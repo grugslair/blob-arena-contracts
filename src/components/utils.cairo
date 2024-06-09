@@ -1,7 +1,7 @@
 use core::fmt::{Display, Formatter, Error};
 
 
-#[derive(Copy, Drop, Print, Serde, PartialEq)]
+#[derive(Copy, Drop, Print, Serde, PartialEq, Debug)]
 enum AB {
     A,
     B,
