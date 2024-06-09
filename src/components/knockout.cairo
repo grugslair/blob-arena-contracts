@@ -16,7 +16,7 @@ struct Knockout {
 }
 
 
-#[derive(Model, Copy, Drop, Print, Serde)]
+#[derive(Model, Copy, Drop, Print, Serde, Debug)]
 struct Healths {
     #[key]
     combat_id: u128,
@@ -24,7 +24,7 @@ struct Healths {
     b: u8,
 }
 
-#[derive(Model, Copy, Drop, Print, Serde, SerdeLen)]
+#[derive(Model, Copy, Drop, Print, Serde, SerdeLen, Debug)]
 struct LastRound {
     #[key]
     combat_id: u128,
@@ -42,6 +42,12 @@ impl RoundImpl of RoundTrait {
     fn create(
         combat_id: u128, healths: Healths, moves: TwoMoves, damage_a: u8, damage_b: u8
     ) -> LastRound {
+        println!("Creating round");
+        println!("Combat id: {}", combat_id);
+        println!("Healths: {:?}", healths);
+        println!("Moves: {:?}", moves);
+        println!("Damage A: {}", damage_a);
+        println!("Damage B: {}", damage_b);
         let (move_a, move_b) = moves.moves();
         LastRound {
             combat_id, health_a: healths.a, health_b: healths.b, move_a, move_b, damage_a, damage_b

@@ -3,14 +3,14 @@ use starknet::ContractAddress;
 use blob_arena::{constants::U64_MASK_U256, components::utils::{AB, Status, Winner, DisplayImplT}};
 
 
-#[derive(Copy, Drop, Print, Serde, SerdeLen, PartialEq, Introspect)]
+#[derive(Copy, Drop, Print, Serde, SerdeLen, PartialEq, Introspect, Debug)]
 enum Move {
     Beat,
     Counter,
     Rush,
 }
 
-#[derive(Copy, Drop, Print, Serde, SerdeLen, PartialEq, Introspect)]
+#[derive(Copy, Drop, Print, Serde, SerdeLen, PartialEq, Introspect, Debug)]
 enum MoveN {
     None,
     Beat,
@@ -107,7 +107,7 @@ struct TwoHashes {
     b: felt252,
 }
 
-#[derive(Model, Copy, Drop, Print, Serde, SerdeLen)]
+#[derive(Model, Copy, Drop, Print, Serde, SerdeLen, Debug)]
 struct TwoMoves {
     #[key]
     id: u128,
