@@ -130,7 +130,18 @@
         "speed": 15,
         "strength": 10
       },
-      "attacks": []
+      "attacks": [
+        {
+          "name": "Heal",
+          "damage": 0,
+          "speed": 0,
+          "accuracy": 0,
+          "critical": 0,
+          "stun": 0,
+          "cooldown": 0,
+          "heal": 0
+        }
+      ]
     },
     "1": {
       "name": "Kigurumi",

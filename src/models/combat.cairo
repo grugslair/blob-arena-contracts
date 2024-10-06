@@ -47,6 +47,16 @@ pub struct AttackResult {
     pub critical: bool,
 }
 
+#[derive(Drop, Serde, Copy, Introspect)]
+#[dojo::model]
+pub struct HealResult {
+    #[key]
+    pub combatant_id: u128,
+    #[key]
+    pub round: u32,
+    pub heal: u8,
+}
+
 
 #[dojo::model]
 #[derive(Drop, Serde)]

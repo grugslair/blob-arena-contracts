@@ -158,6 +158,15 @@ impl CombatWorldImp of CombatWorldTraits {
     // emit!(self, AttackResult { combatant_id, round, attack_id, target, effect });
     }
 
+    fn emit_heal_event(
+        self: IWorldDispatcher,
+        combatant_id: u128,
+        round: u32,
+        heal: u8
+    ) {
+        HealResult { combatant_id, round, heal }.set(self);
+    }
+
     fn run_attack(
         self: IWorldDispatcher,
         attacker_stats: CombatantStats,
@@ -170,6 +179,10 @@ impl CombatWorldImp of CombatWorldTraits {
         let seed = felt252_to_u128(hash.to_hash(attacker_stats.id));
         let (seed, stunned) = attacker_state.run_stun(seed);
         let (seed, hit) = attacker_stats.did_hit(attack, seed);
+        if attack.name == "Heal" {
+            attacker_state.health.add(attack.heal);
+            self.emit_heal_event(attacker_stats.id, round, attack.heal);
+        }
         let effect = if !self.run_attack_check(attacker_stats.id, attack, round) {
             AttackEffect::Failed
         } else if stunned {
