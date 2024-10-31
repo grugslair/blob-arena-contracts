@@ -1,5 +1,5 @@
 use starknet::{ContractAddress, get_caller_address, get_block_timestamp, get_contract_address};
-use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
+use dojo::world::{WorldStorage, ModelStorage};
 use alexandria_math::BitShift;
 
 use blob_arena::{
@@ -50,7 +50,7 @@ fn generate_seed(randomness: felt252) -> Seed {
 
 #[generate_trait]
 impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
-    fn mint_blobert(self: IWorldDispatcher) -> u256 {
+    fn mint_blobert(ref self: WorldStorage) -> u256 {
         let caller = get_caller_address();
         let timestamp = get_block_timestamp();
         if self.is_owner(get_contract_address().into(), caller.into()) {
@@ -65,7 +65,7 @@ impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
         token_id.into()
     }
     fn mint_blobert_with_traits(
-        self: IWorldDispatcher, player: ContractAddress, traits: TokenTrait
+        ref self: WorldStorage, player: ContractAddress, traits: TokenTrait
     ) -> u256 {
         self.assert_caller_is_owner();
         let token_id = uuid(self);
@@ -73,10 +73,10 @@ impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
         self.set_arcade_blobert(token_id, player, traits);
         token_id.into()
     }
-    fn get_last_mint(self: @IWorldDispatcher, caller: ContractAddress) -> u64 {
+    fn get_last_mint(self: @WorldStorage, caller: ContractAddress) -> u64 {
         get!((*self), (caller), LastMint).timestamp
     }
-    fn set_last_mint(self: IWorldDispatcher, player: ContractAddress, timestamp: u64) {
+    fn set_last_mint(ref self: WorldStorage, player: ContractAddress, timestamp: u64) {
         set!(self, LastMint { player, timestamp });
     }
 }

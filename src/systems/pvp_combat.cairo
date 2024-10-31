@@ -8,13 +8,13 @@ use blob_arena::{
     utils::UpdateHashToU128, models::CombatantStateStore, systems::{combat::{CombatWorldTraits}},
     models::PlannedAttack,
 };
-use dojo::{world::{IWorldDispatcher, IWorldDispatcherTrait}, model::Model};
+use dojo::{world::{WorldStorage, ModelStorage}, model::Model};
 
 
 #[generate_trait]
 impl PvPCombatSystemImpl of PvPCombatSystemTrait {
     fn run_round(
-        self: IWorldDispatcher,
+        ref self: WorldStorage,
         combatant_ids: ABT<felt252>,
         planned_attacks: ABT<PlannedAttack>,
         round: u32,

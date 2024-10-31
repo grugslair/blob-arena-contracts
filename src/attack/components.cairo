@@ -1,10 +1,40 @@
-use dojo::{world::{WorldStorage, ModelStorage}, model::Model};
-
 use blob_arena::{
-    core::Signed, utils::uuid,
-    models::{AttackModel, AvailableAttack, Effect, Affect, AttackStore, Target, Damage, Stat},
-    components::{utils::{IdTrait, IdsTrait, TIdsImpl}, stats::{Stats, TStats, StatTypes},},
+    core::Signed, stats::{IStats, StatTypes, SignedStats}, id_trait::{IdTrait, TIdsImpl,}
 };
+
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+enum Affect {
+    Stats: IStats,
+    Stat: Stat,
+    Damage: Damage,
+    Stun: u8,
+    Health: i16,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+struct Stat {
+    stat: StatTypes,
+    amount: i8,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+struct Effect {
+    target: Target,
+    affect: Affect,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+struct Damage {
+    critical: u8,
+    power: u8,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+enum Target {
+    Player,
+    Opponent,
+}
 
 
 #[derive(Drop, Serde)]
@@ -40,13 +70,12 @@ struct EffectInput {
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect)]
 enum AffectInput {
-    Stats: TStats<Signed<u8>>,
+    Stats: SignedStats,
     Stat: StatInput,
     Damage: Damage,
     Stun: u8,
     Health: Signed<u8>,
 }
-
 
 impl InputIntoAffect of Into<AffectInput, Affect> {
     fn into(self: AffectInput) -> Affect {
@@ -83,8 +112,8 @@ impl InputIntoEffectArray of Into<Array<EffectInput>, Array<Effect>> {
 
 #[generate_trait]
 impl AttackInputImpl of AttackInputTrait {
-    fn to_model(self: @AttackInput, id: felt252) -> AttackModel {
-        AttackModel {
+    fn to_model(self: @AttackInput, id: felt252) -> models::Attack {
+        models::Attack {
             id,
             name: self.name.clone(),
             speed: *(self.speed),
@@ -98,7 +127,7 @@ impl AttackInputImpl of AttackInputTrait {
 
 #[generate_trait]
 impl AttackModelImpl of AttackModelTrait {
-    fn to_attack(self: @AttackModel) -> Attack {
+    fn to_attack(self: @models::Attack) -> Attack {
         Attack {
             id: *(self.id),
             speed: *(self.speed),
@@ -117,33 +146,30 @@ impl AttackIdImpl of IdTrait<Attack> {
 }
 
 impl AttackIdsImpl = TIdsImpl<Attack>;
-// impl AttackArrayCopyImpl of Copy<Array<Attack>>;
 
-#[generate_trait]
-impl AttackImpl of AttackTrait {
-    fn get_attack_model(self: @WorldStorage, id: felt252) -> AttackModel {
-        get!((*self), id, AttackModel)
+mod models {
+    use super::Effect;
+    #[dojo::model]
+    #[derive(Drop, Serde, Copy)]
+    struct AvailableAttack {
+        #[key]
+        combatant_id: felt252,
+        #[key]
+        attack_id: felt252,
+        available: bool,
+        last_used: u32,
     }
-    fn get_attack(self: @WorldStorage, id: felt252) -> Attack {
-        self.get_attack_model(id).to_attack()
+
+    #[dojo::model]
+    #[derive(Drop, Serde)]
+    struct Attack {
+        #[key]
+        id: felt252,
+        name: ByteArray,
+        speed: u8,
+        accuracy: u8,
+        cooldown: u8,
+        hit: Array<Effect>,
+        miss: Array<Effect>,
     }
-    fn create_new_attack(ref self: WorldStorage, attack: AttackInput) -> felt252 {
-        let id = uuid(self);
-        attack.to_model(id).set(self);
-        id
-    }
-    fn get_attack_speed(self: @WorldStorage, id: felt252) -> u8 {
-        AttackStore::get_speed(*self, id)
-    }
-    // fn get_available_attack(
-//     ref self: WorldStorage, combat_id: u128, combatant: u128, attack: u128,
-// ) -> AvailableAttack {
-//     get!(self, (combat_id, combatant, attack), AvailableAttack)
-// }
-// fn set_available_attack(
-//     ref self: WorldStorage, combat_id: u128, combatant: u128, attack: u128, last_used: u32
-// ) {
-//     set!(self, (AvailableAttack { combat_id, combatant, attack, available: true, last_used
-//     }));
-// }
 }

@@ -1,10 +1,10 @@
-use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
+use dojo::world::{WorldStorage, ModelStorage};
 use blob_arena::components::{attack::{Attack, AttackTrait}, combatant::Combatant};
 
 #[generate_trait]
 impl AttackSystemImpl of AttackSystemTrait {
     fn run_cooldown(
-        self: IWorldDispatcher, combatant: @Combatant, attack: Attack, round: u32
+        ref self: WorldStorage, combatant: @Combatant, attack: Attack, round: u32
     ) -> bool {
         if attack.cooldown == 0 {
             return true;

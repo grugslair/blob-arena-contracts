@@ -1,38 +1,38 @@
 use starknet::ContractAddress;
-use dojo::world::{IWorldDispatcher};
+use dojo::world::{WorldStorage};
 
 #[dojo::interface]
 trait IPvPCombatActions {
-    fn commit_attack(ref world: IWorldDispatcher, combatant_id: felt252, hash: felt252);
+    fn commit_attack(ref self: ContractState, combatant_id: felt252, hash: felt252);
     fn reveal_attack(
-        ref world: IWorldDispatcher, combatant_id: felt252, attack: felt252, salt: felt252
+        ref self: ContractState, combatant_id: felt252, attack: felt252, salt: felt252
     );
-    fn run_round(ref world: IWorldDispatcher, combat_id: felt252);
-    fn forfeit(ref world: IWorldDispatcher, combatant_id: felt252);
-    fn kick_inactive_player(ref world: IWorldDispatcher, combatant_id: felt252);
+    fn run_round(ref self: ContractState, combat_id: felt252);
+    fn forfeit(ref self: ContractState, combatant_id: felt252);
+    fn kick_inactive_player(ref self: ContractState, combatant_id: felt252);
 }
 
 #[dojo::interface]
 trait IPvPChallengeActions {
     fn send_invite(
-        ref world: IWorldDispatcher,
+        ref self: ContractState,
         receiver: ContractAddress,
         collection_address: ContractAddress,
         token_id: u256,
         attacks: Span<(felt252, felt252)>,
         phase_time: u64
     ) -> felt252;
-    fn rescind_invite(ref world: IWorldDispatcher, challenge_id: felt252);
+    fn rescind_invite(ref self: ContractState, challenge_id: felt252);
     fn respond_invite(
-        ref world: IWorldDispatcher,
+        ref self: ContractState,
         challenge_id: felt252,
         token_id: u256,
         attacks: Span<(felt252, felt252)>
     );
-    fn rescind_response(ref world: IWorldDispatcher, challenge_id: felt252);
-    fn reject_invite(ref world: IWorldDispatcher, challenge_id: felt252);
-    fn reject_response(ref world: IWorldDispatcher, challenge_id: felt252);
-    fn accept_response(ref world: IWorldDispatcher, challenge_id: felt252);
+    fn rescind_response(ref self: ContractState, challenge_id: felt252);
+    fn reject_invite(ref self: ContractState, challenge_id: felt252);
+    fn reject_response(ref self: ContractState, challenge_id: felt252);
+    fn accept_response(ref self: ContractState, challenge_id: felt252);
 }
 
 
@@ -59,7 +59,7 @@ mod pvp_actions {
     #[abi(embed_v0)]
     impl IPvPChallengeActionsImpl of IPvPChallengeActions<ContractState> {
         fn send_invite(
-            ref world: IWorldDispatcher,
+            ref self: ContractState,
             receiver: ContractAddress,
             collection_address: ContractAddress,
             token_id: u256,
@@ -78,14 +78,14 @@ mod pvp_actions {
                 );
             challenge_id
         }
-        fn rescind_invite(ref world: IWorldDispatcher, challenge_id: felt252) {
+        fn rescind_invite(ref self: ContractState, challenge_id: felt252) {
             let mut challenge = world.get_open_challenge(challenge_id);
             challenge.assert_caller_sender();
             challenge.invite_open = false;
             world.set_challenge_invite(challenge);
         }
         fn respond_invite(
-            ref world: IWorldDispatcher,
+            ref self: ContractState,
             challenge_id: felt252,
             token_id: u256,
             attacks: Span<(felt252, felt252)>
@@ -103,26 +103,26 @@ mod pvp_actions {
             challenge.response_open = true;
             world.set_challenge_response(challenge);
         }
-        fn rescind_response(ref world: IWorldDispatcher, challenge_id: felt252) {
+        fn rescind_response(ref self: ContractState, challenge_id: felt252) {
             let mut challenge = world.get_open_challenge(challenge_id);
             challenge.assert_caller_receiver();
             assert(challenge.response_open, 'Response already closed');
             challenge.response_open = false;
             world.set_challenge_response(challenge);
         }
-        fn reject_invite(ref world: IWorldDispatcher, challenge_id: felt252) {
+        fn reject_invite(ref self: ContractState, challenge_id: felt252) {
             let mut challenge = world.get_open_challenge(challenge_id);
             challenge.assert_caller_receiver();
             challenge.invite_open = false;
             world.set_challenge_invite(challenge);
         }
-        fn reject_response(ref world: IWorldDispatcher, challenge_id: felt252) {
+        fn reject_response(ref self: ContractState, challenge_id: felt252) {
             let mut challenge = world.get_open_challenge(challenge_id);
             challenge.assert_caller_sender();
             challenge.invite_open = false;
             world.set_challenge_invite(challenge);
         }
-        fn accept_response(ref world: IWorldDispatcher, challenge_id: felt252) {
+        fn accept_response(ref self: ContractState, challenge_id: felt252) {
             let mut challenge = world.get_open_challenge(challenge_id);
             challenge.assert_caller_sender();
             assert(challenge.response_open, 'Response already closed');
@@ -131,7 +131,7 @@ mod pvp_actions {
     }
     #[abi(embed_v0)]
     impl PvPActionsImpl of IPvPCombatActions<ContractState> {
-        fn commit_attack(ref world: IWorldDispatcher, combatant_id: felt252, hash: felt252) {
+        fn commit_attack(ref self: ContractState, combatant_id: felt252, hash: felt252) {
             let combatant = world.get_combatant_info_in_combat(combatant_id);
             let combat = world.get_combat_state(combatant.combat_id);
             assert(combat.phase == Phase::Commit, 'Not in commit phase');
@@ -140,7 +140,7 @@ mod pvp_actions {
             world.set_new_commitment_with(combatant_id, hash);
         }
         fn reveal_attack(
-            ref world: IWorldDispatcher, combatant_id: felt252, attack: felt252, salt: felt252
+            ref self: ContractState, combatant_id: felt252, attack: felt252, salt: felt252
         ) {
             let combatant = world.get_combatant_info_in_combat(combatant_id);
             combatant.assert_player();
@@ -165,7 +165,7 @@ mod pvp_actions {
                 world.update_scores(world.get_combatant_info(winner_id), combatant);
             }
         }
-        fn run_round(ref world: IWorldDispatcher, combat_id: felt252) {
+        fn run_round(ref self: ContractState, combat_id: felt252) {
             let mut combat = world.get_running_combat_state(combat_id);
             let combatants = world.get_pvp_combatants(combat_id);
             let combatants_span: Span<felt252> = combatants.into();
@@ -187,7 +187,7 @@ mod pvp_actions {
                 world.update_scores(winner, looser);
             }
         }
-        fn forfeit(ref world: IWorldDispatcher, combatant_id: felt252) {
+        fn forfeit(ref self: ContractState, combatant_id: felt252) {
             let loser = world.get_combatant_info_in_combat(combatant_id);
             loser.assert_player();
             let mut combat = world.get_running_combat_state(loser.combat_id);
@@ -198,7 +198,7 @@ mod pvp_actions {
             world.update_scores(winner, loser);
         }
         fn kick_inactive_player(
-            ref world: IWorldDispatcher, combatant_id: felt252
+            ref self: ContractState, combatant_id: felt252
         ) { // let mut combat = world.get_combat_state(combat_id);
         }
     }

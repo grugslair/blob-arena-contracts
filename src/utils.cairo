@@ -1,11 +1,12 @@
 use core::{
     num::traits::Bounded, hash::{HashStateTrait, HashStateExTrait, Hash},
     poseidon::{PoseidonTrait, HashState, poseidon_hash_span},
-    fmt::{Display, Formatter, Error, Debug}
+    fmt::{Display, Formatter, Error, Debug}, GasBuiltin
 };
-use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use starknet::{
-    ContractAddress, get_contract_address, get_caller_address, get_tx_info, get_block_timestamp
+    ContractAddress, get_contract_address, get_caller_address, get_tx_info, get_block_timestamp,
+    StorageAddress, StorageBaseAddress, syscalls::{storage_read_syscall, storage_write_syscall},
+    storage_address_from_base
 };
 use blob_arena::core::Felt252BitAnd;
 
@@ -22,12 +23,21 @@ fn value_to_uuid<T, +Hash<T, HashState>, +Drop<T>>(value: T) -> u128 {
     felt252_to_uuid(hash_value(value))
 }
 
-fn uuid(world: IWorldDispatcher) -> felt252 {
-    let values = (
-        dojo::world::IWorldDispatcherTrait::uuid(world), get_tx_info().unbox().transaction_hash
-    );
-    hash_value(values)
+fn uuid() -> felt252 {
+    let storage_address: StorageAddress = 'uuid'.try_into().unwrap();
+    let value = storage_read(storage_address) + 1;
+    storage_write(storage_address, value);
+    hash_value((get_contract_address(), value))
 }
+
+fn storage_read(address: StorageAddress) -> felt252 {
+    storage_read_syscall(0, address).unwrap()
+}
+
+fn storage_write(address: StorageAddress, value: felt252) {
+    storage_write_syscall(0, address, value).unwrap()
+}
+
 
 impl ArrayHash<
     T, S, +HashStateTrait<S>, +Hash<T, S>, +Drop<Array<T>>, +Drop<S>
@@ -57,17 +67,6 @@ struct RandomSeed {
     #[key]
     key: bool,
     value: felt252,
-}
-
-#[generate_trait]
-impl RandomnessImpl of RandomnessTrait {
-    fn get_randomness(ref world: IWorldDispatcher) -> felt252 {
-        let seed = get!(world, true, RandomSeed).value;
-        let values = (get_block_timestamp(), get_tx_info().unbox().transaction_hash, seed);
-        let value = hash_value(values);
-        set!(world, RandomSeed { key: true, value });
-        value
-    }
 }
 
 trait ToHash<T> {

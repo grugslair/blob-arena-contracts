@@ -118,8 +118,8 @@ impl Felt252BitAnd of BitAnd<felt252> {
     }
 }
 
-fn in_range<T, +PartialOrd<T>, +Drop<T>, +Copy<T>>(min: T, max: T, value: T) -> T {
-    max(min, min(max, value))
+fn in_range<T, +PartialOrd<T>, +Drop<T>, +Copy<T>>(lower: T, upper: T, value: T) -> T {
+    max(lower, min(upper, value))
 }
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect)]

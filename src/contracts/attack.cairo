@@ -1,10 +1,10 @@
-use dojo::world::{IWorldDispatcher};
+use dojo::world::{WorldStorage};
 use blob_arena::{components::attack::EffectInput};
 
 #[dojo::interface]
 trait IAttackActions {
     fn new_attack(
-        ref world: IWorldDispatcher,
+        ref self: ContractState,
         name: ByteArray,
         speed: u8,
         accuracy: u8,
@@ -29,7 +29,7 @@ mod attack_actions {
     #[abi(embed_v0)]
     impl IAttackActionsImpl of IAttackActions<ContractState> {
         fn new_attack(
-            ref world: IWorldDispatcher,
+            ref self: ContractState,
             name: ByteArray,
             speed: u8,
             accuracy: u8,

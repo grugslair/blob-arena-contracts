@@ -1,5 +1,5 @@
 use starknet::{ContractAddress, get_caller_address, get_block_number};
-use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
+use dojo::world::{WorldStorage, ModelStorage};
 use blob_arena::{
     components::{
         combat::{Phase, CombatStateTrait}, combatant::{CombatantInfo, CombatantTrait},
@@ -23,7 +23,7 @@ struct PvPChallenge {
 
 
 fn make_challenge(
-    world: @IWorldDispatcher, invite: PvPChallengeInvite, response: PvPChallengeResponse
+    self: @ContractState, invite: PvPChallengeInvite, response: PvPChallengeResponse
 ) -> PvPChallenge {
     PvPChallenge {
         id: invite.id,
@@ -41,24 +41,24 @@ fn make_challenge(
 
 #[generate_trait]
 impl PvPChallengeImpl of PvPChallengeTrait {
-    fn get_challenge_invite(self: @IWorldDispatcher, challenge_id: felt252) -> PvPChallengeInvite {
+    fn get_challenge_invite(self: @WorldStorage, challenge_id: felt252) -> PvPChallengeInvite {
         get!((*self), challenge_id, PvPChallengeInvite)
     }
 
-    fn get_challenge_response(self: @IWorldDispatcher, challenge_id: felt252) -> PvPChallengeResponse {
+    fn get_challenge_response(self: @WorldStorage, challenge_id: felt252) -> PvPChallengeResponse {
         get!((*self), challenge_id, PvPChallengeResponse)
     }
 
-    fn set_challenge_invite(self: IWorldDispatcher, challenge: PvPChallenge) {
+    fn set_challenge_invite(ref self: WorldStorage, challenge: PvPChallenge) {
         set!(self, (challenge.invite(),))
     }
 
-    fn set_challenge_response(self: IWorldDispatcher, challenge: PvPChallenge) {
+    fn set_challenge_response(ref self: WorldStorage, challenge: PvPChallenge) {
         set!(self, (challenge.response(),))
     }
 
     fn send_challenge_invite(
-        self: IWorldDispatcher,
+        ref self: WorldStorage,
         challenge_id: felt252,
         sender: ContractAddress,
         receiver: ContractAddress,
@@ -92,13 +92,13 @@ impl PvPChallengeImpl of PvPChallengeTrait {
         caller
     }
 
-    fn get_challenge(self: @IWorldDispatcher, challenge_id: felt252) -> PvPChallenge {
+    fn get_challenge(self: @WorldStorage, challenge_id: felt252) -> PvPChallenge {
         make_challenge(
             self, self.get_challenge_invite(challenge_id), self.get_challenge_response(challenge_id)
         )
     }
 
-    fn get_open_challenge(self: @IWorldDispatcher, challenge_id: felt252) -> PvPChallenge {
+    fn get_open_challenge(self: @WorldStorage, challenge_id: felt252) -> PvPChallenge {
         let challenge = self.get_challenge(challenge_id);
         assert(challenge.invite_open, 'Challenge already closed');
 
@@ -122,7 +122,7 @@ impl PvPChallengeImpl of PvPChallengeTrait {
             id: self.id, combatant: self.receiver_combatant, open: self.response_open,
         }
     }
-    fn create_game(self: IWorldDispatcher, challenge: PvPChallenge) {
+    fn create_game(ref self: WorldStorage, challenge: PvPChallenge) {
         self
             .set_pvp_combatants(
                 challenge.id, (challenge.sender_combatant, challenge.receiver_combatant)
@@ -134,7 +134,7 @@ impl PvPChallengeImpl of PvPChallengeTrait {
 #[generate_trait]
 impl PvPChallengeScoreImpl of PvPChallengeScoreTrait {
     fn get_score(
-        self: @IWorldDispatcher,
+        self: @WorldStorage,
         player: ContractAddress,
         collection_address: ContractAddress,
         token_id: u256
@@ -156,7 +156,7 @@ impl PvPChallengeScoreImpl of PvPChallengeScoreTrait {
         self.current_consecutive_wins = 0;
         self.losses += 1;
     }
-    fn update_scores(self: IWorldDispatcher, winner: CombatantInfo, loser: CombatantInfo) {
+    fn update_scores(ref self: WorldStorage, winner: CombatantInfo, loser: CombatantInfo) {
         let mut winner_score = self
             .get_score(winner.player, winner.collection_address, winner.token_id);
         let mut loser_score = self

@@ -20,7 +20,7 @@ use blob_arena::{
         DamageResult, AttackResult
     },
 };
-use dojo::{world::{IWorldDispatcher, IWorldDispatcherTrait}, model::Model};
+use dojo::{world::{WorldStorage, ModelStorage}, model::Model};
 
 
 const THREE_TENTHS_FIXED: Fixed = Fixed { mag: 5534023222112865484, sign: false };
@@ -179,12 +179,12 @@ fn run_effects(
 #[generate_trait]
 impl CombatWorldImp of CombatWorldTraits {
     fn get_attacker_attack_speed(
-        self: @IWorldDispatcher, state: @CombatantState, attack: @Attack
+        self: @WorldStorage, state: @CombatantState, attack: @Attack
     ) -> u8 {
         *state.stats.dexterity + *attack.speed
     }
     fn run_attack_check(
-        self: IWorldDispatcher, combatant_id: felt252, attack_id: felt252, cooldown: u8, round: u32
+        ref self: WorldStorage, combatant_id: felt252, attack_id: felt252, cooldown: u8, round: u32
     ) -> bool {
         let attack_available = self.get_available_attack(combatant_id, attack_id);
         if !attack_available.available {
@@ -203,7 +203,7 @@ impl CombatWorldImp of CombatWorldTraits {
     }
 
     fn run_attack(
-        self: IWorldDispatcher,
+        ref self: WorldStorage,
         ref attacker_state: CombatantState,
         ref defender_state: CombatantState,
         attack: @Attack,

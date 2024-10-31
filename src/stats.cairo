@@ -1,5 +1,7 @@
 use core::{fmt::{Display, Formatter, Error, Debug}, cmp::min};
-use blob_arena::{core::{SaturatingAdd, SaturatingSub, SaturatingInto}, consts::STARTING_HEALTH};
+use blob_arena::{
+    core::{SaturatingAdd, SaturatingSub, SaturatingInto, Signed}, consts::STARTING_HEALTH
+};
 
 const MAX_STAT: u8 = 100;
 
@@ -20,7 +22,9 @@ enum StatTypes {
 }
 
 
-type Stats = TStats<u8>;
+type UStats = TStats<u8>;
+type IStats = TStats<i8>;
+type SignedStats = TStats<Signed<u8>>;
 
 impl TIntoTStats<T, +Copy<T>> of Into<T, TStats<T>> {
     fn into(self: T) -> TStats<T> {
@@ -34,13 +38,13 @@ fn add_buff(stat: u8, buff: i8) -> u8 {
 
 #[generate_trait]
 impl StatsImpl of StatsTrait {
-    fn limit_stats(ref self: Stats) {
+    fn limit_stats(ref self: UStats) {
         self.strength = min(self.strength, MAX_STAT);
         self.vitality = min(self.vitality, MAX_STAT);
         self.dexterity = min(self.dexterity, MAX_STAT);
         self.luck = min(self.luck, MAX_STAT);
     }
-    fn apply_buff(ref self: Stats, stat: StatTypes, amount: i8) {
+    fn apply_buff(ref self: UStats, stat: StatTypes, amount: i8) {
         match stat {
             StatTypes::Strength => { self.strength = add_buff(self.strength, amount) },
             StatTypes::Vitality => { self.vitality = add_buff(self.vitality, amount) },
@@ -48,13 +52,13 @@ impl StatsImpl of StatsTrait {
             StatTypes::Luck => { self.luck = add_buff(self.luck, amount) },
         }
     }
-    fn apply_buffs(ref self: Stats, buffs: @TStats<i8>) {
+    fn apply_buffs(ref self: UStats, buffs: @TStats<i8>) {
         self.strength = add_buff(self.strength, *buffs.strength);
         self.vitality = add_buff(self.vitality, *buffs.vitality);
         self.dexterity = add_buff(self.dexterity, *buffs.dexterity);
         self.luck = add_buff(self.luck, *buffs.luck);
     }
-    fn get_max_health(self: @Stats) -> u8 {
+    fn get_max_health(self: @UStats) -> u8 {
         *self.vitality + STARTING_HEALTH
     }
 }

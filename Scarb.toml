@@ -1,25 +1,23 @@
 [package]
-cairo-version = "2.7.0"
+cairo-version = "2.8.4"
 name = "blob_arena"
 version = "0.4.0"
 
 [cairo]
 sierra-replace-ids = true
 
-[tool.fmt]
-sort-module-level-items = true
-
 [dependencies]
-dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0-alpha.19" }
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0-rc.0" }
 alexandria_math = { git = "https://github.com/keep-starknet-strange/alexandria.git" }
 cubit = { git = "https://github.com/dojoengine/cubit", branch = "cairo_2.7" }
-
-[[target.dojo]]
 
 [tool.dojo]
 initializer_class_hash = "0xbeef"
 
-[tool.dojo.world.namespace]
-default = "blob_arena"
+# [[target.starknet-contract]]
+# build-external-contracts = ["dojo::world::world_contract::world"]
+
+[dev-dependencies]
+dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0-rc.0" }
 
 [profile.sepolia]

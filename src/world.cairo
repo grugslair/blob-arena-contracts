@@ -1,7 +1,6 @@
 use starknet::{get_caller_address, ContractAddress, get_contract_address};
 use dojo::{
-    world::{IWorldDispatcher, IWorldDispatcherTrait},
-    contract::{IContractDispatcherTrait, IContractDispatcher}
+    world::{WorldStorage, ModelStorage}, contract::{IContractDispatcherTrait, IContractDispatcher}
 };
 
 
@@ -29,7 +28,7 @@ impl ContractIntoFelt252 of Into<Contract, felt252> {
 
 #[generate_trait]
 impl WorldImpl of WorldTrait {
-    fn assert_caller_is_owner(self: @IWorldDispatcher) -> ContractAddress {
+    fn assert_caller_is_owner(self: @WorldStorage) -> ContractAddress {
         let dispatcher = IContractDispatcher { contract_address: get_contract_address(), };
         let selector = dispatcher.selector();
         let caller = get_caller_address();

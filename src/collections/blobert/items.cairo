@@ -1,4 +1,4 @@
-use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
+use dojo::world::{WorldStorage, ModelStorage};
 use super::external::{Seed, TokenTrait};
 use blob_arena::{
     core::TTupleSize5, utils::{value_to_uuid, HashStateTrait},
@@ -76,7 +76,7 @@ struct ItemMap {
 #[generate_trait]
 impl BlobertItems of BlobertItemsTrait {
     fn set_item_id(
-        self: IWorldDispatcher,
+        ref self: WorldStorage,
         trait_type: felt252,
         blobert_trait: BlobertTrait,
         blobert_trait_id: u8,
@@ -85,14 +85,11 @@ impl BlobertItems of BlobertItemsTrait {
         ItemMap { trait_type, blobert_trait, blobert_trait_id, item_id, }.set(self);
     }
     fn get_item_id(
-        self: @IWorldDispatcher,
-        trait_type: felt252,
-        blobert_trait: BlobertTrait,
-        blobert_trait_id: u8
+        self: @WorldStorage, trait_type: felt252, blobert_trait: BlobertTrait, blobert_trait_id: u8
     ) -> felt252 {
         ItemMapStore::get_item_id(*self, trait_type, blobert_trait, blobert_trait_id)
     }
-    fn get_seed_item_ids(self: @IWorldDispatcher, trait_type: felt252, traits: Seed) -> SeedIds {
+    fn get_seed_item_ids(self: @WorldStorage, trait_type: felt252, traits: Seed) -> SeedIds {
         (
             self.get_item_id(trait_type, BlobertTrait::Background, traits.background),
             self.get_item_id(trait_type, BlobertTrait::Armour, traits.armour),
@@ -101,7 +98,7 @@ impl BlobertItems of BlobertItemsTrait {
             self.get_item_id(trait_type, BlobertTrait::Weapon, traits.weapon),
         )
     }
-    fn get_item_ids(self: @IWorldDispatcher, blobert_trait: TokenTrait) -> SeedIds {
+    fn get_item_ids(self: @WorldStorage, blobert_trait: TokenTrait) -> SeedIds {
         match blobert_trait {
             TokenTrait::Regular(seed) => self.get_seed_item_ids(SEED_TRAIT_TYPE, seed),
             TokenTrait::Custom(custom_id) => self
@@ -112,14 +109,14 @@ impl BlobertItems of BlobertItemsTrait {
 
 #[generate_trait]
 impl BlobertStatsImpl of BlobertStatsTrait {
-    fn get_blobert_item_ids(self: @IWorldDispatcher, blobert_trait: TokenTrait) -> Array<felt252> {
+    fn get_blobert_item_ids(self: @WorldStorage, blobert_trait: TokenTrait) -> Array<felt252> {
         let (background, armour, jewelry, mask, weapon) = self.get_item_ids(blobert_trait);
         array![background, armour, jewelry, mask, weapon]
     }
-    fn get_blobert_stats(self: @IWorldDispatcher, blobert_trait: TokenTrait) -> Stats {
+    fn get_blobert_stats(self: @WorldStorage, blobert_trait: TokenTrait) -> Stats {
         self.get_items(self.get_blobert_item_ids(blobert_trait).span()).get_stats()
     }
-    fn get_blobert_health(self: @IWorldDispatcher, blobert_trait: TokenTrait) -> u8 {
+    fn get_blobert_health(self: @WorldStorage, blobert_trait: TokenTrait) -> u8 {
         let stats = self.get_blobert_stats(blobert_trait);
         if stats.vitality > 155 {
             255
@@ -128,7 +125,7 @@ impl BlobertStatsImpl of BlobertStatsTrait {
         }
     }
     fn blobert_has_attack(
-        self: @IWorldDispatcher, blobert_trait: TokenTrait, item_id: felt252, attack_id: felt252
+        self: @WorldStorage, blobert_trait: TokenTrait, item_id: felt252, attack_id: felt252
     ) -> bool {
         let mut item_ids = self.get_blobert_item_ids(blobert_trait);
         let mut has = false;

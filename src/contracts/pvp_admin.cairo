@@ -1,12 +1,12 @@
 // For testing only
 use starknet::{ContractAddress};
-use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
+use dojo::world::{WorldStorage, ModelStorage};
 
 
 #[dojo::interface]
 trait IPvPAdminActions {
     fn create_challenge(
-        ref world: IWorldDispatcher,
+        ref self: ContractState,
         collection_address_a: ContractAddress,
         collection_address_b: ContractAddress,
         player_a: ContractAddress,
@@ -16,7 +16,7 @@ trait IPvPAdminActions {
         attacks_a: Span<(felt252, felt252)>,
         attacks_b: Span<(felt252, felt252)>,
     ) -> felt252;
-    fn set_winner(ref world: IWorldDispatcher, combatant_id: felt252);
+    fn set_winner(ref self: ContractState, combatant_id: felt252);
 }
 
 #[dojo::contract]
@@ -35,7 +35,7 @@ mod pvp_admin_actions {
     #[abi(embed_v0)]
     impl IPvPAdminActionsImpl of IPvPAdminActions<ContractState> {
         fn create_challenge(
-            ref world: IWorldDispatcher,
+            ref self: ContractState,
             collection_address_a: ContractAddress,
             collection_address_b: ContractAddress,
             player_a: ContractAddress,
@@ -57,7 +57,7 @@ mod pvp_admin_actions {
             world.set_pvp_combatants(combat_id, (combatant_a.id, combatant_b.id));
             combat_id
         }
-        fn set_winner(ref world: IWorldDispatcher, combatant_id: felt252) {
+        fn set_winner(ref self: ContractState, combatant_id: felt252) {
             world.assert_caller_is_owner();
 
             let winner = world.get_combatant_info(combatant_id);

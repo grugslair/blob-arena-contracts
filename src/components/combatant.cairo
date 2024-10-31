@@ -1,7 +1,7 @@
 use alexandria_data_structures::array_ext::ArrayTraitExt;
 use core::cmp::{min, max};
 use starknet::{ContractAddress, get_caller_address};
-use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
+use dojo::world::{WorldStorage, ModelStorage};
 use blob_arena::{
     core::{SaturatingInto, SaturatingAdd, in_range}, consts::STARTING_HEALTH,
     components::{
@@ -28,32 +28,32 @@ fn make_combatant_state(id: felt252, stats: @Stats) -> CombatantState {
 
 #[generate_trait]
 impl CombatantImpl of CombatantTrait {
-    fn get_combatant_info(self: @IWorldDispatcher, id: felt252) -> CombatantInfo {
+    fn get_combatant_info(self: @WorldStorage, id: felt252) -> CombatantInfo {
         get!((*self), id, CombatantInfo)
     }
 
-    fn get_combatant_state(self: @IWorldDispatcher, id: felt252) -> CombatantState {
+    fn get_combatant_state(self: @WorldStorage, id: felt252) -> CombatantState {
         get!((*self), id, CombatantState)
     }
     fn get_available_attack(
-        self: @IWorldDispatcher, id: felt252, attack_id: felt252
+        self: @WorldStorage, id: felt252, attack_id: felt252
     ) -> AvailableAttack {
         get!((*self), (id, attack_id), AvailableAttack)
     }
     fn set_available_attack(
-        self: IWorldDispatcher, combatant_id: felt252, attack_id: felt252, last_used: u32
+        ref self: WorldStorage, combatant_id: felt252, attack_id: felt252, last_used: u32
     ) {
         set!(
             self, AvailableAttack { combatant_id, attack_id, available: true, last_used: last_used }
         );
     }
-    fn get_combatant_info_in_combat(self: @IWorldDispatcher, id: felt252) -> CombatantInfo {
+    fn get_combatant_info_in_combat(self: @WorldStorage, id: felt252) -> CombatantInfo {
         let combatant = self.get_combatant_info(id);
         assert(combatant.combat_id.is_non_zero(), 'Not valid combatant');
         combatant
     }
     fn has_attack(
-        self: @IWorldDispatcher,
+        self: @WorldStorage,
         collection: ICollectionDispatcher,
         token_id: u256,
         item_id: felt252,
@@ -62,7 +62,7 @@ impl CombatantImpl of CombatantTrait {
         collection.has_attack(token_id, item_id, attack_id)
     }
     fn setup_available_attacks(
-        self: IWorldDispatcher,
+        ref self: WorldStorage,
         collection: ICollectionDispatcher,
         token_id: u256,
         combatant_id: felt252,
@@ -78,7 +78,7 @@ impl CombatantImpl of CombatantTrait {
         }
     }
     fn create_combatant(
-        self: IWorldDispatcher,
+        ref self: WorldStorage,
         collection: ICollectionDispatcher,
         token_id: u256,
         combat_id: felt252,
@@ -98,7 +98,7 @@ impl CombatantImpl of CombatantTrait {
     }
 
     fn create_player_combatant(
-        self: IWorldDispatcher,
+        ref self: WorldStorage,
         collection_address: ContractAddress,
         token_id: u256,
         challenge_id: felt252,
@@ -111,7 +111,7 @@ impl CombatantImpl of CombatantTrait {
         self.create_combatant(collection, token_id, challenge_id, player, attacks)
     }
 
-    fn get_player_combatant_info(self: @IWorldDispatcher, id: felt252) -> CombatantInfo {
+    fn get_player_combatant_info(self: @WorldStorage, id: felt252) -> CombatantInfo {
         let combatant = self.get_combatant_info(id);
         combatant.assert_player();
         combatant
