@@ -1,28 +1,13 @@
-use starknet::{get_caller_address, ContractAddress, get_contract_address};
-use dojo::{
-    world::{WorldStorage, ModelStorage}, contract::{IContractDispatcherTrait, IContractDispatcher}
-};
+use starknet::{get_caller_address, ContractAddress, get_contract_address, StorageAddress};
+use dojo::{world::WorldStorage, contract::{IContractDispatcherTrait, IContractDispatcher}};
 
+use blob_arena::{utils::{storage_read, storage_write}, hash::hash_value};
 
-#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
-enum Contract {
-    World,
-    Attack,
-    Item,
-    PvP,
-    PvPAdmin,
-}
-
-impl ContractIntoFelt252 of Into<Contract, felt252> {
-    fn into(self: Contract) -> felt252 {
-        match self {
-            Contract::World => 0,
-            Contract::Attack => 'Attack',
-            Contract::Item => 'Item',
-            Contract::PvP => 'PvP',
-            Contract::PvPAdmin => 'PvPAdmin',
-        }
-    }
+fn uuid() -> felt252 {
+    let storage_address: StorageAddress = 'uuid'.try_into().unwrap();
+    let value = storage_read(storage_address) + 1;
+    storage_write(storage_address, value);
+    hash_value((get_contract_address(), value))
 }
 
 
@@ -36,3 +21,4 @@ impl WorldImpl of WorldTrait {
         caller
     }
 }
+

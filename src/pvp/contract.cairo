@@ -1,5 +1,4 @@
 use starknet::ContractAddress;
-use dojo::world::{WorldStorage};
 
 #[dojo::interface]
 trait IPvPCombatActions {
@@ -40,20 +39,7 @@ trait IPvPChallengeActions {
 mod pvp_actions {
     use dojo::model::Model;
     use starknet::{ContractAddress, get_caller_address};
-    use blob_arena::{
-        components::{
-            combat::{
-                SaltsTrait, Phase, CombatStateTrait, CombatStatesTrait, PlannedAttack,
-                PlannedAttackTrait, PlannedAttackStore,
-            },
-            combatant::{CombatantInfo, CombatantTrait,}, commitment::{Commitment,},
-            pvp_combat::{PvPCombatTrait},
-            pvp_challenge::{PvPChallengeTrait, PvPChallengeInvite, PvPChallengeScoreTrait},
-            utils::{ABTTrait, ABT, ABTOtherTrait}
-        },
-        collections::{get_collection_dispatcher, ICollectionDispatcher, ICollectionDispatcherTrait},
-        systems::pvp_combat::PvPCombatSystemTrait, utils::{uuid, hash_value},
-    };
+    use blob_arena::{pvp::{}, combatant::{}, hash::hash_value, uuid};
     use super::{IPvPCombatActions, IPvPChallengeActions};
 
     #[abi(embed_v0)]

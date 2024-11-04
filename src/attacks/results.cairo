@@ -1,24 +1,5 @@
-use blob_arena::models::Target;
+use super::Target;
 
-#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
-enum Phase {
-    Setup,
-    Commit,
-    Reveal,
-    Ended: felt252,
-}
-
-#[dojo::model]
-#[derive(Drop, Serde, Copy, Introspect)]
-struct CombatState {
-    #[key]
-    id: felt252,
-    round: u32,
-    phase: Phase,
-    block_number: u64,
-}
-
-#[dojo::model]
 #[dojo::event]
 #[derive(Drop, Serde)]
 struct AttackResult {
@@ -34,8 +15,8 @@ struct AttackResult {
 enum AttackOutcomes {
     Failed,
     Stunned,
-    Miss: Array<EffectResult>,
-    Hit: Array<EffectResult>,
+    Miss: Span<EffectResult>,
+    Hit: Span<EffectResult>,
 }
 
 #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
@@ -55,12 +36,3 @@ struct DamageResult {
     damage: u8,
     critical: bool,
 }
-
-#[dojo::model]
-#[derive(Drop, Serde)]
-struct Salts {
-    #[key]
-    id: felt252,
-    salts: Array<felt252>
-}
-

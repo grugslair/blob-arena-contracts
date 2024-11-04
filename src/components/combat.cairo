@@ -10,7 +10,7 @@ use blob_arena::{
         SaltsModel, Phase, CombatState, CombatStateStore, PlannedAttack, PlannedAttackStore,
         CombatantState
     },
-    utils::ArrayHash
+    hash::ArrayHash
 };
 type Salts = Array<felt252>;
 
@@ -119,40 +119,17 @@ impl PlannedAttackImpl of PlannedAttackTrait {
     fn get_planned_attack(self: @WorldStorage, id: felt252) -> PlannedAttack {
         PlannedAttackStore::get(*self, id)
     }
-    fn get_planned_attacks(self: @WorldStorage, ids: Span<felt252>) -> Span<PlannedAttack> {
-        let (mut n, len) = (0, ids.len());
+    fn get_planned_attacks(self: @WorldStorage, mut ids: Span<felt252>) -> Span<PlannedAttack> {
         let mut attacks = ArrayTrait::<PlannedAttack>::new();
-        while n < len {
-            attacks.append(self.get_planned_attack(*ids.at(n)));
-            n += 1;
-        };
-        attacks.span()
+        loop {
+            match ids.pop_front() {
+                Option::Some(id) => { attacks.append(self.get_planned_attack(*id)); },
+                Option::None => { break attacks.span(); },
+            }
+        }
     }
     fn set_planned_attack(ref self: WorldStorage, attack: PlannedAttack) {
         attack.set(self)
-    }
-    fn check_all_set(self: Span<PlannedAttack>) -> bool {
-        let (mut n, len) = (0, self.len());
-        let mut set = true;
-        while n < len {
-            if (*self.at(n).attack).is_zero() {
-                set = false;
-                break;
-            }
-            n += 1;
-        };
-        set
-    }
-
-    fn clear_planned_attack(ref self: WorldStorage, id: felt252) {
-        PlannedAttack { id, attack: 0, target: 0 }.set(self);
-    }
-    fn clear_planned_attacks(ref self: WorldStorage, ids: Span<felt252>) {
-        let (mut n, len) = (0, ids.len());
-        while n < len {
-            self.clear_planned_attack(*ids.at(n));
-            n += 1;
-        };
     }
 }
 

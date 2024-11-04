@@ -2,32 +2,10 @@ use blob_arena::{
     core::Signed, stats::{IStats, StatTypes, SignedStats}, id_trait::{IdTrait, TIdsImpl,}
 };
 
-
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
-enum Affect {
-    Stats: IStats,
-    Stat: Stat,
-    Damage: Damage,
-    Stun: u8,
-    Health: i16,
-}
-
 #[derive(Drop, Serde, Copy, PartialEq, IntrospectPacked)]
 struct Stat {
     stat: StatTypes,
     amount: i8,
-}
-
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
-struct Effect {
-    target: Target,
-    affect: Affect,
-}
-
-#[derive(Drop, Serde, Copy, PartialEq, IntrospectPacked)]
-struct Damage {
-    critical: u8,
-    power: u8,
 }
 
 #[derive(Drop, Serde, Copy, PartialEq, IntrospectPacked)]
@@ -36,15 +14,31 @@ enum Target {
     Opponent,
 }
 
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+struct Effect {
+    target: Target,
+    affect: Affect,
+}
 
-#[derive(Drop, Serde)]
-struct Attack {
-    id: felt252,
-    speed: u8,
-    accuracy: u8,
-    cooldown: u8,
-    hit: Span<Effect>,
-    miss: Span<Effect>,
+#[derive(Drop, Serde, Copy, PartialEq)]
+struct StatInput {
+    stat: StatTypes,
+    amount: Signed<u8>,
+}
+
+#[derive(Copy, Drop, Serde, PartialEq)]
+struct EffectInput {
+    target: Target,
+    affect: AffectInput,
+}
+
+#[derive(Copy, Drop, Serde, PartialEq)]
+enum AffectInput {
+    Stats: SignedStats,
+    Stat: StatInput,
+    Damage: Damage,
+    Stun: u8,
+    Health: Signed<u8>,
 }
 
 #[derive(Drop, Serde)]
@@ -57,25 +51,31 @@ struct AttackInput {
     miss: Span<EffectInput>,
 }
 
-#[derive(Drop, Serde, Copy, PartialEq, IntrospectPacked)]
-struct StatInput {
-    stat: StatTypes,
-    amount: Signed<u8>,
-}
-#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
-struct EffectInput {
-    target: Target,
-    affect: AffectInput,
-}
-
-#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
-enum AffectInput {
-    Stats: SignedStats,
-    Stat: StatInput,
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+enum Affect {
+    Stats: IStats,
+    Stat: Stat,
     Damage: Damage,
     Stun: u8,
-    Health: Signed<u8>,
+    Health: i16,
 }
+
+#[derive(Drop, Serde, Copy, PartialEq, IntrospectPacked)]
+struct Damage {
+    critical: u8,
+    power: u8,
+}
+
+#[derive(Drop, Serde)]
+struct Attack {
+    id: felt252,
+    speed: u8,
+    accuracy: u8,
+    cooldown: u8,
+    hit: Span<Effect>,
+    miss: Span<Effect>,
+}
+
 
 impl InputIntoAffect of Into<AffectInput, Affect> {
     fn into(self: AffectInput) -> Affect {
@@ -139,6 +139,7 @@ impl AttackModelImpl of AttackModelTrait {
     }
 }
 
+
 impl AttackIdImpl of IdTrait<Attack> {
     fn id(self: @Attack) -> felt252 {
         *(self.id)
@@ -172,5 +173,30 @@ mod models {
         hit: Span<Effect>,
         miss: Span<Effect>,
     }
+
+    #[dojo::model]
+    #[derive(Drop, Serde, Copy)]
+    struct PlannedAttack {
+        #[key]
+        id: felt252,
+        attack: felt252,
+        target: felt252,
+    }
 }
 use models::{Attack as AttackModel, AvailableAttack, AvailableAttackValue};
+
+#[generate_trait]
+impl PlannedAttacksImpl of PlannedAttacksTrait {
+    fn check_all_set(self: Span<models::PlannedAttack>) -> bool {
+        let (mut n, len) = (0, self.len());
+        let mut set = true;
+        while n < len {
+            if (*self.at(n).attack).is_zero() {
+                set = false;
+                break;
+            }
+            n += 1;
+        };
+        set
+    }
+}

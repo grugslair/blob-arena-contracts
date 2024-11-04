@@ -1,3 +1,10 @@
-const U64_MASK_U256: u256 = 0xffffffffffffffff;
-const U128_MASK_U256: u256 = 0xffffffffffffffffffffffffffffffff;
-const U16_MASK_U128: u128 = 0xffff;
+use cubit::f128::types::fixed::Fixed;
+
+const STARTING_HEALTH: u8 = 100;
+const THREE_TENTHS_FIXED: Fixed = Fixed { mag: 5534023222112865484, sign: false };
+const HUNDRED_FIXED: Fixed = Fixed { mag: 1844674407370955161600, sign: false };
+const FIXED_255: Fixed = Fixed { mag: 4703919738795935662080, sign: false };
+const HUNDREDTH_FIXED: Fixed = Fixed { mag: 184467440737095516, sign: false };
+const NZ_255: NonZero<u128> = 255;
+const NZ_100: NonZero<u128> = 100;
+const MAX_STAT: u8 = 100;

@@ -1,8 +1,8 @@
-use dojo::world::{WorldStorage, ModelStorage};
+use dojo::{world::WorldStorage, model::{ModelStorage, ModelValueStorage}};
 use super::external::{Seed, TokenTrait};
 use blob_arena::{
-    core::TTupleSize5, utils::{value_to_uuid, HashStateTrait},
-    components::{stats::{Stats}, item::{ItemTrait, ItemsTrait, AttackInput}},
+    core::TTupleSize5, utils::{value_to_uuid, HashStateTrait}, items::{ItemTrait, ItemsTrait},
+    stats::UStats
 };
 use core::hash::into_felt252_based;
 type SeedIds = TTupleSize5<felt252>;
@@ -82,12 +82,15 @@ impl BlobertItems of BlobertItemsTrait {
         blobert_trait_id: u8,
         item_id: felt252
     ) {
-        ItemMap { trait_type, blobert_trait, blobert_trait_id, item_id, }.set(self);
+        self.write_model(@ItemMap { trait_type, blobert_trait, blobert_trait_id, item_id, });
     }
     fn get_item_id(
         self: @WorldStorage, trait_type: felt252, blobert_trait: BlobertTrait, blobert_trait_id: u8
     ) -> felt252 {
-        ItemMapStore::get_item_id(*self, trait_type, blobert_trait, blobert_trait_id)
+        ModelValueStorage::<
+            WorldStorage, ItemMapValue
+        >::read_value(self, (trait_type, blobert_trait, blobert_trait_id))
+            .item_id
     }
     fn get_seed_item_ids(self: @WorldStorage, trait_type: felt252, traits: Seed) -> SeedIds {
         (
@@ -113,17 +116,10 @@ impl BlobertStatsImpl of BlobertStatsTrait {
         let (background, armour, jewelry, mask, weapon) = self.get_item_ids(blobert_trait);
         array![background, armour, jewelry, mask, weapon]
     }
-    fn get_blobert_stats(self: @WorldStorage, blobert_trait: TokenTrait) -> Stats {
+    fn get_blobert_stats(self: @WorldStorage, blobert_trait: TokenTrait) -> UStats {
         self.get_items(self.get_blobert_item_ids(blobert_trait).span()).get_stats()
     }
-    fn get_blobert_health(self: @WorldStorage, blobert_trait: TokenTrait) -> u8 {
-        let stats = self.get_blobert_stats(blobert_trait);
-        if stats.vitality > 155 {
-            255
-        } else {
-            100 + stats.vitality
-        }
-    }
+
     fn blobert_has_attack(
         self: @WorldStorage, blobert_trait: TokenTrait, item_id: felt252, attack_id: felt252
     ) -> bool {

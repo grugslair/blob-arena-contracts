@@ -1,9 +1,9 @@
 use core::{fmt::{Display, Formatter, Error, Debug}, cmp::min};
 use blob_arena::{
-    core::{SaturatingAdd, SaturatingSub, SaturatingInto, Signed}, consts::STARTING_HEALTH
+    core::{SaturatingAdd, SaturatingSub, SaturatingInto, Signed},
+    constants::{STARTING_HEALTH, MAX_STAT}
 };
 
-const MAX_STAT: u8 = 100;
 
 #[derive(Copy, Drop, Serde, PartialEq, IntrospectPacked, Default)]
 struct TStats<T> {

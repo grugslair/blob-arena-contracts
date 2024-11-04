@@ -1,51 +1,52 @@
 mod core;
-mod consts;
+mod constants;
 mod utils;
 mod id_trait;
+mod ab;
+mod salts;
+mod commitments;
+mod collections;
+mod hash;
+mod world;
+use world::uuid;
+mod permissions {
+    mod components;
+    mod systems;
+    mod contract;
+}
+use permissions::components::Permissions;
 mod items {
     mod components;
     mod systems;
-    use components::Item;
-    use systems::ItemTrait;
+    use components::{Item, ItemsTrait};
+    use systems::{ItemTrait};
 }
 mod attacks {
     mod components;
     mod systems;
     mod contract;
-    use components::Attack;
-    use systems::AttackTrait;
+    mod results;
+    use components::{Stat, Target, Affect, Damage, Attack, Effect};
+    use systems::{AttackTrait, AvailableAttackTrait};
 }
 mod stats;
-mod combatant {
+mod combatants {
+    mod components;
+    mod systems;
+    use components::{CombatantInfo, CombatantState, CombatantInfoTrait, CombatantStateTrait};
+    use systems::CombatantTrait;
+}
+mod combat {
+    mod calculations;
     mod components;
     mod systems;
 }
-// mod models;
-// mod collections;
-
+mod pvp {
+    mod components;
+    // mod systems;
+// mod contract;
+}
 // mod world;
-mod commitment;
-// mod components {
-//     mod attack;
-//     mod stats;
-//     mod combatant;
-//     mod item;
-//     mod pvp_combat;
-//     mod combat;
-//     mod utils;
-//     mod pvp_challenge;
-// }
-// mod systems {
-//     mod combat;
-//     // mod attack;
-//     mod pvp_combat;
-// }
-// mod contracts {
-//     mod attack;
-//     mod item;
-//     mod pvp;
-//     mod pvp_admin;
-// }
 
 // #[cfg(test)]
 // mod tests {

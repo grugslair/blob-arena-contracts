@@ -1,10 +1,13 @@
-use starknet::{ContractAddress, get_caller_address, get_block_timestamp, get_contract_address};
-use dojo::world::{WorldStorage, ModelStorage};
-use alexandria_math::BitShift;
+use core::integer::u128_safe_divmod;
+
+use starknet::{
+    ContractAddress, get_caller_address, get_contract_address, get_block_timestamp, get_tx_info
+};
+use dojo::{world::WorldStorage, model::{ModelStorage, ModelValueStorage}};
 
 use blob_arena::{
-    utils::{felt252_to_uuid, uuid, hash_value}, collections::blobert::external::{Seed, TokenTrait},
-    world::WorldTrait
+    uuid, utils::SeedProbability, hash::hash_value,
+    collections::blobert::external::{Seed, TokenTrait}, world::WorldTrait, core::SaturatingInto
 };
 use super::blobert::{ArcadeBlobertTrait, ArcadeBlobert};
 
@@ -24,17 +27,21 @@ struct LastMint {
     timestamp: u64,
 }
 
+fn u8_to_u128_nz(value: u8) -> NonZero<u128> {
+    TryInto::<u8, u128>::try_into(value).unwrap().try_into().unwrap()
+}
 
 fn generate_seed(randomness: felt252) -> Seed {
-    let randomness: u256 = randomness.into();
-    let background_count: u256 = BACKGROUND_COUNT.into();
-    let armour_count: u256 = ARMOUR_COUNT.into();
-    let jewelry_count: u256 = JEWELRY_COUNT.into();
-    let weapon_count: u256 = WEAPON_COUNT.into();
-    let mut mask_count: u256 = MASK_COUNT.into();
+    let mut randomness = Into::<felt252, u256>::into(randomness).low;
 
-    let background: u8 = (randomness % background_count).try_into().unwrap();
-    let armour: u8 = (BitShift::shr(randomness, 48) % armour_count).try_into().unwrap();
+    let background_count: NonZero<u128> = u8_to_u128_nz(BACKGROUND_COUNT);
+    let armour_count: NonZero<u128> = u8_to_u128_nz(ARMOUR_COUNT);
+    let jewelry_count: NonZero<u128> = u8_to_u128_nz(JEWELRY_COUNT);
+    let weapon_count: NonZero<u128> = u8_to_u128_nz(WEAPON_COUNT);
+    let mut mask_count: NonZero<u128> = u8_to_u128_nz(MASK_COUNT);
+
+    let background: u8 = randomness.get_value(background_count).try_into().unwrap();
+    let armour: u8 = randomness.get_value(armour_count).try_into().unwrap();
 
     // only allow the mask to be one of the first 8 masks
     // where the armour is sheep wool or kigurumi
@@ -42,9 +49,9 @@ fn generate_seed(randomness: felt252) -> Seed {
         mask_count = 8;
     };
 
-    let jewelry: u8 = (BitShift::shr(randomness, 96) % jewelry_count).try_into().unwrap();
-    let mask: u8 = (BitShift::shr(randomness, 144) % mask_count).try_into().unwrap();
-    let weapon: u8 = (BitShift::shr(randomness, 192) % weapon_count).try_into().unwrap();
+    let jewelry: u8 = randomness.get_value(jewelry_count).try_into().unwrap();
+    let mask: u8 = randomness.get_value(weapon_count).try_into().unwrap();
+    let weapon: u8 = randomness.get_value(mask_count).try_into().unwrap();
     return Seed { background, armour, jewelry, mask, weapon };
 }
 
@@ -57,7 +64,7 @@ impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
             assert(timestamp > self.get_last_mint(caller) + SECONDS_IN_DAY, 'Only one mint in 24h');
         }
 
-        let token_id = hash_value(('arcade', timestamp, uuid(self)));
+        let token_id = hash_value(('arcade', get_tx_info().transaction_hash));
         let seed = generate_seed(token_id);
 
         self.set_arcade_blobert(token_id, caller, TokenTrait::Regular(seed));
@@ -68,15 +75,15 @@ impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
         ref self: WorldStorage, player: ContractAddress, traits: TokenTrait
     ) -> u256 {
         self.assert_caller_is_owner();
-        let token_id = uuid(self);
+        let token_id = uuid();
 
         self.set_arcade_blobert(token_id, player, traits);
         token_id.into()
     }
     fn get_last_mint(self: @WorldStorage, caller: ContractAddress) -> u64 {
-        get!((*self), (caller), LastMint).timestamp
+        ModelValueStorage::<WorldStorage, LastMintValue>::read_value(self, caller).timestamp
     }
     fn set_last_mint(ref self: WorldStorage, player: ContractAddress, timestamp: u64) {
-        set!(self, LastMint { player, timestamp });
+        self.write_model(@LastMint { player, timestamp });
     }
 }

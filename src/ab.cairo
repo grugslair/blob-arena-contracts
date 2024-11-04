@@ -1,27 +1,6 @@
-use core::{num::traits::{Zero, One, Bounded}, fmt::{Display, Formatter, Error}};
+use core::{num::traits::{Zero, One, Bounded}};
 
-trait IdTrait<T> {
-    fn id(self: @T) -> felt252;
-}
-
-trait IdsTrait<T> {
-    fn ids(self: Span<T>) -> Span<felt252>;
-}
-
-impl TIdsImpl<T, +IdTrait<T>, +Drop<T>> of IdsTrait<T> {
-    fn ids(self: Span<T>) -> Span<felt252> {
-        let mut ids: Array<felt252> = ArrayTrait::new();
-        let (len, mut n) = (self.len(), 0_usize);
-        while (n < len) {
-            ids.append(self.at(n).id());
-            n += 1;
-        };
-        ids.span()
-    }
-}
-
-
-#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
+#[derive(Copy, Drop, Serde, PartialEq)]
 enum AB {
     A,
     B,
@@ -36,7 +15,7 @@ impl ABIntoByteArray of Into<AB, ByteArray> {
     }
 }
 
-#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
+#[derive(Copy, Drop, Serde, PartialEq)]
 struct ABT<T> {
     a: T,
     b: T,
@@ -132,11 +111,7 @@ enum Winner {
     B,
     Draw
 }
-#[derive(Copy, Drop, Serde, PartialEq)]
-enum Status {
-    Running,
-    Finished: Winner,
-}
+
 
 impl WinnerIntoAB of Into<Winner, AB> {
     fn into(self: Winner) -> AB {
@@ -187,12 +162,3 @@ impl ABBoolImpl of ABBoolTrait {
         self.b = false;
     }
 }
-// impl DisplayImplT<T, +Into<T, ByteArray>, +Copy<T>> of Display<T> {
-//     fn fmt(self: @T, ref f: Formatter) -> Result<(), Error> {
-//         let str: ByteArray = self.into();
-//         f.buffer.append(@str);
-//         Result::Ok(())
-//     }
-// }
-
-

@@ -148,6 +148,32 @@ impl SignedTryIntoI<T, S, +TryInto<T, S>, +Neg<S>> of TryInto<Signed<T>, S> {
         })
     }
 }
+
+impl BoolIntoFelt252Impl of Into<bool, felt252> {
+    fn into(self: bool) -> felt252 {
+        if self {
+            1
+        } else {
+            0
+        }
+    }
+}
+
+impl Felt252IntoBoolImpl of Into<felt252, bool> {
+    fn into(self: felt252) -> bool {
+        self != 0
+    }
+}
+
+impl Felt252TryIntoBoolImpl of TryInto<felt252, bool> {
+    fn try_into(self: felt252) -> Option<bool> {
+        match self {
+            0 => Option::Some(false),
+            1 => Option::Some(true),
+            _ => Option::None,
+        }
+    }
+}
 // impl U8ArrayCopyImpl of Copy<Array<u8>>;
 // impl U128ArrayCopyImpl of Copy<Array<u128>>;
 
