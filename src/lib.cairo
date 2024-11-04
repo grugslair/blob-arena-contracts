@@ -2,11 +2,24 @@ mod core;
 mod consts;
 mod utils;
 mod id_trait;
-mod attack {
+mod items {
+    mod components;
+    mod systems;
+    use components::Item;
+    use systems::ItemTrait;
+}
+mod attacks {
+    mod components;
+    mod systems;
+    mod contract;
+    use components::Attack;
+    use systems::AttackTrait;
+}
+mod stats;
+mod combatant {
     mod components;
     mod systems;
 }
-mod stats;
 // mod models;
 // mod collections;
 

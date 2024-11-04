@@ -61,14 +61,6 @@ fn make_hash_state<T, +Hash<T, HashState>, +Drop<T>>(value: T) -> HashState {
     PoseidonTrait::new().update_with(value)
 }
 
-#[dojo::model]
-#[derive(Drop, Serde)]
-struct RandomSeed {
-    #[key]
-    key: bool,
-    value: felt252,
-}
-
 trait ToHash<T> {
     fn update_to(self: @HashState, value: T) -> felt252;
 }
@@ -101,4 +93,8 @@ impl TDebugImpl<T, +Display<T>> of Debug<T> {
     fn fmt(self: @T, ref f: Formatter) -> Result<(), Error> {
         Display::fmt(self, ref f)
     }
+}
+
+fn default_namespace() -> @ByteArray {
+    @"blob_arena"
 }

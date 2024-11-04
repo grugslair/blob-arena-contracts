@@ -5,7 +5,7 @@ use blob_arena::{
 
 const MAX_STAT: u8 = 100;
 
-#[derive(Copy, Drop, Serde, PartialEq, Introspect, Default)]
+#[derive(Copy, Drop, Serde, PartialEq, IntrospectPacked, Default)]
 struct TStats<T> {
     strength: T,
     vitality: T,
@@ -13,7 +13,7 @@ struct TStats<T> {
     luck: T,
 }
 
-#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
+#[derive(Copy, Drop, Serde, PartialEq, IntrospectPacked)]
 enum StatTypes {
     Strength,
     Vitality,

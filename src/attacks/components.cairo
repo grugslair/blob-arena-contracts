@@ -12,7 +12,7 @@ enum Affect {
     Health: i16,
 }
 
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+#[derive(Drop, Serde, Copy, PartialEq, IntrospectPacked)]
 struct Stat {
     stat: StatTypes,
     amount: i8,
@@ -24,13 +24,13 @@ struct Effect {
     affect: Affect,
 }
 
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+#[derive(Drop, Serde, Copy, PartialEq, IntrospectPacked)]
 struct Damage {
     critical: u8,
     power: u8,
 }
 
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+#[derive(Drop, Serde, Copy, PartialEq, IntrospectPacked)]
 enum Target {
     Player,
     Opponent,
@@ -43,8 +43,8 @@ struct Attack {
     speed: u8,
     accuracy: u8,
     cooldown: u8,
-    hit: Array<Effect>,
-    miss: Array<Effect>,
+    hit: Span<Effect>,
+    miss: Span<Effect>,
 }
 
 #[derive(Drop, Serde)]
@@ -53,11 +53,11 @@ struct AttackInput {
     speed: u8,
     accuracy: u8,
     cooldown: u8,
-    hit: Array<EffectInput>,
-    miss: Array<EffectInput>,
+    hit: Span<EffectInput>,
+    miss: Span<EffectInput>,
 }
 
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+#[derive(Drop, Serde, Copy, PartialEq, IntrospectPacked)]
 struct StatInput {
     stat: StatTypes,
     amount: Signed<u8>,
@@ -97,30 +97,30 @@ impl InputIntoEffect of Into<EffectInput, Effect> {
     }
 }
 
-impl InputIntoEffectArray of Into<Array<EffectInput>, Array<Effect>> {
-    fn into(mut self: Array<EffectInput>) -> Array<Effect> {
+impl InputIntoEffectArray of Into<Span<EffectInput>, Span<Effect>> {
+    fn into(mut self: Span<EffectInput>) -> Span<Effect> {
         let mut effects = array![];
         loop {
             match self.pop_front() {
-                Option::Some(effect) => { effects.append(effect.into()); },
+                Option::Some(effect) => { effects.append((*effect).into()); },
                 Option::None => { break; },
             };
         };
-        effects
+        effects.span()
     }
 }
 
 #[generate_trait]
 impl AttackInputImpl of AttackInputTrait {
-    fn to_model(self: @AttackInput, id: felt252) -> models::Attack {
-        models::Attack {
+    fn to_model(self: @AttackInput, id: felt252) -> @AttackModel {
+        @AttackModel {
             id,
             name: self.name.clone(),
-            speed: *(self.speed),
-            accuracy: *(self.accuracy),
-            cooldown: *(self.cooldown),
-            hit: self.hit.clone().into(),
-            miss: self.miss.clone().into(),
+            speed: *self.speed,
+            accuracy: *self.accuracy,
+            cooldown: *self.cooldown,
+            hit: (*self.hit).into(),
+            miss: (*self.miss).into(),
         }
     }
 }
@@ -133,8 +133,8 @@ impl AttackModelImpl of AttackModelTrait {
             speed: *(self.speed),
             accuracy: *(self.accuracy),
             cooldown: *(self.cooldown),
-            hit: self.hit.clone(),
-            miss: self.miss.clone(),
+            hit: *self.hit,
+            miss: *self.miss,
         }
     }
 }
@@ -169,7 +169,8 @@ mod models {
         speed: u8,
         accuracy: u8,
         cooldown: u8,
-        hit: Array<Effect>,
-        miss: Array<Effect>,
+        hit: Span<Effect>,
+        miss: Span<Effect>,
     }
 }
+use models::{Attack as AttackModel, AvailableAttack, AvailableAttackValue};
