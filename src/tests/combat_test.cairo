@@ -1,21 +1,19 @@
 use core::fmt::Debug;
 use blob_arena::{
-    models::{
-        combatant::{CombatantState, CombatantInfo,},
-        attack::{Attack, Affect, Effect, Damage, Target, Stat, Stats as BStats},
+    combatants::{
+        CombatantState, CombatantInfo, components::make_combatant_state, CombatantTrait,
+        CombatantStateTrait,
     },
-    components::{
-        stats::{TStats, StatTypes, Stats},
-        combatant::{make_combatant_state, CombatantTrait, CombatantStateTrait,},
-    },
-    systems::combat::{run_effects, apply_luck_modifier, damage_calculation}, utils::make_hash_state,
+    attacks::{Attack, Affect, Effect, Damage, Target, Stat}, stats::{UStats, IStats, StatTypes},
+    combat::{systems::run_effects, calculations::{apply_luck_modifier, damage_calculation}},
+    hash::make_hash_state,
 };
 
-const STATS_AVG: Stats = Stats { strength: 50, vitality: 50, dexterity: 50, luck: 50, };
+const STATS_AVG: UStats = UStats { strength: 50, vitality: 50, dexterity: 50, luck: 50, };
 
-const STATS_MAX: Stats = Stats { strength: 100, vitality: 100, dexterity: 100, luck: 100, };
+const STATS_MAX: UStats = UStats { strength: 100, vitality: 100, dexterity: 100, luck: 100, };
 
-const STATS_WEAK: Stats = Stats { strength: 10, vitality: 10, dexterity: 10, luck: 10, };
+const STATS_WEAK: UStats = UStats { strength: 10, vitality: 10, dexterity: 10, luck: 10, };
 
 fn stats_effect_span(value: i8, target: Target) -> Span<Effect> {
     effect_span(Affect::Stats(value.into()), target)

@@ -57,12 +57,11 @@ mod pvp {
     use systems::{PvPTrait, PvPCombatTrait};
 }
 use world::default_namespace;
-// #[cfg(test)]
-// mod tests {
-//     // mod pvp_test;
-//     mod core_test;
-//     mod combat_test;
-//     mod utils_test;
-// }
-
+#[cfg(test)]
+mod tests {
+    // mod pvp_test;
+    mod core_test;
+    mod combat_test;
+    mod utils_test;
+}
 

@@ -42,4 +42,6 @@ account_address = "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d219472
     "blob_arena-PvPCombatants",
 ]
 [owners]
-"blob_arena-pvp_actions" = []
+"blob_arena-pvp_actions" = [
+    "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d2194723B5bd",
+]
