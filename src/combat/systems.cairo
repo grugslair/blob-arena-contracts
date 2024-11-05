@@ -8,7 +8,7 @@ use blob_arena::{
         results::{AttackOutcomes, AttackResult}
     },
     combat::components::{CombatState, Phase, PhaseTrait, run_effects},
-    combatants::{CombatantState, CombatantStateTrait}, commitments::Commitment, salts::{SaltsTrait},
+    combatants::{CombatantState, CombatantStateTrait}, commitments::Commitment, salts::{Salts},
     utils::SeedProbability, hash::UpdateHashToU128, constants::NZ_100,
 };
 

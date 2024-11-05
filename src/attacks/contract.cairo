@@ -20,8 +20,7 @@ mod attack_actions {
     use starknet::{ContractAddress, get_caller_address};
     use dojo::model::ModelStorage;
     use blob_arena::{
-        attacks::components::{EffectInput, AttackInput, AttackInputTrait},
-        utils::{default_namespace}, uuid
+        attacks::components::{EffectInput, AttackInput, AttackInputTrait}, default_namespace, uuid
     };
 
     use super::IAttackActions;

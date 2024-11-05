@@ -21,11 +21,9 @@ impl WorldImpl of WorldTrait {
         assert((*self.dispatcher).is_owner(0, caller), 'Not Admin');
         caller
     }
-    fn assert_caller_is_admin(self: @WorldStorage) -> ContractAddress {
-        let dispatcher = IContractDispatcher { contract_address: get_contract_address(), };
-        let selector = dispatcher.selector();
+    fn assert_caller_is_admin(self: @WorldStorage, selector_hash: felt252) -> ContractAddress {
         let caller = get_caller_address();
-        assert((*self.dispatcher).is_owner(selector, caller), 'Not Admin');
+        assert((*self.dispatcher).is_owner(selector_hash, caller), 'Not Admin');
         caller
     }
 }

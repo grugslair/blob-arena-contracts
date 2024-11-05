@@ -9,13 +9,13 @@ mod collections;
 mod hash;
 mod world;
 use world::uuid;
-mod permissions {
-    mod components;
-    mod systems;
-    mod contract;
-    use components::{Permissions, WritePermissions};
-}
-use permissions::Permissions;
+// mod permissions {
+//     mod components;
+//     mod systems;
+//     mod contract;
+//     use components::{Permissions, WritePermissions};
+// }
+// use permissions::Permissions;
 mod items {
     mod components;
     mod systems;
@@ -27,8 +27,10 @@ mod attacks {
     mod systems;
     mod contract;
     mod results;
-    use components::{Stat, Target, Affect, Damage, Attack, Effect};
-    use systems::{AttackTrait, AvailableAttackTrait};
+    use components::{
+        Stat, Target, Affect, Damage, Attack, Effect, PlannedAttack, PlannedAttacksTrait
+    };
+    use systems::{AttackTrait, AvailableAttackTrait, PlannedAttackTrait};
 }
 mod stats;
 mod combatants {
@@ -47,11 +49,14 @@ mod combat {
 mod pvp {
     mod components;
     mod systems;
-    // mod contract;
+    mod contract;
+    use components::{
+        PvPChallenge, PvPCombatants, PvPChallengeScore, PvPChallengeTrait, PvPChallengeInvite,
+        PvPChallengeResponse, make_pvp_challenge, PvPChallengeScoreTrait
+    };
+    use systems::{PvPTrait, PvPCombatTrait};
 }
 use world::default_namespace;
-// mod world;
-
 // #[cfg(test)]
 // mod tests {
 //     // mod pvp_test;

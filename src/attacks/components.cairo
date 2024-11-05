@@ -183,11 +183,11 @@ mod models {
         target: felt252,
     }
 }
-use models::{Attack as AttackModel, AvailableAttack, AvailableAttackValue};
+use models::{Attack as AttackModel, AvailableAttack, AvailableAttackValue, PlannedAttack};
 
 #[generate_trait]
 impl PlannedAttacksImpl of PlannedAttacksTrait {
-    fn check_all_set(self: Span<models::PlannedAttack>) -> bool {
+    fn check_all_set(self: Span<PlannedAttack>) -> bool {
         let (mut n, len) = (0, self.len());
         let mut set = true;
         while n < len {

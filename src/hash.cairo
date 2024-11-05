@@ -26,6 +26,20 @@ impl ArrayHash<
     }
 }
 
+impl SpanHash<
+    T, S, +hash::HashStateTrait<S>, +hash::Hash<T, S>, +Drop<Array<T>>, +Drop<S>, +Copy<T>,
+> of Hash<Span<T>, S> {
+    fn update_state(mut state: S, mut value: Span<T>) -> S {
+        loop {
+            match value.pop_front() {
+                Option::Some(v) => { state = Hash::update_state(state, *v); },
+                Option::None => { break; },
+            }
+        };
+        state
+    }
+}
+
 fn hash_value<T, +Hash<T, HashState>, +Drop<T>>(value: T) -> felt252 {
     PoseidonTrait::new().update_with(value).finalize()
 }

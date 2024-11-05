@@ -62,17 +62,19 @@ struct PvPChallengeResponse {
     open: bool,
 }
 
-fn make_challenge(invite: PvPChallengeInvite, response: PvPChallengeResponse) -> PvPChallenge {
+fn make_pvp_challenge(
+    invite: @PvPChallengeInvite, response: @PvPChallengeResponse
+) -> PvPChallenge {
     PvPChallenge {
-        id: invite.id,
-        sender: invite.sender,
-        receiver: invite.receiver,
-        sender_combatant: invite.combatant,
-        receiver_combatant: response.combatant,
-        phase_time: invite.phase_time,
-        invite_open: invite.open,
-        response_open: response.open,
-        collection_address: invite.collection_address,
+        id: *invite.id,
+        sender: *invite.sender,
+        receiver: *invite.receiver,
+        sender_combatant: *invite.combatant,
+        receiver_combatant: *response.combatant,
+        phase_time: *invite.phase_time,
+        invite_open: *invite.open,
+        response_open: *response.open,
+        collection_address: *invite.collection_address,
     }
 }
 
@@ -90,20 +92,35 @@ impl PvPChallengeImpl of PvPChallengeTrait {
         caller
     }
 
-    fn invite(self: PvPChallenge) -> PvPChallengeInvite {
+    fn invite(self: @PvPChallenge) -> PvPChallengeInvite {
         PvPChallengeInvite {
-            id: self.id,
-            sender: self.sender,
-            receiver: self.receiver,
-            combatant: self.sender_combatant,
-            phase_time: self.phase_time,
-            open: self.invite_open,
-            collection_address: self.collection_address,
+            id: *self.id,
+            sender: *self.sender,
+            receiver: *self.receiver,
+            combatant: *self.sender_combatant,
+            phase_time: *self.phase_time,
+            open: *self.invite_open,
+            collection_address: *self.collection_address,
         }
     }
-    fn response(self: PvPChallenge) -> PvPChallengeResponse {
+    fn response(self: @PvPChallenge) -> PvPChallengeResponse {
         PvPChallengeResponse {
-            id: self.id, combatant: self.receiver_combatant, open: self.response_open,
+            id: *self.id, combatant: *self.receiver_combatant, open: *self.response_open,
         }
+    }
+}
+
+#[generate_trait]
+impl PvPChallengeScoreImpl of PvPChallengeScoreTrait {
+    fn win(ref self: PvPChallengeScore) {
+        self.current_consecutive_wins += 1;
+        self.wins += 1;
+        if self.current_consecutive_wins > self.max_consecutive_wins {
+            self.max_consecutive_wins = self.current_consecutive_wins;
+        }
+    }
+    fn lose(ref self: PvPChallengeScore) {
+        self.current_consecutive_wins = 0;
+        self.losses += 1;
     }
 }

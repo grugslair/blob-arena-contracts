@@ -35,6 +35,9 @@ impl CombatantImpl of CombatantTrait {
     fn get_combatant_info(self: @WorldStorage, id: felt252) -> CombatantInfo {
         self.read_model(id)
     }
+    fn get_combatant_state(self: @WorldStorage, id: felt252) -> CombatantState {
+        self.read_model(id)
+    }
     fn create_player_combatant(
         ref self: WorldStorage,
         collection_address: ContractAddress,
