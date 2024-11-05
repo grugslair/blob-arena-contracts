@@ -21,7 +21,7 @@ mod attack_actions {
     use dojo::model::ModelStorage;
     use blob_arena::{
         attacks::components::{EffectInput, AttackInput, AttackInputTrait},
-        utils::{uuid, default_namespace}
+        utils::{default_namespace}, uuid
     };
 
     use super::IAttackActions;

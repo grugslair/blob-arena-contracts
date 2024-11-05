@@ -1,7 +1,7 @@
 use alexandria_data_structures::array_ext::ArrayTraitExt;
 use starknet::{ContractAddress};
 use dojo::world::{WorldStorage};
-use blob_arena::{stats::UStats, id_trait::{IdTrait, TIdsImpl}, utils::uuid};
+use blob_arena::{stats::UStats, id_trait::{IdTrait, TIdsImpl}, uuid};
 
 #[derive(Drop, Serde, Copy)]
 struct Item {

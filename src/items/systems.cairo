@@ -2,7 +2,7 @@ use dojo::{world::WorldStorage, model::{ModelStorage, ModelValueStorage, ModelPt
 use blob_arena::{
     id_trait::IdsTrait, attacks::{components::AttackInput, AttackTrait},
     items::{Item, components::{ItemModel, HasAttack, ItemValue, HasAttackValue}}, stats::UStats,
-    utils::uuid
+    uuid
 };
 #[generate_trait]
 impl ItemImpl of ItemTrait {

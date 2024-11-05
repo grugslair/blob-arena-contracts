@@ -19,7 +19,7 @@ mod permissions_core {
     use starknet::{ContractAddress, get_caller_address};
     use blob_arena::{
         Permissions, permissions::{AssertPermissions, components::WritePermissions},
-        utils::default_namespace
+        default_namespace
     };
     use super::{IPemissions};
 

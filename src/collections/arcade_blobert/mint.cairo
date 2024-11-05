@@ -60,10 +60,8 @@ impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
     fn mint_blobert(ref self: WorldStorage) -> u256 {
         let caller = get_caller_address();
         let timestamp = get_block_timestamp();
-        if self.is_owner(get_contract_address().into(), caller.into()) {
-            assert(timestamp > self.get_last_mint(caller) + SECONDS_IN_DAY, 'Only one mint in 24h');
-        }
-
+        // TESTING: add this line back in
+        // assert(timestamp > self.get_last_mint(caller) + SECONDS_IN_DAY, 'Only one mint in 24h');
         let token_id = hash_value(('arcade', get_tx_info().transaction_hash));
         let seed = generate_seed(token_id);
 
@@ -74,7 +72,7 @@ impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
     fn mint_blobert_with_traits(
         ref self: WorldStorage, player: ContractAddress, traits: TokenTrait
     ) -> u256 {
-        self.assert_caller_is_owner();
+        self.assert_caller_is_creator();
         let token_id = uuid();
 
         self.set_arcade_blobert(token_id, player, traits);

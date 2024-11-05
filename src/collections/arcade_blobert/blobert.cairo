@@ -26,15 +26,11 @@ impl ArcadeBlobertImpl of ArcadeBlobertTrait {
         let token_id: felt252 = token_id.try_into().unwrap();
         self.read_model(token_id)
     }
-    fn get_arcade_blobert_owner<T, +TryInto<T, felt252>>(
-        self: @WorldStorage, token_id: u256
-    ) -> ContractAddress {
+    fn get_arcade_blobert_owner(self: @WorldStorage, token_id: u256) -> ContractAddress {
         self.get_arcade_blobert(token_id).owner
     }
 
-    fn get_arcade_blobert_traits<T, +TryInto<T, felt252>>(
-        self: @WorldStorage, token_id: u256
-    ) -> TokenTrait {
+    fn get_arcade_blobert_traits(self: @WorldStorage, token_id: u256) -> TokenTrait {
         self.get_arcade_blobert(token_id).traits
     }
 }

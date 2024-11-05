@@ -1,10 +1,11 @@
 use core::{poseidon::{HashState,}, hash::HashStateExTrait};
 use starknet::get_block_number;
 
-use dojo::{world::WorldStorage, model::ModelStorage};
+use dojo::{world::WorldStorage, model::ModelStorage, event::EventStorage};
 use blob_arena::{
     attacks::{
-        Attack, systems::{PlannedAttackTrait, AvailableAttackTrait}, results::{AttackOutcomes}
+        Attack, systems::{PlannedAttackTrait, AvailableAttackTrait},
+        results::{AttackOutcomes, AttackResult}
     },
     combat::components::{CombatState, Phase, PhaseTrait, run_effects},
     combatants::{CombatantState, CombatantStateTrait}, commitments::Commitment, salts::{SaltsTrait},
@@ -112,11 +113,11 @@ impl CombatImpl of CombatTrait {
                 run_effects(ref attacker_state, ref defender_state, *(attack.miss), hash_state)
             )
         };
-        emit!(
-            self,
-            AttackResult {
-                combatant_id: attacker_state.id, round, target: defender_state.id, result
-            }
-        )
+        self
+            .emit_event(
+                @AttackResult {
+                    combatant_id: attacker_state.id, round, target: defender_state.id, result
+                }
+            );
     }
 }

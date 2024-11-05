@@ -7,7 +7,7 @@ use blob_arena::{
             models::{PlannedAttack, AvailableAttack}
         }
     },
-    utils::uuid
+    uuid
 };
 
 #[generate_trait]

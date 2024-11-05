@@ -25,9 +25,6 @@ impl TDebugImpl<T, +Display<T>> of Debug<T> {
     }
 }
 
-fn default_namespace() -> @ByteArray {
-    @"blob_arena"
-}
 
 trait SeedProbability {
     fn get_outcome<T, +Into<T, u128>>(ref self: u128, scale: NonZero<u128>, probability: T) -> bool;

@@ -5,6 +5,7 @@ const DEV_PERMISSIONS_SELECTOR: felt252 = 'devs';
 const ADMIN_PERMISSIONS_SELECTOR: felt252 = 'admin';
 const SETUP_PERMISSIONS_SELECTOR: felt252 = 'setup';
 
+
 #[generate_trait]
 impl PermissionsImpl of HasPermissions {
     fn has_admin_permissions(self: @WorldStorage, user: ContractAddress) -> bool {

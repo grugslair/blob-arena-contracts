@@ -49,7 +49,6 @@ trait IERC721<TContractState> {
 trait ICollection<TContractState> {
     fn get_owner(self: @TContractState, token_id: u256) -> ContractAddress;
     fn get_item_ids(self: @TContractState, token_id: u256) -> Span<felt252>;
-    fn get_health(self: @TContractState, token_id: u256) -> u8;
     fn get_stats(self: @TContractState, token_id: u256) -> UStats;
     fn has_attack(
         self: @TContractState, token_id: u256, item_id: felt252, attack_id: felt252

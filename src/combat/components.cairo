@@ -62,7 +62,7 @@ fn run_effect(
             AffectResult::Success
         },
         Affect::Damage(damage) => {
-            hash_state = hash_state.update();
+            hash_state.update_hash_state('salt');
             let mut seed = hash_state.to_u128();
 
             let critical = did_critical(*damage.critical, attacker_state.stats.luck, ref seed);

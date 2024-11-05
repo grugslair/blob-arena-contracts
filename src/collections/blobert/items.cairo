@@ -1,8 +1,7 @@
 use dojo::{world::WorldStorage, model::{ModelStorage, ModelValueStorage}};
 use super::external::{Seed, TokenTrait};
 use blob_arena::{
-    core::TTupleSize5, utils::{value_to_uuid, HashStateTrait}, items::{ItemTrait, ItemsTrait},
-    stats::UStats
+    core::TTupleSize5, hash::HashStateTrait, items::{ItemTrait, ItemsTrait}, stats::UStats
 };
 use core::hash::into_felt252_based;
 type SeedIds = TTupleSize5<felt252>;

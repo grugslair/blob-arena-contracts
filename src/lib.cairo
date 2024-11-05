@@ -13,8 +13,9 @@ mod permissions {
     mod components;
     mod systems;
     mod contract;
+    use components::{Permissions, WritePermissions};
 }
-use permissions::components::Permissions;
+use permissions::Permissions;
 mod items {
     mod components;
     mod systems;
@@ -40,12 +41,15 @@ mod combat {
     mod calculations;
     mod components;
     mod systems;
+    use components::Phase;
+    use systems::CombatTrait;
 }
 mod pvp {
     mod components;
-    // mod systems;
-// mod contract;
+    mod systems;
+    // mod contract;
 }
+use world::default_namespace;
 // mod world;
 
 // #[cfg(test)]

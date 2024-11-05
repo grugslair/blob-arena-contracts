@@ -29,7 +29,7 @@ impl AMMABlobertImpl of AMMABlobertTrait {
         token_id
     }
     fn set_amma_blobert(ref self: WorldStorage, fighter_id: u8, name: ByteArray, custom_id: u8) {
-        self.assert_caller_is_owner();
+        self.assert_caller_is_creator();
         self.write_model(@AMMABlobert { fighter_id, name, custom_id });
     }
 }
