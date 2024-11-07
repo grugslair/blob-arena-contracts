@@ -184,12 +184,13 @@ impl CombatWorldImp of CombatWorldTraits {
     fn emit_attack_result(
         self: IWorldDispatcher,
         combatant_id: felt252,
+        attack_id: felt252,
         round: u32,
         target: felt252,
         result: AttackOutcomes,
         mut effects: Span<AffectResult>,
     ) {
-        emit!(self, AttackResult { combatant_id, round, target, result });
+        emit!(self, AttackResult { combatant_id, attack_id, round, target, result });
         loop {
             match effects.pop_front() {
                 Option::Some(effect) => {
@@ -251,17 +252,28 @@ impl CombatWorldImp of CombatWorldTraits {
         if !self.run_attack_check(attacker_state.id, *attack.id, *attack.cooldown, round) {
             self
                 .emit_attack_result(
-                    attacker_state.id, round, defender_state.id, AttackOutcomes::Failed, [].span()
+                    attacker_state.id,
+                    *attack.id,
+                    round,
+                    defender_state.id,
+                    AttackOutcomes::Failed,
+                    [].span()
                 );
         } else if attacker_state.run_stun(ref seed) {
             self
                 .emit_attack_result(
-                    attacker_state.id, round, defender_state.id, AttackOutcomes::Stunned, [].span()
+                    attacker_state.id,
+                    *attack.id,
+                    round,
+                    defender_state.id,
+                    AttackOutcomes::Stunned,
+                    [].span()
                 );
         } else if seed.get_outcome(NZ_100, *attack.accuracy) {
             self
                 .emit_attack_result(
                     attacker_state.id,
+                    *attack.id,
                     round,
                     defender_state.id,
                     AttackOutcomes::Hit,
@@ -273,6 +285,7 @@ impl CombatWorldImp of CombatWorldTraits {
             self
                 .emit_attack_result(
                     attacker_state.id,
+                    *attack.id,
                     round,
                     defender_state.id,
                     AttackOutcomes::Miss,

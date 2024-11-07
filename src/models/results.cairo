@@ -17,6 +17,7 @@ struct AttackResult {
     #[key]
     round: u32,
     target: felt252,
+    attack_id: felt252,
     result: AttackOutcomes,
 }
 
