@@ -21,7 +21,6 @@ enum StatTypes {
     Luck,
 }
 
-
 type UStats = TStats<u8>;
 type IStats = TStats<i8>;
 type SignedStats = TStats<Signed<u8>>;
@@ -29,6 +28,19 @@ type SignedStats = TStats<Signed<u8>>;
 impl TIntoTStats<T, +Copy<T>> of Into<T, TStats<T>> {
     fn into(self: T) -> TStats<T> {
         TStats { strength: self, vitality: self, dexterity: self, luck: self, }
+    }
+}
+
+#[generate_trait]
+impl UStatsConvertIStats of ConvertStatsTrait{
+    fn convert(self: @UStats) -> IStats {
+        Into::<>
+        IStats {
+            strength: *self.strength as i8,
+            vitality: *self.vitality as i8,
+            dexterity: *self.dexterity as i8,
+            luck: *self.luck as i8,
+        }
     }
 }
 

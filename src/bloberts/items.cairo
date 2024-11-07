@@ -9,18 +9,13 @@ type SeedIds = TTupleSize5<felt252>;
 const SEED_TRAIT_TYPE: felt252 = 'seed';
 const CUSTOM_TRAIT_TYPE: felt252 = 'custom';
 
+
 struct BlobertTraitsSeed {
     background: felt252,
     armour: felt252,
     jewelry: felt252,
     mask: felt252,
     weapon: felt252,
-}
-
-impl U8IntoBlobertSeedImpl of Into<u8, Seed> {
-    fn into(self: u8) -> Seed {
-        Seed { background: self, armour: self, jewelry: self, mask: self, weapon: self, }
-    }
 }
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect)]
@@ -31,6 +26,68 @@ enum BlobertTrait {
     Mask,
     Weapon,
 }
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+struct BlobertTraitKey {
+    blobert_trait: BlobertTrait,
+    blobert_trait_id: u8,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+enum  BlobertItemKey{
+    Normal: BlobertTraitKey,
+    Custom: u8,
+    AMMMA: u128,
+
+} 
+
+mod models {
+    #[dojo:model]
+    #[derive(Copy, Drop, Serde, PartialEq, IntrospectPacked)]
+    struct BlobertItem {
+        #[key]
+        key:BlobertItemKey,
+        stats: UStats,
+    }
+
+    #[dojo:model]
+    #[derive(Copy, Drop, Serde, PartialEq, Introspect)]
+    struct HasAttack {
+        #[key]
+        key:BlobertItemKey,
+        #[key]
+        attack_id: felt252,
+        has: bool,
+    }
+
+    #[dojo:event]
+    #[derive(Copy, Drop, Serde, PartialEq, Introspect)]
+    struct BlobertItemName {
+        #[key]
+        key:BlobertItemKey,
+        name: ByteArray,
+    }
+}
+
+#[generate_trait]
+impl BlobertItemImpl of BlobertItemTrait {
+    fn get_blobert_item_stats(self: @WorldStorage, key: BlobertItemKey) -> IStats {
+        ModelValueStorage::<WorldStorage, BlobertItem>::read_value(self, key).stats
+    }
+
+    fn set_blobet_item(ref self: WorldStorage, key: BlobertItemKey, name: ByteArray, stats: UStats, attacks: Span<AttackInput>) {
+        self.write_model(@BlobertItem { key, stats, });
+        self.emit_event(@BlobertItemName { key, name, });
+    }
+}
+
+
+impl U8IntoBlobertSeedImpl of Into<u8, Seed> {
+    fn into(self: u8) -> Seed {
+        Seed { background: self, armour: self, jewelry: self, mask: self, weapon: self, }
+    }
+}
+
 
 impl HashBlobertTrait<S, +HashStateTrait<S>, +Drop<S>> =
     into_felt252_based::HashImpl<BlobertTrait, S>;
@@ -58,18 +115,6 @@ impl U8IntoBlobertTrait of Into<u8, BlobertTrait> {
             _ => panic!("Invalid BlobertTrait"),
         }
     }
-}
-
-#[dojo::model]
-#[derive(Drop, Serde, Copy)]
-struct ItemMap {
-    #[key]
-    trait_type: felt252,
-    #[key]
-    blobert_trait: BlobertTrait,
-    #[key]
-    blobert_trait_id: u8,
-    item_id: felt252,
 }
 
 #[generate_trait]
