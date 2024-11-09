@@ -386,18 +386,18 @@
               {
                 "target": "Player",
                 "affect": {
-                  "Health": 30
-                }
-              },
-              {
-                "target": "Player",
-                "affect": {
                   "Stats": {
                     "strength": 0,
                     "vitality": 30,
                     "dexterity": 0,
                     "luck": 0
                   }
+                }
+              },
+              {
+                "target": "Player",
+                "affect": {
+                  "Health": 30
                 }
               },
               {
