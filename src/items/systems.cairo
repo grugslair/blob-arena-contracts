@@ -1,4 +1,4 @@
-use dojo::{world::WorldStorage, model::{ModelStorage, ModelValueStorage, ModelPtr}};
+use dojo::{world::WorldStorage, model::{ModelStorage, ModelValueStorage, Model}};
 use blob_arena::{
     id_trait::IdsTrait, attacks::{components::AttackInput, AttackTrait},
     items::{Item, components::{ItemModel, HasAttack, ItemValue, HasAttackValue}}, stats::UStats,
@@ -28,7 +28,7 @@ impl ItemImpl of ItemTrait {
         self.write_model(@HasAttack { item_id, attack_id, has: true });
     }
     fn remove_has_attack(ref self: WorldStorage, item_id: felt252, attack_id: felt252) {
-        self.erase_model_ptr(ModelPtr::<HasAttack>::Keys([item_id, attack_id].span()));
+        self.erase_model_ptr(Model::<HasAttack>::ptr_from_keys((item_id, attack_id)));
     }
     fn check_has_attack(self: @WorldStorage, item_id: felt252, attack_id: felt252) -> bool {
         ModelValueStorage::<WorldStorage, HasAttackValue>::read_value(self, (item_id, attack_id))

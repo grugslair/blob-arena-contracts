@@ -1,4 +1,4 @@
-use dojo::{world::WorldStorage, model::{ModelStorage, ModelValueStorage, ModelPtr}};
+use dojo::{world::WorldStorage, model::{ModelStorage, ModelValueStorage, Model}};
 use blob_arena::{
     attacks::{
         Attack,
@@ -45,7 +45,7 @@ impl PlannedAttackImpl of PlannedAttackTrait {
         }
     }
     fn clear_planned_attack(ref self: WorldStorage, id: felt252) {
-        self.erase_model_ptr(ModelPtr::<PlannedAttack>::Keys([id].span()));
+        self.erase_model_ptr(Model::<PlannedAttack>::ptr_from_keys(id));
     }
     fn clear_planned_attacks(ref self: WorldStorage, mut ids: Span<felt252>) {
         loop {

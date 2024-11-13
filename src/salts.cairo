@@ -30,7 +30,7 @@ impl SaltsImpl of Salts {
     }
 
     fn reset_salts(ref self: WorldStorage, id: felt252) {
-        self.erase_model_ptr(ModelPtr::<SaltsModel>::Keys([id].span()));
+        self.erase_model_ptr(Model::<SaltsModel>::ptr_from_keys(id));
     }
     fn get_salts(ref self: WorldStorage, id: felt252) -> Span<felt252> {
         self.get_salts_model(id).salts

@@ -1,5 +1,5 @@
 use core::{poseidon::{HashState}, hash::{Hash}};
-use dojo::{world::WorldStorage, model::{ModelValueStorage, ModelStorage, ModelPtr}};
+use dojo::{world::WorldStorage, model::{ModelValueStorage, ModelStorage, Model}};
 
 use blob_arena::hash::hash_value;
 
@@ -25,7 +25,7 @@ impl CommitmentImpl of Commitment {
         self.write_model(@CommitmentModel { id, commitment });
     }
     fn clear_commitment(ref self: WorldStorage, id: felt252) {
-        self.erase_model_ptr(ModelPtr::<CommitmentModel>::Keys([id].span()));
+        self.erase_model_ptr(Model::<CommitmentModel>::ptr_from_keys(id));
     }
     fn check_commitment_set(self: @WorldStorage, id: felt252) -> bool {
         self.get_commitment(id).is_non_zero()
