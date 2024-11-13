@@ -113,6 +113,7 @@ mod pvp_actions {
             attacks: Span<(felt252, felt252)>,
             phase_time: u64,
         ) -> felt252 {
+            assert(attacks.len() <= 4, 'Too many attacks');
             let mut world = self.world(default_namespace());
             let challenge_id = uuid();
             let caller = get_caller_address();
@@ -140,6 +141,8 @@ mod pvp_actions {
             token_id: u256,
             attacks: Span<(felt252, felt252)>
         ) {
+            assert(attacks.len() <= 4, 'Too many attacks');
+
             let mut world = self.world(default_namespace());
             let mut challenge = world.get_open_challenge(challenge_id);
             assert(!challenge.response_open, 'Already responded');
