@@ -1,7 +1,7 @@
 [package]
 cairo-version = "2.8.4"
 name = "blob_arena"
-version = "0.4.0"
+version = "0.6.0"
 
 [cairo]
 sierra-replace-ids = true
@@ -14,8 +14,9 @@ cubit = { git = "https://github.com/dojoengine/cubit", branch = "cairo_2.7" }
 [tool.dojo]
 initializer_class_hash = "0xbeef"
 
-# [[target.starknet-contract]]
-# build-external-contracts = ["dojo::world::world_contract::world"]
+[[target.starknet-contract]]
+sierra = true
+build-external-contracts = ["dojo::world::world_contract::world"]
 
 [dev-dependencies]
 dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0-rc.2" }

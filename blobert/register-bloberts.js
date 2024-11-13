@@ -37,9 +37,7 @@ const getContract = async (provider, contractAddress) => {
 const seed_data = loadJson("./seed-attributes.json");
 const custom_data = loadJson("./custom-attributes.json");
 const amma_data = loadJson("./amma-attributes.json");
-const manifest = loadJson(
-  `../manifests/${process.argv[2]}/deployment/manifest.json`
-);
+const manifest = loadJson(`../manifest_${process.argv[2]}.json`);
 
 const blobertContractTag = "blob_arena-blobert_actions";
 const arcadeBlobertTag = "blob_arena-arcade_blobert_actions";
