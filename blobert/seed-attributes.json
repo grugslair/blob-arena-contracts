@@ -471,7 +471,7 @@
           "name": "Bare Minimum Defense",
           "speed": 90,
           "accuracy": 100,
-          "cooldown": 255,
+          "cooldown": 10,
           "hit": [
             {
               "target": "Player",
@@ -502,7 +502,7 @@
           "name": "Casual Guard",
           "speed": 70,
           "accuracy": 100,
-          "cooldown": 255,
+          "cooldown": 10,
           "hit": [
             {
               "target": "Player",
@@ -533,7 +533,7 @@
           "name": "Risky Offense",
           "speed": 60,
           "accuracy": 100,
-          "cooldown": 255,
+          "cooldown": 10,
           "hit": [
             {
               "target": "Player",
@@ -772,7 +772,7 @@
           "name": "Golden Sacrifice",
           "speed": 60,
           "accuracy": 100,
-          "cooldown": 255,
+          "cooldown": 10,
           "hit": [
             {
               "target": "Player",
@@ -1283,7 +1283,7 @@
           "name": "Algorithmic Overload",
           "speed": 30,
           "accuracy": 50,
-          "cooldown": 255,
+          "cooldown": 10,
           "hit": [
             {
               "target": "Opponent",
@@ -1942,7 +1942,7 @@
           "name": "Giant's Hammer",
           "speed": 30,
           "accuracy": 40,
-          "cooldown": 255,
+          "cooldown": 10,
           "hit": [
             {
               "target": "Opponent",
@@ -2108,7 +2108,7 @@
           "name": "Energy Overload",
           "speed": 30,
           "accuracy": 60,
-          "cooldown": 255,
+          "cooldown": 10,
           "hit": [
             {
               "target": "Opponent",
@@ -3603,7 +3603,7 @@
           "name": "Giant Rock Uppercut Grapple",
           "speed": 30,
           "accuracy": 50,
-          "cooldown": 255,
+          "cooldown": 10,
           "hit": [
             {
               "target": "Opponent",
@@ -4504,7 +4504,7 @@
           "name": "Cairo Burst",
           "speed": 30,
           "accuracy": 40,
-          "cooldown": 255,
+          "cooldown": 10,
           "hit": [
             {
               "target": "Opponent",
@@ -4753,7 +4753,7 @@
           "name": "Earthquake Hammer",
           "speed": 30,
           "accuracy": 40,
-          "cooldown": 255,
+          "cooldown": 10,
           "hit": [
             {
               "target": "Opponent",
