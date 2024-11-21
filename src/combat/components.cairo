@@ -89,7 +89,7 @@ fn run_effect(
             AffectResult::Success
         },
     };
-    EffectResult { target: *effect.target, affect: result, }
+    EffectResult { target: *effect.target, n: move_n, affect: result, }
 }
 
 fn run_effects(

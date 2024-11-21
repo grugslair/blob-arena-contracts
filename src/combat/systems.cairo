@@ -5,7 +5,10 @@ use dojo::{world::WorldStorage, model::ModelStorage, event::EventStorage};
 use blob_arena::{
     attacks::{
         Attack, systems::{PlannedAttackTrait, AvailableAttackTrait},
-        results::{AttackOutcomes, AttackResult}
+        results::{
+            AttackOutcomes, AttackResult, AffectResult, EffectResult,
+            events::DamageResult as DamageResultEvent
+        }
     },
     combat::components::{CombatState, Phase, PhaseTrait, run_effects},
     combatants::{CombatantState, CombatantStateTrait}, commitments::Commitment, salts::{Salts},
@@ -70,6 +73,36 @@ impl CombatImpl of CombatTrait {
     ) -> u8 {
         *state.stats.dexterity + *attack.speed
     }
+    fn emit_attack_result(
+        ref self: WorldStorage,
+        combatant_id: felt252,
+        round: u32,
+        attack: felt252,
+        target: felt252,
+        result: AttackOutcomes,
+        effects: Span<EffectResult>,
+    ) {
+        self.emit_event(@AttackResult { combatant_id, round, attack, target, result });
+        for effect in effects {
+            match effect.affect {
+                AffectResult::Damage(damage) => {
+                    self
+                        .emit_event(
+                            @DamageResultEvent {
+                                combatant_id,
+                                round,
+                                move: *effect.n,
+                                target: *effect.target,
+                                damage: *damage.damage,
+                                critical: *damage.critical
+                            }
+                        );
+                },
+                AffectResult::Success => {},
+            }
+        };
+    }
+
     fn run_attack_check(
         ref self: WorldStorage, combatant_id: felt252, attack_id: felt252, cooldown: u8, round: u32
     ) -> bool {
@@ -99,29 +132,25 @@ impl CombatImpl of CombatTrait {
     ) {
         let hash_state = hash_state.update_with(attacker_state.id);
         let mut seed = hash_state.to_u128();
-        let result = if !self
+        let (result, effects) = if !self
             .run_attack_check(attacker_state.id, *(attack.id), *(attack.cooldown), round) {
-            AttackOutcomes::Failed
+            (AttackOutcomes::Failed, [].span())
         } else if attacker_state.run_stun(ref seed) {
-            AttackOutcomes::Stunned
+            (AttackOutcomes::Stunned, [].span())
         } else if seed.get_outcome(NZ_100, *(attack.accuracy)) {
-            AttackOutcomes::Hit(
+            (
+                AttackOutcomes::Hit,
                 run_effects(ref attacker_state, ref defender_state, *(attack.hit), hash_state)
             )
         } else {
-            AttackOutcomes::Miss(
+            (
+                AttackOutcomes::Miss,
                 run_effects(ref attacker_state, ref defender_state, *(attack.miss), hash_state)
             )
         };
         self
-            .emit_event(
-                @AttackResult {
-                    combatant_id: attacker_state.id,
-                    round,
-                    attack: *attack.id,
-                    target: defender_state.id,
-                    result
-                }
+            .emit_attack_result(
+                attacker_state.id, round, *attack.id, defender_state.id, result, effects
             );
     }
 }
