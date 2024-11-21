@@ -13,15 +13,21 @@ account_address = "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d219472
 "blob_arena-ArcadeBlobert" = ["blob_arena-arcade_blobert_actions"]
 "blob_arena-LastMint" = ["blob_arena-arcade_blobert_actions"]
 "blob_arena-AMMABlobert" = ["blob_arena-arcade_blobert_actions"]
-
-
 "blob_arena-ItemMap" = ["blob_arena-blobert_actions"]
-"blob_arena-Item" = ["blob_arena-blobert_actions", "blob_arena-pvp_actions"]
+"blob_arena-Item" = [
+    "blob_arena-blobert_actions",
+    "blob_arena-item_actions",
+    "blob_arena-pvp_actions",
+]
 "blob_arena-Attack" = [
     "blob_arena-blobert_actions",
     "blob_arena-attack_actions",
+    "blob_arena-item_actions",
 ]
-"blob_arena-HasAttack" = ["blob_arena-blobert_actions"]
+"blob_arena-HasAttack" = [
+    "blob_arena-blobert_actions",
+    "blob_arena-item_actions",
+]
 "blob_arena-AvailableAttack" = ["blob_arena-pvp_actions"]
 "blob_arena-CombatState" = ["blob_arena-pvp_actions"]
 "blob_arena-Salts" = ["blob_arena-pvp_actions"]
@@ -33,3 +39,5 @@ account_address = "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d219472
 "blob_arena-PvPChallengeResponse" = ["blob_arena-pvp_actions"]
 "blob_arena-PvPChallengeScore" = ["blob_arena-pvp_actions"]
 "blob_arena-PvPCombatants" = ["blob_arena-pvp_actions"]
+"blob_arena-AttackResult" = ["blob_arena-pvp_actions"]
+"blob_arena-DamageResult" = ["blob_arena-pvp_actions"]

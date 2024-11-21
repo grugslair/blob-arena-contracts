@@ -912,9 +912,9 @@
         "name": "USA",
         "stats": {
           "strength": 11,
-          "vitality": 10,
-          "dexterity": 14,
-          "luck": 9
+          "vitality": 9,
+          "dexterity": 10,
+          "luck": 10
         },
         "attacks": []
       },

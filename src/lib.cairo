@@ -19,6 +19,7 @@ use world::uuid;
 mod items {
     mod components;
     mod systems;
+    mod contract;
     use components::{Item, ItemsTrait};
     use systems::{ItemTrait};
 }
