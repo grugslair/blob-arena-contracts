@@ -43,7 +43,8 @@ fn run_effect(
     ref attacker_state: CombatantState,
     ref defender_state: CombatantState,
     effect: @Effect,
-    ref hash_state: HashState,
+    move_n: u32,
+    hash_state: HashState,
 ) -> EffectResult {
     let result = match effect.affect {
         Affect::Stats(stats_effect) => {
@@ -62,8 +63,7 @@ fn run_effect(
             AffectResult::Success
         },
         Affect::Damage(damage) => {
-            hash_state.update_hash_state('salt');
-            let mut seed = hash_state.to_u128();
+            let mut seed = hash_state.update_to_u128(move_n);
 
             let critical = did_critical(*damage.critical, attacker_state.stats.luck, ref seed);
 
@@ -99,16 +99,15 @@ fn run_effects(
     mut hash_state: HashState,
 ) -> Span<EffectResult> {
     let mut results: Array<EffectResult> = ArrayTrait::new();
-    loop {
-        match effects.pop_front() {
-            Option::Some(effect) => {
-                let result = run_effect(
-                    ref attacker_state, ref defender_state, effect, ref hash_state,
-                );
-                results.append(result);
-            },
-            Option::None => { break; },
-        }
-    };
+    for n in 0
+        ..effects
+            .len() {
+                results
+                    .append(
+                        run_effect(
+                            ref attacker_state, ref defender_state, effects.at(n), n, hash_state,
+                        )
+                    );
+            };
     results.span()
 }

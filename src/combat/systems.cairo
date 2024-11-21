@@ -116,7 +116,11 @@ impl CombatImpl of CombatTrait {
         self
             .emit_event(
                 @AttackResult {
-                    combatant_id: attacker_state.id, round, target: defender_state.id, result
+                    combatant_id: attacker_state.id,
+                    round,
+                    attack: *attack.id,
+                    target: defender_state.id,
+                    result
                 }
             );
     }
