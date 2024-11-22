@@ -2,7 +2,7 @@ use starknet::{ContractAddress, get_caller_address};
 use dojo::{world::WorldStorage, model::{ModelStorage, ModelValueStorage}};
 use blob_arena::{
     core::TTupleSize5, hash::{hash_value}, world::WorldTrait,
-    collections::{blobert::{external::TokenTrait}, arcade_blobert::blobert::ArcadeBlobert},
+    collections::{blobert::{external::TokenTrait}, arcade_blobert::blobert::ArcadeBlobertTrait},
 };
 
 #[dojo::model]
@@ -25,7 +25,7 @@ impl AMMABlobertImpl of AMMABlobertTrait {
     ) -> felt252 {
         let custom_id = self.get_custom_id(fighter_id);
         let token_id = hash_value((owner, custom_id));
-        self.write_model(@ArcadeBlobert { token_id, owner, traits: TokenTrait::Custom(custom_id) });
+        self.set_arcade_blobert(token_id, owner, TokenTrait::Custom(custom_id));
         token_id
     }
     fn set_amma_blobert(ref self: WorldStorage, fighter_id: u8, name: ByteArray, custom_id: u8) {
