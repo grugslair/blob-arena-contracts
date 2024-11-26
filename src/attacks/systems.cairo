@@ -73,7 +73,16 @@ impl AvailableAttackImpl of AvailableAttackTrait {
     fn set_attack_last_used(
         ref self: WorldStorage, combatant_id: felt252, attack_id: felt252, last_used: u32
     ) {
-        self.write_model(@AvailableAttack { combatant_id, attack_id, available: true, last_used });
+        self
+            .write_member(
+                Model::<AvailableAttack>::ptr_from_keys((combatant_id, attack_id)),
+                selector!("last_used"),
+                last_used
+            );
+    }
+    fn check_attack_useable(self: @AvailableAttack, cooldown: u8, round: u32) -> bool {
+        *self.available
+            && ((*self.last_used).is_zero() || *self.last_used + cooldown.into() < round)
     }
 }
 

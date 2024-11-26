@@ -74,18 +74,13 @@ impl CombatImpl of CombatTrait {
         ref self: WorldStorage, combatant_id: felt252, attack_id: felt252, cooldown: u8, round: u32
     ) -> bool {
         let attack_available = self.get_available_attack(combatant_id, attack_id);
-        if !attack_available.available {
-            false
-        } else {
-            if cooldown == 0 {
-                return true;
+        if attack_available.check_attack_useable(cooldown, round) {
+            if cooldown.is_non_zero() {
+                self.set_attack_last_used(combatant_id, attack_id, round)
             }
-            let last_used = attack_available.last_used;
-            if last_used.is_non_zero() && (cooldown.into() + last_used) > round {
-                return false;
-            };
-            self.set_attack_last_used(combatant_id, attack_id, round);
             true
+        } else {
+            false
         }
     }
 
