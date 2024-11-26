@@ -24,7 +24,7 @@ fn effect_span(affect: Affect, target: Target) -> Span<Effect> {
 }
 
 fn stat_effect_span(stat: StatTypes, amount: i8, target: Target) -> Span<Effect> {
-    effect_span(Affect::Stat(Stat { stat, amount }), Target::Player)
+    effect_span(Affect::Stat(Stat { stat, amount }), target)
 }
 
 #[test]
@@ -60,37 +60,41 @@ fn test_luck_modifier() {
     assert_eq!(255_u8, apply_luck_modifier(100, 100));
 }
 
+fn assert_damage_calculation(power: u8, strength: u8, critical: bool, expected: u8) {
+    assert_eq!(damage_calculation(power, strength, critical), expected);
+}
+
 #[test]
-fn test_damage_calculation() {
-    assert_eq!(damage_calculation(0, 0, false), 0);
-    assert_eq!(damage_calculation(0, 100, false), 0);
-    assert_eq!(damage_calculation(0, 100, true), 0);
+fn test_damage_calculations() {
+    assert_damage_calculation(0, 0, false, 0);
+    assert_damage_calculation(0, 100, false, 0);
+    assert_damage_calculation(0, 100, true, 0);
 
-    assert_eq!(damage_calculation(25, 0, false), 10);
-    assert_eq!(damage_calculation(25, 25, false), 12);
-    assert_eq!(damage_calculation(25, 50, false), 15);
-    assert_eq!(damage_calculation(25, 75, false), 17);
-    assert_eq!(damage_calculation(25, 100, false), 20);
+    assert_damage_calculation(25, 0, false, 12);
+    assert_damage_calculation(25, 25, false, 15);
+    assert_damage_calculation(25, 50, false, 18);
+    assert_damage_calculation(25, 75, false, 21);
+    assert_damage_calculation(25, 100, false, 25);
 
-    assert_eq!(damage_calculation(50, 0, false), 20);
-    assert_eq!(damage_calculation(50, 25, false), 25);
-    assert_eq!(damage_calculation(50, 50, false), 30);
-    assert_eq!(damage_calculation(50, 75, false), 35);
-    assert_eq!(damage_calculation(50, 100, false), 40);
+    assert_damage_calculation(50, 0, false, 25);
+    assert_damage_calculation(50, 25, false, 31);
+    assert_damage_calculation(50, 50, false, 37);
+    assert_damage_calculation(50, 75, false, 43);
+    assert_damage_calculation(50, 100, false, 50);
 
-    assert_eq!(damage_calculation(75, 0, false), 30);
-    assert_eq!(damage_calculation(75, 25, false), 37);
-    assert_eq!(damage_calculation(75, 50, false), 45);
-    assert_eq!(damage_calculation(75, 75, false), 52);
-    assert_eq!(damage_calculation(75, 100, false), 60);
+    assert_damage_calculation(75, 0, false, 37);
+    assert_damage_calculation(75, 25, false, 46);
+    assert_damage_calculation(75, 50, false, 56);
+    assert_damage_calculation(75, 75, false, 65);
+    assert_damage_calculation(75, 100, false, 75);
 
-    assert_eq!(damage_calculation(100, 0, false), 40);
-    assert_eq!(damage_calculation(100, 25, false), 50);
-    assert_eq!(damage_calculation(100, 50, false), 60);
-    assert_eq!(damage_calculation(100, 75, false), 70);
-    assert_eq!(damage_calculation(100, 100, false), 80);
+    assert_damage_calculation(100, 0, false, 50);
+    assert_damage_calculation(100, 25, false, 62);
+    assert_damage_calculation(100, 50, false, 75);
+    assert_damage_calculation(100, 75, false, 87);
+    assert_damage_calculation(100, 100, false, 100);
 
-    assert_eq!(damage_calculation(100, 100, true), 160);
+    assert_damage_calculation(100, 100, true, 200);
 }
 
 #[test]
@@ -187,7 +191,7 @@ fn test_damage() {
     );
 
     run_effects(ref state_1, ref state_2, damage_effect, hash_state);
-    new_state_2.health -= 30;
+    new_state_2.health -= 37;
     assert_eq!((new_state_1, new_state_2), (state_1, state_2));
 
     let damage_effect = effect_span(
@@ -202,7 +206,7 @@ fn test_damage() {
     );
 
     run_effects(ref state_1, ref state_2, damage_effect, hash_state);
-    new_state_1.health -= 30;
+    new_state_1.health -= 37;
     assert_eq!((new_state_1, new_state_2), (state_1, state_2));
 
     let mut state_1 = make_combatant_state(1, @STATS_MAX);
@@ -214,11 +218,11 @@ fn test_damage() {
     );
 
     run_effects(ref state_1, ref state_2, damage_effect, hash_state);
-    new_state_2.health -= 40;
+    new_state_2.health -= 50;
     assert_eq!((new_state_1, new_state_2), (state_1, state_2));
 }
 
-
+#[test]
 fn test_health() {
     let mut state_1 = make_combatant_state(1, @STATS_AVG);
     let mut state_2 = make_combatant_state(2, @STATS_AVG);
@@ -252,7 +256,7 @@ fn test_health() {
     assert_eq!((new_state_1, new_state_2), (state_1, state_2));
 }
 
-
+#[test]
 fn test_stat() {
     let mut state_1 = make_combatant_state(1, @STATS_AVG);
     let mut state_2 = make_combatant_state(2, @STATS_AVG);
@@ -268,7 +272,7 @@ fn test_stat() {
         hash_state
     );
     new_state_1.stats.dexterity = 100;
-    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2), "+ Dex");
 
     run_effects(
         ref state_1,
@@ -277,7 +281,7 @@ fn test_stat() {
         hash_state
     );
     new_state_1.stats.luck = 0;
-    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2), "- Luck");
 
     run_effects(
         ref state_1,
@@ -286,7 +290,7 @@ fn test_stat() {
         hash_state
     );
     new_state_2.stats.strength = 20;
-    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2), "- Str");
 
     run_effects(
         ref state_1,
@@ -295,7 +299,7 @@ fn test_stat() {
         hash_state
     );
     new_state_1.stats.vitality = 90;
-    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2), "+ Vit");
 
     run_effects(
         ref state_1,
@@ -303,8 +307,8 @@ fn test_stat() {
         stat_effect_span(StatTypes::Vitality, -40, Target::Opponent),
         hash_state
     );
-    new_state_1.stats.vitality = 10;
-    new_state_1.health = 110;
-    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
+    new_state_2.stats.vitality = 10;
+    new_state_2.health = 110;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2), "- Vit");
 }
 

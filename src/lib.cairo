@@ -63,5 +63,6 @@ mod tests {
     mod core_test;
     mod combat_test;
     mod utils_test;
+    mod attack_test;
 }
 
