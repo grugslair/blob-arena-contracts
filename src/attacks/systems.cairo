@@ -31,9 +31,9 @@ impl PlannedAttackImpl of PlannedAttackTrait {
         self.read_model(id)
     }
     fn set_planned_attack(
-        ref self: WorldStorage, combatant_id: felt252, attack: felt252, target: felt252
+        ref self: WorldStorage, combatant: felt252, attack: felt252, target: felt252
     ) {
-        self.write_model(@PlannedAttack { id: combatant_id, attack, target });
+        self.write_model(@PlannedAttack { combatant, attack, target });
     }
     fn get_planned_attacks(self: @WorldStorage, mut ids: Span<felt252>) -> Span<PlannedAttack> {
         let mut attacks = ArrayTrait::<PlannedAttack>::new();

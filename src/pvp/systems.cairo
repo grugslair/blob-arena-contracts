@@ -1,8 +1,10 @@
+use dojo::event::EventStorage;
 use core::poseidon::HashState;
 use starknet::ContractAddress;
 use dojo::{world::WorldStorage, model::ModelStorage};
 use blob_arena::{
-    combat::{CombatTrait, Phase}, attacks::{PlannedAttack, AttackTrait},
+    combat::{CombatTrait, Phase},
+    attacks::{PlannedAttack, AttackTrait, Attack, results::AttackResult},
     pvp::{
         PvPChallengeInvite, PvPChallengeResponse, PvPChallenge, PvPCombatants, make_pvp_challenge,
         PvPChallengeScore, PvPChallengeScoreTrait
@@ -11,42 +13,40 @@ use blob_arena::{
     hash::UpdateHashToU128
 };
 
+fn in_order<T, +PartialOrd<T>, +PartialEq<T>, +Drop<T>>(a: T, b: T, hash: HashState) -> bool {
+    if a == b {
+        (hash.to_u128() % 2_u128).is_zero()
+    } else {
+        a < b
+    }
+}
+
 
 #[generate_trait]
 impl PvPCombatImpl of PvPCombatTrait {
+    fn get_speed(self: @(CombatantState, Attack)) -> u8 {
+        let (state, attack) = self;
+        *state.stats.dexterity + *attack.speed
+    }
+
     fn run_pvp_round(
-        ref self: WorldStorage,
-        combatant_ids: ABT<felt252>,
-        planned_attacks: ABT<PlannedAttack>,
-        round: u32,
-        hash: HashState
-    ) -> Array<CombatantState> {
-        let state_a = self.get_combatant_state(combatant_ids.a);
-        let state_b = self.get_combatant_state(combatant_ids.b);
-        let attack_a = @self.get_attack(planned_attacks.a.attack);
-        let attack_b = @self.get_attack(planned_attacks.b.attack);
-        let speed_a = self.get_attacker_attack_speed(@state_a, attack_a);
-        let speed_b = self.get_attacker_attack_speed(@state_b, attack_b);
+        ref self: WorldStorage, planned_attacks: Span<PlannedAttack>, round: u32, hash: HashState
+    ) -> (Span<CombatantState>, Span<AttackResult>) {
+        let array = self.get_states_and_attacks(planned_attacks);
 
-        let switch = if speed_a == speed_b {
-            (hash.to_u128() % 2_u128) == 1
+        let ((mut state_1, attack_1), (mut state_2, attack_2)) = if in_order(
+            array.at(0).get_speed(), array.at(1).get_speed(), hash
+        ) {
+            (*array.at(0), *array.at(1))
         } else {
-            speed_a < speed_b
+            (*array.at(1), *array.at(0))
         };
-        let (mut state_1, mut state_2, attack_1, attack_2) = if switch {
-            (state_b, state_a, attack_b, attack_a)
-        } else {
-            (state_a, state_b, attack_a, attack_b)
-        };
-
-        self.run_attack(ref state_1, ref state_2, attack_1, round, hash);
+        let mut attacks = array![];
+        attacks.append(self.run_attack(ref state_1, ref state_2, @attack_1, round, hash));
         if state_1.health > 0 && state_2.health > 0 {
-            self.run_attack(ref state_2, ref state_1, attack_2, round, hash);
-        }
-        self.write_model(@state_1);
-        self.write_model(@state_2);
-
-        array![state_1, state_2]
+            attacks.append(self.run_attack(ref state_2, ref state_1, @attack_2, round, hash));
+        };
+        ([state_1, state_2].span(), attacks.span())
     }
 }
 

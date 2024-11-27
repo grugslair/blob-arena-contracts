@@ -1,20 +1,23 @@
 use core::{poseidon::{HashState,}, hash::HashStateExTrait};
 use starknet::get_block_number;
 
-use dojo::{world::WorldStorage, model::ModelStorage, event::EventStorage};
+use dojo::{world::WorldStorage, model::{ModelStorage, Model}, event::EventStorage};
 use blob_arena::{
     attacks::{
-        Attack, systems::{PlannedAttackTrait, AvailableAttackTrait},
+        Attack, AttackTrait, systems::{PlannedAttackTrait, PlannedAttack, AvailableAttackTrait},
         results::{AttackOutcomes, AttackResult}
     },
     combat::components::{CombatState, Phase, PhaseTrait, run_effects},
-    combatants::{CombatantState, CombatantStateTrait}, commitments::Commitment, salts::{Salts},
-    utils::SeedProbability, hash::UpdateHashToU128, constants::NZ_100,
+    combatants::{CombatantState, CombatantStateTrait, CombatantTrait}, commitments::Commitment,
+    salts::{Salts}, utils::SeedProbability, hash::UpdateHashToU128, constants::NZ_100,
 };
 
 
 #[generate_trait]
 impl CombatImpl of CombatTrait {
+    fn set_combat_phase(ref self: WorldStorage, id: felt252, phase: Phase) {
+        self.write_member(Model::<CombatState>::ptr_from_keys(id), selector!("phase"), phase);
+    }
     fn get_combat_state(self: @WorldStorage, id: felt252) -> CombatState {
         self.read_model(id)
     }
@@ -42,21 +45,14 @@ impl CombatImpl of CombatTrait {
         state.phase = Phase::Commit;
         self.write_model(@state);
     }
-    fn get_combatants_mortality(
-        mut self: Array<CombatantState>
-    ) -> (Array<felt252>, Array<felt252>) {
+    fn get_combatants_mortality(self: Span<CombatantState>) -> (Array<felt252>, Array<felt252>) {
         let mut alive = ArrayTrait::<felt252>::new();
         let mut dead = ArrayTrait::<felt252>::new();
-        loop {
-            match self.pop_front() {
-                Option::Some(state) => {
-                    if state.health.is_non_zero() {
-                        alive.append(state.id);
-                    } else {
-                        dead.append(state.id);
-                    }
-                },
-                Option::None => { break; }
+        for state in self {
+            if (*state.health).is_non_zero() {
+                alive.append(*state.id);
+            } else {
+                dead.append(*state.id);
             }
         };
         (alive, dead)
@@ -84,6 +80,25 @@ impl CombatImpl of CombatTrait {
         }
     }
 
+    fn get_state_and_attack(
+        self: @WorldStorage, planned_attack: @PlannedAttack
+    ) -> (CombatantState, Attack) {
+        (
+            self.get_combatant_state(*planned_attack.combatant),
+            self.get_attack(*planned_attack.attack)
+        )
+    }
+
+    fn get_states_and_attacks(
+        self: @WorldStorage, planned_attacks: Span<PlannedAttack>
+    ) -> Array<(CombatantState, Attack)> {
+        let mut array = ArrayTrait::<(CombatantState, Attack)>::new();
+        for planned_attack in planned_attacks {
+            array.append(self.get_state_and_attack(planned_attack));
+        };
+        array
+    }
+
     fn run_attack(
         ref self: WorldStorage,
         ref attacker_state: CombatantState,
@@ -91,9 +106,10 @@ impl CombatImpl of CombatTrait {
         attack: @Attack,
         round: u32,
         hash_state: HashState
-    ) {
+    ) -> AttackResult {
         let hash_state = hash_state.update_with(attacker_state.id);
         let mut seed = hash_state.to_u128();
+
         let result = if !self
             .run_attack_check(attacker_state.id, *(attack.id), *(attack.cooldown), round) {
             AttackOutcomes::Failed
@@ -108,15 +124,8 @@ impl CombatImpl of CombatTrait {
                 run_effects(ref attacker_state, ref defender_state, *(attack.miss), hash_state)
             )
         };
-        self
-            .emit_event(
-                @AttackResult {
-                    combatant_id: attacker_state.id,
-                    round,
-                    attack: *attack.id,
-                    target: defender_state.id,
-                    result
-                }
-            );
+        AttackResult {
+            combatant_id: attacker_state.id, attack: *attack.id, target: defender_state.id, result
+        }
     }
 }

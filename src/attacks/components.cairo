@@ -66,7 +66,7 @@ struct Damage {
     power: u8,
 }
 
-#[derive(Drop, Serde)]
+#[derive(Drop, Serde, Copy)]
 struct Attack {
     id: felt252,
     speed: u8,
@@ -178,7 +178,7 @@ mod models {
     #[derive(Drop, Serde, Copy)]
     struct PlannedAttack {
         #[key]
-        id: felt252,
+        combatant: felt252,
         attack: felt252,
         target: felt252,
     }

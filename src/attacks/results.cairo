@@ -1,12 +1,17 @@
 use super::Target;
-
 #[dojo::event]
 #[derive(Drop, Serde)]
-struct AttackResult {
+struct RoundResult {
     #[key]
-    combatant_id: felt252,
+    combat_id: felt252,
     #[key]
     round: u32,
+    attacks: Span<AttackResult>,
+}
+
+#[derive(Drop, Serde, Introspect)]
+struct AttackResult {
+    combatant_id: felt252,
     attack: felt252,
     target: felt252,
     result: AttackOutcomes,
@@ -32,7 +37,7 @@ struct EffectResult {
     affect: AffectResult,
 }
 
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+#[derive(Drop, Serde, Copy, PartialEq, IntrospectPacked)]
 struct DamageResult {
     damage: u8,
     critical: bool,

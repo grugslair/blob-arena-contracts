@@ -54,10 +54,10 @@ trait IPvPChallengeActions<TContractState> {
 #[dojo::contract]
 mod pvp_actions {
     const SELECTOR: felt252 = selector!("blob_arena-pvp_actions");
-    use dojo::model::ModelStorage;
+    use dojo::{model::ModelStorage, event::EventStorage};
     use starknet::{ContractAddress, get_caller_address};
     use blob_arena::{
-        attacks::{PlannedAttack, PlannedAttackTrait, PlannedAttacksTrait},
+        attacks::{PlannedAttack, PlannedAttackTrait, PlannedAttacksTrait, results::RoundResult},
         pvp::{PvPChallengeTrait, PvPTrait, PvPChallengeScoreTrait, PvPCombatTrait},
         combatants::{CombatantTrait, CombatantInfoTrait}, hash::hash_value,
         combat::{CombatTrait, Phase}, world::{WorldTrait, default_namespace, uuid},
@@ -203,26 +203,22 @@ mod pvp_actions {
             ref self: ContractState, combatant_id: felt252, attack: felt252, salt: felt252
         ) {
             let mut world = self.world(default_namespace());
+
             let combatant = world.get_combatant_info_in_combat(combatant_id);
             combatant.assert_player();
             let mut combat = world.get_combat_state(combatant.combat_id);
             let combatants = world.get_pvp_combatants(combat.id);
-            if combat.phase == Phase::Commit {
-                if world.check_commitments_set_with(combatants.into()) {
-                    combat.phase = Phase::Reveal;
-                    world.write_model(@combat);
-                };
+            if combat.phase == Phase::Commit
+                && world.check_commitments_set_with(combatants.into()) {
+                world.set_combat_phase(combat.id, Phase::Reveal);
             };
+
             assert(combat.phase == Phase::Reveal, 'Not in reveal phase');
-            let hash = hash_value((attack, salt));
             let commitment = world.get_commitment_with(combatant_id);
-            if hash == commitment {
+
+            if hash_value((attack, salt)) == commitment {
                 world.append_salt(combat.id, salt);
-                let other_combatant = combatants.other(combatant_id);
-                world
-                    .write_model(
-                        @PlannedAttack { id: combatant_id, attack, target: other_combatant, }
-                    );
+                world.set_planned_attack(combatant_id, attack, combatants.other(combatant_id));
             } else {
                 let winner_id = combatants.other(combatant_id);
                 world.end_combat(combat, winner_id);
@@ -238,8 +234,12 @@ mod pvp_actions {
             let hash = world.get_salts_hash_state(combat_id);
             let planned_attacks = world.get_planned_attacks(combatants_span);
             assert(planned_attacks.check_all_set(), 'Not all attacks revealed');
-            let states = world
-                .run_pvp_round(combatants, planned_attacks.try_into().unwrap(), combat.round, hash);
+
+            let (states, attack_result) = world.run_pvp_round(planned_attacks, combat.round, hash);
+            world
+                .emit_event(
+                    @RoundResult { combat_id, round: combat.round, attacks: attack_result }
+                );
             let (alive, dead) = states.get_combatants_mortality();
             if (alive.len() > 1) {
                 world.next_round(combat, combatants_span);
