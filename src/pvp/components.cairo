@@ -8,7 +8,6 @@ struct PvPChallenge {
     receiver: ContractAddress,
     sender_combatant: felt252,
     receiver_combatant: felt252,
-    phase_time: u64,
     invite_open: bool,
     response_open: bool,
     collection_address: ContractAddress,
@@ -49,7 +48,6 @@ struct PvPChallengeInvite {
     receiver: ContractAddress,
     collection_address: ContractAddress,
     combatant: felt252,
-    phase_time: u64,
     open: bool,
 }
 
@@ -71,7 +69,6 @@ fn make_pvp_challenge(
         receiver: *invite.receiver,
         sender_combatant: *invite.combatant,
         receiver_combatant: *response.combatant,
-        phase_time: *invite.phase_time,
         invite_open: *invite.open,
         response_open: *response.open,
         collection_address: *invite.collection_address,
@@ -98,7 +95,6 @@ impl PvPChallengeImpl of PvPChallengeTrait {
             sender: *self.sender,
             receiver: *self.receiver,
             combatant: *self.sender_combatant,
-            phase_time: *self.phase_time,
             open: *self.invite_open,
             collection_address: *self.collection_address,
         }

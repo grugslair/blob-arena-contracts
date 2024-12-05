@@ -43,7 +43,7 @@ mod combat {
     mod calculations;
     mod components;
     mod systems;
-    use components::Phase;
+    use components::{Phase, CombatState};
     use systems::CombatTrait;
 }
 mod pvp {

@@ -16,12 +16,20 @@ struct CombatantInfo {
     id: felt252,
     combat_id: felt252,
     player: ContractAddress,
+    opponent: felt252,
+}
+
+#[dojo::model]
+#[derive(Drop, Serde, Copy)]
+struct CombatantToken {
+    #[key]
+    id: felt252,
     collection_address: ContractAddress,
     token_id: u256,
 }
 
 #[dojo::model]
-#[derive(Drop, Serde, Copy, PartialEq)]
+#[derive(Drop, Serde, Copy)]
 struct CombatantState {
     #[key]
     id: felt252,

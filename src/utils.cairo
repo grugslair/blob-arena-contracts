@@ -18,6 +18,9 @@ fn storage_write(address: StorageAddress, value: felt252) {
     storage_write_syscall(0, address, value).unwrap()
 }
 
+fn get_transaction_hash() -> felt252 {
+    get_tx_info().unbox().transaction_hash
+}
 
 impl TDebugImpl<T, +Display<T>> of Debug<T> {
     fn fmt(self: @T, ref f: Formatter) -> Result<(), Error> {

@@ -1,4 +1,5 @@
 use core::poseidon::HashState;
+use starknet::ContractAddress;
 use blob_arena::{
     attacks::{
         Effect, Affect, Target, Damage, Stat, results::{EffectResult, AffectResult, DamageResult}
@@ -21,9 +22,9 @@ enum Phase {
 struct CombatState {
     #[key]
     id: felt252,
+    owner: ContractAddress,
     round: u32,
     phase: Phase,
-    block_number: u64,
 }
 
 #[generate_trait]

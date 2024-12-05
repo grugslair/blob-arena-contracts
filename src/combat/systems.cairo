@@ -22,12 +22,7 @@ impl CombatImpl of CombatTrait {
         self.read_model(id)
     }
     fn new_combat_state(ref self: WorldStorage, id: felt252) {
-        self
-            .write_model(
-                @CombatState {
-                    id, phase: Phase::Commit, round: 1, block_number: get_block_number()
-                }
-            );
+        self.write_model(@CombatState { id, phase: Phase::Commit, round: 1 });
     }
     fn get_combat_phase(self: @WorldStorage, id: felt252) -> Phase {
         self.get_combat_state(id).phase
