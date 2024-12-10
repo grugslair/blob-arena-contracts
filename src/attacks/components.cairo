@@ -178,8 +178,8 @@ mod models {
     #[derive(Drop, Serde, Copy)]
     struct PlannedAttack {
         #[key]
-        combatant: felt252,
-        attack: felt252,
+        combatant_id: felt252,
+        attack_id: felt252,
         target: felt252,
     }
 }
@@ -191,7 +191,7 @@ impl PlannedAttacksImpl of PlannedAttacksTrait {
         let (mut n, len) = (0, self.len());
         let mut set = true;
         while n < len {
-            if (*self.at(n).attack).is_zero() {
+            if (*self.at(n).attack_id).is_zero() {
                 set = false;
                 break;
             }

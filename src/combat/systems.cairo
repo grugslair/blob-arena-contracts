@@ -1,5 +1,5 @@
 use core::{poseidon::{HashState,}, hash::HashStateExTrait};
-use starknet::get_block_number;
+use starknet::{get_block_number, ContractAddress};
 
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}, event::EventStorage};
 use blob_arena::{
@@ -21,20 +21,19 @@ impl CombatImpl of CombatTrait {
     fn get_combat_state(self: @WorldStorage, id: felt252) -> CombatState {
         self.read_model(id)
     }
-    fn new_combat_state(ref self: WorldStorage, id: felt252) {
-        self.write_model(@CombatState { id, phase: Phase::Commit, round: 1 });
+    fn new_combat_state(ref self: WorldStorage, id: felt252, owner: ContractAddress) {
+        self.write_model(@CombatState { id, owner, phase: Phase::Commit, round: 1 });
     }
     fn get_combat_phase(self: @WorldStorage, id: felt252) -> Phase {
-        self.get_combat_state(id).phase
+        self.read_member(Model::<CombatState>::ptr_from_keys(id), selector!("phase"))
     }
     fn get_running_combat_state(self: @WorldStorage, id: felt252) -> CombatState {
         let state = self.get_combat_state(id);
         state.phase.assert_running();
         state
     }
-    fn next_round(ref self: WorldStorage, mut state: CombatState, combatants: Span<felt252>) {
+    fn next_round(ref self: WorldStorage, ref state: CombatState, combatants: Span<felt252>) {
         self.reset_salts(state.id);
-        self.clear_commitments_with(combatants);
         self.clear_planned_attacks(combatants);
         state.round += 1;
         state.phase = Phase::Commit;
@@ -52,7 +51,7 @@ impl CombatImpl of CombatTrait {
         };
         (alive, dead)
     }
-    fn end_combat(ref self: WorldStorage, mut state: CombatState, winner: felt252) {
+    fn end_combat(ref self: WorldStorage, ref state: CombatState, winner: felt252) {
         state.phase = Phase::Ended(winner);
         self.write_model(@state);
     }
@@ -79,19 +78,27 @@ impl CombatImpl of CombatTrait {
         self: @WorldStorage, planned_attack: @PlannedAttack
     ) -> (CombatantState, Attack) {
         (
-            self.get_combatant_state(*planned_attack.combatant),
-            self.get_attack(*planned_attack.attack)
+            self.get_combatant_state(*planned_attack.combatant_id),
+            self.get_attack(*planned_attack.attack_id)
         )
     }
 
     fn get_states_and_attacks(
-        self: @WorldStorage, planned_attacks: Span<PlannedAttack>
+        self: @WorldStorage, combatant_ids: Span<felt252>
     ) -> Array<(CombatantState, Attack)> {
-        let mut array = ArrayTrait::<(CombatantState, Attack)>::new();
-        for planned_attack in planned_attacks {
-            array.append(self.get_state_and_attack(planned_attack));
+        let states = self.get_combatant_states(combatant_ids);
+        let mut attack_ids = ArrayTrait::<felt252>::new();
+        for attack in self
+            .get_planned_attacks(combatant_ids) {
+                attack_ids.append(attack.attack_id);
+            };
+
+        let attacks = self.get_attacks(attack_ids.span());
+        let mut states_and_attacks = ArrayTrait::<(CombatantState, Attack)>::new();
+        for n in 0..states.len() {
+            states_and_attacks.append((*states.at(n), *attacks.at(n)));
         };
-        array
+        states_and_attacks
     }
 
     fn run_attack(

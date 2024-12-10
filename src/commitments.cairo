@@ -19,7 +19,7 @@ use model::{CommitmentValue, Commitment as CommitmentModel};
 #[generate_trait]
 impl CommitmentImpl of Commitment {
     fn get_commitment(self: @WorldStorage, id: felt252) -> felt252 {
-        ModelValueStorage::<WorldStorage, CommitmentValue>::read_value(self, id).commitment
+        self.read_member(Model::<CommitmentModel>::ptr_from_keys(id), selector!("commitment"))
     }
     fn set_commitment(ref self: WorldStorage, id: felt252, commitment: felt252) {
         self.write_model(@CommitmentModel { id, commitment });
@@ -34,30 +34,44 @@ impl CommitmentImpl of Commitment {
         self.get_commitment(id).is_zero()
     }
     fn check_commitments_set(self: @WorldStorage, ids: Span<felt252>) -> bool {
-        let (mut n, len) = (0, ids.len());
-        let mut set = true;
-        while n < len {
-            if self.check_commitment_unset(*ids.at(n)) {
-                set = false;
-                break;
+        let mut values: Array<CommitmentValue> = self.read_values(ids);
+        loop {
+            match values.pop_front() {
+                Option::Some(value) => { if value.commitment.is_zero() {
+                    break false;
+                } },
+                Option::None => { break true; },
             }
-            n += 1;
-        };
-        set
+        }
+    }
+    fn check_commitments_unset(self: @WorldStorage, ids: Span<felt252>) -> bool {
+        let mut values: Array<CommitmentValue> = self.read_values(ids);
+        loop {
+            match values.pop_front() {
+                Option::Some(value) => { if value.commitment.is_non_zero() {
+                    break false;
+                } },
+                Option::None => { break true; },
+            }
+        }
     }
     fn check_commitments_set_with<T, +Hash<T, HashState>, +Drop<T>, +Copy<T>>(
-        self: @WorldStorage, values: Span<T>
+        self: @WorldStorage, mut values: Span<T>
     ) -> bool {
-        let (mut n, len) = (0, values.len());
-        let mut set = true;
-        while n < len {
-            if self.check_commitment_unset_with(*(values.at(n))) {
-                set = false;
-                break;
-            }
-            n += 1;
+        let mut ids: Array<felt252> = ArrayTrait::<felt252>::new();
+        for value in values {
+            ids.append(hash_value(*value));
         };
-        set
+        self.check_commitments_set(ids.span())
+    }
+    fn check_commitments_unset_with<T, +Hash<T, HashState>, +Drop<T>, +Copy<T>>(
+        self: @WorldStorage, mut values: Span<T>
+    ) -> bool {
+        let mut ids: Array<felt252> = ArrayTrait::<felt252>::new();
+        for value in values {
+            ids.append(hash_value(*value));
+        };
+        self.check_commitments_set(ids.span())
     }
     fn clear_commitments(ref self: WorldStorage, ids: Span<felt252>) {
         let (mut n, len) = (0, ids.len());
@@ -108,6 +122,16 @@ impl CommitmentImpl of Commitment {
         ref self: WorldStorage, value: T, hash: felt252
     ) {
         self.set_new_commitment(hash_value(value), hash);
+    }
+    fn get_set_commitment(self: @WorldStorage, id: felt252) -> felt252 {
+        let commitment = self.get_commitment(id);
+        assert(commitment.is_non_zero(), 'Commitment not set');
+        commitment
+    }
+    fn consume_commitment(ref self: WorldStorage, id: felt252) -> felt252 {
+        let commitment = self.get_set_commitment(id);
+        self.clear_commitment(id);
+        commitment
     }
 }
 

@@ -13,14 +13,6 @@ use blob_arena::{
     hash::UpdateHashToU128
 };
 
-fn in_order<T, +PartialOrd<T>, +PartialEq<T>, +Drop<T>>(a: T, b: T, hash: HashState) -> bool {
-    if a == b {
-        (hash.to_u128() % 2_u128).is_zero()
-    } else {
-        a < b
-    }
-}
-
 
 #[generate_trait]
 impl PvPCombatImpl of PvPCombatTrait {
@@ -109,7 +101,9 @@ impl PvPChallengeImpl of PvPTrait {
         self.new_combat_state(*challenge.id);
     }
 
-    fn set_pvp_combatants(ref self: WorldStorage, id: felt252, combatants: (felt252, felt252)) {
+    fn set_pvp_combatants(
+        ref self: WorldStorage, id: felt252, owner: ContractAddress, combatants: (felt252, felt252)
+    ) {
         self.write_model(@PvPCombatants { id, combatants: combatants });
     }
     fn get_pvp_combatants_model(self: @WorldStorage, id: felt252) -> PvPCombatants {

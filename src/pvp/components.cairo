@@ -13,14 +13,6 @@ struct PvPChallenge {
     collection_address: ContractAddress,
 }
 
-#[dojo::model]
-#[derive(Drop, Serde, Copy)]
-struct PvPCombatants {
-    #[key]
-    id: felt252,
-    combatants: (felt252, felt252),
-}
-
 
 #[dojo::model]
 #[derive(Copy, Drop, Serde)]

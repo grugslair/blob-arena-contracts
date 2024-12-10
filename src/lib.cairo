@@ -8,6 +8,8 @@ mod commitments;
 mod collections;
 mod hash;
 mod world;
+mod storage;
+mod serde;
 use world::uuid;
 // mod permissions {
 //     mod components;
@@ -36,7 +38,9 @@ mod stats;
 mod combatants {
     mod components;
     mod systems;
-    use components::{CombatantInfo, CombatantState, CombatantInfoTrait, CombatantStateTrait};
+    use components::{
+        CombatantInfo, CombatantState, CombatantInfoTrait, CombatantStateTrait, CombatantToken
+    };
     use systems::CombatantTrait;
 }
 mod combat {
@@ -46,16 +50,28 @@ mod combat {
     use components::{Phase, CombatState};
     use systems::CombatTrait;
 }
-mod pvp {
+mod game {
+    mod components;
+    mod contract;
+    mod systems;
+}
+
+mod betsy {
     mod components;
     mod systems;
     mod contract;
-    use components::{
-        PvPChallenge, PvPCombatants, PvPChallengeScore, PvPChallengeTrait, PvPChallengeInvite,
-        PvPChallengeResponse, make_pvp_challenge, PvPChallengeScoreTrait
-    };
-    use systems::{PvPTrait, PvPCombatTrait};
 }
+
+// mod pvp {
+//     mod components;
+//     mod systems;
+//     mod contract;
+//     use components::{
+//         PvPChallenge, PvPCombatants, PvPChallengeScore, PvPChallengeTrait, PvPChallengeInvite,
+//         PvPChallengeResponse, make_pvp_challenge, PvPChallengeScoreTrait
+//     };
+//     use systems::{PvPTrait, PvPCombatTrait};
+// }
 use world::default_namespace;
 #[cfg(test)]
 mod tests {

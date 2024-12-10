@@ -80,3 +80,12 @@ impl HashToU128Impl of UpdateHashToU128 {
         Self::to_u128(Hash::update_state(self, value))
     }
 }
+
+
+fn in_order<T, +PartialOrd<T>, +PartialEq<T>, +Drop<T>>(a: T, b: T, hash: HashState) -> bool {
+    if a == b {
+        (hash.to_u128() % 2_u128).is_zero()
+    } else {
+        a < b
+    }
+}

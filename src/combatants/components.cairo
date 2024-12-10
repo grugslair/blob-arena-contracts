@@ -16,7 +16,6 @@ struct CombatantInfo {
     id: felt252,
     combat_id: felt252,
     player: ContractAddress,
-    opponent: felt252,
 }
 
 #[dojo::model]

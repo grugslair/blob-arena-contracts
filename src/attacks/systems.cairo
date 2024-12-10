@@ -15,6 +15,14 @@ impl AttackImpl of AttackTrait {
     fn get_attack(self: @WorldStorage, id: felt252) -> Attack {
         ModelStorage::<WorldStorage, AttackModel>::read_model(self, id).to_attack()
     }
+    fn get_attacks(self: @WorldStorage, ids: Span<felt252>) -> Span<Attack> {
+        let attack_models: Array<AttackModel> = self.read_models(ids);
+        let mut attacks = ArrayTrait::<Attack>::new();
+        for model in attack_models {
+            attacks.append(model.to_attack());
+        };
+        attacks.span()
+    }
     fn create_new_attack(ref self: WorldStorage, attack: @AttackInput) -> felt252 {
         let id = uuid();
         self.write_model(attack.to_model(id));
@@ -31,18 +39,12 @@ impl PlannedAttackImpl of PlannedAttackTrait {
         self.read_model(id)
     }
     fn set_planned_attack(
-        ref self: WorldStorage, combatant: felt252, attack: felt252, target: felt252
+        ref self: WorldStorage, combatant_id: felt252, attack_id: felt252, target: felt252
     ) {
-        self.write_model(@PlannedAttack { combatant, attack, target });
+        self.write_model(@PlannedAttack { combatant_id, attack_id, target });
     }
-    fn get_planned_attacks(self: @WorldStorage, mut ids: Span<felt252>) -> Span<PlannedAttack> {
-        let mut attacks = ArrayTrait::<PlannedAttack>::new();
-        loop {
-            match ids.pop_front() {
-                Option::Some(id) => { attacks.append(self.get_planned_attack(*id)); },
-                Option::None => { break attacks.span(); },
-            }
-        }
+    fn get_planned_attacks(self: @WorldStorage, mut ids: Span<felt252>) -> Array<PlannedAttack> {
+        self.read_models(ids)
     }
     fn clear_planned_attack(ref self: WorldStorage, id: felt252) {
         self.erase_model_ptr(Model::<PlannedAttack>::ptr_from_keys(id));
