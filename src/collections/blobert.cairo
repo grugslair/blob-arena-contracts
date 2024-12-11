@@ -20,7 +20,7 @@ trait IBlobertItems<TContractState> {
         trait_id: u8,
         item_name: ByteArray,
         stats: UStats,
-        attacks: Span<AttackInput>
+        attacks: Array<AttackInput>
     );
     fn new_custom_item_with_attacks(
         ref self: TContractState,
@@ -28,7 +28,7 @@ trait IBlobertItems<TContractState> {
         trait_id: u8,
         item_name: ByteArray,
         stats: UStats,
-        attacks: Span<AttackInput>
+        attacks: Array<AttackInput>
     );
 }
 #[dojo::contract]
@@ -108,12 +108,11 @@ mod blobert_actions {
             trait_id: u8,
             item_name: ByteArray,
             stats: UStats,
-            attacks: Span<AttackInput>
+            attacks: Array<AttackInput>
         ) {
             let mut world = self.world(default_namespace());
             world.assert_caller_is_creator();
-            let item_id = world.create_new_item(item_name, stats);
-            world.create_and_set_new_attacks(item_id, attacks);
+            let item_id = world.create_new_item_with_attacks(item_name, stats, attacks);
             world.set_item_id(SEED_TRAIT_TYPE, blobert_trait, trait_id, item_id);
         }
         fn new_custom_item_with_attacks(
@@ -122,12 +121,11 @@ mod blobert_actions {
             trait_id: u8,
             item_name: ByteArray,
             stats: UStats,
-            attacks: Span<AttackInput>
+            attacks: Array<AttackInput>
         ) {
             let mut world = self.world(default_namespace());
             world.assert_caller_is_creator();
-            let item_id = world.create_new_item(item_name, stats);
-            world.create_and_set_new_attacks(item_id, attacks);
+            let item_id = world.create_new_item_with_attacks(item_name, stats, attacks);
             world.set_item_id(CUSTOM_TRAIT_TYPE, blobert_trait, trait_id, item_id);
         }
     }

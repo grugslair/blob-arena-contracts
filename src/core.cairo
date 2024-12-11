@@ -174,6 +174,37 @@ impl Felt252TryIntoBoolImpl of TryInto<felt252, bool> {
         }
     }
 }
+impl ArrayTryIntoTTupleSized2<T, +Drop<T>, +Copy<T>> of TryInto<Array<T>, (T, T)> {
+    fn try_into(self: Array<T>) -> Option<(T, T)> {
+        if self.len() == 2 {
+            Option::Some((*self[0], *self[1]))
+        } else {
+            Option::None
+        }
+    }
+}
+
+impl TTupleSized2ToSpan<T, +Drop<T>, +Copy<T>> of ToSpanTrait<(T, T), T> {
+    fn span(self: @(T, T)) -> Span<T> {
+        let (a, b) = *self;
+        array![a, b].span()
+    }
+}
+
+trait Sum<T, S> {
+    fn sum(self: T) -> S;
+}
+
+
+impl SumTArray<S, +Add<S>, +Zeroable<S>, +Drop<S>> of Sum<Array<S>, S> {
+    fn sum(self: Array<S>) -> S {
+        let mut result = Zeroable::<S>::zero();
+        for value in self {
+            result = result + value;
+        };
+        result
+    }
+}
 // impl U8ArrayCopyImpl of Copy<Array<u8>>;
 // impl U128ArrayCopyImpl of Copy<Array<u128>>;
 

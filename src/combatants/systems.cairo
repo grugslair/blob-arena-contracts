@@ -1,10 +1,10 @@
 use starknet::ContractAddress;
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}};
 use blob_arena::{
-    attacks::AvailableAttackTrait,
+    attacks::AttackStorage,
     combatants::{
-        CombatantInfo, CombatantState, CombatantInfoTrait, CombatantStateTrait, CombatantToken,
-        components::{get_combatant_id, make_combatant_state}
+        CombatantInfo, CombatantInfoTrait, CombatantStateTrait, CombatantToken,
+        components::{get_combatant_id, make_combatant_state}, CombatantStorage
     },
     combat::{CombatState, CombatTrait}, stats::UStats,
     collections::{get_collection_dispatcher, ICollectionDispatcherTrait, ICollectionDispatcher}
@@ -32,16 +32,6 @@ impl CombatantImpl of CombatantTrait {
         self.write_model(@token);
         combatant_id
     }
-    fn get_combatant_info(self: @WorldStorage, id: felt252) -> CombatantInfo {
-        self.read_model(id)
-    }
-    fn get_combatant_state(self: @WorldStorage, id: felt252) -> CombatantState {
-        self.read_model(id)
-    }
-
-    fn get_combatant_states(self: @WorldStorage, ids: Span<felt252>) -> Array<CombatantState> {
-        self.read_models(ids)
-    }
     fn create_player_combatant(
         ref self: WorldStorage,
         collection_address: ContractAddress,
@@ -56,16 +46,7 @@ impl CombatantImpl of CombatantTrait {
         assert(player == owner, 'Not Owner');
         self.create_combatant(collection_address, token_id, challenge_id, player, attacks)
     }
-    fn get_combatant_info_in_combat(self: @WorldStorage, id: felt252) -> CombatantInfo {
-        let combatant = self.get_combatant_info(id);
-        assert(combatant.combat_id.is_non_zero(), 'Not valid combatant');
-        combatant
-    }
-    fn get_player_combatant_info(self: @WorldStorage, id: felt252) -> CombatantInfo {
-        let combatant = self.get_combatant_info(id);
-        combatant.assert_player();
-        combatant
-    }
+
     fn has_attack(
         self: @WorldStorage,
         collection: ICollectionDispatcher,
@@ -95,18 +76,5 @@ impl CombatantImpl of CombatantTrait {
                 Option::None => { break; }
             }
         };
-    }
-
-    fn get_combat_id_from_combatant_id(self: @WorldStorage, combatant_id: felt252) -> felt252 {
-        self
-            .read_member(
-                Model::<CombatantInfo>::ptr_from_keys(combatant_id), selector!("combat_id")
-            )
-    }
-
-    fn get_combat_state_from_combatant_id(
-        self: @WorldStorage, combatant_id: felt252
-    ) -> CombatState {
-        self.get_combat_state(self.get_combat_id_from_combatant_id(combatant_id))
     }
 }

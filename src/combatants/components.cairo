@@ -73,7 +73,7 @@ fn make_stat_in_range(base: u8, buff: i8) -> i8 {
 
 #[generate_trait]
 impl CombatantInfoImpl of CombatantInfoTrait {
-    fn assert_player(self: CombatantInfo) -> ContractAddress {
+    fn assert_caller(self: CombatantInfo) -> ContractAddress {
         assert(get_caller_address() == self.player, 'Not combatant player'); //#
         self.player
     }

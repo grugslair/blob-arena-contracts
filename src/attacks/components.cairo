@@ -66,14 +66,45 @@ struct Damage {
     power: u8,
 }
 
+#[dojo::event]
+#[derive(Drop, Serde)]
+struct AttackName {
+    #[key]
+    id: felt252,
+    name: ByteArray,
+}
+
+#[dojo::model]
 #[derive(Drop, Serde, Copy)]
 struct Attack {
+    #[key]
     id: felt252,
     speed: u8,
     accuracy: u8,
     cooldown: u8,
     hit: Span<Effect>,
     miss: Span<Effect>,
+}
+
+#[dojo::model]
+#[derive(Drop, Serde, Copy)]
+struct AvailableAttack {
+    #[key]
+    combatant_id: felt252,
+    #[key]
+    attack_id: felt252,
+    available: bool,
+    last_used: u32,
+}
+
+
+#[dojo::model]
+#[derive(Drop, Serde, Copy)]
+struct PlannedAttack {
+    #[key]
+    combatant_id: felt252,
+    attack_id: felt252,
+    target: felt252,
 }
 
 
@@ -112,30 +143,26 @@ impl InputIntoEffectArray of Into<Span<EffectInput>, Span<Effect>> {
 
 #[generate_trait]
 impl AttackInputImpl of AttackInputTrait {
-    fn to_model(self: @AttackInput, id: felt252) -> @AttackModel {
-        @AttackModel {
-            id,
-            name: self.name.clone(),
-            speed: *self.speed,
-            accuracy: *self.accuracy,
-            cooldown: *self.cooldown,
-            hit: (*self.hit).into(),
-            miss: (*self.miss).into(),
-        }
+    fn to_attack_and_name(self: AttackInput, id: felt252) -> (Attack, AttackName) {
+        (
+            Attack {
+                id,
+                speed: self.speed,
+                accuracy: self.accuracy,
+                cooldown: self.cooldown,
+                hit: self.hit.into(),
+                miss: self.miss.into(),
+            },
+            AttackName { id, name: self.name }
+        )
     }
 }
 
 #[generate_trait]
-impl AttackModelImpl of AttackModelTrait {
-    fn to_attack(self: @models::Attack) -> Attack {
-        Attack {
-            id: *(self.id),
-            speed: *(self.speed),
-            accuracy: *(self.accuracy),
-            cooldown: *(self.cooldown),
-            hit: *self.hit,
-            miss: *self.miss,
-        }
+impl AvailableAttackImpl of AvailableAttackTrait {
+    fn check_attack_useable(self: @AvailableAttack, cooldown: u8, round: u32) -> bool {
+        *self.available
+            && ((*self.last_used).is_zero() || *self.last_used + cooldown.into() < round)
     }
 }
 
@@ -148,55 +175,3 @@ impl AttackIdImpl of IdTrait<Attack> {
 
 impl AttackIdsImpl = TIdsImpl<Attack>;
 
-mod models {
-    use super::Effect;
-    #[dojo::model]
-    #[derive(Drop, Serde, Copy)]
-    struct AvailableAttack {
-        #[key]
-        combatant_id: felt252,
-        #[key]
-        attack_id: felt252,
-        available: bool,
-        last_used: u32,
-    }
-
-    #[dojo::model]
-    #[derive(Drop, Serde)]
-    struct Attack {
-        #[key]
-        id: felt252,
-        name: ByteArray,
-        speed: u8,
-        accuracy: u8,
-        cooldown: u8,
-        hit: Span<Effect>,
-        miss: Span<Effect>,
-    }
-
-    #[dojo::model]
-    #[derive(Drop, Serde, Copy)]
-    struct PlannedAttack {
-        #[key]
-        combatant_id: felt252,
-        attack_id: felt252,
-        target: felt252,
-    }
-}
-use models::{Attack as AttackModel, AvailableAttack, AvailableAttackValue, PlannedAttack};
-
-#[generate_trait]
-impl PlannedAttacksImpl of PlannedAttacksTrait {
-    fn check_all_set(self: Span<PlannedAttack>) -> bool {
-        let (mut n, len) = (0, self.len());
-        let mut set = true;
-        while n < len {
-            if (*self.at(n).attack_id).is_zero() {
-                set = false;
-                break;
-            }
-            n += 1;
-        };
-        set
-    }
-}

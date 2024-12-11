@@ -11,7 +11,8 @@ use blob_arena::{
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect)]
 enum Phase {
-    Setup,
+    None,
+    Created,
     Commit,
     Reveal,
     Ended: felt252,
@@ -22,9 +23,8 @@ enum Phase {
 struct CombatState {
     #[key]
     id: felt252,
-    owner: ContractAddress,
-    round: u32,
     phase: Phase,
+    round: u32,
 }
 
 #[generate_trait]
@@ -32,10 +32,25 @@ impl PhaseImpl of PhaseTrait {
     fn assert_running(self: @Phase) {
         assert(self.is_running(), 'Combat not running')
     }
+    fn assert_commit(self: @Phase) {
+        assert(*self == Phase::Commit, 'Not in commit phase')
+    }
+    fn assert_reveal(self: @Phase) {
+        assert(*self == Phase::Reveal, 'Not in reveal phase')
+    }
+    fn assert_created(self: @Phase) {
+        assert(*self == Phase::Created, 'Not in creation phase')
+    }
     fn is_running(self: @Phase) -> bool {
         match *self {
             Phase::Commit | Phase::Reveal => true,
             _ => false
+        }
+    }
+    fn assert_no_winner(self: @Phase) {
+        match *self {
+            Phase::Ended(_) => panic!("Combat already ended"),
+            _ => {}
         }
     }
 }

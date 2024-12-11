@@ -89,6 +89,14 @@ impl CommitmentImpl of Commitment {
             n += 1;
         };
     }
+    fn check_commitments_are(self: @WorldStorage, ids: Span<felt252>, set: bool) -> Array<bool> {
+        let commitments: Array<CommitmentValue> = self.read_values(ids);
+        let mut values = ArrayTrait::<bool>::new();
+        for commitment in commitments {
+            values.append(commitment.commitment.is_non_zero() == set);
+        };
+        values
+    }
 
     fn set_new_commitment(ref self: WorldStorage, id: felt252, hash: felt252) {
         assert(!self.check_commitment_set(id), 'Commitment already set');
@@ -132,6 +140,11 @@ impl CommitmentImpl of Commitment {
         let commitment = self.get_set_commitment(id);
         self.clear_commitment(id);
         commitment
+    }
+    fn consume_and_compare_commitment_value<T, +Hash<T, HashState>, +Drop<T>>(
+        ref self: WorldStorage, id: felt252, value: T
+    ) -> bool {
+        hash_value(value) == self.consume_commitment(id)
     }
 }
 

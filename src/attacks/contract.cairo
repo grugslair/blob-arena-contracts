@@ -20,7 +20,7 @@ mod attack_actions {
     use starknet::{ContractAddress, get_caller_address};
     use dojo::model::ModelStorage;
     use blob_arena::{
-        attacks::components::{EffectInput, AttackInput, AttackInputTrait}, default_namespace, uuid
+        attacks::{AttackStorage, components::{EffectInput, AttackInput}}, default_namespace, uuid
     };
 
     use super::IAttackActions;
@@ -38,10 +38,7 @@ mod attack_actions {
         ) -> felt252 {
             let id = uuid();
             let mut world = self.world(default_namespace());
-            world
-                .write_model(
-                    (@AttackInput { name, speed, accuracy, cooldown, hit, miss }).to_model(id)
-                );
+            world.create_attack(AttackInput { name, speed, accuracy, cooldown, hit, miss });
             id
         }
     }

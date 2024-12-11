@@ -1,6 +1,6 @@
-use core::{fmt::{Display, Formatter, Error, Debug}, cmp::min};
+use core::{fmt::{Display, Formatter, Error, Debug}, cmp::min, ops::AddAssign};
 use blob_arena::{
-    core::{SaturatingAdd, SaturatingSub, SaturatingInto, Signed},
+    core::{SaturatingAdd, SaturatingSub, SaturatingInto, Signed, SumTArray},
     constants::{STARTING_HEALTH, MAX_STAT}
 };
 
@@ -19,6 +19,26 @@ enum StatTypes {
     Vitality,
     Dexterity,
     Luck,
+}
+
+impl TStatsZeroable<T, +Zeroable<T>, +Drop<T>> of Zeroable<TStats<T>> {
+    fn zero() -> TStats<T> {
+        TStats {
+            strength: Zeroable::zero(),
+            vitality: Zeroable::zero(),
+            dexterity: Zeroable::zero(),
+            luck: Zeroable::zero()
+        }
+    }
+    fn is_zero(self: TStats<T>) -> bool {
+        self.strength.is_zero()
+            && self.vitality.is_zero()
+            && self.dexterity.is_zero()
+            && self.luck.is_zero()
+    }
+    fn is_non_zero(self: TStats<T>) -> bool {
+        !self.is_zero()
+    }
 }
 
 
@@ -93,6 +113,17 @@ impl TStatsAdd<T, +Add<T>, +Drop<T>> of Add<TStats<T>> {
             dexterity: lhs.dexterity + rhs.dexterity,
             luck: lhs.luck + rhs.luck,
         }
+    }
+}
+
+impl TStatsSum<T, +Add<T>, +Drop<T>, +Zeroable<T>> = SumTArray<TStats<T>>;
+
+impl TStatsAddEq<T, +AddAssign<T, T>, +Drop<T>> of AddAssign<TStats<T>, TStats<T>> {
+    fn add_assign(ref self: TStats<T>, rhs: TStats<T>) {
+        self.strength += rhs.strength;
+        self.vitality += rhs.vitality;
+        self.dexterity += rhs.dexterity;
+        self.luck += rhs.luck;
     }
 }
 

@@ -4,37 +4,29 @@ use starknet::{get_block_number, ContractAddress};
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}, event::EventStorage};
 use blob_arena::{
     attacks::{
-        Attack, AttackTrait, systems::{PlannedAttackTrait, PlannedAttack, AvailableAttackTrait},
+        Attack, AttackStorage, components::AvailableAttackTrait,
         results::{AttackOutcomes, AttackResult}
     },
-    combat::components::{CombatState, Phase, PhaseTrait, run_effects},
-    combatants::{CombatantState, CombatantStateTrait, CombatantTrait}, commitments::Commitment,
-    salts::{Salts}, utils::SeedProbability, hash::UpdateHashToU128, constants::NZ_100,
+    combat::{CombatStorage, components::{CombatState, Phase, PhaseTrait, run_effects}},
+    combatants::{CombatantState, CombatantStateTrait, CombatantTrait, CombatantStorage},
+    commitments::Commitment, salts::{Salts}, utils::SeedProbability, hash::UpdateHashToU128,
+    constants::NZ_100,
 };
 
 
 #[generate_trait]
 impl CombatImpl of CombatTrait {
-    fn set_combat_phase(ref self: WorldStorage, id: felt252, phase: Phase) {
-        self.write_member(Model::<CombatState>::ptr_from_keys(id), selector!("phase"), phase);
+    fn assert_commit_phase(self: @WorldStorage, id: felt252) {
+        self.get_combat_phase(id).assert_commit();
     }
-    fn get_combat_state(self: @WorldStorage, id: felt252) -> CombatState {
-        self.read_model(id)
+    fn assert_reveal_phase(self: @WorldStorage, id: felt252) {
+        self.get_combat_phase(id).assert_reveal();
     }
-    fn new_combat_state(ref self: WorldStorage, id: felt252, owner: ContractAddress) {
-        self.write_model(@CombatState { id, owner, phase: Phase::Commit, round: 1 });
-    }
-    fn get_combat_phase(self: @WorldStorage, id: felt252) -> Phase {
-        self.read_member(Model::<CombatState>::ptr_from_keys(id), selector!("phase"))
-    }
-    fn get_running_combat_state(self: @WorldStorage, id: felt252) -> CombatState {
-        let state = self.get_combat_state(id);
-        state.phase.assert_running();
-        state
+    fn assert_created_phase(self: @WorldStorage, id: felt252) {
+        self.get_combat_phase(id).assert_created();
     }
     fn next_round(ref self: WorldStorage, ref state: CombatState, combatants: Span<felt252>) {
         self.reset_salts(state.id);
-        self.clear_planned_attacks(combatants);
         state.round += 1;
         state.phase = Phase::Commit;
         self.write_model(@state);
@@ -52,8 +44,7 @@ impl CombatImpl of CombatTrait {
         (alive, dead)
     }
     fn end_combat(ref self: WorldStorage, ref state: CombatState, winner: felt252) {
-        state.phase = Phase::Ended(winner);
-        self.write_model(@state);
+        self.set_combat_phase(state.id, Phase::Ended(winner));
     }
     fn get_attacker_attack_speed(
         self: @WorldStorage, state: @CombatantState, attack: @Attack
@@ -74,26 +65,16 @@ impl CombatImpl of CombatTrait {
         }
     }
 
-    fn get_state_and_attack(
-        self: @WorldStorage, planned_attack: @PlannedAttack
-    ) -> (CombatantState, Attack) {
-        (
-            self.get_combatant_state(*planned_attack.combatant_id),
-            self.get_attack(*planned_attack.attack_id)
-        )
+    fn get_speed(self: @(CombatantState, Attack)) -> u8 {
+        let (state, attack) = self;
+        *state.stats.dexterity + *attack.speed
     }
 
     fn get_states_and_attacks(
         self: @WorldStorage, combatant_ids: Span<felt252>
     ) -> Array<(CombatantState, Attack)> {
         let states = self.get_combatant_states(combatant_ids);
-        let mut attack_ids = ArrayTrait::<felt252>::new();
-        for attack in self
-            .get_planned_attacks(combatant_ids) {
-                attack_ids.append(attack.attack_id);
-            };
-
-        let attacks = self.get_attacks(attack_ids.span());
+        let attacks = self.get_attacks_from_planned_attack_ids(combatant_ids);
         let mut states_and_attacks = ArrayTrait::<(CombatantState, Attack)>::new();
         for n in 0..states.len() {
             states_and_attacks.append((*states.at(n), *attacks.at(n)));

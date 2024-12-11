@@ -1,7 +1,7 @@
 use dojo::{world::WorldStorage, model::{ModelStorage, ModelValueStorage}};
 use super::external::{Seed, TokenTrait};
 use blob_arena::{
-    core::TTupleSize5, hash::HashStateTrait, items::{ItemTrait, ItemsTrait}, stats::UStats
+    core::{TTupleSize5, Sum}, hash::HashStateTrait, items::{ItemTrait, ItemStorage}, stats::UStats
 };
 use core::hash::into_felt252_based;
 type SeedIds = TTupleSize5<felt252>;
@@ -116,9 +116,8 @@ impl BlobertStatsImpl of BlobertStatsTrait {
         array![background, armour, jewelry, mask, weapon]
     }
     fn get_blobert_stats(self: @WorldStorage, blobert_trait: TokenTrait) -> UStats {
-        self.get_items(self.get_blobert_item_ids(blobert_trait).span()).get_stats()
+        self.get_items_stats(self.get_blobert_item_ids(blobert_trait).span()).sum()
     }
-
     fn blobert_has_attack(
         self: @WorldStorage, blobert_trait: TokenTrait, item_id: felt252, attack_id: felt252
     ) -> bool {

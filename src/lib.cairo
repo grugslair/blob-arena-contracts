@@ -21,46 +21,53 @@ use world::uuid;
 mod items {
     mod components;
     mod systems;
-    use components::{Item, ItemsTrait};
-    use systems::{ItemTrait};
+    mod storage;
+    use components::Item;
+    use systems::ItemTrait;
+    use storage::ItemStorage;
 }
 mod attacks {
     mod components;
-    mod systems;
     mod contract;
     mod results;
+    mod storage;
     use components::{
-        Stat, Target, Affect, Damage, Attack, Effect, PlannedAttack, PlannedAttacksTrait
+        Stat, Target, Affect, Damage, Attack, Effect, PlannedAttack, AvailableAttackTrait,
     };
-    use systems::{AttackTrait, AvailableAttackTrait, PlannedAttackTrait};
+    use storage::AttackStorage;
 }
 mod stats;
 mod combatants {
     mod components;
     mod systems;
+    mod storage;
     use components::{
         CombatantInfo, CombatantState, CombatantInfoTrait, CombatantStateTrait, CombatantToken
     };
+    use storage::CombatantStorage;
     use systems::CombatantTrait;
 }
 mod combat {
     mod calculations;
     mod components;
     mod systems;
+    mod storage;
     use components::{Phase, CombatState};
     use systems::CombatTrait;
+    use storage::CombatStorage;
 }
 mod game {
     mod components;
+    mod storage;
     mod contract;
     mod systems;
 }
 
-mod betsy {
-    mod components;
-    mod systems;
-    mod contract;
-}
+// mod lobby {
+//     mod components;
+//     mod systems;
+//     mod contract;
+// }
 
 // mod pvp {
 //     mod components;
