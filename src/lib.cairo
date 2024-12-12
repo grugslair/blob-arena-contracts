@@ -61,24 +61,16 @@ mod game {
     mod storage;
     mod contract;
     mod systems;
+    use storage::GameStorage;
 }
 
-// mod lobby {
-//     mod components;
-//     mod systems;
-//     mod contract;
-// }
+mod lobby {
+    mod components;
+    mod storage;
+    mod systems;
+    mod contract;
+}
 
-// mod pvp {
-//     mod components;
-//     mod systems;
-//     mod contract;
-//     use components::{
-//         PvPChallenge, PvPCombatants, PvPChallengeScore, PvPChallengeTrait, PvPChallengeInvite,
-//         PvPChallengeResponse, make_pvp_challenge, PvPChallengeScoreTrait
-//     };
-//     use systems::{PvPTrait, PvPCombatTrait};
-// }
 use world::default_namespace;
 #[cfg(test)]
 mod tests {

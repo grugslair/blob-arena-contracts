@@ -1,4 +1,4 @@
-use starknet::ContractAddress;
+use starknet::{ContractAddress, get_caller_address};
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}};
 use blob_arena::{
     attacks::AttackStorage,
@@ -14,37 +14,40 @@ use blob_arena::{
 impl CombatantImpl of CombatantTrait {
     fn create_combatant(
         ref self: WorldStorage,
+        combatant_id: felt252,
+        player: ContractAddress,
+        combat_id: felt252,
         collection_address: ContractAddress,
         token_id: u256,
-        combat_id: felt252,
-        player: ContractAddress,
-        attacks: Span<(felt252, felt252)>
-    ) -> felt252 {
+        attacks: Array<(felt252, felt252)>
+    ) {
+        self.set_combatant_info(combatant_id, combat_id, player);
         let collection_dispatcher = get_collection_dispatcher(collection_address);
-        let combatant_id = get_combatant_id(collection_address, token_id, combat_id);
-
+        self.set_combatant_token(combatant_id, collection_address, token_id);
+        self.create_combatant_state(combatant_id, collection_dispatcher.get_stats(token_id));
         self.setup_available_attacks(collection_dispatcher, token_id, combatant_id, attacks);
-        let info = CombatantInfo { id: combatant_id, combat_id, player };
-        let token = CombatantToken { id: combatant_id, collection_address, token_id };
-        let stats: UStats = collection_dispatcher.get_stats(token_id);
-        self.write_model(@make_combatant_state(combatant_id, @stats));
-        self.write_model(@info);
-        self.write_model(@token);
-        combatant_id
     }
+
     fn create_player_combatant(
         ref self: WorldStorage,
+        combatant_id: felt252,
+        player: ContractAddress,
+        combat_id: felt252,
         collection_address: ContractAddress,
         token_id: u256,
-        challenge_id: felt252,
-        player: ContractAddress,
-        opponent_id: felt252,
-        attacks: Span<(felt252, felt252)>
-    ) -> felt252 {
-        let collection = get_collection_dispatcher(collection_address);
-        let owner = collection.get_owner(token_id);
+        attacks: Array<(felt252, felt252)>
+    ) {
+        let collection_dispatcher = get_collection_dispatcher(collection_address);
+        let owner = collection_dispatcher.get_owner(token_id);
         assert(player == owner, 'Not Owner');
-        self.create_combatant(collection_address, token_id, challenge_id, player, attacks)
+        self.set_combatant_info(combatant_id, combat_id, player);
+        self.set_combatant_token(combatant_id, collection_address, token_id);
+        self.create_combatant_state(combatant_id, collection_dispatcher.get_stats(token_id));
+        self.setup_available_attacks(collection_dispatcher, token_id, combatant_id, attacks);
+    }
+
+    fn assert_caller_player(self: @WorldStorage, combatant_id: felt252) {
+        assert(self.get_player(combatant_id) == get_caller_address(), 'Caller not player');
     }
 
     fn has_attack(
@@ -62,15 +65,15 @@ impl CombatantImpl of CombatantTrait {
         collection: ICollectionDispatcher,
         token_id: u256,
         combatant_id: felt252,
-        mut attacks: Span<(felt252, felt252)>
+        mut attacks: Array<(felt252, felt252)>
     ) {
         loop {
             match attacks.pop_front() {
                 Option::Some((
                     item_id, attack_id
                 )) => {
-                    if self.has_attack(collection, token_id, *item_id, *attack_id) {
-                        self.set_attack_available(combatant_id, *attack_id);
+                    if self.has_attack(collection, token_id, item_id, attack_id) {
+                        self.set_attack_available(combatant_id, attack_id);
                     }
                 },
                 Option::None => { break; }

@@ -5,7 +5,8 @@ use blob_arena::{
         Effect, Affect, Target, Damage, Stat, results::{EffectResult, AffectResult, DamageResult}
     },
     combatants::{CombatantState, CombatantTrait, CombatantStateTrait},
-    combat::calculations::{damage_calculation, did_critical}, hash::{HashUpdate, UpdateHashToU128}
+    combat::calculations::{damage_calculation, did_critical}, hash::{HashUpdate, UpdateHashToU128},
+    core::Enumerate,
 };
 
 
@@ -27,6 +28,7 @@ struct CombatState {
     round: u32,
 }
 
+
 #[generate_trait]
 impl PhaseImpl of PhaseTrait {
     fn assert_running(self: @Phase) {
@@ -40,6 +42,9 @@ impl PhaseImpl of PhaseTrait {
     }
     fn assert_created(self: @Phase) {
         assert(*self == Phase::Created, 'Not in creation phase')
+    }
+    fn assert_none(self: @Phase) {
+        assert(*self == Phase::None, 'Combat already created')
     }
     fn is_running(self: @Phase) -> bool {
         match *self {
@@ -58,7 +63,7 @@ impl PhaseImpl of PhaseTrait {
 fn run_effect(
     ref attacker_state: CombatantState,
     ref defender_state: CombatantState,
-    effect: @Effect,
+    effect: Effect,
     move_n: u32,
     hash_state: HashState,
 ) -> EffectResult {
@@ -73,17 +78,17 @@ fn run_effect(
         Affect::Stat(Stat { stat,
         amount }) => {
             match effect.target {
-                Target::Player => { attacker_state.apply_buff(*stat, *amount) },
-                Target::Opponent => { defender_state.apply_buff(*stat, *amount) },
+                Target::Player => { attacker_state.apply_buff(stat, amount) },
+                Target::Opponent => { defender_state.apply_buff(stat, amount) },
             };
             AffectResult::Success
         },
         Affect::Damage(damage) => {
             let mut seed = hash_state.update_to_u128(move_n);
 
-            let critical = did_critical(*damage.critical, attacker_state.stats.luck, ref seed);
+            let critical = did_critical(damage.critical, attacker_state.stats.luck, ref seed);
 
-            let damage = damage_calculation(*damage.power, attacker_state.stats.strength, critical);
+            let damage = damage_calculation(damage.power, attacker_state.stats.strength, critical);
             match effect.target {
                 Target::Player => { attacker_state.modify_health::<i16>(-(damage.into())) },
                 Target::Opponent => { defender_state.modify_health::<i16>(-(damage.into())) },
@@ -92,38 +97,34 @@ fn run_effect(
         },
         Affect::Stun(stun) => {
             match effect.target {
-                Target::Player => { attacker_state.apply_stun(*stun) },
-                Target::Opponent => { defender_state.apply_stun(*stun) },
+                Target::Player => { attacker_state.apply_stun(stun) },
+                Target::Opponent => { defender_state.apply_stun(stun) },
             };
             AffectResult::Success
         },
         Affect::Health(health) => {
             match effect.target {
-                Target::Player => { attacker_state.modify_health(*health) },
-                Target::Opponent => { defender_state.modify_health(*health) },
+                Target::Player => { attacker_state.modify_health(health) },
+                Target::Opponent => { defender_state.modify_health(health) },
             };
             AffectResult::Success
         },
     };
-    EffectResult { target: *effect.target, affect: result, }
+    EffectResult { target: effect.target, affect: result, }
 }
+
 
 fn run_effects(
     ref attacker_state: CombatantState,
     ref defender_state: CombatantState,
-    mut effects: Span<Effect>,
-    mut hash_state: HashState,
-) -> Span<EffectResult> {
+    mut effects: Array<Effect>,
+    hash_state: HashState,
+) -> Array<EffectResult> {
     let mut results: Array<EffectResult> = ArrayTrait::new();
-    for n in 0
-        ..effects
-            .len() {
-                results
-                    .append(
-                        run_effect(
-                            ref attacker_state, ref defender_state, effects.at(n), n, hash_state,
-                        )
-                    );
-            };
-    results.span()
+    for (n, effect) in effects
+        .enumerate() {
+            results
+                .append(run_effect(ref attacker_state, ref defender_state, effect, n, hash_state));
+        };
+    results
 }

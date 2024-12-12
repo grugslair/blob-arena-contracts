@@ -205,7 +205,25 @@ impl SumTArray<S, +Add<S>, +Zeroable<S>, +Drop<S>> of Sum<Array<S>, S> {
         result
     }
 }
-// impl U8ArrayCopyImpl of Copy<Array<u8>>;
-// impl U128ArrayCopyImpl of Copy<Array<u128>>;
 
 
+trait Enumerate<T, S> {
+    fn enumerate(self: T) -> Array<(usize, S)>;
+}
+
+impl EnumerateArrayImpl<S, +Drop<S>> of Enumerate<Array<S>, S> {
+    fn enumerate(mut self: Array<S>) -> Array<(usize, S)> {
+        let mut result = ArrayTrait::<(usize, S)>::new();
+        let mut n = 0;
+        loop {
+            match self.pop_front() {
+                Option::Some(value) => {
+                    result.append((n, value));
+                    n += 1;
+                },
+                Option::None => { break; },
+            }
+        };
+        result
+    }
+}

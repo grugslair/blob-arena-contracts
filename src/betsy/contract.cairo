@@ -5,6 +5,7 @@ trait IBetsyInterface<TContractState> {
     fn create(
         ref self: TContractState,
         time_limit: u64,
+        initiator: ContractAddress,
         player_a: ContractAddress,
         collection_address_a: ContractAddress,
         token_id_a: u256,
@@ -14,6 +15,7 @@ trait IBetsyInterface<TContractState> {
         token_id_b: u256,
         attacks_b: Span<(felt252, felt252)>,
     ) -> felt252;
+    fn start(ref self: TContractState, game_id: felt252);
     fn commit(ref self: TContractState, combatant_id: felt252, hash: felt252);
     fn reveal(ref self: TContractState, combatant_id: felt252, attack: felt252, salt: felt252);
     fn run(ref self: TContractState, combat_id: felt252);
@@ -39,7 +41,7 @@ mod betsy {
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
         fn get_storage(self: @ContractState) -> WorldStorage {
-            self.world(@"ba_betsy")
+            self.world(@"ba_timed")
         }
 
         fn get_combat(ref self: WorldStorage, combatant_id: felt252) -> CombatState {
@@ -56,6 +58,7 @@ mod betsy {
         fn create(
             ref self: ContractState,
             time_limit: u64,
+            initiator: ContractAddress,
             player_a: ContractAddress,
             collection_address_a: ContractAddress,
             token_id_a: u256,
@@ -83,6 +86,13 @@ mod betsy {
             world.set_player(combatant_a, player_a);
             world.set_player(combatant_b, player_b);
             game.combat_id
+        }
+        fn start(ref self: ContractState, game_id: felt252) {
+            let mut world = self.get_storage();
+            let combat = world.get_owners_combat_state(game_id, get_contract_address());
+            assert(combat.phase == Phase::Created, 'Game not in creation phase');
+            assert(world.get_initiator(game_id) == get_caller_address(), 'Not the initiator');
+            world.set_combat_phase(game_id, Phase::Commit);
         }
         fn commit(ref self: ContractState, combatant_id: felt252, hash: felt252) {
             let mut world = self.get_storage();
@@ -134,7 +144,7 @@ mod betsy {
 
         fn get_winner(ref self: ContractState, combat_id: felt252) -> ContractAddress {
             let storage = self.get_storage();
-            storage.get_winner(combat_id)
+            storage.get_winning_player(combat_id)
         }
     }
 }

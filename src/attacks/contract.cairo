@@ -9,8 +9,8 @@ trait IAttackActions<TContractState> {
         speed: u8,
         accuracy: u8,
         cooldown: u8,
-        hit: Span<EffectInput>,
-        miss: Span<EffectInput>,
+        hit: Array<EffectInput>,
+        miss: Array<EffectInput>,
     ) -> felt252;
 }
 
@@ -33,8 +33,8 @@ mod attack_actions {
             speed: u8,
             accuracy: u8,
             cooldown: u8,
-            hit: Span<EffectInput>,
-            miss: Span<EffectInput>,
+            hit: Array<EffectInput>,
+            miss: Array<EffectInput>,
         ) -> felt252 {
             let id = uuid();
             let mut world = self.world(default_namespace());

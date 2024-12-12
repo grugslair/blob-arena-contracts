@@ -26,6 +26,38 @@ struct LastTimestamp {
     timestamp: u64,
 }
 
+#[derive(Drop, Serde, Copy, Introspect)]
+struct Token {
+    collection_address: ContractAddress,
+    token_id: u256,
+}
+
+#[derive(Drop, Serde, Copy, Introspect)]
+struct Player {
+    player: ContractAddress,
+    combatant_id: felt252,
+    token: Token
+}
+
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
+enum WinVia {
+    Combat,
+    TimeLimit,
+    Forfeit,
+    IncorrectReveal,
+}
+
+#[dojo::event]
+#[derive(Drop, Serde, Copy)]
+struct CombatEnd {
+    #[key]
+    game_id: felt252,
+    winner: Player,
+    loser: Player,
+    via: WinVia,
+}
+
+
 #[generate_trait]
 impl GameInfoImpl of GameInfoTrait {
     fn get_opponent_id(self: @GameInfo, combatant_id: felt252) -> felt252 {
@@ -39,3 +71,4 @@ impl GameInfoImpl of GameInfoTrait {
         }
     }
 }
+

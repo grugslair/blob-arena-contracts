@@ -25,7 +25,13 @@ impl CombatImpl of CombatTrait {
     fn assert_created_phase(self: @WorldStorage, id: felt252) {
         self.get_combat_phase(id).assert_created();
     }
-    fn next_round(ref self: WorldStorage, ref state: CombatState, combatants: Span<felt252>) {
+    fn assert_combat_running(self: @WorldStorage, id: felt252) {
+        self.get_combat_phase(id).assert_running();
+    }
+    fn assert_combat_none(self: @WorldStorage, id: felt252) {
+        self.get_combat_phase(id).assert_none();
+    }
+    fn next_round(ref self: WorldStorage, mut state: CombatState, combatants: Span<felt252>) {
         self.reset_salts(state.id);
         state.round += 1;
         state.phase = Phase::Commit;
@@ -73,11 +79,16 @@ impl CombatImpl of CombatTrait {
     fn get_states_and_attacks(
         self: @WorldStorage, combatant_ids: Span<felt252>
     ) -> Array<(CombatantState, Attack)> {
-        let states = self.get_combatant_states(combatant_ids);
-        let attacks = self.get_attacks_from_planned_attack_ids(combatant_ids);
+        let mut states = self.get_combatant_states(combatant_ids);
+        let mut attacks = self.get_attacks_from_planned_attack_ids(combatant_ids);
         let mut states_and_attacks = ArrayTrait::<(CombatantState, Attack)>::new();
-        for n in 0..states.len() {
-            states_and_attacks.append((*states.at(n), *attacks.at(n)));
+        loop {
+            match (states.pop_front(), attacks.pop_front()) {
+                (
+                    Option::Some(state), Option::Some(attack)
+                ) => { states_and_attacks.append((state, attack)); },
+                _ => { break; }
+            }
         };
         states_and_attacks
     }
@@ -86,7 +97,7 @@ impl CombatImpl of CombatTrait {
         ref self: WorldStorage,
         ref attacker_state: CombatantState,
         ref defender_state: CombatantState,
-        attack: @Attack,
+        attack: Attack,
         round: u32,
         hash_state: HashState
     ) -> AttackResult {
@@ -94,21 +105,21 @@ impl CombatImpl of CombatTrait {
         let mut seed = hash_state.to_u128();
 
         let result = if !self
-            .run_attack_check(attacker_state.id, *(attack.id), *(attack.cooldown), round) {
+            .run_attack_check(attacker_state.id, attack.id, attack.cooldown, round) {
             AttackOutcomes::Failed
         } else if attacker_state.run_stun(ref seed) {
             AttackOutcomes::Stunned
-        } else if seed.get_outcome(NZ_100, *(attack.accuracy)) {
+        } else if seed.get_outcome(NZ_100, attack.accuracy) {
             AttackOutcomes::Hit(
-                run_effects(ref attacker_state, ref defender_state, *(attack.hit), hash_state)
+                run_effects(ref attacker_state, ref defender_state, attack.hit, hash_state)
             )
         } else {
             AttackOutcomes::Miss(
-                run_effects(ref attacker_state, ref defender_state, *(attack.miss), hash_state)
+                run_effects(ref attacker_state, ref defender_state, attack.miss, hash_state)
             )
         };
         AttackResult {
-            combatant_id: attacker_state.id, attack: *attack.id, target: defender_state.id, result
+            combatant_id: attacker_state.id, attack: attack.id, target: defender_state.id, result
         }
     }
 }

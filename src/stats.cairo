@@ -72,11 +72,11 @@ impl StatsImpl of StatsTrait {
             StatTypes::Luck => { self.luck = add_buff(self.luck, amount) },
         }
     }
-    fn apply_buffs(ref self: UStats, buffs: @TStats<i8>) {
-        self.strength = add_buff(self.strength, *buffs.strength);
-        self.vitality = add_buff(self.vitality, *buffs.vitality);
-        self.dexterity = add_buff(self.dexterity, *buffs.dexterity);
-        self.luck = add_buff(self.luck, *buffs.luck);
+    fn apply_buffs(ref self: UStats, buffs: TStats<i8>) {
+        self.strength = add_buff(self.strength, buffs.strength);
+        self.vitality = add_buff(self.vitality, buffs.vitality);
+        self.dexterity = add_buff(self.dexterity, buffs.dexterity);
+        self.luck = add_buff(self.luck, buffs.luck);
     }
     fn get_max_health(self: @UStats) -> u8 {
         *self.vitality + STARTING_HEALTH

@@ -1,5 +1,5 @@
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}, event::EventStorage};
-use blob_arena::combat::{CombatState, Phase};
+use blob_arena::{combat::{CombatState, Phase}, attacks::results::{AttackResult, RoundResult}};
 
 #[generate_trait]
 impl CombatImpl of CombatStorage {
@@ -23,5 +23,14 @@ impl CombatImpl of CombatStorage {
     }
     fn set_combat_winner(ref self: WorldStorage, id: felt252, winner: felt252) {
         self.set_combat_phase(id, Phase::Ended(winner));
+    }
+
+    fn emit_round_result(
+        ref self: WorldStorage, combat: @CombatState, attacks: Array<AttackResult>
+    ) {
+        self
+            .emit_event(
+                @RoundResult { combat_id: *combat.id, round: *combat.round, attacks: attacks }
+            );
     }
 }

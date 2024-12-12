@@ -14,8 +14,8 @@ impl AttackStorageImpl of AttackStorage {
     fn get_attack(self: @WorldStorage, id: felt252) -> Attack {
         self.read_model(id)
     }
-    fn get_attacks(self: @WorldStorage, ids: Span<felt252>) -> Span<Attack> {
-        self.read_models(ids).span()
+    fn get_attacks(self: @WorldStorage, ids: Span<felt252>) -> Array<Attack> {
+        self.read_models(ids)
     }
     fn create_attack(ref self: WorldStorage, attack_input: AttackInput) -> felt252 {
         let id = uuid();
@@ -50,7 +50,7 @@ impl AttackStorageImpl of AttackStorage {
     }
     fn get_attacks_from_planned_attack_ids(
         self: @WorldStorage, ids: Span<felt252>
-    ) -> Span<Attack> {
+    ) -> Array<Attack> {
         let mut attack_ids = ArrayTrait::<felt252>::new();
         for planned_attack in self
             .get_planned_attacks(ids) {

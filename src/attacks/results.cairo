@@ -6,7 +6,7 @@ struct RoundResult {
     combat_id: felt252,
     #[key]
     round: u32,
-    attacks: Span<AttackResult>,
+    attacks: Array<AttackResult>,
 }
 
 #[derive(Drop, Serde, Introspect)]
@@ -21,20 +21,20 @@ struct AttackResult {
 enum AttackOutcomes {
     Failed,
     Stunned,
-    Miss: Span<EffectResult>,
-    Hit: Span<EffectResult>,
-}
-
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
-enum AffectResult {
-    Success,
-    Damage: DamageResult,
+    Miss: Array<EffectResult>,
+    Hit: Array<EffectResult>,
 }
 
 #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
 struct EffectResult {
     target: Target,
     affect: AffectResult,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+enum AffectResult {
+    Success,
+    Damage: DamageResult,
 }
 
 #[derive(Drop, Serde, Copy, PartialEq, IntrospectPacked)]

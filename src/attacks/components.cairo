@@ -14,7 +14,7 @@ enum Target {
     Opponent,
 }
 
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+#[derive(Drop, Serde, PartialEq, Introspect)]
 struct Effect {
     target: Target,
     affect: Affect,
@@ -47,8 +47,8 @@ struct AttackInput {
     speed: u8,
     accuracy: u8,
     cooldown: u8,
-    hit: Span<EffectInput>,
-    miss: Span<EffectInput>,
+    hit: Array<EffectInput>,
+    miss: Array<EffectInput>,
 }
 
 #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
@@ -75,15 +75,15 @@ struct AttackName {
 }
 
 #[dojo::model]
-#[derive(Drop, Serde, Copy)]
+#[derive(Drop, Serde)]
 struct Attack {
     #[key]
     id: felt252,
     speed: u8,
     accuracy: u8,
     cooldown: u8,
-    hit: Span<Effect>,
-    miss: Span<Effect>,
+    hit: Array<Effect>,
+    miss: Array<Effect>,
 }
 
 #[dojo::model]
@@ -128,16 +128,16 @@ impl InputIntoEffect of Into<EffectInput, Effect> {
     }
 }
 
-impl InputIntoEffectArray of Into<Span<EffectInput>, Span<Effect>> {
-    fn into(mut self: Span<EffectInput>) -> Span<Effect> {
+impl InputIntoEffectArray of Into<Array<EffectInput>, Array<Effect>> {
+    fn into(mut self: Array<EffectInput>) -> Array<Effect> {
         let mut effects = array![];
         loop {
             match self.pop_front() {
-                Option::Some(effect) => { effects.append((*effect).into()); },
+                Option::Some(effect) => { effects.append(effect.into()); },
                 Option::None => { break; },
             };
         };
-        effects.span()
+        effects
     }
 }
 

@@ -2,25 +2,13 @@ use starknet::ContractAddress;
 
 #[starknet::interface]
 trait IGame<TContractState> {
-    fn create(
-        ref self: TContractState,
-        initiator: ContractAddress,
-        time_limit: u64,
-        player_a: ContractAddress,
-        collection_address_a: ContractAddress,
-        token_id_a: u256,
-        attacks_a: Span<(felt252, felt252)>,
-        player_b: ContractAddress,
-        collection_address_b: ContractAddress,
-        token_id_b: u256,
-        attacks_b: Span<(felt252, felt252)>,
-    ) -> felt252;
     fn start(ref self: TContractState, game_id: felt252);
     fn commit(ref self: TContractState, combatant_id: felt252, hash: felt252);
     fn reveal(ref self: TContractState, combatant_id: felt252, attack: felt252, salt: felt252);
     fn run(ref self: TContractState, combat_id: felt252);
     fn kick_player(ref self: TContractState, combat_id: felt252);
-    fn get_winner(ref self: TContractState, combat_id: felt252) -> ContractAddress;
+    fn forfeit(ref self: TContractState, combatant_id: felt252);
+    fn get_winning_player(ref self: TContractState, combat_id: felt252) -> ContractAddress;
 }
 
 #[dojo::contract]
@@ -29,8 +17,8 @@ mod game_actions {
     use dojo::{world::{WorldStorage, WorldStorageTrait}};
     use blob_arena::{
         attacks::AttackStorage, combat::{Phase, CombatTrait, CombatState, CombatStorage},
-        combatants::{CombatantTrait, CombatantStorage},
-        game::{components::{GameInfoTrait}, storage::{GameStorage}, systems::GameTrait,},
+        combatants::{CombatantTrait, CombatantStorage, CombatantInfo},
+        game::{components::{GameInfoTrait, WinVia}, storage::{GameStorage}, systems::GameTrait,},
         world::default_namespace, commitments::Commitment, salts::Salts,
         core::{TTupleSized2ToSpan, ArrayTryIntoTTupleSized2}
     };
@@ -42,41 +30,12 @@ mod game_actions {
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
         fn get_storage(self: @ContractState) -> WorldStorage {
-            self.world(@"ba_timed")
+            self.world(@"arena-1")
         }
     }
 
     #[abi(embed_v0)]
     impl IGameImpl of IGame<ContractState> {
-        fn create(
-            ref self: ContractState,
-            initiator: ContractAddress,
-            time_limit: u64,
-            player_a: ContractAddress,
-            collection_address_a: ContractAddress,
-            token_id_a: u256,
-            attacks_a: Span<(felt252, felt252)>,
-            player_b: ContractAddress,
-            collection_address_b: ContractAddress,
-            token_id_b: u256,
-            attacks_b: Span<(felt252, felt252)>,
-        ) -> felt252 {
-            let mut world = self.get_storage();
-            world
-                .create_game(
-                    get_contract_address(),
-                    initiator,
-                    time_limit,
-                    player_a,
-                    collection_address_a,
-                    token_id_a,
-                    attacks_a,
-                    player_b,
-                    collection_address_b,
-                    token_id_b,
-                    attacks_b,
-                )
-        }
         fn start(ref self: ContractState, game_id: felt252) {
             let mut world = self.get_storage();
             world.assert_caller_initiator(game_id);
@@ -87,9 +46,9 @@ mod game_actions {
             let mut world = self.get_storage();
             let combatant = world.get_callers_combatant_info(combatant_id);
             let game = world.get_owners_game(combatant.combat_id, get_contract_address());
+            let opponent_id = game.get_opponent_id(combatant_id);
             world.assert_commit_phase(game.combat_id);
             world.set_new_commitment(combatant_id, hash);
-            let opponent_id = game.get_opponent_id(combatant_id);
 
             if world.check_commitment_set(opponent_id) {
                 world.set_combat_phase(game.combat_id, Phase::Reveal);
@@ -109,6 +68,11 @@ mod game_actions {
                 if world.check_commitment_set(opponent_id) {
                     world.set_last_timestamp(game.combat_id);
                 }
+            } else {
+                world
+                    .end_game_from_ids(
+                        game.combat_id, opponent_id, combatant_id, WinVia::IncorrectReveal
+                    );
             }
         }
         fn run(ref self: ContractState, combat_id: felt252) {
@@ -133,16 +97,29 @@ mod game_actions {
                 .check_commitments_are(game.combatant_ids.span(), xor)
                 .try_into()
                 .unwrap();
-            let winner = match are_set {
-                (true, false) => a,
-                (false, true) => b,
+            let (winner_id, looser_id) = match are_set {
+                (true, false) => (a, b),
+                (false, true) => (b, a),
                 (true, true) => panic!("Both players have played"),
                 (false, false) => panic!("Neither players have played"),
             };
-            storage.set_combat_winner(combat_id, winner);
+
+            storage.end_game_from_ids(game.combat_id, winner_id, looser_id, WinVia::TimeLimit);
         }
 
-        fn get_winner(ref self: ContractState, combat_id: felt252) -> ContractAddress {
+        fn forfeit(ref self: ContractState, combatant_id: felt252) {
+            let mut world = self.get_storage();
+            let combatant = world.get_callers_combatant_info(combatant_id);
+            let game = world.get_owners_game(combatant.combat_id, get_contract_address());
+
+            world.assert_combat_running(game.combat_id);
+
+            let opponent = world.get_opponent(game, combatant_id);
+
+            world.end_game(game.combat_id, opponent, combatant, WinVia::Forfeit);
+        }
+
+        fn get_winning_player(ref self: ContractState, combat_id: felt252) -> ContractAddress {
             let storage = self.get_storage();
             storage.get_winning_player(combat_id)
         }

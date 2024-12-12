@@ -86,7 +86,7 @@ impl CombatantStateImpl of CombatantStateTrait {
         self.stats.limit_stats();
     }
 
-    fn apply_buffs(ref self: CombatantState, buffs: @IStats) {
+    fn apply_buffs(ref self: CombatantState, buffs: IStats) {
         self.stats.apply_buffs(buffs);
         self.cap_health();
     }
