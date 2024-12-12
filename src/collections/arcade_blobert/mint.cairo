@@ -50,8 +50,8 @@ fn generate_seed(randomness: felt252) -> Seed {
     };
 
     let jewelry: u8 = randomness.get_value(jewelry_count).try_into().unwrap();
-    let mask: u8 = randomness.get_value(weapon_count).try_into().unwrap();
-    let weapon: u8 = randomness.get_value(mask_count).try_into().unwrap();
+    let mask: u8 = randomness.get_value(mask_count).try_into().unwrap();
+    let weapon: u8 = randomness.get_value(weapon_count).try_into().unwrap();
     return Seed { background, armour, jewelry, mask, weapon };
 }
 
