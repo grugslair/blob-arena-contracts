@@ -62,6 +62,7 @@ mod game {
     mod contract;
     mod systems;
     use storage::GameStorage;
+    mod admin;
 }
 
 mod lobby {

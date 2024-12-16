@@ -23,7 +23,7 @@ impl WorldImpl of WorldTrait {
     }
     fn assert_caller_is_admin(self: @WorldStorage, selector_hash: felt252) -> ContractAddress {
         let caller = get_caller_address();
-        assert((*self.dispatcher).is_owner(selector_hash, caller), 'Not Admin');
+        assert((*self.dispatcher).is_writer(selector_hash, caller), 'Not Admin');
         caller
     }
 }
