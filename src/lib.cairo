@@ -28,7 +28,7 @@ mod items {
 }
 mod attacks {
     mod components;
-    mod contract;
+    // mod contract;
     mod results;
     mod storage;
     use components::{

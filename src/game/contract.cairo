@@ -30,7 +30,7 @@ mod game_actions {
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
         fn get_storage(self: @ContractState) -> WorldStorage {
-            self.world(@"arena-1")
+            self.world(default_namespace())
         }
     }
 

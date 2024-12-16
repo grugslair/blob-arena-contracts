@@ -34,14 +34,14 @@ mod lobby_actions {
     use blob_arena::{
         lobby::{systems::LobbyTrait, storage::LobbyStorage}, combat::{CombatTrait, CombatStorage},
         game::GameStorage, combatants::{CombatantTrait, CombatantStorage},
-        utils::get_transaction_hash, hash::hash_value, world::uuid
+        utils::get_transaction_hash, hash::hash_value, world::{uuid, default_namespace}
     };
     use super::ILobby;
 
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
         fn get_storage(self: @ContractState) -> WorldStorage {
-            self.world(@"arena-1")
+            self.world(default_namespace())
         }
     }
 

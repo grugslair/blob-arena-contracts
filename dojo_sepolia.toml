@@ -1,35 +1,45 @@
 [world]
 name = "blob_arena"
-seed = "blob-arena-0.7.0"
+seed = "blob-arena-0.8.0"
 
-[namespace]
-default = "blob_arena"
 
 [env]
 rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
 account_address = "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d2194723B5bd"
 
+[namespace]
+default = "blob_arena"
+
 [writers]
+"blob_arena-Lobby" = ["blob_arena-lobby_actions"]
+"blob_arena-GameInfo" = ["blob_arena-lobby_actions"]
+"blob_arena-Initiator" = ["blob_arena-lobby_actions"]
+"blob_arena-CombatantToken" = ["blob_arena-lobby_actions"]
+"blob_arena-CombatantInfo" = ["blob_arena-lobby_actions"]
+"blob_arena-CombatantState" = [
+    "blob_arena-game_actions",
+    "blob_arena-lobby_actions",
+]
+"blob_arena-AvailableAttack" = [
+    "blob_arena-game_actions",
+    "blob_arena-lobby_actions",
+]
+"blob_arena-CombatState" = [
+    "blob_arena-game_actions",
+    "blob_arena-lobby_actions",
+]
+"blob_arena-Commitment" = ["blob_arena-game_actions"]
+"blob_arena-LastTimestamp" = ["blob_arena-game_actions"]
+"blob_arena-Salts" = ["blob_arena-game_actions"]
+"blob_arena-PlannedAttack" = ["blob_arena-game_actions"]
+"blob_arena-CombatEnd" = ["blob_arena-game_actions"]
+"blob_arena-RoundResult" = ["blob_arena-game_actions"]
+
 "blob_arena-ArcadeBlobert" = ["blob_arena-arcade_blobert_actions"]
 "blob_arena-LastMint" = ["blob_arena-arcade_blobert_actions"]
 "blob_arena-AMMABlobert" = ["blob_arena-arcade_blobert_actions"]
 
-
 "blob_arena-ItemMap" = ["blob_arena-blobert_actions"]
-"blob_arena-Item" = ["blob_arena-blobert_actions", "blob_arena-pvp_actions"]
-"blob_arena-Attack" = [
-    "blob_arena-blobert_actions",
-    "blob_arena-attack_actions",
-]
+"blob_arena-Item" = ["blob_arena-blobert_actions"]
+"blob_arena-Attack" = ["blob_arena-blobert_actions"]
 "blob_arena-HasAttack" = ["blob_arena-blobert_actions"]
-"blob_arena-AvailableAttack" = ["blob_arena-pvp_actions"]
-"blob_arena-CombatState" = ["blob_arena-pvp_actions"]
-"blob_arena-Salts" = ["blob_arena-pvp_actions"]
-"blob_arena-CombatantInfo" = ["blob_arena-pvp_actions"]
-"blob_arena-CombatantState" = ["blob_arena-pvp_actions"]
-"blob_arena-PlannedAttack" = ["blob_arena-pvp_actions"]
-"blob_arena-Commitment" = ["blob_arena-pvp_actions"]
-"blob_arena-PvPChallengeInvite" = ["blob_arena-pvp_actions"]
-"blob_arena-PvPChallengeResponse" = ["blob_arena-pvp_actions"]
-"blob_arena-PvPChallengeScore" = ["blob_arena-pvp_actions"]
-"blob_arena-PvPCombatants" = ["blob_arena-pvp_actions"]
