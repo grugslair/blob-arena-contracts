@@ -71,6 +71,45 @@ struct ItemMap {
     blobert_trait_id: u8,
     item_id: felt252,
 }
+struct SeedMap {
+    
+}
+enum BlobertType{
+    Seed,
+    Custom,
+}
+
+struct BlobertItemKey{
+    
+}
+
+#[dojo::model]
+#[derive(Drop, Serde, Copy)]
+struct BlobertItem {
+    #[key]
+    id: felt252,
+    stats: UStats,
+}
+
+#[dojo::event]
+#[derive(Drop, Serde)]
+struct BlobertItemName {
+    #[key]
+    id: felt252,
+    name: ByteArray,
+}
+
+#[dojo::model]
+#[derive(Drop, Serde, Copy)]
+struct BlobertItemHasAttack {
+    #[key]
+    item_id: felt252,
+    #[key]
+    attack_id: felt252,
+    has: bool,
+}
+
+
 
 #[generate_trait]
 impl BlobertItems of BlobertItemsTrait {
