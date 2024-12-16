@@ -92,7 +92,7 @@ impl GameImpl of GameTrait {
                 self.next_round(combat, combatants_span);
             }
         }
-        self.write_models([state_1, state_2].span());
+        self.write_models([@state_1, @state_2].span());
         self.emit_round_result(@combat, results);
     }
 }

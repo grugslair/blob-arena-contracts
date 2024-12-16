@@ -1,6 +1,6 @@
 [world]
 name = "blob_arena"
-seed = "blob-arena-0.8.0"
+seed = "blob-arena-0.8.1"
 
 
 [env]
@@ -41,5 +41,7 @@ default = "blob_arena"
 
 "blob_arena-ItemMap" = ["blob_arena-blobert_actions"]
 "blob_arena-Item" = ["blob_arena-blobert_actions"]
+"blob_arena-ItemName" = ["blob_arena-blobert_actions"]
 "blob_arena-Attack" = ["blob_arena-blobert_actions"]
+"blob_arena-AttackName" = ["blob_arena-blobert_actions"]
 "blob_arena-HasAttack" = ["blob_arena-blobert_actions"]

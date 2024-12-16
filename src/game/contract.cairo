@@ -24,8 +24,6 @@ mod game_actions {
     };
     use super::IGame;
 
-    fn dojo_init(ref self: ContractState, betsy_contract_address: ContractAddress) {}
-
 
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
