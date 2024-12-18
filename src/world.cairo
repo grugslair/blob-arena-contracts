@@ -13,6 +13,13 @@ fn uuid() -> felt252 {
     hash_value((get_contract_address(), value))
 }
 
+fn incrementor(key: felt252) -> felt252 {
+    let storage_address: StorageAddress = key.try_into().unwrap();
+    let value = storage_read(storage_address) + 1;
+    storage_write(storage_address, value);
+    value
+}
+
 
 #[generate_trait]
 impl WorldImpl of WorldTrait {
@@ -31,3 +38,9 @@ impl WorldImpl of WorldTrait {
 fn default_namespace() -> @ByteArray {
     @"blob_arena"
 }
+
+
+pub trait DefaultStorage<TContractState> {
+    fn default_storage(self: @TContractState) -> WorldStorage;
+}
+

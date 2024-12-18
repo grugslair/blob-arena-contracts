@@ -38,7 +38,7 @@ impl CombatantImpl of CombatantTrait {
         attacks: Array<(felt252, felt252)>
     ) {
         let collection_dispatcher = get_collection_dispatcher(collection_address);
-        let owner = collection_dispatcher.get_owner(token_id);
+        let owner = collection_dispatcher.owner_of(token_id);
         assert(player == owner, 'Not Owner');
         self.set_combatant_info(combatant_id, combat_id, player);
         self.set_combatant_token(combatant_id, collection_address, token_id);
@@ -50,16 +50,6 @@ impl CombatantImpl of CombatantTrait {
         assert(self.get_player(combatant_id) == get_caller_address(), 'Caller not player');
     }
 
-    fn has_attack(
-        self: @WorldStorage,
-        collection: ICollectionDispatcher,
-        token_id: u256,
-        item_id: felt252,
-        attack_id: felt252
-    ) -> bool {
-        collection.has_attack(token_id, item_id, attack_id)
-    }
-
     fn setup_available_attacks(
         ref self: WorldStorage,
         collection: ICollectionDispatcher,
@@ -67,17 +57,9 @@ impl CombatantImpl of CombatantTrait {
         combatant_id: felt252,
         mut attacks: Array<(felt252, felt252)>
     ) {
-        loop {
-            match attacks.pop_front() {
-                Option::Some((
-                    item_id, attack_id
-                )) => {
-                    if self.has_attack(collection, token_id, item_id, attack_id) {
-                        self.set_attack_available(combatant_id, attack_id);
-                    }
-                },
-                Option::None => { break; }
-            }
-        };
+        self
+            .set_combatant_attacks_available(
+                combatant_id, collection.get_attack_slots(token_id, attacks)
+            );
     }
 }

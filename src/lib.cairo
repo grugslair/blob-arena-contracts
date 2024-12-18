@@ -18,14 +18,6 @@ use world::uuid;
 //     use components::{Permissions, WritePermissions};
 // }
 // use permissions::Permissions;
-mod items {
-    mod components;
-    mod systems;
-    mod storage;
-    use components::Item;
-    use systems::ItemTrait;
-    use storage::ItemStorage;
-}
 mod attacks {
     mod components;
     // mod contract;
@@ -72,7 +64,7 @@ mod lobby {
     mod contract;
 }
 
-use world::default_namespace;
+pub use world::{default_namespace, DefaultStorage};
 #[cfg(test)]
 mod tests {
     // mod pvp_test;

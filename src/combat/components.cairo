@@ -117,7 +117,7 @@ fn run_effect(
 fn run_effects(
     ref attacker_state: CombatantState,
     ref defender_state: CombatantState,
-    mut effects: Array<Effect>,
+    effects: Array<Effect>,
     hash_state: HashState,
 ) -> Array<EffectResult> {
     let mut results: Array<EffectResult> = ArrayTrait::new();

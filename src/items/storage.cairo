@@ -34,9 +34,6 @@ impl ItemStorageImpl of ItemStorage {
         };
         self.write_models(has_attacks.span());
     }
-    fn check_has_attack(self: @WorldStorage, item_id: felt252, attack_id: felt252) -> bool {
-        self.read_member(Model::<HasAttack>::ptr_from_keys((item_id, attack_id)), selector!("has"))
-    }
     fn get_items_stats(self: @WorldStorage, ids: Span<felt252>) -> Array<UStats> {
         let mut stats = ArrayTrait::<UStats>::new();
         for item in self.get_items(ids) {

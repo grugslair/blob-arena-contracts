@@ -1,12 +1,13 @@
 use dojo::{
-    world::WorldStorage, event::EventStorage, model::{ModelStorage, ModelValueStorage, Model}
+    world::{WorldStorage, WorldStorageTrait}, event::EventStorage,
+    model::{ModelStorage, ModelValueStorage, Model}
 };
 use blob_arena::{
     attacks::{
         Attack,
         components::{AttackInputTrait, AttackInput, PlannedAttack, AvailableAttack, AttackName}
     },
-    uuid
+    uuid, world::default_namespace
 };
 
 #[generate_trait]
@@ -24,7 +25,7 @@ impl AttackStorageImpl of AttackStorage {
         self.emit_event(@name);
         id
     }
-    fn create_attacks(ref self: WorldStorage, attack_inputs: Array<AttackInput>) -> Span<felt252> {
+    fn create_attacks(ref self: WorldStorage, attack_inputs: Array<AttackInput>) -> Array<felt252> {
         let mut attack_ids = ArrayTrait::<felt252>::new();
         let mut attacks = ArrayTrait::<@Attack>::new();
         for attack in attack_inputs {
@@ -35,7 +36,13 @@ impl AttackStorageImpl of AttackStorage {
             attack_ids.append(id);
         };
         self.write_models(attacks.span());
-        attack_ids.span()
+        attack_ids
+    }
+    fn create_attacks_external(
+        ref self: WorldStorage, attack_inputs: Array<AttackInput>
+    ) -> Array<felt252> {
+        let mut attack_world = WorldStorageTrait::new(self.dispatcher, default_namespace());
+        attack_world.create_attacks(attack_inputs)
     }
     fn get_planned_attack(self: @WorldStorage, id: felt252) -> PlannedAttack {
         self.read_model(id)
@@ -68,6 +75,18 @@ impl AttackStorageImpl of AttackStorage {
             .write_model(
                 @AvailableAttack { combatant_id, attack_id, available: true, last_used: 0 }
             );
+    }
+    fn set_combatant_attacks_available(
+        ref self: WorldStorage, combatant_id: felt252, attack_ids: Array<felt252>
+    ) {
+        let mut models = ArrayTrait::<@AvailableAttack>::new();
+        for attack_id in attack_ids {
+            models
+                .append(
+                    @AvailableAttack { combatant_id, attack_id, available: true, last_used: 0 }
+                );
+        };
+        self.write_models(models.span());
     }
     fn set_attack_last_used(
         ref self: WorldStorage, combatant_id: felt252, attack_id: felt252, last_used: u32

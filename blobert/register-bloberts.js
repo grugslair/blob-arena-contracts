@@ -39,7 +39,8 @@ const custom_data = loadJson("./custom-attributes.json");
 const amma_data = loadJson("./amma-attributes.json");
 const manifest = loadJson(`../manifest_${process.argv[2]}.json`);
 
-const blobertContractTag = "blob_arena-blobert_actions";
+const blobertContractTag = "blobert-blobert_actions";
+const ammaBlobertContractTag = "amma_blobert-amma_blobert_actions";
 const arcadeBlobertTag = "blob_arena-arcade_blobert_actions";
 const seedEntrypoint = "new_seed_item_with_attacks";
 const customEntrypoint = "new_custom_item_with_attacks";
@@ -55,9 +56,9 @@ const blobertContract = await getContract(
   provider,
   getContractAddress(manifest, blobertContractTag)
 );
-const arcadeBlobertContract = await getContract(
+const ammaBlobertContract = await getContract(
   provider,
-  getContractAddress(manifest, arcadeBlobertTag)
+  getContractAddress(manifest, ammaBlobertContractTag)
 );
 
 const TRAITS_ENUM = ["Background", "Armour", "Jewelry", "Mask", "Weapon"];
