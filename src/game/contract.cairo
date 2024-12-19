@@ -38,6 +38,7 @@ mod game_actions {
             let mut world = self.get_storage();
             world.assert_caller_initiator(game_id);
             world.assert_created_phase(game_id);
+            world.assert_contract_is_owner(game_id);
             world.set_combat_phase(game_id, Phase::Commit);
         }
         fn commit(ref self: ContractState, combatant_id: felt252, hash: felt252) {
@@ -81,7 +82,7 @@ mod game_actions {
 
         fn kick_player(ref self: ContractState, combat_id: felt252) {
             let mut storage = self.get_storage();
-            let game = storage.get_game_info(combat_id);
+            let game = storage.get_owners_game(combat_id, get_contract_address());
             let (a, b) = game.combatant_ids;
             storage.assert_past_time_limit(game);
 

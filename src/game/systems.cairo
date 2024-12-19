@@ -18,6 +18,9 @@ impl GameImpl of GameTrait {
     fn assert_caller_initiator(self: @WorldStorage, game_id: felt252) {
         assert(self.get_initiator(game_id) == get_caller_address(), 'Not the initiator');
     }
+    fn assert_contract_is_owner(self: @WorldStorage, game_id: felt252) {
+        self.get_game_info(game_id).assert_contract_is_owner();
+    }
     fn assert_past_time_limit(self: @WorldStorage, game: GameInfo) {
         assert(game.time_limit.is_non_zero(), 'No time limit set');
         assert(

@@ -1,4 +1,4 @@
-use starknet::ContractAddress;
+use starknet::{ContractAddress, get_contract_address};
 
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
@@ -69,6 +69,10 @@ impl GameInfoImpl of GameInfoTrait {
         } else {
             panic!("Combatant not in combat")
         }
+    }
+
+    fn assert_contract_is_owner(self: @GameInfo) {
+        assert(*self.owner == get_contract_address(), "Not the contract owner");
     }
 }
 
