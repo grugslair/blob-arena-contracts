@@ -1,5 +1,6 @@
 use dojo::{
-    world::WorldStorage, model::{ModelStorage, ModelValueStorage, Model}, event::EventStorage
+    world::WorldStorage, model::{ModelStorage, ModelValueStorage, Model}, event::EventStorage,
+    utils::entity_id_from_keys
 };
 use blob_arena::{stats::UStats, core::Enumerate, attacks::AttackStorage};
 use super::components::{
@@ -14,7 +15,7 @@ impl BlobertStorageImpl of BlobertStorage {
     }
 
     fn set_blobert_item_name(ref self: WorldStorage, id: BlobertItemKey, name: ByteArray) {
-        self.emit_event(@BlobertItemName { id, name });
+        self.emit_event(@BlobertItemName { entity_id: entity_id_from_keys(@id), name });
     }
 
     fn set_blobert_item(

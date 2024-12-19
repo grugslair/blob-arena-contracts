@@ -53,7 +53,7 @@ struct BlobertItem {
 #[derive(Drop, Serde)]
 struct BlobertItemName {
     #[key]
-    id: BlobertItemKey,
+    entity_id: felt252,
     name: ByteArray,
 }
 

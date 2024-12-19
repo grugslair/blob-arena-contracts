@@ -41,9 +41,8 @@ const manifest = loadJson(`../manifest_${process.argv[2]}.json`);
 
 const blobertContractTag = "blobert-blobert_actions";
 const ammaBlobertContractTag = "amma_blobert-amma_blobert_actions";
-const arcadeBlobertTag = "blob_arena-arcade_blobert_actions";
-const seedEntrypoint = "new_seed_item_with_attacks";
-const customEntrypoint = "new_custom_item_with_attacks";
+const seedEntrypoint = "set_seed_item_with_attacks";
+const customEntrypoint = "set_custom_item_with_attacks";
 
 const amma_offset = 50;
 
@@ -60,12 +59,6 @@ const ammaBlobertContract = await getContract(
   provider,
   getContractAddress(manifest, ammaBlobertContractTag)
 );
-
-const TRAITS_ENUM = ["Background", "Armour", "Jewelry", "Mask", "Weapon"];
-const TARGET_ENUM = ["Player", "Opponent"];
-const STAT_TYPES_ENUM = ["Strength", "Vitality", "Dexterity", "Luck"];
-const AFFECTS_ENUM = ["Stats", "Stat", "Damage", "Stun", "Health"];
-const STAT_KEYS = ["strength", "vitality", "dexterity", "luck"];
 
 const toSigned = (x) => {
   if (x >= 0) {
@@ -130,7 +123,6 @@ const makeAttacksStruct = (attacks) => {
   for (const attack of attacks) {
     attacksStructs.push({
       name: attack.name,
-      // name: byteArray.byteArrayFromString(attack.name),
       speed: attack.speed,
       accuracy: attack.accuracy,
       cooldown: attack.cooldown,
@@ -141,12 +133,20 @@ const makeAttacksStruct = (attacks) => {
   return attacksStructs;
 };
 
-const makeItemCallData = (trait, n, item) => {
+const makeSeedItemCallData = (trait, n, item) => {
   const trait_str = trait.charAt(0).toUpperCase() + trait.slice(1);
   return {
-    blobert_trait: makeCairoEnum(trait_str),
-    trait_id: Number(n),
-    // item_name: byteArray.byteArrayFromString(item.name),
+    attribute: makeCairoEnum(trait_str),
+    attribute_id: Number(n),
+    item_name: item.name,
+    stats: item.stats,
+    attacks: makeAttacksStruct(item.attacks),
+  };
+};
+
+const makeCustomItemCallData = (n, item) => {
+  return {
+    custom_id: Number(n),
     item_name: item.name,
     stats: item.stats,
     attacks: makeAttacksStruct(item.attacks),
@@ -160,51 +160,37 @@ const makeCall = (contract, entrypoint, calldata) => {
 let calls = [];
 for (const [trait, traits] of Object.entries(seed_data)) {
   for (const [n, item] of Object.entries(traits)) {
-    console.log(`seed: ${item.name}`);
     calls.push([
-      `seed: ${item.name}`,
+      `seed: ${trait} ${n} ${item.name}`,
       makeCall(
         blobertContract,
         seedEntrypoint,
-        makeItemCallData(trait, n, item)
+        makeSeedItemCallData(trait, n, item)
       ),
     ]);
   }
 }
 
-for (const [n, traits] of Object.entries(custom_data)) {
-  for (const [trait, item] of Object.entries(traits)) {
-    calls.push([
-      `custom: ${item.name}`,
-      makeCall(
-        blobertContractAddress,
-        customEntrypoint,
-        makeItemCallData(trait, n, item)
-      ),
-    ]);
-  }
-}
-
-for (const [n, fighter] of Object.entries(amma_data)) {
-  let custom_id = Number(n) + amma_offset;
+for (const [n, item] of Object.entries(custom_data)) {
   calls.push([
-    `fighter ${fighter.name}`,
-    makeCall(arcadeBlobertContract, "set_amma_fighter", {
-      fighter_id: n,
-      name: fighter.name,
-      custom_id: custom_id,
-    }),
+    `custom: ${n} ${item.name}`,
+    makeCall(
+      blobertContract,
+      customEntrypoint,
+      makeCustomItemCallData(trait, n, item)
+    ),
   ]);
-  for (const [trait, item] of Object.entries(fighter.traits)) {
-    calls.push([
-      `custom: ${item.name}`,
-      makeCall(
-        blobertContract,
-        customEntrypoint,
-        makeItemCallData(trait, custom_id, item)
-      ),
-    ]);
-  }
+}
+
+for (const [n, item] of Object.entries(amma_data)) {
+  calls.push([
+    `amma: ${n} ${item.name}`,
+    makeCall(
+      ammaBlobertContract,
+      customEntrypoint,
+      makeCustomItemCallData(n, item)
+    ),
+  ]);
 }
 
 const multiCallSize = 20;
