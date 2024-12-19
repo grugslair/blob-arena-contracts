@@ -137,8 +137,8 @@ const makeSeedItemCallData = (trait, n, item) => {
   const trait_str = trait.charAt(0).toUpperCase() + trait.slice(1);
   return {
     attribute: makeCairoEnum(trait_str),
-    attribute_id: Number(n),
-    item_name: item.name,
+    id: Number(n),
+    name: item.name,
     stats: item.stats,
     attacks: makeAttacksStruct(item.attacks),
   };
@@ -146,8 +146,8 @@ const makeSeedItemCallData = (trait, n, item) => {
 
 const makeCustomItemCallData = (n, item) => {
   return {
-    custom_id: Number(n),
-    item_name: item.name,
+    id: Number(n),
+    name: item.name,
     stats: item.stats,
     attacks: makeAttacksStruct(item.attacks),
   };

@@ -44,7 +44,7 @@ enum BlobertAttribute {
 #[derive(Drop, Serde, Copy)]
 struct BlobertItem {
     #[key]
-    id: BlobertItemKey,
+    key: BlobertItemKey,
     stats: UStats,
 }
 
@@ -53,7 +53,7 @@ struct BlobertItem {
 #[derive(Drop, Serde)]
 struct BlobertItemName {
     #[key]
-    entity_id: felt252,
+    id: felt252,
     name: ByteArray,
 }
 
@@ -61,7 +61,7 @@ struct BlobertItemName {
 #[derive(Drop, Serde)]
 struct AttackSlot {
     #[key]
-    item_id: BlobertItemKey,
+    item_key: BlobertItemKey,
     #[key]
     slot: felt252,
     attack_id: felt252,

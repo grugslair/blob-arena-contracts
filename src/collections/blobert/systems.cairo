@@ -13,13 +13,13 @@ use super::{
 impl BlobertImpl of BlobertTrait {
     fn set_blobert_item_with_attacks(
         ref self: WorldStorage,
-        id: BlobertItemKey,
+        key: BlobertItemKey,
         name: ByteArray,
         stats: UStats,
         attacks: Array<AttackInput>
     ) {
-        self.set_blobert_item(id, name, stats);
-        self.fill_blobert_item_attack_slots(id, self.create_attacks_external(attacks));
+        self.set_blobert_item(key, name, stats);
+        self.fill_blobert_item_attack_slots(key, self.create_attacks_external(attacks));
     }
 
     fn get_blobert_stats(self: @WorldStorage, blobert: TokenAttributes) -> UStats {

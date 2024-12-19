@@ -1,8 +1,8 @@
 {
   "world": {
     "class_hash": "0x45575a88cc5cef1e444c77ce60b7b4c9e73a01cbbe20926d5a4c72a94011410",
-    "address": "0x1d1cc6530e95a3a49dc35cb7e2607a15c60b2a6c3b86fa3e8bce1d8128d92f3",
-    "seed": "blob-arena-0.8.3",
+    "address": "0x3bfc46470821d0fd3ba573b2588c1de46102eeed5aa748ca9a695a678d5877c",
+    "seed": "blob-arena-0.8.4",
     "name": "blob_arena",
     "entrypoints": [
       "uuid",
@@ -1252,8 +1252,8 @@
   },
   "contracts": [
     {
-      "address": "0x6a02db5acb41d5537e7e257e93afcc744f996e7a7740d36fe0149170782a14e",
-      "class_hash": "0x51bc07a0f77a517df308a94e7e077ccbdf93622494ae4967bd190f0d67e4fd4",
+      "address": "0x39baf8515f8d8b4e6bdbea6ed320a926b095aae9848ae6251206bff935e33e6",
+      "class_hash": "0x5a20461c3f1820e55112fe92009311c1c19415859c5165eaab1877979cce9cb",
       "abi": [
         {
           "type": "impl",
@@ -1738,11 +1738,11 @@
               "name": "set_item",
               "inputs": [
                 {
-                  "name": "item_id",
+                  "name": "key",
                   "type": "blob_arena::collections::blobert::components::BlobertItemKey"
                 },
                 {
-                  "name": "item_name",
+                  "name": "name",
                   "type": "core::byte_array::ByteArray"
                 },
                 {
@@ -1758,11 +1758,11 @@
               "name": "set_item_with_attacks",
               "inputs": [
                 {
-                  "name": "item_id",
+                  "name": "key",
                   "type": "blob_arena::collections::blobert::components::BlobertItemKey"
                 },
                 {
-                  "name": "item_name",
+                  "name": "name",
                   "type": "core::byte_array::ByteArray"
                 },
                 {
@@ -1782,7 +1782,7 @@
               "name": "set_item_stats",
               "inputs": [
                 {
-                  "name": "item_id",
+                  "name": "key",
                   "type": "blob_arena::collections::blobert::components::BlobertItemKey"
                 },
                 {
@@ -1798,11 +1798,11 @@
               "name": "set_item_name",
               "inputs": [
                 {
-                  "name": "item_id",
+                  "name": "key",
                   "type": "blob_arena::collections::blobert::components::BlobertItemKey"
                 },
                 {
-                  "name": "item_name",
+                  "name": "name",
                   "type": "core::byte_array::ByteArray"
                 }
               ],
@@ -1814,7 +1814,7 @@
               "name": "set_item_attack_slot",
               "inputs": [
                 {
-                  "name": "item_id",
+                  "name": "key",
                   "type": "blob_arena::collections::blobert::components::BlobertItemKey"
                 },
                 {
@@ -1834,7 +1834,7 @@
               "name": "fill_item_attack_slots",
               "inputs": [
                 {
-                  "name": "item_id",
+                  "name": "key",
                   "type": "blob_arena::collections::blobert::components::BlobertItemKey"
                 },
                 {
@@ -1854,11 +1854,11 @@
                   "type": "blob_arena::collections::blobert::components::BlobertAttribute"
                 },
                 {
-                  "name": "attribute_id",
+                  "name": "id",
                   "type": "core::integer::u32"
                 },
                 {
-                  "name": "item_name",
+                  "name": "name",
                   "type": "core::byte_array::ByteArray"
                 },
                 {
@@ -1878,11 +1878,11 @@
                   "type": "blob_arena::collections::blobert::components::BlobertAttribute"
                 },
                 {
-                  "name": "attribute_id",
+                  "name": "id",
                   "type": "core::integer::u32"
                 },
                 {
-                  "name": "item_name",
+                  "name": "name",
                   "type": "core::byte_array::ByteArray"
                 },
                 {
@@ -1902,11 +1902,11 @@
               "name": "set_custom_item",
               "inputs": [
                 {
-                  "name": "custom_id",
+                  "name": "id",
                   "type": "core::felt252"
                 },
                 {
-                  "name": "item_name",
+                  "name": "name",
                   "type": "core::byte_array::ByteArray"
                 },
                 {
@@ -1922,11 +1922,11 @@
               "name": "set_custom_item_with_attacks",
               "inputs": [
                 {
-                  "name": "custom_id",
+                  "name": "id",
                   "type": "core::felt252"
                 },
                 {
-                  "name": "item_name",
+                  "name": "name",
                   "type": "core::byte_array::ByteArray"
                 },
                 {
@@ -2015,7 +2015,7 @@
       ]
     },
     {
-      "address": "0xe3a687b34e2e9e5b985594b344b519a7f980aedeafcb0e418091cdad843a8c",
+      "address": "0x4ddb8232ba3b54a32eb4162d4bd636f80767c687ec40d3ec8bd6e06eadfa856",
       "class_hash": "0x34a58f08d81a81d5a82d527bd9273252cddf462aaa08de9c0892d0bf1ebe0aa",
       "abi": [
         {
@@ -2284,7 +2284,7 @@
       ]
     },
     {
-      "address": "0x2f8f405ad174c8eb0b2842b471be06f318c629f2fcc64d0a7f51856e64b15e6",
+      "address": "0x5007479cd6e930408ba4dcb98c9dea9e0472cb178889a548874132976cae11",
       "class_hash": "0x77e35e336d79e551c4d0dfc5516a96c7fc1592b4dfc55ec55dcbc790c76f8f6",
       "abi": [
         {
@@ -2578,7 +2578,7 @@
       ]
     },
     {
-      "address": "0x4912e6143528ce28be3c1b44c0d40e581f4689ce4da71e21a83cac297b048af",
+      "address": "0x5ad8e6a10893f8b91a80d27ce5c7dcec50dddb114a9f268554f0e052b77eb91",
       "class_hash": "0x3e5423430c63feda2193fc728b9616e3ddac45b3401ef5a9a690c46d1e407f4",
       "abi": [
         {
@@ -2836,7 +2836,7 @@
       ]
     },
     {
-      "address": "0x7e70a45f74d7760ec5098fd0226612730c24093bd5a7f3cf1a3a0f4014e1af9",
+      "address": "0x2d99cc4dde4c50a67a7ba4ca4585fcdbe4557597e7fb4f3562258b812131027",
       "class_hash": "0x30a431b0c8bf6aa48449e13a025be74c8fdc35f261be94b492770de35846027",
       "abi": [
         {
@@ -3164,8 +3164,8 @@
       ]
     },
     {
-      "address": "0x57d706c8183b27187a461044d13ce7b1aa01a38b922e56a4a6feac5f51ede53",
-      "class_hash": "0x6a4b4ec9a9b6fe9ddaf83fd41d4725eb2ee8cc5a26a04c65d7d85f51142e10e",
+      "address": "0xfad450129b27c88a913d82e79dc245bb692c0a430a4483610168bdfdaa73a0",
+      "class_hash": "0x5ee87c12d52ad88bccf61a1207e7b25d144d6a80f2f758b3060ef4646478b16",
       "abi": [
         {
           "type": "impl",
@@ -3690,11 +3690,11 @@
               "name": "set_item",
               "inputs": [
                 {
-                  "name": "item_id",
+                  "name": "key",
                   "type": "blob_arena::collections::blobert::components::BlobertItemKey"
                 },
                 {
-                  "name": "item_name",
+                  "name": "name",
                   "type": "core::byte_array::ByteArray"
                 },
                 {
@@ -3710,11 +3710,11 @@
               "name": "set_item_with_attacks",
               "inputs": [
                 {
-                  "name": "item_id",
+                  "name": "key",
                   "type": "blob_arena::collections::blobert::components::BlobertItemKey"
                 },
                 {
-                  "name": "item_name",
+                  "name": "name",
                   "type": "core::byte_array::ByteArray"
                 },
                 {
@@ -3734,7 +3734,7 @@
               "name": "set_item_stats",
               "inputs": [
                 {
-                  "name": "item_id",
+                  "name": "key",
                   "type": "blob_arena::collections::blobert::components::BlobertItemKey"
                 },
                 {
@@ -3750,11 +3750,11 @@
               "name": "set_item_name",
               "inputs": [
                 {
-                  "name": "item_id",
+                  "name": "key",
                   "type": "blob_arena::collections::blobert::components::BlobertItemKey"
                 },
                 {
-                  "name": "item_name",
+                  "name": "name",
                   "type": "core::byte_array::ByteArray"
                 }
               ],
@@ -3766,7 +3766,7 @@
               "name": "set_item_attack_slot",
               "inputs": [
                 {
-                  "name": "item_id",
+                  "name": "key",
                   "type": "blob_arena::collections::blobert::components::BlobertItemKey"
                 },
                 {
@@ -3786,7 +3786,7 @@
               "name": "fill_item_attack_slots",
               "inputs": [
                 {
-                  "name": "item_id",
+                  "name": "key",
                   "type": "blob_arena::collections::blobert::components::BlobertItemKey"
                 },
                 {
@@ -3806,11 +3806,11 @@
                   "type": "blob_arena::collections::blobert::components::BlobertAttribute"
                 },
                 {
-                  "name": "attribute_id",
+                  "name": "id",
                   "type": "core::integer::u32"
                 },
                 {
-                  "name": "item_name",
+                  "name": "name",
                   "type": "core::byte_array::ByteArray"
                 },
                 {
@@ -3830,11 +3830,11 @@
                   "type": "blob_arena::collections::blobert::components::BlobertAttribute"
                 },
                 {
-                  "name": "attribute_id",
+                  "name": "id",
                   "type": "core::integer::u32"
                 },
                 {
-                  "name": "item_name",
+                  "name": "name",
                   "type": "core::byte_array::ByteArray"
                 },
                 {
@@ -3854,11 +3854,11 @@
               "name": "set_custom_item",
               "inputs": [
                 {
-                  "name": "custom_id",
+                  "name": "id",
                   "type": "core::felt252"
                 },
                 {
-                  "name": "item_name",
+                  "name": "name",
                   "type": "core::byte_array::ByteArray"
                 },
                 {
@@ -3874,11 +3874,11 @@
               "name": "set_custom_item_with_attacks",
               "inputs": [
                 {
-                  "name": "custom_id",
+                  "name": "id",
                   "type": "core::felt252"
                 },
                 {
-                  "name": "item_name",
+                  "name": "name",
                   "type": "core::byte_array::ByteArray"
                 },
                 {
@@ -3969,13 +3969,13 @@
   "models": [
     {
       "members": [],
-      "class_hash": "0x443148439ca690bcb891d0e8d69c084ea480c852762a780824160406540efb3",
+      "class_hash": "0x7d46fa26deae50de8d5bc0ada1f27a4dbc115958d1f588cd255c049f91b6cdc",
       "tag": "amma_blobert-AttackSlot",
       "selector": "0x3f95f1403fa2000077a4b9d690c2278e8b32a173662b0db7b764afd73e5582"
     },
     {
       "members": [],
-      "class_hash": "0x7b32a3ac9ee7354c98698798118715f3dfe75f003827db1b3e39869d34c2842",
+      "class_hash": "0x6e7f40488e3dba2722c0b26754beca6ff8007f6b0b48bbbd413a2838e431b4b",
       "tag": "amma_blobert-BlobertItem",
       "selector": "0x1f2b4eecd1b85cdfb0cfa8ea7bc33c355fffb24e4d7ac7c52640376edc48e4"
     },
@@ -4077,13 +4077,13 @@
     },
     {
       "members": [],
-      "class_hash": "0x443148439ca690bcb891d0e8d69c084ea480c852762a780824160406540efb3",
+      "class_hash": "0x7d46fa26deae50de8d5bc0ada1f27a4dbc115958d1f588cd255c049f91b6cdc",
       "tag": "blobert-AttackSlot",
       "selector": "0x7f77914d0bf4f02bb41ab8131bba8df6fad148bf436f18ff9dfe0d97a495650"
     },
     {
       "members": [],
-      "class_hash": "0x7b32a3ac9ee7354c98698798118715f3dfe75f003827db1b3e39869d34c2842",
+      "class_hash": "0x6e7f40488e3dba2722c0b26754beca6ff8007f6b0b48bbbd413a2838e431b4b",
       "tag": "blobert-BlobertItem",
       "selector": "0x1eb8dc949a0848de6ecda53d9fe49124136424ee308527fd8274b54616211c5"
     }
@@ -4091,7 +4091,7 @@
   "events": [
     {
       "members": [],
-      "class_hash": "0x9cd996e6b611cf61b3b91ce199d8360105f83332fb006012299b594ce19dd0",
+      "class_hash": "0x7cd95178fb202cbe98cd461b8353c93b5f8c77a8a29fadf5d5f3dbb54cdcb86",
       "tag": "amma_blobert-BlobertItemName",
       "selector": "0x523b3e8e216d160c64ea210598ccbd8f0940fd5699ec7fcbbb439c96b52305c"
     },
@@ -4115,7 +4115,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x9cd996e6b611cf61b3b91ce199d8360105f83332fb006012299b594ce19dd0",
+      "class_hash": "0x7cd95178fb202cbe98cd461b8353c93b5f8c77a8a29fadf5d5f3dbb54cdcb86",
       "tag": "blobert-BlobertItemName",
       "selector": "0x3c65933b654646718218b7b044c12f8e25aabdd31201f6e7e040063d7b6d7b"
     }
