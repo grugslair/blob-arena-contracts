@@ -72,7 +72,7 @@ impl GameInfoImpl of GameInfoTrait {
     }
 
     fn assert_contract_is_owner(self: @GameInfo) {
-        assert(*self.owner == get_contract_address(), "Not the contract owner");
+        assert(*self.owner == get_contract_address(), 'Not the contract owner');
     }
 }
 
