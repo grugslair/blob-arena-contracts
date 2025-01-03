@@ -35,7 +35,7 @@ impl GameStorageImpl of GameStorage {
         self.read_member(Model::<GameInfo>::ptr_from_keys(game_id), selector!("combatant_ids"))
     }
 
-    fn set_game_combatants(
+    fn _set_game_combatants(
         ref self: WorldStorage, game_id: felt252, combatant_a: felt252, combatant_b: felt252
     ) {
         self
@@ -44,6 +44,14 @@ impl GameStorageImpl of GameStorage {
                 selector!("combatant_ids"),
                 (combatant_a, combatant_b)
             );
+    }
+
+    fn set_game_combatants(
+        ref self: WorldStorage, game_id: felt252, combatant_a: felt252, combatant_b: felt252
+    ) {
+        let mut game_info = self.get_game_info(game_id);
+        game_info.combatant_ids = (combatant_a, combatant_b);
+        self.write_model(@game_info);
     }
 
     fn set_game_info(
