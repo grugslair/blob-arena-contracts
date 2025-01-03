@@ -3,7 +3,7 @@ version = 1
 
 [[package]]
 name = "blob_arena"
-version = "0.8.5-temp-fix"
+version = "0.8.5-temp.1"
 dependencies = [
  "cubit",
  "dojo",

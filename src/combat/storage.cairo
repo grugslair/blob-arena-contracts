@@ -12,8 +12,13 @@ impl CombatImpl of CombatStorage {
     fn get_combat_phase(self: @WorldStorage, id: felt252) -> Phase {
         self.read_member(Model::<CombatState>::ptr_from_keys(id), selector!("phase"))
     }
-    fn set_combat_phase(ref self: WorldStorage, id: felt252, phase: Phase) {
+    fn _set_combat_phase(ref self: WorldStorage, id: felt252, phase: Phase) {
         self.write_member(Model::<CombatState>::ptr_from_keys(id), selector!("phase"), phase);
+    }
+    fn set_combat_phase(ref self: WorldStorage, id: felt252, phase: Phase) {
+        let mut model = self.get_combat_state(id);
+        model.phase = phase;
+        self.write_model(@model);
     }
     fn get_combat_winner(self: @WorldStorage, id: felt252) -> felt252 {
         match self.get_combat_phase(id) {

@@ -88,7 +88,7 @@ impl AttackStorageImpl of AttackStorage {
         };
         self.write_models(models.span());
     }
-    fn set_attack_last_used(
+    fn _set_attack_last_used(
         ref self: WorldStorage, combatant_id: felt252, attack_id: felt252, last_used: u32
     ) {
         self
@@ -97,6 +97,13 @@ impl AttackStorageImpl of AttackStorage {
                 selector!("last_used"),
                 last_used
             );
+    }
+    fn set_attack_last_used(
+        ref self: WorldStorage, combatant_id: felt252, attack_id: felt252, last_used: u32
+    ) {
+        let mut model: AvailableAttack = self.read_model((combatant_id, attack_id));
+        model.last_used = last_used;
+        self.write_model(@model);
     }
     fn clear_planned_attack(ref self: WorldStorage, id: felt252) {
         self.erase_model_ptr(Model::<PlannedAttack>::ptr_from_keys(id));
