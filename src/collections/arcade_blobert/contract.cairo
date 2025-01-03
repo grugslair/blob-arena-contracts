@@ -39,6 +39,7 @@ mod arcade_blobert_actions {
         }
     }
 
+    #[abi(embed_v0)]
     impl IArcadeBlobertCollectionImpl =
         arcade_blobert::collection::IBlobertCollectionImpl<ContractState>;
 

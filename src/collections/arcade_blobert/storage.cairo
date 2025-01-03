@@ -34,10 +34,12 @@ impl ArcadeBlobertImpl of ArcadeBlobertStorage {
         self.read_model(token_id)
     }
     fn get_blobert_token_owner(self: @WorldStorage, token_id: u256) -> ContractAddress {
+        let token_id: felt252 = token_id.try_into().unwrap();
         self.read_member(Model::<BlobertToken>::ptr_from_keys(token_id), selector!("owner"))
     }
 
     fn get_blobert_token_attributes(self: @WorldStorage, token_id: u256) -> TokenAttributes {
+        let token_id: felt252 = token_id.try_into().unwrap();
         self.read_member(Model::<BlobertToken>::ptr_from_keys(token_id), selector!("attributes"))
     }
 

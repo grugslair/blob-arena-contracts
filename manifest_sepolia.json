@@ -1,8 +1,8 @@
 {
   "world": {
     "class_hash": "0x45575a88cc5cef1e444c77ce60b7b4c9e73a01cbbe20926d5a4c72a94011410",
-    "address": "0x3bfc46470821d0fd3ba573b2588c1de46102eeed5aa748ca9a695a678d5877c",
-    "seed": "blob-arena-0.8.4",
+    "address": "0x1f93ac2b839eefd4dee6dfa70570c2619aaec7cdcdef438f80555c13623f860",
+    "seed": "blob-arena-0.8.5",
     "name": "blob_arena",
     "entrypoints": [
       "uuid",
@@ -1252,8 +1252,8 @@
   },
   "contracts": [
     {
-      "address": "0x39baf8515f8d8b4e6bdbea6ed320a926b095aae9848ae6251206bff935e33e6",
-      "class_hash": "0x5a20461c3f1820e55112fe92009311c1c19415859c5165eaab1877979cce9cb",
+      "address": "0xf9e32822f136713f860bb26fa1b34c38b7a3e54890ca45b19aef44a9eb2313",
+      "class_hash": "0x2ef7a6091ede9d63492ff7cc3346fe7e7af1f66588e59f167ea9727ebf9abe6",
       "abi": [
         {
           "type": "impl",
@@ -2015,8 +2015,8 @@
       ]
     },
     {
-      "address": "0x4ddb8232ba3b54a32eb4162d4bd636f80767c687ec40d3ec8bd6e06eadfa856",
-      "class_hash": "0x34a58f08d81a81d5a82d527bd9273252cddf462aaa08de9c0892d0bf1ebe0aa",
+      "address": "0x719fa2b4613979cc7046d4bfd50cfd76d3159c25e1c4bc5f1e890a8f7b63d87",
+      "class_hash": "0x115a0f4b0f5f5f78f72f7b14a2c678290132003d89868308e86124cd7338b6f",
       "abi": [
         {
           "type": "impl",
@@ -2223,6 +2223,165 @@
           ]
         },
         {
+          "type": "impl",
+          "name": "IArcadeBlobertCollectionImpl",
+          "interface_name": "blob_arena::collections::interface::ICollection"
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::stats::TStats::<core::integer::u8>",
+          "members": [
+            {
+              "name": "strength",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "vitality",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "dexterity",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "luck",
+              "type": "core::integer::u8"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "blob_arena::collections::interface::ICollection",
+          "items": [
+            {
+              "type": "function",
+              "name": "owner_of",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_approved",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "is_approved_for_all",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "operator",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_stats",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "blob_arena::stats::TStats::<core::integer::u8>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_attack_slot",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                },
+                {
+                  "name": "item_id",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "slot",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_attack_slots",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                },
+                {
+                  "name": "item_slots",
+                  "type": "core::array::Array::<(core::felt252, core::felt252)>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Array::<core::felt252>"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
           "type": "constructor",
           "name": "constructor",
           "inputs": []
@@ -2284,8 +2443,8 @@
       ]
     },
     {
-      "address": "0x5007479cd6e930408ba4dcb98c9dea9e0472cb178889a548874132976cae11",
-      "class_hash": "0x77e35e336d79e551c4d0dfc5516a96c7fc1592b4dfc55ec55dcbc790c76f8f6",
+      "address": "0x1e37e25627609811bbd0a89cb446a7b7420f97529c991d057c70849c9c6afea",
+      "class_hash": "0x44d72567ad14c47db1b7d58d6557182548d1328d8bb33a953871e9ea4d3b13c",
       "abi": [
         {
           "type": "impl",
@@ -2578,7 +2737,7 @@
       ]
     },
     {
-      "address": "0x5ad8e6a10893f8b91a80d27ce5c7dcec50dddb114a9f268554f0e052b77eb91",
+      "address": "0x5bfed50ad8e00940ec8ed70dd020400bd18a993ab49a85d589518fd5f686e2b",
       "class_hash": "0x3e5423430c63feda2193fc728b9616e3ddac45b3401ef5a9a690c46d1e407f4",
       "abi": [
         {
@@ -2836,7 +2995,7 @@
       ]
     },
     {
-      "address": "0x2d99cc4dde4c50a67a7ba4ca4585fcdbe4557597e7fb4f3562258b812131027",
+      "address": "0x2a74b97585647b5905f4b1308bd136e240169846df9bd723fb16f62c9046575",
       "class_hash": "0x30a431b0c8bf6aa48449e13a025be74c8fdc35f261be94b492770de35846027",
       "abi": [
         {
@@ -3164,7 +3323,7 @@
       ]
     },
     {
-      "address": "0xfad450129b27c88a913d82e79dc245bb692c0a430a4483610168bdfdaa73a0",
+      "address": "0xe4eba41d847a451a5cdab9818a6dbbe8cd8e0b7fc59b3c38ac642f69c4222a",
       "class_hash": "0x5ee87c12d52ad88bccf61a1207e7b25d144d6a80f2f758b3060ef4646478b16",
       "abi": [
         {
