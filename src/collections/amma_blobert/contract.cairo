@@ -44,6 +44,7 @@ mod amma_blobert_actions {
     #[abi(embed_v0)]
     impl IAMMABlobertItems = blobert::items::IBlobertItemsImpl<ContractState>;
 
+    #[abi(embed_v0)]
     impl IArcadeBlobertCollectionImpl =
         arcade_blobert::collection::IBlobertCollectionImpl<ContractState>;
 

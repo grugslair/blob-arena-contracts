@@ -62,7 +62,9 @@ impl BlobertStorageImpl of BlobertStorage {
         let values: Array<AttackSlotValue> = self.read_values(item_slots);
         let mut array = ArrayTrait::<felt252>::new();
         for value in values {
-            array.append(value.attack_id);
+            if value.attack_id.is_non_zero() {
+                array.append(value.attack_id);
+            };
         };
         array
     }

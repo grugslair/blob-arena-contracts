@@ -112,8 +112,8 @@ impl Felt252TryIntoBlobertTrait of TryInto<felt252, BlobertAttribute> {
     fn try_into(self: felt252) -> Option<BlobertAttribute> {
         match self {
             0 => Option::None,
-            1 => Option::Some(BlobertAttribute::Armour),
-            2 => Option::Some(BlobertAttribute::Background),
+            1 => Option::Some(BlobertAttribute::Background),
+            2 => Option::Some(BlobertAttribute::Armour),
             3 => Option::Some(BlobertAttribute::Jewelry),
             4 => Option::Some(BlobertAttribute::Mask),
             5 => Option::Some(BlobertAttribute::Weapon),
