@@ -2560,11 +2560,14 @@
       "init_calldata": [],
       "tag": "arcade_blobert-arcade_blobert_actions",
       "selector": "0x398dead577648eae94dda0766c4b9200e73e820aaa6deac666f68f4d44d1e75",
-      "systems": ["mint", "upgrade"]
+      "systems": [
+        "mint",
+        "upgrade"
+      ]
     },
     {
       "address": "0x4dab1c52aa4027587f65ef9987d6f1afe352a3cdd8e573efcf457d6bb192592",
-      "class_hash": "0x3b2a8485e1cc50c214dd8515ec8bd5027fa2166fc0a80cf9d13c9988e0c5fdb",
+      "class_hash": "0xa2c8a419ddf2e37162e686fd7318f2a0f238316e69e7eca4a7d6dbf4248b3e",
       "abi": [
         {
           "type": "impl",
@@ -3109,7 +3112,10 @@
       "init_calldata": [],
       "tag": "blob_arena-game_admin",
       "selector": "0x39565feeea0e864d39d7139c930c0ff020062640719e93b257b329d1755913d",
-      "systems": ["create", "upgrade"]
+      "systems": [
+        "create",
+        "upgrade"
+      ]
     },
     {
       "address": "0x5c89105b012fd5b04efd6cee9d893b5732d8c9d0167ce8d007a1356e18f13ef",
