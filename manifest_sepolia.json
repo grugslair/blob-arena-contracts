@@ -1253,7 +1253,7 @@
   "contracts": [
     {
       "address": "0xf9e32822f136713f860bb26fa1b34c38b7a3e54890ca45b19aef44a9eb2313",
-      "class_hash": "0x2ef7a6091ede9d63492ff7cc3346fe7e7af1f66588e59f167ea9727ebf9abe6",
+      "class_hash": "0x157045e375780d4e32ea888c0f7859ecd381329e0fc10bd87e624a202eab1c7",
       "abi": [
         {
           "type": "impl",
@@ -1944,6 +1944,129 @@
           ]
         },
         {
+          "type": "impl",
+          "name": "IArcadeBlobertCollectionImpl",
+          "interface_name": "blob_arena::collections::interface::ICollection"
+        },
+        {
+          "type": "interface",
+          "name": "blob_arena::collections::interface::ICollection",
+          "items": [
+            {
+              "type": "function",
+              "name": "owner_of",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_approved",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "is_approved_for_all",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "operator",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_stats",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "blob_arena::stats::TStats::<core::integer::u8>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_attack_slot",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                },
+                {
+                  "name": "item_id",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "slot",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_attack_slots",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                },
+                {
+                  "name": "item_slots",
+                  "type": "core::array::Array::<(core::felt252, core::felt252)>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Array::<core::felt252>"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
           "type": "constructor",
           "name": "constructor",
           "inputs": []
@@ -2016,7 +2139,7 @@
     },
     {
       "address": "0x719fa2b4613979cc7046d4bfd50cfd76d3159c25e1c4bc5f1e890a8f7b63d87",
-      "class_hash": "0x115a0f4b0f5f5f78f72f7b14a2c678290132003d89868308e86124cd7338b6f",
+      "class_hash": "0x45ecc0d396b19d9f8a2045247948cb44129205eff2a0dfa61b935532e25c97a",
       "abi": [
         {
           "type": "impl",
@@ -3324,7 +3447,7 @@
     },
     {
       "address": "0xe4eba41d847a451a5cdab9818a6dbbe8cd8e0b7fc59b3c38ac642f69c4222a",
-      "class_hash": "0x5ee87c12d52ad88bccf61a1207e7b25d144d6a80f2f758b3060ef4646478b16",
+      "class_hash": "0x97f9e13fbda4b67a3bb95fda60a7ead29a4bc7c9d750e54e6dfb2fe2012fe6",
       "abi": [
         {
           "type": "impl",
