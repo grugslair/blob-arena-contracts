@@ -61,7 +61,7 @@ mod game_actions {
             let game = world.get_owners_game(combatant.combat_id, get_contract_address());
 
             let opponent_id = game.get_opponent_id(combatant_id);
-            if world.consume_and_compare_commitment_value(combatant_id, (attack, salt)) {
+            if world.consume_and_compare_commitment_value(combatant_id, @(attack, salt)) {
                 world.append_salt(game.combat_id, salt);
                 world.set_planned_attack(combatant_id, attack, opponent_id);
                 if world.check_commitment_set(opponent_id) {

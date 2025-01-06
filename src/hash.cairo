@@ -1,5 +1,6 @@
 use core::{
-    hash::{Hash, HashStateExTrait, HashStateTrait}, poseidon::HashState, poseidon::PoseidonTrait
+    num::traits::One, hash::{Hash, HashStateExTrait, HashStateTrait},
+    poseidon::{HashState, PoseidonTrait, poseidon_hash_span}
 };
 
 trait HashUpdate<T> {
@@ -44,6 +45,16 @@ fn hash_value<T, +Hash<T, HashState>, +Drop<T>>(value: T) -> felt252 {
     PoseidonTrait::new().update_with(value).finalize()
 }
 
+fn value_to_id<T, +Serde<T>>(value: @T) -> felt252 {
+    let mut arr = ArrayTrait::<felt252>::new();
+    Serde::serialize(value, ref arr);
+
+    if arr.len().is_one() {
+        arr.pop_front().unwrap()
+    } else {
+        poseidon_hash_span(arr.span())
+    }
+}
 
 fn array_to_hash_state<T, +Hash<T, HashState>, +Drop<Array<T>>,>(arr: Array<T>) -> HashState {
     Hash::update_state(PoseidonTrait::new(), arr)

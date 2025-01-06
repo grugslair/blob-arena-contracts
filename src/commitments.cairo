@@ -1,7 +1,7 @@
 use core::{poseidon::{HashState}, hash::{Hash}};
-use dojo::{world::WorldStorage, model::{ModelValueStorage, ModelStorage, Model}};
+use dojo::{world::WorldStorage, model::{ModelValueStorage, ModelStorage, Model, ModelPtr}};
 
-use blob_arena::hash::hash_value;
+use blob_arena::hash::{hash_value, value_to_id};
 
 mod model {
     #[dojo::model]
@@ -26,6 +26,13 @@ impl CommitmentImpl of Commitment {
     }
     fn clear_commitment(ref self: WorldStorage, id: felt252) {
         self.erase_model_ptr(Model::<CommitmentModel>::ptr_from_keys(id));
+    }
+    fn clear_commitments(ref self: WorldStorage, ids: Span<felt252>) {
+        let mut ptrs = ArrayTrait::<ModelPtr<CommitmentModel>>::new();
+        for id in ids {
+            ptrs.append(Model::<CommitmentModel>::ptr_from_keys(*id))
+        };
+        self.erase_models_ptrs(ptrs.span());
     }
     fn check_commitment_set(self: @WorldStorage, id: felt252) -> bool {
         self.get_commitment(id).is_non_zero()
@@ -55,39 +62,32 @@ impl CommitmentImpl of Commitment {
             }
         }
     }
-    fn check_commitments_set_with<T, +Hash<T, HashState>, +Drop<T>, +Copy<T>>(
+    fn check_commitments_set_with<T, +Serde<T>, +Drop<T>>(
         self: @WorldStorage, mut values: Span<T>
     ) -> bool {
         let mut ids: Array<felt252> = ArrayTrait::<felt252>::new();
         for value in values {
-            ids.append(hash_value(*value));
+            ids.append(value_to_id(value));
         };
         self.check_commitments_set(ids.span())
     }
-    fn check_commitments_unset_with<T, +Hash<T, HashState>, +Drop<T>, +Copy<T>>(
+    fn check_commitments_unset_with<T, +Serde<T>, +Drop<T>>(
         self: @WorldStorage, mut values: Span<T>
     ) -> bool {
         let mut ids: Array<felt252> = ArrayTrait::<felt252>::new();
         for value in values {
-            ids.append(hash_value(*value));
+            ids.append(value_to_id(value));
         };
-        self.check_commitments_set(ids.span())
+        self.check_commitments_unset(ids.span())
     }
-    fn clear_commitments(ref self: WorldStorage, ids: Span<felt252>) {
-        let (mut n, len) = (0, ids.len());
-        while n < len {
-            self.clear_commitment(*ids.at(n));
-            n += 1;
-        };
-    }
-    fn clear_commitments_with<T, +Hash<T, HashState>, +Drop<T>, +Copy<T>>(
+    fn clear_commitments_with<T, +Serde<T>, +Drop<T>, +Copy<T>>(
         ref self: WorldStorage, values: Span<T>
     ) {
-        let (mut n, len) = (0, values.len());
-        while n < len {
-            self.clear_commitment_with(*(values.at(n)));
-            n += 1;
+        let mut ptrs = ArrayTrait::<ModelPtr<CommitmentModel>>::new();
+        for value in values {
+            ptrs.append(Model::<CommitmentModel>::ptr_from_keys(value_to_id(value)))
         };
+        self.erase_models_ptrs(ptrs.span());
     }
     fn check_commitments_are(self: @WorldStorage, ids: Span<felt252>, set: bool) -> Array<bool> {
         let commitments: Array<CommitmentValue> = self.read_values(ids);
@@ -103,33 +103,23 @@ impl CommitmentImpl of Commitment {
         self.set_commitment(id, hash);
     }
 
-    fn get_commitment_with<T, +Hash<T, HashState>, +Drop<T>>(
-        self: @WorldStorage, value: T
-    ) -> felt252 {
-        self.get_commitment(hash_value(value))
+    fn get_commitment_with<T, +Serde<T>>(self: @WorldStorage, value: @T) -> felt252 {
+        self.get_commitment(value_to_id(value))
     }
-    fn set_commitment_with<T, +Hash<T, HashState>, +Drop<T>>(
-        ref self: WorldStorage, value: T, commitment: felt252
-    ) {
-        self.set_commitment(hash_value(value), commitment)
+    fn set_commitment_with<T, +Serde<T>>(ref self: WorldStorage, value: @T, commitment: felt252) {
+        self.set_commitment(value_to_id(value), commitment)
     }
-    fn clear_commitment_with<T, +Hash<T, HashState>, +Drop<T>>(ref self: WorldStorage, value: T) {
-        self.clear_commitment(hash_value(value));
+    fn clear_commitment_with<T, +Serde<T>, +Drop<T>>(ref self: WorldStorage, value: @T) {
+        self.clear_commitment(value_to_id(value));
     }
-    fn check_commitment_set_with<T, +Hash<T, HashState>, +Drop<T>>(
-        self: @WorldStorage, value: T
-    ) -> bool {
-        self.check_commitment_set(hash_value(value))
+    fn check_commitment_set_with<T, +Serde<T>>(self: @WorldStorage, value: @T) -> bool {
+        self.check_commitment_set(value_to_id(value))
     }
-    fn check_commitment_unset_with<T, +Hash<T, HashState>, +Drop<T>>(
-        self: @WorldStorage, value: T
-    ) -> bool {
+    fn check_commitment_unset_with<T, +Serde<T>, +Drop<T>>(self: @WorldStorage, value: @T) -> bool {
         !self.check_commitment_set_with(value)
     }
-    fn set_new_commitment_with<T, +Hash<T, HashState>, +Drop<T>>(
-        ref self: WorldStorage, value: T, hash: felt252
-    ) {
-        self.set_new_commitment(hash_value(value), hash);
+    fn set_new_commitment_with<T, +Serde<T>>(ref self: WorldStorage, value: @T, hash: felt252) {
+        self.set_new_commitment(value_to_id(value), hash);
     }
     fn get_set_commitment(self: @WorldStorage, id: felt252) -> felt252 {
         let commitment = self.get_commitment(id);
@@ -141,10 +131,10 @@ impl CommitmentImpl of Commitment {
         self.clear_commitment(id);
         commitment
     }
-    fn consume_and_compare_commitment_value<T, +Hash<T, HashState>, +Drop<T>>(
-        ref self: WorldStorage, id: felt252, value: T
+    fn consume_and_compare_commitment_value<T, +Serde<T>>(
+        ref self: WorldStorage, id: felt252, value: @T
     ) -> bool {
-        hash_value(value) == self.consume_commitment(id)
+        value_to_id(value) == self.consume_commitment(id)
     }
 }
 
