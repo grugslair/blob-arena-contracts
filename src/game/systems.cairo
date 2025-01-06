@@ -75,7 +75,7 @@ impl GameImpl of GameTrait {
         let mut combat = self.get_combat_state(game.combat_id);
         combat.phase.assert_reveal();
         let combatants_span = game.combatant_ids.span();
-        assert(self.check_commitments_unset_with(combatants_span), 'Not all attacks revealed');
+        assert(self.check_commitments_unset(combatants_span), 'Not all attacks revealed');
         let mut array = self.get_states_and_attacks(combatants_span);
 
         let hash = self.get_salts_hash_state(combat.id);
