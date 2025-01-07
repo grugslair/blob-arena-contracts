@@ -11,8 +11,9 @@ struct RoundResult {
     combatant_id: felt252,
     attack: felt252,
     target: felt252,
-    result: AttackOutcomes,
+    // result: AttackOutcomes,
 }
+
 
 #[derive(Drop, Serde, Introspect)]
 struct AttackResult {

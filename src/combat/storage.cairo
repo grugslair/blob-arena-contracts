@@ -41,7 +41,7 @@ impl CombatImpl of CombatStorage {
                             combatant_id: attack.combatant_id,
                             attack: attack.attack,
                             target: attack.target,
-                            result: attack.result,
+                            // result: attack.result,
                         }
                     );
             }
