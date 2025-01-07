@@ -1,5 +1,7 @@
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}, event::EventStorage};
-use blob_arena::{combat::{CombatState, Phase}, attacks::results::{AttackResult, RoundResult}};
+use blob_arena::{
+    combat::{CombatState, Phase}, attacks::results::{AttackResult, RoundResult}, core::Enumerate
+};
 
 #[generate_trait]
 impl CombatImpl of CombatStorage {
@@ -28,9 +30,20 @@ impl CombatImpl of CombatStorage {
     fn emit_round_result(
         ref self: WorldStorage, combat: @CombatState, attacks: Array<AttackResult>
     ) {
-        self
-            .emit_event(
-                @RoundResult { combat_id: *combat.id, round: *combat.round, attacks: attacks }
-            );
+        for (order, attack) in attacks
+            .enumerate() {
+                self
+                    .emit_event(
+                        @RoundResult {
+                            combat_id: *combat.id,
+                            round: *combat.round,
+                            order,
+                            combatant_id: attack.combatant_id,
+                            attack: attack.attack,
+                            target: attack.target,
+                            result: attack.result,
+                        }
+                    );
+            }
     }
 }

@@ -6,7 +6,12 @@ struct RoundResult {
     combat_id: felt252,
     #[key]
     round: u32,
-    attacks: Array<AttackResult>,
+    #[key]
+    order: u32,
+    combatant_id: felt252,
+    attack: felt252,
+    target: felt252,
+    result: AttackOutcomes,
 }
 
 #[derive(Drop, Serde, Introspect)]
