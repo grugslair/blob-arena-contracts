@@ -1,8 +1,8 @@
 {
   "world": {
     "class_hash": "0x45575a88cc5cef1e444c77ce60b7b4c9e73a01cbbe20926d5a4c72a94011410",
-    "address": "0x1f93ac2b839eefd4dee6dfa70570c2619aaec7cdcdef438f80555c13623f860",
-    "seed": "blob-arena-0.8.5",
+    "address": "0x2dbb9962a33081ea738418460c1c6c165ff087660c1eaf15c9e67976e443d7e",
+    "seed": "blob-arena-0.8.5-temp.3",
     "name": "blob_arena",
     "entrypoints": [
       "uuid",
@@ -1252,7 +1252,7 @@
   },
   "contracts": [
     {
-      "address": "0xf9e32822f136713f860bb26fa1b34c38b7a3e54890ca45b19aef44a9eb2313",
+      "address": "0x3e6a2ff1624164ad98f47919061f336c7dcda772e847852cf79353e71788176",
       "class_hash": "0x157045e375780d4e32ea888c0f7859ecd381329e0fc10bd87e624a202eab1c7",
       "abi": [
         {
@@ -2138,7 +2138,7 @@
       ]
     },
     {
-      "address": "0x719fa2b4613979cc7046d4bfd50cfd76d3159c25e1c4bc5f1e890a8f7b63d87",
+      "address": "0x37163d8c701df44006c840a622a24f916bd243b870851a4ba05e92097f8bbf8",
       "class_hash": "0x45ecc0d396b19d9f8a2045247948cb44129205eff2a0dfa61b935532e25c97a",
       "abi": [
         {
@@ -2566,8 +2566,8 @@
       ]
     },
     {
-      "address": "0x1e37e25627609811bbd0a89cb446a7b7420f97529c991d057c70849c9c6afea",
-      "class_hash": "0x172c3e32eebcdfa63d2a82627bd09345a6d8d54abeae982240a091cfc57bda1",
+      "address": "0x12f9cff0f1869c84322a527a821397df9eda8041b91f198e5538c3196e045ae",
+      "class_hash": "0x1758cb4d883f999b12898f78d7c4ddf823fd28bbb35217c8b31115b3b0f0985",
       "abi": [
         {
           "type": "impl",
@@ -2860,7 +2860,7 @@
       ]
     },
     {
-      "address": "0x5bfed50ad8e00940ec8ed70dd020400bd18a993ab49a85d589518fd5f686e2b",
+      "address": "0x88cb33a8b61e495d7ca29c53a86d7644809c3b498ca3d86edf23d80c80bd9e",
       "class_hash": "0x3e5423430c63feda2193fc728b9616e3ddac45b3401ef5a9a690c46d1e407f4",
       "abi": [
         {
@@ -3118,7 +3118,7 @@
       ]
     },
     {
-      "address": "0x2a74b97585647b5905f4b1308bd136e240169846df9bd723fb16f62c9046575",
+      "address": "0x295d4eaeb64ef0588922de1a0e18d9e5a1d447129ab3b96ec08e7d6d1ac4c3a",
       "class_hash": "0x30a431b0c8bf6aa48449e13a025be74c8fdc35f261be94b492770de35846027",
       "abi": [
         {
@@ -3446,7 +3446,7 @@
       ]
     },
     {
-      "address": "0xe4eba41d847a451a5cdab9818a6dbbe8cd8e0b7fc59b3c38ac642f69c4222a",
+      "address": "0x6793fd6c28135643db3a38c5a4fd6db98987cb0139dc12753650b53d25a46a0",
       "class_hash": "0x97f9e13fbda4b67a3bb95fda60a7ead29a4bc7c9d750e54e6dfb2fe2012fe6",
       "abi": [
         {
@@ -4388,12 +4388,6 @@
       "class_hash": "0x30753f98a7ae39f68bd14045ea9685925985595ea430e19879c02898cba72c0",
       "tag": "blob_arena-CombatEnd",
       "selector": "0xe7cdf29adf83bbe5840856288de06ac5e57971bf4d14409651b69de892deaf"
-    },
-    {
-      "members": [],
-      "class_hash": "0x361fabb73d820505eb34d5d6a98bd8d6935737f2289ddc29d67a320f972b5a7",
-      "tag": "blob_arena-RoundResult",
-      "selector": "0x7dee6d86ca7c0d9ee2d32ee3483fa5a093d00b4e6b0452590d9b309f28ba583"
     },
     {
       "members": [],

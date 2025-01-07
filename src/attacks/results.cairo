@@ -1,5 +1,5 @@
 use super::Target;
-#[dojo::event]
+// #[dojo::event]
 #[derive(Drop, Serde)]
 struct RoundResult {
     #[key]

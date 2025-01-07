@@ -27,10 +27,10 @@ impl CombatImpl of CombatStorage {
 
     fn emit_round_result(
         ref self: WorldStorage, combat: @CombatState, attacks: Array<AttackResult>
-    ) {
-        self
-            .emit_event(
-                @RoundResult { combat_id: *combat.id, round: *combat.round, attacks: attacks }
-            );
+    ) {// TODO: Impliment when fixed in Tor
+    // self
+    //     .emit_event(
+    //         @RoundResult { combat_id: *combat.id, round: *combat.round, attacks: attacks }
+    //     );
     }
 }
