@@ -64,6 +64,8 @@ mod lobby {
     mod contract;
 }
 
+mod singleplayer;
+
 pub use world::{default_namespace, DefaultStorage};
 #[cfg(test)]
 mod tests {
