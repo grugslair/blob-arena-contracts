@@ -1,6 +1,6 @@
 use core::{poseidon::{poseidon_hash_span, HashState, PoseidonTrait}, hash::HashStateExTrait};
 use dojo::{world::WorldStorage, model::{Model, ModelStorage, ModelPtr}};
-use blob_arena::hash::SpanHash;
+use blob_arena::hash::{SpanHash, make_hash_state};
 
 mod models {
     #[dojo::model]
@@ -42,6 +42,6 @@ impl SaltsImpl of Salts {
     }
 
     fn get_salts_hash_state(ref self: WorldStorage, id: felt252) -> HashState {
-        PoseidonTrait::new().update_with(self.get_salts(id))
+        make_hash_state(self.get_salts(id))
     }
 }

@@ -22,8 +22,18 @@ impl CombatantImpl of CombatantTrait {
         attacks: Array<(felt252, felt252)>
     ) {
         self.set_combatant_info(combatant_id, combat_id, player);
-        let collection_dispatcher = get_collection_dispatcher(collection_address);
         self.set_combatant_token(combatant_id, collection_address, token_id);
+        self.setup_combatant_state_and_attacks(combatant_id, collection_address, token_id, attacks);
+    }
+
+    fn setup_combatant_state_and_attacks(
+        ref self: WorldStorage,
+        combatant_id: felt252,
+        collection_address: ContractAddress,
+        token_id: u256,
+        attacks: Array<(felt252, felt252)>,
+    ) {
+        let collection_dispatcher = get_collection_dispatcher(collection_address);
         self.create_combatant_state(combatant_id, collection_dispatcher.get_stats(token_id));
         self.setup_available_attacks(collection_dispatcher, token_id, combatant_id, attacks);
     }

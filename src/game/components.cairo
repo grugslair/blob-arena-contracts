@@ -57,6 +57,11 @@ struct CombatEnd {
     via: WinVia,
 }
 
+#[derive(Copy, Drop, Serde, PartialEq)]
+enum GameProgress {
+    Active,
+    Ended: [felt252; 2],
+}
 
 #[generate_trait]
 impl GameInfoImpl of GameInfoTrait {

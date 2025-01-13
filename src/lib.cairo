@@ -54,6 +54,7 @@ mod game {
     mod contract;
     mod systems;
     use storage::GameStorage;
+    use systems::GameTrait;
     mod admin;
 }
 
@@ -62,6 +63,12 @@ mod lobby {
     mod storage;
     mod systems;
     mod contract;
+}
+
+mod pve {
+    mod components;
+    mod systems;
+    use components::{PVEGame, PVEToken, PVEBlobertInfo, PVEStorage, PVEPhase};
 }
 
 pub use world::{default_namespace, DefaultStorage};

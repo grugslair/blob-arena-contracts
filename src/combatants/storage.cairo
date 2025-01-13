@@ -35,6 +35,10 @@ impl CombatantRWImpl of CombatantStorage {
     fn get_combatant_states(self: @WorldStorage, ids: Span<felt252>) -> Array<CombatantState> {
         self.read_models(ids)
     }
+
+    fn set_combatant_states(ref self: WorldStorage, states: Span<@CombatantState>) {
+        self.write_models(states)
+    }
     fn get_combatant_info_in_combat(self: @WorldStorage, id: felt252) -> CombatantInfo {
         let combatant = self.get_combatant_info(id);
         assert(combatant.combat_id.is_non_zero(), 'Not valid combatant');

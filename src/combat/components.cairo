@@ -9,7 +9,6 @@ use blob_arena::{
     core::Enumerate,
 };
 
-
 #[derive(Copy, Drop, Serde, PartialEq, Introspect)]
 enum Phase {
     None,
