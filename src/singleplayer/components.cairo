@@ -29,4 +29,14 @@ struct SingleplayerGame {
 }
 
 #[dojo::contract]
-fn attack()
+fn attack(game_id: felt252, attack_id: felt252) {
+    // TODO: implement attack logic, sender 
+
+    let game = self.get_storage().get_component::<SingleplayerGame>(game_id);
+    assert(game.player == get_caller_address(), 'Not the player');
+
+    let blobert = self.get_storage().get_component::<SingleplayerBlobert>(game.player_id);
+    let attack = blobert.attacks[attack_id];
+
+    // TODO: implement attack logic
+}
