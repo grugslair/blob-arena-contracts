@@ -37,28 +37,51 @@ const getContract = async (provider, contractAddress) => {
 const seed_data = loadJson("./seed-attributes.json");
 const custom_data = loadJson("./custom-attributes.json");
 const amma_data = loadJson("./amma-attributes.json");
+const pve_data = loadJson("./pve-opponents.json");
 const manifest = loadJson(`../manifest_${process.argv[2]}.json`);
 
 const blobertContractTag = "blobert-blobert_actions";
+const arcadeBlobertContractTag = "arcade_blobert-arcade_blobert_actions";
 const ammaBlobertContractTag = "amma_blobert-amma_blobert_actions";
+const pveBlobertContractTag = "pve_blobert-pve_blobert_actions";
 const seedEntrypoint = "set_seed_item_with_attacks";
 const customEntrypoint = "set_custom_item_with_attacks";
-
-const amma_offset = 50;
+const pveOpponentEntrypoint = "new_opponent_from_attack_slots";
 
 const provider = new RpcProvider({ nodeUrl: process.env.STARKNET_RPC_URL });
 const account1Address = process.env.DOJO_ACCOUNT_ADDRESS;
 const privateKey1 = process.env.DOJO_PRIVATE_KEY;
 const account = new Account(provider, account1Address, privateKey1);
 
-const blobertContract = await getContract(
-  provider,
-  getContractAddress(manifest, blobertContractTag)
+const blobertContractAddress = getContractAddress(manifest, blobertContractTag);
+const arcadeContractAddress = getContractAddress(
+  manifest,
+  arcadeBlobertContractTag
 );
+const ammaBlobertContractAddress = getContractAddress(
+  manifest,
+  ammaBlobertContractTag
+);
+const pveBlobertContractAddress = getContractAddress(
+  manifest,
+  pveBlobertContractTag
+);
+
+const blobertContract = await getContract(provider, blobertContractAddress);
 const ammaBlobertContract = await getContract(
   provider,
-  getContractAddress(manifest, ammaBlobertContractTag)
+  ammaBlobertContractAddress
 );
+const pveBlobertContract = await getContract(
+  provider,
+  pveBlobertContractAddress
+);
+
+const PVECollectionAddresses = {
+  blobert: blobertContractAddress,
+  arcade_blobert: arcadeContractAddress,
+  amma_blobert: ammaBlobertContractAddress,
+};
 
 const toSigned = (x) => {
   if (x >= 0) {
@@ -91,6 +114,21 @@ const parseEnumObject = (obj) => {
     for (const o in obj) {
       return [o, obj[o]];
     }
+  }
+};
+
+const parseBlobertItemKey = (itemKey) => {
+  const [key, value] = Object.entries(itemKey)[0];
+  if (key == "Seed") {
+    return new CairoCustomEnum({
+      Seed: {
+        attribute: new CairoCustomEnum({ [value.attribute]: {} }),
+        attribute_id: value.attribute_id,
+      },
+    });
+  }
+  if (key == "Custom") {
+    return new CairoCustomEnum({ Custom: value });
   }
 };
 
@@ -153,42 +191,80 @@ const makeCustomItemCallData = (n, item) => {
   };
 };
 
+const makeAttackSlots = (attack_slots) => {
+  let slots = [];
+  for (const [item, slot] of attack_slots) {
+    slots.push([parseBlobertItemKey(item), slot]);
+  }
+  return slots;
+};
+
+const makeCollectionsAllowed = (collections) => {
+  let allowed = [];
+  for (const collection of collections) {
+    allowed.push(PVECollectionAddresses[collection]);
+  }
+  return allowed;
+};
+
+const makePveOpponentCallData = (opponent) => {
+  return {
+    name: opponent.name,
+    collection: PVECollectionAddresses[opponent.collection],
+    attributes: new CairoCustomEnum(opponent.attributes),
+    stats: opponent.stats,
+    attack_namespace: opponent.attack_namespace,
+    attack_slots: makeAttackSlots(opponent.attack_slots),
+    collections_allowed: makeCollectionsAllowed(opponent.collections_allowed),
+  };
+};
+
 const makeCall = (contract, entrypoint, calldata) => {
   return contract.populate(entrypoint, calldata);
 };
 
 let calls = [];
-for (const [trait, traits] of Object.entries(seed_data)) {
-  for (const [n, item] of Object.entries(traits)) {
-    calls.push([
-      `seed: ${trait} ${n} ${item.name}`,
-      makeCall(
-        blobertContract,
-        seedEntrypoint,
-        makeSeedItemCallData(trait, n, item)
-      ),
-    ]);
-  }
-}
+// for (const [trait, traits] of Object.entries(seed_data)) {
+//   for (const [n, item] of Object.entries(traits)) {
+//     calls.push([
+//       `seed: ${trait} ${n} ${item.name}`,
+//       makeCall(
+//         blobertContract,
+//         seedEntrypoint,
+//         makeSeedItemCallData(trait, n, item)
+//       ),
+//     ]);
+//   }
+// }
 
-for (const [n, item] of Object.entries(custom_data)) {
-  calls.push([
-    `custom: ${n} ${item.name}`,
-    makeCall(
-      blobertContract,
-      customEntrypoint,
-      makeCustomItemCallData(trait, n, item)
-    ),
-  ]);
-}
+// for (const [n, item] of Object.entries(custom_data)) {
+//   calls.push([
+//     `custom: ${n} ${item.name}`,
+//     makeCall(
+//       blobertContract,
+//       customEntrypoint,
+//       makeCustomItemCallData(trait, n, item)
+//     ),
+//   ]);
+// }
 
-for (const [n, item] of Object.entries(amma_data)) {
+// for (const [n, item] of Object.entries(amma_data)) {
+//   calls.push([
+//     `amma: ${n} ${item.name}`,
+//     makeCall(
+//       ammaBlobertContract,
+//       customEntrypoint,
+//       makeCustomItemCallData(n, item)
+//     ),
+//   ]);
+// }
+for (const opponent of pve_data["opponents"]) {
   calls.push([
-    `amma: ${n} ${item.name}`,
+    `pve: ${opponent.name}`,
     makeCall(
-      ammaBlobertContract,
-      customEntrypoint,
-      makeCustomItemCallData(n, item)
+      pveBlobertContract,
+      pveOpponentEntrypoint,
+      makePveOpponentCallData(opponent)
     ),
   ]);
 }

@@ -1,9 +1,9 @@
 {
   "world": {
     "class_hash": "0x45575a88cc5cef1e444c77ce60b7b4c9e73a01cbbe20926d5a4c72a94011410",
-    "address": "0x55b34f0a6e108c80da068fcfa953a8156281c3322940d742d4c47c92d58e68b",
-    "seed": "blob-arena-0.8.6",
-    "name": "blob_arena",
+    "address": "0x26fe89cb538b9dea906afda6997f39796830cd5f093c46d62a926871cd75623",
+    "seed": "blob-arena-0.8.7",
+    "name": "blob_arena-0.8.7",
     "entrypoints": [
       "uuid",
       "set_metadata",
@@ -1252,7 +1252,7 @@
   },
   "contracts": [
     {
-      "address": "0x4c1fa6b61b376f31d2f706fb9a3eaff59dbde470e244fb7b578f5b6cd0d8beb",
+      "address": "0x2bf37dcb758041213d43e0e17b2ec3efa8927d042033506950a26180057d104",
       "class_hash": "0x157045e375780d4e32ea888c0f7859ecd381329e0fc10bd87e624a202eab1c7",
       "abi": [
         {
@@ -2138,7 +2138,7 @@
       ]
     },
     {
-      "address": "0x3e8234406c0a9d035dd4286eb580146c08b4fc1144e157a3cc2142b9c141e00",
+      "address": "0x641c87b456ee888650a97991d8d4b878f455e91ab4d92256fe207438c7a64ee",
       "class_hash": "0x45ecc0d396b19d9f8a2045247948cb44129205eff2a0dfa61b935532e25c97a",
       "abi": [
         {
@@ -2566,8 +2566,8 @@
       ]
     },
     {
-      "address": "0x5ae995f4ff218b42a3e3e5f002fbcbda382a8f8c20e8767d86eac113a1ad7c5",
-      "class_hash": "0x172c3e32eebcdfa63d2a82627bd09345a6d8d54abeae982240a091cfc57bda1",
+      "address": "0x1e296a088cbc8b6a133e5ca2d234d82f16199ad8300f5a0d12644f1e3586bba",
+      "class_hash": "0x4fc36774ee810024ee0fa5d07cb4cb1a718a69b850a360f1ac4a4cbbccc4ad",
       "abi": [
         {
           "type": "impl",
@@ -2860,8 +2860,8 @@
       ]
     },
     {
-      "address": "0x28024e228b843a75c962614efa680eaee77530a2cd67e48245e993d92c6362",
-      "class_hash": "0x3e5423430c63feda2193fc728b9616e3ddac45b3401ef5a9a690c46d1e407f4",
+      "address": "0x9ba2049681d1a6097707c3e35238194fdd8d94f7a714dee14309cccb13b1ae",
+      "class_hash": "0x6573f39cfece3fb22037da1e84df77421aa7544471a8040436b09ac220fb2b8",
       "abi": [
         {
           "type": "impl",
@@ -3118,8 +3118,8 @@
       ]
     },
     {
-      "address": "0x3d0ae9239ade4714b24e85c80a09741429e977726f40d6469a4f16ea962fbdb",
-      "class_hash": "0x30a431b0c8bf6aa48449e13a025be74c8fdc35f261be94b492770de35846027",
+      "address": "0x18ab22454cce14358e7e6019be419bc8846d09d608c7311a57c5544c15269e6",
+      "class_hash": "0x2ccaf46733168ba65b0a7f59c0d1ae99da6fd9a9613afe7020f5ee65bc8c050",
       "abi": [
         {
           "type": "impl",
@@ -3446,7 +3446,7 @@
       ]
     },
     {
-      "address": "0x7f3cd90917836d760a55e8b42aaee964e8a42525d9462851acec869b483f7f3",
+      "address": "0x707aa42e69160e7f02323940c1938c377656e01496a069eccdd3924dbbfdbfa",
       "class_hash": "0x97f9e13fbda4b67a3bb95fda60a7ead29a4bc7c9d750e54e6dfb2fe2012fe6",
       "abi": [
         {
@@ -4246,6 +4246,535 @@
         "set_custom_item",
         "set_custom_item_with_attacks"
       ]
+    },
+    {
+      "address": "0x35a89a0d4512631ef446753d51cd5a249cd9879bd17247fd41793b705dc9aa1",
+      "class_hash": "0x72e933019a1faa817a5c9575dbae801d6d98a94d0e0a920f7f1d6c5235564cc",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "pve_blobert_actions__ContractImpl",
+          "interface_name": "dojo::contract::interface::IContract"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::interface::IContract",
+          "items": []
+        },
+        {
+          "type": "impl",
+          "name": "pve_blobert_actions__DeployedContractImpl",
+          "interface_name": "dojo::meta::interface::IDeployedResource"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::meta::interface::IDeployedResource",
+          "items": [
+            {
+              "type": "function",
+              "name": "dojo_name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IPVEImpl",
+          "interface_name": "blob_arena::pve::contract::IPVE"
+        },
+        {
+          "type": "struct",
+          "name": "core::integer::u256",
+          "members": [
+            {
+              "name": "low",
+              "type": "core::integer::u128"
+            },
+            {
+              "name": "high",
+              "type": "core::integer::u128"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "blob_arena::pve::contract::IPVE",
+          "items": [
+            {
+              "type": "function",
+              "name": "new_game",
+              "inputs": [
+                {
+                  "name": "player_collection_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "player_token_id",
+                  "type": "core::integer::u256"
+                },
+                {
+                  "name": "player_attacks",
+                  "type": "core::array::Array::<(core::felt252, core::felt252)>"
+                },
+                {
+                  "name": "opponent_token",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "attack",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "attack",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IPVEAdminImpl",
+          "interface_name": "blob_arena::pve::contract::IPVEAdmin"
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::collections::blobert::components::Seed",
+          "members": [
+            {
+              "name": "background",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "armour",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "jewelry",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "mask",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "weapon",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::collections::blobert::components::TokenAttributes",
+          "variants": [
+            {
+              "name": "Seed",
+              "type": "blob_arena::collections::blobert::components::Seed"
+            },
+            {
+              "name": "Custom",
+              "type": "core::felt252"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::stats::TStats::<core::integer::u8>",
+          "members": [
+            {
+              "name": "strength",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "vitality",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "dexterity",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "luck",
+              "type": "core::integer::u8"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::collections::blobert::components::BlobertAttribute",
+          "variants": [
+            {
+              "name": "Background",
+              "type": "()"
+            },
+            {
+              "name": "Armour",
+              "type": "()"
+            },
+            {
+              "name": "Jewelry",
+              "type": "()"
+            },
+            {
+              "name": "Mask",
+              "type": "()"
+            },
+            {
+              "name": "Weapon",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::collections::blobert::components::SeedItem",
+          "members": [
+            {
+              "name": "attribute",
+              "type": "blob_arena::collections::blobert::components::BlobertAttribute"
+            },
+            {
+              "name": "attribute_id",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::collections::blobert::components::BlobertItemKey",
+          "variants": [
+            {
+              "name": "Seed",
+              "type": "blob_arena::collections::blobert::components::SeedItem"
+            },
+            {
+              "name": "Custom",
+              "type": "core::felt252"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "blob_arena::pve::contract::IPVEAdmin",
+          "items": [
+            {
+              "type": "function",
+              "name": "new_opponent",
+              "inputs": [
+                {
+                  "name": "name",
+                  "type": "core::byte_array::ByteArray"
+                },
+                {
+                  "name": "collection",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "attributes",
+                  "type": "blob_arena::collections::blobert::components::TokenAttributes"
+                },
+                {
+                  "name": "stats",
+                  "type": "blob_arena::stats::TStats::<core::integer::u8>"
+                },
+                {
+                  "name": "attacks",
+                  "type": "core::array::Array::<core::felt252>"
+                },
+                {
+                  "name": "collections_allowed",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "new_opponent_from_attack_slots",
+              "inputs": [
+                {
+                  "name": "name",
+                  "type": "core::byte_array::ByteArray"
+                },
+                {
+                  "name": "collection",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "attributes",
+                  "type": "blob_arena::collections::blobert::components::TokenAttributes"
+                },
+                {
+                  "name": "stats",
+                  "type": "blob_arena::stats::TStats::<core::integer::u8>"
+                },
+                {
+                  "name": "attack_namespace",
+                  "type": "core::byte_array::ByteArray"
+                },
+                {
+                  "name": "attack_slots",
+                  "type": "core::array::Array::<(blob_arena::collections::blobert::components::BlobertItemKey, core::felt252)>"
+                },
+                {
+                  "name": "collections_allowed",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_opponent_collection",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "collection",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "available",
+                  "type": "core::bool"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_opponent_collections",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "collections",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                },
+                {
+                  "name": "available",
+                  "type": "core::bool"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_opponents_collection",
+              "inputs": [
+                {
+                  "name": "token_ids",
+                  "type": "core::array::Array::<core::felt252>"
+                },
+                {
+                  "name": "collection",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "available",
+                  "type": "core::bool"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "dojo_init",
+          "inputs": [],
+          "outputs": [],
+          "state_mutability": "view"
+        },
+        {
+          "type": "impl",
+          "name": "WorldProviderImpl",
+          "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
+        },
+        {
+          "type": "struct",
+          "name": "dojo::world::iworld::IWorldDispatcher",
+          "members": [
+            {
+              "name": "contract_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::world_provider::IWorldProvider",
+          "items": [
+            {
+              "type": "function",
+              "name": "world_dispatcher",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::world::iworld::IWorldDispatcher"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "UpgradeableImpl",
+          "interface_name": "dojo::contract::components::upgradeable::IUpgradeable"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::upgradeable::IUpgradeable",
+          "items": [
+            {
+              "type": "function",
+              "name": "upgrade",
+              "inputs": [
+                {
+                  "name": "new_class_hash",
+                  "type": "core::starknet::class_hash::ClassHash"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": []
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "class_hash",
+              "type": "core::starknet::class_hash::ClassHash",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "Upgraded",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+          "kind": "enum",
+          "variants": []
+        },
+        {
+          "type": "event",
+          "name": "blob_arena::pve::contract::pve_blobert_actions::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "UpgradeableEvent",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+              "kind": "nested"
+            },
+            {
+              "name": "WorldProviderEvent",
+              "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+              "kind": "nested"
+            }
+          ]
+        }
+      ],
+      "init_calldata": [],
+      "tag": "pve_blobert-pve_blobert_actions",
+      "selector": "0x4a3d4964b4b5b8f11879283e18f52f1a27f2fa52da589aa9b95e5ea0213b4d3",
+      "systems": [
+        "new_game",
+        "attack",
+        "new_opponent",
+        "new_opponent_from_attack_slots",
+        "set_opponent_collection",
+        "set_opponent_collections",
+        "set_opponents_collection",
+        "upgrade"
+      ]
     }
   ],
   "models": [
@@ -4287,9 +4816,15 @@
     },
     {
       "members": [],
-      "class_hash": "0x2d9de6937f2135e3420303b78ff8eacb762d79ef32877253a71848ac17f31e2",
-      "tag": "blob_arena-AvailableAttack",
-      "selector": "0x32de0cecfab8b89e212fbac9802141a7fb4d4ec008fe03a53d9d1f632a1e448"
+      "class_hash": "0x12a07e5e7cd3bb81d2ff93664ff635970984794d5a157e41ec86aa866dd302e",
+      "tag": "blob_arena-AttackAvailable",
+      "selector": "0x1bf52499e41160b410aea1ad7c22c85b046c36a2c987fd2f051e77372820a7d"
+    },
+    {
+      "members": [],
+      "class_hash": "0x1b0164faf51caadb637b1678081eae3f6de8c6013624521ac9ca65674c0c684",
+      "tag": "blob_arena-AttackLastUsed",
+      "selector": "0x614318952d2a95d4885a7bee8fb6d80140d50f9213a9883a147c8e0788ff2c0"
     },
     {
       "members": [],
@@ -4368,6 +4903,24 @@
       "class_hash": "0x6e7f40488e3dba2722c0b26754beca6ff8007f6b0b48bbbd413a2838e431b4b",
       "tag": "blobert-BlobertItem",
       "selector": "0x1eb8dc949a0848de6ecda53d9fe49124136424ee308527fd8274b54616211c5"
+    },
+    {
+      "members": [],
+      "class_hash": "0x5695abb4fff107f952f85af477ce0bde236130dc638c2c5aa99fc4d3dc9b13",
+      "tag": "pve_blobert-PVECollectionAllowed",
+      "selector": "0x4529fa4c78d7ad06798fb77345a202687442ce76db2f06dd3edf5abc6b98811"
+    },
+    {
+      "members": [],
+      "class_hash": "0x23c1361bf24ab803c8dea26de27469818db32b8794860e2853d835ce0712796",
+      "tag": "pve_blobert-PVEGame",
+      "selector": "0x1de11c21dc5290e8c3ea5421d2fc522384fa369812f007751fe66ac2ed7e0fb"
+    },
+    {
+      "members": [],
+      "class_hash": "0x12a86fabb0a234082834849ccbdf7dce16533f9368c282b28882ec924ad2a0d",
+      "tag": "pve_blobert-PVEOpponent",
+      "selector": "0x26bf21d2b3dcccdf754886f999d848881c6ac3684dbf6eab2e4c62879cc9201"
     }
   ],
   "events": [
@@ -4400,6 +4953,12 @@
       "class_hash": "0x7cd95178fb202cbe98cd461b8353c93b5f8c77a8a29fadf5d5f3dbb54cdcb86",
       "tag": "blobert-BlobertItemName",
       "selector": "0x3c65933b654646718218b7b044c12f8e25aabdd31201f6e7e040063d7b6d7b"
+    },
+    {
+      "members": [],
+      "class_hash": "0x61f83aca7edaa66e8f3048d8f0e6775d680c6c550dde2de5590b2889c91b9db",
+      "tag": "pve_blobert-PVEBlobertInfo",
+      "selector": "0x65b483ab67c45ea17bd5557c98a5b585f441959b1b66f26a7d157fb7e24ba13"
     }
   ]
 }

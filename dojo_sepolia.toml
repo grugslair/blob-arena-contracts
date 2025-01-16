@@ -1,6 +1,6 @@
 [world]
-name = "blob_arena"
-seed = "blob-arena-0.8.6"
+name = "blob_arena-0.8.7"
+seed = "blob-arena-0.8.7"
 
 
 [env]
@@ -24,6 +24,12 @@ mappings = { "blobert" = [
     "BlobertItem",
     "AttackSlot",
     "BlobertItemName",
+], "pve_blobert" = [
+    "pve_blobert_actions",
+    "PVEOpponent",
+    "PVECollectionAllowed",
+    "PVEBlobertInfo",
+    "PVEGame",
 ] }
 
 [writers]
@@ -57,7 +63,6 @@ mappings = { "blobert" = [
     "blob_arena-lobby_actions",
     "blob_arena-game_admin",
     "pve_blobert-pve_blobert_actions",
-
 ]
 
 "blob_arena-Commitment" = ["blob_arena-game_actions"]
@@ -83,4 +88,4 @@ mappings = { "blobert" = [
 "blobert" = ["blobert-blobert_actions"]
 "arcade_blobert" = ["arcade_blobert-arcade_blobert_actions"]
 "amma_blobert" = ["amma_blobert-amma_blobert_actions"]
-blobert_pve = ["blobert_pve-blobert_pve_actions"]
+"pve_blobert" = ["pve_blobert-pve_blobert_actions"]

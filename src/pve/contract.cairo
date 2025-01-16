@@ -54,7 +54,7 @@ trait IPVEAdmin<TContractState> {
 }
 
 #[dojo::contract]
-mod blobert_pve_actions {
+mod pve_blobert_actions {
     use starknet::{ContractAddress, get_caller_address};
     use dojo::world::WorldStorage;
     use blob_arena::{
