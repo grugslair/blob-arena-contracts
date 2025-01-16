@@ -125,7 +125,7 @@ impl CombatImpl of CombatTrait {
         let hash_state = hash_state.update_with(attacker_state.id);
         let mut seed = hash_state.to_u128();
         let result = if attack_id.is_zero()
-            || !(checked || !self.run_attack_check(attacker_state.id, attack_id, round)) {
+            || !(checked || self.run_attack_check(attacker_state.id, attack_id, round)) {
             AttackOutcomes::Failed
         } else if attacker_state.run_stun(ref seed) {
             AttackOutcomes::Stunned

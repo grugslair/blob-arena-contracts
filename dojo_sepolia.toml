@@ -41,6 +41,7 @@ mappings = { "blobert" = [
 "blob_arena-CombatantToken" = [
     "blob_arena-lobby_actions",
     "blob_arena-game_admin",
+    "pve_blobert-pve_blobert_actions",
 ]
 "blob_arena-CombatantInfo" = [
     "blob_arena-lobby_actions",
@@ -53,11 +54,18 @@ mappings = { "blobert" = [
     "blob_arena-game_admin",
     "pve_blobert-pve_blobert_actions",
 ]
-"blob_arena-AvailableAttack" = [
-    "blob_arena-game_actions",
+
+"blob_arena-AttackAvailable" = [
     "blob_arena-lobby_actions",
     "blob_arena-game_admin",
+    "pve_blobert-pve_blobert_actions",
 ]
+
+"blob_arena-AttackLastUsed" = [
+    "blob_arena-game_actions",
+    "pve_blobert-pve_blobert_actions",
+]
+
 "blob_arena-CombatState" = [
     "blob_arena-game_actions",
     "blob_arena-lobby_actions",

@@ -97,6 +97,6 @@ fn in_order<T, +PartialOrd<T>, +PartialEq<T>, +Drop<T>>(a: T, b: T, hash: HashSt
     if a == b {
         (hash.to_u128() % 2_u128).is_zero()
     } else {
-        a < b
+        a > b
     }
 }

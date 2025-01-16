@@ -62,7 +62,6 @@ struct PVEStore {
     pve: WorldStorage,
 }
 
-
 #[generate_trait]
 impl PVEStorageImpl of PVEStorage {
     fn new_pve_game_model(
