@@ -77,7 +77,7 @@ mod game_actions {
         fn run(ref self: ContractState, combat_id: felt252) {
             let mut world = self.get_storage();
 
-            world.run_round(world.get_owners_game(combat_id, get_contract_address()));
+            world.run_game_round(world.get_owners_game(combat_id, get_contract_address()));
         }
 
         fn kick_player(ref self: ContractState, combat_id: felt252) {

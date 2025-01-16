@@ -66,7 +66,7 @@ impl GameStorageImpl of GameStorage {
         self.get_player(self.get_combat_winner(game_id))
     }
 
-    fn get_combatant_state(
+    fn get_combatants_state(
         self: @WorldStorage, combat_id: felt252, combatant_a_id: felt252, combatant_b_id: felt252
     ) -> (bool, bool) {
         match self.get_combat_phase(combat_id) {

@@ -111,6 +111,16 @@ pub impl TSaturatingIntoS<
     }
 }
 
+impl ArrayTryIntoFixed2Array<T, +Drop<T>> of TryInto<Array<T>, [T; 2]> {
+    fn try_into(mut self: Array<T>) -> Option<[T; 2]> {
+        if self.len() == 2 {
+            Option::Some([self.pop_front().unwrap(), self.pop_front().unwrap()])
+        } else {
+            Option::None
+        }
+    }
+}
+
 impl Felt252BitAnd of BitAnd<felt252> {
     #[inline(always)]
     fn bitand(lhs: felt252, rhs: felt252) -> felt252 {
@@ -181,6 +191,13 @@ impl ArrayTryIntoTTupleSized2<T, +Drop<T>, +Copy<T>> of TryInto<Array<T>, (T, T)
         } else {
             Option::None
         }
+    }
+}
+
+impl TTupleSized2IntoFixed<T, +Drop<T>> of Into<(T, T), [T; 2]> {
+    fn into(self: (T, T)) -> [T; 2] {
+        let (a, b) = self;
+        [a, b]
     }
 }
 

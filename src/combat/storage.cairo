@@ -9,6 +9,9 @@ impl CombatImpl of CombatStorage {
     fn get_combat_state(self: @WorldStorage, id: felt252) -> CombatState {
         self.read_model(id)
     }
+    fn set_combat_state(ref self: WorldStorage, state: CombatState) {
+        self.write_model(@state);
+    }
     fn get_combat_phase(self: @WorldStorage, id: felt252) -> Phase {
         self.read_member(Model::<CombatState>::ptr_from_keys(id), selector!("phase"))
     }
@@ -26,11 +29,8 @@ impl CombatImpl of CombatStorage {
     }
 
     fn emit_round_result(
-        ref self: WorldStorage, combat: @CombatState, attacks: Array<AttackResult>
+        ref self: WorldStorage, combat_id: felt252, round: u32, attacks: Array<AttackResult>
     ) {
-        self
-            .emit_event(
-                @RoundResult { combat_id: *combat.id, round: *combat.round, attacks: attacks }
-            );
+        self.emit_event(@RoundResult { combat_id, round, attacks: attacks });
     }
 }

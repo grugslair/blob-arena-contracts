@@ -9,8 +9,10 @@ use blob_arena::{
     combat::{CombatTrait, Phase, CombatState, CombatStorage, components::PhaseTrait},
     commitments::Commitment, utils::get_transaction_hash,
     combatants::{CombatantTrait, CombatantInfo, CombatantStorage, CombatantState}, salts::Salts,
-    hash::in_order, attacks::results::{RoundResult, AttackResult},
-    core::{TTupleSized2ToSpan, ArrayTryIntoTTupleSized2}
+    hash::in_order, attacks::{results::{RoundResult, AttackResult}, Attack, AttackStorage},
+    core::{
+        TTupleSized2ToSpan, ArrayTryIntoTTupleSized2, ArrayTryIntoFixed2Array, TTupleSized2IntoFixed
+    }
 };
 
 
@@ -55,23 +57,6 @@ impl GameImpl of GameTrait {
         self.end_game(combat_id, winner, looser, via);
     }
 
-    fn _if_winner_end(
-        ref self: WorldStorage,
-        combat_id: felt252,
-        player_1: @CombatantState,
-        player_2: @CombatantState
-    ) -> bool {
-        if (*player_2.health).is_zero() {
-            self.end_game_from_ids(combat_id, *player_1.id, *player_2.id, WinVia::Combat);
-            true
-        } else if (*player_1.health).is_zero() {
-            self.end_game_from_ids(combat_id, *player_2.id, *player_1.id, WinVia::Combat);
-            true
-        } else {
-            false
-        }
-    }
-
     fn if_winner_end(
         ref self: WorldStorage,
         combat_id: felt252,
@@ -87,6 +72,30 @@ impl GameImpl of GameTrait {
         }
     }
 
+    fn get_attack_order(
+        self: @WorldStorage, combatants: @[
+            CombatantState
+            ; 2], attack_ids: [
+            felt252
+        ; 2], hash: HashState
+    ) -> bool {
+        let [attack_1, attack_2] = attack_ids;
+        if attack_1.is_zero() {
+            return false;
+        };
+        if attack_2.is_zero() {
+            return true;
+        };
+        let [combatant_1, combatant_2] = combatants;
+        let [speed_1, speed_2]: [u8; 2] = self
+            .get_attack_speeds(attack_ids.span())
+            .try_into()
+            .unwrap();
+        in_order(
+            *combatant_1.stats.dexterity + speed_1, *combatant_2.stats.dexterity + speed_2, hash
+        )
+    }
+
     fn run_game_round(ref self: WorldStorage, game: GameInfo) {
         let combat = self.get_combat_state(game.combat_id);
         combat.phase.assert_reveal();
@@ -94,11 +103,9 @@ impl GameImpl of GameTrait {
         let combatants_span = game.combatant_ids.span();
         assert(self.check_commitments_unset(combatants_span), 'Not all attacks revealed');
         let hash = self.get_salts_hash_state(combat.id);
-
-        let (progress, results) = self.run_round(combat.id, combat.round, combatants_span, hash);
-        self.emit_round_result(@combat, results);
-
-        match progress {
+        let combatants = game.combatant_ids.into();
+        let attacks = self.get_attack_ids_from_combatant_ids(combatants_span).try_into().unwrap();
+        match self.run_round(combat.id, combat.round, combatants, attacks, [false, false], hash) {
             GameProgress::Active => self.next_round(combat, combatants_span),
             GameProgress::Ended([
                 winner, looser
@@ -107,29 +114,37 @@ impl GameImpl of GameTrait {
     }
 
     fn run_round(
-        ref self: WorldStorage,
-        combat_id: felt252,
-        round: u32,
-        combatants: Span<felt252>,
-        hash: HashState,
-    ) -> (GameProgress, Array<AttackResult>) {
-        let mut array = self.get_states_and_attacks(combatants);
-        let ordered = in_order(array.at(0).get_speed(), array.at(1).get_speed(), hash);
-        let (a, b) = (array.pop_front().unwrap(), array.pop_front().unwrap());
-        let ((mut state_1, attack_1), (mut state_2, attack_2)) = if ordered {
-            (a, b)
-        } else {
-            (b, a)
+        ref self: WorldStorage, combat_id: felt252, round: u32, combatants_ids: [
+            felt252
+            ; 2], attacks: [
+            felt252
+            ; 2], verified: [
+            bool
+        ; 2], hash: HashState,
+    ) -> GameProgress {
+        let combatants = self.get_combatant_states(combatants_ids.span()).try_into().unwrap();
+        // This needs to be another line beca compiler bs
+        let [ca, cb]: [CombatantState; 2] = combatants;
+        let ([aa, ab], [va, vb]) = (attacks, verified);
+        let (mut state_1, mut state_2, attack_1, attack_2, verified_1, verified_2) =
+            match self.get_attack_order(@combatants, attacks, hash) {
+            true => (ca, cb, aa, ab, va, vb),
+            false => (cb, ca, ab, aa, vb, va)
         };
         let mut results = array![];
-        results.append(self.run_attack(ref state_1, ref state_2, attack_1, round, hash));
+        results
+            .append(self.run_attack(ref state_1, ref state_2, attack_1, round, verified_1, hash));
         let mut progress = self.if_winner_end(combat_id, @state_2, @state_1);
         if progress == GameProgress::Active {
-            results.append(self.run_attack(ref state_2, ref state_1, attack_2, round, hash));
+            results
+                .append(
+                    self.run_attack(ref state_2, ref state_1, attack_2, round, verified_2, hash)
+                );
             progress = self.if_winner_end(combat_id, @state_1, @state_2)
         };
         self.set_combatant_states([@state_1, @state_2].span());
-        (progress, results)
+        self.emit_round_result(combat_id, round, results);
+        progress
     }
 }
 

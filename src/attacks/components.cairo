@@ -75,7 +75,7 @@ struct AttackName {
 }
 
 #[dojo::model]
-#[derive(Drop, Serde)]
+#[derive(Drop, Serde, Default)]
 struct Attack {
     #[key]
     id: felt252,
@@ -86,14 +86,24 @@ struct Attack {
     miss: Array<Effect>,
 }
 
+
 #[dojo::model]
-#[derive(Drop, Serde, Copy)]
-struct AvailableAttack {
+#[derive(Drop, Serde)]
+struct AttackAvailable {
     #[key]
     combatant_id: felt252,
     #[key]
     attack_id: felt252,
     available: bool,
+}
+
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct AttackLastUsed {
+    #[key]
+    combatant_id: felt252,
+    #[key]
+    attack_id: felt252,
     last_used: u32,
 }
 
@@ -155,14 +165,6 @@ impl AttackInputImpl of AttackInputTrait {
             },
             AttackName { id, name: self.name }
         )
-    }
-}
-
-#[generate_trait]
-impl AvailableAttackImpl of AvailableAttackTrait {
-    fn check_attack_useable(self: @AvailableAttack, cooldown: u8, round: u32) -> bool {
-        *self.available
-            && ((*self.last_used).is_zero() || *self.last_used + cooldown.into() < round)
     }
 }
 

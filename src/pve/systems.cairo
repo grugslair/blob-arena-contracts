@@ -1,50 +1,94 @@
 use starknet::{ContractAddress, get_contract_address};
 use dojo::world::WorldStorage;
 use blob_arena::{
-    pve::{PVEGame, PVEToken, PVEBlobertInfo, PVEStorage, PVEPhase}, game::{GameStorage, GameTrait},
-    combatants::{CombatantStorage, CombatantTrait}, attacks::AttackStorage, world::uuid,
-    hash::make_hash_state
+    attacks::Attack, pve::{PVEGame, PVEOpponent, PVEBlobertInfo, PVEStorage, PVEPhase, PVEStore},
+    game::{GameStorage, GameTrait, GameProgress},
+    combatants::{CombatantStorage, CombatantTrait, CombatantState}, attacks::AttackStorage,
+    combat::CombatTrait, world::uuid, hash::{make_hash_state, felt252_to_u128}, stats::UStats,
+    collections::blobert::TokenAttributes
 };
+
 
 #[generate_trait]
 impl PVEImpl of PVETrait {
     fn new_pve_game(
-        ref self: WorldStorage,
+        ref self: PVEStore,
         player: ContractAddress,
         player_collection_address: ContractAddress,
         player_token_id: u256,
         player_attacks: Array<(felt252, felt252)>,
         opponent_token: felt252
-    ) {
+    ) -> felt252 {
         let game_id = uuid();
         let combatant_id = uuid();
         let opponent_id = uuid();
-        self.set_combatant_token(combatant_id, player_collection_address, player_token_id);
-        self.set_pve_game(game_id, player, combatant_id, opponent_token, opponent_id);
-        self.new_pve_state(game_id);
+        assert(
+            self.pve.get_collection_allowed(opponent_token, player_collection_address),
+            'Collection not allowed'
+        );
+        self.ba.set_combatant_token(combatant_id, player_collection_address, player_token_id);
         self
+            .ba
+            .create_combatant_state(opponent_id, self.pve.get_pve_opponent_stats(opponent_token));
+        self.pve.new_pve_game_model(game_id, player, combatant_id, opponent_token, opponent_id);
+        self
+            .ba
             .setup_combatant_state_and_attacks(
                 combatant_id, player_collection_address, player_token_id, player_attacks
             );
-        self.setup_pve_opponent_combatant(opponent_id, opponent_token);
+        game_id
     }
-    fn setup_pve_opponent_combatant(
-        ref self: WorldStorage, opponent_id: felt252, opponent_token: felt252
+    fn setup_new_opponent(
+        ref self: WorldStorage,
+        name: ByteArray,
+        collection: ContractAddress,
+        attributes: TokenAttributes,
+        stats: UStats,
+        attacks: Array<felt252>,
+        collections_allowed: Array<ContractAddress>
+    ) -> felt252 {
+        let token_id = uuid();
+        self.set_pve_opponent(token_id, stats, attacks);
+        self.set_pve_blobert_info(token_id, name, collection, attributes);
+        self.set_collections_allowed(token_id, collections_allowed, true);
+        token_id
+    }
+    fn run_pve_round(
+        ref self: PVEStore, game: PVEGame, player_attack: felt252, randomness: felt252
     ) {
-        let token = self.get_pve_token(opponent_token);
-        self.create_combatant_state(opponent_id, token.stats);
-        self.set_combatant_attacks_available(opponent_id, token.attacks);
-    }
-    fn run_pve_round(ref self: WorldStorage, game: PVEGame, randomness: felt252) {
-        let state = self.get_pve_state(game.id);
-        assert(state.phase == PVEPhase::Active, 'Not active');
+        assert(game.phase == PVEPhase::Active, 'Not active');
         let hash = make_hash_state(randomness);
-        let (progress, results) = self
-            .run_round(game.id, state.round, [game.player_id, game.opponent_id].span(), hash);
-        match progress {
-            PVEPhase::Active => {
-                self.set_pve_state_round(game.id, state.round + 1);
-                
+        let combatants = [game.player_id, game.opponent_id];
+        let opponent_attacks = self.pve.get_pve_opponent_attacks(game.opponent_token);
+        let attacks = [
+            player_attack, self.ba.get_opponent_attack(@game, opponent_attacks, randomness)
+        ];
+        match self.ba.run_round(game.id, game.round, combatants, attacks, [false, true], hash) {
+            GameProgress::Active => { self.pve.set_pve_round(game.id, game.round + 1); },
+            GameProgress::Ended([
+                winner, _
+            ]) => self.pve.set_pve_ended(game.id, winner == game.player_id)
+        }
+    }
+    fn get_opponent_attack(
+        ref self: WorldStorage, game: @PVEGame, attacks: Array<felt252>, randomness: felt252
+    ) -> felt252 {
+        let (mut n, n_attacks) = (0, attacks.len());
+        let sn = (felt252_to_u128(randomness) % n_attacks.into()).try_into().unwrap();
+        loop {
+            let i = (n + sn);
+            let id = if i < n_attacks {
+                *attacks[i]
+            } else {
+                *attacks[i - n_attacks]
+            };
+            if self.run_attack_cooldown(*game.opponent_id, id, *game.round) {
+                break id;
+            };
+            n += 1;
+            if n == n_attacks {
+                break 0;
+            };
         }
     }
 }

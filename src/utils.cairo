@@ -49,3 +49,4 @@ impl SeedProbabilityImpl of SeedProbability {
         value
     }
 }
+

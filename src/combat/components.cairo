@@ -27,6 +27,12 @@ struct CombatState {
     round: u32,
 }
 
+#[derive(Copy, Drop, Serde, PartialEq)]
+enum AttackCooledDown {
+    False,
+    True: bool,
+}
+
 
 #[generate_trait]
 impl PhaseImpl of PhaseTrait {

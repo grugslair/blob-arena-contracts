@@ -23,9 +23,7 @@ mod attacks {
     // mod contract;
     mod results;
     mod storage;
-    use components::{
-        Stat, Target, Affect, Damage, Attack, Effect, PlannedAttack, AvailableAttackTrait,
-    };
+    use components::{Stat, Target, Affect, Damage, Attack, Effect, PlannedAttack,};
     use storage::AttackStorage;
 }
 mod stats;
@@ -44,7 +42,7 @@ mod combat {
     mod components;
     mod systems;
     mod storage;
-    use components::{Phase, CombatState};
+    use components::{Phase, CombatState, AttackCooledDown};
     use systems::CombatTrait;
     use storage::CombatStorage;
 }
@@ -53,6 +51,7 @@ mod game {
     mod storage;
     mod contract;
     mod systems;
+    use components::{GameProgress};
     use storage::GameStorage;
     use systems::GameTrait;
     mod admin;
@@ -68,7 +67,11 @@ mod lobby {
 mod pve {
     mod components;
     mod systems;
-    use components::{PVEGame, PVEToken, PVEBlobertInfo, PVEStorage, PVEPhase};
+    mod contract;
+    use systems::PVETrait;
+    use components::{
+        PVEGame, PVEOpponent, PVEBlobertInfo, PVEStorage, PVEPhase, pve_namespace, PVEStore
+    };
 }
 
 pub use world::{default_namespace, DefaultStorage};

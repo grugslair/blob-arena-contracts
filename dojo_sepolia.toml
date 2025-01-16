@@ -45,6 +45,7 @@ mappings = { "blobert" = [
     "blob_arena-game_actions",
     "blob_arena-lobby_actions",
     "blob_arena-game_admin",
+    "pve_blobert-pve_blobert_actions",
 ]
 "blob_arena-AvailableAttack" = [
     "blob_arena-game_actions",
@@ -55,6 +56,8 @@ mappings = { "blobert" = [
     "blob_arena-game_actions",
     "blob_arena-lobby_actions",
     "blob_arena-game_admin",
+    "pve_blobert-pve_blobert_actions",
+
 ]
 
 "blob_arena-Commitment" = ["blob_arena-game_actions"]
@@ -62,7 +65,11 @@ mappings = { "blobert" = [
 "blob_arena-Salts" = ["blob_arena-game_actions"]
 "blob_arena-PlannedAttack" = ["blob_arena-game_actions"]
 "blob_arena-CombatEnd" = ["blob_arena-game_actions"]
-"blob_arena-RoundResult" = ["blob_arena-game_actions"]
+
+"blob_arena-RoundResult" = [
+    "blob_arena-game_actions",
+    "pve_blobert-pve_blobert_actions",
+]
 
 "blob_arena-Attack" = [
     "blobert-blobert_actions",
@@ -76,3 +83,4 @@ mappings = { "blobert" = [
 "blobert" = ["blobert-blobert_actions"]
 "arcade_blobert" = ["arcade_blobert-arcade_blobert_actions"]
 "amma_blobert" = ["amma_blobert-amma_blobert_actions"]
+blobert_pve = ["blobert_pve-blobert_pve_actions"]
