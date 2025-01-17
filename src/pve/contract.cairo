@@ -2,6 +2,31 @@ use starknet::ContractAddress;
 use blob_arena::{stats::UStats, collections::blobert::{TokenAttributes, BlobertItemKey}};
 
 
+/// Interface for Player vs Environment (PVE) contract.
+///
+/// # Methods
+/// - `new_game`: Starts a new game session.
+/// - `attack`: Executes an attack in an ongoing game.
+///
+/// ## `new_game`
+/// Starts a new game session.
+///
+/// ### Parameters:
+/// - `player_collection_address`: Address of the player's collection contract.
+/// - `player_token_id`: Token ID of the player.
+/// - `player_attacks`: Array of tuples representing the player's attacks. Each tuple contains two
+/// `felt252` values.
+/// - `opponent_token`: Token ID of the opponent.
+///
+/// ### Returns:
+/// - `felt252`: A unique identifier for the newly created game.
+///
+/// ## `attack`
+/// Executes an attack in an ongoing game.
+///
+/// ### Parameters:
+/// - `game_id`: Unique identifier of the game.
+/// - `attack`: Attack identifier represented as `felt252`.
 #[starknet::interface]
 trait IPVE<TContractState> {
     fn new_game(
@@ -14,6 +39,70 @@ trait IPVE<TContractState> {
     fn attack(ref self: TContractState, game_id: felt252, attack: felt252);
 }
 
+
+/// Interface for Player vs Environment (PVE) contract administration.
+///
+/// # Methods
+/// - `new_opponent`: Registers a new opponent.
+/// - `new_opponent_from_attack_slots`: Registers a new opponent using attack slots.
+/// - `set_opponent_collection`: Sets the collection availability for an opponent.
+/// - `set_opponent_collections`: Sets the collection availability for multiple collections for an
+/// opponent.
+/// - `set_opponents_collection`: Sets the collection availability for multiple opponents.
+///
+/// ## `new_opponent`
+/// Registers a new opponent.
+///
+/// ### Parameters:
+/// - `name`: Name of the opponent.
+/// - `collection`: Address of the opponent's collection contract.
+/// - `attributes`: Attributes of the opponent.
+/// - `stats`: Stats of the opponent.
+/// - `attacks`: Array of attack identifiers.
+/// - `collections_allowed`: Array of addresses of allowed collections.
+///
+/// ### Returns:
+/// - `felt252`: A unique identifier for the newly registered opponent.
+///
+/// ## `new_opponent_from_attack_slots`
+/// Registers a new opponent using attack slots.
+///
+/// ### Parameters:
+/// - `name`: Name of the opponent.
+/// - `collection`: Address of the opponent's collection contract.
+/// - `attributes`: Attributes of the opponent.
+/// - `stats`: Stats of the opponent.
+/// - `attack_namespace`: Namespace for the attack slots.
+/// - `attack_slots`: Array of tuples representing the attack slots. Each tuple contains a
+/// `BlobertItemKey` and a `felt252` value.
+/// - `collections_allowed`: Array of addresses of allowed collections.
+///
+/// ### Returns:
+/// - `felt252`: A unique identifier for the newly registered opponent.
+///
+/// ## `set_opponent_collection`
+/// Sets the collection availability for an opponent.
+///
+/// ### Parameters:
+/// - `token_id`: Token ID of the opponent.
+/// - `collection`: Address of the collection contract.
+/// - `available`: Boolean indicating if the collection is available.
+///
+/// ## `set_opponent_collections`
+/// Sets the collection availability for multiple collections for an opponent.
+///
+/// ### Parameters:
+/// - `token_id`: Token ID of the opponent.
+/// - `collections`: Array of addresses of the collection contracts.
+/// - `available`: Boolean indicating if the collections are available.
+///
+/// ## `set_opponents_collection`
+/// Sets the collection availability for multiple opponents.
+///
+/// ### Parameters:
+/// - `token_ids`: Array of token IDs of the opponents.
+/// - `collection`: Address of the collection contract.
+/// - `available`: Boolean indicating if the collection is available.
 #[starknet::interface]
 trait IPVEAdmin<TContractState> {
     fn new_opponent(
