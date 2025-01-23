@@ -224,40 +224,40 @@ const makeCall = (contract, entrypoint, calldata) => {
 };
 
 let calls = [];
-// for (const [trait, traits] of Object.entries(seed_data)) {
-//   for (const [n, item] of Object.entries(traits)) {
-//     calls.push([
-//       `seed: ${trait} ${n} ${item.name}`,
-//       makeCall(
-//         blobertContract,
-//         seedEntrypoint,
-//         makeSeedItemCallData(trait, n, item)
-//       ),
-//     ]);
-//   }
-// }
+for (const [trait, traits] of Object.entries(seed_data)) {
+  for (const [n, item] of Object.entries(traits)) {
+    calls.push([
+      `seed: ${trait} ${n} ${item.name}`,
+      makeCall(
+        blobertContract,
+        seedEntrypoint,
+        makeSeedItemCallData(trait, n, item)
+      ),
+    ]);
+  }
+}
 
-// for (const [n, item] of Object.entries(custom_data)) {
-//   calls.push([
-//     `custom: ${n} ${item.name}`,
-//     makeCall(
-//       blobertContract,
-//       customEntrypoint,
-//       makeCustomItemCallData(trait, n, item)
-//     ),
-//   ]);
-// }
+for (const [n, item] of Object.entries(custom_data)) {
+  calls.push([
+    `custom: ${n} ${item.name}`,
+    makeCall(
+      blobertContract,
+      customEntrypoint,
+      makeCustomItemCallData(trait, n, item)
+    ),
+  ]);
+}
 
-// for (const [n, item] of Object.entries(amma_data)) {
-//   calls.push([
-//     `amma: ${n} ${item.name}`,
-//     makeCall(
-//       ammaBlobertContract,
-//       customEntrypoint,
-//       makeCustomItemCallData(n, item)
-//     ),
-//   ]);
-// }
+for (const [n, item] of Object.entries(amma_data)) {
+  calls.push([
+    `amma: ${n} ${item.name}`,
+    makeCall(
+      ammaBlobertContract,
+      customEntrypoint,
+      makeCustomItemCallData(n, item)
+    ),
+  ]);
+}
 for (const opponent of pve_data["opponents"]) {
   calls.push([
     `pve: ${opponent.name}`,
