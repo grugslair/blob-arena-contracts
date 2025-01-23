@@ -8,3 +8,13 @@ struct Lobby {
     receiver: ContractAddress,
     open: bool,
 }
+
+
+#[dojo::event]
+#[derive(Drop, Serde)]
+struct LobbyCreated {
+    #[key]
+    id: felt252,
+    sender: ContractAddress,
+    receiver: ContractAddress,
+}
