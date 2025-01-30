@@ -2,11 +2,12 @@ use dojo::event::EventStorage;
 use starknet::{get_block_timestamp, get_caller_address, ContractAddress};
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}};
 use blob_arena::{
+    collections::ERC721Token,
     game::components::{
-        GameInfo, Initiator, LastTimestamp, Player, Token, WinVia, CombatEnd, GameInfoTrait
+        GameInfo, Initiator, LastTimestamp, Player, WinVia, CombatEnd, GameInfoTrait,
     },
     combat::{CombatState, Phase, CombatTrait, CombatStorage}, commitments::Commitment,
-    combatants::{CombatantStorage, CombatantInfo}
+    combatants::{CombatantStorage, CombatantInfo},
 };
 
 #[generate_trait]
@@ -36,13 +37,13 @@ impl GameStorageImpl of GameStorage {
     }
 
     fn set_game_combatants(
-        ref self: WorldStorage, game_id: felt252, combatant_a: felt252, combatant_b: felt252
+        ref self: WorldStorage, game_id: felt252, combatant_a: felt252, combatant_b: felt252,
     ) {
         self
             .write_member(
                 Model::<GameInfo>::ptr_from_keys(game_id),
                 selector!("combatant_ids"),
-                (combatant_a, combatant_b)
+                (combatant_a, combatant_b),
             );
     }
 
@@ -52,13 +53,16 @@ impl GameStorageImpl of GameStorage {
         owner: ContractAddress,
         time_limit: u64,
         combatant_a: felt252,
-        combatant_b: felt252
+        combatant_b: felt252,
     ) {
         self
             .write_model(
                 @GameInfo {
-                    combat_id: game_id, owner, time_limit, combatant_ids: (combatant_a, combatant_b)
-                }
+                    combat_id: game_id,
+                    owner,
+                    time_limit,
+                    combatant_ids: (combatant_a, combatant_b),
+                },
             );
     }
 
@@ -67,31 +71,34 @@ impl GameStorageImpl of GameStorage {
     }
 
     fn get_combatants_state(
-        self: @WorldStorage, combat_id: felt252, combatant_a_id: felt252, combatant_b_id: felt252
+        self: @WorldStorage, combat_id: felt252, combatant_a_id: felt252, combatant_b_id: felt252,
     ) -> (bool, bool) {
         match self.get_combat_phase(combat_id) {
             Phase::Commit => (
-                self.check_commitment_set(combatant_a_id), self.check_commitment_set(combatant_b_id)
+                self.check_commitment_set(combatant_a_id),
+                self.check_commitment_set(combatant_b_id),
             ),
             Phase::Reveal => (
                 self.check_commitment_unset(combatant_a_id),
-                self.check_commitment_unset(combatant_b_id)
+                self.check_commitment_unset(combatant_b_id),
             ),
-            _ => panic!("Not in play phase")
+            _ => panic!("Not in play phase"),
         }
     }
 
     fn get_end_player(self: @WorldStorage, combatant: CombatantInfo) -> Player {
-        let token = self.get_combatant_token_value(combatant.id);
+        let token = self.get_combatant_token(combatant.id);
         Player {
             combatant_id: combatant.id,
             player: combatant.player,
-            token: Token { collection_address: token.collection_address, token_id: token.token_id, }
+            token: ERC721Token {
+                collection_address: token.collection_address, token_id: token.token_id,
+            },
         }
     }
 
     fn get_owners_game(
-        self: @WorldStorage, combat_id: felt252, caller: ContractAddress
+        self: @WorldStorage, combat_id: felt252, caller: ContractAddress,
     ) -> GameInfo {
         let combat = self.get_game_info(combat_id);
         assert(combat.owner == caller, 'Not the owner');
@@ -103,7 +110,7 @@ impl GameStorageImpl of GameStorage {
         game_id: felt252,
         winner: CombatantInfo,
         loser: CombatantInfo,
-        via: WinVia
+        via: WinVia,
     ) {
         self
             .emit_event(
@@ -111,8 +118,8 @@ impl GameStorageImpl of GameStorage {
                     game_id,
                     winner: self.get_end_player(winner),
                     loser: self.get_end_player(loser),
-                    via
-                }
+                    via,
+                },
             );
     }
 
