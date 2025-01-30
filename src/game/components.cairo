@@ -1,4 +1,5 @@
 use starknet::{ContractAddress, get_contract_address};
+use blob_arena::collections::ERC721Token;
 
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
@@ -27,16 +28,10 @@ struct LastTimestamp {
 }
 
 #[derive(Drop, Serde, Copy, Introspect)]
-struct Token {
-    collection_address: ContractAddress,
-    token_id: u256,
-}
-
-#[derive(Drop, Serde, Copy, Introspect)]
 struct Player {
     player: ContractAddress,
     combatant_id: felt252,
-    token: Token
+    token: ERC721Token,
 }
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect)]
