@@ -1,5 +1,5 @@
 [package]
-cairo-version = "2.8.4"
+cairo-version = "2.9.2"
 name = "blob_arena"
 version = "0.8.6"
 
@@ -8,8 +8,8 @@ sierra-replace-ids = true
 
 
 [dependencies]
-dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.12" }
-cubit = { git = "https://github.com/dojoengine/cubit", branch = "cairo_2.7" }
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.1.0" }
+cubit = { git = "https://github.com/bengineer42/cubit", tag = "cairo--2.8.0" }
 
 [tool.dojo]
 initializer_class_hash = "0xbeef"
@@ -19,6 +19,6 @@ sierra = true
 build-external-contracts = ["dojo::world::world_contract::world"]
 
 [dev-dependencies]
-dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.12" }
+dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.1.0" }
 
 [profile.sepolia]
