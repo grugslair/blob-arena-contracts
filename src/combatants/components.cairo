@@ -1,11 +1,11 @@
 use core::{fmt::{Display, Formatter, Error, Debug}, cmp::{min, max}};
 use starknet::{ContractAddress, get_caller_address};
-use dojo::{world::WorldStorage, model::ModelStorage};
+use dojo::{world::WorldStorage, model::{ModelStorage, Model}};
 use blob_arena::{
-    core::{SaturatingInto, SaturatingAdd, in_range}, constants::STARTING_HEALTH,
-    combat::calculations::{apply_luck_modifier, get_new_stun_chance},
+    collections::ERC721Token, core::{SaturatingInto, SaturatingAdd, in_range},
+    constants::STARTING_HEALTH, combat::calculations::{apply_luck_modifier, get_new_stun_chance},
     stats::{UStats, IStats, StatsTrait, StatTypes}, utils, utils::SeedProbability, hash::hash_value,
-    constants::{NZ_255}
+    constants::{NZ_255},
 };
 
 
@@ -27,6 +27,7 @@ struct CombatantToken {
     token_id: u256,
 }
 
+
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
 struct CombatantState {
@@ -35,6 +36,12 @@ struct CombatantState {
     health: u8,
     stun_chance: u8,
     stats: UStats,
+}
+
+#[derive(Drop)]
+struct CombatantSetup {
+    stats: UStats,
+    attacks: Array<felt252>,
 }
 
 
@@ -46,7 +53,7 @@ impl CombatantStateDisplayImpl of Display<CombatantState> {
             self.id,
             self.health,
             self.stun_chance,
-            *self.stats
+            *self.stats,
         )
     }
 }
@@ -54,7 +61,7 @@ impl CombatantStateDisplayImpl of Display<CombatantState> {
 impl CombatantStateDebugImpl = utils::TDebugImpl<CombatantState>;
 
 fn get_combatant_id(
-    collection_address: ContractAddress, token_id: u256, combat_id: felt252
+    collection_address: ContractAddress, token_id: u256, combat_id: felt252,
 ) -> felt252 {
     hash_value((collection_address, token_id, combat_id))
 }
@@ -92,13 +99,13 @@ impl CombatantStateImpl of CombatantStateTrait {
     }
 
     fn modify_health<T, +Into<u8, T>, +SaturatingAdd<T>, +SaturatingInto<T, u8>, +Drop<T>>(
-        ref self: CombatantState, health: T
+        ref self: CombatantState, health: T,
     ) {
         self
             .health =
                 min(
                     self.get_max_health(),
-                    self.health.into().saturating_add(health).saturating_into()
+                    self.health.into().saturating_add(health).saturating_into(),
                 );
     }
 
@@ -125,5 +132,79 @@ impl CombatantStateImpl of CombatantStateTrait {
 
     fn apply_stun(ref self: CombatantState, stun: u8) {
         self.stun_chance = get_new_stun_chance(self.stun_chance, stun)
+    }
+}
+
+
+#[generate_trait]
+impl CombatantStorageImpl of CombatantStorage {
+    fn get_combatant_info(self: @WorldStorage, id: felt252) -> CombatantInfo {
+        self.read_model(id)
+    }
+
+    fn get_combatant_infos(self: @WorldStorage, ids: Span<felt252>) -> Array<CombatantInfo> {
+        self.read_models(ids)
+    }
+
+    fn set_combatant_info(
+        ref self: WorldStorage, id: felt252, combat_id: felt252, player: ContractAddress,
+    ) {
+        self.write_model(@CombatantInfo { id, combat_id, player });
+    }
+
+    fn create_combatant_state(ref self: WorldStorage, id: felt252, stats: UStats) {
+        self.write_model(@make_combatant_state(id, @stats));
+    }
+
+    fn get_combatant_health(self: @WorldStorage, id: felt252) -> u8 {
+        self.read_member(Model::<CombatantState>::ptr_from_keys(id), selector!("health"))
+    }
+
+    fn set_combatant_state(
+        ref self: WorldStorage, combatant_id: felt252, health: u8, stun_chance: u8, stats: UStats,
+    ) {
+        self.write_model(@CombatantState { id: combatant_id, health, stun_chance, stats });
+    }
+
+    fn get_combatant_state(self: @WorldStorage, id: felt252) -> CombatantState {
+        self.read_model(id)
+    }
+
+    fn get_combatant_states(self: @WorldStorage, ids: Span<felt252>) -> Array<CombatantState> {
+        self.read_models(ids)
+    }
+
+    fn set_combatant_states(ref self: WorldStorage, states: Span<@CombatantState>) {
+        self.write_models(states)
+    }
+    fn get_combatant_info_in_combat(self: @WorldStorage, id: felt252) -> CombatantInfo {
+        let combatant = self.get_combatant_info(id);
+        assert(combatant.combat_id.is_non_zero(), 'Not valid combatant');
+        combatant
+    }
+    fn get_callers_combatant_info(self: @WorldStorage, id: felt252) -> CombatantInfo {
+        let combatant = self.get_combatant_info(id);
+        combatant.assert_caller();
+        combatant
+    }
+    fn get_player(self: @WorldStorage, id: felt252) -> ContractAddress {
+        self.read_member(Model::<CombatantInfo>::ptr_from_keys(id), selector!("player"))
+    }
+
+    fn get_combatant_token(self: @WorldStorage, id: felt252) -> ERC721Token {
+        self.read_schema(Model::<CombatantToken>::ptr_from_keys(id))
+    }
+
+    fn get_combatant_token_address(self: @WorldStorage, id: felt252) -> ContractAddress {
+        self
+            .read_member(
+                Model::<CombatantToken>::ptr_from_keys(id), selector!("collection_address"),
+            )
+    }
+
+    fn set_combatant_token(
+        ref self: WorldStorage, id: felt252, collection_address: ContractAddress, token_id: u256,
+    ) {
+        self.write_model(@CombatantToken { id, collection_address, token_id });
     }
 }
