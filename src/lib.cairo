@@ -23,18 +23,17 @@ mod attacks {
     // mod contract;
     mod results;
     mod storage;
-    use components::{Stat, Target, Affect, Damage, Attack, Effect, PlannedAttack,};
+    use components::{Stat, Target, Affect, Damage, Attack, Effect, PlannedAttack};
     use storage::AttackStorage;
 }
 mod stats;
 mod combatants {
     mod components;
     mod systems;
-    mod storage;
     use components::{
-        CombatantInfo, CombatantState, CombatantInfoTrait, CombatantStateTrait, CombatantToken
+        CombatantInfo, CombatantState, CombatantInfoTrait, CombatantStateTrait, CombatantToken,
+        CombatantStorage, CombatantSetup,
     };
-    use storage::CombatantStorage;
     use systems::CombatantTrait;
 }
 mod combat {
@@ -70,7 +69,8 @@ mod pve {
     mod contract;
     use systems::PVETrait;
     use components::{
-        PVEGame, PVEOpponent, PVEBlobertInfo, PVEStorage, PVEPhase, pve_namespace, PVEStore
+        PVEGame, PVEOpponent, PVEBlobertInfo, PVEStorage, PVEPhase, pve_namespace, PVEStore,
+        PVEGameIds,
     };
 }
 
