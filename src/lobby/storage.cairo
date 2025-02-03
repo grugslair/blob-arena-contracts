@@ -1,6 +1,8 @@
 use starknet::ContractAddress;
-use dojo::{world::WorldStorage, model::{ModelStorage, Model, ModelValueStorage}};
-use blob_arena::lobby::components::{Lobby, LobbyValue};
+use dojo::{
+    world::WorldStorage, model::{ModelStorage, Model, ModelValueStorage}, event::EventStorage,
+};
+use blob_arena::lobby::components::{Lobby, LobbyValue, LobbyCreated};
 
 #[generate_trait]
 impl LobbyStorageImpl of LobbyStorage {
@@ -16,6 +18,11 @@ impl LobbyStorageImpl of LobbyStorage {
     }
     fn close_lobby(ref self: WorldStorage, id: felt252) {
         self.write_member(Model::<Lobby>::ptr_from_keys(id), selector!("open"), false);
+    }
+    fn emit_lobby_created(
+        ref self: WorldStorage, id: felt252, sender: ContractAddress, receiver: ContractAddress,
+    ) {
+        self.emit_event(@LobbyCreated { id, sender, receiver });
     }
     // fn set_lobby_response(ref self: WorldStorage, id: felt252, response: bool) {
 //     self.write_member(Model::<Lobby>::ptr_from_keys(id), selector!("responded"), response);

@@ -1,6 +1,6 @@
 [world]
-name = "blob_arena-0.8.8"
-seed = "blob-arena-0.8.8"
+name = "blob_arena-0.9"
+seed = "blob-arena-0.9"
 
 
 [env]
@@ -28,6 +28,7 @@ mappings = { "blobert" = [
 
 [writers]
 "blob_arena-Lobby" = ["blob_arena-lobby_actions"]
+"blob_arena-LobbyCreated" = ["blob_arena-lobby_actions"]
 
 "blob_arena-GameInfo" = ["blob_arena-lobby_actions", "blob_arena-game_admin"]
 "blob_arena-Initiator" = ["blob_arena-lobby_actions", "blob_arena-game_admin"]
@@ -76,6 +77,7 @@ mappings = { "blobert" = [
     "blobert-blobert_actions",
     "amma_blobert-amma_blobert_actions",
 ]
+
 
 "blobert" = ["blobert-blobert_actions"]
 "arcade_blobert" = ["arcade_blobert-arcade_blobert_actions"]

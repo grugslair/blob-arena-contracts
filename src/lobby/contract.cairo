@@ -62,14 +62,15 @@ mod lobby_actions {
 
             let id = uuid();
             let sender_id = uuid();
-
+            let caller = get_caller_address();
             world.create_lobby(id, receiver);
 
             world.set_game_info(id, owner, time_limit, sender_id, 0);
             world.set_initiator(id, initiator);
+            world.emit_lobby_created(id, caller, receiver);
             world
                 .create_player_combatant(
-                    sender_id, get_caller_address(), id, collection_address, token_id, attacks
+                    sender_id, caller, id, collection_address, token_id, attacks
                 );
             id
         }
