@@ -62,20 +62,20 @@ const ammaBlobertContractAddress = getContractAddress(
   manifest,
   ammaBlobertContractTag
 );
-const pveBlobertContractAddress = getContractAddress(
-  manifest,
-  pveBlobertContractTag
-);
+// const pveBlobertContractAddress = getContractAddress(
+//   manifest,
+//   pveBlobertContractTag
+// );
 
 const blobertContract = await getContract(provider, blobertContractAddress);
 const ammaBlobertContract = await getContract(
   provider,
   ammaBlobertContractAddress
 );
-const pveBlobertContract = await getContract(
-  provider,
-  pveBlobertContractAddress
-);
+// const pveBlobertContract = await getContract(
+//   provider,
+//   pveBlobertContractAddress
+// );
 
 const PVECollectionAddresses = {
   blobert: blobertContractAddress,
@@ -258,16 +258,16 @@ for (const [n, item] of Object.entries(amma_data)) {
     ),
   ]);
 }
-for (const opponent of pve_data["opponents"]) {
-  calls.push([
-    `pve: ${opponent.name}`,
-    makeCall(
-      pveBlobertContract,
-      pveOpponentEntrypoint,
-      makePveOpponentCallData(opponent)
-    ),
-  ]);
-}
+// for (const opponent of pve_data["opponents"]) {
+//   calls.push([
+//     `pve: ${opponent.name}`,
+//     makeCall(
+//       pveBlobertContract,
+//       pveOpponentEntrypoint,
+//       makePveOpponentCallData(opponent)
+//     ),
+//   ]);
+// }
 
 const multiCallSize = 20;
 for (let i = 0, x = 0; i < calls.length; i += multiCallSize, x += 1) {
