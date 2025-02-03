@@ -1344,7 +1344,8 @@
                           "target": "Opponent",
                           "affect": {
                               "Damage": {
-                                  "power": 80
+                                  "power": 80,
+                                  "critical": 0
                               }
                           }
                       },
@@ -1876,7 +1877,8 @@
                           "target": "Opponent",
                           "affect": {
                               "Damage": {
-                                  "power": 65
+                                  "power": 65,
+                                  "critical": 0
                               }
                           }
                       },
@@ -2029,7 +2031,8 @@
                           "target": "Opponent",
                           "affect": {
                               "Damage": {
-                                  "power": 60
+                                  "power": 60,
+                                  "critical": 0
                               }
                           }
                       }
@@ -2057,7 +2060,8 @@
                           "target": "Opponent",
                           "affect": {
                               "Damage": {
-                                  "power": 30
+                                  "power": 30,
+                                  "critical": 0
                               }
                           }
                       }
@@ -2098,7 +2102,8 @@
                           "target": "Opponent",
                           "affect": {
                               "Damage": {
-                                  "power": 100
+                                  "power": 100,
+                                  "critical": 0
                               }
                           }
                       }
@@ -2434,7 +2439,8 @@
                           "target": "Opponent",
                           "affect": {
                               "Damage": {
-                                  "power": 30
+                                  "power": 30,
+                                  "critical": 0
                               }
                           }
                       }
@@ -2664,7 +2670,8 @@
                           "target": "Opponent",
                           "affect": {
                               "Damage": {
-                                  "power": 30
+                                  "power": 30,
+                                  "critical": 0
                               }
                           }
                       }
@@ -2912,7 +2919,8 @@
                           "target": "Opponent",
                           "affect": {
                               "Damage": {
-                                  "power": 45
+                                  "power": 45,
+                                  "critical": 0
                               }
                           }
                       },
@@ -3450,7 +3458,8 @@
                           "target": "Opponent",
                           "affect": {
                               "Damage": {
-                                  "power": 45
+                                  "power": 45,
+                                  "critical": 0
                               }
                           }
                       },
@@ -3473,7 +3482,8 @@
                           "target": "Opponent",
                           "affect": {
                               "Damage": {
-                                  "power": 80
+                                  "power": 80,
+                                  "critical": 0
                               }
                           }
                       },
@@ -4194,7 +4204,8 @@
                           "target": "Opponent",
                           "affect": {
                               "Damage": {
-                                  "power": 30
+                                  "power": 30,
+                                  "critical": 0
                               }
                           }
                       }
@@ -4442,7 +4453,8 @@
                           "target": "Opponent",
                           "affect": {
                               "Damage": {
-                                  "power": 45
+                                  "power": 45,
+                                  "critical": 0
                               }
                           }
                       },
@@ -4518,7 +4530,8 @@
                           "target": "Opponent",
                           "affect": {
                               "Damage": {
-                                  "power": 50
+                                  "power": 50,
+                                  "critical": 0
                               }
                           }
                       },
@@ -4541,7 +4554,8 @@
                           "target": "Opponent",
                           "affect": {
                               "Damage": {
-                                  "power": 70
+                                  "power": 70,
+                                  "critical": 0
                               }
                           }
                       },
