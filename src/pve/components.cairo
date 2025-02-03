@@ -1,5 +1,5 @@
 use dojo::model::ModelValueStorage;
-use starknet::ContractAddress;
+use starknet::{ContractAddress, get_block_timestamp};
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}, event::EventStorage};
 use blob_arena::{stats::UStats, collections::blobert::TokenAttributes};
 
@@ -21,6 +21,15 @@ struct PVEOpponent {
     id: felt252,
     stats: UStats,
     attacks: Array<felt252>,
+}
+
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct PVEFreeGames {
+    #[key]
+    player: ContractAddress,
+    games: u32,
+    last_claim: u64,
 }
 
 #[dojo::model]
@@ -48,6 +57,7 @@ struct PVEBlobertInfo {
 struct PVEGame {
     #[key]
     id: felt252,
+    owner: ContractAddress,
     player: ContractAddress,
     player_id: felt252,
     opponent_token: felt252,
@@ -255,5 +265,23 @@ impl PVEStorageImpl of PVEStorage {
             .write_member(
                 Model::<PVEChallenge>::ptr_from_keys(challenge_id), selector!("stage"), stage,
             );
+    }
+
+    fn set_free_games(
+        ref self: WorldStorage, player: ContractAddress, games: u32, last_claim: u64,
+    ) {
+        self.write_model(@PVEFreeGames { player, games, last_claim: get_block_timestamp() });
+    }
+
+    fn get_free_games(self: @WorldStorage, player: ContractAddress) -> PVEFreeGames {
+        self.read_model(player)
+    }
+
+    fn get_number_free_games(self: @WorldStorage, player: ContractAddress) -> u32 {
+        self.read_member(Model::<PVEFreeGames>::ptr_from_keys(player), selector!("games"))
+    }
+
+    fn set_number_free_games(ref self: WorldStorage, player: ContractAddress, games: u32) {
+        self.write_member(Model::<PVEFreeGames>::ptr_from_keys(player), selector!("games"), games);
     }
 }

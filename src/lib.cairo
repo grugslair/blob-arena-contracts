@@ -67,10 +67,10 @@ mod pve {
     mod components;
     mod systems;
     mod contract;
+    mod free_games;
     use systems::PVETrait;
     use components::{
         PVEGame, PVEOpponent, PVEBlobertInfo, PVEStorage, PVEPhase, pve_namespace, PVEStore,
-        PVEGameIds,
     };
 }
 

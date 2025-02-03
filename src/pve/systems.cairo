@@ -1,5 +1,5 @@
 use core::cmp::min;
-use starknet::{ContractAddress, get_contract_address};
+use starknet::{ContractAddress, get_contract_address, get_block_timestamp};
 use dojo::world::WorldStorage;
 use blob_arena::{
     attacks::Attack,
@@ -8,7 +8,7 @@ use blob_arena::{
     combatants::{CombatantStorage, CombatantTrait, CombatantState, CombatantSetup},
     attacks::AttackStorage, combat::CombatTrait, world::uuid,
     hash::{make_hash_state, felt252_to_u128}, stats::UStats, collections::blobert::TokenAttributes,
-    constants::STARTING_HEALTH,
+    constants::{STARTING_HEALTH, SECONDS_12_HOURS},
 };
 
 
@@ -180,5 +180,20 @@ impl PVEImpl of PVETrait {
         } else {
             false
         }
+    }
+
+
+    fn use_free_game(ref self: WorldStorage, player: ContractAddress) {
+        let games = self.get_number_free_games(player);
+        assert(games > 0, 'No free games');
+        self.set_number_free_games(player, games - 1);
+    }
+
+    fn mint_free_game(ref self: WorldStorage, player: ContractAddress) {
+        let model = self.get_free_games(player);
+        assert(model.games < 2, 'No free games');
+        let timestamp = get_block_timestamp();
+        assert(model.last_claim + SECONDS_12_HOURS <= timestamp, 'Not enough time passed');
+        self.set_free_games(player, model.games + 1, timestamp);
     }
 }

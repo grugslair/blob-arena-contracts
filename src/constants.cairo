@@ -8,3 +8,4 @@ const HUNDREDTH_FIXED: Fixed = Fixed { mag: 184467440737095516, sign: false };
 const NZ_255: NonZero<u128> = 255;
 const NZ_100: NonZero<u128> = 100;
 const MAX_STAT: u8 = 100;
+const SECONDS_12_HOURS: u64 = 43200;
