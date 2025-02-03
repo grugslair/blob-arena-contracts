@@ -8,7 +8,7 @@ trait IGame<TContractState> {
     fn run(ref self: TContractState, combat_id: felt252);
     fn kick_player(ref self: TContractState, combat_id: felt252);
     fn forfeit(ref self: TContractState, combatant_id: felt252);
-    fn get_winning_player(ref self: TContractState, combat_id: felt252) -> ContractAddress;
+    fn get_winning_player(self: @TContractState, combat_id: felt252) -> ContractAddress;
 }
 
 #[dojo::contract]
@@ -18,9 +18,9 @@ mod game_actions {
     use blob_arena::{
         attacks::AttackStorage, combat::{Phase, CombatTrait, CombatState, CombatStorage},
         combatants::{CombatantTrait, CombatantStorage, CombatantInfo},
-        game::{components::{GameInfoTrait, WinVia}, storage::{GameStorage}, systems::GameTrait,},
+        game::{components::{GameInfoTrait, WinVia}, storage::{GameStorage}, systems::GameTrait},
         world::default_namespace, commitments::Commitment, salts::Salts,
-        core::{TTupleSized2ToSpan, ArrayTryIntoTTupleSized2}
+        core::{TTupleSized2ToSpan, ArrayTryIntoTTupleSized2},
     };
     use super::IGame;
 
@@ -70,7 +70,7 @@ mod game_actions {
             } else {
                 world
                     .end_game_from_ids(
-                        game.combat_id, opponent_id, combatant_id, WinVia::IncorrectReveal
+                        game.combat_id, opponent_id, combatant_id, WinVia::IncorrectReveal,
                     );
             }
         }
@@ -89,7 +89,7 @@ mod game_actions {
             let xor = match storage.get_combat_phase(game.combat_id) {
                 Phase::Commit => true,
                 Phase::Reveal => false,
-                _ => { panic!("Game not running") }
+                _ => { panic!("Game not running") },
             };
 
             let are_set: (bool, bool) = storage
@@ -118,7 +118,7 @@ mod game_actions {
             world.end_game(game.combat_id, opponent, combatant, WinVia::Forfeit);
         }
 
-        fn get_winning_player(ref self: ContractState, combat_id: felt252) -> ContractAddress {
+        fn get_winning_player(self: @ContractState, combat_id: felt252) -> ContractAddress {
             let storage = self.get_storage();
             storage.get_winning_player(combat_id)
         }
