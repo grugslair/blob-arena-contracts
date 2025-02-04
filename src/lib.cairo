@@ -63,16 +63,16 @@ mod lobby {
     mod contract;
 }
 
-mod pve {
-    mod components;
-    mod systems;
-    mod contract;
-    mod free_games;
-    use systems::PVETrait;
-    use components::{
-        PVEGame, PVEOpponent, PVEBlobertInfo, PVEStorage, PVEPhase, pve_namespace, PVEStore,
-    };
-}
+// mod pve {
+//     mod components;
+//     mod systems;
+//     mod contract;
+//     mod free_games;
+//     use systems::PVETrait;
+//     use components::{
+//         PVEGame, PVEOpponent, PVEBlobertInfo, PVEStorage, PVEPhase, pve_namespace, PVEStore,
+//     };
+// }
 
 pub use world::{default_namespace, DefaultStorage};
 #[cfg(test)]
