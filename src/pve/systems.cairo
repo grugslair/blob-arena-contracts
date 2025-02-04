@@ -137,28 +137,24 @@ impl PVEImpl of PVETrait {
         player_token_id: u256,
         player_attacks: Array<(felt252, felt252)>,
     ) -> felt252 {
+        self.pve.assert_collection_allowed(challenge_id, player_collection_address);
+
         let id = uuid();
 
         let (combatant_id, CombatantSetup { stats, attacks }) = self
             .ba
             .new_pve_combatant(player_collection_address, player_token_id, player_attacks);
         self.pve.set_combatant_info(combatant_id, id, player);
-        self.pve.assert_collection_allowed(challenge_id, player_collection_address);
         self.pve.new_pve_challenge_attempt(id, challenge_id, stats, attacks);
-        self.create_pve_challenge_attempt_round(id, challenge_id, player, combatant_id, 1);
-
+        self.create_pve_challenge_attempt_round(id, challenge_id, combatant_id, 1);
         id
     }
 
-    fn next_pve_challenge_round(ref self: PVEStore, attempt_id: felt252) {
+    fn next_pve_challenge_round(ref self: PVEStore, combatant_id: felt252) {
         let attempt = self.pve.get_pve_challenge_attempt(attempt_id);
 
-        let PVEPlayerPhase {
-            player, phase, combatant_id,
-        } = self.pve.get_pve_stage_game_phase_and_player(attempt_id, attempt.stage);
-
         assert(attempt.stage.is_non_zero(), 'Not Started');
-        match phase {
+        match self.pve.get_pve_game_phase(attempt_id) {
             PVEPhase::Ended(won) => assert(won, 'Player Lost'),
             _ => panic!("Combat not ended"),
         };

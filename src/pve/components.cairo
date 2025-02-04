@@ -65,13 +65,6 @@ struct PVEGame {
     phase: PVEPhase,
 }
 
-#[derive(Drop, Serde, Introspect)]
-struct PVEPlayerPhase {
-    player: ContractAddress,
-    combatant_id: felt252,
-    phase: PVEPhase,
-}
-
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct PVEChallenge {
@@ -168,11 +161,6 @@ impl PVEStorageImpl of PVEStorage {
     fn get_pve_game_phase(self: @WorldStorage, game_id: felt252) -> PVEPhase {
         self.read_member(Model::<PVEGame>::ptr_from_keys(game_id), selector!("phase"))
     }
-    fn get_pve_game_schema<T, +Introspect<T>, +Serde<T>>(
-        self: @WorldStorage, game_id: felt252,
-    ) -> T {
-        self.read_schema(Model::<PVEGame>::ptr_from_keys(game_id))
-    }
 
     fn get_collection_allowed(
         self: @WorldStorage, id: felt252, collection: ContractAddress,
@@ -251,12 +239,6 @@ impl PVEStorageImpl of PVEStorage {
             .read_member(
                 Model::<PVEStageGame>::ptr_from_keys((attempt_id, stage)), selector!("game_id"),
             )
-    }
-
-    fn get_pve_stage_game_phase_and_player(
-        self: @WorldStorage, attempt_id: felt252, stage: u32,
-    ) -> PVEPlayerPhase {
-        self.get_pve_game_schema(self.get_pve_stage_game_id(attempt_id, stage))
     }
 
     fn set_pve_challenge_stage(ref self: WorldStorage, attempt_id: felt252, stage: u32) {
