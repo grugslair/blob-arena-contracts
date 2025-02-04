@@ -2,8 +2,8 @@ mod core;
 mod constants;
 mod utils;
 mod id_trait;
-mod ab;
-mod salts;
+// mod ab;
+// mod salts;
 mod commitments;
 mod collections;
 mod hash;
@@ -34,7 +34,7 @@ mod combatants {
     mod systems;
     mod storage;
     use components::{
-        CombatantInfo, CombatantState, CombatantInfoTrait, CombatantStateTrait, CombatantToken
+        CombatantInfo, CombatantState, CombatantInfoTrait, CombatantStateTrait, CombatantToken,
     };
     use storage::CombatantStorage;
     use systems::CombatantTrait;

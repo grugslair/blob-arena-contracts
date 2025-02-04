@@ -3,13 +3,13 @@ use dojo::{world::WorldStorage, model::{ModelStorage, Model}, event::EventStorag
 use blob_arena::{
     game::{
         components::{LastTimestamp, Initiator, GameInfo, GameInfoTrait, WinVia},
-        storage::GameStorage
+        storage::GameStorage,
     },
     combat::{CombatTrait, Phase, CombatState, CombatStorage, components::PhaseTrait},
     commitments::Commitment, utils::get_transaction_hash,
-    combatants::{CombatantTrait, CombatantInfo, CombatantStorage, CombatantState}, salts::Salts,
-    hash::in_order, attacks::results::RoundResult,
-    core::{TTupleSized2ToSpan, ArrayTryIntoTTupleSized2}
+    combatants::{CombatantTrait, CombatantInfo, CombatantStorage, CombatantState},
+    hash::{in_order, array_to_hash_state}, attacks::results::RoundResult,
+    core::{TTupleSized2ToSpan, ArrayTryIntoTTupleSized2},
 };
 
 
@@ -25,11 +25,11 @@ impl GameImpl of GameTrait {
         assert(game.time_limit.is_non_zero(), 'No time limit set');
         assert(
             get_block_timestamp() - self.get_last_timestamp(game.combat_id) > game.time_limit,
-            'Not past time limit'
+            'Not past time limit',
         );
     }
     fn get_combatants_info_tuple(
-        self: @WorldStorage, combatants_info: (felt252, felt252)
+        self: @WorldStorage, combatants_info: (felt252, felt252),
     ) -> (CombatantInfo, CombatantInfo) {
         self.get_combatant_infos(combatants_info.span()).try_into().unwrap()
     }
@@ -38,7 +38,7 @@ impl GameImpl of GameTrait {
         combat_id: felt252,
         winner: CombatantInfo,
         loser: CombatantInfo,
-        via: WinVia
+        via: WinVia,
     ) {
         self.set_combat_phase(combat_id, Phase::Ended(winner.id));
         self.emit_combat_end(combat_id, winner, loser, via);
@@ -48,7 +48,7 @@ impl GameImpl of GameTrait {
         combat_id: felt252,
         winner_id: felt252,
         loser_id: felt252,
-        via: WinVia
+        via: WinVia,
     ) {
         let (winner, looser) = self.get_combatants_info_tuple((winner_id, loser_id));
         self.end_game(combat_id, winner, looser, via);
@@ -58,7 +58,7 @@ impl GameImpl of GameTrait {
         ref self: WorldStorage,
         combat_id: felt252,
         player_1: @CombatantState,
-        player_2: @CombatantState
+        player_2: @CombatantState,
     ) -> bool {
         if (*player_2.health).is_zero() {
             self.end_game_from_ids(combat_id, *player_1.id, *player_2.id, WinVia::Combat);
@@ -76,9 +76,9 @@ impl GameImpl of GameTrait {
         combat.phase.assert_reveal();
         let combatants_span = game.combatant_ids.span();
         assert(self.check_commitments_unset(combatants_span), 'Not all attacks revealed');
-        let mut array = self.get_states_and_attacks(combatants_span);
+        let (mut array, salts) = self.get_states_and_attacks(combatants_span);
 
-        let hash = self.get_salts_hash_state(combat.id);
+        let hash = array_to_hash_state(salts);
         let ordered = in_order(array.at(0).get_speed(), array.at(1).get_speed(), hash);
         let (a, b) = (array.pop_front().unwrap(), array.pop_front().unwrap());
         let ((mut state_1, attack_1), (mut state_2, attack_2)) = if ordered {

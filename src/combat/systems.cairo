@@ -1,16 +1,15 @@
-use core::{poseidon::{HashState,}, hash::HashStateExTrait};
+use core::{poseidon::{HashState}, hash::HashStateExTrait};
 use starknet::{get_block_number, ContractAddress};
 
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}, event::EventStorage};
 use blob_arena::{
     attacks::{
         Attack, AttackStorage, components::AvailableAttackTrait,
-        results::{AttackOutcomes, AttackResult}
+        results::{AttackOutcomes, AttackResult},
     },
     combat::{CombatStorage, components::{CombatState, Phase, PhaseTrait, run_effects}},
     combatants::{CombatantState, CombatantStateTrait, CombatantTrait, CombatantStorage},
-    commitments::Commitment, salts::{Salts}, utils::SeedProbability, hash::UpdateHashToU128,
-    constants::NZ_100,
+    commitments::Commitment, utils::SeedProbability, hash::UpdateHashToU128, constants::NZ_100,
 };
 
 
@@ -32,7 +31,6 @@ impl CombatImpl of CombatTrait {
         self.get_combat_phase(id).assert_none();
     }
     fn next_round(ref self: WorldStorage, mut state: CombatState, combatants: Span<felt252>) {
-        self.reset_salts(state.id);
         state.round += 1;
         state.phase = Phase::Commit;
         self.write_model(@state);
@@ -53,12 +51,12 @@ impl CombatImpl of CombatTrait {
         self.set_combat_phase(state.id, Phase::Ended(winner));
     }
     fn get_attacker_attack_speed(
-        self: @WorldStorage, state: @CombatantState, attack: @Attack
+        self: @WorldStorage, state: @CombatantState, attack: @Attack,
     ) -> u8 {
         *state.stats.dexterity + *attack.speed
     }
     fn run_attack_check(
-        ref self: WorldStorage, combatant_id: felt252, attack_id: felt252, cooldown: u8, round: u32
+        ref self: WorldStorage, combatant_id: felt252, attack_id: felt252, cooldown: u8, round: u32,
     ) -> bool {
         let attack_available = self.get_available_attack(combatant_id, attack_id);
         if attack_available.check_attack_useable(cooldown, round) {
@@ -77,20 +75,20 @@ impl CombatImpl of CombatTrait {
     }
 
     fn get_states_and_attacks(
-        self: @WorldStorage, combatant_ids: Span<felt252>
-    ) -> Array<(CombatantState, Attack)> {
+        self: @WorldStorage, combatant_ids: Span<felt252>,
+    ) -> (Array<(CombatantState, Attack)>, Array<felt252>) {
         let mut states = self.get_combatant_states(combatant_ids);
-        let mut attacks = self.get_attacks_from_planned_attack_ids(combatant_ids);
+        let (mut attacks, salts) = self.get_attacks_from_planned_attack_ids(combatant_ids);
         let mut states_and_attacks = ArrayTrait::<(CombatantState, Attack)>::new();
         loop {
             match (states.pop_front(), attacks.pop_front()) {
                 (
-                    Option::Some(state), Option::Some(attack)
+                    Option::Some(state), Option::Some(attack),
                 ) => { states_and_attacks.append((state, attack)); },
-                _ => { break; }
+                _ => { break; },
             }
         };
-        states_and_attacks
+        (states_and_attacks, salts)
     }
 
     fn run_attack(
@@ -99,7 +97,7 @@ impl CombatImpl of CombatTrait {
         ref defender_state: CombatantState,
         attack: Attack,
         round: u32,
-        hash_state: HashState
+        hash_state: HashState,
     ) -> AttackResult {
         let hash_state = hash_state.update_with(attacker_state.id);
         let mut seed = hash_state.to_u128();
@@ -111,15 +109,15 @@ impl CombatImpl of CombatTrait {
             AttackOutcomes::Stunned
         } else if seed.get_outcome(NZ_100, attack.accuracy) {
             AttackOutcomes::Hit(
-                run_effects(ref attacker_state, ref defender_state, attack.hit, hash_state)
+                run_effects(ref attacker_state, ref defender_state, attack.hit, hash_state),
             )
         } else {
             AttackOutcomes::Miss(
-                run_effects(ref attacker_state, ref defender_state, attack.miss, hash_state)
+                run_effects(ref attacker_state, ref defender_state, attack.miss, hash_state),
             )
         };
         AttackResult {
-            combatant_id: attacker_state.id, attack: attack.id, target: defender_state.id, result
+            combatant_id: attacker_state.id, attack: attack.id, target: defender_state.id, result,
         }
     }
 }

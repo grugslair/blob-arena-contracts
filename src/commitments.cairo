@@ -25,14 +25,16 @@ impl CommitmentImpl of Commitment {
         self.write_model(@CommitmentModel { id, commitment });
     }
     fn clear_commitment(ref self: WorldStorage, id: felt252) {
-        self.erase_model_ptr(Model::<CommitmentModel>::ptr_from_keys(id));
+        self.write_member(Model::<CommitmentModel>::ptr_from_keys(id), selector!("commitment"), 0);
     }
     fn clear_commitments(ref self: WorldStorage, ids: Span<felt252>) {
         let mut ptrs = ArrayTrait::<ModelPtr<CommitmentModel>>::new();
+        let mut zeros = ArrayTrait::<felt252>::new();
         for id in ids {
-            ptrs.append(Model::<CommitmentModel>::ptr_from_keys(*id))
+            ptrs.append(Model::<CommitmentModel>::ptr_from_keys(*id));
+            zeros.append(0);
         };
-        self.erase_models_ptrs(ptrs.span());
+        self.write_member_of_models(ptrs.span(), selector!("commitment"), zeros.span());
     }
     fn check_commitment_set(self: @WorldStorage, id: felt252) -> bool {
         self.get_commitment(id).is_non_zero()
@@ -63,7 +65,7 @@ impl CommitmentImpl of Commitment {
         }
     }
     fn check_commitments_set_with<T, +Serde<T>, +Drop<T>>(
-        self: @WorldStorage, mut values: Span<T>
+        self: @WorldStorage, mut values: Span<T>,
     ) -> bool {
         let mut ids: Array<felt252> = ArrayTrait::<felt252>::new();
         for value in values {
@@ -72,7 +74,7 @@ impl CommitmentImpl of Commitment {
         self.check_commitments_set(ids.span())
     }
     fn check_commitments_unset_with<T, +Serde<T>, +Drop<T>>(
-        self: @WorldStorage, mut values: Span<T>
+        self: @WorldStorage, mut values: Span<T>,
     ) -> bool {
         let mut ids: Array<felt252> = ArrayTrait::<felt252>::new();
         for value in values {
@@ -81,13 +83,15 @@ impl CommitmentImpl of Commitment {
         self.check_commitments_unset(ids.span())
     }
     fn clear_commitments_with<T, +Serde<T>, +Drop<T>, +Copy<T>>(
-        ref self: WorldStorage, values: Span<T>
+        ref self: WorldStorage, values: Span<T>,
     ) {
         let mut ptrs = ArrayTrait::<ModelPtr<CommitmentModel>>::new();
+        let mut zeros = ArrayTrait::<felt252>::new();
         for value in values {
-            ptrs.append(Model::<CommitmentModel>::ptr_from_keys(value_to_id(value)))
+            ptrs.append(Model::<CommitmentModel>::ptr_from_keys(value_to_id(value)));
+            zeros.append(0);
         };
-        self.erase_models_ptrs(ptrs.span());
+        self.write_member_of_models(ptrs.span(), selector!("commitment"), zeros.span());
     }
     fn check_commitments_are(self: @WorldStorage, ids: Span<felt252>, set: bool) -> Array<bool> {
         let commitments: Array<CommitmentValue> = self.read_values(ids);
@@ -132,7 +136,7 @@ impl CommitmentImpl of Commitment {
         commitment
     }
     fn consume_and_compare_commitment_value<T, +Serde<T>>(
-        ref self: WorldStorage, id: felt252, value: @T
+        ref self: WorldStorage, id: felt252, value: @T,
     ) -> bool {
         value_to_id(value) == self.consume_commitment(id)
     }
