@@ -54,29 +54,27 @@ impl AttackStorageImpl of AttackStorage {
         self.read_models(ids).span()
     }
     fn set_planned_attack(
-        ref self: WorldStorage, combatant_id: felt252, attack_id: felt252, target: felt252,
+        ref self: WorldStorage,
+        combatant_id: felt252,
+        attack_id: felt252,
+        target: felt252,
+        salt: felt252,
     ) {
-        self.write_model(@PlannedAttack { combatant_id, attack_id, target });
-    }
-    fn get_attacks_from_planned_attack_ids(
-        self: @WorldStorage, ids: Span<felt252>,
-    ) -> Array<Attack> {
-        let mut attack_ids = ArrayTrait::<felt252>::new();
-        for planned_attack in self.get_planned_attacks(ids) {
-            attack_ids.append(*planned_attack.attack_id);
-        };
-        self.get_attacks(attack_ids.span())
+        self.write_model(@PlannedAttack { combatant_id, attack_id, target, salt });
     }
 
     fn get_attack_ids_from_combatant_ids(
         self: @WorldStorage, combatant_ids: Span<felt252>,
-    ) -> Array<felt252> {
+    ) -> (Array<felt252>, Array<felt252>) {
         let mut attack_ids = ArrayTrait::<felt252>::new();
+        let mut salts = ArrayTrait::<felt252>::new();
         for planned_attack in self.get_planned_attacks(combatant_ids) {
             attack_ids.append(*planned_attack.attack_id);
+            salts.append(*planned_attack.salt);
         };
-        attack_ids
+        (attack_ids, salts)
     }
+
 
     fn check_attack_available(
         self: @WorldStorage, combatant_id: felt252, attack_id: felt252,

@@ -19,7 +19,7 @@ mod game_actions {
         attacks::AttackStorage, combat::{Phase, CombatTrait, CombatState, CombatStorage},
         combatants::{CombatantTrait, CombatantStorage, CombatantInfo},
         game::{components::{GameInfoTrait, WinVia}, storage::{GameStorage}, systems::GameTrait},
-        world::default_namespace, commitments::Commitment, salts::Salts,
+        world::default_namespace, commitments::Commitment,
         core::{TTupleSized2ToSpan, ArrayTryIntoTTupleSized2},
     };
     use super::IGame;
@@ -62,8 +62,7 @@ mod game_actions {
 
             let opponent_id = game.get_opponent_id(combatant_id);
             if world.consume_and_compare_commitment_value(combatant_id, @(attack, salt)) {
-                world.append_salt(game.combat_id, salt);
-                world.set_planned_attack(combatant_id, attack, opponent_id);
+                world.set_planned_attack(combatant_id, attack, opponent_id, salt);
                 if world.check_commitment_set(opponent_id) {
                     world.set_last_timestamp(game.combat_id);
                 }

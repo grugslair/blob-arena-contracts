@@ -1,9 +1,9 @@
 use dojo::{
-    world::WorldStorage, event::EventStorage, model::{ModelStorage, ModelValueStorage, Model}
+    world::WorldStorage, event::EventStorage, model::{ModelStorage, ModelValueStorage, Model},
 };
 use blob_arena::{
     id_trait::IdsTrait, attacks::AttackStorage, items::{Item, components::{HasAttack, ItemName}},
-    stats::UStats, uuid
+    stats::UStats, uuid,
 };
 
 #[generate_trait]
@@ -25,7 +25,7 @@ impl ItemStorageImpl of ItemStorage {
         self.write_model(@HasAttack { item_id, attack_id, has: true });
     }
     fn remove_has_attack(ref self: WorldStorage, item_id: felt252, attack_id: felt252) {
-        self.erase_model_ptr(Model::<HasAttack>::ptr_from_keys((item_id, attack_id)));
+        self.write_model(@HasAttack { item_id, attack_id, has: false });
     }
     fn set_has_attacks(ref self: WorldStorage, item_id: felt252, attack_ids: Span<felt252>) {
         let mut has_attacks = ArrayTrait::<@HasAttack>::new();

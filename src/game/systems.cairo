@@ -4,15 +4,17 @@ use dojo::{world::WorldStorage, model::{ModelStorage, Model}, event::EventStorag
 use blob_arena::{
     game::{
         components::{LastTimestamp, Initiator, GameInfo, GameInfoTrait, WinVia, GameProgress},
-        storage::GameStorage
+        storage::GameStorage,
     },
     combat::{CombatTrait, Phase, CombatState, CombatStorage, components::PhaseTrait},
     commitments::Commitment, utils::get_transaction_hash,
-    combatants::{CombatantTrait, CombatantInfo, CombatantStorage, CombatantState}, salts::Salts,
-    hash::in_order, attacks::{results::{RoundResult, AttackResult}, Attack, AttackStorage},
+    combatants::{CombatantTrait, CombatantInfo, CombatantStorage, CombatantState},
+    hash::{in_order, array_to_hash_state},
+    attacks::{results::{RoundResult, AttackResult}, Attack, AttackStorage},
     core::{
-        TTupleSized2ToSpan, ArrayTryIntoTTupleSized2, ArrayTryIntoFixed2Array, TTupleSized2IntoFixed
-    }
+        TTupleSized2ToSpan, ArrayTryIntoTTupleSized2, ArrayTryIntoFixed2Array,
+        TTupleSized2IntoFixed,
+    },
 };
 
 
@@ -28,11 +30,11 @@ impl GameImpl of GameTrait {
         assert(game.time_limit.is_non_zero(), 'No time limit set');
         assert(
             get_block_timestamp() - self.get_last_timestamp(game.combat_id) > game.time_limit,
-            'Not past time limit'
+            'Not past time limit',
         );
     }
     fn get_combatants_info_tuple(
-        self: @WorldStorage, combatants_info: (felt252, felt252)
+        self: @WorldStorage, combatants_info: (felt252, felt252),
     ) -> (CombatantInfo, CombatantInfo) {
         self.get_combatant_infos(combatants_info.span()).try_into().unwrap()
     }
@@ -41,7 +43,7 @@ impl GameImpl of GameTrait {
         combat_id: felt252,
         winner: CombatantInfo,
         loser: CombatantInfo,
-        via: WinVia
+        via: WinVia,
     ) {
         self.set_combat_phase(combat_id, Phase::Ended(winner.id));
         self.emit_combat_end(combat_id, winner, loser, via);
@@ -51,7 +53,7 @@ impl GameImpl of GameTrait {
         combat_id: felt252,
         winner_id: felt252,
         loser_id: felt252,
-        via: WinVia
+        via: WinVia,
     ) {
         let (winner, looser) = self.get_combatants_info_tuple((winner_id, loser_id));
         self.end_game(combat_id, winner, looser, via);
@@ -61,7 +63,7 @@ impl GameImpl of GameTrait {
         ref self: WorldStorage,
         combat_id: felt252,
         player_1: @CombatantState,
-        player_2: @CombatantState
+        player_2: @CombatantState,
     ) -> GameProgress {
         if (*player_2.health).is_zero() {
             GameProgress::Ended([*player_1.id, *player_2.id])
@@ -73,11 +75,10 @@ impl GameImpl of GameTrait {
     }
 
     fn get_attack_order(
-        self: @WorldStorage, combatants: @[
-            CombatantState
-            ; 2], attack_ids: [
-            felt252
-        ; 2], hash: HashState
+        self: @WorldStorage,
+        combatants: @[CombatantState; 2],
+        attack_ids: [felt252; 2],
+        hash: HashState,
     ) -> bool {
         let [attack_1, attack_2] = attack_ids;
         if attack_1.is_zero() {
@@ -92,7 +93,7 @@ impl GameImpl of GameTrait {
             .try_into()
             .unwrap();
         in_order(
-            *combatant_1.stats.dexterity + speed_1, *combatant_2.stats.dexterity + speed_2, hash
+            *combatant_1.stats.dexterity + speed_1, *combatant_2.stats.dexterity + speed_2, hash,
         )
     }
 
@@ -102,25 +103,34 @@ impl GameImpl of GameTrait {
 
         let combatants_span = game.combatant_ids.span();
         assert(self.check_commitments_unset(combatants_span), 'Not all attacks revealed');
-        let hash = self.get_salts_hash_state(combat.id);
+
         let combatants = game.combatant_ids.into();
-        let attacks = self.get_attack_ids_from_combatant_ids(combatants_span).try_into().unwrap();
-        match self.run_round(combat.id, combat.round, combatants, attacks, [false, false], hash) {
+        let (attacks, salts) = self.get_attack_ids_from_combatant_ids(combatants_span);
+        let hash = array_to_hash_state(salts);
+        match self
+            .run_round(
+                combat.id,
+                combat.round,
+                combatants,
+                attacks.try_into().unwrap(),
+                [false, false],
+                hash,
+            ) {
             GameProgress::Active => self.next_round(combat, combatants_span),
             GameProgress::Ended([
-                winner, looser
-            ]) => { self.end_game_from_ids(combat.id, winner, looser, WinVia::Combat); }
+                winner, looser,
+            ]) => { self.end_game_from_ids(combat.id, winner, looser, WinVia::Combat); },
         }
     }
 
     fn run_round(
-        ref self: WorldStorage, combat_id: felt252, round: u32, combatants_ids: [
-            felt252
-            ; 2], attacks: [
-            felt252
-            ; 2], verified: [
-            bool
-        ; 2], hash: HashState,
+        ref self: WorldStorage,
+        combat_id: felt252,
+        round: u32,
+        combatants_ids: [felt252; 2],
+        attacks: [felt252; 2],
+        verified: [bool; 2],
+        hash: HashState,
     ) -> GameProgress {
         let combatants = self.get_combatant_states(combatants_ids.span()).try_into().unwrap();
         // This needs to be another line beca compiler bs
@@ -129,7 +139,7 @@ impl GameImpl of GameTrait {
         let (mut state_1, mut state_2, attack_1, attack_2, verified_1, verified_2) =
             match self.get_attack_order(@combatants, attacks, hash) {
             true => (ca, cb, aa, ab, va, vb),
-            false => (cb, ca, ab, aa, vb, va)
+            false => (cb, ca, ab, aa, vb, va),
         };
         let mut results = array![];
         results
@@ -138,7 +148,7 @@ impl GameImpl of GameTrait {
         if progress == GameProgress::Active {
             results
                 .append(
-                    self.run_attack(ref state_2, ref state_1, attack_2, round, verified_2, hash)
+                    self.run_attack(ref state_2, ref state_1, attack_2, round, verified_2, hash),
                 );
             progress = self.if_winner_end(combat_id, @state_1, @state_2)
         };

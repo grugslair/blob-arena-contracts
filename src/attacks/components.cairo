@@ -1,5 +1,5 @@
 use blob_arena::{
-    core::Signed, stats::{IStats, StatTypes, SignedStats}, id_trait::{IdTrait, TIdsImpl,}
+    core::Signed, stats::{IStats, StatTypes, SignedStats}, id_trait::{IdTrait, TIdsImpl},
 };
 
 #[derive(Drop, Serde, Copy, PartialEq, IntrospectPacked)]
@@ -115,6 +115,7 @@ struct PlannedAttack {
     combatant_id: felt252,
     attack_id: felt252,
     target: felt252,
+    salt: felt252,
 }
 
 
@@ -123,7 +124,7 @@ impl InputIntoAffect of Into<AffectInput, Affect> {
         match self {
             AffectInput::Stats(stats) => Affect::Stats(stats.into()),
             AffectInput::Stat(stat) => Affect::Stat(
-                Stat { stat: stat.stat, amount: stat.amount.into() }
+                Stat { stat: stat.stat, amount: stat.amount.into() },
             ),
             AffectInput::Damage(damage) => Affect::Damage(damage),
             AffectInput::Stun(stun) => Affect::Stun(stun),
@@ -163,7 +164,7 @@ impl AttackInputImpl of AttackInputTrait {
                 hit: self.hit.into(),
                 miss: self.miss.into(),
             },
-            AttackName { id, name: self.name }
+            AttackName { id, name: self.name },
         )
     }
 }

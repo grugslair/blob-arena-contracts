@@ -8,7 +8,7 @@ sierra-replace-ids = true
 
 
 [dependencies]
-dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.1.0" }
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.1.2" }
 cubit = { git = "https://github.com/bengineer42/cubit", tag = "cairo--2.8.0" }
 
 [tool.dojo]
@@ -19,6 +19,6 @@ sierra = true
 build-external-contracts = ["dojo::world::world_contract::world"]
 
 [dev-dependencies]
-dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.1.0" }
+dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.1.2" }
 
 [profile.sepolia]

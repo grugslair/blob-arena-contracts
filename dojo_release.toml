@@ -1,11 +1,11 @@
 [world]
-name = "blob_arena-0.8.7"
-seed = "blob-arena-0.8.7"
+name = "blob_arena-0.8.8"
+seed = "blob-arena-0.8.8"
 
 
 [env]
-rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
-account_address = "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d2194723B5bd"
+rpc_url = "https://api.cartridge.gg/x/starknet/mainnet"
+account_address = "0x049848982e9b089A1F4eb5e1cd12aB58bE55Feb6937bc9CfcAD34c2Dfd0a6df8"
 
 [namespace]
 default = "blob_arena"
@@ -24,12 +24,6 @@ mappings = { "blobert" = [
     "BlobertItem",
     "AttackSlot",
     "BlobertItemName",
-], "pve_blobert" = [
-    "pve_blobert_actions",
-    "PVEOpponent",
-    "PVECollectionAllowed",
-    "PVEBlobertInfo",
-    "PVEGame",
 ] }
 
 [writers]
@@ -42,7 +36,6 @@ mappings = { "blobert" = [
 "blob_arena-CombatantToken" = [
     "blob_arena-lobby_actions",
     "blob_arena-game_admin",
-    "pve_blobert-pve_blobert_actions",
 ]
 "blob_arena-CombatantInfo" = [
     "blob_arena-lobby_actions",
@@ -53,25 +46,19 @@ mappings = { "blobert" = [
     "blob_arena-game_actions",
     "blob_arena-lobby_actions",
     "blob_arena-game_admin",
-    "pve_blobert-pve_blobert_actions",
 ]
 
 "blob_arena-AttackAvailable" = [
     "blob_arena-lobby_actions",
     "blob_arena-game_admin",
-    "pve_blobert-pve_blobert_actions",
 ]
 
-"blob_arena-AttackLastUsed" = [
-    "blob_arena-game_actions",
-    "pve_blobert-pve_blobert_actions",
-]
+"blob_arena-AttackLastUsed" = ["blob_arena-game_actions"]
 
 "blob_arena-CombatState" = [
     "blob_arena-game_actions",
     "blob_arena-lobby_actions",
     "blob_arena-game_admin",
-    "pve_blobert-pve_blobert_actions",
 ]
 
 "blob_arena-Commitment" = ["blob_arena-game_actions"]
@@ -80,10 +67,7 @@ mappings = { "blobert" = [
 "blob_arena-PlannedAttack" = ["blob_arena-game_actions"]
 "blob_arena-CombatEnd" = ["blob_arena-game_actions"]
 
-"blob_arena-RoundResult" = [
-    "blob_arena-game_actions",
-    "pve_blobert-pve_blobert_actions",
-]
+"blob_arena-RoundResult" = ["blob_arena-game_actions"]
 
 "blob_arena-Attack" = [
     "blobert-blobert_actions",
@@ -97,4 +81,3 @@ mappings = { "blobert" = [
 "blobert" = ["blobert-blobert_actions"]
 "arcade_blobert" = ["arcade_blobert-arcade_blobert_actions"]
 "amma_blobert" = ["amma_blobert-amma_blobert_actions"]
-"pve_blobert" = ["pve_blobert-pve_blobert_actions"]
