@@ -37,13 +37,13 @@ const getContract = async (provider, contractAddress) => {
 const seed_data = loadJson("./seed-attributes.json");
 const custom_data = loadJson("./custom-attributes.json");
 const amma_data = loadJson("./amma-attributes.json");
-const pve_data = loadJson("./pve-opponents.json");
+// const pve_data = loadJson("./pve-opponents.json");
 const manifest = loadJson(`../manifest_${process.argv[2]}.json`);
 
 const blobertContractTag = "blobert-blobert_actions";
 const arcadeBlobertContractTag = "arcade_blobert-arcade_blobert_actions";
 const ammaBlobertContractTag = "amma_blobert-amma_blobert_actions";
-const pveBlobertContractTag = "pve_blobert-pve_blobert_actions";
+// const pveBlobertContractTag = "pve_blobert-pve_blobert_actions";
 const seedEntrypoint = "set_seed_item_with_attacks";
 const customEntrypoint = "set_custom_item_with_attacks";
 const pveOpponentEntrypoint = "new_opponent_from_attack_slots";
@@ -62,26 +62,26 @@ const ammaBlobertContractAddress = getContractAddress(
   manifest,
   ammaBlobertContractTag
 );
-const pveBlobertContractAddress = getContractAddress(
-  manifest,
-  pveBlobertContractTag
-);
+// const pveBlobertContractAddress = getContractAddress(
+//   manifest,
+//   pveBlobertContractTag
+// );
 
 const blobertContract = await getContract(provider, blobertContractAddress);
 const ammaBlobertContract = await getContract(
   provider,
   ammaBlobertContractAddress
 );
-const pveBlobertContract = await getContract(
-  provider,
-  pveBlobertContractAddress
-);
+// const pveBlobertContract = await getContract(
+//   provider,
+//   pveBlobertContractAddress
+// );
 
-const PVECollectionAddresses = {
-  blobert: blobertContractAddress,
-  arcade_blobert: arcadeContractAddress,
-  amma_blobert: ammaBlobertContractAddress,
-};
+// const PVECollectionAddresses = {
+//   blobert: blobertContractAddress,
+//   arcade_blobert: arcadeContractAddress,
+//   amma_blobert: ammaBlobertContractAddress,
+// };
 
 const toSigned = (x) => {
   if (x >= 0) {
@@ -258,16 +258,16 @@ for (const [n, item] of Object.entries(amma_data)) {
     ),
   ]);
 }
-for (const opponent of pve_data["opponents"]) {
-  calls.push([
-    `pve: ${opponent.name}`,
-    makeCall(
-      pveBlobertContract,
-      pveOpponentEntrypoint,
-      makePveOpponentCallData(opponent)
-    ),
-  ]);
-}
+// for (const opponent of pve_data["opponents"]) {
+//   calls.push([
+//     `pve: ${opponent.name}`,
+//     makeCall(
+//       pveBlobertContract,
+//       pveOpponentEntrypoint,
+//       makePveOpponentCallData(opponent)
+//     ),
+//   ]);
+// }
 
 const multiCallSize = 20;
 for (let i = 0, x = 0; i < calls.length; i += multiCallSize, x += 1) {
