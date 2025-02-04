@@ -1,6 +1,8 @@
 use dojo::model::ModelValueStorage;
 use starknet::{ContractAddress, get_block_timestamp};
-use dojo::{world::WorldStorage, model::{ModelStorage, Model}, event::EventStorage};
+use dojo::{
+    world::WorldStorage, model::{ModelStorage, Model}, event::EventStorage, meta::Introspect,
+};
 use blob_arena::{stats::UStats, collections::blobert::TokenAttributes};
 
 #[derive(Drop, Serde, Copy, Introspect, PartialEq)]
@@ -36,7 +38,7 @@ struct PVEFreeGames {
 #[derive(Drop, Serde)]
 struct PVECollectionAllowed {
     #[key]
-    token_id: felt252,
+    id: felt252,
     #[key]
     collection: ContractAddress,
     allowed: bool,
@@ -57,18 +59,22 @@ struct PVEBlobertInfo {
 struct PVEGame {
     #[key]
     id: felt252,
-    owner: ContractAddress,
-    player: ContractAddress,
-    player_id: felt252,
     opponent_token: felt252,
     opponent_id: felt252,
     round: u32,
     phase: PVEPhase,
 }
 
+#[derive(Drop, Serde, Introspect)]
+struct PVEPlayerPhase {
+    player: ContractAddress,
+    combatant_id: felt252,
+    phase: PVEPhase,
+}
+
 #[dojo::model]
 #[derive(Drop, Serde)]
-struct PVEChallengeSetup {
+struct PVEChallenge {
     #[key]
     id: felt252,
     health_recovery: u8,
@@ -86,22 +92,21 @@ struct PVEStageOpponent {
 
 #[dojo::model]
 #[derive(Drop, Serde)]
-struct PVEChallenge {
+struct PVEChallengeAttempt {
     #[key]
     id: felt252,
-    stages: felt252,
-    player: ContractAddress,
-    combatant_id: felt252,
+    challenge: felt252,
     stats: UStats,
     attacks: Array<felt252>,
     stage: u32,
+    respawns: u32,
 }
 
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct PVEStageGame {
     #[key]
-    challenge_id: felt252,
+    attempt_id: felt252,
     #[key]
     stage: u32,
     game_id: felt252,
@@ -117,21 +122,10 @@ struct PVEStore {
 #[generate_trait]
 impl PVEStorageImpl of PVEStorage {
     fn new_pve_game_model(
-        ref self: WorldStorage,
-        game_id: felt252,
-        player: ContractAddress,
-        player_id: felt252,
-        opponent_token: felt252,
-        opponent_id: felt252,
+        ref self: WorldStorage, game_id: felt252, opponent_token: felt252, opponent_id: felt252,
     ) -> PVEGame {
         let game = PVEGame {
-            id: game_id,
-            player,
-            player_id,
-            opponent_token,
-            opponent_id,
-            round: 1,
-            phase: PVEPhase::Active,
+            id: game_id, opponent_token, opponent_id, round: 1, phase: PVEPhase::Active,
         };
         self.write_model(@game);
         game
@@ -174,50 +168,49 @@ impl PVEStorageImpl of PVEStorage {
     fn get_pve_game_phase(self: @WorldStorage, game_id: felt252) -> PVEPhase {
         self.read_member(Model::<PVEGame>::ptr_from_keys(game_id), selector!("phase"))
     }
+    fn get_pve_game_schema<T, +Introspect<T>, +Serde<T>>(
+        self: @WorldStorage, game_id: felt252,
+    ) -> T {
+        self.read_schema(Model::<PVEGame>::ptr_from_keys(game_id))
+    }
 
     fn get_collection_allowed(
-        self: @WorldStorage, token_id: felt252, collection: ContractAddress,
+        self: @WorldStorage, id: felt252, collection: ContractAddress,
     ) -> bool {
-        let value: PVECollectionAllowedValue = self.read_value((token_id, collection));
-        value.allowed
+        self
+            .read_member(
+                Model::<PVECollectionAllowed>::ptr_from_keys((id, collection)),
+                selector!("allowed"),
+            )
     }
 
     fn set_collection_allowed(
-        ref self: WorldStorage, token_id: felt252, collection: ContractAddress, allowed: bool,
+        ref self: WorldStorage, id: felt252, collection: ContractAddress, allowed: bool,
     ) {
-        self.write_model(@PVECollectionAllowed { token_id, collection, allowed });
+        self.write_model(@PVECollectionAllowed { id, collection, allowed });
     }
     fn set_collections_allowed(
-        ref self: WorldStorage,
-        token_id: felt252,
-        collections: Array<ContractAddress>,
-        allowed: bool,
+        ref self: WorldStorage, id: felt252, collections: Array<ContractAddress>, allowed: bool,
     ) {
         let mut models = ArrayTrait::<@PVECollectionAllowed>::new();
         for collection in collections {
-            models.append(@PVECollectionAllowed { token_id, collection, allowed });
+            models.append(@PVECollectionAllowed { id, collection, allowed });
         };
         self.write_models(models.span());
     }
-    fn set_mutiple_collection_allowed(
-        ref self: WorldStorage,
-        token_ids: Array<felt252>,
-        collection: ContractAddress,
-        allowed: bool,
+    fn set_multiple_collection_allowed(
+        ref self: WorldStorage, ids: Array<felt252>, collection: ContractAddress, allowed: bool,
     ) {
         let mut models = ArrayTrait::<@PVECollectionAllowed>::new();
-        for token_id in token_ids {
-            models.append(@PVECollectionAllowed { token_id, collection, allowed });
+        for id in ids {
+            models.append(@PVECollectionAllowed { id, collection, allowed });
         };
         self.write_models(models.span());
     }
     fn get_pve_challenge_health_recovery(self: @WorldStorage, id: felt252) -> u8 {
-        self
-            .read_member(
-                Model::<PVEChallengeSetup>::ptr_from_keys(id), selector!("health_recovery"),
-            )
+        self.read_member(Model::<PVEChallenge>::ptr_from_keys(id), selector!("health_recovery"))
     }
-    fn get_pve_challenge_rounds(self: @WorldStorage, id: felt252) -> PVEChallengeSetup {
+    fn get_pve_challenge(self: @WorldStorage, id: felt252) -> PVEChallenge {
         self.read_model(id)
     }
 
@@ -227,45 +220,52 @@ impl PVEStorageImpl of PVEStorage {
                 Model::<PVEStageOpponent>::ptr_from_keys(challenge_id), selector!("opponent"),
             )
     }
-    fn new_pve_challenge(
+    fn new_pve_challenge_attempt(
         ref self: WorldStorage,
         id: felt252,
-        stages: felt252,
-        player: ContractAddress,
-        combatant_id: felt252,
+        challenge: felt252,
         stats: UStats,
         attacks: Array<felt252>,
     ) {
         self
             .write_model(
-                @PVEChallenge { id, stages, player, combatant_id, stats, attacks, stage: 1 },
+                @PVEChallengeAttempt { id, challenge, stats, attacks, stage: 1, respawns: 0 },
             );
     }
-    fn get_pve_challenge(self: @WorldStorage, id: felt252) -> PVEChallenge {
+    fn set_pve_challenge_respawns(ref self: WorldStorage, id: felt252, respawns: u32) {
+        self
+            .write_member(
+                Model::<PVEChallengeAttempt>::ptr_from_keys(id), selector!("respawns"), respawns,
+            );
+    }
+    fn get_pve_challenge_attempt(self: @WorldStorage, id: felt252) -> PVEChallengeAttempt {
         self.read_model(id)
     }
     fn set_pve_stage_game(
-        ref self: WorldStorage, challenge_id: felt252, stage: u32, game_id: felt252,
+        ref self: WorldStorage, attempt_id: felt252, stage: u32, game_id: felt252,
     ) {
-        self.write_model(@PVEStageGame { challenge_id, stage, game_id });
+        self.write_model(@PVEStageGame { attempt_id, stage, game_id });
     }
-    fn get_pve_stage_game_id(self: @WorldStorage, challenge_id: felt252, stage: u32) -> felt252 {
+    fn get_pve_stage_game_id(self: @WorldStorage, attempt_id: felt252, stage: u32) -> felt252 {
         self
             .read_member(
-                Model::<PVEStageGame>::ptr_from_keys((challenge_id, stage)), selector!("game_id"),
+                Model::<PVEStageGame>::ptr_from_keys((attempt_id, stage)), selector!("game_id"),
             )
     }
-    fn get_pve_stage_game_phase(
-        self: @WorldStorage, challenge_id: felt252, stage: u32,
-    ) -> PVEPhase {
-        self.get_pve_game_phase(self.get_pve_stage_game_id(challenge_id, stage))
+
+    fn get_pve_stage_game_phase_and_player(
+        self: @WorldStorage, attempt_id: felt252, stage: u32,
+    ) -> PVEPlayerPhase {
+        self.get_pve_game_schema(self.get_pve_stage_game_id(attempt_id, stage))
     }
-    fn set_pve_challenge_stage(ref self: WorldStorage, challenge_id: felt252, stage: u32) {
+
+    fn set_pve_challenge_stage(ref self: WorldStorage, attempt_id: felt252, stage: u32) {
         self
             .write_member(
-                Model::<PVEChallenge>::ptr_from_keys(challenge_id), selector!("stage"), stage,
+                Model::<PVEChallengeAttempt>::ptr_from_keys(attempt_id), selector!("stage"), stage,
             );
     }
+
 
     fn set_free_games(
         ref self: WorldStorage, player: ContractAddress, games: u32, last_claim: u64,

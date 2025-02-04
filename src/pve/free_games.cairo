@@ -31,11 +31,11 @@ mod pve_blobert_free_game_actions {
 
     #[abi(embed_v0)]
     impl IPVEFreeGamesImpl of IPVEFreeGames<ContractState> {
-        fn claim_free_game(ref self: ContractState) {
+        fn claim_game(ref self: ContractState) {
             let mut store = self.get_pve_storage();
             store.mint_free_game(get_caller_address());
         }
-        fn start_free_game(
+        fn start(
             ref self: ContractState,
             player_collection_address: ContractAddress,
             player_token_id: u256,
@@ -53,6 +53,5 @@ mod pve_blobert_free_game_actions {
                     opponent_token,
                 )
         }
-        fn continue_free_game
     }
 }

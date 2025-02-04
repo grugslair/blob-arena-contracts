@@ -152,6 +152,13 @@ impl CombatantStorageImpl of CombatantStorage {
         self.write_model(@CombatantInfo { id, combat_id, player });
     }
 
+    fn set_combatant_combat_id(ref self: WorldStorage, id: felt252, combat_id: felt252) {
+        self
+            .write_member(
+                Model::<CombatantInfo>::ptr_from_keys(id), selector!("combat_id"), combat_id,
+            );
+    }
+
     fn create_combatant_state(ref self: WorldStorage, id: felt252, stats: UStats) {
         self.write_model(@make_combatant_state(id, @stats));
     }
