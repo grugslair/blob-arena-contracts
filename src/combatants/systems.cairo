@@ -26,6 +26,16 @@ impl CombatantImpl of CombatantTrait {
         self.setup_combatant_state_and_attacks(combatant_id, collection_address, token_id, attacks);
     }
 
+    fn get_token_stats_and_attacks(
+        self: @WorldStorage,
+        collection_address: ContractAddress,
+        token_id: u256,
+        attacks: Array<(felt252, felt252)>,
+    ) -> (UStats, Array<felt252>) {
+        let collection = get_collection_dispatcher(collection_address);
+        (collection.get_stats(token_id), collection.get_attack_slots(token_id, attacks))
+    }
+
     fn setup_combatant_state_and_attacks(
         ref self: WorldStorage,
         combatant_id: felt252,

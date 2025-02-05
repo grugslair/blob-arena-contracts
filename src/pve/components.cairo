@@ -59,6 +59,8 @@ struct PVEBlobertInfo {
 struct PVEGame {
     #[key]
     id: felt252,
+    combatant_id: felt252,
+    player: ContractAddress,
     opponent_token: felt252,
     opponent_id: felt252,
     round: u32,
@@ -89,6 +91,7 @@ struct PVEChallengeAttempt {
     #[key]
     id: felt252,
     challenge: felt252,
+    player: ContractAddress,
     stats: UStats,
     attacks: Array<felt252>,
     stage: u32,
@@ -105,7 +108,7 @@ struct PVEStageGame {
     game_id: felt252,
 }
 
-#[derive(Drop, Copy)]
+#[derive(Drop)]
 struct PVEStore {
     ba: WorldStorage,
     pve: WorldStorage,
@@ -115,10 +118,21 @@ struct PVEStore {
 #[generate_trait]
 impl PVEStorageImpl of PVEStorage {
     fn new_pve_game_model(
-        ref self: WorldStorage, game_id: felt252, opponent_token: felt252, opponent_id: felt252,
+        ref self: WorldStorage,
+        game_id: felt252,
+        combatant_id: felt252,
+        player: ContractAddress,
+        opponent_token: felt252,
+        opponent_id: felt252,
     ) -> PVEGame {
         let game = PVEGame {
-            id: game_id, opponent_token, opponent_id, round: 1, phase: PVEPhase::Active,
+            id: game_id,
+            combatant_id,
+            player,
+            opponent_token,
+            opponent_id,
+            round: 1,
+            phase: PVEPhase::Active,
         };
         self.write_model(@game);
         game

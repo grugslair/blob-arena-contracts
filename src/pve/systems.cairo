@@ -2,11 +2,7 @@ use core::cmp::min;
 use starknet::{ContractAddress, get_contract_address, get_block_timestamp};
 use dojo::world::WorldStorage;
 use blob_arena::{
-    attacks::Attack,
-    pve::{
-        PVEGame, PVEOpponent, PVEBlobertInfo, PVEStorage, PVEPhase, PVEStore,
-        components::PVEPlayerPhase,
-    },
+    attacks::Attack, pve::{PVEGame, PVEOpponent, PVEBlobertInfo, PVEStorage, PVEPhase, PVEStore},
     game::{GameStorage, GameTrait, GameProgress},
     combatants::{CombatantStorage, CombatantTrait, CombatantState, CombatantSetup},
     attacks::AttackStorage, combat::CombatTrait, world::uuid,
@@ -39,38 +35,36 @@ impl PVEImpl of PVETrait {
             self.pve.get_collection_allowed(opponent_token, player_collection_address),
             'Collection not allowed',
         );
-        let (combatant_id, _) = self
-            .ba
-            .new_pve_combatant(player_collection_address, player_token_id, player_attacks);
+
         let game_id = uuid();
-        self.pve.set_combatant_info(combatant_id, game_id, player);
-        self.new_pve_combat(game_id, opponent_token);
+
+        self.ba.set_combatant_token(combatant_id, player_collection_address, player_token_id);
+        self.new_pve_opponent_in_combat(game_id, combatant_id, player, opponent_token);
 
         game_id
     }
 
-    fn new_pve_combat(ref self: PVEStore, game_id: felt252, opponent_token: felt252) {
+    fn new_pve_opponent_in_combat(
+        ref self: PVEStore,
+        game_id: felt252,
+        combatant_id: felt252,
+        player: ContractAddress,
+        opponent_token: felt252,
+    ) -> (felt252, CombatantSetup) {
         let opponent_id = uuid();
+        let combatant_id = uuid();
         self
             .ba
             .create_combatant_state(opponent_id, self.pve.get_pve_opponent_stats(opponent_token));
-        self.pve.new_pve_game_model(game_id, opponent_token, opponent_id);
+        self.pve.new_pve_game_model(game_id, combatant_id, player, opponent_token, opponent_id);
+        let setup = self
+            .ba
+            .setup_combatant_state_and_attacks(
+                combatant_id, player_collection_address, player_token_id, player_attacks,
+            );
+        (combatant_id, setup)
     }
 
-    fn new_pve_combatant(
-        ref self: WorldStorage,
-        player_collection_address: ContractAddress,
-        player_token_id: u256,
-        player_attacks: Array<(felt252, felt252)>,
-    ) -> (felt252, CombatantSetup) {
-        let player_id = uuid();
-        self.set_combatant_token(player_id, player_collection_address, player_token_id);
-        let setup = self
-            .setup_combatant_state_and_attacks(
-                player_id, player_collection_address, player_token_id, player_attacks,
-            );
-        (player_id, setup)
-    }
     fn setup_new_opponent(
         ref self: WorldStorage,
         name: ByteArray,
@@ -86,16 +80,13 @@ impl PVEImpl of PVETrait {
         self.set_collections_allowed(token_id, collections_allowed, true);
         token_id
     }
+
     fn run_pve_round(
-        ref self: PVEStore,
-        combatant_id: felt252,
-        game: PVEGame,
-        player_attack: felt252,
-        randomness: felt252,
+        ref self: PVEStore, game: PVEGame, player_attack: felt252, randomness: felt252,
     ) {
         assert(game.phase == PVEPhase::Active, 'Not active');
         let hash = make_hash_state(randomness);
-        let combatants = [combatant_id, game.opponent_id];
+        let combatants = [game.combatant_id, game.opponent_id];
         let opponent_attacks = self.pve.get_pve_opponent_attacks(game.opponent_token);
         let attacks = [
             player_attack, self.ba.get_opponent_attack(@game, opponent_attacks, randomness),
@@ -104,7 +95,7 @@ impl PVEImpl of PVETrait {
             GameProgress::Active => { self.pve.set_pve_round(game.id, game.round + 1); },
             GameProgress::Ended([winner, _]) => self
                 .pve
-                .set_pve_ended(game.id, winner == combatant_id),
+                .set_pve_ended(game.id, winner == game.combatant_id),
         }
     }
     fn get_opponent_attack(
@@ -138,19 +129,19 @@ impl PVEImpl of PVETrait {
         player_attacks: Array<(felt252, felt252)>,
     ) -> felt252 {
         self.pve.assert_collection_allowed(challenge_id, player_collection_address);
-
         let id = uuid();
 
         let (combatant_id, CombatantSetup { stats, attacks }) = self
             .ba
             .new_pve_combatant(player_collection_address, player_token_id, player_attacks);
-        self.pve.set_combatant_info(combatant_id, id, player);
         self.pve.new_pve_challenge_attempt(id, challenge_id, stats, attacks);
         self.create_pve_challenge_attempt_round(id, challenge_id, combatant_id, 1);
         id
     }
 
     fn next_pve_challenge_round(ref self: PVEStore, combatant_id: felt252) {
+        let combatant = self.pve.get_combatant_info(combatant_id);
+        let attempt_id = combatant.combat_id;
         let attempt = self.pve.get_pve_challenge_attempt(attempt_id);
 
         assert(attempt.stage.is_non_zero(), 'Not Started');
@@ -179,6 +170,8 @@ impl PVEImpl of PVETrait {
         combatant_id: felt252,
         stage: u32,
     ) {
+        let combatant_id = uuid();
+
         let opponent = self.pve.get_pve_stage_opponent(challenge_id, stage);
         assert(opponent.is_non_zero(), 'No more stages');
         self.new_pve_combat(attempt_id, opponent);

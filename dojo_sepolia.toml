@@ -76,7 +76,6 @@ mappings = { "blobert" = [
 
 "blob_arena-Commitment" = ["blob_arena-game_actions"]
 "blob_arena-LastTimestamp" = ["blob_arena-game_actions"]
-"blob_arena-Salts" = ["blob_arena-game_actions"]
 "blob_arena-PlannedAttack" = ["blob_arena-game_actions"]
 "blob_arena-CombatEnd" = ["blob_arena-game_actions"]
 
