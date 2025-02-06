@@ -2,12 +2,15 @@ use core::cmp::min;
 use starknet::{ContractAddress, get_contract_address, get_block_timestamp};
 use dojo::world::WorldStorage;
 use blob_arena::{
-    attacks::Attack, pve::{PVEGame, PVEOpponent, PVEBlobertInfo, PVEStorage, PVEPhase, PVEStore},
+    attacks::Attack,
+    pve::{
+        PVEGame, PVEOpponent, PVEBlobertInfo, PVEStorage, PVEPhase, PVEStore, PVEChallengeAttempt,
+    },
     game::{GameStorage, GameTrait, GameProgress},
     combatants::{CombatantStorage, CombatantTrait, CombatantState, CombatantSetup},
     attacks::AttackStorage, combat::CombatTrait, world::uuid,
     hash::{make_hash_state, felt252_to_u128}, stats::UStats, collections::blobert::TokenAttributes,
-    constants::{STARTING_HEALTH, SECONDS_12_HOURS}, stats::StatsTrait,
+    constants::{STARTING_HEALTH, SECONDS_12_HOURS}, stats::StatsTrait, iter::{Enumerate, Map},
 };
 
 
@@ -35,34 +38,50 @@ impl PVEImpl of PVETrait {
             self.pve.get_collection_allowed(opponent_token, player_collection_address),
             'Collection not allowed',
         );
-
-        let game_id = uuid();
-
-        self.ba.set_combatant_token(combatant_id, player_collection_address, player_token_id);
-        self.new_pve_opponent_in_combat(game_id, combatant_id, player, opponent_token);
-
-        game_id
+        let (game, _, _) = self
+            .new_pve_opponent_in_combat(
+                player, player_collection_address, player_token_id, player_attacks, opponent_token,
+            );
+        self.ba.set_combatant_token(game.combatant_id, player_collection_address, player_token_id);
+        game.id
     }
-
     fn new_pve_opponent_in_combat(
         ref self: PVEStore,
-        game_id: felt252,
-        combatant_id: felt252,
         player: ContractAddress,
+        player_collection_address: ContractAddress,
+        player_token_id: u256,
+        player_attacks: Array<(felt252, felt252)>,
         opponent_token: felt252,
-    ) -> (felt252, CombatantSetup) {
+    ) -> (PVEGame, UStats, Array<felt252>) {
+        let (stats, attacks) = self
+            .ba
+            .get_token_stats_and_attacks(
+                player_collection_address, player_token_id, player_attacks,
+            );
+        let game = self
+            .setup_pve_opponent_in_combat(
+                player, stats, stats.get_max_health(), attacks.span(), opponent_token,
+            );
+        (game, stats, attacks)
+    }
+
+
+    fn setup_pve_opponent_in_combat(
+        ref self: PVEStore,
+        player: ContractAddress,
+        stats: UStats,
+        health: u8,
+        attacks: Span<felt252>,
+        opponent_token: felt252,
+    ) -> PVEGame {
+        let game_id = uuid();
         let opponent_id = uuid();
         let combatant_id = uuid();
         self
             .ba
             .create_combatant_state(opponent_id, self.pve.get_pve_opponent_stats(opponent_token));
-        self.pve.new_pve_game_model(game_id, combatant_id, player, opponent_token, opponent_id);
-        let setup = self
-            .ba
-            .setup_combatant_state_and_attacks(
-                combatant_id, player_collection_address, player_token_id, player_attacks,
-            );
-        (combatant_id, setup)
+        self.ba.set_combatant_stats_health_and_attacks(combatant_id, stats, health, attacks);
+        self.pve.new_pve_game_model(game_id, combatant_id, player, opponent_token, opponent_id)
     }
 
     fn setup_new_opponent(
@@ -79,6 +98,20 @@ impl PVEImpl of PVETrait {
         self.set_pve_blobert_info(token_id, name, collection, attributes);
         self.set_collections_allowed(token_id, collections_allowed, true);
         token_id
+    }
+
+    fn create_challenge(
+        ref self: WorldStorage,
+        health_recovery: u8,
+        opponents: Array<felt252>,
+        collections_allowed: Array<ContractAddress>,
+    ) {
+        let challenge_id = uuid();
+        self.set_pve_challenge(challenge_id, health_recovery);
+        self.set_collections_allowed(challenge_id, collections_allowed, true);
+        for (n, opponent) in opponents.enumerate() {
+            self.set_pve_stage_opponent(challenge_id, n, opponent);
+        }
     }
 
     fn run_pve_round(
@@ -130,27 +163,29 @@ impl PVEImpl of PVETrait {
     ) -> felt252 {
         self.pve.assert_collection_allowed(challenge_id, player_collection_address);
         let id = uuid();
-
-        let (combatant_id, CombatantSetup { stats, attacks }) = self
+        let (stats, attacks) = self
             .ba
-            .new_pve_combatant(player_collection_address, player_token_id, player_attacks);
-        self.pve.new_pve_challenge_attempt(id, challenge_id, stats, attacks);
-        self.create_pve_challenge_attempt_round(id, challenge_id, combatant_id, 1);
+            .get_token_stats_and_attacks(
+                player_collection_address, player_token_id, player_attacks,
+            );
+        let attempt = self.pve.new_pve_challenge_attempt(id, challenge_id, player, stats, attacks);
+
+        self.create_pve_challenge_attempt_round(attempt, stats.get_max_health());
         id
     }
 
-    fn next_pve_challenge_round(ref self: PVEStore, combatant_id: felt252) {
-        let combatant = self.pve.get_combatant_info(combatant_id);
-        let attempt_id = combatant.combat_id;
-        let attempt = self.pve.get_pve_challenge_attempt(attempt_id);
-
+    fn next_pve_challenge_round(ref self: PVEStore, attempt_id: felt252) {
+        let mut attempt = self.pve.get_pve_challenge_attempt(attempt_id);
+        let (combatant_id, phase) = self
+            .pve
+            .get_pve_game_combatant_phase(
+                self.pve.get_pve_stage_game_id(attempt_id, attempt.stage),
+            );
         assert(attempt.stage.is_non_zero(), 'Not Started');
-        match self.pve.get_pve_game_phase(attempt_id) {
+        match phase {
             PVEPhase::Ended(won) => assert(won, 'Player Lost'),
             _ => panic!("Combat not ended"),
         };
-        let stage = attempt.stage + 1;
-        self.pve.set_pve_challenge_stage(attempt_id, stage);
 
         let health = calc_restored_health(
             self.ba.get_combatant_health(combatant_id),
@@ -158,61 +193,39 @@ impl PVEImpl of PVETrait {
             self.pve.get_pve_challenge_health_recovery(attempt_id),
         );
 
-        self.ba.reset_combatant(combatant_id, health, attempt.stats, attempt.attacks);
+        attempt.stage += 1;
 
-        self.create_pve_challenge_attempt_round(attempt_id, attempt.challenge, combatant_id, stage);
+        self.pve.set_pve_challenge_stage(attempt_id, attempt.stage);
+        self.create_pve_challenge_attempt_round(attempt, health);
     }
 
     fn create_pve_challenge_attempt_round(
-        ref self: PVEStore,
-        attempt_id: felt252,
-        challenge_id: felt252,
-        combatant_id: felt252,
-        stage: u32,
+        ref self: PVEStore, attempt: PVEChallengeAttempt, health: u8,
     ) {
-        let combatant_id = uuid();
-
-        let opponent = self.pve.get_pve_stage_opponent(challenge_id, stage);
+        let opponent = self.pve.get_pve_stage_opponent(attempt.challenge, attempt.stage);
         assert(opponent.is_non_zero(), 'No more stages');
-        self.new_pve_combat(attempt_id, opponent);
+        let game = self
+            .setup_pve_opponent_in_combat(
+                attempt.player, attempt.stats, health, attempt.attacks.span(), opponent,
+            );
+        self.pve.set_pve_stage_game(attempt.id, attempt.stage, game.id);
     }
 
     fn respawn(ref self: PVEStore, attempt_id: felt252) {
-        let attempt = self.pve.get_pve_challenge_attempt(attempt_id);
+        let mut attempt = self.pve.get_pve_challenge_attempt(attempt_id);
+        let phase = self
+            .pve
+            .get_pve_game_phase(self.pve.get_pve_stage_game_id(attempt_id, attempt.stage));
 
-        let PVEPlayerPhase {
-            player, phase, combatant_id,
-        } = self.pve.get_pve_stage_game_phase_and_player(attempt_id, attempt.stage);
         assert(attempt.respawns.is_zero(), 'No more respawns');
         assert(attempt.stage.is_non_zero(), 'Not Started');
         match phase {
             PVEPhase::Ended(won) => assert(!won, 'Player not dead'),
             _ => panic!("Combat not ended"),
         };
-
-        self
-            .ba
-            .reset_combatant(
-                combatant_id, attempt.stats.get_max_health(), attempt.stats, attempt.attacks,
-            );
-
         self.pve.set_pve_challenge_respawns(attempt_id, attempt.respawns + 1);
-    }
-
-    fn create_pve_challenge_round(
-        ref self: PVEStore,
-        challenge_id: felt252,
-        stages: felt252,
-        player: ContractAddress,
-        combatant_id: felt252,
-        stage: u32,
-    ) -> bool {
-        let opponent = self.pve.get_pve_stage_opponent(stages, stage);
-        if opponent.is_non_zero() {
-            true
-        } else {
-            false
-        }
+        let health = attempt.stats.get_max_health();
+        self.create_pve_challenge_attempt_round(attempt, health);
     }
 
 

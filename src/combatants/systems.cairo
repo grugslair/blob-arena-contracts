@@ -6,7 +6,7 @@ use blob_arena::{
         CombatantInfo, CombatantInfoTrait, CombatantStateTrait, CombatantToken,
         components::{get_combatant_id, make_combatant_state}, CombatantStorage, CombatantSetup,
     },
-    combat::{CombatState, CombatTrait}, stats::UStats,
+    combat::{CombatState, CombatTrait}, stats::{UStats, StatsTrait},
     collections::{get_collection_dispatcher, ICollectionDispatcherTrait, ICollectionDispatcher},
 };
 
@@ -42,13 +42,28 @@ impl CombatantImpl of CombatantTrait {
         collection_address: ContractAddress,
         token_id: u256,
         attacks: Array<(felt252, felt252)>,
-    ) -> CombatantSetup {
-        let collection_dispatcher = get_collection_dispatcher(collection_address);
-        let stats = collection_dispatcher.get_stats(token_id);
+    ) {
+        let (stats, attack_ids) = self
+            .get_token_stats_and_attacks(collection_address, token_id, attacks);
+        self.set_combatant_stats_and_attacks(combatant_id, stats, attack_ids.span());
+    }
+
+    fn set_combatant_stats_and_attacks(
+        ref self: WorldStorage, combatant_id: felt252, stats: UStats, attacks: Span<felt252>,
+    ) {
         self.create_combatant_state(combatant_id, stats);
-        let attacks = self
-            .setup_available_attacks(collection_dispatcher, token_id, combatant_id, attacks);
-        CombatantSetup { stats, attacks }
+        self.set_combatant_attacks_available(combatant_id, attacks);
+    }
+
+    fn set_combatant_stats_health_and_attacks(
+        ref self: WorldStorage,
+        combatant_id: felt252,
+        stats: UStats,
+        health: u8,
+        attacks: Span<felt252>,
+    ) {
+        self.set_combatant_attacks_available(combatant_id, attacks);
+        self.set_combatant_state(combatant_id, health, 0, stats);
     }
 
     fn create_player_combatant(

@@ -4,7 +4,7 @@ use blob_arena::{stats::UStats, id_trait::{IdTrait, TIdsImpl}, uuid};
 
 
 #[dojo::model]
-#[derive(Drop, Serde, Copy)]
+#[derive(Drop, Serde)]
 struct Item {
     #[key]
     id: felt252,
@@ -20,7 +20,7 @@ struct ItemName {
 }
 
 #[dojo::model]
-#[derive(Drop, Serde, Copy)]
+#[derive(Drop, Serde)]
 struct HasAttack {
     #[key]
     item_id: felt252,

@@ -25,19 +25,19 @@ enum AttackOutcomes {
     Hit: Array<EffectResult>,
 }
 
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+#[derive(Drop, Serde, PartialEq, Introspect)]
 struct EffectResult {
     target: Target,
     affect: AffectResult,
 }
 
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+#[derive(Drop, Serde, PartialEq, Introspect)]
 enum AffectResult {
     Success,
     Damage: DamageResult,
 }
 
-#[derive(Drop, Serde, Copy, PartialEq, IntrospectPacked)]
+#[derive(Drop, Serde, PartialEq, IntrospectPacked)]
 struct DamageResult {
     damage: u8,
     critical: bool,

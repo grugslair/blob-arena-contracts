@@ -2,14 +2,13 @@ mod core;
 mod constants;
 mod utils;
 mod id_trait;
-// mod ab;
-// mod salts;
 mod commitments;
 mod collections;
 mod hash;
 mod world;
 mod storage;
 mod serde;
+mod iter;
 use world::uuid;
 // mod permissions {
 //     mod components;
@@ -71,6 +70,7 @@ mod pve {
     use systems::PVETrait;
     use components::{
         PVEGame, PVEOpponent, PVEBlobertInfo, PVEStorage, PVEPhase, pve_namespace, PVEStore,
+        PVEChallengeAttempt,
     };
 }
 

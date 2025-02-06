@@ -67,6 +67,12 @@ struct PVEGame {
     phase: PVEPhase,
 }
 
+#[derive(Drop, Serde, Introspect)]
+struct PVEGameCombatantPhase {
+    combatant_id: felt252,
+    phase: PVEPhase,
+}
+
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct PVEChallenge {
@@ -176,6 +182,18 @@ impl PVEStorageImpl of PVEStorage {
         self.read_member(Model::<PVEGame>::ptr_from_keys(game_id), selector!("phase"))
     }
 
+    fn get_pve_game_schema<T, +Introspect<T>, +Serde<T>>(
+        self: @WorldStorage, game_id: felt252,
+    ) -> T {
+        self.read_schema(Model::<PVEGame>::ptr_from_keys(game_id))
+    }
+
+    fn get_pve_game_combatant_phase(self: @WorldStorage, game_id: felt252) -> (felt252, PVEPhase) {
+        let PVEGameCombatantPhase { combatant_id, phase } = self.get_pve_game_schema(game_id);
+        (combatant_id, phase)
+    }
+
+
     fn get_collection_allowed(
         self: @WorldStorage, id: felt252, collection: ContractAddress,
     ) -> bool {
@@ -212,6 +230,11 @@ impl PVEStorageImpl of PVEStorage {
     fn get_pve_challenge_health_recovery(self: @WorldStorage, id: felt252) -> u8 {
         self.read_member(Model::<PVEChallenge>::ptr_from_keys(id), selector!("health_recovery"))
     }
+
+    fn set_pve_challenge(ref self: WorldStorage, id: felt252, health_recovery: u8) {
+        self.write_model(@PVEChallenge { id, health_recovery });
+    }
+
     fn get_pve_challenge(self: @WorldStorage, id: felt252) -> PVEChallenge {
         self.read_model(id)
     }
@@ -222,17 +245,24 @@ impl PVEStorageImpl of PVEStorage {
                 Model::<PVEStageOpponent>::ptr_from_keys(challenge_id), selector!("opponent"),
             )
     }
+    fn set_pve_stage_opponent(
+        ref self: WorldStorage, challenge_id: felt252, round: u32, opponent: felt252,
+    ) {
+        self.write_model(@PVEStageOpponent { challenge_id, stage: round, opponent });
+    }
     fn new_pve_challenge_attempt(
         ref self: WorldStorage,
         id: felt252,
         challenge: felt252,
+        player: ContractAddress,
         stats: UStats,
         attacks: Array<felt252>,
-    ) {
-        self
-            .write_model(
-                @PVEChallengeAttempt { id, challenge, stats, attacks, stage: 1, respawns: 0 },
-            );
+    ) -> PVEChallengeAttempt {
+        let model = PVEChallengeAttempt {
+            id, challenge, player, stats, attacks, stage: 1, respawns: 0,
+        };
+        self.write_model(@model);
+        model
     }
     fn set_pve_challenge_respawns(ref self: WorldStorage, id: felt252, respawns: u32) {
         self

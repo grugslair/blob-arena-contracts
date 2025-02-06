@@ -3,7 +3,7 @@ use dojo::{world::WorldStorage, model::{ModelStorage, Model, ModelValueStorage}}
 use blob_arena::collections::blobert::{Seed, TokenAttributes};
 
 #[dojo::model]
-#[derive(Drop, Serde, Copy)]
+#[derive(Drop, Serde)]
 struct BlobertToken {
     #[key]
     id: felt252,
@@ -12,7 +12,7 @@ struct BlobertToken {
 }
 
 #[dojo::model]
-#[derive(Drop, Serde, Copy)]
+#[derive(Drop, Serde)]
 struct LastMint {
     #[key]
     player: ContractAddress,
@@ -22,13 +22,13 @@ struct LastMint {
 #[generate_trait]
 impl ArcadeBlobertImpl of ArcadeBlobertStorage {
     fn set_blobert_token(
-        ref self: WorldStorage, id: felt252, owner: ContractAddress, attributes: TokenAttributes
+        ref self: WorldStorage, id: felt252, owner: ContractAddress, attributes: TokenAttributes,
     ) {
         self.write_model(@BlobertToken { id, owner, attributes });
     }
 
     fn get_blobert_token<T, +TryInto<T, felt252>>(
-        self: @WorldStorage, token_id: T
+        self: @WorldStorage, token_id: T,
     ) -> BlobertToken {
         let token_id: felt252 = token_id.try_into().unwrap();
         self.read_model(token_id)

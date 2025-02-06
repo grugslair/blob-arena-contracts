@@ -2,11 +2,11 @@ use core::poseidon::HashState;
 use starknet::ContractAddress;
 use blob_arena::{
     attacks::{
-        Effect, Affect, Target, Damage, Stat, results::{EffectResult, AffectResult, DamageResult}
+        Effect, Affect, Target, Damage, Stat, results::{EffectResult, AffectResult, DamageResult},
     },
     combatants::{CombatantState, CombatantTrait, CombatantStateTrait},
     combat::calculations::{damage_calculation, did_critical}, hash::{HashUpdate, UpdateHashToU128},
-    core::Enumerate,
+    iter::Enumerate,
 };
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect)]
@@ -54,13 +54,13 @@ impl PhaseImpl of PhaseTrait {
     fn is_running(self: @Phase) -> bool {
         match *self {
             Phase::Commit | Phase::Reveal => true,
-            _ => false
+            _ => false,
         }
     }
     fn assert_no_winner(self: @Phase) {
         match *self {
             Phase::Ended(_) => panic!("Combat already ended"),
-            _ => {}
+            _ => {},
         }
     }
 }
@@ -80,8 +80,9 @@ fn run_effect(
             };
             AffectResult::Success
         },
-        Affect::Stat(Stat { stat,
-        amount }) => {
+        Affect::Stat(Stat {
+            stat, amount,
+        }) => {
             match effect.target {
                 Target::Player => { attacker_state.apply_buff(stat, amount) },
                 Target::Opponent => { defender_state.apply_buff(stat, amount) },
@@ -115,7 +116,7 @@ fn run_effect(
             AffectResult::Success
         },
     };
-    EffectResult { target: effect.target, affect: result, }
+    EffectResult { target: effect.target, affect: result }
 }
 
 
@@ -126,10 +127,8 @@ fn run_effects(
     hash_state: HashState,
 ) -> Array<EffectResult> {
     let mut results: Array<EffectResult> = ArrayTrait::new();
-    for (n, effect) in effects
-        .enumerate() {
-            results
-                .append(run_effect(ref attacker_state, ref defender_state, effect, n, hash_state));
-        };
+    for (n, effect) in effects.enumerate() {
+        results.append(run_effect(ref attacker_state, ref defender_state, effect, n, hash_state));
+    };
     results
 }

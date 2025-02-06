@@ -28,35 +28,29 @@ trait IPVEAdmin<TContractState> {
         attack_slots: Array<(BlobertItemKey, felt252)>,
         collections_allowed: Array<ContractAddress>,
     ) -> felt252;
-    fn set_opponent_collection(
-        ref self: TContractState, token_id: felt252, collection: ContractAddress, available: bool,
+    fn new_challenge(ref self: TContractState, health_recovery_pc: u8, opponents: Array<felt252>){
+        
+
+    }
+    fn set_collection(
+        ref self: TContractState, id: felt252, collection: ContractAddress, available: bool,
     );
-    fn set_opponent_collections(
-        ref self: TContractState,
-        token_id: felt252,
-        collections: Array<ContractAddress>,
-        available: bool,
+    fn set_collections(
+        ref self: TContractState, id: felt252, collections: Array<ContractAddress>, available: bool,
     );
 
-    fn set_opponents_collection(
-        ref self: TContractState,
-        token_ids: Array<felt252>,
-        collection: ContractAddress,
-        available: bool,
+    fn set_ids_collection(
+        ref self: TContractState, ids: Array<felt252>, collection: ContractAddress, available: bool,
     );
 }
 
 #[starknet::interface]
 trait IPVEFreeGames<TContractState> {
     fn claim_free_game(ref self: TContractState);
-    fn start_free_game(
-        ref self: TContractState,
-        player_collection_address: ContractAddress,
-        player_token_id: u256,
-        player_attacks: Array<(felt252, felt252)>,
-        opponent_token: felt252,
-    ) -> felt252;
 }
+
+#[starknet::interface]
+trait IPVE
 
 #[dojo::contract]
 mod pve_blobert_actions {
@@ -152,32 +146,29 @@ mod pve_blobert_actions {
                 );
             token_id
         }
-        fn set_opponent_collection(
-            ref self: ContractState,
-            token_id: felt252,
-            collection: ContractAddress,
-            available: bool,
+        fn set_collection(
+            ref self: TContractState, id: felt252, collection: ContractAddress, available: bool,
         ) {
             let mut store = self.get_pve_storage();
-            store.set_collection_allowed(token_id, collection, available);
+            store.set_collection_allowed(id, collection, available);
         }
-        fn set_opponent_collections(
-            ref self: ContractState,
-            token_id: felt252,
+        fn set_collections(
+            ref self: TContractState,
+            id: felt252,
             collections: Array<ContractAddress>,
             available: bool,
         ) {
             let mut store = self.get_pve_storage();
-            store.set_collections_allowed(token_id, collections, available);
+            store.set_collections_allowed(id, collections, available);
         }
-        fn set_opponents_collection(
-            ref self: ContractState,
-            token_ids: Array<felt252>,
+        fn set_ids_collection(
+            ref self: TContractState,
+            ids: Array<felt252>,
             collection: ContractAddress,
             available: bool,
         ) {
             let mut store = self.get_pve_storage();
-            store.set_mutiple_collection_allowed(token_ids, collection, available);
+            store.set_multiple_allowed(ids, collection, available);
         }
     }
 }
