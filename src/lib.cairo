@@ -11,13 +11,12 @@ mod world;
 mod storage;
 mod serde;
 use world::uuid;
-// mod permissions {
-//     mod components;
-//     mod systems;
-//     mod contract;
-//     use components::{Permissions, WritePermissions};
-// }
-// use permissions::Permissions;
+mod permissions {
+    mod components;
+    mod systems;
+    use components::{PermissionStorage, Permission};
+    use systems::GamePermissions;
+}
 mod attacks {
     mod components;
     // mod contract;

@@ -13,19 +13,31 @@ mod amma_blobert_actions {
     use dojo::world::WorldStorage;
     use blob_arena::{
         DefaultStorage, attacks::components::AttackInput, stats::UStats, default_namespace,
-        hash::hash_value
+        hash::hash_value,
     };
     use blob_arena::collections::{blobert, arcade_blobert, interface::ICollection};
     use arcade_blobert::{ArcadeBlobertStorage, BlobertCollectionTrait};
     use blobert::{
         blobert_namespace, BlobertTrait, BlobertStorage, TokenAttributes, BlobertItemKey,
-        to_seed_key, BlobertAttribute
+        to_seed_key, BlobertAttribute,
     };
     use super::IAMMABlobert;
 
     impl DefaultStorageImpl of DefaultStorage<ContractState> {
         fn default_storage(self: @ContractState) -> WorldStorage {
             self.world(@"amma_blobert")
+        }
+    }
+
+    mod permissioned_storage {
+        use super::{DefaultStorage, ContractState, WorldStorage};
+        use blob_arena::permissions::GamePermissions;
+        impl DefaultStorageImpl of DefaultStorage<ContractState> {
+            fn default_storage(self: @ContractState) -> WorldStorage {
+                let storage = super::DefaultStorageImpl::default_storage(self);
+                storage.assert_caller_is_admin();
+                storage
+            }
         }
     }
 
@@ -42,7 +54,8 @@ mod amma_blobert_actions {
     }
 
     #[abi(embed_v0)]
-    impl IAMMABlobertItems = blobert::items::IBlobertItemsImpl<ContractState>;
+    impl IAMMABlobertItems =
+        blobert::items::IBlobertItemsImpl<ContractState, permissioned_storage::DefaultStorageImpl>;
 
     #[abi(embed_v0)]
     impl IArcadeBlobertCollectionImpl =
