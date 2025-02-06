@@ -1,18 +1,18 @@
 use core::cmp::min;
-use starknet::{ContractAddress, get_contract_address, get_block_timestamp};
+use starknet::{ContractAddress, get_caller_address, get_contract_address, get_block_timestamp};
 use dojo::world::WorldStorage;
 use blob_arena::{
     attacks::Attack,
     pve::{
         PVEGame, PVEOpponent, PVEBlobertInfo, PVEStorage, PVEPhase, PVEStore, PVEChallengeAttempt,
+        PVEPhaseTrait, PVEEndAttemptSchema,
     },
     game::{GameStorage, GameTrait, GameProgress},
     combatants::{CombatantStorage, CombatantTrait, CombatantState, CombatantSetup},
     attacks::AttackStorage, combat::CombatTrait, world::uuid,
     hash::{make_hash_state, felt252_to_u128}, stats::UStats, collections::blobert::TokenAttributes,
-    constants::{STARTING_HEALTH, SECONDS_12_HOURS}, stats::StatsTrait, iter::{Enumerate, Map},
+    constants::{STARTING_HEALTH, SECONDS_12_HOURS}, stats::StatsTrait, iter::Iteration,
 };
-
 
 fn calc_restored_health(current_health: u8, vitality: u8, health_recovery_percent: u8) -> u8 {
     let max_health = STARTING_HEALTH + vitality;
@@ -100,13 +100,15 @@ impl PVEImpl of PVETrait {
         token_id
     }
 
-    fn create_challenge(
+    fn setup_new_challenge(
         ref self: WorldStorage,
+        name: ByteArray,
         health_recovery: u8,
         opponents: Array<felt252>,
         collections_allowed: Array<ContractAddress>,
     ) {
         let challenge_id = uuid();
+        self.emit_pve_challenge_name(challenge_id, name);
         self.set_pve_challenge(challenge_id, health_recovery);
         self.set_collections_allowed(challenge_id, collections_allowed, true);
         for (n, opponent) in opponents.enumerate() {
@@ -153,7 +155,14 @@ impl PVEImpl of PVETrait {
         }
     }
 
-    fn new_pve_challenge(
+    fn get_pve_players_challenge_attempt(self: @WorldStorage, id: felt252) -> PVEChallengeAttempt {
+        let attempt = self.get_pve_challenge_attempt(id);
+        assert(attempt.player == get_caller_address(), 'Not player');
+        attempt.phase.assert_active();
+        attempt
+    }
+
+    fn new_pve_challenge_attempt(
         ref self: PVEStore,
         challenge_id: felt252,
         player: ContractAddress,
@@ -174,12 +183,11 @@ impl PVEImpl of PVETrait {
         id
     }
 
-    fn next_pve_challenge_round(ref self: PVEStore, attempt_id: felt252) {
-        let mut attempt = self.pve.get_pve_challenge_attempt(attempt_id);
+    fn next_pve_challenge_round(ref self: PVEStore, mut attempt: PVEChallengeAttempt) {
         let (combatant_id, phase) = self
             .pve
             .get_pve_game_combatant_phase(
-                self.pve.get_pve_stage_game_id(attempt_id, attempt.stage),
+                self.pve.get_pve_stage_game_id(attempt.id, attempt.stage),
             );
         assert(attempt.stage.is_non_zero(), 'Not Started');
         match phase {
@@ -190,12 +198,12 @@ impl PVEImpl of PVETrait {
         let health = calc_restored_health(
             self.ba.get_combatant_health(combatant_id),
             attempt.stats.vitality,
-            self.pve.get_pve_challenge_health_recovery(attempt_id),
+            self.pve.get_pve_challenge_health_recovery(attempt.id),
         );
 
         attempt.stage += 1;
 
-        self.pve.set_pve_challenge_stage(attempt_id, attempt.stage);
+        self.pve.set_pve_challenge_stage(attempt.id, attempt.stage);
         self.create_pve_challenge_attempt_round(attempt, health);
     }
 
@@ -211,11 +219,10 @@ impl PVEImpl of PVETrait {
         self.pve.set_pve_stage_game(attempt.id, attempt.stage, game.id);
     }
 
-    fn respawn(ref self: PVEStore, attempt_id: felt252) {
-        let mut attempt = self.pve.get_pve_challenge_attempt(attempt_id);
+    fn respawn_pve_challenge_attempt(ref self: PVEStore, attempt: PVEChallengeAttempt) {
         let phase = self
             .pve
-            .get_pve_game_phase(self.pve.get_pve_stage_game_id(attempt_id, attempt.stage));
+            .get_pve_game_phase(self.pve.get_pve_stage_game_id(attempt.id, attempt.stage));
 
         assert(attempt.respawns.is_zero(), 'No more respawns');
         assert(attempt.stage.is_non_zero(), 'Not Started');
@@ -223,16 +230,40 @@ impl PVEImpl of PVETrait {
             PVEPhase::Ended(won) => assert(!won, 'Player not dead'),
             _ => panic!("Combat not ended"),
         };
-        self.pve.set_pve_challenge_respawns(attempt_id, attempt.respawns + 1);
+        self.pve.set_pve_challenge_respawns(attempt.id, attempt.respawns + 1);
         let health = attempt.stats.get_max_health();
         self.create_pve_challenge_attempt_round(attempt, health);
     }
 
+    fn end_pve_challenge_attempt(
+        ref self: WorldStorage, attempt_id: felt252, attempt: PVEEndAttemptSchema,
+    ) {
+        attempt.phase.assert_active();
+        let phase = self.get_pve_game_phase(self.get_pve_stage_game_id(attempt_id, attempt.stage));
+        let won = match phase {
+            PVEPhase::Ended(won) => won,
+            _ => panic!("Combat not ended"),
+        };
+        if won {
+            assert(
+                self.get_pve_stage_game_id(attempt_id, attempt.stage + 1).is_zero(),
+                'Not last stage',
+            );
+        };
+        self.set_pve_challenge_attempt_ended(attempt_id, won);
+    }
 
-    fn use_free_game(ref self: WorldStorage, player: ContractAddress) {
+
+    fn use_free_game(ref self: WorldStorage, player: ContractAddress) -> bool {
         let games = self.get_number_free_games(player);
-        assert(games > 0, 'No free games');
-        self.set_number_free_games(player, games - 1);
+        let available = games > 0;
+        if available {
+            self.set_number_free_games(player, games - 1);
+        };
+        available
+    }
+    fn use_paid_game(ref self: WorldStorage, player: ContractAddress) {
+        panic!("Paid games not implemented");
     }
 
     fn mint_free_game(ref self: WorldStorage, player: ContractAddress) {
@@ -241,5 +272,11 @@ impl PVEImpl of PVETrait {
         let timestamp = get_block_timestamp();
         assert(model.last_claim + SECONDS_12_HOURS <= timestamp, 'Not enough time passed');
         self.set_free_games(player, model.games + 1, timestamp);
+    }
+
+    fn use_game(ref self: WorldStorage, player: ContractAddress) {
+        if !self.use_free_game(player) {
+            self.use_paid_game(player);
+        };
     }
 }

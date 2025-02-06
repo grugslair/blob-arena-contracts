@@ -1,15 +1,41 @@
 use dojo::model::ModelValueStorage;
-use starknet::{ContractAddress, get_block_timestamp};
+use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
 use dojo::{
     world::WorldStorage, model::{ModelStorage, Model}, event::EventStorage, meta::Introspect,
 };
 use blob_arena::{stats::UStats, collections::blobert::TokenAttributes};
 
-#[derive(Drop, Serde, Copy, Introspect, PartialEq)]
+#[derive(Drop, Copy, Introspect, PartialEq)]
 enum PVEPhase {
     None,
     Active,
     Ended: bool,
+}
+
+#[generate_trait]
+impl PVEPhaseImpl of PVEPhaseTrait {
+    fn assert_active(self: PVEPhase) {
+        assert(self == PVEPhase::Active, 'Phase not active');
+    }
+}
+
+impl PVEPhaseSerde of Serde<PVEPhase> {
+    fn serialize(self: @PVEPhase, ref output: Array<felt252>) {
+        match self {
+            PVEPhase::None => 0,
+            PVEPhase::Active => 1,
+            PVEPhase::Ended(win) => 2 + (*win).into(),
+        }.serialize(ref output)
+    }
+    fn deserialize(ref serialized: Span<felt252>) -> Option<PVEPhase> {
+        match Serde::<felt252>::deserialize(ref serialized)? {
+            0 => Option::Some(PVEPhase::None),
+            1 => Option::Some(PVEPhase::Active),
+            2 => Option::Some(PVEPhase::Ended(false)),
+            3 => Option::Some(PVEPhase::Ended(true)),
+            _ => Option::None,
+        }
+    }
 }
 
 fn pve_namespace() -> @ByteArray {
@@ -81,6 +107,14 @@ struct PVEChallenge {
     health_recovery: u8,
 }
 
+#[dojo::event]
+#[derive(Drop, Serde)]
+struct PVEChallengeName {
+    #[key]
+    id: felt252,
+    name: ByteArray,
+}
+
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct PVEStageOpponent {
@@ -102,7 +136,17 @@ struct PVEChallengeAttempt {
     attacks: Array<felt252>,
     stage: u32,
     respawns: u32,
+    phase: PVEPhase,
 }
+
+#[derive(Drop, Serde, Introspect)]
+struct PVEEndAttemptSchema {
+    challenge: felt252,
+    player: ContractAddress,
+    stage: u32,
+    phase: PVEPhase,
+}
+
 
 #[dojo::model]
 #[derive(Drop, Serde)]
@@ -234,7 +278,9 @@ impl PVEStorageImpl of PVEStorage {
     fn set_pve_challenge(ref self: WorldStorage, id: felt252, health_recovery: u8) {
         self.write_model(@PVEChallenge { id, health_recovery });
     }
-
+    fn emit_pve_challenge_name(ref self: WorldStorage, id: felt252, name: ByteArray) {
+        self.emit_event(@PVEChallengeName { id, name });
+    }
     fn get_pve_challenge(self: @WorldStorage, id: felt252) -> PVEChallenge {
         self.read_model(id)
     }
@@ -259,7 +305,7 @@ impl PVEStorageImpl of PVEStorage {
         attacks: Array<felt252>,
     ) -> PVEChallengeAttempt {
         let model = PVEChallengeAttempt {
-            id, challenge, player, stats, attacks, stage: 1, respawns: 0,
+            id, challenge, player, stats, attacks, stage: 1, respawns: 0, phase: PVEPhase::Active,
         };
         self.write_model(@model);
         model
@@ -272,6 +318,18 @@ impl PVEStorageImpl of PVEStorage {
     }
     fn get_pve_challenge_attempt(self: @WorldStorage, id: felt252) -> PVEChallengeAttempt {
         self.read_model(id)
+    }
+
+
+    fn get_pve_challenge_attempt_schema<T, +Introspect<T>, +Serde<T>>(
+        self: @WorldStorage, id: felt252,
+    ) -> T {
+        self.read_schema(Model::<PVEChallengeAttempt>::ptr_from_keys(id))
+    }
+    fn get_pve_challenge_attempt_end_schema(
+        self: @WorldStorage, id: felt252,
+    ) -> PVEEndAttemptSchema {
+        self.get_pve_challenge_attempt_schema(id)
     }
     fn set_pve_stage_game(
         ref self: WorldStorage, attempt_id: felt252, stage: u32, game_id: felt252,
@@ -291,8 +349,18 @@ impl PVEStorageImpl of PVEStorage {
                 Model::<PVEChallengeAttempt>::ptr_from_keys(attempt_id), selector!("stage"), stage,
             );
     }
+    fn set_pve_challenge_attempt_ended(ref self: WorldStorage, id: felt252, won: bool) {
+        self
+            .write_member(
+                Model::<PVEChallengeAttempt>::ptr_from_keys(id),
+                selector!("phase"),
+                PVEPhase::Ended(won),
+            );
+    }
 
-
+    fn set_free_games_model(ref self: WorldStorage, model: PVEFreeGames) {
+        self.write_model(@model);
+    }
     fn set_free_games(
         ref self: WorldStorage, player: ContractAddress, games: u32, last_claim: u64,
     ) {

@@ -2,7 +2,7 @@ use dojo::{
     world::WorldStorage, model::{ModelStorage, ModelValueStorage, Model}, event::EventStorage,
     utils::entity_id_from_keys,
 };
-use blob_arena::{stats::UStats, iter::Enumerate, attacks::AttackStorage};
+use blob_arena::{stats::UStats, iter::Iteration, attacks::AttackStorage};
 use super::components::{
     BlobertItem, BlobertItemKey, BlobertAttribute, Seed, SeedItem, BlobertItemValue,
     BlobertItemName, SeedTrait, AttackSlot, AttackSlotValue,

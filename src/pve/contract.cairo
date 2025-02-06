@@ -5,52 +5,19 @@ use blob_arena::{stats::UStats, collections::blobert::{TokenAttributes, BlobertI
 #[starknet::interface]
 trait IPVE<TContractState> {
     fn attack(ref self: TContractState, game_id: felt252, attack: felt252);
-}
-
-#[starknet::interface]
-trait IPVEAdmin<TContractState> {
-    fn new_opponent(
+    fn start_challenge(
         ref self: TContractState,
-        name: ByteArray,
-        collection: ContractAddress,
-        attributes: TokenAttributes,
-        stats: UStats,
-        attacks: Array<felt252>,
-        collections_allowed: Array<ContractAddress>,
-    ) -> felt252;
-    fn new_opponent_from_attack_slots(
-        ref self: TContractState,
-        name: ByteArray,
-        collection: ContractAddress,
-        attributes: TokenAttributes,
-        stats: UStats,
-        attack_namespace: ByteArray,
-        attack_slots: Array<(BlobertItemKey, felt252)>,
-        collections_allowed: Array<ContractAddress>,
-    ) -> felt252;
-    fn new_challenge(ref self: TContractState, health_recovery_pc: u8, opponents: Array<felt252>){
-        
-
-    }
-    fn set_collection(
-        ref self: TContractState, id: felt252, collection: ContractAddress, available: bool,
+        challenge_id: felt252,
+        collection_address: ContractAddress,
+        token_id: u256,
+        attacks: Array<(felt252, felt252)>,
     );
-    fn set_collections(
-        ref self: TContractState, id: felt252, collections: Array<ContractAddress>, available: bool,
-    );
-
-    fn set_ids_collection(
-        ref self: TContractState, ids: Array<felt252>, collection: ContractAddress, available: bool,
-    );
-}
-
-#[starknet::interface]
-trait IPVEFreeGames<TContractState> {
+    fn next_challenge_round(ref self: TContractState, attempt_id: felt252);
+    fn respawn_challenge(ref self: TContractState, attempt_id: felt252);
+    fn end_challenge(ref self: TContractState, attempt_id: felt252);
     fn claim_free_game(ref self: TContractState);
 }
 
-#[starknet::interface]
-trait IPVE
 
 #[dojo::contract]
 mod pve_blobert_actions {
@@ -61,7 +28,7 @@ mod pve_blobert_actions {
         game::GameProgress, utils::get_transaction_hash, stats::UStats,
         collections::blobert::{TokenAttributes, BlobertItemKey, BlobertStorage},
     };
-    use super::{IPVE, IPVEFreeGames, IPVEAdmin};
+    use super::{IPVE};
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
         fn get_storage(self: @ContractState) -> PVEStore {
@@ -81,94 +48,43 @@ mod pve_blobert_actions {
             let randomness = get_transaction_hash(); //TODO: Use real randomness
             store.run_pve_round(game, attack, randomness);
         }
-    }
+        fn start_challenge(
+            ref self: ContractState,
+            challenge_id: felt252,
+            collection_address: ContractAddress,
+            token_id: u256,
+            attacks: Array<(felt252, felt252)>,
+        ) {
+            let mut store = self.get_storage();
+            store
+                .new_pve_challenge_attempt(
+                    challenge_id, get_caller_address(), collection_address, token_id, attacks,
+                );
+        }
+        fn next_challenge_round(ref self: ContractState, attempt_id: felt252) {
+            let mut store = self.get_storage();
+            let attempt = store.pve.get_pve_players_challenge_attempt(attempt_id);
+            store.next_pve_challenge_round(attempt);
+        }
+        fn respawn_challenge(ref self: ContractState, attempt_id: felt252) {
+            let mut store = self.get_storage();
+            store
+                .respawn_pve_challenge_attempt(
+                    store.pve.get_pve_players_challenge_attempt(attempt_id),
+                );
+        }
+        fn end_challenge(ref self: ContractState, attempt_id: felt252) {
+            let mut store = self.get_pve_storage();
+            let attempt = store.get_pve_challenge_attempt_end_schema(attempt_id);
 
-    #[abi(embed_v0)]
-    impl IPVEFreeGamesImpl of IPVEFreeGames<ContractState> {
+            assert(attempt.player == get_caller_address(), 'Not player');
+
+            store.end_pve_challenge_attempt(attempt_id, attempt);
+        }
+
         fn claim_free_game(ref self: ContractState) {
             let mut store = self.get_pve_storage();
             store.mint_free_game(get_caller_address());
-        }
-        fn start_free_game(
-            ref self: ContractState,
-            player_collection_address: ContractAddress,
-            player_token_id: u256,
-            player_attacks: Array<(felt252, felt252)>,
-            opponent_token: felt252,
-        ) -> felt252 {
-            let mut store = self.get_storage();
-            store.pve.use_free_game(get_caller_address());
-            store
-                .new_pve_game(
-                    get_caller_address(),
-                    player_collection_address,
-                    player_token_id,
-                    player_attacks,
-                    opponent_token,
-                )
-        }
-    }
-
-    #[abi(embed_v0)]
-    impl IPVEAdminImpl of IPVEAdmin<ContractState> {
-        fn new_opponent(
-            ref self: ContractState,
-            name: ByteArray,
-            collection: ContractAddress,
-            attributes: TokenAttributes,
-            stats: UStats,
-            attacks: Array<felt252>,
-            collections_allowed: Array<ContractAddress>,
-        ) -> felt252 {
-            let mut store = self.get_pve_storage();
-            store
-                .setup_new_opponent(
-                    name, collection, attributes, stats, attacks, collections_allowed,
-                )
-        }
-        fn new_opponent_from_attack_slots(
-            ref self: ContractState,
-            name: ByteArray,
-            collection: ContractAddress,
-            attributes: TokenAttributes,
-            stats: UStats,
-            attack_namespace: ByteArray,
-            attack_slots: Array<(BlobertItemKey, felt252)>,
-            collections_allowed: Array<ContractAddress>,
-        ) -> felt252 {
-            let mut store = self.get_pve_storage();
-            let attacks = self
-                .world(@attack_namespace)
-                .get_blobert_attack_slots(attack_slots.span());
-            let token_id = store
-                .setup_new_opponent(
-                    name, collection, attributes, stats, attacks, collections_allowed,
-                );
-            token_id
-        }
-        fn set_collection(
-            ref self: TContractState, id: felt252, collection: ContractAddress, available: bool,
-        ) {
-            let mut store = self.get_pve_storage();
-            store.set_collection_allowed(id, collection, available);
-        }
-        fn set_collections(
-            ref self: TContractState,
-            id: felt252,
-            collections: Array<ContractAddress>,
-            available: bool,
-        ) {
-            let mut store = self.get_pve_storage();
-            store.set_collections_allowed(id, collections, available);
-        }
-        fn set_ids_collection(
-            ref self: TContractState,
-            ids: Array<felt252>,
-            collection: ContractAddress,
-            available: bool,
-        ) {
-            let mut store = self.get_pve_storage();
-            store.set_multiple_allowed(ids, collection, available);
         }
     }
 }

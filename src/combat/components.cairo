@@ -6,7 +6,7 @@ use blob_arena::{
     },
     combatants::{CombatantState, CombatantTrait, CombatantStateTrait},
     combat::calculations::{damage_calculation, did_critical}, hash::{HashUpdate, UpdateHashToU128},
-    iter::Enumerate,
+    iter::Iteration,
 };
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect)]

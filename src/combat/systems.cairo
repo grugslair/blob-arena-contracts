@@ -62,7 +62,7 @@ impl CombatImpl of CombatTrait {
             AttackCooledDown::True(false)
         } else {
             let last_used = self.get_attack_last_used(combatant_id, attack_id);
-            if last_used.is_zero() || (cooldown.into() + last_used) < round {
+            if last_used.is_zero() || ((cooldown.into() + last_used) < round) {
                 AttackCooledDown::True(true)
             } else {
                 AttackCooledDown::False
