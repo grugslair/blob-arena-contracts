@@ -57,7 +57,7 @@ mod game_admin {
             attacks_b: Array<(felt252, felt252)>,
         ) -> felt252 {
             let mut world = self.world(default_namespace());
-            world.assert_caller_is_admin();
+            world.assert_caller_is_creator();
             let id = uuid();
             let player_a_id = uuid();
             let player_b_id = uuid();
