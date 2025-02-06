@@ -1253,7 +1253,7 @@
   "contracts": [
     {
       "address": "0x7ba5f75191788b6fdc48c5675d91f6259c1e39d639fe77f0ab4bb501c5560aa",
-      "class_hash": "0x4e438a5d023c18c9f42455a7c3fb9360a763ffdf5413cb490d5666547b356f2",
+      "class_hash": "0x6aab662006d1dd541f4f6710b51104a39fc687d50bd2f8c04162b78f728f04d",
       "abi": [
         {
           "type": "impl",
@@ -2860,7 +2860,7 @@
     },
     {
       "address": "0x5a2210d8fc09cd46f73cf66f4da2904c021aecaf814624c2cc9075f054ee22b",
-      "class_hash": "0x1805162fdcbb4db5e0620d45b6ca9b1a46629c029a411a80695d1c62166696d",
+      "class_hash": "0x3d53a10e349c85ec4662484e141da5fd941e9cd8977792fe0132d95ede91910",
       "abi": [
         {
           "type": "impl",
@@ -2913,6 +2913,13 @@
           ]
         },
         {
+          "type": "function",
+          "name": "dojo_init",
+          "inputs": [],
+          "outputs": [],
+          "state_mutability": "external"
+        },
+        {
           "type": "impl",
           "name": "IGameAdminImpl",
           "interface_name": "blob_arena::game::admin::IGameAdmin"
@@ -2928,6 +2935,20 @@
             {
               "name": "high",
               "type": "core::integer::u128"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
             }
           ]
         },
@@ -2990,15 +3011,72 @@
                 }
               ],
               "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_is_admin",
+              "inputs": [
+                {
+                  "name": "user",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "has",
+                  "type": "core::bool"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_is_creator",
+              "inputs": [
+                {
+                  "name": "user",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "has",
+                  "type": "core::bool"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_is_admin",
+              "inputs": [
+                {
+                  "name": "user",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_is_creator",
+              "inputs": [
+                {
+                  "name": "user",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "view"
             }
           ]
-        },
-        {
-          "type": "function",
-          "name": "dojo_init",
-          "inputs": [],
-          "outputs": [],
-          "state_mutability": "view"
         },
         {
           "type": "impl",
@@ -3112,7 +3190,10 @@
       "tag": "blob_arena-game_admin",
       "selector": "0x39565feeea0e864d39d7139c930c0ff020062640719e93b257b329d1755913d",
       "systems": [
+        "dojo_init",
         "create",
+        "set_is_admin",
+        "set_is_creator",
         "upgrade"
       ]
     },
@@ -3446,7 +3527,7 @@
     },
     {
       "address": "0x48d3541ca586b943754f1bf012a76ec295cba0e1a9cf1e1342b111bf2cca2f0",
-      "class_hash": "0x666aeb836fdc01817b30c45355e83bb1bfc2f86e351d8e9d47a7b7ce899a082",
+      "class_hash": "0x3f0fce182a3200e3ae772e07c2eaf6911aa78370f8366329f05aaea73a81a89",
       "abi": [
         {
           "type": "impl",
@@ -4349,6 +4430,12 @@
       "class_hash": "0x881213157f2197b233aa2d69bcc1c14f6a1a30f826559d4c3db7c0460f8e58",
       "tag": "blob_arena-Lobby",
       "selector": "0x763708ae2ba0f13fd2ef5edd26eb8a882334125d42785002138561d025b8794"
+    },
+    {
+      "members": [],
+      "class_hash": "0xb6f10631d01b0f213935160307fd7c99e921f99f452f271a1239d29e9da00",
+      "tag": "blob_arena-Permission",
+      "selector": "0x615bc7eb0310cf08678fe3c908720f4e0d9f0b5d3f5d4a19ee51abdf0a310e2"
     },
     {
       "members": [],
