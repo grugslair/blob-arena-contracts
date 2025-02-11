@@ -10,14 +10,14 @@ trait ILobby<TContractState> {
         receiver: ContractAddress,
         collection_address: ContractAddress,
         token_id: u256,
-        attacks: Array<(felt252, felt252)>
+        attacks: Array<(felt252, felt252)>,
     ) -> felt252;
     fn rescind_invite(ref self: TContractState, challenge_id: felt252);
     fn respond_invite(
         ref self: TContractState,
         challenge_id: felt252,
         token_id: u256,
-        attacks: Array<(felt252, felt252)>
+        attacks: Array<(felt252, felt252)>,
     );
     fn rescind_response(ref self: TContractState, challenge_id: felt252);
     fn reject_invite(ref self: TContractState, challenge_id: felt252);
@@ -34,7 +34,7 @@ mod lobby_actions {
     use blob_arena::{
         lobby::{systems::LobbyTrait, storage::LobbyStorage}, combat::{CombatTrait, CombatStorage},
         game::GameStorage, combatants::{CombatantTrait, CombatantStorage},
-        utils::get_transaction_hash, hash::hash_value, world::{uuid, default_namespace}
+        utils::get_transaction_hash, world::{uuid, default_namespace},
     };
     use super::ILobby;
 
@@ -55,7 +55,7 @@ mod lobby_actions {
             receiver: ContractAddress,
             collection_address: ContractAddress,
             token_id: u256,
-            attacks: Array<(felt252, felt252)>
+            attacks: Array<(felt252, felt252)>,
         ) -> felt252 {
             assert(attacks.len() <= 4, 'Too many attacks');
             let mut world = self.get_storage();
@@ -71,7 +71,7 @@ mod lobby_actions {
             world.emit_lobby_created(id, caller, receiver);
             world
                 .create_player_combatant(
-                    sender_id, caller, id, collection_address, token_id, attacks
+                    sender_id, caller, id, collection_address, token_id, attacks,
                 );
             id
         }
@@ -85,7 +85,7 @@ mod lobby_actions {
             ref self: ContractState,
             challenge_id: felt252,
             token_id: u256,
-            attacks: Array<(felt252, felt252)>
+            attacks: Array<(felt252, felt252)>,
         ) {
             assert(attacks.len() <= 4, 'Too many attacks');
 
@@ -98,7 +98,7 @@ mod lobby_actions {
 
             world
                 .create_player_combatant(
-                    combatant_id, receiver, challenge_id, collection_address, token_id, attacks
+                    combatant_id, receiver, challenge_id, collection_address, token_id, attacks,
                 );
             world.set_game_combatants(challenge_id, sender_id, combatant_id);
         }

@@ -3,7 +3,13 @@ use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
 use dojo::{
     world::WorldStorage, model::{ModelStorage, Model}, event::EventStorage, meta::Introspect,
 };
-use blob_arena::{stats::UStats, collections::blobert::TokenAttributes};
+use blob_arena::{
+    attacks::AttackInput, stats::UStats, collections::blobert::TokenAttributes, tags::IdTagNew,
+};
+
+const PVE_NAMESPACE_HASH: felt252 = bytearray_hash!("pve_blobert");
+const OPPONENT_TAG_GROUP: felt252 = 'pve-opponent';
+const CHALLENGE_TAG_GROUP: felt252 = 'pve-challenge';
 
 #[derive(Drop, Copy, Introspect, PartialEq)]
 enum PVEPhase {
@@ -38,10 +44,6 @@ impl PVEPhaseSerde of Serde<PVEPhase> {
     }
 }
 
-fn pve_namespace() -> @ByteArray {
-    @"pve_blobert"
-}
-
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct PVEOpponent {
@@ -49,6 +51,16 @@ struct PVEOpponent {
     id: felt252,
     stats: UStats,
     attacks: Array<felt252>,
+}
+
+#[derive(Drop, Serde)]
+struct PVEOpponentInput {
+    name: ByteArray,
+    collection: ContractAddress,
+    attributes: TokenAttributes,
+    stats: UStats,
+    attacks: Array<IdTagNew<AttackInput>>,
+    collections_allowed: Array<ContractAddress>,
 }
 
 #[dojo::model]
@@ -195,6 +207,15 @@ impl PVEStorageImpl of PVEStorage {
     ) {
         self.write_model(@PVEOpponent { id, stats, attacks });
     }
+    fn check_pve_opponent_exists(self: @WorldStorage, id: felt252) -> bool {
+        let value: u32 = self
+            .read_member(Model::<PVEOpponent>::ptr_from_keys(id), selector!("attacks"));
+        value.is_non_zero()
+    }
+
+    fn set_pve_opponents(ref self: WorldStorage, opponents: Array<@PVEOpponent>) {
+        self.write_models(opponents.span());
+    }
 
     fn set_pve_blobert_info(
         ref self: WorldStorage,
@@ -305,7 +326,7 @@ impl PVEStorageImpl of PVEStorage {
         attacks: Array<felt252>,
     ) -> PVEChallengeAttempt {
         let model = PVEChallengeAttempt {
-            id, challenge, player, stats, attacks, stage: 1, respawns: 0, phase: PVEPhase::Active,
+            id, challenge, player, stats, attacks, stage: 0, respawns: 0, phase: PVEPhase::Active,
         };
         self.write_model(@model);
         model

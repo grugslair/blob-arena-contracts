@@ -9,11 +9,11 @@ trait IAMMABlobert<TContractState> {
 
 #[dojo::contract]
 mod amma_blobert_actions {
+    use core::poseidon::poseidon_hash_span;
     use starknet::{ContractAddress, get_caller_address};
     use dojo::world::WorldStorage;
     use blob_arena::{
         DefaultStorage, attacks::components::AttackInput, stats::UStats, default_namespace,
-        hash::hash_value,
     };
     use blob_arena::collections::{blobert, arcade_blobert, interface::ICollection};
     use arcade_blobert::{ArcadeBlobertStorage, BlobertCollectionTrait};
@@ -22,21 +22,21 @@ mod amma_blobert_actions {
         to_seed_key, BlobertAttribute,
     };
     use super::IAMMABlobert;
+    const AMMA_BLOBERT_NAMESPACE_HASH: felt252 = bytearray_hash!("amma_blobert");
 
     impl DefaultStorageImpl of DefaultStorage<ContractState> {
         fn default_storage(self: @ContractState) -> WorldStorage {
-            self.world(@"amma_blobert")
+            self.world_ns_hash(AMMA_BLOBERT_NAMESPACE_HASH)
         }
     }
 
     mod permissioned_storage {
         use super::{DefaultStorage, ContractState, WorldStorage};
-        use blob_arena::permissions::GamePermissions;
+        use blob_arena::{permissions::GamePermissions, world::get_default_storage};
         impl DefaultStorageImpl of DefaultStorage<ContractState> {
             fn default_storage(self: @ContractState) -> WorldStorage {
-                let storage = super::DefaultStorageImpl::default_storage(self);
-                storage.assert_caller_is_admin();
-                storage
+                get_default_storage().assert_caller_is_admin();
+                super::DefaultStorageImpl::default_storage(self)
             }
         }
     }
@@ -66,7 +66,7 @@ mod amma_blobert_actions {
         fn mint(ref self: ContractState, fighter: felt252) -> felt252 {
             let mut storage = self.default_storage();
             let owner = get_caller_address();
-            let id = hash_value((owner, fighter));
+            let id = poseidon_hash_span([owner.into(), fighter].span());
             storage.set_blobert_token(id, owner, TokenAttributes::Custom(fighter));
             id
         }

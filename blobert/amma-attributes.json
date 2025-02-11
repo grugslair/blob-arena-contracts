@@ -121,22 +121,7 @@
     },
     "attacks": [
       {
-        "name": "Sword Slash",
-        "speed": 85,
-        "accuracy": 95,
-        "cooldown": 0,
-        "hit": [
-          {
-            "target": "Opponent",
-            "affect": {
-              "Damage": {
-                "power": 30,
-                "critical": 20
-              }
-            }
-          }
-        ],
-        "miss": []
+        "tag": "Sword Slash"
       },
       {
         "name": "Ground and Pound",
@@ -227,22 +212,7 @@
     },
     "attacks": [
       {
-        "name": "Sword Slash",
-        "speed": 85,
-        "accuracy": 95,
-        "cooldown": 0,
-        "hit": [
-          {
-            "target": "Opponent",
-            "affect": {
-              "Damage": {
-                "power": 30,
-                "critical": 20
-              }
-            }
-          }
-        ],
-        "miss": []
+        "tag": "Sword Slash"
       },
       {
         "name": "Shield Block",
@@ -340,22 +310,7 @@
     },
     "attacks": [
       {
-        "name": "Sword Slash",
-        "speed": 85,
-        "accuracy": 95,
-        "cooldown": 0,
-        "hit": [
-          {
-            "target": "Opponent",
-            "affect": {
-              "Damage": {
-                "power": 30,
-                "critical": 20
-              }
-            }
-          }
-        ],
-        "miss": []
+        "tag": "Sword Slash"
       },
       {
         "name": "Low Kick",
@@ -536,7 +491,7 @@
           {
             "target": "Player",
             "affect": {
-                "Health": -20
+              "Health": -20
             }
           },
           {
@@ -565,22 +520,7 @@
     },
     "attacks": [
       {
-        "name": "Sword Slash",
-        "speed": 85,
-        "accuracy": 95,
-        "cooldown": 0,
-        "hit": [
-          {
-            "target": "Opponent",
-            "affect": {
-              "Damage": {
-                "power": 30,
-                "critical": 20
-              }
-            }
-          }
-        ],
-        "miss": []
+        "tag": "Sword Slash"
       },
       {
         "name": "Shield Punch",
@@ -651,22 +591,7 @@
     },
     "attacks": [
       {
-        "name": "Sword Slash",
-        "speed": 85,
-        "accuracy": 95,
-        "cooldown": 0,
-        "hit": [
-          {
-            "target": "Opponent",
-            "affect": {
-              "Damage": {
-                "power": 30,
-                "critical": 20
-              }
-            }
-          }
-        ],
-        "miss": []
+        "tag": "Sword Slash"
       },
       {
         "name": "Weapon Master",

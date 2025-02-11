@@ -1,6 +1,6 @@
 use core::{
     num::traits::One, hash::{Hash, HashStateExTrait, HashStateTrait},
-    poseidon::{HashState, PoseidonTrait, poseidon_hash_span}
+    poseidon::{HashState, PoseidonTrait, poseidon_hash_span},
 };
 
 trait HashUpdate<T> {
@@ -14,7 +14,7 @@ impl HashUpdateImpl<T, +Hash<T, HashState>, +Drop<T>> of HashUpdate<T> {
 }
 
 impl ArrayHash<
-    T, S, +hash::HashStateTrait<S>, +hash::Hash<T, S>, +Drop<Array<T>>, +Drop<S>
+    T, S, +hash::HashStateTrait<S>, +hash::Hash<T, S>, +Drop<Array<T>>, +Drop<S>,
 > of Hash<Array<T>, S> {
     fn update_state(mut state: S, mut value: Array<T>) -> S {
         loop {
@@ -41,8 +41,10 @@ impl SpanHash<
     }
 }
 
-fn hash_value<T, +Hash<T, HashState>, +Drop<T>>(value: T) -> felt252 {
-    PoseidonTrait::new().update_with(value).finalize()
+fn hash_value<T, +Serde<T>>(value: @T) -> felt252 {
+    let mut output = ArrayTrait::<felt252>::new();
+    Serde::serialize(value, ref output);
+    poseidon_hash_span(output.span())
 }
 
 fn value_to_id<T, +Serde<T>>(value: @T) -> felt252 {
@@ -56,7 +58,7 @@ fn value_to_id<T, +Serde<T>>(value: @T) -> felt252 {
     }
 }
 
-fn array_to_hash_state<T, +Hash<T, HashState>, +Drop<Array<T>>,>(arr: Array<T>) -> HashState {
+fn array_to_hash_state<T, +Hash<T, HashState>, +Drop<Array<T>>>(arr: Array<T>) -> HashState {
     Hash::update_state(PoseidonTrait::new(), arr)
 }
 

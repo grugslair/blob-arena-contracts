@@ -1,10 +1,10 @@
-use core::{fmt::{Display, Formatter, Error, Debug}, cmp::{min, max}};
+use core::{fmt::{Display, Formatter, Error, Debug}, cmp::{min, max}, poseidon::poseidon_hash_span};
 use starknet::{ContractAddress, get_caller_address};
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}};
 use blob_arena::{
     collections::ERC721Token, core::{SaturatingInto, SaturatingAdd, in_range},
     constants::STARTING_HEALTH, combat::calculations::{apply_luck_modifier, get_new_stun_chance},
-    stats::{UStats, IStats, StatsTrait, StatTypes}, utils, utils::SeedProbability, hash::hash_value,
+    stats::{UStats, IStats, StatsTrait, StatTypes}, utils, utils::SeedProbability,
     constants::{NZ_255},
 };
 
@@ -63,7 +63,9 @@ impl CombatantStateDebugImpl = utils::TDebugImpl<CombatantState>;
 fn get_combatant_id(
     collection_address: ContractAddress, token_id: u256, combat_id: felt252,
 ) -> felt252 {
-    hash_value((collection_address, token_id, combat_id))
+    poseidon_hash_span(
+        [collection_address.into(), token_id.high.into(), token_id.low.into(), combat_id].span(),
+    )
 }
 
 fn max_health(vitality: u8) -> u8 {

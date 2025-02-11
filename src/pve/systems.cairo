@@ -1,23 +1,53 @@
-use core::cmp::min;
+use core::{cmp::min, poseidon::poseidon_hash_span};
 use starknet::{ContractAddress, get_caller_address, get_contract_address, get_block_timestamp};
 use dojo::world::WorldStorage;
 use blob_arena::{
-    attacks::Attack,
+    attacks::{Attack, AttackInput, AttackTrait},
     pve::{
-        PVEGame, PVEOpponent, PVEBlobertInfo, PVEStorage, PVEPhase, PVEStore, PVEChallengeAttempt,
-        PVEPhaseTrait, PVEEndAttemptSchema,
+        PVEGame, PVEOpponent, PVEOpponentInput, PVEBlobertInfo, PVEStorage, PVEPhase, PVEStore,
+        PVEChallengeAttempt, PVEPhaseTrait, PVEEndAttemptSchema,
+        components::{OPPONENT_TAG_GROUP, CHALLENGE_TAG_GROUP},
     },
     game::{GameStorage, GameTrait, GameProgress},
     combatants::{CombatantStorage, CombatantTrait, CombatantState, CombatantSetup},
     attacks::AttackStorage, combat::CombatTrait, world::uuid,
     hash::{make_hash_state, felt252_to_u128}, stats::UStats, collections::blobert::TokenAttributes,
     constants::{STARTING_HEALTH, SECONDS_12_HOURS}, stats::StatsTrait, iter::Iteration,
+    tags::{Tag, IdTagNew}, core::byte_array_to_felt252_array,
 };
 
 fn calc_restored_health(current_health: u8, vitality: u8, health_recovery_percent: u8) -> u8 {
     let max_health = STARTING_HEALTH + vitality;
     let health_recovery = max_health * health_recovery_percent / 100;
     min(max_health, current_health + health_recovery)
+}
+
+fn get_pve_challenge_id(
+    name: @ByteArray, health_recovery: u8, opponents: Span<felt252>,
+) -> felt252 {
+    let mut output = byte_array_to_felt252_array(name);
+    output.append(health_recovery.into());
+    for id in opponents {
+        output.append(*id);
+    };
+    poseidon_hash_span(output.span())
+}
+
+fn get_pve_opponent_id(
+    name: @ByteArray,
+    collection: ContractAddress,
+    attributes: @TokenAttributes,
+    stats: @UStats,
+    attack_ids: Span<felt252>,
+) -> felt252 {
+    let mut output = byte_array_to_felt252_array(name);
+    output.append(collection.into());
+    Serde::serialize(attributes, ref output);
+    Serde::serialize(stats, ref output);
+    for id in attack_ids {
+        output.append(*id);
+    };
+    poseidon_hash_span(output.span())
 }
 
 #[generate_trait]
@@ -28,11 +58,11 @@ impl PVEImpl of PVETrait {
 
     fn new_pve_game(
         ref self: PVEStore,
+        opponent_token: felt252,
         player: ContractAddress,
         player_collection_address: ContractAddress,
         player_token_id: u256,
         player_attacks: Array<(felt252, felt252)>,
-        opponent_token: felt252,
     ) -> felt252 {
         assert(
             self.pve.get_collection_allowed(opponent_token, player_collection_address),
@@ -84,36 +114,131 @@ impl PVEImpl of PVETrait {
         self.pve.new_pve_game_model(game_id, combatant_id, player, opponent_token, opponent_id)
     }
 
+
     fn setup_new_opponent(
         ref self: WorldStorage,
         name: ByteArray,
         collection: ContractAddress,
         attributes: TokenAttributes,
         stats: UStats,
-        attacks: Array<felt252>,
+        attack_ids: Array<felt252>,
         collections_allowed: Array<ContractAddress>,
     ) -> felt252 {
-        let token_id = uuid();
-        self.set_pve_opponent(token_id, stats, attacks);
-        self.set_pve_blobert_info(token_id, name, collection, attributes);
+        let token_id = get_pve_opponent_id(
+            @name, collection, @attributes, @stats, attack_ids.span(),
+        );
+        if !self.check_pve_opponent_exists(token_id) {
+            self.set_pve_opponent(token_id, stats, attack_ids);
+            self.set_tag(OPPONENT_TAG_GROUP, @name, token_id);
+            self.set_pve_blobert_info(token_id, name, collection, attributes);
+        };
         self.set_collections_allowed(token_id, collections_allowed, true);
         token_id
+    }
+
+    fn setup_new_opponent_from_input(
+        ref self: WorldStorage, opponent: PVEOpponentInput,
+    ) -> felt252 {
+        self
+            .setup_new_opponent(
+                opponent.name,
+                opponent.collection,
+                opponent.attributes,
+                opponent.stats,
+                self.create_or_get_attacks_external(opponent.attacks),
+                opponent.collections_allowed,
+            )
+    }
+    fn make_opponent_model_from_input(
+        ref self: WorldStorage, opponent: PVEOpponentInput,
+    ) -> (PVEOpponent, @ByteArray, bool) {
+        let attack_ids = self.create_or_get_attacks_external(opponent.attacks);
+        let sname = @opponent.name;
+        let id = get_pve_opponent_id(
+            sname, opponent.collection, @opponent.attributes, @opponent.stats, attack_ids.span(),
+        );
+        let exists = self.check_pve_opponent_exists(id);
+        if !exists {
+            self.set_pve_blobert_info(id, opponent.name, opponent.collection, opponent.attributes);
+        };
+
+        self.set_collections_allowed(id, opponent.collections_allowed, true);
+
+        (PVEOpponent { id, stats: opponent.stats, attacks: attack_ids }, sname, exists)
+    }
+
+    fn create_or_get_opponent(
+        ref self: WorldStorage, opponent: IdTagNew<PVEOpponentInput>,
+    ) -> felt252 {
+        match opponent {
+            IdTagNew::Id(id) => id,
+            IdTagNew::Tag(name) => self.get_tag(OPPONENT_TAG_GROUP, @name),
+            IdTagNew::New(opponent) => self.setup_new_opponent_from_input(opponent),
+        }
+    }
+
+    fn create_or_get_opponents(
+        ref self: WorldStorage, opponents: Array<IdTagNew<PVEOpponentInput>>,
+    ) -> Array<felt252> {
+        let mut models = ArrayTrait::<@PVEOpponent>::new();
+        let mut tags = ArrayTrait::<(@ByteArray, felt252)>::new();
+        let mut ids = ArrayTrait::<felt252>::new();
+        for opponent in opponents {
+            ids
+                .append(
+                    match opponent {
+                        IdTagNew::Id(id) => id,
+                        IdTagNew::Tag(name) => self.get_tag(OPPONENT_TAG_GROUP, @name),
+                        IdTagNew::New(opponent) => {
+                            let (model, name, exists) = self
+                                .make_opponent_model_from_input(opponent);
+                            if !exists {
+                                models.append(@model);
+                                tags.append((name, model.id));
+                            };
+                            model.id
+                        },
+                    },
+                );
+        };
+        self.set_pve_opponents(models);
+        self.set_tags(OPPONENT_TAG_GROUP, tags);
+        ids
+    }
+
+    fn check_pve_challenge_exists(self: @WorldStorage, id: felt252) -> bool {
+        self.get_pve_stage_opponent(id, 1).is_non_zero()
+    }
+
+    fn get_pve_challenge_id(
+        name: @ByteArray, health_recovery: u8, opponents: Span<felt252>,
+    ) -> felt252 {
+        let mut output = byte_array_to_felt252_array(name);
+        output.append(health_recovery.into());
+        for id in opponents {
+            output.append(*id);
+        };
+        poseidon_hash_span(output.span())
     }
 
     fn setup_new_challenge(
         ref self: WorldStorage,
         name: ByteArray,
         health_recovery: u8,
-        opponents: Array<felt252>,
+        opponents: Array<IdTagNew<PVEOpponentInput>>,
         collections_allowed: Array<ContractAddress>,
     ) {
-        let challenge_id = uuid();
-        self.emit_pve_challenge_name(challenge_id, name);
-        self.set_pve_challenge(challenge_id, health_recovery);
+        let opponent_ids = self.create_or_get_opponents(opponents);
+        let challenge_id = get_pve_challenge_id(@name, health_recovery, opponent_ids.span());
+        if !self.check_pve_challenge_exists(challenge_id) {
+            self.set_tag(CHALLENGE_TAG_GROUP, @name, challenge_id);
+            self.emit_pve_challenge_name(challenge_id, name);
+            self.set_pve_challenge(challenge_id, health_recovery);
+            for (n, id) in opponent_ids.enumerate() {
+                self.set_pve_stage_opponent(challenge_id, n, id);
+            }
+        };
         self.set_collections_allowed(challenge_id, collections_allowed, true);
-        for (n, opponent) in opponents.enumerate() {
-            self.set_pve_stage_opponent(challenge_id, n, opponent);
-        }
     }
 
     fn run_pve_round(

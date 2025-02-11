@@ -1,17 +1,17 @@
-use core::integer::u128_safe_divmod;
+use core::{integer::u128_safe_divmod, poseidon::poseidon_hash_span};
 
 use starknet::{
-    ContractAddress, get_caller_address, get_contract_address, get_block_timestamp, get_tx_info
+    ContractAddress, get_caller_address, get_contract_address, get_block_timestamp, get_tx_info,
 };
 use dojo::{world::WorldStorage, model::{ModelStorage, Model, ModelValueStorage}};
 
 use blob_arena::{
-    uuid, world::incrementor, utils::SeedProbability, hash::hash_value, collections::blobert::Seed,
-    world::WorldTrait, core::SaturatingInto
+    uuid, world::incrementor, utils::SeedProbability, collections::blobert::Seed, world::WorldTrait,
+    core::SaturatingInto,
 };
 
 
-use super::{ArcadeBlobertStorage, storage::TokenAttributes,};
+use super::{ArcadeBlobertStorage, storage::TokenAttributes};
 
 const ARMOUR_COUNT: u8 = 17;
 const JEWELRY_COUNT: u8 = 8;
@@ -53,7 +53,7 @@ fn generate_seed(randomness: felt252) -> Seed {
 #[generate_trait]
 impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
     fn mint_random_blobert(ref self: WorldStorage, owner: ContractAddress) -> u256 {
-        let token_id = hash_value(('arcade', incrementor('SEED-ITER')));
+        let token_id = poseidon_hash_span(['arcade', incrementor('SEED-ITER')].span());
 
         self.set_blobert_token(token_id, owner, TokenAttributes::Seed(generate_seed(token_id)));
         token_id.into()
@@ -64,7 +64,7 @@ impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
         token_id.into()
     }
     fn mint_custom_blobert(
-        ref self: WorldStorage, player: ContractAddress, custom_id: felt252
+        ref self: WorldStorage, player: ContractAddress, custom_id: felt252,
     ) -> u256 {
         let token_id = uuid();
         self.set_blobert_token(token_id, player, TokenAttributes::Custom(custom_id));

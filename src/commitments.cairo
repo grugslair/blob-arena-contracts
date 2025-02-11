@@ -1,7 +1,7 @@
 use core::{poseidon::{HashState}, hash::{Hash}};
 use dojo::{world::WorldStorage, model::{ModelValueStorage, ModelStorage, Model, ModelPtr}};
 
-use blob_arena::hash::{hash_value, value_to_id};
+use blob_arena::hash::value_to_id;
 
 mod model {
     #[dojo::model]

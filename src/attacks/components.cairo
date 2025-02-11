@@ -2,6 +2,8 @@ use blob_arena::{
     core::Signed, stats::{IStats, StatTypes, SignedStats}, id_trait::{IdTrait, TIdsImpl},
 };
 
+const ATTACK_TAG_GROUP: felt252 = 'attacks';
+
 #[derive(Drop, Serde, Copy, PartialEq, IntrospectPacked)]
 struct Stat {
     stat: StatTypes,
@@ -51,6 +53,7 @@ struct AttackInput {
     miss: Array<EffectInput>,
 }
 
+
 #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
 enum Affect {
     Stats: IStats,
@@ -84,6 +87,13 @@ struct Attack {
     cooldown: u8,
     hit: Array<Effect>,
     miss: Array<Effect>,
+}
+
+
+#[derive(Drop, Serde, Introspect)]
+struct AttackExists {
+    hit: u32,
+    miss: u32,
 }
 
 
@@ -154,7 +164,7 @@ impl InputIntoEffectArray of Into<Array<EffectInput>, Array<Effect>> {
 
 #[generate_trait]
 impl AttackInputImpl of AttackInputTrait {
-    fn to_attack_and_name(self: AttackInput, id: felt252) -> (Attack, AttackName) {
+    fn to_attack_and_name(self: AttackInput, id: felt252) -> (Attack, ByteArray) {
         (
             Attack {
                 id,
@@ -164,7 +174,7 @@ impl AttackInputImpl of AttackInputTrait {
                 hit: self.hit.into(),
                 miss: self.miss.into(),
             },
-            AttackName { id, name: self.name },
+            self.name,
         )
     }
 }

@@ -22,23 +22,35 @@ trait IGameAdmin<TContractState> {
 
     fn get_is_admin(self: @TContractState, user: ContractAddress) -> bool;
     fn get_is_creator(self: @TContractState, user: ContractAddress) -> bool;
+
+    fn get_world_address(self: @TContractState) -> ContractAddress;
 }
 
 #[dojo::contract]
 mod game_admin {
+    use dojo::world::WorldStorage;
     use starknet::{ContractAddress, get_tx_info, get_caller_address};
     use blob_arena::{
-        world::{default_namespace, uuid}, game::GameStorage, combatants::CombatantTrait,
-        combat::CombatStorage, permissions::GamePermissions,
+        world::{DEFAULT_NAMESPACE_HASH, uuid, get_world_address}, game::GameStorage,
+        combatants::CombatantTrait, combat::CombatStorage, permissions::GamePermissions,
     };
 
     use super::IGameAdmin;
+
     fn dojo_init(ref self: ContractState) {
-        let mut world = self.world(default_namespace());
+        let mut world = self.get_storage();
 
         let admin = get_tx_info().unbox().account_contract_address;
         world.set_admin_permission(admin, true);
     }
+
+    #[generate_trait]
+    impl PrivateImpl of PrivateTrait {
+        fn get_storage(self: @ContractState) -> WorldStorage {
+            self.world_ns_hash(DEFAULT_NAMESPACE_HASH)
+        }
+    }
+
 
     #[abi(embed_v0)]
     impl IGameAdminImpl of IGameAdmin<ContractState> {
@@ -56,7 +68,7 @@ mod game_admin {
             token_id_b: u256,
             attacks_b: Array<(felt252, felt252)>,
         ) -> felt252 {
-            let mut world = self.world(default_namespace());
+            let mut world = self.get_storage();
             world.assert_caller_is_creator();
             let id = uuid();
             let player_a_id = uuid();
@@ -78,24 +90,28 @@ mod game_admin {
         }
 
         fn set_is_admin(ref self: ContractState, user: ContractAddress, has: bool) {
-            let mut world = self.world(default_namespace());
-            world.assert_admin_permission(get_caller_address());
+            let mut world = self.get_storage();
+            world.assert_caller_is_admin();
             world.set_admin_permission(user, has);
         }
         fn set_is_creator(ref self: ContractState, user: ContractAddress, has: bool) {
-            let mut world = self.world(default_namespace());
-            world.assert_admin_permission(get_caller_address());
+            let mut world = self.get_storage();
+            world.assert_caller_is_admin();
             world.set_creator_permission(user, has);
         }
 
         fn get_is_admin(self: @ContractState, user: ContractAddress) -> bool {
-            let world = self.world(default_namespace());
+            let world = self.get_storage();
             world.has_admin_permission(user)
         }
 
         fn get_is_creator(self: @ContractState, user: ContractAddress) -> bool {
-            let world = self.world(default_namespace());
+            let world = self.get_storage();
             world.has_creator_permission(user)
+        }
+
+        fn get_world_address(self: @ContractState) -> ContractAddress {
+            get_world_address()
         }
     }
 }

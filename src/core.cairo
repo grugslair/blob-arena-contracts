@@ -137,7 +137,7 @@ fn in_range<T, +PartialOrd<T>, +Drop<T>, +Copy<T>>(lower: T, upper: T, value: T)
     max(lower, min(upper, value))
 }
 
-#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
+#[derive(Copy, Drop, Serde, PartialEq)]
 struct Signed<T> {
     value: T,
     sign: bool,
@@ -228,7 +228,21 @@ impl SumTArray<S, +Add<S>, +Zeroable<S>, +Drop<S>> of Sum<Array<S>, S> {
     }
 }
 
+fn byte31_array_to_felt252_array(array: Span<bytes31>) -> Array<felt252> {
+    let mut result = ArrayTrait::<felt252>::new();
+    for bytes in array {
+        result.append((*bytes).into());
+    };
+    result
+}
 
+fn byte_array_to_felt252_array(data: @ByteArray) -> Array<felt252> {
+    let mut result = byte31_array_to_felt252_array(data.data.span());
+    if data.pending_word_len.is_non_zero() {
+        result.append(*data.pending_word);
+    }
+    result
+}
 // trait Enumerate<T, S> {
 //     fn enumerate(self: T) -> Array<(usize, S)>;
 // }
@@ -249,3 +263,5 @@ impl SumTArray<S, +Add<S>, +Zeroable<S>, +Drop<S>> of Sum<Array<S>, S> {
 //         result
 //     }
 // }
+
+

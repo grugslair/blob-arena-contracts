@@ -9,6 +9,7 @@ mod world;
 mod storage;
 mod serde;
 mod iter;
+mod tags;
 use world::uuid;
 mod permissions {
     mod components;
@@ -21,8 +22,10 @@ mod attacks {
     // mod contract;
     mod results;
     mod storage;
-    use components::{Stat, Target, Affect, Damage, Attack, Effect, PlannedAttack};
+    mod systems;
+    use components::{Stat, Target, Affect, Damage, Attack, Effect, PlannedAttack, AttackInput};
     use storage::AttackStorage;
+    use systems::AttackTrait;
 }
 mod stats;
 mod combatants {
@@ -68,8 +71,8 @@ mod pve {
     mod admin;
     use systems::PVETrait;
     use components::{
-        PVEGame, PVEOpponent, PVEBlobertInfo, PVEStorage, PVEPhase, pve_namespace, PVEStore,
-        PVEChallengeAttempt, PVEPhaseTrait, PVEEndAttemptSchema,
+        PVEGame, PVEOpponent, PVEBlobertInfo, PVEStorage, PVEPhase, PVEStore, PVEChallengeAttempt,
+        PVEPhaseTrait, PVEEndAttemptSchema, PVEOpponentInput, PVE_NAMESPACE_HASH,
     };
 }
 

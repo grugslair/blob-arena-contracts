@@ -1,11 +1,11 @@
 use dojo::{
-    world::WorldStorage, event::EventStorage, model::{ModelStorage, ModelValueStorage, Model}
+    world::WorldStorage, event::EventStorage, model::{ModelStorage, ModelValueStorage, Model},
 };
-use blob_arena::{attacks::{AttackStorage, components::AttackInput}, stats::UStats};
+use blob_arena::{attacks::{AttackTrait, components::AttackInput}, stats::UStats, tags::IdTagNew};
 
 use super::{
     BlobertStorage, Seed, BlobertItemKey, TokenAttributes, AttackSlot,
-    components::{SeedTrait, TokenAttributesTrait}
+    components::{SeedTrait, TokenAttributesTrait},
 };
 
 
@@ -16,10 +16,10 @@ impl BlobertImpl of BlobertTrait {
         key: BlobertItemKey,
         name: ByteArray,
         stats: UStats,
-        attacks: Array<AttackInput>
+        attacks: Array<IdTagNew<AttackInput>>,
     ) {
         self.set_blobert_item(key, name, stats);
-        self.fill_blobert_item_attack_slots(key, self.create_attacks_external(attacks));
+        self.fill_blobert_item_attack_slots(key, self.create_or_get_attacks_external(attacks));
     }
 
     fn get_blobert_stats(self: @WorldStorage, blobert: TokenAttributes) -> UStats {
@@ -32,7 +32,7 @@ impl BlobertImpl of BlobertTrait {
     }
 
     fn get_blobert_attack(
-        self: @WorldStorage, blobert: TokenAttributes, item_id: felt252, slot: felt252
+        self: @WorldStorage, blobert: TokenAttributes, item_id: felt252, slot: felt252,
     ) -> felt252 {
         match blobert.to_item_key(item_id) {
             Option::Some(key) => self.get_blobert_attack_slot(key, slot),
@@ -41,15 +41,13 @@ impl BlobertImpl of BlobertTrait {
     }
 
     fn get_blobert_attacks(
-        self: @WorldStorage, blobert: TokenAttributes, item_slots: Array<(felt252, felt252)>
+        self: @WorldStorage, blobert: TokenAttributes, item_slots: Array<(felt252, felt252)>,
     ) -> Array<felt252> {
         let mut keys = ArrayTrait::<(BlobertItemKey, felt252)>::new();
-        for (
-            item_id, slot
-        ) in item_slots {
+        for (item_id, slot) in item_slots {
             match blobert.to_item_key(item_id) {
                 Option::Some(key) => { keys.append((key, slot)); },
-                Option::None => {}
+                Option::None => {},
             };
         };
         self.get_blobert_attack_slots(keys.span())

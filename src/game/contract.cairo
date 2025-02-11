@@ -19,7 +19,7 @@ mod game_actions {
         attacks::AttackStorage, combat::{Phase, CombatTrait, CombatState, CombatStorage},
         combatants::{CombatantTrait, CombatantStorage, CombatantInfo},
         game::{components::{GameInfoTrait, WinVia}, storage::{GameStorage}, systems::GameTrait},
-        world::default_namespace, commitments::Commitment,
+        world::DEFAULT_NAMESPACE_HASH, commitments::Commitment,
         core::{TTupleSized2ToSpan, ArrayTryIntoTTupleSized2},
     };
     use super::IGame;
@@ -28,9 +28,10 @@ mod game_actions {
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
         fn get_storage(self: @ContractState) -> WorldStorage {
-            self.world(default_namespace())
+            self.world_ns_hash(DEFAULT_NAMESPACE_HASH)
         }
     }
+
 
     #[abi(embed_v0)]
     impl IGameImpl of IGame<ContractState> {

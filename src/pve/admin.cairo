@@ -1,5 +1,8 @@
 use starknet::ContractAddress;
-use blob_arena::{stats::UStats, collections::blobert::{TokenAttributes, BlobertItemKey}};
+use blob_arena::{
+    stats::UStats, pve::PVEOpponentInput, collections::blobert::{TokenAttributes, BlobertItemKey},
+    tags::IdTagNew, attacks::components::AttackInput,
+};
 
 #[starknet::interface]
 trait IPVEAdmin<TContractState> {
@@ -9,24 +12,14 @@ trait IPVEAdmin<TContractState> {
         collection: ContractAddress,
         attributes: TokenAttributes,
         stats: UStats,
-        attacks: Array<felt252>,
-        collections_allowed: Array<ContractAddress>,
-    ) -> felt252;
-    fn new_opponent_from_attack_slots(
-        ref self: TContractState,
-        name: ByteArray,
-        collection: ContractAddress,
-        attributes: TokenAttributes,
-        stats: UStats,
-        attack_namespace: ByteArray,
-        attack_slots: Array<(BlobertItemKey, felt252)>,
+        attacks: Array<IdTagNew<AttackInput>>,
         collections_allowed: Array<ContractAddress>,
     ) -> felt252;
     fn new_challenge(
         ref self: TContractState,
         name: ByteArray,
         health_recovery_pc: u8,
-        opponents: Array<felt252>,
+        opponents: Array<IdTagNew<PVEOpponentInput>>,
         collections_allowed: Array<ContractAddress>,
     );
     fn set_collection(
@@ -47,15 +40,18 @@ mod pve_blobert_admin_actions {
     use starknet::{ContractAddress, get_caller_address};
     use dojo::world::WorldStorage;
     use blob_arena::{
-        pve::{PVEStore, PVETrait, PVEStorage, pve_namespace}, stats::UStats,
-        collections::blobert::{TokenAttributes, BlobertItemKey, BlobertStorage},
+        attacks::{AttackInput, AttackTrait}, permissions::GamePermissions,
+        pve::{PVEStore, PVETrait, PVEStorage, PVE_NAMESPACE_HASH, PVEOpponentInput}, stats::UStats,
+        collections::blobert::{TokenAttributes, BlobertItemKey, BlobertStorage}, tags::IdTagNew,
+        world::DEFAULT_NAMESPACE_HASH,
     };
     use super::IPVEAdmin;
 
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
         fn get_pve_storage(self: @ContractState) -> WorldStorage {
-            self.world(pve_namespace())
+            self.world_ns_hash(DEFAULT_NAMESPACE_HASH).assert_caller_is_admin();
+            self.world_ns_hash(PVE_NAMESPACE_HASH)
         }
     }
 
@@ -67,40 +63,21 @@ mod pve_blobert_admin_actions {
             collection: ContractAddress,
             attributes: TokenAttributes,
             stats: UStats,
-            attacks: Array<felt252>,
+            attacks: Array<IdTagNew<AttackInput>>,
             collections_allowed: Array<ContractAddress>,
         ) -> felt252 {
             let mut store = self.get_pve_storage();
+            let attack_ids = store.create_or_get_attacks_external(attacks);
             store
                 .setup_new_opponent(
-                    name, collection, attributes, stats, attacks, collections_allowed,
+                    name, collection, attributes, stats, attack_ids, collections_allowed,
                 )
-        }
-        fn new_opponent_from_attack_slots(
-            ref self: ContractState,
-            name: ByteArray,
-            collection: ContractAddress,
-            attributes: TokenAttributes,
-            stats: UStats,
-            attack_namespace: ByteArray,
-            attack_slots: Array<(BlobertItemKey, felt252)>,
-            collections_allowed: Array<ContractAddress>,
-        ) -> felt252 {
-            let mut store = self.get_pve_storage();
-            let attacks = self
-                .world(@attack_namespace)
-                .get_blobert_attack_slots(attack_slots.span());
-            let token_id = store
-                .setup_new_opponent(
-                    name, collection, attributes, stats, attacks, collections_allowed,
-                );
-            token_id
         }
         fn new_challenge(
             ref self: ContractState,
             name: ByteArray,
             health_recovery_pc: u8,
-            opponents: Array<felt252>,
+            opponents: Array<IdTagNew<PVEOpponentInput>>,
             collections_allowed: Array<ContractAddress>,
         ) {
             let mut store = self.get_pve_storage();

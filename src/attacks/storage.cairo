@@ -7,46 +7,31 @@ use blob_arena::{
         Attack, Effect,
         components::{
             AttackInputTrait, AttackInput, PlannedAttack, AttackAvailable, AttackLastUsed,
-            AttackAvailableValue, AttackLastUsedValue, AttackName,
+            AttackAvailableValue, AttackLastUsedValue, AttackName, AttackExists,
         },
     },
-    uuid, world::default_namespace,
+    uuid, world::WorldTrait, tags::Tag,
 };
+
 
 #[generate_trait]
 impl AttackStorageImpl of AttackStorage {
+    fn set_attack_model(ref self: WorldStorage, attack: Attack) {
+        self.write_model(@attack);
+    }
+    fn set_attack_models(ref self: WorldStorage, attacks: Array<@Attack>) {
+        self.write_models_check(attacks.span());
+    }
     fn get_attack(self: @WorldStorage, id: felt252) -> Attack {
         self.read_model(id)
     }
     fn get_attacks(self: @WorldStorage, ids: Span<felt252>) -> Array<Attack> {
         self.read_models(ids)
     }
-    fn create_attack(ref self: WorldStorage, attack_input: AttackInput) -> felt252 {
-        let id = uuid();
-        let (attack, name) = attack_input.to_attack_and_name(id);
-        self.write_model(@attack);
-        self.emit_event(@name);
-        id
+    fn emit_attack_name(ref self: WorldStorage, id: felt252, name: ByteArray) {
+        self.emit_event(@AttackName { id, name });
     }
-    fn create_attacks(ref self: WorldStorage, attack_inputs: Array<AttackInput>) -> Array<felt252> {
-        let mut attack_ids = ArrayTrait::<felt252>::new();
-        let mut attacks = ArrayTrait::<@Attack>::new();
-        for attack in attack_inputs {
-            let id = uuid();
-            let (attack, name) = attack.to_attack_and_name(id);
-            attacks.append(@attack);
-            self.emit_event(@name);
-            attack_ids.append(id);
-        };
-        self.write_models(attacks.span());
-        attack_ids
-    }
-    fn create_attacks_external(
-        ref self: WorldStorage, attack_inputs: Array<AttackInput>,
-    ) -> Array<felt252> {
-        let mut attack_world = WorldStorageTrait::new(self.dispatcher, default_namespace());
-        attack_world.create_attacks(attack_inputs)
-    }
+
     fn get_planned_attack(self: @WorldStorage, id: felt252) -> PlannedAttack {
         self.read_model(id)
     }
@@ -150,6 +135,11 @@ impl AttackStorageImpl of AttackStorage {
 
     fn get_attack_miss_effects(self: @WorldStorage, attack_id: felt252) -> Array<Effect> {
         self.read_member(Model::<Attack>::ptr_from_keys(attack_id), selector!("miss"))
+    }
+
+    fn check_attack_exists(self: @WorldStorage, attack_id: felt252) -> bool {
+        let schema: AttackExists = self.read_schema(Model::<Attack>::ptr_from_keys(attack_id));
+        schema.hit.is_non_zero() || schema.miss.is_non_zero()
     }
 }
 
