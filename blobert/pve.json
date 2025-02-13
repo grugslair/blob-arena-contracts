@@ -49,7 +49,7 @@
   ],
   "challenges": [
     {
-      "name": "AMMA 1",
+      "name": "Challenge 1",
       "health_recovery": 30,
       "opponents": [
         { "tag": "Mr Blobert" },
