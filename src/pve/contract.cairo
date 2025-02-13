@@ -10,7 +10,8 @@ use blob_arena::{stats::UStats, collections::blobert::{TokenAttributes, BlobertI
 ///   * `opponent_id` - Identifier for the opponent to fight
 ///   * `collection_address` - Contract address of the NFT collection
 ///   * `token_id` - ID of the token being used
-///   * `attacks` - Array of attack tuples (attack_type, attack_value)
+///   * `attacks` - Array of attack tuples (item_n, slot_n) where item_n is 1, 2, 3... for
+///   Background, Armour, Jewelry....
 ///   * Returns: game_id as felt252
 ///
 /// * `attack` - Executes an attack in an ongoing game
