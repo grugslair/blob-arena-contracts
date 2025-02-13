@@ -48,6 +48,7 @@ const pveBlobertContractTag = "pve_blobert-pve_blobert_admin_actions";
 const seedEntrypoint = "set_seed_item_with_attacks";
 const customEntrypoint = "set_custom_item_with_attacks";
 const pveOpponentEntrypoint = "new_opponent";
+const pveChallengeEntrypoint = "new_challenge";
 
 const provider = new RpcProvider({ nodeUrl: process.env.STARKNET_RPC_URL });
 const account1Address = process.env.DOJO_ACCOUNT_ADDRESS;
@@ -189,6 +190,38 @@ const parseAttackStruct = (attack) => {
   return new CairoCustomEnum({ New: parseNewAttack(attack) });
 };
 
+const parseNewPVEOpponent = (opponent) => {
+  return {
+    name: opponent.name,
+    collection: PVECollectionAddresses[opponent.collection],
+    attributes: new CairoCustomEnum(opponent.attributes),
+    stats: opponent.stats,
+    attacks: makeAttacksStruct(opponent.attacks),
+    collections_allowed: makeCollectionsAllowed(opponent.collections_allowed),
+  };
+};
+
+const makePveOpponentsStruct = (opponents) => {
+  let opponentsStructs = [];
+  for (const opponent of opponents) {
+    opponentsStructs.push(parseOpponentStruct(opponent));
+  }
+  return opponentsStructs;
+};
+
+const parseOpponentStruct = (opponent) => {
+  if (typeof opponent.tag === "string") {
+    return new CairoCustomEnum({ Tag: opponent.tag });
+  }
+  if (opponent.id != null) {
+    return new CairoCustomEnum({ Id: opponent.id });
+  }
+  if (opponent.new != null) {
+    return new CairoCustomEnum({ New: opponent.new });
+  }
+  return new CairoCustomEnum({ New: parseNewPVEOpponent(opponent) });
+};
+
 const makeSeedItemCallData = (trait, n, item) => {
   const trait_str = trait.charAt(0).toUpperCase() + trait.slice(1);
   return {
@@ -225,14 +258,12 @@ const makeCollectionsAllowed = (collections) => {
   return allowed;
 };
 
-const makePveOpponentCallData = (opponent) => {
+const makePveChallengeCallData = (challenge) => {
   return {
-    name: opponent.name,
-    collection: PVECollectionAddresses[opponent.collection],
-    attributes: new CairoCustomEnum(opponent.attributes),
-    stats: opponent.stats,
-    attacks: makeAttacksStruct(opponent.attacks),
-    collections_allowed: makeCollectionsAllowed(opponent.collections_allowed),
+    name: challenge.name,
+    health_recovery_pc: challenge.health_recovery,
+    opponents: makePveOpponentsStruct(challenge.opponents),
+    collections_allowed: makeCollectionsAllowed(challenge.collections_allowed),
   };
 };
 
@@ -274,18 +305,27 @@ for (const [n, item] of Object.entries(amma_data)) {
     ),
   ]);
 }
-
+calls = [];
 for (const opponent of pve_data["opponents"]) {
   calls.push([
     `pve: ${opponent.name}`,
     makeCall(
       pveBlobertContract,
       pveOpponentEntrypoint,
-      makePveOpponentCallData(opponent)
+      parseNewPVEOpponent(opponent)
     ),
   ]);
 }
-
+for (const challenge of pve_data["challenges"]) {
+  calls.push([
+    `pve: ${challenge.name}`,
+    makeCall(
+      pveBlobertContract,
+      pveChallengeEntrypoint,
+      makePveChallengeCallData(challenge)
+    ),
+  ]);
+}
 const multiCallSize = 20;
 for (let i = 0, x = 0; i < calls.length; i += multiCallSize, x += 1) {
   const chunk = calls.slice(i, i + multiCallSize);

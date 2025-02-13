@@ -45,19 +45,120 @@
         { "tag": "Osoto Gari" }
       ],
       "collections_allowed": ["amma_blobert"]
+    },
+    {
+      "name": "Stage 1-1 Enemy",
+      "collection": "amma_blobert",
+      "attributes": {
+        "Custom": 3
+      },
+      "stats": {
+        "strength": 15,
+        "vitality": 15,
+        "dexterity": 15,
+        "luck": 15
+      },
+      "attacks": [
+        { "tag": "Sword Slash" },
+        { "tag": "Shield Block" },
+        { "tag": "Sword Dance" },
+        { "tag": "Spin Attack" }
+      ],
+      "collections_allowed": ["amma_blobert"]
+    },
+    {
+      "name": "Stage 1-2 Enemy",
+      "collection": "amma_blobert",
+      "attributes": {
+        "Custom": 1
+      },
+      "stats": {
+        "strength": 20,
+        "vitality": 20,
+        "dexterity": 20,
+        "luck": 20
+      },
+      "attacks": [
+        { "tag": "Sword Slash" },
+        { "tag": "Shield Punch" },
+        { "tag": "Grapple" },
+        { "tag": "Osoto Gari" }
+      ],
+      "collections_allowed": ["amma_blobert"]
+    },
+    {
+      "name": "Stage 2-1 Enemy",
+      "collection": "amma_blobert",
+      "attributes": {
+        "Custom": 5
+      },
+      "stats": {
+        "strength": 25,
+        "vitality": 25,
+        "dexterity": 25,
+        "luck": 25
+      },
+      "attacks": [
+        { "tag": "Axe Attack" },
+        { "tag": "Shield Punch" },
+        { "tag": "Grind" },
+        { "tag": "Reverse Throw" }
+      ],
+      "collections_allowed": ["amma_blobert"]
+    },
+    {
+      "name": "Stage 2-2 Enemy",
+      "collection": "amma_blobert",
+      "attributes": {
+        "Custom": 6
+      },
+      "stats": {
+        "strength": 30,
+        "vitality": 30,
+        "dexterity": 30,
+        "luck": 30
+      },
+      "attacks": [
+        { "tag": "Sword Slash" },
+        { "tag": "Shield Punch" },
+        { "tag": "Swift Attack" },
+        { "tag": "Comeback Kid" }
+      ],
+      "collections_allowed": ["amma_blobert"]
+    },
+    {
+      "name": "Boss Enemy",
+      "collection": "amma_blobert",
+      "attributes": {
+        "Custom": 7
+      },
+      "stats": {
+        "strength": 50,
+        "vitality": 50,
+        "dexterity": 50,
+        "luck": 50
+      },
+      "attacks": [
+        { "tag": "Sword Slash" },
+        { "tag": "Weapon Master" },
+        { "tag": "Superman Shield Punch" },
+        { "tag": "People's Elbow" }
+      ],
+      "collections_allowed": ["amma_blobert"]
     }
   ],
   "challenges": [
     {
-      "name": "Challenge 1",
-      "health_recovery": 30,
+      "name": "Test Challenge 1",
+      "health_recovery": 40,
       "opponents": [
-        { "tag": "Mr Blobert" },
-        { "tag": "Mr Blobert" },
-        { "tag": "Mr Blobert" },
-        { "new": {} }
+        { "tag": "Stage 1-1 Enemy" },
+        { "tag": "Stage 1-2 Enemy" },
+        { "tag": "Stage 2-1 Enemy" },
+        { "tag": "Stage 2-2 Enemy" },
+        { "tag": "Boss Enemy" }
       ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      "collections_allowed": ["arcade_blobert"]
     }
   ]
 }
