@@ -309,7 +309,8 @@ impl PVEStorageImpl of PVEStorage {
     fn get_pve_stage_opponent(self: @WorldStorage, challenge_id: felt252, round: u32) -> felt252 {
         self
             .read_member(
-                Model::<PVEStageOpponent>::ptr_from_keys(challenge_id), selector!("opponent"),
+                Model::<PVEStageOpponent>::ptr_from_keys((challenge_id, round)),
+                selector!("opponent"),
             )
     }
     fn set_pve_stage_opponent(
