@@ -305,7 +305,7 @@ for (const [n, item] of Object.entries(amma_data)) {
     ),
   ]);
 }
-calls = [];
+
 for (const opponent of pve_data["opponents"]) {
   calls.push([
     `pve: ${opponent.name}`,

@@ -1,11 +1,11 @@
 use core::{fmt::{Display, Formatter, Error, Debug}, cmp::min, ops::AddAssign};
 use blob_arena::{
     core::{SaturatingAdd, SaturatingSub, SaturatingInto, Signed, SumTArray},
-    constants::{STARTING_HEALTH, MAX_STAT}
+    constants::{STARTING_HEALTH, MAX_STAT},
 };
 
 
-#[derive(Copy, Drop, Serde, PartialEq, IntrospectPacked, Default)]
+#[derive(Copy, Drop, Serde, PartialEq, Introspect, Default)]
 struct TStats<T> {
     strength: T,
     vitality: T,
@@ -13,7 +13,7 @@ struct TStats<T> {
     luck: T,
 }
 
-#[derive(Copy, Drop, Serde, PartialEq, IntrospectPacked)]
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
 enum StatTypes {
     Strength,
     Vitality,
@@ -27,7 +27,7 @@ impl TStatsZeroable<T, +Zeroable<T>, +Drop<T>> of Zeroable<TStats<T>> {
             strength: Zeroable::zero(),
             vitality: Zeroable::zero(),
             dexterity: Zeroable::zero(),
-            luck: Zeroable::zero()
+            luck: Zeroable::zero(),
         }
     }
     fn is_zero(self: TStats<T>) -> bool {
@@ -48,7 +48,7 @@ type SignedStats = TStats<Signed<u8>>;
 
 impl TIntoTStats<T, +Copy<T>> of Into<T, TStats<T>> {
     fn into(self: T) -> TStats<T> {
-        TStats { strength: self, vitality: self, dexterity: self, luck: self, }
+        TStats { strength: self, vitality: self, dexterity: self, luck: self }
     }
 }
 
@@ -185,7 +185,7 @@ impl TStatsDiv<T, +Div<T>, +Drop<T>> of Div<TStats<T>> {
 }
 
 impl TStatsIntoTStata<
-    T, S, +Into<T, S>, +Copy<T>, +Drop<S>, +Drop<T>
+    T, S, +Into<T, S>, +Copy<T>, +Drop<S>, +Drop<T>,
 > of Into<TStats<T>, TStats<S>> {
     fn into(self: TStats<T>) -> TStats<S> {
         TStats {
@@ -198,7 +198,7 @@ impl TStatsIntoTStata<
 }
 
 impl TStatsSaturatingIntoTStats<
-    T, S, +SaturatingInto<T, S>, +Drop<T>, +Copy<T>, +Drop<S>
+    T, S, +SaturatingInto<T, S>, +Drop<T>, +Copy<T>, +Drop<S>,
 > of SaturatingInto<TStats<T>, TStats<S>> {
     fn saturating_into(self: TStats<T>) -> TStats<S> {
         TStats {
@@ -219,7 +219,7 @@ impl StatsDisplayImpl<T, +Debug<T>, +Drop<T>, +Copy<T>> of Display<TStats<T>> {
             *self.strength,
             *self.vitality,
             *self.dexterity,
-            *self.luck
+            *self.luck,
         )
     }
 }

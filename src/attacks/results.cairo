@@ -37,7 +37,7 @@ enum AffectResult {
     Damage: DamageResult,
 }
 
-#[derive(Drop, Serde, PartialEq, IntrospectPacked)]
+#[derive(Drop, Serde, PartialEq, Introspect)]
 struct DamageResult {
     damage: u8,
     critical: bool,

@@ -22,7 +22,7 @@ enum TokenAttributes {
 }
 
 
-#[derive(Copy, Drop, Serde, Hash, PartialEq, IntrospectPacked)]
+#[derive(Copy, Drop, Serde, Hash, PartialEq, Introspect)]
 struct Seed {
     background: u32,
     armour: u32,
@@ -31,7 +31,7 @@ struct Seed {
     weapon: u32,
 }
 
-#[derive(Copy, Drop, Serde, PartialEq, IntrospectPacked)]
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
 enum BlobertAttribute {
     Background,
     Armour,
@@ -104,7 +104,8 @@ impl SeedImpl of SeedTrait {
             to_seed_key(BlobertAttribute::Jewelry, *self.jewelry),
             to_seed_key(BlobertAttribute::Mask, *self.mask),
             to_seed_key(BlobertAttribute::Weapon, *self.weapon),
-        ].span()
+        ]
+            .span()
     }
 }
 

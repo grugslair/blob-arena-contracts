@@ -4,13 +4,13 @@ use blob_arena::{
 
 const ATTACK_TAG_GROUP: felt252 = 'attacks';
 
-#[derive(Drop, Serde, Copy, PartialEq, IntrospectPacked)]
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
 struct Stat {
     stat: StatTypes,
     amount: i8,
 }
 
-#[derive(Drop, Serde, Copy, PartialEq, IntrospectPacked)]
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
 enum Target {
     Player,
     Opponent,
@@ -63,7 +63,7 @@ enum Affect {
     Health: i16,
 }
 
-#[derive(Drop, Serde, Copy, PartialEq, IntrospectPacked)]
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
 struct Damage {
     critical: u8,
     power: u8,
