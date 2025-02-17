@@ -158,7 +158,7 @@
         { "tag": "Stage 2-2 Enemy" },
         { "tag": "Boss Enemy" }
       ],
-      "collections_allowed": ["arcade_blobert"]
+      "collections_allowed": ["arcade_blobert", "amma_blobert"]
     }
   ]
 }
