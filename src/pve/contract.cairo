@@ -67,6 +67,7 @@ mod pve_blobert_actions {
         pve::{PVETrait, PVEStorage, PVE_NAMESPACE_HASH, PVEStore},
         world::{uuid, DEFAULT_NAMESPACE_HASH}, game::GameProgress, utils::get_transaction_hash,
         stats::UStats, collections::blobert::{TokenAttributes, BlobertItemKey, BlobertStorage},
+        erc721::erc721_owner_of,
     };
     use super::{IPVE};
     #[generate_trait]
@@ -90,6 +91,7 @@ mod pve_blobert_actions {
         ) -> felt252 {
             let mut store = self.get_storage();
             let caller = get_caller_address();
+            assert(erc721_owner_of(collection_address, token_id) == caller, 'Not owner');
             store.pve.use_game(caller);
             store.new_pve_game(opponent_id, caller, collection_address, token_id, attacks)
         }
@@ -109,6 +111,7 @@ mod pve_blobert_actions {
         ) {
             let mut store = self.get_storage();
             let caller = get_caller_address();
+            assert(erc721_owner_of(collection_address, token_id) == caller, 'Not owner');
             store.pve.use_game(caller);
             store
                 .new_pve_challenge_attempt(

@@ -10,6 +10,7 @@ sierra-replace-ids = true
 [dependencies]
 dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.1.2" }
 cubit = { git = "https://github.com/bengineer42/cubit", tag = "cairo--2.8.0" }
+openzeppelin_token = { git = "https://github.com/OpenZeppelin/cairo-contracts", tag = "v0.19.0" }
 
 [tool.dojo]
 initializer_class_hash = "0xbeef"

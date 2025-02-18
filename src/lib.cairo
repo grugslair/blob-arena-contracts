@@ -10,6 +10,7 @@ mod storage;
 mod serde;
 mod iter;
 mod tags;
+mod erc721;
 use world::uuid;
 mod permissions {
     mod components;
