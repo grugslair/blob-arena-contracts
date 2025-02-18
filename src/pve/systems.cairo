@@ -315,10 +315,7 @@ impl PVEImpl of PVETrait {
                 self.pve.get_pve_stage_game_id(attempt.id, attempt.stage),
             );
         assert(attempt.stage.is_non_zero(), 'Not Started');
-        match phase {
-            PVEPhase::Ended(won) => assert(won, 'Player Lost'),
-            _ => panic!("Combat not ended"),
-        };
+        assert(phase == PVEPhase::PlayerWon, 'Player not won last round');
 
         let health = calc_restored_health(
             self.ba.get_combatant_health(combatant_id),
@@ -351,10 +348,8 @@ impl PVEImpl of PVETrait {
 
         assert(attempt.respawns.is_zero(), 'No more respawns');
         assert(attempt.stage.is_non_zero(), 'Not Started');
-        match phase {
-            PVEPhase::Ended(won) => assert(!won, 'Player not dead'),
-            _ => panic!("Combat not ended"),
-        };
+        assert(phase == PVEPhase::PlayerWon, 'Player not lost round');
+
         self.pve.set_pve_challenge_respawns(attempt.id, attempt.respawns + 1);
         let health = attempt.stats.get_max_health();
         self.create_pve_challenge_attempt_round(attempt, health);
@@ -366,14 +361,15 @@ impl PVEImpl of PVETrait {
         attempt.phase.assert_active();
         let phase = self.get_pve_game_phase(self.get_pve_stage_game_id(attempt_id, attempt.stage));
         let won = match phase {
-            PVEPhase::Ended(won) => won,
+            PVEPhase::PlayerWon => {
+                assert(
+                    self.get_pve_stage_game_id(attempt_id, attempt.stage + 1).is_zero(),
+                    'Not last stage',
+                );
+                true
+            },
+            PVEPhase::PlayerLost => false,
             _ => panic!("Combat not ended"),
-        };
-        if won {
-            assert(
-                self.get_pve_stage_game_id(attempt_id, attempt.stage + 1).is_zero(),
-                'Not last stage',
-            );
         };
         self.set_pve_challenge_attempt_ended(attempt_id, won);
     }

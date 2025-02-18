@@ -11,36 +11,25 @@ const PVE_NAMESPACE_HASH: felt252 = bytearray_hash!("pve_blobert");
 const OPPONENT_TAG_GROUP: felt252 = 'pve-opponent';
 const CHALLENGE_TAG_GROUP: felt252 = 'pve-challenge';
 
-#[derive(Drop, Copy, Introspect, PartialEq)]
+#[derive(Drop, Copy, Introspect, PartialEq, Serde)]
 enum PVEPhase {
     None,
     Active,
-    Ended: bool,
+    PlayerWon,
+    PlayerLost,
+}
+
+fn end_phase(won: bool) -> PVEPhase {
+    match won {
+        true => PVEPhase::PlayerWon,
+        false => PVEPhase::PlayerLost,
+    }
 }
 
 #[generate_trait]
 impl PVEPhaseImpl of PVEPhaseTrait {
     fn assert_active(self: PVEPhase) {
         assert(self == PVEPhase::Active, 'Phase not active');
-    }
-}
-
-impl PVEPhaseSerde of Serde<PVEPhase> {
-    fn serialize(self: @PVEPhase, ref output: Array<felt252>) {
-        match self {
-            PVEPhase::None => 0,
-            PVEPhase::Active => 1,
-            PVEPhase::Ended(win) => 2 + (*win).into(),
-        }.serialize(ref output)
-    }
-    fn deserialize(ref serialized: Span<felt252>) -> Option<PVEPhase> {
-        match Serde::<felt252>::deserialize(ref serialized)? {
-            0 => Option::Some(PVEPhase::None),
-            1 => Option::Some(PVEPhase::Active),
-            2 => Option::Some(PVEPhase::Ended(false)),
-            3 => Option::Some(PVEPhase::Ended(true)),
-            _ => Option::None,
-        }
     }
 }
 
@@ -232,10 +221,7 @@ impl PVEStorageImpl of PVEStorage {
     }
 
     fn set_pve_ended(ref self: WorldStorage, id: felt252, win: bool) {
-        self
-            .write_member(
-                Model::<PVEGame>::ptr_from_keys(id), selector!("phase"), PVEPhase::Ended(win),
-            );
+        self.write_member(Model::<PVEGame>::ptr_from_keys(id), selector!("phase"), end_phase(win));
     }
     fn get_pve_opponent_attacks(self: @WorldStorage, opponent_token: felt252) -> Array<felt252> {
         self.read_member(Model::<PVEOpponent>::ptr_from_keys(opponent_token), selector!("attacks"))
@@ -374,9 +360,7 @@ impl PVEStorageImpl of PVEStorage {
     fn set_pve_challenge_attempt_ended(ref self: WorldStorage, id: felt252, won: bool) {
         self
             .write_member(
-                Model::<PVEChallengeAttempt>::ptr_from_keys(id),
-                selector!("phase"),
-                PVEPhase::Ended(won),
+                Model::<PVEChallengeAttempt>::ptr_from_keys(id), selector!("phase"), end_phase(won),
             );
     }
 
