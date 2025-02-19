@@ -319,7 +319,7 @@ impl PVEImpl of PVETrait {
         let health = calc_restored_health(
             self.ba.get_combatant_health(combatant_id),
             attempt.stats.vitality,
-            self.pve.get_pve_challenge_health_recovery(attempt.id),
+            self.pve.get_pve_challenge_health_recovery(attempt.challenge),
         );
 
         attempt.stage += 1;
