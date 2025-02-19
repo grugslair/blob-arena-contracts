@@ -314,7 +314,6 @@ impl PVEImpl of PVETrait {
             .get_pve_game_combatant_phase(
                 self.pve.get_pve_stage_game_id(attempt.id, attempt.stage),
             );
-        assert(attempt.stage.is_non_zero(), 'Not Started');
         assert(phase == PVEPhase::PlayerWon, 'Player not won last round');
 
         let health = calc_restored_health(

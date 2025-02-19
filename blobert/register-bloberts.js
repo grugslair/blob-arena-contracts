@@ -326,7 +326,7 @@ for (const challenge of pve_data["challenges"]) {
     ),
   ]);
 }
-const multiCallSize = 200;
+const multiCallSize = 70;
 for (let i = 0, x = 0; i < calls.length; i += multiCallSize, x += 1) {
   const chunk = calls.slice(i, i + multiCallSize);
   const names = chunk.map(([name, call]) => name);
