@@ -1,4 +1,4 @@
-use core::{cmp::min, poseidon::poseidon_hash_span};
+use core::{cmp::min, poseidon::poseidon_hash_span, num::traits::WideMul};
 use starknet::{ContractAddress, get_caller_address, get_contract_address, get_block_timestamp};
 use dojo::world::WorldStorage;
 use blob_arena::{
@@ -18,7 +18,7 @@ use blob_arena::{
 
 fn calc_restored_health(current_health: u8, vitality: u8, health_recovery_percent: u8) -> u8 {
     let max_health = STARTING_HEALTH + vitality;
-    let health_recovery = max_health * health_recovery_percent / 100;
+    let health_recovery = (max_health.wide_mul(health_recovery_percent) / 100).try_into().unwrap();
     min(max_health, current_health + health_recovery)
 }
 
@@ -346,7 +346,6 @@ impl PVEImpl of PVETrait {
             .get_pve_game_phase(self.pve.get_pve_stage_game_id(attempt.id, attempt.stage));
 
         assert(attempt.respawns.is_zero(), 'No more respawns');
-        assert(attempt.stage.is_non_zero(), 'Not Started');
         assert(phase == PVEPhase::PlayerWon, 'Player not lost round');
 
         self.pve.set_pve_challenge_respawns(attempt.id, attempt.respawns + 1);
