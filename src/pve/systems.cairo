@@ -340,15 +340,16 @@ impl PVEImpl of PVETrait {
         self.pve.set_pve_stage_game(attempt.id, attempt.stage, game.id);
     }
 
-    fn respawn_pve_challenge_attempt(ref self: PVEStore, attempt: PVEChallengeAttempt) {
-        let phase = self
-            .pve
-            .get_pve_game_phase(self.pve.get_pve_stage_game_id(attempt.id, attempt.stage));
+    fn respawn_pve_challenge_attempt(ref self: PVEStore, mut attempt: PVEChallengeAttempt) {
+        let game_id = self.pve.get_pve_stage_game_id(attempt.id, attempt.stage);
+        let phase = self.pve.get_pve_game_phase(game_id);
 
         assert(attempt.respawns.is_zero(), 'No more respawns');
-        assert(phase == PVEPhase::PlayerWon, 'Player not lost round');
+        assert(phase == PVEPhase::PlayerLost, 'Player not lost round');
+        attempt.respawns += 1;
 
-        self.pve.set_pve_challenge_respawns(attempt.id, attempt.respawns + 1);
+        self.pve.set_pve_challenge_respawns(attempt.id, attempt.respawns);
+        self.pve.emit_pve_respawn(@attempt, game_id);
         let health = attempt.stats.get_max_health();
         self.create_pve_challenge_attempt_round(attempt, health);
     }
@@ -361,7 +362,7 @@ impl PVEImpl of PVETrait {
         let won = match phase {
             PVEPhase::PlayerWon => {
                 assert(
-                    self.get_pve_stage_game_id(attempt_id, attempt.stage + 1).is_zero(),
+                    self.get_pve_stage_game_id(attempt.challenge, attempt.stage + 1).is_zero(),
                     'Not last stage',
                 );
                 true

@@ -140,6 +140,17 @@ struct PVEChallengeAttempt {
     phase: PVEPhase,
 }
 
+#[dojo::event]
+#[derive(Drop, Serde)]
+struct PVEChallengeRespawn {
+    #[key]
+    challenge_id: felt252,
+    #[key]
+    respawn: u32,
+    stage: u32,
+    game_id: felt252,
+}
+
 #[derive(Drop, Serde, Introspect)]
 struct PVEEndAttemptSchema {
     challenge: felt252,
@@ -383,5 +394,17 @@ impl PVEStorageImpl of PVEStorage {
 
     fn set_number_free_games(ref self: WorldStorage, player: ContractAddress, games: u32) {
         self.write_member(Model::<PVEFreeGames>::ptr_from_keys(player), selector!("games"), games);
+    }
+
+    fn emit_pve_respawn(ref self: WorldStorage, attempt: @PVEChallengeAttempt, game_id: felt252) {
+        self
+            .emit_event(
+                @PVEChallengeRespawn {
+                    challenge_id: *attempt.challenge,
+                    respawn: *attempt.respawns,
+                    stage: *attempt.stage,
+                    game_id,
+                },
+            );
     }
 }

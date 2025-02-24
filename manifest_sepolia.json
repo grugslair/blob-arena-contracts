@@ -4376,7 +4376,7 @@
     },
     {
       "address": "0x536607c00e40b82600da5bc79eb91f5b9da517ab203e6100175f827281e0f5",
-      "class_hash": "0x2616b3d4a7259ea4d1c43f5acd2ce38cd6a20609d53c5f68ff03bab644bacff",
+      "class_hash": "0x189ae5f127dd78c9ac86f5dfce9bb31c95ab510194f44c1f84bf5db688be49d",
       "abi": [
         {
           "type": "impl",
@@ -5547,6 +5547,12 @@
       "class_hash": "0x4af22ea04f83357e610834fd79737afac4a108cc064b70d9cada633283d21fd",
       "tag": "blob_arena-LobbyCreated",
       "selector": "0x2163e888ca166f3e277e821f5262afdb8655d3b0a97da7718334894eaced25"
+    },
+    {
+      "members": [],
+      "class_hash": "0x2d58a0aa0979a68f4f77b50cfff8c820e68beb31c36e80a6edc6759852aeffa",
+      "tag": "blob_arena-PVEChallengeRespawn",
+      "selector": "0x4fd4296770fddacdab3c6ab8afa04d30bbaad3c71a786b577d052915aef7af1"
     },
     {
       "members": [],
