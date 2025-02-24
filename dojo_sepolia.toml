@@ -43,6 +43,7 @@ mappings = { "blob_arena" = [
     "PVEFreeGames",
     "PVEChallengeAttempt",
     "PVEStageGame",
+    "PVEChallengeRespawn",
 ] }
 
 [writers]
@@ -117,7 +118,7 @@ mappings = { "blob_arena" = [
 "pve_blobert-PVEStageGame" = ["pve_blobert-pve_blobert_actions"]
 "pve_blobert-PVEGame" = ["pve_blobert-pve_blobert_actions"]
 "pve_blobert-PVEFreeGames" = ["pve_blobert-pve_blobert_actions"]
-
+"pve_blobert-PVEChallengeRespawn" = ["pve_blobert-pve_blobert_actions"]
 
 "blobert" = ["blobert-blobert_actions"]
 "arcade_blobert" = ["arcade_blobert-arcade_blobert_actions"]

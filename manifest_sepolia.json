@@ -5550,12 +5550,6 @@
     },
     {
       "members": [],
-      "class_hash": "0x2d58a0aa0979a68f4f77b50cfff8c820e68beb31c36e80a6edc6759852aeffa",
-      "tag": "blob_arena-PVEChallengeRespawn",
-      "selector": "0x4fd4296770fddacdab3c6ab8afa04d30bbaad3c71a786b577d052915aef7af1"
-    },
-    {
-      "members": [],
       "class_hash": "0x3a8ce1e642018e254be23eee09bc05e5d0d53b6043f0ba29d6bdf3d04639cec",
       "tag": "blob_arena-RoundResult",
       "selector": "0x7dee6d86ca7c0d9ee2d32ee3483fa5a093d00b4e6b0452590d9b309f28ba583"
@@ -5577,6 +5571,12 @@
       "class_hash": "0x346aa23049e2e8bca341e86cd74fd05b8c69f0ab8b31ab37deba3ee949b17a9",
       "tag": "pve_blobert-PVEChallengeName",
       "selector": "0x55b06946689ba0275074caa84302b43991780c9aafb890c7327cb812fb3b225"
+    },
+    {
+      "members": [],
+      "class_hash": "0x2d58a0aa0979a68f4f77b50cfff8c820e68beb31c36e80a6edc6759852aeffa",
+      "tag": "pve_blobert-PVEChallengeRespawn",
+      "selector": "0x23468028bbea0359c31d8e55b7737b8280d368993a668779fa2d73b4788c712"
     }
   ]
 }
