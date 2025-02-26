@@ -63,6 +63,14 @@ struct PVEFreeGames {
 
 #[dojo::model]
 #[derive(Drop, Serde)]
+struct PVEPaidGames {
+    #[key]
+    player: ContractAddress,
+    games: u32,
+}
+
+#[dojo::model]
+#[derive(Drop, Serde)]
 struct PVECollectionAllowed {
     #[key]
     id: felt252,
@@ -388,12 +396,20 @@ impl PVEStorageImpl of PVEStorage {
         self.read_model(player)
     }
 
-    fn get_number_free_games(self: @WorldStorage, player: ContractAddress) -> u32 {
+    fn get_number_of_free_games(self: @WorldStorage, player: ContractAddress) -> u32 {
         self.read_member(Model::<PVEFreeGames>::ptr_from_keys(player), selector!("games"))
     }
 
-    fn set_number_free_games(ref self: WorldStorage, player: ContractAddress, games: u32) {
+    fn set_number_of_free_games(ref self: WorldStorage, player: ContractAddress, games: u32) {
         self.write_member(Model::<PVEFreeGames>::ptr_from_keys(player), selector!("games"), games);
+    }
+
+    fn set_number_of_paid_games(ref self: WorldStorage, player: ContractAddress, games: u32) {
+        self.write_model(@PVEPaidGames { player, games });
+    }
+
+    fn get_number_of_paid_games(self: @WorldStorage, player: ContractAddress) -> u32 {
+        self.read_member(Model::<PVEPaidGames>::ptr_from_keys(player), selector!("games"))
     }
 
     fn emit_pve_respawn(ref self: WorldStorage, attempt: @PVEChallengeAttempt, game_id: felt252) {

@@ -33,6 +33,7 @@ trait IPVEAdmin<TContractState> {
         ref self: TContractState, ids: Array<felt252>, collection: ContractAddress, available: bool,
     );
     fn mint_free_games(ref self: TContractState, player: ContractAddress, amount: u32);
+    fn mint_paid_games(ref self: TContractState, player: ContractAddress, amount: u32);
 }
 
 #[dojo::contract]
@@ -112,10 +113,15 @@ mod pve_blobert_admin_actions {
             let mut model = store.get_free_games(player);
             model.games += amount;
             if model.last_claim.is_non_zero() {
-                store.set_number_free_games(player, model.games);
+                store.set_number_of_free_games(player, model.games);
             } else {
                 store.set_free_games_model(model)
             }
+        }
+        fn mint_paid_games(ref self: ContractState, player: ContractAddress, amount: u32) {
+            let mut store = self.get_pve_storage();
+            let games = store.get_number_of_paid_games(player);
+            store.set_number_of_paid_games(player, games + amount);
         }
     }
 }
