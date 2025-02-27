@@ -33,6 +33,8 @@ impl PVEPhaseImpl of PVEPhaseTrait {
     }
 }
 
+/////////////////
+
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct PVEOpponent {
@@ -40,35 +42,6 @@ struct PVEOpponent {
     id: felt252,
     stats: UStats,
     attacks: Array<felt252>,
-}
-
-#[derive(Drop, Serde)]
-struct PVEOpponentInput {
-    name: ByteArray,
-    collection: ContractAddress,
-    attributes: TokenAttributes,
-    stats: UStats,
-    attacks: Array<IdTagNew<AttackInput>>,
-    collections_allowed: Array<ContractAddress>,
-}
-
-#[dojo::model]
-#[derive(Drop, Serde)]
-struct PVEFreeGames {
-    #[key]
-    player: ContractAddress,
-    games: u32,
-    last_claim: u64,
-}
-
-#[dojo::model]
-#[derive(Drop, Serde)]
-struct PVECollectionAllowed {
-    #[key]
-    id: felt252,
-    #[key]
-    collection: ContractAddress,
-    allowed: bool,
 }
 
 #[dojo::event]
@@ -79,25 +52,6 @@ struct PVEBlobertInfo {
     name: ByteArray,
     collection: ContractAddress,
     attributes: TokenAttributes,
-}
-
-#[dojo::model]
-#[derive(Drop, Serde)]
-struct PVEGame {
-    #[key]
-    id: felt252,
-    combatant_id: felt252,
-    player: ContractAddress,
-    opponent_token: felt252,
-    opponent_id: felt252,
-    round: u32,
-    phase: PVEPhase,
-}
-
-#[derive(Drop, Serde, Introspect)]
-struct PVEGameCombatantPhase {
-    combatant_id: felt252,
-    phase: PVEPhase,
 }
 
 #[dojo::model]
@@ -128,6 +82,34 @@ struct PVEStageOpponent {
 
 #[dojo::model]
 #[derive(Drop, Serde)]
+struct PVECollectionAllowed {
+    #[key]
+    id: felt252,
+    #[key]
+    collection: ContractAddress,
+    allowed: bool,
+}
+
+////////////////////
+
+/// Instance of combat against PVEOpponent
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct PVEGame {
+    #[key]
+    id: felt252,
+    combatant_id: felt252,
+    player: ContractAddress,
+    opponent_token: felt252,
+    opponent_id: felt252,
+    round: u32,
+    phase: PVEPhase,
+}
+
+
+/// Instance of challenge of PVEChallenge
+#[dojo::model]
+#[derive(Drop, Serde)]
 struct PVEChallengeAttempt {
     #[key]
     id: felt252,
@@ -138,6 +120,17 @@ struct PVEChallengeAttempt {
     stage: u32,
     respawns: u32,
     phase: PVEPhase,
+}
+
+// Instance of PVEStageOpponent
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct PVEStageGame {
+    #[key]
+    attempt_id: felt252,
+    #[key]
+    stage: u32,
+    game_id: felt252,
 }
 
 #[dojo::event]
@@ -151,6 +144,7 @@ struct PVEChallengeRespawn {
     game_id: felt252,
 }
 
+
 #[derive(Drop, Serde, Introspect)]
 struct PVEEndAttemptSchema {
     challenge: felt252,
@@ -160,14 +154,20 @@ struct PVEEndAttemptSchema {
 }
 
 
-#[dojo::model]
 #[derive(Drop, Serde)]
-struct PVEStageGame {
-    #[key]
-    attempt_id: felt252,
-    #[key]
-    stage: u32,
-    game_id: felt252,
+struct PVEOpponentInput {
+    name: ByteArray,
+    collection: ContractAddress,
+    attributes: TokenAttributes,
+    stats: UStats,
+    attacks: Array<IdTagNew<AttackInput>>,
+    collections_allowed: Array<ContractAddress>,
+}
+
+#[derive(Drop, Serde, Introspect)]
+struct PVEGameCombatantPhase {
+    combatant_id: felt252,
+    phase: PVEPhase,
 }
 
 #[derive(Drop)]
@@ -176,6 +176,15 @@ struct PVEStore {
     pve: WorldStorage,
 }
 
+
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct PVEFreeGames {
+    #[key]
+    player: ContractAddress,
+    games: u32,
+    last_claim: u64,
+}
 
 #[generate_trait]
 impl PVEStorageImpl of PVEStorage {
