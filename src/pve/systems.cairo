@@ -302,6 +302,7 @@ impl PVEImpl of PVETrait {
             .get_token_stats_and_attacks(
                 player_collection_address, player_token_id, player_attacks,
             );
+        self.ba.set_combatant_token(id, player_collection_address, player_token_id);
         let attempt = self.pve.new_pve_challenge_attempt(id, challenge_id, player, stats, attacks);
 
         self.create_pve_challenge_attempt_round(attempt, stats.get_max_health());

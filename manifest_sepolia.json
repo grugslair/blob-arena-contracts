@@ -4376,7 +4376,7 @@
     },
     {
       "address": "0x536607c00e40b82600da5bc79eb91f5b9da517ab203e6100175f827281e0f5",
-      "class_hash": "0x4791672878c92dab145576351fc97a97bf45e6ea58a0653b9264d33571e06be",
+      "class_hash": "0x4ff8f18f294368b0c11679db403127d16526fb4eccc077fdbc9a83bbd8f6e19",
       "abi": [
         {
           "type": "impl",
@@ -5484,6 +5484,12 @@
       "class_hash": "0x2ace52ef425b8121ffaef3b0ece54c893bff217472fa329a3d5c3ec3a22b702",
       "tag": "blobert-BlobertItem",
       "selector": "0x1eb8dc949a0848de6ecda53d9fe49124136424ee308527fd8274b54616211c5"
+    },
+    {
+      "members": [],
+      "class_hash": "0x236180cf3ffb36d629a8508629a234ad95169bd7537aa2ec697a068e31e629d",
+      "tag": "pve_blobert-CombatantToken",
+      "selector": "0x203171ce1131d5ff669d8eabf8461ee9430a471db8e71b9c46ea1eb6c774b69"
     },
     {
       "members": [],

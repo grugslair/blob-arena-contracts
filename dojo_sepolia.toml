@@ -14,6 +14,7 @@ keystore_path = "/home/ben/sn-accounts/0x058e3b49d870f08c96a02f794c82b5f6c868c07
 [namespace]
 default = "blob_arena"
 mappings = { "blob_arena" = [
+    "CombatantToken",
     "Tag",
 ], "blobert" = [
     "blobert_actions",
@@ -34,6 +35,7 @@ mappings = { "blob_arena" = [
     "pve_blobert_actions",
     "pve_blobert_admin_actions",
     "Tag",
+    "CombatantToken",
     "PVEOpponent",
     "PVECollectionAllowed",
     "PVEBlobertInfo",
@@ -122,6 +124,7 @@ mappings = { "blob_arena" = [
 "pve_blobert-PVEFreeGames" = ["pve_blobert-pve_blobert_actions"]
 "pve_blobert-PVEPaidGames" = ["pve_blobert-pve_blobert_actions"]
 "pve_blobert-PVEChallengeRespawn" = ["pve_blobert-pve_blobert_actions"]
+"pve_blobert-CombatantToken" = ["pve_blobert-pve_blobert_actions"]
 
 "blobert" = ["blobert-blobert_actions"]
 "arcade_blobert" = ["arcade_blobert-arcade_blobert_actions"]
