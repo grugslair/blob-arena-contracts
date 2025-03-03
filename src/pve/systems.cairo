@@ -375,15 +375,17 @@ impl PVEImpl of PVETrait {
 
 
     fn use_free_game(ref self: WorldStorage, player: ContractAddress) -> bool {
-        let games = self.get_number_free_games(player);
+        let games = self.get_number_of_free_games(player);
         let available = games > 0;
         if available {
-            self.set_number_free_games(player, games - 1);
+            self.set_number_of_free_games(player, games - 1);
         };
         available
     }
     fn use_paid_game(ref self: WorldStorage, player: ContractAddress) {
-        panic!("Paid games not implemented");
+        let games = self.get_number_of_paid_games(player);
+        assert(games > 0, 'No paid games');
+        self.set_number_of_paid_games(player, games - 1);
     }
 
     fn mint_free_game(ref self: WorldStorage, player: ContractAddress) {

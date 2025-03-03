@@ -42,6 +42,7 @@ mappings = { "blob_arena" = [
     "PVEStageOpponent",
     "PVEGame",
     "PVEFreeGames",
+    "PVEPaidGames",
     "PVEChallengeAttempt",
     "PVEStageGame",
     "PVEChallengeRespawn",
@@ -119,6 +120,7 @@ mappings = { "blob_arena" = [
 "pve_blobert-PVEStageGame" = ["pve_blobert-pve_blobert_actions"]
 "pve_blobert-PVEGame" = ["pve_blobert-pve_blobert_actions"]
 "pve_blobert-PVEFreeGames" = ["pve_blobert-pve_blobert_actions"]
+"pve_blobert-PVEPaidGames" = ["pve_blobert-pve_blobert_actions"]
 "pve_blobert-PVEChallengeRespawn" = ["pve_blobert-pve_blobert_actions"]
 
 "blobert" = ["blobert-blobert_actions"]
