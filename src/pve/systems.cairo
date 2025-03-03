@@ -344,7 +344,6 @@ impl PVEImpl of PVETrait {
         let game_id = self.pve.get_pve_stage_game_id(attempt.id, attempt.stage);
         let phase = self.pve.get_pve_game_phase(game_id);
 
-        assert(attempt.respawns.is_zero(), 'No more respawns');
         assert(phase == PVEPhase::PlayerLost, 'Player not lost round');
         attempt.respawns += 1;
 

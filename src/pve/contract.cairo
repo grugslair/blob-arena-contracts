@@ -120,15 +120,13 @@ mod pve_blobert_actions {
         }
         fn next_challenge_round(ref self: ContractState, attempt_id: felt252) {
             let mut store = self.get_storage();
-            let attempt = store.pve.get_pve_players_challenge_attempt(attempt_id);
-            store.next_pve_challenge_round(attempt);
+            store.next_pve_challenge_round(store.pve.get_pve_players_challenge_attempt(attempt_id));
         }
         fn respawn_challenge(ref self: ContractState, attempt_id: felt252) {
             let mut store = self.get_storage();
-            store
-                .respawn_pve_challenge_attempt(
-                    store.pve.get_pve_players_challenge_attempt(attempt_id),
-                );
+            let attempt = store.pve.get_pve_players_challenge_attempt(attempt_id);
+            store.pve.use_game(attempt.player);
+            store.respawn_pve_challenge_attempt(attempt);
         }
         fn end_challenge(ref self: ContractState, attempt_id: felt252) {
             let mut store = self.get_pve_storage();
