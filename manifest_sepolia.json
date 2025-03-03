@@ -4376,7 +4376,7 @@
     },
     {
       "address": "0x536607c00e40b82600da5bc79eb91f5b9da517ab203e6100175f827281e0f5",
-      "class_hash": "0x189ae5f127dd78c9ac86f5dfce9bb31c95ab510194f44c1f84bf5db688be49d",
+      "class_hash": "0x270c64925615785797505db3f9360f45b6ebbc203e95785233f9422ab5f29f0",
       "abi": [
         {
           "type": "impl",
@@ -4695,7 +4695,7 @@
     },
     {
       "address": "0x344f93399dcf988725f3f8847085e499b5d757fac017105a8334736f1578e94",
-      "class_hash": "0x1a94138d44872ccb9b72181a85a7c5481b7774afec5e2576f2ca37777bde3db",
+      "class_hash": "0x61d6b1d0ff9eac2396396f1d3dd57626de184a5c193c3e9f3195af2e51389c3",
       "abi": [
         {
           "type": "impl",
@@ -5203,6 +5203,22 @@
               ],
               "outputs": [],
               "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "mint_paid_games",
+              "inputs": [
+                {
+                  "name": "player",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
             }
           ]
         },
@@ -5331,6 +5347,7 @@
         "set_collections",
         "set_ids_collection",
         "mint_free_games",
+        "mint_paid_games",
         "upgrade"
       ]
     }
@@ -5503,6 +5520,12 @@
       "class_hash": "0x1bfc3aaa57b9f0efb4c9fe33c32d57b3fece49f0c52808d95932497d7c16c39",
       "tag": "pve_blobert-PVEOpponent",
       "selector": "0x26bf21d2b3dcccdf754886f999d848881c6ac3684dbf6eab2e4c62879cc9201"
+    },
+    {
+      "members": [],
+      "class_hash": "0x3b3fb1daedd56769c179cc3ab1942138b2662544f654c4e330a551c0413660d",
+      "tag": "pve_blobert-PVEPaidGames",
+      "selector": "0x5c60db0a6ed2d52681914bebee61173d6ca073af75f94278d3084a0598a247a"
     },
     {
       "members": [],
