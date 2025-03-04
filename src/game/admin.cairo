@@ -1,6 +1,42 @@
 use starknet::ContractAddress;
 
 
+/// Interface for administrating the game.
+///
+/// # Interface Functions
+///
+/// * `create` - Creates a new game instance with specified parameters
+///   * `owner` - The owner of the game instance
+///   * `initiator` - The address that initiates the game creation (tournament or betting contract)
+///   * `time_limit` - Time limit for player inactivity in the game
+///   * `player_a` - Address of first player
+///   * `collection_address_a` - NFT collection address for first player
+///   * `token_id_a` - Token ID of first player's NFT
+///   * `attacks_a` - Array of attack tuples for first player
+///   * `player_b` - Address of second player
+///   * `collection_address_b` - NFT collection address for second player
+///   * `token_id_b` - Token ID of second player's NFT
+///   * `attacks_b` - Array of attack tuples for second player
+///   * Returns the game ID as felt252
+///
+/// * `set_is_admin` - Sets admin status for a user
+///   * `user` - Address to set admin status for
+///   * `has` - Boolean indicating if user should have admin status
+///
+/// * `set_is_creator` - Sets creator status for a user
+///   * `user` - Address to set creator status for
+///   * `has` - Boolean indicating if user should have creator status
+///
+/// * `get_is_admin` - Checks if a user has admin status
+///   * `user` - Address to check
+///   * Returns boolean indicating admin status
+///
+/// * `get_is_creator` - Checks if a user has creator status
+///   * `user` - Address to check
+///   * Returns boolean indicating creator status
+///
+/// * `get_world_address` - Gets the address of the world contract
+///   * Returns the ContractAddress of the world contract
 #[starknet::interface]
 trait IGameAdmin<TContractState> {
     fn create(
