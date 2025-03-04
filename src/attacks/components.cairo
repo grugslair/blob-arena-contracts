@@ -77,6 +77,17 @@ struct AttackName {
     name: ByteArray,
 }
 
+/// A component representing an attack in the game.
+///
+/// # Attributes
+///
+/// * `id` - A unique identifier for the attack.
+/// * `speed` - The speed of the attack, represented as a value between 0 and 255.
+/// * `accuracy` - The likelihood of the attack hitting its target, represented as a value between 0
+/// and 100.
+/// * `cooldown` - The number of turns required before the attack can be used again.
+/// * `hit` - An array of effects that are applied when the attack successfully hits.
+/// * `miss` - An array of effects that are applied when the attack misses.
 #[dojo::model]
 #[derive(Drop, Serde, Default)]
 struct Attack {
@@ -97,6 +108,15 @@ struct AttackExists {
 }
 
 
+/// A component that tracks whether a specific attack is available for a combatant.
+/// The attack_id represents the unique identifier for an attack ability.
+/// If available is true, the attack can be used by the combatant.
+///
+/// # Arguments
+///
+/// * `combatant_id` - The unique identifier of the combatant
+/// * `attack_id` - The unique identifier of the attack
+/// * `available` - Boolean indicating if the attack is available for use
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct AttackAvailable {
@@ -107,6 +127,15 @@ struct AttackAvailable {
     available: bool,
 }
 
+/// A component that tracks when a specific attack was last used by a combatant.
+/// The attack_id represents the unique identifier for an attack ability.
+/// The last_used timestamp helps enforce cooldown periods between attack uses.
+///
+/// # Arguments
+///
+/// * `combatant_id` - The unique identifier of the combatant
+/// * `attack_id` - The unique identifier of the attack
+/// * `last_used` - Timestamp of when the attack was last used
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct AttackLastUsed {
@@ -118,6 +147,11 @@ struct AttackLastUsed {
 }
 
 
+/// Represents a planned attack in the combat system
+/// * `combatant_id` - The unique identifier of the attacking combatant
+/// * `attack_id` - The identifier of the attack type being used
+/// * `target` - The identifier of the target being attacked
+/// * `salt` - A random value used to prevent attack prediction and used for the random seed
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
 struct PlannedAttack {
