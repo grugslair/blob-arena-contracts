@@ -34,21 +34,26 @@ const getContract = async (provider, contractAddress) => {
   return new Contract(abi, contractAddress, provider);
 };
 
+const profile = process.argv[2];
+
 const seed_data = loadJson("./seed-attributes.json");
 const custom_data = loadJson("./custom-attributes.json");
 const amma_data = loadJson("./amma-attributes.json");
 const pve_data = loadJson("./pve.json");
-const manifest = loadJson(`../manifest_${process.argv[2]}.json`);
+const role_data = loadJson("./roles.json")[profile];
+const manifest = loadJson(`../manifest_${profile}.json`);
 
 const blobertContractTag = "blobert-blobert_actions";
 const arcadeBlobertContractTag = "arcade_blobert-arcade_blobert_actions";
 const ammaBlobertContractTag = "amma_blobert-amma_blobert_actions";
 const pveBlobertContractTag = "pve_blobert-pve_blobert_admin_actions";
+const gameAdminContractTag = "blob_arena-game_admin";
 
 const seedEntrypoint = "set_seed_item_with_attacks";
 const customEntrypoint = "set_custom_item_with_attacks";
 const pveOpponentEntrypoint = "new_opponent";
 const pveChallengeEntrypoint = "new_challenge";
+const setPermissionsEntrypoint = "set_multiple_has_role";
 
 const provider = new RpcProvider({ nodeUrl: process.env.STARKNET_RPC_URL });
 const account1Address = process.env.DOJO_ACCOUNT_ADDRESS;
@@ -68,6 +73,10 @@ const pveBlobertContractAddress = getContractAddress(
   manifest,
   pveBlobertContractTag
 );
+const gameAdminContractAddress = getContractAddress(
+  manifest,
+  gameAdminContractTag
+);
 
 const blobertContract = await getContract(provider, blobertContractAddress);
 const ammaBlobertContract = await getContract(
@@ -78,6 +87,7 @@ const pveBlobertContract = await getContract(
   provider,
   pveBlobertContractAddress
 );
+const gameAdminContract = await getContract(provider, gameAdminContractAddress);
 
 const PVECollectionAddresses = {
   blobert: blobertContractAddress,
@@ -272,6 +282,17 @@ const makeCall = (contract, entrypoint, calldata) => {
 };
 
 let calls = [];
+for (const [role, users] of Object.entries(role_data)) {
+  calls.push([
+    `role: ${role}`,
+    makeCall(gameAdminContract, setPermissionsEntrypoint, {
+      users,
+      role: new CairoCustomEnum({ [role]: {} }),
+      has: true,
+    }),
+  ]);
+}
+
 for (const [trait, traits] of Object.entries(seed_data)) {
   for (const [n, item] of Object.entries(traits)) {
     calls.push([

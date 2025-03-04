@@ -31,10 +31,10 @@ mod blobert_actions {
 
     mod permissioned_storage {
         use super::{DefaultStorage, ContractState, WorldStorage};
-        use blob_arena::{permissions::GamePermissions, world::get_default_storage};
+        use blob_arena::{permissions::{Permissions, Role}, world::get_default_storage};
         impl DefaultStorageImpl of DefaultStorage<ContractState> {
             fn default_storage(self: @ContractState) -> WorldStorage {
-                get_default_storage().assert_caller_is_admin();
+                get_default_storage().assert_caller_has_permission(Role::BlobertAdmin);
                 super::DefaultStorageImpl::default_storage(self)
             }
         }

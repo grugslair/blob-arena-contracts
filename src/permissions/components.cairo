@@ -1,99 +1,72 @@
 use starknet::ContractAddress;
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}};
-use blob_arena::core::{Felt252TryIntoBoolImpl};
+use blob_arena::world::WorldTrait;
 
-mod models {
-    use starknet::ContractAddress;
-    /// Represents permission settings for a resource and requester
-    ///
-    /// # Arguments
-    /// * `resource` - The identifier of the resource being accessed
-    /// * `requester` - The address of the entity requesting access
-    /// * `permissions` - The permission flags stored as a felt252
-    #[dojo::model]
-    #[derive(Drop, Serde)]
-    struct Permission {
-        #[key]
-        resource: felt252,
-        #[key]
-        requester: ContractAddress,
-        permission: felt252,
-    }
+#[derive(Drop, Copy, Serde, PartialEq, Introspect)]
+enum Role {
+    Admin,
+    AmmaAdmin,
+    BlobertAdmin,
+    Creator,
+    PaidMinter,
+    FreeMinter,
 }
 
-#[derive(Drop)]
-struct Permission<P> {
-    resource: felt252,
-    requester: ContractAddress,
-    permission: P,
-}
-
-impl PermissionIntoModel<P, +Into<P, felt252>> of Into<Permission<P>, PermissionModel> {
-    fn into(self: Permission<P>) -> PermissionModel {
-        PermissionModel {
-            resource: self.resource, requester: self.requester, permission: self.permission.into(),
+impl RoleIntoByteArrayImpl of Into<Role, ByteArray> {
+    fn into(self: Role) -> ByteArray {
+        match self {
+            Role::Admin => "admin",
+            Role::AmmaAdmin => "amma admin",
+            Role::BlobertAdmin => "Blobert admin",
+            Role::Creator => "creator",
+            Role::PaidMinter => "paid minter",
+            Role::FreeMinter => "free minter",
         }
     }
 }
 
-use models::Permission as PermissionModel;
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct Permission {
+    #[key]
+    requester: ContractAddress,
+    #[key]
+    role: Role,
+    has: bool,
+}
 
-/// Trait for reading permissions from storage
-///
-/// Generic parameter P represents the permission type that will be returned
-trait PermissionStorage<P> {
-    /// Retrieves permissions for a given resource and requester
-    ///
-    /// # Arguments
-    /// * `resource` - The identifier of the resource
-    /// * `requester` - The address requesting access
-    ///
-    /// # Returns
-    /// * The permissions of type P for the given resource and requester
-    fn get_permission(self: @WorldStorage, resource: felt252, requester: ContractAddress) -> P;
-    /// Sets permissions for a given resource and requester
-    ///
-    /// # Arguments
-    /// * `resource` - The identifier of the resource
-    /// * `requester` - The address requesting access
-    /// * `permissions` - The permissions to set
-    fn set_permission(
-        ref self: WorldStorage, resource: felt252, requester: ContractAddress, permission: P,
-    );
-
-    fn set_permissions(ref self: WorldStorage, permissions: Array<Permission<P>>);
+trait PermissionStorage {
+    fn get_permissions_storage(self: @WorldStorage) -> WorldStorage;
+    fn get_permission(self: @WorldStorage, requester: ContractAddress, role: Role) -> bool;
+    fn set_permission(ref self: WorldStorage, requester: ContractAddress, role: Role, has: bool);
+    fn set_permissions(ref self: WorldStorage, permissions: Array<Permission>);
 }
 
 /// Implementation of the Permissions trait
 ///
 /// Requires that P can be converted from felt252
-impl PermissionImpl<P, +Into<P, felt252>, +TryInto<felt252, P>, +Drop<P>> of PermissionStorage<P> {
-    fn get_permission(self: @WorldStorage, resource: felt252, requester: ContractAddress) -> P {
-        self
-            .read_member::<
-                felt252,
-            >(
-                Model::<PermissionModel>::ptr_from_keys((resource, requester)),
-                selector!("permission"),
-            )
-            .try_into()
-            .unwrap()
+impl PermissionImpl of PermissionStorage {
+    fn get_permissions_storage(self: @WorldStorage) -> WorldStorage {
+        self.new_storage(bytearray_hash!("ba_permissions"))
     }
 
-    fn set_permission(
-        ref self: WorldStorage, resource: felt252, requester: ContractAddress, permission: P,
-    ) {
+    fn get_permission(self: @WorldStorage, requester: ContractAddress, role: Role) -> bool {
         self
-            .write_model(
-                @PermissionModel { resource: resource, requester, permission: permission.into() },
-            )
+            .get_permissions_storage()
+            .read_member(Model::<Permission>::ptr_from_keys((requester, role)), selector!("has"))
     }
 
-    fn set_permissions(ref self: WorldStorage, permissions: Array<Permission<P>>) {
-        let mut array = ArrayTrait::<@PermissionModel>::new();
+    fn set_permission(ref self: WorldStorage, requester: ContractAddress, role: Role, has: bool) {
+        let mut storage = self.get_permissions_storage();
+        storage.write_model(@Permission { requester, role, has })
+    }
+
+    fn set_permissions(ref self: WorldStorage, permissions: Array<Permission>) {
+        let mut array = ArrayTrait::<@Permission>::new();
         for permission in permissions {
-            array.append(@permission.into());
+            array.append(@permission);
         };
-        self.write_models(array.span());
+        let mut storage = self.get_permissions_storage();
+        storage.write_models(array.span());
     }
 }
