@@ -1,42 +1,47 @@
 use starknet::ContractAddress;
 use blob_arena::permissions::Role;
 
-/// Interface for administrating the game.
+/// Admin interface for managing game states and roles
 ///
 /// # Interface Functions
 ///
-/// * `create` - Creates a new game instance with specified parameters
-///   * `owner` - The owner of the game instance
-///   * `initiator` - The address that initiates the game creation (tournament or betting contract)
-///   * `time_limit` - Time limit for player inactivity in the game
-///   * `player_a` - Address of first player
-///   * `collection_address_a` - NFT collection address for first player
-///   * `token_id_a` - Token ID of first player's NFT
-///   * `attacks_a` - Array of attack tuples for first player
-///   * `player_b` - Address of second player
-///   * `collection_address_b` - NFT collection address for second player
-///   * `token_id_b` - Token ID of second player's NFT
-///   * `attacks_b` - Array of attack tuples for second player
-///   * Returns the game ID as felt252
+/// ## create
+/// Creates a new game instance with specified parameters
+/// * `owner` - The owner of the game instance
+/// * `initiator` - The address that initiates the game
+/// * `time_limit` - Time limit for the game in seconds
+/// * `player_a` - Address of the first player
+/// * `collection_address_a` - NFT collection address for player A's blob
+/// * `token_id_a` - Token ID of player A's blob
+/// * `attacks_a` - Array of attack moves for player A as (felt252, felt252) tuples
+/// * `player_b` - Address of the second player
+/// * `collection_address_b` - NFT collection address for player B's blob
+/// * `token_id_b` - Token ID of player B's blob
+/// * `attacks_b` - Array of attack moves for player B as (felt252, felt252) tuples
+/// * Returns: A felt252 representing the game ID
 ///
-/// * `set_is_admin` - Sets admin status for a user
-///   * `user` - Address to set admin status for
-///   * `has` - Boolean indicating if user should have admin status
+/// ## set_has_role
+/// Sets a role for a specific user
+/// * `user` - Address of the user
+/// * `role` - Role to be assigned
+/// * `has` - Boolean indicating if the user should have the role
 ///
-/// * `set_is_creator` - Sets creator status for a user
-///   * `user` - Address to set creator status for
-///   * `has` - Boolean indicating if user should have creator status
+/// ## get_has_role
+/// Checks if a user has a specific role
+/// * `user` - Address of the user to check
+/// * `role` - Role to check for
+/// * Returns: Boolean indicating if the user has the role
 ///
-/// * `get_is_admin` - Checks if a user has admin status
-///   * `user` - Address to check
-///   * Returns boolean indicating admin status
+/// ## set_multiple_has_role
+/// Batch sets roles for multiple users
+/// * `users` - Array of user addresses
+/// * `role` - Role to be assigned
+/// * `has` - Boolean indicating if the users should have the role
 ///
-/// * `get_is_creator` - Checks if a user has creator status
-///   * `user` - Address to check
-///   * Returns boolean indicating creator status
-///
-/// * `get_world_address` - Gets the address of the world contract
-///   * Returns the ContractAddress of the world contract
+/// ## get_world_address
+/// Gets the address of the world contract
+/// * Returns: ContractAddress of the world contract
+
 #[starknet::interface]
 trait IGameAdmin<TContractState> {
     fn create(

@@ -1,5 +1,30 @@
 use starknet::ContractAddress;
 
+/// Interface trait for the Game contract, which manages combat-based gameplay mechanics.
+///
+/// # Interface Functions
+///
+/// * `start` - Initiates a new game with the specified game ID.
+/// * `commit` - Allows a player to commit their move hash for a combat round.
+/// * `reveal` - Reveals a player's previously committed move along with the salt used for hashing.
+/// * `run` - Executes a combat round for the specified combat ID.
+/// * `kick_player` - Removes an inactive player from the combat.
+/// * `forfeit` - Allows a player to voluntarily forfeit their position in the combat.
+/// * `get_winning_player` - Retrieves the address of the winning player for a specific combat.
+///
+/// # Arguments
+///
+/// * `TContractState` - The contract state type parameter used across all interface functions.
+/// * `game_id` - Unique identifier for a game session.
+/// * `combatant_id` - Unique identifier for a player in combat.
+/// * `hash` - Hashed combination of a player's move and salt.
+/// * `attack` - The revealed attack move value.
+/// * `salt` - Random value used in the commit-reveal scheme.
+/// * `combat_id` - Unique identifier for a specific combat instance.
+///
+/// This interface implements a commit-reveal pattern for fair gameplay,
+/// where players first commit their moves (hashed) and later reveal them
+/// to prevent front-running and ensure fairness.
 #[starknet::interface]
 trait IGame<TContractState> {
     fn start(ref self: TContractState, game_id: felt252);
