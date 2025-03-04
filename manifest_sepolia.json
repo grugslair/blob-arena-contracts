@@ -1,9 +1,9 @@
 {
   "world": {
-    "class_hash": "0x4b767fda48530353c2e44e4b9433f4d75c6c9974aaff43ecc00de9455eb71b8",
-    "address": "0x72f8cb944af683279bebe11c315680088259e4c62b49fadbcb5c82e838ec6e8",
-    "seed": "blob-arena-0.11.5",
-    "name": "blob_arena-0.11.5",
+    "class_hash": "0x7c9469d45a9cdbab775035afb48e1fa73fb35ab059fcb9dfb0a301aa973e783",
+    "address": "0x284165b82dd7d2544af429ad950998722599f82a5336d1a48adf9871095e07b",
+    "seed": "blob-arena-0.11.10",
+    "name": "blob_arena-0.11.10",
     "entrypoints": [
       "uuid",
       "set_metadata",
@@ -11,6 +11,7 @@
       "register_event",
       "register_model",
       "register_contract",
+      "register_library",
       "init_contract",
       "upgrade_event",
       "upgrade_model",
@@ -78,6 +79,10 @@
           {
             "name": "Unregistered",
             "type": "()"
+          },
+          {
+            "name": "Library",
+            "type": "(core::starknet::class_hash::ClassHash, core::felt252)"
           }
         ]
       },
@@ -358,6 +363,34 @@
             "outputs": [
               {
                 "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "register_library",
+            "inputs": [
+              {
+                "name": "namespace",
+                "type": "core::byte_array::ByteArray"
+              },
+              {
+                "name": "class_hash",
+                "type": "core::starknet::class_hash::ClassHash"
+              },
+              {
+                "name": "name",
+                "type": "core::byte_array::ByteArray"
+              },
+              {
+                "name": "version",
+                "type": "core::byte_array::ByteArray"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::starknet::class_hash::ClassHash"
               }
             ],
             "state_mutability": "external"
@@ -967,6 +1000,28 @@
       },
       {
         "type": "event",
+        "name": "dojo::world::world_contract::world::LibraryRegistered",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "name",
+            "type": "core::byte_array::ByteArray",
+            "kind": "key"
+          },
+          {
+            "name": "namespace",
+            "type": "core::byte_array::ByteArray",
+            "kind": "key"
+          },
+          {
+            "name": "class_hash",
+            "type": "core::starknet::class_hash::ClassHash",
+            "kind": "data"
+          }
+        ]
+      },
+      {
+        "type": "event",
         "name": "dojo::world::world_contract::world::EventEmitted",
         "kind": "struct",
         "members": [
@@ -1207,6 +1262,11 @@
             "kind": "nested"
           },
           {
+            "name": "LibraryRegistered",
+            "type": "dojo::world::world_contract::world::LibraryRegistered",
+            "kind": "nested"
+          },
+          {
             "name": "EventEmitted",
             "type": "dojo::world::world_contract::world::EventEmitted",
             "kind": "nested"
@@ -1252,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0xc0f71220f5efc1e2363cf02a713927d2a4744051b37b77e76847531b03a0b",
-      "class_hash": "0x7b8849b3ec19178997eca150b13d9785aae2b77325f0cf0c57fbde6ba238fd1",
+      "address": "0x3c825b1f233e872dcc49df6d2cde7ebd93cdddc05a4a105869a7668171750e1",
+      "class_hash": "0x36e41f910a3861e69f721241d424ff2c87bde9f4960014245a8ef277336a19e",
       "abi": [
         {
           "type": "impl",
@@ -2156,7 +2216,7 @@
       ]
     },
     {
-      "address": "0x302479a8a77a3616da7e367d7738472729a95330818bc39ef89c59a40a0b0c1",
+      "address": "0x6ad932bb7607bffdf8d40846f5764c0bf72572b0ed6d40bddfaa2e235d53fe4",
       "class_hash": "0x5be639d6649d0b69a2c01b9578f8ee6ba096334f3cfb26bada3de37eda44fe6",
       "abi": [
         {
@@ -2584,7 +2644,7 @@
       ]
     },
     {
-      "address": "0x75cf7717957216e854731d0f61bd22b7c4dfb84bd4f990d823e81ef9a28f30f",
+      "address": "0x6e42081852913ca2264e80663b06be0f6ae17734f5efc3b4027eb81a74970dc",
       "class_hash": "0x231e0ab5845d2e0b36f0dd28c43ce7bd680f209cb8317f40260ad61886c7628",
       "abi": [
         {
@@ -2877,8 +2937,8 @@
       ]
     },
     {
-      "address": "0x23f125430b693b68534e954befe74e79d154a8ebd1ace084f57a7108d86c55d",
-      "class_hash": "0x6ebeb0908deb3faba43f7b15a22d92a5664db61d27a4203dcce897011ca436",
+      "address": "0x683c1db361f2b10064304094a670f943de210ad38c6d333aa143148bf710b04",
+      "class_hash": "0x1080cc2ddb292d1b7b31a030f280558068a87f1318fdb61244826d8d9bbc2c9",
       "abi": [
         {
           "type": "impl",
@@ -2958,6 +3018,36 @@
         },
         {
           "type": "enum",
+          "name": "blob_arena::permissions::components::Role",
+          "variants": [
+            {
+              "name": "Admin",
+              "type": "()"
+            },
+            {
+              "name": "AmmaAdmin",
+              "type": "()"
+            },
+            {
+              "name": "BlobertAdmin",
+              "type": "()"
+            },
+            {
+              "name": "Creator",
+              "type": "()"
+            },
+            {
+              "name": "PaidMinter",
+              "type": "()"
+            },
+            {
+              "name": "FreeMinter",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
           "name": "core::bool",
           "variants": [
             {
@@ -3032,11 +3122,15 @@
             },
             {
               "type": "function",
-              "name": "set_is_admin",
+              "name": "set_has_role",
               "inputs": [
                 {
                   "name": "user",
                   "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "role",
+                  "type": "blob_arena::permissions::components::Role"
                 },
                 {
                   "name": "has",
@@ -3048,11 +3142,35 @@
             },
             {
               "type": "function",
-              "name": "set_is_creator",
+              "name": "get_has_role",
               "inputs": [
                 {
                   "name": "user",
                   "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "role",
+                  "type": "blob_arena::permissions::components::Role"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "set_multiple_has_role",
+              "inputs": [
+                {
+                  "name": "users",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                },
+                {
+                  "name": "role",
+                  "type": "blob_arena::permissions::components::Role"
                 },
                 {
                   "name": "has",
@@ -3061,38 +3179,6 @@
               ],
               "outputs": [],
               "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "get_is_admin",
-              "inputs": [
-                {
-                  "name": "user",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::bool"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "get_is_creator",
-              "inputs": [
-                {
-                  "name": "user",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::bool"
-                }
-              ],
-              "state_mutability": "view"
             },
             {
               "type": "function",
@@ -3221,13 +3307,13 @@
       "systems": [
         "dojo_init",
         "create",
-        "set_is_admin",
-        "set_is_creator",
+        "set_has_role",
+        "set_multiple_has_role",
         "upgrade"
       ]
     },
     {
-      "address": "0x11d04b598ae88c46409c7ebcca60356fe986c9525ed8a842d706ce1e28cf9e7",
+      "address": "0x477730b78f1bee9e3e310a3c62b9b8186bf5f19324b000b5d3babfeae81a3b7",
       "class_hash": "0x95452c55c03a1d1fe6c3c3e7b1f1bd6122975fdd63cd55097ae3b9b038535b",
       "abi": [
         {
@@ -3555,8 +3641,8 @@
       ]
     },
     {
-      "address": "0x6203414167fcdb27e89f50e87dea83528b6e2040bc3c52fe0592c647ebdde33",
-      "class_hash": "0x59c8e1eb5e854b60ded859f8f53c6dcbb4376b8384b1bcae2e206b3d2de9fb0",
+      "address": "0x5f6cd2d32fa925022cdcc6a3e1361c86c0db6fb32fdc621627ed2a7f89c6209",
+      "class_hash": "0x4aae4a8b5df00f279f73010238c528d84cf4603f9bb64f3fae697be38ad8bd3",
       "abi": [
         {
           "type": "impl",
@@ -4375,7 +4461,7 @@
       ]
     },
     {
-      "address": "0x536607c00e40b82600da5bc79eb91f5b9da517ab203e6100175f827281e0f5",
+      "address": "0x8f7e2f748006c2cf95d8dcd14495e46100fa4d11a2b8772a7bd02bb8fa69b4",
       "class_hash": "0x4ff8f18f294368b0c11679db403127d16526fb4eccc077fdbc9a83bbd8f6e19",
       "abi": [
         {
@@ -4694,8 +4780,8 @@
       ]
     },
     {
-      "address": "0x344f93399dcf988725f3f8847085e499b5d757fac017105a8334736f1578e94",
-      "class_hash": "0x61d6b1d0ff9eac2396396f1d3dd57626de184a5c193c3e9f3195af2e51389c3",
+      "address": "0x16cc9a0aa4130fb01d6fd09d62a408cee92950024018cd84d16230a0eae8b70",
+      "class_hash": "0x3d1a4c1e8b6838a9e13239db96b39c641ef1e844da972f16b7369f6ebde7872",
       "abi": [
         {
           "type": "impl",
@@ -5352,6 +5438,7 @@
       ]
     }
   ],
+  "libraries": [],
   "models": [
     {
       "members": [],
@@ -5382,6 +5469,12 @@
       "class_hash": "0x4863dfe20d362fdee19801571be8d96e85472c500cec75b0bda8c91da606235",
       "tag": "arcade_blobert-LastMint",
       "selector": "0x3d90acaacd293b21babacc85ca4b644529f4e9412c51e0475810b9fa8212765"
+    },
+    {
+      "members": [],
+      "class_hash": "0x1b310715086c9b91a3a1e489a95334436fca933c44e61a4cc9f9f65d64a3d55",
+      "tag": "ba_permissions-Permission",
+      "selector": "0x6aa131be59e940caa3e7d320c269ef4762f993a310327ccf3b3e03f6451aa44"
     },
     {
       "members": [],
@@ -5454,12 +5547,6 @@
       "class_hash": "0x881213157f2197b233aa2d69bcc1c14f6a1a30f826559d4c3db7c0460f8e58",
       "tag": "blob_arena-Lobby",
       "selector": "0x763708ae2ba0f13fd2ef5edd26eb8a882334125d42785002138561d025b8794"
-    },
-    {
-      "members": [],
-      "class_hash": "0xb6f10631d01b0f213935160307fd7c99e921f99f452f271a1239d29e9da00",
-      "tag": "blob_arena-Permission",
-      "selector": "0x615bc7eb0310cf08678fe3c908720f4e0d9f0b5d3f5d4a19ee51abdf0a310e2"
     },
     {
       "members": [],
@@ -5607,5 +5694,6 @@
       "tag": "pve_blobert-PVEChallengeRespawn",
       "selector": "0x23468028bbea0359c31d8e55b7737b8280d368993a668779fa2d73b4788c712"
     }
-  ]
+  ],
+  "external_contracts": []
 }

@@ -41,7 +41,7 @@ mod pve_blobert_admin_actions {
     use starknet::{ContractAddress, get_caller_address};
     use dojo::world::WorldStorage;
     use blob_arena::{
-        attacks::{AttackInput, AttackTrait}, permissions::GamePermissions,
+        attacks::{AttackInput, AttackTrait}, permissions::Permissions,
         pve::{PVEStore, PVETrait, PVEStorage, PVE_NAMESPACE_HASH, PVEOpponentInput}, stats::UStats,
         collections::blobert::{TokenAttributes, BlobertItemKey, BlobertStorage}, tags::IdTagNew,
         world::DEFAULT_NAMESPACE_HASH,

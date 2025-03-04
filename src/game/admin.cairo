@@ -1,5 +1,5 @@
 use starknet::ContractAddress;
-
+use blob_arena::permissions::Role;
 
 #[starknet::interface]
 trait IGameAdmin<TContractState> {
@@ -17,12 +17,11 @@ trait IGameAdmin<TContractState> {
         token_id_b: u256,
         attacks_b: Array<(felt252, felt252)>,
     ) -> felt252;
-    fn set_is_admin(ref self: TContractState, user: ContractAddress, has: bool);
-    fn set_is_creator(ref self: TContractState, user: ContractAddress, has: bool);
-
-    fn get_is_admin(self: @TContractState, user: ContractAddress) -> bool;
-    fn get_is_creator(self: @TContractState, user: ContractAddress) -> bool;
-
+    fn set_has_role(ref self: TContractState, user: ContractAddress, role: Role, has: bool);
+    fn get_has_role(self: @TContractState, user: ContractAddress, role: Role) -> bool;
+    fn set_multiple_has_role(
+        ref self: TContractState, users: Array<ContractAddress>, role: Role, has: bool,
+    );
     fn get_world_address(self: @TContractState) -> ContractAddress;
 }
 
@@ -32,7 +31,8 @@ mod game_admin {
     use starknet::{ContractAddress, get_tx_info, get_caller_address};
     use blob_arena::{
         world::{DEFAULT_NAMESPACE_HASH, uuid, get_world_address}, game::GameStorage,
-        combatants::CombatantTrait, combat::CombatStorage, permissions::GamePermissions,
+        combatants::CombatantTrait, combat::CombatStorage,
+        permissions::{Role, Permissions, Permission, PermissionStorage},
     };
 
     use super::IGameAdmin;
@@ -41,7 +41,7 @@ mod game_admin {
         let mut world = self.get_storage();
 
         let admin = get_tx_info().unbox().account_contract_address;
-        world.set_admin_permission(admin, true);
+        world.set_permission(admin, Role::Admin, true);
     }
 
     #[generate_trait]
@@ -69,7 +69,8 @@ mod game_admin {
             attacks_b: Array<(felt252, felt252)>,
         ) -> felt252 {
             let mut world = self.get_storage();
-            world.assert_caller_is_creator();
+            world.assert_caller_is_admin();
+
             let id = uuid();
             let player_a_id = uuid();
             let player_b_id = uuid();
@@ -89,25 +90,27 @@ mod game_admin {
             id
         }
 
-        fn set_is_admin(ref self: ContractState, user: ContractAddress, has: bool) {
+        fn set_has_role(ref self: ContractState, user: ContractAddress, role: Role, has: bool) {
             let mut world = self.get_storage();
             world.assert_caller_is_admin();
-            world.set_admin_permission(user, has);
+            world.set_permission(user, role, has);
         }
-        fn set_is_creator(ref self: ContractState, user: ContractAddress, has: bool) {
+
+        fn get_has_role(self: @ContractState, user: ContractAddress, role: Role) -> bool {
+            let world = self.get_storage();
+            world.get_permission(user, role)
+        }
+
+        fn set_multiple_has_role(
+            ref self: ContractState, users: Array<ContractAddress>, role: Role, has: bool,
+        ) {
             let mut world = self.get_storage();
             world.assert_caller_is_admin();
-            world.set_creator_permission(user, has);
-        }
-
-        fn get_is_admin(self: @ContractState, user: ContractAddress) -> bool {
-            let world = self.get_storage();
-            world.has_admin_permission(user)
-        }
-
-        fn get_is_creator(self: @ContractState, user: ContractAddress) -> bool {
-            let world = self.get_storage();
-            world.has_creator_permission(user)
+            let mut permissions = ArrayTrait::<Permission>::new();
+            for user in users {
+                permissions.append(Permission { requester: user, role, has });
+            };
+            world.set_permissions(permissions);
         }
 
         fn get_world_address(self: @ContractState) -> ContractAddress {

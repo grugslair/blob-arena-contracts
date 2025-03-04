@@ -15,12 +15,11 @@ use world::uuid;
 mod permissions {
     mod components;
     mod systems;
-    use components::{PermissionStorage, Permission};
-    use systems::GamePermissions;
+    use components::{PermissionStorage, Role, Permission};
+    use systems::Permissions;
 }
 mod attacks {
     mod components;
-    // mod contract;
     mod results;
     mod storage;
     mod systems;
