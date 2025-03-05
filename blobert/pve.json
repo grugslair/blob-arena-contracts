@@ -1,7 +1,7 @@
 {
   "opponents": [
     {
-      "name": "Stage 1",
+      "name": "Byte Basher",
       "collection": "blobert",
       "attributes": {
         "Seed": {
@@ -26,7 +26,7 @@
       "collections_allowed": ["blobert", "arcade_blobert"]
     },
     {
-      "name": "Stage 2",
+      "name": "Cyber Crusher",
       "collection": "blobert",
       "attributes": {
         "Seed": {
@@ -51,7 +51,7 @@
       "collections_allowed": ["blobert", "arcade_blobert"]
     },
     {
-      "name": "Stage 3",
+      "name": "Balloon Bruiser",
       "collection": "blobert",
       "attributes": {
         "Seed": {
@@ -76,7 +76,7 @@
       "collections_allowed": ["blobert", "arcade_blobert"]
     },
     {
-      "name": "Stage 4",
+      "name": "Brick Behemoth ",
       "collection": "blobert",
       "attributes": {
         "Seed": {
@@ -101,7 +101,7 @@
       "collections_allowed": ["blobert", "arcade_blobert"]
     },
     {
-      "name": "Stage 5",
+      "name": "Quantum Gladiator",
       "collection": "blobert",
       "attributes": {
         "Seed": {
@@ -126,7 +126,7 @@
       "collections_allowed": ["blobert", "arcade_blobert"]
     },
     {
-      "name": "Stage 6",
+      "name": "Code Conqueror",
       "collection": "blobert",
       "attributes": {
         "Seed": {
@@ -151,7 +151,7 @@
       "collections_allowed": ["blobert", "arcade_blobert"]
     },
     {
-      "name": "Stage 7",
+      "name": "Diamond Destroyer",
       "collection": "blobert",
       "attributes": {
         "Seed": {
@@ -176,7 +176,7 @@
       "collections_allowed": ["blobert", "arcade_blobert"]
     },
     {
-      "name": "Stage 8",
+      "name": "Bullet Barrager",
       "collection": "blobert",
       "attributes": {
         "Seed": {
@@ -201,7 +201,7 @@
       "collections_allowed": ["blobert", "arcade_blobert"]
     },
     {
-      "name": "Stage 9",
+      "name": "Phantom Wraith",
       "collection": "blobert",
       "attributes": {
         "Seed": {
@@ -226,7 +226,7 @@
       "collections_allowed": ["blobert", "arcade_blobert"]
     },
     {
-      "name": "Boss Stage",
+      "name": "Grug the Colossal",
       "collection": "blobert",
       "attributes": {
         "Seed": {
@@ -251,7 +251,7 @@
       "collections_allowed": ["blobert", "arcade_blobert"]
     },
     {
-      "name": "AMMA 1",
+      "name": "Andrzej Studencki",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 3
@@ -271,7 +271,7 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "AMMA 2",
+      "name": "Brett Skinner",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 1
@@ -291,7 +291,7 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "AMMA 3",
+      "name": "Adam Harrigan",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 5
@@ -311,7 +311,7 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "AMMA 4",
+      "name": "Taylor Jones",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 6
@@ -331,7 +331,7 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "AMMA 5",
+      "name": "Daniel Winter",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 4
@@ -351,7 +351,7 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "AMMA 6",
+      "name": "Antonio Penedo",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 2
@@ -371,7 +371,7 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "AMMA 7",
+      "name": "Andrzej Studencki ",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 3
@@ -391,7 +391,7 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "AMMA 8",
+      "name": "Brett Skinner ",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 1
@@ -411,7 +411,7 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "AMMA 9",
+      "name": "Daniel Winter",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 4
@@ -431,7 +431,7 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "AMMA Boss",
+      "name": "Mickey Gallus",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 7
