@@ -4,8 +4,17 @@ use blob_arena::{
     tags::IdTagNew, attacks::components::AttackInput,
 };
 
+/// Interface for managing PVE (Player vs Environment) administrative functions.
 #[starknet::interface]
 trait IPVEAdmin<TContractState> {
+    /// Creates a new opponent with specified attributes and allowed collections
+    /// # Arguments
+    /// * `name` - Name of the opponent
+    /// * `collection` - Contract address of opponent's collection
+    /// * `attributes` - Token attributes for the opponent (for off chain generation)
+    /// * `stats` - Base stats for the opponent
+    /// * `attacks` - Array of attacks available to the opponent
+    /// * `collections_allowed` - Array of collection addresses that can challenge this opponent
     fn new_opponent(
         ref self: TContractState,
         name: ByteArray,
@@ -15,6 +24,13 @@ trait IPVEAdmin<TContractState> {
         attacks: Array<IdTagNew<AttackInput>>,
         collections_allowed: Array<ContractAddress>,
     ) -> felt252;
+
+    /// Creates a new PVE challenge with defined opponents and collection restrictions
+    /// # Arguments
+    /// * `name` - Name of the challenge
+    /// * `health_recovery_pc` - Health recovery percentage between fights
+    /// * `opponents` - Array of opponents in the challenge
+    /// * `collections_allowed` - Collections that can participate in this challenge
     fn new_challenge(
         ref self: TContractState,
         name: ByteArray,
@@ -22,19 +38,47 @@ trait IPVEAdmin<TContractState> {
         opponents: Array<IdTagNew<PVEOpponentInput>>,
         collections_allowed: Array<ContractAddress>,
     );
+
+    /// Sets availability of a single collection for a specific ID
+    /// # Arguments
+    /// * `id` - Target ID to modify
+    /// * `collection` - Collection address to set
+    /// * `available` - Whether collection should be available
     fn set_collection(
         ref self: TContractState, id: felt252, collection: ContractAddress, available: bool,
     );
+
+    /// Sets availability of multiple collections for a specific ID
+    /// # Arguments
+    /// * `id` - Target ID to modify
+    /// * `collections` - Array of collection addresses
+    /// * `available` - Whether collections should be available
     fn set_collections(
         ref self: TContractState, id: felt252, collections: Array<ContractAddress>, available: bool,
     );
 
+    /// Sets availability of a collection for multiple IDs
+    /// # Arguments
+    /// * `ids` - Array of IDs to modify
+    /// * `collection` - Collection address to set
+    /// * `available` - Whether collection should be available
     fn set_ids_collection(
         ref self: TContractState, ids: Array<felt252>, collection: ContractAddress, available: bool,
     );
+
+    /// Mints free game passes for a player
+    /// # Arguments
+    /// * `player` - Address of player receiving games
+    /// * `amount` - Number of free games to mint
     fn mint_free_games(ref self: TContractState, player: ContractAddress, amount: u32);
+
+    /// Mints paid game passes for a player
+    /// # Arguments
+    /// * `player` - Address of player receiving games
+    /// * `amount` - Number of paid games to mint
     fn mint_paid_games(ref self: TContractState, player: ContractAddress, amount: u32);
 }
+
 
 #[dojo::contract]
 mod pve_blobert_admin_actions {
