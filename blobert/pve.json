@@ -1,7 +1,232 @@
 {
   "opponents": [
     {
-      "name": "Mr Blobert",
+      "name": "Stage 1",
+      "collection": "blobert",
+      "attributes": {
+        "Seed": {
+          "background": 0,
+          "armour": 0,
+          "jewelry": 0,
+          "mask": 0,
+          "weapon": 0
+        }
+      },
+      "stats": {
+        "strength": 15,
+        "vitality": 15,
+        "dexterity": 15,
+        "luck": 15
+      },
+      "attacks": [
+        { "tag": "Binary Bash" },
+        { "tag": "Algorithm Assault" },
+        { "tag": "Algorithmic Overload" }
+      ],
+      "collections_allowed": ["blobert", "arcade_blobert"]
+    },
+    {
+      "name": "Stage 2",
+      "collection": "blobert",
+      "attributes": {
+        "Seed": {
+          "background": 1,
+          "armour": 1,
+          "jewelry": 1,
+          "mask": 1,
+          "weapon": 1
+        }
+      },
+      "stats": {
+        "strength": 20,
+        "vitality": 20,
+        "dexterity": 20,
+        "luck": 20
+      },
+      "attacks": [
+        { "tag": "Argent Assault" },
+        { "tag": "Argent Crush" },
+        { "tag": "Two Factor Authentication" }
+      ],
+      "collections_allowed": ["blobert", "arcade_blobert"]
+    },
+    {
+      "name": "Stage 3",
+      "collection": "blobert",
+      "attributes": {
+        "Seed": {
+          "background": 2,
+          "armour": 2,
+          "jewelry": 2,
+          "mask": 2,
+          "weapon": 2
+        }
+      },
+      "stats": {
+        "strength": 25,
+        "vitality": 25,
+        "dexterity": 25,
+        "luck": 25
+      },
+      "attacks": [
+        { "tag": "Helium Blast" },
+        { "tag": "Balloon Bombardment" },
+        { "tag": "Inflatable Explosion" }
+      ],
+      "collections_allowed": ["blobert", "arcade_blobert"]
+    },
+    {
+      "name": "Stage 4",
+      "collection": "blobert",
+      "attributes": {
+        "Seed": {
+          "background": 3,
+          "armour": 3,
+          "jewelry": 3,
+          "mask": 3,
+          "weapon": 21
+        }
+      },
+      "stats": {
+        "strength": 30,
+        "vitality": 30,
+        "dexterity": 30,
+        "luck": 30
+      },
+      "attacks": [
+        { "tag": "Briq Bash" },
+        { "tag": "Briq Breaker" },
+        { "tag": "Briq Avalanche" }
+      ],
+      "collections_allowed": ["blobert", "arcade_blobert"]
+    },
+    {
+      "name": "Stage 5",
+      "collection": "blobert",
+      "attributes": {
+        "Seed": {
+          "background": 4,
+          "armour": 4,
+          "jewelry": 4,
+          "mask": 4,
+          "weapon": 22
+        }
+      },
+      "stats": {
+        "strength": 35,
+        "vitality": 35,
+        "dexterity": 35,
+        "luck": 35
+      },
+      "attacks": [
+        { "tag": "Hash Hit" },
+        { "tag": "Calculated Crush" },
+        { "tag": "Quantum Singularity" }
+      ],
+      "collections_allowed": ["blobert", "arcade_blobert"]
+    },
+    {
+      "name": "Stage 6",
+      "collection": "blobert",
+      "attributes": {
+        "Seed": {
+          "background": 5,
+          "armour": 5,
+          "jewelry": 5,
+          "mask": 5,
+          "weapon": 23
+        }
+      },
+      "stats": {
+        "strength": 40,
+        "vitality": 40,
+        "dexterity": 40,
+        "luck": 40
+      },
+      "attacks": [
+        { "tag": "Code Crush" },
+        { "tag": "Debug Destruction" },
+        { "tag": "Algorithm Overload" }
+      ],
+      "collections_allowed": ["blobert", "arcade_blobert"]
+    },
+    {
+      "name": "Stage 7",
+      "collection": "blobert",
+      "attributes": {
+        "Seed": {
+          "background": 6,
+          "armour": 6,
+          "jewelry": 6,
+          "mask": 6,
+          "weapon": 24
+        }
+      },
+      "stats": {
+        "strength": 45,
+        "vitality": 45,
+        "dexterity": 45,
+        "luck": 45
+      },
+      "attacks": [
+        { "tag": "Diamond Strike" },
+        { "tag": "Diamond Destruction" },
+        { "tag": "Diamond Hand" }
+      ],
+      "collections_allowed": ["blobert", "arcade_blobert"]
+    },
+    {
+      "name": "Stage 8",
+      "collection": "blobert",
+      "attributes": {
+        "Seed": {
+          "background": 7,
+          "armour": 7,
+          "jewelry": 7,
+          "mask": 7,
+          "weapon": 25
+        }
+      },
+      "stats": {
+        "strength": 50,
+        "vitality": 50,
+        "dexterity": 50,
+        "luck": 50
+      },
+      "attacks": [
+        { "tag": "Bullet Blast" },
+        { "tag": "Bullet Barrage" },
+        { "tag": "Desperation Toss" }
+      ],
+      "collections_allowed": ["blobert", "arcade_blobert"]
+    },
+    {
+      "name": "Stage 9",
+      "collection": "blobert",
+      "attributes": {
+        "Seed": {
+          "background": 8,
+          "armour": 8,
+          "jewelry": 0,
+          "mask": 8,
+          "weapon": 26
+        }
+      },
+      "stats": {
+        "strength": 55,
+        "vitality": 55,
+        "dexterity": 55,
+        "luck": 55
+      },
+      "attacks": [
+        { "tag": "Spectral Hit" },
+        { "tag": "Phantom Pulse" },
+        { "tag": "Phantom Blast" }
+      ],
+      "collections_allowed": ["blobert", "arcade_blobert"]
+    },
+    {
+      "name": "Boss Stage",
       "collection": "blobert",
       "attributes": {
         "Seed": {
@@ -13,13 +238,12 @@
         }
       },
       "stats": {
-        "strength": 50,
-        "vitality": 50,
-        "dexterity": 50,
-        "luck": 50
+        "strength": 70,
+        "vitality": 70,
+        "dexterity": 70,
+        "luck": 70
       },
       "attacks": [
-        { "tag": "Golden Fortitude" },
         { "tag": "Grug's Crush" },
         { "tag": "Grug's Smash" },
         { "tag": "Giant Rock Uppercut Grapple" }
@@ -27,27 +251,7 @@
       "collections_allowed": ["blobert", "arcade_blobert"]
     },
     {
-      "name": "Gary",
-      "collection": "amma_blobert",
-      "attributes": {
-        "Custom": 1
-      },
-      "stats": {
-        "strength": 45,
-        "vitality": 51,
-        "dexterity": 46,
-        "luck": 45
-      },
-      "attacks": [
-        { "tag": "Sword Slash" },
-        { "tag": "Shield Punch" },
-        { "tag": "Grapple" },
-        { "tag": "Osoto Gari" }
-      ],
-      "collections_allowed": ["amma_blobert"]
-    },
-    {
-      "name": "Stage 1-1 Enemy",
+      "name": "AMMA 1",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 3
@@ -67,7 +271,7 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "Stage 1-2 Enemy",
+      "name": "AMMA 2",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 1
@@ -87,7 +291,7 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "Stage 2-1 Enemy",
+      "name": "AMMA 3",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 5
@@ -107,7 +311,7 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "Stage 2-2 Enemy",
+      "name": "AMMA 4",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 6
@@ -127,16 +331,116 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "Boss Enemy",
+      "name": "AMMA 5",
       "collection": "amma_blobert",
       "attributes": {
-        "Custom": 7
+        "Custom": 4
+      },
+      "stats": {
+        "strength": 35,
+        "vitality": 35,
+        "dexterity": 35,
+        "luck": 35
+      },
+      "attacks": [
+        { "tag": "Sword Slash" },
+        { "tag": "Low Kick" },
+        { "tag": "Swag" },
+        { "tag": "Mega Shield Bash" }
+      ],
+      "collections_allowed": ["amma_blobert"]
+    },
+    {
+      "name": "AMMA 6",
+      "collection": "amma_blobert",
+      "attributes": {
+        "Custom": 2
+      },
+      "stats": {
+        "strength": 40,
+        "vitality": 40,
+        "dexterity": 40,
+        "luck": 40
+      },
+      "attacks": [
+        { "tag": "Sword Slash" },
+        { "tag": "Ground and Pound" },
+        { "tag": "Grind" },
+        { "tag": "White Company" }
+      ],
+      "collections_allowed": ["amma_blobert"]
+    },
+    {
+      "name": "AMMA 7",
+      "collection": "amma_blobert",
+      "attributes": {
+        "Custom": 3
+      },
+      "stats": {
+        "strength": 45,
+        "vitality": 45,
+        "dexterity": 45,
+        "luck": 45
+      },
+      "attacks": [
+        { "tag": "Sword Slash" },
+        { "tag": "Shield Block" },
+        { "tag": "Sword Dance" },
+        { "tag": "Spin Attack" }
+      ],
+      "collections_allowed": ["amma_blobert"]
+    },
+    {
+      "name": "AMMA 8",
+      "collection": "amma_blobert",
+      "attributes": {
+        "Custom": 1
       },
       "stats": {
         "strength": 50,
         "vitality": 50,
         "dexterity": 50,
         "luck": 50
+      },
+      "attacks": [
+        { "tag": "Sword Slash" },
+        { "tag": "Shield Punch" },
+        { "tag": "Grapple" },
+        { "tag": "Osoto Gari" }
+      ],
+      "collections_allowed": ["amma_blobert"]
+    },
+    {
+      "name": "AMMA 9",
+      "collection": "amma_blobert",
+      "attributes": {
+        "Custom": 4
+      },
+      "stats": {
+        "strength": 55,
+        "vitality": 55,
+        "dexterity": 55,
+        "luck": 55
+      },
+      "attacks": [
+        { "tag": "Sword Slash" },
+        { "tag": "Shield Punch" },
+        { "tag": "Swift Attack" },
+        { "tag": "Comeback Kid" }
+      ],
+      "collections_allowed": ["amma_blobert"]
+    },
+    {
+      "name": "AMMA Boss",
+      "collection": "amma_blobert",
+      "attributes": {
+        "Custom": 7
+      },
+      "stats": {
+        "strength": 70,
+        "vitality": 70,
+        "dexterity": 70,
+        "luck": 70
       },
       "attacks": [
         { "tag": "Sword Slash" },
@@ -149,16 +453,38 @@
   ],
   "challenges": [
     {
-      "name": "Test Challenge 1",
+      "name": "Classic Challenge",
       "health_recovery": 40,
       "opponents": [
-        { "tag": "Stage 1-1 Enemy" },
-        { "tag": "Stage 1-2 Enemy" },
-        { "tag": "Stage 2-1 Enemy" },
-        { "tag": "Stage 2-2 Enemy" },
-        { "tag": "Boss Enemy" }
+        { "tag": "Stage 1" },
+        { "tag": "Stage 2" },
+        { "tag": "Stage 3" },
+        { "tag": "Stage 4" },
+        { "tag": "Stage 5" },
+        { "tag": "Stage 6" },
+        { "tag": "Stage 7" },
+        { "tag": "Stage 8" },
+        { "tag": "Stage 9" },
+        { "tag": "Boss Stage" }
       ],
-      "collections_allowed": ["arcade_blobert", "amma_blobert"]
+      "collections_allowed": ["arcade_blobert"]
+    },
+    {
+      "name": "AMMA Challenge",
+      "health_recovery": 40,
+      "opponents": [
+        { "tag": "AMMA 1" },
+        { "tag": "AMMA 2" },
+        { "tag": "AMMA 3" },
+        { "tag": "AMMA 4" },
+        { "tag": "AMMA 5" },
+        { "tag": "AMMA 6" },
+        { "tag": "AMMA 7" },
+        { "tag": "AMMA 8" },
+        { "tag": "AMMA 9" },
+        { "tag": "AMMA Boss" }
+      ],
+      "collections_allowed": ["amma_blobert"]
     }
   ]
 }
