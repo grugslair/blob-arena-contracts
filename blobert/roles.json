@@ -7,11 +7,13 @@
       "0x048401fadd150099551f652572b69d6530c7407051de0dbd8c371c0af3177245",
       "0x077714ce5e56b1b9a369541b386a74a321a96893a8c59b009ed2ee3d598db713"
     ],
-    "PaidMinter": [
+    "PveMinter": [
       "0x048401fadd150099551f652572b69d6530c7407051de0dbd8c371c0af3177245",
       "0x077714ce5e56b1b9a369541b386a74a321a96893a8c59b009ed2ee3d598db713"
     ],
-    "FreeMinter": [
+    "PveFreeMinter": [],
+    "PvePaidMinter": [],
+    "PveSetter": [
       "0x048401fadd150099551f652572b69d6530c7407051de0dbd8c371c0af3177245",
       "0x077714ce5e56b1b9a369541b386a74a321a96893a8c59b009ed2ee3d598db713"
     ]

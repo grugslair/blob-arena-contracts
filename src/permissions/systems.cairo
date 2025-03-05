@@ -3,6 +3,23 @@ use dojo::{world::WorldStorage, model::ModelStorage};
 use super::{PermissionStorage, Permission, Role};
 
 
+#[generate_trait]
+impl ParentRolesImpl of ParentRoles {
+    fn parent_roles(self: Role) -> Array<Role> {
+        match self {
+            Role::Admin => array![],
+            Role::AmmaAdmin => array![Role::Admin],
+            Role::BlobertAdmin => array![Role::Admin],
+            Role::Creator => array![Role::Admin],
+            Role::PvePaidMinter => array![Role::Admin, Role::PveMinter],
+            Role::PveFreeMinter => array![Role::Admin, Role::PveMinter],
+            Role::PveMinter => array![Role::Admin],
+            Role::PveSetter => array![Role::Admin],
+        }
+    }
+}
+
+
 /// Trait implementation for checking various permission levels
 #[generate_trait]
 impl PermissionsImpl of Permissions {
@@ -14,9 +31,31 @@ impl PermissionsImpl of Permissions {
         self.get_permission(requester, role)
     }
 
-    fn has_permission(self: @WorldStorage, requester: ContractAddress, role: Role) -> bool {
-        self.get_permission(requester, role) || self.has_admin_permission(requester)
+    fn has_a_role_permission(
+        self: @WorldStorage, requester: ContractAddress, mut roles: Array<Role>,
+    ) -> bool {
+        loop {
+            match roles.pop_front() {
+                Option::Some(role) => {
+                    if self.has_role_permission(requester, role) {
+                        break true;
+                    }
+                },
+                Option::None => { break false; },
+            }
+        }
     }
+
+    fn has_parent_role_permission(
+        self: @WorldStorage, requester: ContractAddress, role: Role,
+    ) -> bool {
+        self.has_a_role_permission(requester, role.parent_roles())
+    }
+
+    fn has_permission(self: @WorldStorage, requester: ContractAddress, role: Role) -> bool {
+        self.get_permission(requester, role) || self.has_parent_role_permission(requester, role)
+    }
+
 
     fn caller_has_permission(self: @WorldStorage, role: Role) -> bool {
         self.has_permission(get_caller_address(), role)

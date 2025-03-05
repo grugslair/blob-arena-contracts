@@ -8,8 +8,10 @@ enum Role {
     AmmaAdmin,
     BlobertAdmin,
     Creator,
-    PaidMinter,
-    FreeMinter,
+    PvePaidMinter,
+    PveFreeMinter,
+    PveMinter,
+    PveSetter,
 }
 
 impl RoleIntoByteArrayImpl of Into<Role, ByteArray> {
@@ -19,11 +21,14 @@ impl RoleIntoByteArrayImpl of Into<Role, ByteArray> {
             Role::AmmaAdmin => "amma admin",
             Role::BlobertAdmin => "Blobert admin",
             Role::Creator => "creator",
-            Role::PaidMinter => "paid minter",
-            Role::FreeMinter => "free minter",
+            Role::PvePaidMinter => "paid minter",
+            Role::PveFreeMinter => "free minter",
+            Role::PveMinter => "minter",
+            Role::PveSetter => "pve setter",
         }
     }
 }
+
 
 #[dojo::model]
 #[derive(Drop, Serde)]

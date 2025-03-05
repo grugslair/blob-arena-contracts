@@ -1,9 +1,9 @@
 {
   "world": {
     "class_hash": "0x7c9469d45a9cdbab775035afb48e1fa73fb35ab059fcb9dfb0a301aa973e783",
-    "address": "0x284165b82dd7d2544af429ad950998722599f82a5336d1a48adf9871095e07b",
-    "seed": "blob-arena-0.11.10",
-    "name": "blob_arena-0.11.10",
+    "address": "0x5976e0e1c9957cb3161ccfc58d11b3ee3265d39ef125a1aaa6c4607521e87a7",
+    "seed": "blob-arena-0.11.11",
+    "name": "blob_arena-0.11.11",
     "entrypoints": [
       "uuid",
       "set_metadata",
@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x3c825b1f233e872dcc49df6d2cde7ebd93cdddc05a4a105869a7668171750e1",
-      "class_hash": "0x36e41f910a3861e69f721241d424ff2c87bde9f4960014245a8ef277336a19e",
+      "address": "0x6fbb7a6b1606ea9aa16d09872b166661af72bb35b8be80d0b34d7698076e8f4",
+      "class_hash": "0xcdf9b48abd7436c6983f44701245ad1508e5aa73f0ab2bdf0926d4118eecf6",
       "abi": [
         {
           "type": "impl",
@@ -2216,7 +2216,7 @@
       ]
     },
     {
-      "address": "0x6ad932bb7607bffdf8d40846f5764c0bf72572b0ed6d40bddfaa2e235d53fe4",
+      "address": "0x65f7a163bf1d46d30859176d051d20017b718f82834f4a5e5f6f093479a7cb1",
       "class_hash": "0x5be639d6649d0b69a2c01b9578f8ee6ba096334f3cfb26bada3de37eda44fe6",
       "abi": [
         {
@@ -2644,7 +2644,7 @@
       ]
     },
     {
-      "address": "0x6e42081852913ca2264e80663b06be0f6ae17734f5efc3b4027eb81a74970dc",
+      "address": "0xfdd0cb2ee098b6926dda79bcbb1e808017dd687528f307d9a56c4d921b071",
       "class_hash": "0x231e0ab5845d2e0b36f0dd28c43ce7bd680f209cb8317f40260ad61886c7628",
       "abi": [
         {
@@ -2937,8 +2937,8 @@
       ]
     },
     {
-      "address": "0x683c1db361f2b10064304094a670f943de210ad38c6d333aa143148bf710b04",
-      "class_hash": "0x1080cc2ddb292d1b7b31a030f280558068a87f1318fdb61244826d8d9bbc2c9",
+      "address": "0x4ae5b40983f8055ab44a53b324f0d4c76d450b133dce785716e803ef9fb3eda",
+      "class_hash": "0x42686c5cee8585c1d225abf5c1d1bf6d2869754c0759d7c7e5d562554d30153",
       "abi": [
         {
           "type": "impl",
@@ -3037,11 +3037,19 @@
               "type": "()"
             },
             {
-              "name": "PaidMinter",
+              "name": "PvePaidMinter",
               "type": "()"
             },
             {
-              "name": "FreeMinter",
+              "name": "PveFreeMinter",
+              "type": "()"
+            },
+            {
+              "name": "PveMinter",
+              "type": "()"
+            },
+            {
+              "name": "PveSetter",
               "type": "()"
             }
           ]
@@ -3313,7 +3321,7 @@
       ]
     },
     {
-      "address": "0x477730b78f1bee9e3e310a3c62b9b8186bf5f19324b000b5d3babfeae81a3b7",
+      "address": "0x1e86e467529e611c365ea3a738c8f21bf22d3727beec60139505a94a5561f03",
       "class_hash": "0x95452c55c03a1d1fe6c3c3e7b1f1bd6122975fdd63cd55097ae3b9b038535b",
       "abi": [
         {
@@ -3641,8 +3649,8 @@
       ]
     },
     {
-      "address": "0x5f6cd2d32fa925022cdcc6a3e1361c86c0db6fb32fdc621627ed2a7f89c6209",
-      "class_hash": "0x4aae4a8b5df00f279f73010238c528d84cf4603f9bb64f3fae697be38ad8bd3",
+      "address": "0x4129dd74cfef20e41ad8a31e5eee6f28463ed93ca774911631363e9f3510dd2",
+      "class_hash": "0x206a0310daa5d7d1a2be1332c59d193ccb71b1932a61f74a418525519f4cdfb",
       "abi": [
         {
           "type": "impl",
@@ -4461,7 +4469,7 @@
       ]
     },
     {
-      "address": "0x8f7e2f748006c2cf95d8dcd14495e46100fa4d11a2b8772a7bd02bb8fa69b4",
+      "address": "0x39b1a0e069fce84b34d80fdc3e9fd78b85430659b80aa26962e164bb3aa35e4",
       "class_hash": "0x4ff8f18f294368b0c11679db403127d16526fb4eccc077fdbc9a83bbd8f6e19",
       "abi": [
         {
@@ -4780,8 +4788,8 @@
       ]
     },
     {
-      "address": "0x16cc9a0aa4130fb01d6fd09d62a408cee92950024018cd84d16230a0eae8b70",
-      "class_hash": "0x3d1a4c1e8b6838a9e13239db96b39c641ef1e844da972f16b7369f6ebde7872",
+      "address": "0x20ad55f118e70feca5ca5529055a232e92f8cebff83aa43d1b8203d06712b85",
+      "class_hash": "0x6d8009e0d5d84cc26e55f906c16dc61c0fb3e11d053a8ecfa107e5254a41ea8",
       "abi": [
         {
           "type": "impl",
@@ -5472,7 +5480,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x1b310715086c9b91a3a1e489a95334436fca933c44e61a4cc9f9f65d64a3d55",
+      "class_hash": "0x2495a3a8dfc6fedee302f56a978f9b4c2a8b902abfd18936d13f603c5cc22be",
       "tag": "ba_permissions-Permission",
       "selector": "0x6aa131be59e940caa3e7d320c269ef4762f993a310327ccf3b3e03f6451aa44"
     },
