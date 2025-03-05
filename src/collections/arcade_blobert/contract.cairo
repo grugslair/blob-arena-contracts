@@ -1,6 +1,19 @@
 use starknet::ContractAddress;
 use blob_arena::collections::blobert::external::TokenAttributes;
 
+/// Interface for the ArcadeBlobert NFT contract
+///
+/// # Interface Functions
+///
+/// * `mint` - Mints a random Blobert NFT and returns its token ID
+///    Returns:
+///    * `u256` - The ID of the newly minted token
+///
+/// * `traits` - Retrieves the attributes/traits of a specific Blobert NFT
+///    Parameters:
+///    * `token_id` - The ID of the token to query
+///    Returns:
+///    * `TokenAttributes` - The attributes associated with the token
 #[starknet::interface]
 trait IArcadeBlobert<TContractState> {
     fn mint(ref self: TContractState) -> u256;
@@ -12,11 +25,11 @@ mod arcade_blobert_actions {
     use starknet::{ContractAddress, get_caller_address};
     use dojo::world::WorldStorage;
     use blob_arena::{
-        collections::{ICollection, blobert, arcade_blobert}, stats::UStats, default_namespace
+        collections::{ICollection, blobert, arcade_blobert}, stats::UStats, default_namespace,
     };
     use blobert::{blobert_namespace, BlobertTrait, BlobertStorage, TokenAttributes};
     use arcade_blobert::{
-        ArcadeBlobertStorage, mint::ArcadeBlobertMintTrait, collection::BlobertCollectionTrait
+        ArcadeBlobertStorage, mint::ArcadeBlobertMintTrait, collection::BlobertCollectionTrait,
     };
     use super::IArcadeBlobert;
 
