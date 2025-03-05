@@ -415,63 +415,10 @@
         "miss": []
       },
       {
-        "name": "Shield Punch",
-        "speed": 70,
-        "accuracy": 80,
-        "cooldown": 1,
-        "hit": [
-          {
-            "target": "Opponent",
-            "affect": {
-              "Damage": {
-                "power": 40,
-                "critical": 0
-              }
-            }
-          },
-          {
-            "target": "Opponent",
-            "affect": {
-              "Stun": 40
-            }
-          }
-        ],
-        "miss": []
+        "tag": "Shield Punch"
       },
       {
-        "name": "Grind",
-        "speed": 45,
-        "accuracy": 70,
-        "cooldown": 3,
-        "hit": [
-          {
-            "target": "Opponent",
-            "affect": {
-              "Damage": {
-                "power": 40,
-                "critical": 0
-              }
-            }
-          },
-          {
-            "target": "Opponent",
-            "affect": {
-              "Stun": 0
-            }
-          },
-          {
-            "target": "Opponent",
-            "affect": {
-              "Stats": {
-                "strength": -25,
-                "vitality": 0,
-                "dexterity": 0,
-                "luck": 0
-              }
-            }
-          }
-        ],
-        "miss": []
+        "tag": "Grind"
       },
       {
         "name": "Reverse Throw",
@@ -489,7 +436,7 @@
             }
           },
           {
-            "target": "Player",
+            "target": "Opponent",
             "affect": {
               "Health": -20
             }
@@ -523,28 +470,7 @@
         "tag": "Sword Slash"
       },
       {
-        "name": "Shield Punch",
-        "speed": 70,
-        "accuracy": 80,
-        "cooldown": 1,
-        "hit": [
-          {
-            "target": "Opponent",
-            "affect": {
-              "Damage": {
-                "power": 40,
-                "critical": 0
-              }
-            }
-          },
-          {
-            "target": "Opponent",
-            "affect": {
-              "Stun": 40
-            }
-          }
-        ],
-        "miss": []
+        "tag": "Shield Punch"
       },
       {
         "name": "Swift Attack",
