@@ -1,6 +1,18 @@
 use starknet::ContractAddress;
 use blob_arena::collections::blobert::TokenAttributes;
 
+/// Contract interface for AMMA Blobert NFT collection
+///
+/// # Interface Functions
+///
+/// * `mint` - Mints a new Blobert NFT based on a fighter type
+///   * `fighter` - The id of the amma fighter to mint
+///   * Returns the minted token ID
+///
+/// * `traits` - Gets the attributes/traits for a specific token
+///   * `token_id` - ID of the token to query
+///   * Returns TokenAttributes struct containing the token's traits
+
 #[starknet::interface]
 trait IAMMABlobert<TContractState> {
     fn mint(ref self: TContractState, fighter: felt252) -> felt252;

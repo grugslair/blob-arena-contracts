@@ -4,44 +4,53 @@ use blob_arena::{
 
 const ATTACK_TAG_GROUP: felt252 = 'attacks';
 
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
-struct Stat {
-    stat: StatTypes,
-    amount: i8,
+/// A component that tracks when a specific attack was last used by a combatant.
+/// The attack_id represents the unique identifier for an attack ability.
+/// The last_used timestamp helps enforce cooldown periods between attack uses.
+///
+/// # Arguments
+///
+/// * `combatant_id` - The unique identifier of the combatant
+/// * `attack_id` - The unique identifier of the attack
+/// * `last_used` - Timestamp of when the attack was last used
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct AttackLastUsed {
+    #[key]
+    combatant_id: felt252,
+    #[key]
+    attack_id: felt252,
+    last_used: u32,
 }
 
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
-enum Target {
-    Player,
-    Opponent,
+
+/// Represents a planned attack in the combat system
+/// * `combatant_id` - The unique identifier of the attacking combatant
+/// * `attack_id` - The identifier of the attack type being used
+/// * `target` - The identifier of the target being attacked
+/// * `salt` - A random value used to prevent attack prediction and used for the random seed
+#[dojo::model]
+#[derive(Drop, Serde, Copy)]
+struct PlannedAttack {
+    #[key]
+    combatant_id: felt252,
+    attack_id: felt252,
+    target: felt252,
+    salt: felt252,
 }
 
-#[derive(Drop, Serde, PartialEq, Introspect)]
-struct Effect {
-    target: Target,
-    affect: Affect,
-}
-
-#[derive(Drop, Serde, Copy, PartialEq)]
-struct StatInput {
-    stat: StatTypes,
-    amount: Signed<u8>,
-}
-
-#[derive(Copy, Drop, Serde, PartialEq)]
-struct EffectInput {
-    target: Target,
-    affect: AffectInput,
-}
-
-#[derive(Copy, Drop, Serde, PartialEq)]
-enum AffectInput {
-    Stats: SignedStats,
-    Stat: StatInput,
-    Damage: Damage,
-    Stun: u8,
-    Health: Signed<u8>,
-}
+/// A component representing an attack or input of attack in the game.
+///
+/// # Attributes
+///
+/// * `id` - A unique identifier for the attack.
+/// * `speed` - The speed of the attack, represented as a value between 0 and 255.
+/// * `accuracy` - The likelihood of the attack hitting its target, represented as a value between 0
+/// and 100.
+/// * `cooldown` - The number of turns required before the attack can be used again.
+/// * `hit` - An array of effects that are applied when the attack successfully hits.
+/// * `miss` - An array of effects that are applied when the attack misses.
+/// * `name` - The name of the attack. (For off chain use)
 
 #[derive(Drop, Serde)]
 struct AttackInput {
@@ -53,29 +62,6 @@ struct AttackInput {
     miss: Array<EffectInput>,
 }
 
-
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
-enum Affect {
-    Stats: IStats,
-    Stat: Stat,
-    Damage: Damage,
-    Stun: u8,
-    Health: i16,
-}
-
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
-struct Damage {
-    critical: u8,
-    power: u8,
-}
-
-#[dojo::event]
-#[derive(Drop, Serde)]
-struct AttackName {
-    #[key]
-    id: felt252,
-    name: ByteArray,
-}
 
 #[dojo::model]
 #[derive(Drop, Serde, Default)]
@@ -89,13 +75,101 @@ struct Attack {
     miss: Array<Effect>,
 }
 
-
-#[derive(Drop, Serde, Introspect)]
-struct AttackExists {
-    hit: u32,
-    miss: u32,
+#[dojo::event]
+#[derive(Drop, Serde)]
+struct AttackName {
+    #[key]
+    id: felt252,
+    name: ByteArray,
 }
 
+/// Represents an effect that can be applied during the game.
+///
+/// # Arguments
+/// * `target` - Specifies who receives the effect (Player or Opponent)
+/// * `affect` - The type of effect to be applied
+
+#[derive(Drop, Serde, PartialEq, Introspect)]
+struct Effect {
+    target: Target,
+    affect: Affect,
+}
+
+#[derive(Copy, Drop, Serde, PartialEq)]
+struct EffectInput {
+    target: Target,
+    affect: AffectInput,
+}
+
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+enum Target {
+    Player,
+    Opponent,
+}
+
+/// Represents different types of effects that can be applied in the game
+/// * `Stats` - Multiple stat modifications applied at once using SignedStats
+/// * `Stat` - A single stat modification using StatInput
+/// * `Damage` - Direct damage effect
+/// * `Stun` - Stun chance increase of target on next attack in percentage
+/// * `Health` - Health modification (can be positive for healing or negative for damage)
+
+#[derive(Copy, Drop, Serde, PartialEq)]
+enum AffectInput {
+    Stats: SignedStats,
+    Stat: StatInput,
+    Damage: Damage,
+    Stun: u8,
+    Health: Signed<u8>,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+enum Affect {
+    Stats: IStats,
+    Stat: Stat,
+    Damage: Damage,
+    Stun: u8,
+    Health: i16,
+}
+
+
+/// Represents a modifier to a stat in the game.
+/// * `stat` - The type of statistic (Strength, Vitality, Dexterity, Luck)
+/// * `amount` - The numerical value of the stat, ranging from -100 to +100
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+struct Stat {
+    stat: StatTypes,
+    amount: i8,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq)]
+struct StatInput {
+    stat: StatTypes,
+    amount: Signed<u8>,
+}
+
+
+/// Represents damage attributes of an attack.
+/// * `critical` - Critical hit chance value between 0-100
+/// * `power` - Attack power value between 0-100
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+struct Damage {
+    critical: u8,
+    power: u8,
+}
+
+/// A component that tracks whether a specific attack is available for a combatant.
+/// The attack_id represents the unique identifier for an attack ability.
+/// If available is true, the attack can be used by the combatant.
+///
+/// # Arguments
+///
+/// * `combatant_id` - The unique identifier of the combatant
+/// * `attack_id` - The unique identifier of the attack
+/// * `available` - Boolean indicating if the attack is available for use
 
 #[dojo::model]
 #[derive(Drop, Serde)]
@@ -107,25 +181,11 @@ struct AttackAvailable {
     available: bool,
 }
 
-#[dojo::model]
-#[derive(Drop, Serde)]
-struct AttackLastUsed {
-    #[key]
-    combatant_id: felt252,
-    #[key]
-    attack_id: felt252,
-    last_used: u32,
-}
 
-
-#[dojo::model]
-#[derive(Drop, Serde, Copy)]
-struct PlannedAttack {
-    #[key]
-    combatant_id: felt252,
-    attack_id: felt252,
-    target: felt252,
-    salt: felt252,
+#[derive(Drop, Serde, Introspect)]
+struct AttackExists {
+    hit: u32,
+    miss: u32,
 }
 
 

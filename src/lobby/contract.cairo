@@ -1,5 +1,47 @@
 use starknet::ContractAddress;
 
+
+/// Interface for managing lobby invites and responses in the Blob Arena game
+///
+/// # Interface Functions
+///
+/// ## send_invite
+/// Creates a new lobby invite for a PvP match
+/// * `owner` - The owner of the lobby instance
+/// * `initiator` - The address that initiates the match
+/// * `time_limit` - Time limit for player inactivity in seconds
+/// * `receiver` - Address of the invited receiver
+/// * `collection_address` - NFT collection address for the blobert
+/// * `token_id` - Token ID to use
+/// * `attacks` - Array of attack moves as (felt252, felt252) tuples
+/// * Returns: A felt252 representing the lobby ID
+///
+/// ## rescind_invite
+/// Cancels an existing lobby invite
+/// * `challenge_id` - ID of the lobby to cancel
+///
+/// ## respond_invite
+/// Accepts a lobby invite with specified blob and attacks
+/// * `challenge_id` - ID of the lobby to respond to
+/// * `token_id` - Token ID of the responding player's blob
+/// * `attacks` - Array of attack moves as (felt252, felt252) tuples
+///
+/// ## rescind_response
+/// Withdraws a previous response to an invite
+/// * `challenge_id` - ID of the lobby to withdraw from
+///
+/// ## reject_invite
+/// Rejects an incoming lobby invite
+/// * `challenge_id` - ID of the lobby to reject
+///
+/// ## reject_response
+/// Rejects a player's response to an invite
+/// * `challenge_id` - ID of the lobby response to reject
+///
+/// ## accept_response
+/// Finalizes the lobby and starts the match
+/// * `challenge_id` - ID of the lobby to finalize
+
 #[starknet::interface]
 trait ILobby<TContractState> {
     fn send_invite(

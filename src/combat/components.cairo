@@ -9,6 +9,14 @@ use blob_arena::{
     iter::Iteration,
 };
 
+/// Phase represents the different states of a combat encounter
+///
+/// # Variants
+/// * `None` - Initial state before combat is created
+/// * `Created` - Combat has been created but not yet started
+/// * `Commit` - Players are submitting their move commitments
+/// * `Reveal` - Players are revealing their committed moves
+/// * `Ended(felt252)` - Combat has ended with a winner ID
 #[derive(Copy, Drop, Serde, PartialEq, Introspect)]
 enum Phase {
     None,
@@ -18,6 +26,16 @@ enum Phase {
     Ended: felt252,
 }
 
+/// Represents the state of a combat encounter in the game.
+///
+/// # Fields
+/// * `id` - A unique identifier for the combat state
+/// * `phase` - The current phase of combat (e.g., attack, defense)
+/// * `round` - The current round number in the combat sequence the first round is 1
+///
+/// The CombatState model is used to track and manage the progression of combat encounters,
+/// storing essential information about the current state of battle.
+///
 #[dojo::model]
 #[derive(Drop, Serde, Copy, Introspect)]
 struct CombatState {

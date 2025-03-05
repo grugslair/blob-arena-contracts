@@ -7,6 +7,13 @@ struct SeedItem {
     attribute_id: u32,
 }
 
+/// Represents a key that identifies a Blobert item.
+/// This enum is used to uniquely identify items within the Blobert ecosystem.
+///
+/// # Variants
+///
+/// * `Seed` - Represents a seed item with associated `SeedItem` data
+/// * `Custom` - Represents a custom item identified by a felt252 value
 #[derive(Copy, Drop, Serde, PartialEq, Introspect)]
 enum BlobertItemKey {
     Seed: SeedItem,
@@ -40,6 +47,14 @@ enum BlobertAttribute {
     Weapon,
 }
 
+/// A struct representing an item that can be equipped by a Blobert
+///
+/// # Fields
+/// * `key` - The unique identifier for this item, represented by a BlobertItemKey
+/// * `stats` - The stats associated with this item, stored as UStats
+///
+/// # Notes
+/// This is a Dojo model that can be dropped, serialized, and copied.
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
 struct BlobertItem {
@@ -49,6 +64,14 @@ struct BlobertItem {
 }
 
 
+/// Contains a Blobert item's name information.
+///
+/// # Fields
+/// * `id` - The unique identifier of the item
+/// * `name` - The name of the item as a ByteArray
+///
+/// # Events
+/// Emitted when a Blobert item's name is created or updated
 #[dojo::event]
 #[derive(Drop, Serde)]
 struct BlobertItemName {
@@ -57,6 +80,12 @@ struct BlobertItemName {
     name: ByteArray,
 }
 
+/// Represents an attack slot associated with a Blobert item
+///
+/// # Fields
+/// * `item_key` - The unique identifier for the Blobert item
+/// * `slot` - The slot position number
+/// * `attack_id` - The identifier of the attack assigned to this slot
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct AttackSlot {

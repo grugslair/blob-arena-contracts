@@ -35,6 +35,12 @@ impl PVEPhaseImpl of PVEPhaseTrait {
 
 /////////////////
 
+/// A model representing a PVE (Player vs Environment) opponent in the game
+///
+/// # Fields
+/// * `id` - Unique Id of the opponent as a field element
+/// * `stats` - Starting stats of the opponent using the UStats structure
+/// * `attacks` - Array of attack IDs available to this opponent as field elements
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct PVEOpponent {
@@ -44,6 +50,12 @@ struct PVEOpponent {
     attacks: Array<felt252>,
 }
 
+/// Event emitted when for a pve blobert for off chain use only
+/// # Arguments
+/// * `id` - Unique Id for the blobert
+/// * `name` - The name of the blobert
+/// * `collection` - The contract address of the collection the blobert belongs to
+/// * `attributes` - The attributes of the blobert token
 #[dojo::event]
 #[derive(Drop, Serde)]
 struct PVEBlobertInfo {
@@ -54,6 +66,11 @@ struct PVEBlobertInfo {
     attributes: TokenAttributes,
 }
 
+/// Records a PVE Challenge within the game, identified by a unique ID.
+///
+/// # Arguments
+/// * `id` - A unique Id for the PVE challenge
+/// * `health_recovery` - Amount of health recovered after each round as a percentage of max health
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct PVEChallenge {
@@ -62,6 +79,10 @@ struct PVEChallenge {
     health_recovery: u8,
 }
 
+/// Event emitted when a PVE challenge name is set
+/// # Arguments
+/// * `id` - The unique Id of the PVE challenge
+/// * `name` - The name of the PVE challenge as a ByteArray
 #[dojo::event]
 #[derive(Drop, Serde)]
 struct PVEChallengeName {
@@ -70,6 +91,12 @@ struct PVEChallengeName {
     name: ByteArray,
 }
 
+/// A model representing an opponent in a specific stage of a PVE challenge
+///
+/// # Fields
+/// * `challenge_id` - Id for the PVE challenge
+/// * `stage` - Stage number within the challenge
+/// * `opponent` - Id of the opponent at this stage
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct PVEStageOpponent {
@@ -80,6 +107,15 @@ struct PVEStageOpponent {
     opponent: felt252,
 }
 
+/// Represents a permission model for PVE (Player vs Environment) collections
+///
+/// # Arguments
+/// * `id` - A unique identifier for the permission entry (Challenge or opponent id)
+/// * `collection` - The contract address of the collection
+/// * `allowed` - A boolean flag indicating whether the collection is allowed in PVE
+///
+/// This model is used to manage which NFT collections are permitted to participate
+/// in PVE gameplay scenarios
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct PVECollectionAllowed {
@@ -93,6 +129,16 @@ struct PVECollectionAllowed {
 ////////////////////
 
 /// Instance of combat against PVEOpponent
+/// A PVEGame represents a player versus environment game instance
+///
+/// # Arguments
+/// * `id` - Unique identifier for the game instance
+/// * `combatant_id` - Identifier for the player's combatant
+/// * `player` - Contract address of the player
+/// * `opponent_token` - Token identifier for the opponent
+/// * `opponent_id` - Identifier for the opponent combatant
+/// * `round` - Current round number of the game
+/// * `phase` - Current phase of the game
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct PVEGame {
@@ -108,6 +154,17 @@ struct PVEGame {
 
 
 /// Instance of challenge of PVEChallenge
+/// PVEChallengeAttempt represents a player's attempt at completing a PVE challenge
+///
+/// # Fields
+/// * `id` - Unique identifier for this challenge attempt
+/// * `challenge` - The identifier of the PVE challenge being attempted
+/// * `player` - The player's contract address
+/// * `stats` - The current stats of the player during this attempt
+/// * `attacks` - Array of attack moves performed by the player
+/// * `stage` - Current stage number in the challenge
+/// * `respawns` - Number of times the player has respawned
+/// * `phase` - Current phase of the PVE challenge
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct PVEChallengeAttempt {
@@ -123,6 +180,12 @@ struct PVEChallengeAttempt {
 }
 
 // Instance of PVEStageOpponent
+/// Represents a PVE (Player vs Environment) stage game attempt.
+///
+/// # Fields
+/// * `attempt_id` - A unique identifier for the game attempt
+/// * `stage` - The stage number in the PVE progression
+/// * `game_id` - The identifier of the associated game instance
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct PVEStageGame {
@@ -133,6 +196,12 @@ struct PVEStageGame {
     game_id: felt252,
 }
 
+/// Event emitted when a PVE Challenge respawns
+/// # Arguments
+/// * `challenge_id` - The unique identifier of the PVE challenge
+/// * `respawn` - The respawn number
+/// * `stage` - The current stage of the challenge
+/// * `game_id` - The game the player died
 #[dojo::event]
 #[derive(Drop, Serde)]
 struct PVEChallengeRespawn {
@@ -177,6 +246,18 @@ struct PVEStore {
 }
 
 
+/// PVE gameplay components that track the number of available games for a player
+///
+/// # Component: PVEFreeGames
+/// Tracks the number of free games available to a player and when they last claimed them
+/// * player - Player's contract address (primary key)
+/// * games - Number of free games available
+/// * last_claim - Timestamp of last claim in seconds
+///
+/// # Component: PVEPaidGames
+/// Tracks the number of paid games available to a player
+/// * player - Player's contract address (primary key)
+/// * games - Number of paid games available
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct PVEFreeGames {

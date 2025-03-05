@@ -9,6 +9,9 @@ use blob_arena::{
 };
 
 
+/// * `id` - The unique identifier for the combatant
+/// * `combat_id` - The identifier for the current combat session
+/// * `player` - The contract address of the player who owns this combatant
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
 struct CombatantInfo {
@@ -18,6 +21,16 @@ struct CombatantInfo {
     player: ContractAddress,
 }
 
+/// Represents a token-based combatant in the blob arena game
+///
+/// # Arguments
+/// * `id` - Unique identifier for the combatant
+/// * `collection_address` - Contract address of the NFT collection
+/// * `token_id` - Token ID within the collection representing this combatant
+///
+/// The CombatantToken struct links an NFT to a combatant in the game system,
+/// enabling NFT-based character representation. It is a dojo model component
+/// that can be used to track ownership and identify combatants.
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
 struct CombatantToken {
@@ -27,6 +40,17 @@ struct CombatantToken {
     token_id: u256,
 }
 
+
+/// Represents the current state of a combatant in the game
+///
+/// # Fields
+/// * `id` - Unique identifier for the combatant
+/// * `health` - Current health points of the combatant (0-200) depends on vitality
+/// * `stun_chance` - Probability of stunning an opponent (0-255)
+/// * `stats` - The current stats of the combatant
+///
+/// This model is used to track the dynamic state of combatants during gameplay,
+/// including their health status and combat-related attributes.
 
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
