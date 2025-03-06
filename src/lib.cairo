@@ -76,6 +76,13 @@ mod pve {
     };
 }
 
+mod experience {
+    mod events;
+    mod contract;
+    mod systems;
+    mod interface;
+}
+
 pub use world::{default_namespace, DefaultStorage};
 #[cfg(test)]
 mod tests {
