@@ -1,49 +1,29 @@
 use starknet::ContractAddress;
 
-
-/// Interface for managing lobby invites and responses in the Blob Arena game
-///
-/// # Interface Functions
-///
-/// ## send_invite
-/// Creates a new lobby invite for a PvP match
-/// * `owner` - The owner of the lobby instance
-/// * `initiator` - The address that initiates the match
-/// * `time_limit` - Time limit for player inactivity in seconds
-/// * `receiver` - Address of the invited receiver
-/// * `collection_address` - NFT collection address for the blobert
-/// * `token_id` - Token ID to use
-/// * `attacks` - Array of attack moves as (felt252, felt252) tuples
-/// * Returns: A felt252 representing the lobby ID
-///
-/// ## rescind_invite
-/// Cancels an existing lobby invite
-/// * `challenge_id` - ID of the lobby to cancel
-///
-/// ## respond_invite
-/// Accepts a lobby invite with specified blob and attacks
-/// * `challenge_id` - ID of the lobby to respond to
-/// * `token_id` - Token ID of the responding player's blob
-/// * `attacks` - Array of attack moves as (felt252, felt252) tuples
-///
-/// ## rescind_response
-/// Withdraws a previous response to an invite
-/// * `challenge_id` - ID of the lobby to withdraw from
-///
-/// ## reject_invite
-/// Rejects an incoming lobby invite
-/// * `challenge_id` - ID of the lobby to reject
-///
-/// ## reject_response
-/// Rejects a player's response to an invite
-/// * `challenge_id` - ID of the lobby response to reject
-///
-/// ## accept_response
-/// Finalizes the lobby and starts the match
-/// * `challenge_id` - ID of the lobby to finalize
-
 #[starknet::interface]
 trait ILobby<TContractState> {
+    /// ## send_invite
+    /// Creates a new lobby invite for a PvP match
+    /// * `owner` - The owner of the lobby instance
+    /// * `initiator` - The address that initiates the match
+    /// * `time_limit` - Time limit for player inactivity in seconds
+    /// * `receiver` - Address of the invited receiver
+    /// * `collection_address` - NFT collection address for the blobert
+    /// * `token_id` - Token ID to use
+    /// * `attacks` - Array of attack moves as (felt252, felt252) tuples
+    /// * Returns: A felt252 representing the lobby ID
+    ///
+    /// Models:
+    /// - Lobby
+    /// - GameInfo
+    /// - Initiator
+    /// - CombatantInfo
+    /// - CombatantToken
+    /// - CombatantState
+    /// - AttackAvailable
+    ///
+    /// Events:
+    /// - LobbyCreated
     fn send_invite(
         ref self: TContractState,
         owner: ContractAddress,
@@ -54,17 +34,62 @@ trait ILobby<TContractState> {
         token_id: u256,
         attacks: Array<(felt252, felt252)>,
     ) -> felt252;
+
+    /// ## rescind_invite
+    /// Cancels an existing lobby invite
+    /// * `challenge_id` - ID of the lobby to cancel
+    ///
+    /// Models:
+    /// - Lobby
     fn rescind_invite(ref self: TContractState, challenge_id: felt252);
+
+    /// ## respond_invite
+    /// Accepts a lobby invite with specified blob and attacks
+    /// * `challenge_id` - ID of the lobby to respond to
+    /// * `token_id` - Token ID of the responding player's blob
+    /// * `attacks` - Array of attack moves as (felt252, felt252) tuples
+    ///
+    /// Models:
+    /// - CombatantInfo
+    /// - GameInfo
+    /// - CombatantInfo
+    /// - CombatantToken
+    /// - CombatantState
+    /// - AttackAvailable
     fn respond_invite(
         ref self: TContractState,
         challenge_id: felt252,
         token_id: u256,
         attacks: Array<(felt252, felt252)>,
     );
-    fn rescind_response(ref self: TContractState, challenge_id: felt252);
+    /// ## reject_invite
+    /// Rejects an incoming lobby invite
+    /// * `challenge_id` - ID of the lobby to reject#
+    ///
+    /// Models:
+    /// - Lobby
     fn reject_invite(ref self: TContractState, challenge_id: felt252);
-    fn reject_response(ref self: TContractState, challenge_id: felt252);
+    /// ## rescind_response
+    /// Withdraws a previous response to an invite
+    /// * `challenge_id` - ID of the lobby to withdraw from
+    ///
+    /// Models:
+    /// - GameInfo
+    fn rescind_response(ref self: TContractState, challenge_id: felt252);
+    /// ## accept_response
+    /// Finalizes the lobby and starts the match
+    /// * `challenge_id` - ID of the lobby to finalize
+    ///
+    /// Models:
+    /// - CombatState
     fn accept_response(ref self: TContractState, challenge_id: felt252);
+    /// ## reject_response
+    /// Rejects a player's response to an invite
+    /// * `challenge_id` - ID of the lobby response to reject
+    ///
+    /// Models:
+    /// - GameInfo
+    fn reject_response(ref self: TContractState, challenge_id: felt252);
 }
 
 

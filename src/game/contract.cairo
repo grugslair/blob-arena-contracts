@@ -41,6 +41,11 @@ trait IGame<TContractState> {
     /// # Arguments
     /// * `combatant_id` - The unique identifier of the combatant making the move
     /// * `hash` - The hashed combination of the player's attack and salt
+    ///
+    /// Models:
+    /// - CommitmentModel
+    /// - CombatState
+    /// - LastTimestamp
     fn commit(ref self: TContractState, combatant_id: felt252, hash: felt252);
 
     /// Reveals a player's previously committed move
@@ -48,21 +53,51 @@ trait IGame<TContractState> {
     /// * `combatant_id` - The unique identifier of the combatant revealing their move
     /// * `attack` - The actual attack value that was committed
     /// * `salt` - The salt value used in the original commitment
+    ///
+    /// Models:
+    /// - CommitmentModel
+    /// - PlannedAttack
+    /// - LastTimestamp
+    /// - CombatState
+    ///
+    /// Events:
+    /// - CombatEnd
     fn reveal(ref self: TContractState, combatant_id: felt252, attack: felt252, salt: felt252);
 
     /// Executes a combat round for a specific combat
     /// # Arguments
     /// * `combat_id` - The unique identifier of the combat to run
+    ///
+    /// Models:
+    /// - CombatantState
+    /// - AttackLastUsed
+    /// - CombatState
+    ///
+    /// Events:
+    /// - RoundResult
+    /// - CombatEnd
     fn run(ref self: TContractState, combat_id: felt252);
 
     /// Removes an inactive player from the game
     /// # Arguments
     /// * `combat_id` - The unique identifier of the combat containing the player to kick
+    ///
+    /// Models:
+    /// - CombatState
+    ///
+    /// Events:
+    /// - CombatEnd
     fn kick_player(ref self: TContractState, combat_id: felt252);
 
     /// Allows a player to forfeit their position in the game
     /// # Arguments
     /// * `combatant_id` - The unique identifier of the combatant forfeiting
+    ///
+    /// Models:
+    /// - CombatState
+    ///
+    /// Events:
+    /// - CombatEnd
     fn forfeit(ref self: TContractState, combatant_id: felt252);
 
     /// Returns the address of the winning player for a specific combat

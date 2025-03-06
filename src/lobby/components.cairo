@@ -1,5 +1,7 @@
 use starknet::{ContractAddress, get_caller_address, get_block_number};
 
+/// Game Models
+
 /// Represents a game lobby in the system
 /// # Members
 /// * `id` - Unique identifier for the lobby
