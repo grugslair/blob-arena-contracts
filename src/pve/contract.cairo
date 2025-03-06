@@ -35,8 +35,26 @@ use blob_arena::{stats::UStats, collections::blobert::{TokenAttributes, BlobertI
 ///   * `attempt_id` - Identifier for the challenge attempt to end
 ///
 /// * `claim_free_game` - Claims a free game session for the player
+///
+
 #[starknet::interface]
 trait IPVE<TContractState> {
+    /// Starts a new PVE game against an opponent.
+    /// # Arguments
+    /// * `opponent_id` - The unique identifier of the opponent to fight against
+    /// * `collection_address` - The contract address of the NFT collection
+    /// * `token_id` - The token ID of the NFT being used
+    /// * `attacks` - Array of attack tuples (attack_id, attack_power)
+    /// # Returns
+    /// * `felt252` - The game ID of the newly created game
+    ///
+    /// Models:
+    /// - PVEFreeGames
+    /// - PVEPaidGames
+    /// - AttackAvailable
+    /// - CombatantToken
+    /// - CombatantState
+    /// - PVEGame
     fn start_game(
         ref self: TContractState,
         opponent_id: felt252,
@@ -44,7 +62,37 @@ trait IPVE<TContractState> {
         token_id: u256,
         attacks: Array<(felt252, felt252)>,
     ) -> felt252;
+
+    /// Executes an attack move in an active game.
+    /// # Arguments
+    /// * `game_id` - The unique identifier of the active game
+    /// * `attack_id` - The ID of the attack move to execute
+    ///
+    /// Models:
+    /// - CombatantState
+    /// - PVEGame
+    /// - AttackLastUsed
+    ///
+    /// Events:
+    /// - RoundResult
     fn attack(ref self: TContractState, game_id: felt252, attack_id: felt252);
+
+    /// Initiates a new challenge attempt.
+    /// # Arguments
+    /// * `challenge_id` - The unique identifier of the challenge to attempt
+    /// * `collection_address` - The contract address of the NFT collection
+    /// * `token_id` - The token ID of the NFT being used
+    /// * `attacks` - Array of attack tuples (attack_id, attack_power)
+    ///
+    /// Models:
+    /// - PVEFreeGames
+    /// - PVEPaidGames
+    /// - AttackAvailable
+    /// - CombatantToken
+    /// - CombatantState
+    /// - PVEGame
+    /// - PVEChallengeAttempt
+    /// - PVEStageGame
     fn start_challenge(
         ref self: TContractState,
         challenge_id: felt252,
@@ -52,9 +100,48 @@ trait IPVE<TContractState> {
         token_id: u256,
         attacks: Array<(felt252, felt252)>,
     );
+
+    /// Advances to the next round in an active challenge.
+    /// # Arguments
+    /// * `attempt_id` - The unique identifier of the challenge attempt
+    ///
+    /// Models:
+    /// - AttackAvailable
+    /// - CombatantState
+    /// - PVEGame
+    /// - PVEChallengeAttempt
+    /// - PVEStageGame
     fn next_challenge_round(ref self: TContractState, attempt_id: felt252);
+
+    /// Restarts a challenge attempt from the beginning.
+    /// # Arguments
+    /// * `attempt_id` - The unique identifier of the challenge attempt to respawn
+    ///
+    /// Models:
+    /// - PVEFreeGames
+    /// - PVEPaidGames
+    /// - AttackAvailable
+    /// - CombatantState
+    /// - PVEGame
+    /// - PVEChallengeAttempt
+    /// - PVEStageGame
+    ///
+    /// Events:
+    /// - PVEChallengeRespawn
     fn respawn_challenge(ref self: TContractState, attempt_id: felt252);
+
+    /// Completes and finalizes an active challenge attempt.
+    /// # Arguments
+    /// * `attempt_id` - The unique identifier of the challenge attempt to end
+    ///
+    /// Models:
+    /// - PVEChallengeAttempt
     fn end_challenge(ref self: TContractState, attempt_id: felt252);
+
+    /// Claims a free game attempt.
+    ///
+    /// Models:
+    /// - PVEFreeGames
     fn claim_free_game(ref self: TContractState);
 }
 
