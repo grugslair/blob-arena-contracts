@@ -4,6 +4,39 @@ use blob_arena::{
 
 const ATTACK_TAG_GROUP: felt252 = 'attacks';
 
+/// Setup models
+
+/// A struct representing an attack in the game.
+///
+/// # Fields
+/// * `id` - Unique identifier for the attack
+/// * `speed` - The speed of the attack (0-100)
+/// * `accuracy` - The accuracy of the attack (0-100)
+/// * `cooldown` - The cooldown period of the attack in rounds
+/// * `hit` - Array of effects that occur when the attack hits
+/// * `miss` - Array of effects that occur when the attack misses
+#[dojo::model]
+#[derive(Drop, Serde, Default)]
+struct Attack {
+    #[key]
+    id: felt252,
+    speed: u8,
+    accuracy: u8,
+    cooldown: u8,
+    hit: Array<Effect>,
+    miss: Array<Effect>,
+}
+
+#[dojo::event]
+#[derive(Drop, Serde)]
+struct AttackName {
+    #[key]
+    id: felt252,
+    name: ByteArray,
+}
+
+/// Game models
+
 /// A component that tracks when a specific attack was last used by a combatant.
 /// The attack_id represents the unique identifier for an attack ability.
 /// The last_used timestamp helps enforce cooldown periods between attack uses.
@@ -60,27 +93,6 @@ struct AttackInput {
     cooldown: u8,
     hit: Array<EffectInput>,
     miss: Array<EffectInput>,
-}
-
-
-#[dojo::model]
-#[derive(Drop, Serde, Default)]
-struct Attack {
-    #[key]
-    id: felt252,
-    speed: u8,
-    accuracy: u8,
-    cooldown: u8,
-    hit: Array<Effect>,
-    miss: Array<Effect>,
-}
-
-#[dojo::event]
-#[derive(Drop, Serde)]
-struct AttackName {
-    #[key]
-    id: felt252,
-    name: ByteArray,
 }
 
 /// Represents an effect that can be applied during the game.

@@ -2,6 +2,8 @@ use starknet::ContractAddress;
 use dojo::{world::WorldStorage, model::{ModelStorage, Model, ModelValueStorage}};
 use blob_arena::collections::blobert::{Seed, TokenAttributes};
 
+/// Game models
+
 /// A struct representing a Blobert NFT token in the game.
 ///
 /// # Fields

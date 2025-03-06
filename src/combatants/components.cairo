@@ -8,6 +8,7 @@ use blob_arena::{
     constants::{NZ_255},
 };
 
+/// Game Models
 
 /// * `id` - The unique identifier for the combatant
 /// * `combat_id` - The identifier for the current combat session

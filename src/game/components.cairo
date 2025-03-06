@@ -1,6 +1,8 @@
 use starknet::{ContractAddress, get_contract_address};
 use blob_arena::collections::ERC721Token;
 
+/// Game Models
+
 /// Represents game information for a combat encounter
 /// # Arguments
 /// * `combat_id` - Unique identifier for the combat instance, used as a key

@@ -47,6 +47,8 @@ enum BlobertAttribute {
     Weapon,
 }
 
+/// Setup Models
+
 /// A struct representing an item that can be equipped by a Blobert
 ///
 /// # Fields

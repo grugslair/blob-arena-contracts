@@ -25,16 +25,54 @@ use starknet::ContractAddress;
 /// This interface implements a commit-reveal pattern for fair gameplay,
 /// where players first commit their moves (hashed) and later reveal them
 /// to prevent front-running and ensure fairness.
+///
+
 #[starknet::interface]
 trait IGame<TContractState> {
+    /// Starts a new game already created with a given game ID
+    /// # Arguments
+    /// * `game_id` - The unique identifier for the game to start
+    ///
+    /// Models:
+    /// - CombatState
     fn start(ref self: TContractState, game_id: felt252);
+
+    /// Commits a player's move by storing a hash of their attack and salt
+    /// # Arguments
+    /// * `combatant_id` - The unique identifier of the combatant making the move
+    /// * `hash` - The hashed combination of the player's attack and salt
     fn commit(ref self: TContractState, combatant_id: felt252, hash: felt252);
+
+    /// Reveals a player's previously committed move
+    /// # Arguments
+    /// * `combatant_id` - The unique identifier of the combatant revealing their move
+    /// * `attack` - The actual attack value that was committed
+    /// * `salt` - The salt value used in the original commitment
     fn reveal(ref self: TContractState, combatant_id: felt252, attack: felt252, salt: felt252);
+
+    /// Executes a combat round for a specific combat
+    /// # Arguments
+    /// * `combat_id` - The unique identifier of the combat to run
     fn run(ref self: TContractState, combat_id: felt252);
+
+    /// Removes an inactive player from the game
+    /// # Arguments
+    /// * `combat_id` - The unique identifier of the combat containing the player to kick
     fn kick_player(ref self: TContractState, combat_id: felt252);
+
+    /// Allows a player to forfeit their position in the game
+    /// # Arguments
+    /// * `combatant_id` - The unique identifier of the combatant forfeiting
     fn forfeit(ref self: TContractState, combatant_id: felt252);
+
+    /// Returns the address of the winning player for a specific combat
+    /// # Arguments
+    /// * `combat_id` - The unique identifier of the combat to check
+    /// # Returns
+    /// * `ContractAddress` - The address of the winning player
     fn get_winning_player(self: @TContractState, combat_id: felt252) -> ContractAddress;
 }
+
 
 #[dojo::contract]
 mod game_actions {

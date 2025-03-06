@@ -9,6 +9,9 @@ use blob_arena::collections::blobert::external::TokenAttributes;
 ///    Returns:
 ///    * `u256` - The ID of the newly minted token
 ///
+///    Models:
+///    * BlobertToken
+///
 /// * `traits` - Retrieves the attributes/traits of a specific Blobert NFT
 ///    Parameters:
 ///    * `token_id` - The ID of the token to query

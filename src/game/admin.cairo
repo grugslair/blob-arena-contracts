@@ -1,49 +1,34 @@
 use starknet::ContractAddress;
 use blob_arena::permissions::Role;
 
-/// Admin interface for managing game states and roles
-///
-/// # Interface Functions
-///
-/// ## create
-/// Creates a new game instance with specified parameters
-/// * `owner` - The owner of the game instance
-/// * `initiator` - The address that initiates the game
-/// * `time_limit` - Time limit for the game in seconds
-/// * `player_a` - Address of the first player
-/// * `collection_address_a` - NFT collection address for player A's blob
-/// * `token_id_a` - Token ID of player A's blob
-/// * `attacks_a` - Array of attack moves for player A as (felt252, felt252) tuples
-/// * `player_b` - Address of the second player
-/// * `collection_address_b` - NFT collection address for player B's blob
-/// * `token_id_b` - Token ID of player B's blob
-/// * `attacks_b` - Array of attack moves for player B as (felt252, felt252) tuples
-/// * Returns: A felt252 representing the game ID
-///
-/// ## set_has_role
-/// Sets a role for a specific user
-/// * `user` - Address of the user
-/// * `role` - Role to be assigned
-/// * `has` - Boolean indicating if the user should have the role
-///
-/// ## get_has_role
-/// Checks if a user has a specific role
-/// * `user` - Address of the user to check
-/// * `role` - Role to check for
-/// * Returns: Boolean indicating if the user has the role
-///
-/// ## set_multiple_has_role
-/// Batch sets roles for multiple users
-/// * `users` - Array of user addresses
-/// * `role` - Role to be assigned
-/// * `has` - Boolean indicating if the users should have the role
-///
-/// ## get_world_address
-/// Gets the address of the world contract
-/// * Returns: ContractAddress of the world contract
 
 #[starknet::interface]
 trait IGameAdmin<TContractState> {
+    /// Creates a new game instance with specified parameters
+    ///
+    /// * `owner` - The owner of the game instance
+    /// * `initiator` - The address that initiates the game
+    /// * `time_limit` - Time limit for the game in seconds
+    /// * `player_a` - Address of the first player
+    /// * `collection_address_a` - NFT collection address for player A's blob
+    /// * `token_id_a` - Token ID of player A's blob
+    /// * `attacks_a` - Array of attack moves for player A as (felt252, felt252) tuples
+    /// * `player_b` - Address of the second player
+    /// * `collection_address_b` - NFT collection address for player B's blob
+    /// * `token_id_b` - Token ID of player B's blob
+    /// * `attacks_b` - Array of attack moves for player B as (felt252, felt252) tuples
+    ///
+    /// * Returns: A felt252 representing the game ID
+    ///
+    /// Models:
+    /// - CombatantInfo
+    /// - CombatantToken
+    /// - CombatantState
+    /// - AttackAvailable
+    /// - GameInfo
+    /// - Initiator
+    /// - CombatState
+    ///
     fn create(
         ref self: TContractState,
         owner: ContractAddress,
@@ -58,11 +43,40 @@ trait IGameAdmin<TContractState> {
         token_id_b: u256,
         attacks_b: Array<(felt252, felt252)>,
     ) -> felt252;
+
+    /// Sets a role for a user
+    ///
+    /// * `user` - Address of the user to set role for
+    /// * `role` - Role to be assigned
+    /// * `has` - Boolean indicating if the role should be granted or revoked
+    ///
+    /// Models:
+    /// - Permission
     fn set_has_role(ref self: TContractState, user: ContractAddress, role: Role, has: bool);
+
+    /// Checks if a user has a specific role
+    ///
+    /// * `user` - Address of the user to check
+    /// * `role` - Role to check for
+    ///
+    /// Returns: Boolean indicating if user has the role
     fn get_has_role(self: @TContractState, user: ContractAddress, role: Role) -> bool;
+
+    /// Batch sets roles for multiple users
+    ///
+    /// * `users` - Array of user addresses
+    /// * `role` - Role to be assigned to all users
+    /// * `has` - Boolean indicating if the role should be granted or revoked
+    ///
+    /// Models:
+    /// - Permission
     fn set_multiple_has_role(
         ref self: TContractState, users: Array<ContractAddress>, role: Role, has: bool,
     );
+
+    /// Retrieves the address of the world contract
+    ///
+    /// Returns: ContractAddress of the world contract
     fn get_world_address(self: @TContractState) -> ContractAddress;
 }
 

@@ -28,6 +28,8 @@ enum Phase {
 
 /// Represents the state of a combat encounter in the game.
 ///
+/// Game Model
+///
 /// # Fields
 /// * `id` - A unique identifier for the combat state
 /// * `phase` - The current phase of combat (e.g., attack, defense)

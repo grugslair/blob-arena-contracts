@@ -8,6 +8,9 @@ use blob_arena::collections::blobert::TokenAttributes;
 /// * `mint` - Mints a new Blobert NFT based on a fighter type
 ///   * `fighter` - The id of the amma fighter to mint
 ///   * Returns the minted token ID
+/// Models:
+/// - BlobertToken
+///
 ///
 /// * `traits` - Gets the attributes/traits for a specific token
 ///   * `token_id` - ID of the token to query
