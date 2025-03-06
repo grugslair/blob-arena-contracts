@@ -33,7 +33,7 @@ impl PVEPhaseImpl of PVEPhaseTrait {
     }
 }
 
-/////////////////
+///////////////// Setup models
 
 /// A model representing a PVE (Player vs Environment) opponent in the game
 ///
@@ -126,7 +126,7 @@ struct PVECollectionAllowed {
     allowed: bool,
 }
 
-////////////////////
+//////////////////// Game Models
 
 /// Instance of combat against PVEOpponent
 /// A PVEGame represents a player versus environment game instance

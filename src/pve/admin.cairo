@@ -15,6 +15,16 @@ trait IPVEAdmin<TContractState> {
     /// * `stats` - Base stats for the opponent
     /// * `attacks` - Array of attacks available to the opponent
     /// * `collections_allowed` - Array of collection addresses that can challenge this opponent
+    ///
+    /// Models:
+    /// - Tag
+    /// - Attack
+    /// - PveOpponent
+    /// - PVECollectionAllowed
+    ///
+    /// Events:
+    /// - AttackName
+    /// - PVEBlobertInfo
     fn new_opponent(
         ref self: TContractState,
         name: ByteArray,
@@ -31,6 +41,20 @@ trait IPVEAdmin<TContractState> {
     /// * `health_recovery_pc` - Health recovery percentage between fights
     /// * `opponents` - Array of opponents in the challenge
     /// * `collections_allowed` - Collections that can participate in this challenge
+    ///
+    /// Models:
+    /// - Tag
+    /// - Attack
+    /// - PveOpponent
+    /// - PVECollectionAllowed
+    /// - PVEChallenge
+    /// - PVEStageOpponent
+    ///
+    /// Events:
+    /// - AttackName
+    /// - PVEBlobertInfo
+    /// - PVEChallengeName
+    ///
     fn new_challenge(
         ref self: TContractState,
         name: ByteArray,
@@ -44,6 +68,10 @@ trait IPVEAdmin<TContractState> {
     /// * `id` - Target ID to modify
     /// * `collection` - Collection address to set
     /// * `available` - Whether collection should be available
+    ///
+    /// Models:
+    /// - PVECollectionAllowed
+    ///
     fn set_collection(
         ref self: TContractState, id: felt252, collection: ContractAddress, available: bool,
     );
@@ -53,6 +81,9 @@ trait IPVEAdmin<TContractState> {
     /// * `id` - Target ID to modify
     /// * `collections` - Array of collection addresses
     /// * `available` - Whether collections should be available
+    ///
+    /// Models:
+    /// - PVECollectionAllowed
     fn set_collections(
         ref self: TContractState, id: felt252, collections: Array<ContractAddress>, available: bool,
     );
@@ -62,6 +93,9 @@ trait IPVEAdmin<TContractState> {
     /// * `ids` - Array of IDs to modify
     /// * `collection` - Collection address to set
     /// * `available` - Whether collection should be available
+    ///
+    /// Models:
+    /// - PVECollectionAllowed
     fn set_ids_collection(
         ref self: TContractState, ids: Array<felt252>, collection: ContractAddress, available: bool,
     );
@@ -70,12 +104,18 @@ trait IPVEAdmin<TContractState> {
     /// # Arguments
     /// * `player` - Address of player receiving games
     /// * `amount` - Number of free games to mint
+    ///
+    /// Models
+    /// - PVEFreeGames
     fn mint_free_games(ref self: TContractState, player: ContractAddress, amount: u32);
 
     /// Mints paid game passes for a player
     /// # Arguments
     /// * `player` - Address of player receiving games
     /// * `amount` - Number of paid games to mint
+    ///
+    /// Models:
+    /// - PVEPaidGames
     fn mint_paid_games(ref self: TContractState, player: ContractAddress, amount: u32);
 }
 
