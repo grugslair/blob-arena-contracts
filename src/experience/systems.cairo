@@ -1,3 +1,4 @@
+use core::num::traits::Zero;
 use core::poseidon::poseidon_hash_span;
 use core::cmp::min;
 use starknet::ContractAddress;
@@ -30,13 +31,16 @@ impl ExperienceImpl of ExperienceTrait {
         player: ContractAddress,
         increase: u128,
     ) {
+        let (increase, experience) = self
+            .increase_experience_value(collection, token, player, increase);
+
         let total_experience = self.increase_total_experience(increase);
         let collection_experience = self.increase_collection_experience(collection, increase);
         let player_experience = self.increase_player_experience(player, increase);
+
         let collection_player_experience = self
             .increase_collection_player_experience(collection, player, increase);
         let token_experience = self.increase_token_experience(collection, token, increase);
-        let experience = self.increase_experience_value(collection, token, player, increase);
         self
             .emit_experiences(
                 collection,
@@ -56,12 +60,17 @@ impl ExperienceImpl of ExperienceTrait {
         collection: ContractAddress,
         token: u256,
         player: ContractAddress,
-        increase: u128,
-    ) -> u128 {
+        mut increase: u128,
+    ) -> (u128, u128) {
         let key = experience_key(collection, token, player);
-        let new_experience = self.experience.read(key) + increase;
+        let collection_cap = self.collection_cap.read(collection);
+        let mut new_experience = self.experience.read(key) + increase;
+        if new_experience > collection_cap {
+            increase -= new_experience - collection_cap;
+            new_experience = collection_cap;
+        };
         self.experience.write(key, new_experience);
-        new_experience
+        (increase, new_experience)
     }
 
     fn increase_total_experience(ref self: ContractState, increase: u128) -> u128 {

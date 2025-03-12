@@ -15,6 +15,7 @@ mod experience {
         collection_player_experience: Map<felt252, u128>,
         token_experience: Map<felt252, u128>,
         total_experience: u128,
+        collection_cap: Map<ContractAddress, u128>,
         admins: Map<ContractAddress, bool>,
         writers: Map<ContractAddress, bool>,
     }
@@ -60,7 +61,7 @@ mod experience {
             player: ContractAddress,
             amount: u128,
         ) {
-            assert(self.admins.read(get_caller_address()), 'Not admin');
+            assert(self.writers.read(get_caller_address()), 'Not Writer');
             self.increase_experience(collection, token_id, player, amount);
         }
         fn burn_from(
@@ -70,7 +71,7 @@ mod experience {
             player: ContractAddress,
             amount: u128,
         ) {
-            assert(self.admins.read(get_caller_address()), 'Not admin');
+            assert(self.admins.read(get_caller_address()), 'Not Writer');
             self.decrease_experience(collection, token_id, player, amount);
         }
     }
