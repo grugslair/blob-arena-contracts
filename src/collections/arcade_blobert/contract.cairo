@@ -48,10 +48,10 @@ mod arcade_blobert_actions {
             get_storage_from_hash(BLOBERT_NAMESPACE_HASH)
         }
         fn attributes(self: @ContractState, token_id: u256) -> TokenAttributes {
-            self.storage().get_blobert_token_attributes(token_id)
+            storage().get_blobert_token_attributes(token_id)
         }
         fn owner(self: @ContractState, token_id: u256) -> ContractAddress {
-            self.storage().get_blobert_token_owner(token_id)
+            storage().get_blobert_token_owner(token_id)
         }
     }
 
@@ -65,7 +65,7 @@ mod arcade_blobert_actions {
         fn mint(ref self: ContractState) -> u256 {
             let mut storage = storage();
             let randomness = poseidon_hash_span(['arcade', incrementor('SEED-ITER')].span());
-            storage.mint_random_blobert(get_caller_address(), randomness);
+            storage.mint_random_blobert(get_caller_address(), randomness)
         }
         fn burn(ref self: ContractState, token_id: u256) {
             let mut storage = storage();
