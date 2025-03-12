@@ -20,32 +20,32 @@ use blob_arena::collections::blobert::external::TokenAttributes;
 #[starknet::interface]
 trait IArcadeBlobert<TContractState> {
     fn mint(ref self: TContractState) -> u256;
+    fn burn(ref self: TContractState, token_id: u256);
     fn traits(self: @TContractState, token_id: u256) -> TokenAttributes;
 }
 
 #[dojo::contract]
 mod arcade_blobert_actions {
+    use core::poseidon::poseidon_hash_span;
     use starknet::{ContractAddress, get_caller_address};
     use dojo::world::WorldStorage;
     use blob_arena::{
-        collections::{ICollection, blobert, arcade_blobert}, stats::UStats, default_namespace,
+        collections::{ICollection, blobert, arcade_blobert}, stats::UStats,
+        world::{incrementor, get_storage_from_hash},
     };
-    use blobert::{blobert_namespace, BlobertTrait, BlobertStorage, TokenAttributes};
+    use blobert::{BLOBERT_NAMESPACE_HASH, BlobertTrait, BlobertStorage, TokenAttributes};
     use arcade_blobert::{
-        ArcadeBlobertStorage, mint::ArcadeBlobertMintTrait, collection::BlobertCollectionTrait,
+        ArcadeBlobertStorage, systems::ArcadeBlobertTrait, collection::BlobertCollectionTrait,
     };
     use super::IArcadeBlobert;
 
-    #[generate_trait]
-    impl PrivateImpl of PrivateTrait {
-        fn storage(self: @ContractState) -> WorldStorage {
-            self.world(@"arcade_blobert")
-        }
+    fn storage() -> WorldStorage {
+        get_storage_from_hash(bytearray_hash!("arcade_blobert"))
     }
 
     impl ArcadeBlobertCollectionImpl of BlobertCollectionTrait<ContractState> {
         fn blobert_storage(self: @ContractState) -> WorldStorage {
-            self.world(blobert_namespace())
+            get_storage_from_hash(BLOBERT_NAMESPACE_HASH)
         }
         fn attributes(self: @ContractState, token_id: u256) -> TokenAttributes {
             self.storage().get_blobert_token_attributes(token_id)
@@ -63,8 +63,13 @@ mod arcade_blobert_actions {
     #[abi(embed_v0)]
     impl IArcadeBlobertImpl of IArcadeBlobert<ContractState> {
         fn mint(ref self: ContractState) -> u256 {
-            let mut storage = self.storage();
-            storage.mint_random_blobert(get_caller_address())
+            let mut storage = storage();
+            let randomness = poseidon_hash_span(['arcade', incrementor('SEED-ITER')].span());
+            storage.mint_random_blobert(get_caller_address(), randomness);
+        }
+        fn burn(ref self: ContractState, token_id: u256) {
+            let mut storage = storage();
+            storage.burn_blobert(token_id);
         }
         fn traits(self: @ContractState, token_id: u256) -> TokenAttributes {
             self.attributes(token_id)

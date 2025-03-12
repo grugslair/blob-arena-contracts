@@ -1,15 +1,9 @@
-use core::{integer::u128_safe_divmod, poseidon::poseidon_hash_span};
+use core::num::traits::Zero;
 
-use starknet::{
-    ContractAddress, get_caller_address, get_contract_address, get_block_timestamp, get_tx_info,
-};
-use dojo::{world::WorldStorage, model::{ModelStorage, Model, ModelValueStorage}};
+use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
+use dojo::world::WorldStorage;
 
-use blob_arena::{
-    uuid, world::incrementor, utils::SeedProbability, collections::blobert::Seed, world::WorldTrait,
-    core::SaturatingInto,
-};
-
+use blob_arena::{utils::SeedProbability, collections::blobert::Seed, constants::SECONDS_24_HOURS};
 
 use super::{ArcadeBlobertStorage, storage::TokenAttributes};
 
@@ -19,7 +13,7 @@ const BACKGROUND_COUNT: u8 = 12;
 const MASK_COUNT: u8 = 26;
 const WEAPON_COUNT: u8 = 43;
 
-const SECONDS_IN_DAY: u64 = 86400;
+const MAX_TOKENS_OWNED: u64 = 10;
 
 
 fn u8_to_u128_nz(value: u8) -> NonZero<u128> {
@@ -51,23 +45,26 @@ fn generate_seed(randomness: felt252) -> Seed {
 }
 
 #[generate_trait]
-impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
-    fn mint_random_blobert(ref self: WorldStorage, owner: ContractAddress) -> u256 {
-        let token_id = poseidon_hash_span(['arcade', incrementor('SEED-ITER')].span());
-
-        self.set_blobert_token(token_id, owner, TokenAttributes::Seed(generate_seed(token_id)));
-        token_id.into()
-    }
-    fn mint_blobert_with_seed(ref self: WorldStorage, player: ContractAddress, seed: Seed) -> u256 {
-        let token_id = uuid();
-        self.set_blobert_token(token_id, player, TokenAttributes::Seed(seed));
-        token_id.into()
-    }
-    fn mint_custom_blobert(
-        ref self: WorldStorage, player: ContractAddress, custom_id: felt252,
+impl ArcadeBlobertImpl of ArcadeBlobertTrait {
+    fn mint_random_blobert(
+        ref self: WorldStorage, owner: ContractAddress, randomness: felt252,
     ) -> u256 {
-        let token_id = uuid();
-        self.set_blobert_token(token_id, player, TokenAttributes::Custom(custom_id));
-        token_id.into()
+        let timestamp = get_block_timestamp();
+        assert(
+            timestamp >= self.get_last_mint(owner) + SECONDS_24_HOURS,
+            'Can only mint every 24 hours',
+        );
+        let current_tokens_owned = self.get_amount_tokens_owned(owner);
+        assert(current_tokens_owned < MAX_TOKENS_OWNED, 'Max tokens owned');
+        self.set_amount_tokens_owned(owner, current_tokens_owned + 1);
+        self.set_last_mint(owner, timestamp);
+        self.set_blobert_token(randomness, owner, TokenAttributes::Seed(generate_seed(randomness)));
+        randomness.into()
+    }
+    fn burn_blobert(ref self: WorldStorage, token_id: u256) {
+        let caller = get_caller_address();
+        assert(self.get_blobert_token_owner(token_id) == caller, 'Not owner');
+        self.set_amount_tokens_owned(caller, self.get_amount_tokens_owned(caller) - 1);
+        self.set_blobert_token_owner(token_id, Zero::zero());
     }
 }

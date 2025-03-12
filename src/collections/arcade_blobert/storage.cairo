@@ -36,6 +36,14 @@ struct LastMint {
     timestamp: u64,
 }
 
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct AmountTokensOwned {
+    #[key]
+    player: ContractAddress,
+    amount: u64,
+}
+
 #[generate_trait]
 impl ArcadeBlobertImpl of ArcadeBlobertStorage {
     fn set_blobert_token(
@@ -55,6 +63,14 @@ impl ArcadeBlobertImpl of ArcadeBlobertStorage {
         self.read_member(Model::<BlobertToken>::ptr_from_keys(token_id), selector!("owner"))
     }
 
+    fn set_blobert_token_owner(ref self: WorldStorage, token_id: u256, owner: ContractAddress) {
+        let token_id: felt252 = token_id.try_into().unwrap();
+        self
+            .write_member(
+                Model::<BlobertToken>::ptr_from_keys(token_id), selector!("owner"), owner,
+            );
+    }
+
     fn get_blobert_token_attributes(self: @WorldStorage, token_id: u256) -> TokenAttributes {
         let token_id: felt252 = token_id.try_into().unwrap();
         self.read_member(Model::<BlobertToken>::ptr_from_keys(token_id), selector!("attributes"))
@@ -65,5 +81,11 @@ impl ArcadeBlobertImpl of ArcadeBlobertStorage {
     }
     fn set_last_mint(ref self: WorldStorage, player: ContractAddress, timestamp: u64) {
         self.write_model(@LastMint { player, timestamp });
+    }
+    fn set_amount_tokens_owned(ref self: WorldStorage, player: ContractAddress, amount: u64) {
+        self.write_model(@AmountTokensOwned { player, amount });
+    }
+    fn get_amount_tokens_owned(self: @WorldStorage, player: ContractAddress) -> u64 {
+        self.read_member(Model::<AmountTokensOwned>::ptr_from_keys(player), selector!("amount"))
     }
 }
