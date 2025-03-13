@@ -456,16 +456,16 @@
       "name": "Classic Challenge",
       "health_recovery": 40,
       "opponents": [
-        { "tag": "Stage 1" },
-        { "tag": "Stage 2" },
-        { "tag": "Stage 3" },
-        { "tag": "Stage 4" },
-        { "tag": "Stage 5" },
-        { "tag": "Stage 6" },
-        { "tag": "Stage 7" },
-        { "tag": "Stage 8" },
-        { "tag": "Stage 9" },
-        { "tag": "Boss Stage" }
+        { "tag": "Byte Basher" },
+        { "tag": "Cyber Crusher" },
+        { "tag": "Balloon Bruiser" },
+        { "tag": "Brick Behemoth " },
+        { "tag": "Quantum Gladiator" },
+        { "tag": "Code Conqueror" },
+        { "tag": "Diamond Destroyer" },
+        { "tag": "Bullet Barrager" },
+        { "tag": "Phantom Wraith" },
+        { "tag": "Grug the Colossal" }
       ],
       "collections_allowed": ["arcade_blobert"]
     },
@@ -473,16 +473,16 @@
       "name": "AMMA Challenge",
       "health_recovery": 40,
       "opponents": [
-        { "tag": "AMMA 1" },
-        { "tag": "AMMA 2" },
-        { "tag": "AMMA 3" },
-        { "tag": "AMMA 4" },
-        { "tag": "AMMA 5" },
-        { "tag": "AMMA 6" },
-        { "tag": "AMMA 7" },
-        { "tag": "AMMA 8" },
-        { "tag": "AMMA 9" },
-        { "tag": "AMMA Boss" }
+        { "tag": "Andrzej Studencki" },
+        { "tag": "Brett Skinner" },
+        { "tag": "Adam Harrigan" },
+        { "tag": "Taylor Jones" },
+        { "tag": "Daniel Winter" },
+        { "tag": "Antonio Penedo" },
+        { "tag": "Andrzej Studencki " },
+        { "tag": "Brett Skinner " },
+        { "tag": "Daniel Winter" },
+        { "tag": "Mickey Gallus" }
       ],
       "collections_allowed": ["amma_blobert"]
     }
