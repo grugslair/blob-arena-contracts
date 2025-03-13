@@ -506,7 +506,7 @@ impl PVEStorageImpl of PVEStorage {
         self
             .emit_event(
                 @PVEChallengeRespawn {
-                    challenge_id: *attempt.challenge,
+                    challenge_id: *attempt.id,
                     respawn: *attempt.respawns,
                     stage: *attempt.stage,
                     game_id,
