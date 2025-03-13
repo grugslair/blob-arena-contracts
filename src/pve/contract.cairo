@@ -199,7 +199,15 @@ mod pve_blobert_actions {
             let mut store = self.get_storage();
             let caller = get_caller_address();
             assert(erc721_owner_of(collection_address, token_id) == caller, 'Not owner');
+            assert(
+                self
+                    .pve
+                    .get_pve_current_challenge_attempt(caller, collection_address, token_id)
+                    .is_zero(),
+                'Already in challenge',
+            );
             store.pve.use_game(caller);
+
             store
                 .new_pve_challenge_attempt(
                     challenge_id, caller, collection_address, token_id, attacks,

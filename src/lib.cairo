@@ -73,6 +73,7 @@ mod pve {
     use components::{
         PVEGame, PVEOpponent, PVEBlobertInfo, PVEStorage, PVEPhase, PVEStore, PVEChallengeAttempt,
         PVEPhaseTrait, PVEEndAttemptSchema, PVEOpponentInput, PVE_NAMESPACE_HASH,
+        ARCADE_CHALLENGE_MAX_RESPAWNS,
     };
 }
 

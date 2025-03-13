@@ -10,6 +10,8 @@ use blob_arena::{
 const PVE_NAMESPACE_HASH: felt252 = bytearray_hash!("pve_blobert");
 const OPPONENT_TAG_GROUP: felt252 = 'pve-opponent';
 const CHALLENGE_TAG_GROUP: felt252 = 'pve-challenge';
+const ARCADE_CHALLENGE_TIME_LIMIT: u64 = 60 * 60 * 2; // 2 hours
+const ARCADE_CHALLENGE_MAX_RESPAWNS: u32 = 3;   
 
 #[derive(Drop, Copy, Introspect, PartialEq, Serde)]
 enum PVEPhase {
@@ -172,9 +174,12 @@ struct PVEChallengeAttempt {
     id: felt252,
     challenge: felt252,
     player: ContractAddress,
+    collection: ContractAddress,
+    token_id: u256,
     stats: UStats,
     attacks: Array<felt252>,
     stage: u32,
+    expiry: u64,
     respawns: u32,
     phase: PVEPhase,
 }
@@ -213,6 +218,48 @@ struct PVEChallengeRespawn {
     game_id: felt252,
 }
 
+/// Represents the current PVE challenge status for a specific player and token
+///
+/// # Arguments
+///
+/// * `collection` - The contract address of the NFT collection
+/// * `token` - The token ID within the collection
+/// * `player` - The address of the player attempting the challenge
+/// * `current_challenge` - The identifier of the current challenge being attempted
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct PVECurrentChallengeAttempt {
+    #[key]
+    player: ContractAddress,
+    #[key]
+    collection: ContractAddress,
+    #[key]
+    token_id: u256,
+    attempt_id: felt252,
+}
+
+#[derive(Drop, Serde, Introspect)]
+struct PVEChallengeNextStageSchema {
+    challenge: felt252,
+    player: ContractAddress,
+    collection: ContractAddress,
+    token_id: u256,
+    stats: UStats,
+    attacks: Array<felt252>,
+    stage: u32,
+    expiry: u64,
+    phase: PVEPhase,
+}
+
+#[derive(Drop, Serde, Introspect)]
+struct PVEChallengeAttemptRound{
+    id: felt252,
+    challenge: felt252,
+    player: ContractAddress,
+    stats: UStats,
+    attacks: Array<felt252>,
+    stage: u32,
+}
 
 #[derive(Drop, Serde, Introspect)]
 struct PVEEndAttemptSchema {
@@ -422,7 +469,15 @@ impl PVEStorageImpl of PVEStorage {
         attacks: Array<felt252>,
     ) -> PVEChallengeAttempt {
         let model = PVEChallengeAttempt {
-            id, challenge, player, stats, attacks, stage: 0, respawns: 0, phase: PVEPhase::Active,
+            id,
+            challenge,
+            player,
+            stats,
+            attacks,
+            stage: 0,
+            respawns: 0,
+            phase: PVEPhase::Active,
+            expiry: get_block_timestamp() + ARCADE_CHALLENGE_TIME_LIMIT,
         };
         self.write_model(@model);
         model
@@ -512,5 +567,37 @@ impl PVEStorageImpl of PVEStorage {
                     game_id,
                 },
             );
+    }
+
+    fn get_pve_current_challenge_attempt(
+        self: @WorldStorage, player: ContractAddress, collection: ContractAddress, token_id: u256, 
+    ) -> felt252 {
+        self
+            .read_member(
+                Model::<PVECurrentChallengeAttempt>::ptr_from_keys((player, collection, token_id )),
+                selector!("current_challenge"),
+            )
+    }
+
+    fn set_pve_current_challenge_attempt(
+        ref self: WorldStorage,
+        player: ContractAddress,
+        collection: ContractAddress,
+        token_id: u256,
+        attempt_id: felt252,
+    ) {
+        self
+            .write_model(
+                @PVECurrentChallengeAttempt { collection, token_id, player, attempt_id },
+            );
+    }
+
+    fn remove_pve_current_challenge_attempt(
+        ref self: WorldStorage,
+        player: ContractAddress,
+        collection: ContractAddress,
+        token_id: u256,
+    ) {
+        self.set_pve_current_challenge_attempt(player, collection, token_id, , 0);
     }
 }
