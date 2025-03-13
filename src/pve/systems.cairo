@@ -6,7 +6,10 @@ use blob_arena::{
     pve::{
         PVEGame, PVEOpponent, PVEOpponentInput, PVEBlobertInfo, PVEStorage, PVEPhase, PVEStore,
         PVEChallengeAttempt, PVEPhaseTrait, PVEEndAttemptSchema,
-        components::{OPPONENT_TAG_GROUP, CHALLENGE_TAG_GROUP, ARCADE_CHALLENGE_MAX_RESPAWNS},
+        components::{
+            OPPONENT_TAG_GROUP, CHALLENGE_TAG_GROUP, ARCADE_CHALLENGE_MAX_RESPAWNS,
+            PVEChallengeAttemptRespawnSchema,
+        },
     },
     game::{GameStorage, GameTrait, GameProgress},
     combatants::{CombatantStorage, CombatantTrait, CombatantState, CombatantSetup},
@@ -378,6 +381,7 @@ impl PVEImpl of PVETrait {
         assert(get_block_timestamp() <= attempt.expiry, 'Challenge expired');
         assert(phase == PVEPhase::PlayerLost, 'Player not lost round');
         assert(attempt.respawns < ARCADE_CHALLENGE_MAX_RESPAWNS, 'Max respawns');
+        self.pve.use_game(attempt.player);
 
         attempt.respawns += 1;
 

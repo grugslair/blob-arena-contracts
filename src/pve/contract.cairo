@@ -219,9 +219,7 @@ mod pve_blobert_actions {
         }
         fn respawn_challenge(ref self: ContractState, attempt_id: felt252) {
             let mut store = self.get_storage();
-            let attempt = store.pve.get_pve_players_challenge_attempt(attempt_id);
-            store.pve.use_game(attempt.player);
-            store.respawn_pve_challenge_attempt(attempt);
+            store.respawn_pve_challenge_attempt(attempt_id);
         }
         fn end_challenge(ref self: ContractState, attempt_id: felt252) {
             let mut store = self.get_pve_storage();
@@ -229,7 +227,7 @@ mod pve_blobert_actions {
 
             assert(attempt.player == get_caller_address(), 'Not player');
 
-            let attempt = store.end_pve_challenge_attempt(attempt_id, attempt);
+            store.end_pve_challenge_attempt(attempt_id, attempt);
         }
 
         fn claim_free_game(ref self: ContractState) {
