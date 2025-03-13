@@ -299,17 +299,33 @@ impl PVEImpl of PVETrait {
         let id = uuid();
         let (stats, attacks) = self.ba.get_token_stats_and_attacks(collection, token_id, attacks);
         self.ba.set_combatant_token(id, collection, token_id);
-        let attempt = self.pve.new_pve_challenge_attempt(id, challenge_id, player, stats, attacks);
+        let attempt = self
+            .pve
+            .new_pve_challenge_attempt(
+                id, challenge_id, player, collection, token_id, stats, attacks,
+            );
         self.pve.set_pve_current_challenge_attempt(player, collection, token_id, id);
-        self.create_pve_challenge_attempt_round(attempt, stats.get_max_health());
+        self
+            .create_pve_challenge_attempt_round(
+                attempt.id,
+                attempt.challenge,
+                attempt.player,
+                attempt.stats,
+                attempt.attacks,
+                attempt.stage,
+                stats.get_max_health(),
+            );
         id
     }
 
-    fn next_pve_challenge_round(ref self: PVEStore, mut attempt: PVEChallengeAttempt) {
+    fn next_pve_challenge_round(ref self: PVEStore, attempt_id: felt252) {
+        let mut attempt = self.pve.get_pve_challenge_attempt_next_stage(attempt_id);
+        assert(attempt.player == get_caller_address(), 'Not player');
+        attempt.phase.assert_active();
         let (combatant_id, phase) = self
             .pve
             .get_pve_game_combatant_phase(
-                self.pve.get_pve_stage_game_id(attempt.id, attempt.stage),
+                self.pve.get_pve_stage_game_id(attempt_id, attempt.stage),
             );
         assert(phase == PVEPhase::PlayerWon, 'Player not won last round');
         assert(get_block_timestamp() <= attempt.expiry, 'Challenge expired');
@@ -321,11 +337,11 @@ impl PVEImpl of PVETrait {
 
         attempt.stage += 1;
 
-        self.pve.set_pve_challenge_stage(attempt.id, attempt.stage);
+        self.pve.set_pve_challenge_stage(attempt_id, attempt.stage);
 
         self
             .create_pve_challenge_attempt_round(
-                attempt.id,
+                attempt_id,
                 attempt.challenge,
                 attempt.player,
                 attempt.stats,
@@ -352,20 +368,32 @@ impl PVEImpl of PVETrait {
         self.pve.set_pve_stage_game(id, stage, game.id);
     }
 
-    fn respawn_pve_challenge_attempt(ref self: PVEStore, mut attempt: PVEChallengeAttempt) {
-        let game_id = self.pve.get_pve_stage_game_id(attempt.id, attempt.stage);
+    fn respawn_pve_challenge_attempt(ref self: PVEStore, attempt_id: felt252) {
+        let mut attempt = self.pve.get_pve_challenge_attempt_respawn(attempt_id);
+        let game_id = self.pve.get_pve_stage_game_id(attempt_id, attempt.stage);
         let phase = self.pve.get_pve_game_phase(game_id);
 
+        attempt.phase.assert_active();
+        assert(attempt.player == get_caller_address(), 'Not player');
         assert(get_block_timestamp() <= attempt.expiry, 'Challenge expired');
         assert(phase == PVEPhase::PlayerLost, 'Player not lost round');
         assert(attempt.respawns < ARCADE_CHALLENGE_MAX_RESPAWNS, 'Max respawns');
 
         attempt.respawns += 1;
 
-        self.pve.set_pve_challenge_respawns(attempt.id, attempt.respawns);
-        self.pve.emit_pve_respawn(@attempt, game_id);
+        self.pve.set_pve_challenge_respawns(attempt_id, attempt.respawns);
+        self.pve.emit_pve_respawn(attempt_id, attempt.respawns, attempt.stage, game_id);
         let health = attempt.stats.get_max_health();
-        self.create_pve_challenge_attempt_round(attempt, health);
+        self
+            .create_pve_challenge_attempt_round(
+                attempt_id,
+                attempt.challenge,
+                attempt.player,
+                attempt.stats,
+                attempt.attacks,
+                attempt.stage,
+                health,
+            );
     }
 
     fn end_pve_challenge_attempt(

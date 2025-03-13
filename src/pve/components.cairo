@@ -239,11 +239,9 @@ struct PVECurrentChallengeAttempt {
 }
 
 #[derive(Drop, Serde, Introspect)]
-struct PVEChallengeNextStageSchema {
+struct PVEChallengeAttemptNextStageSchema {
     challenge: felt252,
     player: ContractAddress,
-    collection: ContractAddress,
-    token_id: u256,
     stats: UStats,
     attacks: Array<felt252>,
     stage: u32,
@@ -252,19 +250,34 @@ struct PVEChallengeNextStageSchema {
 }
 
 #[derive(Drop, Serde, Introspect)]
-struct PVEChallengeAttemptRound{
-    id: felt252,
+struct PVEChallengeAttemptRespawnSchema {
     challenge: felt252,
     player: ContractAddress,
     stats: UStats,
     attacks: Array<felt252>,
     stage: u32,
+    expiry: u64,
+    respawns: u32,
+    phase: PVEPhase,
+}
+
+#[derive(Drop, Serde, Introspect)]
+struct PVEChallengeAttemptRound{
+    challenge: felt252,
+    player: ContractAddress,
+    stats: UStats,
+    attacks: Array<felt252>,
+    expiry: u64,
+    stage: u32,
+    phase: PVEPhase,
 }
 
 #[derive(Drop, Serde, Introspect)]
 struct PVEEndAttemptSchema {
     challenge: felt252,
     player: ContractAddress,
+    collection: ContractAddress,
+    token_id: u256,
     stage: u32,
     phase: PVEPhase,
 }
@@ -465,6 +478,8 @@ impl PVEStorageImpl of PVEStorage {
         id: felt252,
         challenge: felt252,
         player: ContractAddress,
+        collection:ContractAddress,
+        token_id: u256,
         stats: UStats,
         attacks: Array<felt252>,
     ) -> PVEChallengeAttempt {
@@ -472,6 +487,8 @@ impl PVEStorageImpl of PVEStorage {
             id,
             challenge,
             player,
+            collection,
+            token_id,
             stats,
             attacks,
             stage: 0,
@@ -498,11 +515,22 @@ impl PVEStorageImpl of PVEStorage {
     ) -> T {
         self.read_schema(Model::<PVEChallengeAttempt>::ptr_from_keys(id))
     }
+    fn get_pve_challenge_attempt_next_stage(
+        self: @WorldStorage, id: felt252,
+    ) -> PVEChallengeAttemptNextStageSchema {
+        self.get_pve_challenge_attempt_schema(id)
+    }
+    fn get_pve_challenge_attempt_respawn(
+        self: @WorldStorage, id: felt252,
+    ) -> PVEChallengeAttemptRespawnSchema {
+        self.get_pve_challenge_attempt_schema(id)
+    }
     fn get_pve_challenge_attempt_end_schema(
         self: @WorldStorage, id: felt252,
     ) -> PVEEndAttemptSchema {
         self.get_pve_challenge_attempt_schema(id)
     }
+
     fn set_pve_stage_game(
         ref self: WorldStorage, attempt_id: felt252, stage: u32, game_id: felt252,
     ) {
@@ -557,13 +585,13 @@ impl PVEStorageImpl of PVEStorage {
         self.read_member(Model::<PVEPaidGames>::ptr_from_keys(player), selector!("games"))
     }
 
-    fn emit_pve_respawn(ref self: WorldStorage, attempt: @PVEChallengeAttempt, game_id: felt252) {
+    fn emit_pve_respawn(ref self: WorldStorage, attempt_id: felt252, respawns: u32, stage: u32, game_id: felt252) {
         self
             .emit_event(
                 @PVEChallengeRespawn {
-                    challenge_id: *attempt.challenge,
-                    respawn: *attempt.respawns,
-                    stage: *attempt.stage,
+                    challenge_id: attempt_id,
+                    respawn: respawns,
+                    stage: stage,
                     game_id,
                 },
             );
