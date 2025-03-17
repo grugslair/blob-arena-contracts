@@ -162,8 +162,11 @@ struct PVEGame {
 /// * `id` - Unique identifier for this challenge attempt
 /// * `challenge` - The identifier of the PVE challenge being attempted
 /// * `player` - The player's contract address
+/// * `collection` - The contract address of the NFT collection
+/// * `token_id` - The token ID of the NFT being used
 /// * `stats` - The current stats of the player during this attempt
 /// * `attacks` - Array of attack moves performed by the player
+/// * `expiry` - Timestamp of when the challenge attempt expires
 /// * `stage` - Current stage number in the challenge
 /// * `respawns` - Number of times the player has respawned
 /// * `phase` - Current phase of the PVE challenge
@@ -178,8 +181,8 @@ struct PVEChallengeAttempt {
     token_id: u256,
     stats: UStats,
     attacks: Array<felt252>,
-    stage: u32,
     expiry: u64,
+    stage: u32,
     respawns: u32,
     phase: PVEPhase,
 }
