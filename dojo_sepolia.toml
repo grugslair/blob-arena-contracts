@@ -48,6 +48,7 @@ mappings = { "blob_arena" = [
     "PVEChallengeAttempt",
     "PVEStageGame",
     "PVEChallengeRespawn",
+    "PVECurrentChallengeAttempt",
 ], "ba_permissions" = [
     "Permission",
 ] }
@@ -62,7 +63,6 @@ mappings = { "blob_arena" = [
 "blob_arena-CombatantToken" = [
     "blob_arena-lobby_actions",
     "blob_arena-game_admin",
-    "pve_blobert-pve_blobert_actions",
 ]
 "blob_arena-CombatantInfo" = [
     "blob_arena-lobby_actions",
@@ -127,6 +127,7 @@ mappings = { "blob_arena" = [
 "pve_blobert-PVEPaidGames" = ["pve_blobert-pve_blobert_actions"]
 "pve_blobert-PVEChallengeRespawn" = ["pve_blobert-pve_blobert_actions"]
 "pve_blobert-CombatantToken" = ["pve_blobert-pve_blobert_actions"]
+"pve_blobert-PVECurrentChallengeAttempt" = ["pve_blobert-pve_blobert_actions"]
 
 "blobert" = ["blobert-blobert_actions"]
 "arcade_blobert" = ["arcade_blobert-arcade_blobert_actions"]

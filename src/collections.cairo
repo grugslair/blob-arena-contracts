@@ -14,4 +14,3 @@ struct ERC721Token {
     collection_address: ContractAddress,
     token_id: u256,
 }
-
