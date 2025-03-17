@@ -199,7 +199,15 @@ mod pve_blobert_actions {
             let mut store = self.get_storage();
             let caller = get_caller_address();
             assert(erc721_owner_of(collection_address, token_id) == caller, 'Not owner');
+            assert(
+                store
+                    .pve
+                    .get_pve_current_challenge_attempt(caller, collection_address, token_id)
+                    .is_zero(),
+                'Already in challenge',
+            );
             store.pve.use_game(caller);
+
             store
                 .new_pve_challenge_attempt(
                     challenge_id, caller, collection_address, token_id, attacks,
@@ -207,13 +215,11 @@ mod pve_blobert_actions {
         }
         fn next_challenge_round(ref self: ContractState, attempt_id: felt252) {
             let mut store = self.get_storage();
-            store.next_pve_challenge_round(store.pve.get_pve_players_challenge_attempt(attempt_id));
+            store.next_pve_challenge_round(attempt_id);
         }
         fn respawn_challenge(ref self: ContractState, attempt_id: felt252) {
             let mut store = self.get_storage();
-            let attempt = store.pve.get_pve_players_challenge_attempt(attempt_id);
-            store.pve.use_game(attempt.player);
-            store.respawn_pve_challenge_attempt(attempt);
+            store.respawn_pve_challenge_attempt(attempt_id);
         }
         fn end_challenge(ref self: ContractState, attempt_id: felt252) {
             let mut store = self.get_pve_storage();
