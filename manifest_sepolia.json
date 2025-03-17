@@ -1,9 +1,9 @@
 {
   "world": {
     "class_hash": "0x7c9469d45a9cdbab775035afb48e1fa73fb35ab059fcb9dfb0a301aa973e783",
-    "address": "0x5976e0e1c9957cb3161ccfc58d11b3ee3265d39ef125a1aaa6c4607521e87a7",
-    "seed": "blob-arena-0.11.11",
-    "name": "blob_arena-0.11.11",
+    "address": "0x698f85f3494edaa9e508644abf2643195385481fe8eaf2abfeb31f2fd13ec62",
+    "seed": "blob-arena-0.12",
+    "name": "blob_arena-0.12",
     "entrypoints": [
       "uuid",
       "set_metadata",
@@ -1312,7 +1312,7 @@
   },
   "contracts": [
     {
-      "address": "0x6fbb7a6b1606ea9aa16d09872b166661af72bb35b8be80d0b34d7698076e8f4",
+      "address": "0x5a929a543e55877c58973a677fbd3b145f5057b39b87c89d879c87715878d52",
       "class_hash": "0xcdf9b48abd7436c6983f44701245ad1508e5aa73f0ab2bdf0926d4118eecf6",
       "abi": [
         {
@@ -2216,7 +2216,7 @@
       ]
     },
     {
-      "address": "0x65f7a163bf1d46d30859176d051d20017b718f82834f4a5e5f6f093479a7cb1",
+      "address": "0x56e5ae9af38c6eb85c226fbadaa31e37b5ee1a5401a9c371f4e7f154b76dce3",
       "class_hash": "0x5be639d6649d0b69a2c01b9578f8ee6ba096334f3cfb26bada3de37eda44fe6",
       "abi": [
         {
@@ -2644,7 +2644,7 @@
       ]
     },
     {
-      "address": "0xfdd0cb2ee098b6926dda79bcbb1e808017dd687528f307d9a56c4d921b071",
+      "address": "0x2e4769ec3ac16456e6c6f806efc90f49d46df2a07b431a5a5d8b62e4fb21633",
       "class_hash": "0x7e6ba358b08dc8e1f88bf1925d341e2b0ec61da2b8fab1e30178791e3fd2422",
       "abi": [
         {
@@ -2937,7 +2937,7 @@
       ]
     },
     {
-      "address": "0x4ae5b40983f8055ab44a53b324f0d4c76d450b133dce785716e803ef9fb3eda",
+      "address": "0x64c94e38b12b76f89b2b2f4f89ba239c663d48bef506bdc03a436a63fc223e6",
       "class_hash": "0x42686c5cee8585c1d225abf5c1d1bf6d2869754c0759d7c7e5d562554d30153",
       "abi": [
         {
@@ -3321,7 +3321,7 @@
       ]
     },
     {
-      "address": "0x1e86e467529e611c365ea3a738c8f21bf22d3727beec60139505a94a5561f03",
+      "address": "0x170d4eb49bf626342a15cf77b0809baebee30cafbf7884b2d89bbb27e689f6d",
       "class_hash": "0x4c23390b9b2dbfa48e55a62587971e38335f4e0b3534d198bd4353461ece366",
       "abi": [
         {
@@ -3649,7 +3649,7 @@
       ]
     },
     {
-      "address": "0x4129dd74cfef20e41ad8a31e5eee6f28463ed93ca774911631363e9f3510dd2",
+      "address": "0x47b48aaf7caf78d2384ec3c4dde9a90f8806dd720a9c64a8d23e1c496cf2939",
       "class_hash": "0x206a0310daa5d7d1a2be1332c59d193ccb71b1932a61f74a418525519f4cdfb",
       "abi": [
         {
@@ -4469,8 +4469,8 @@
       ]
     },
     {
-      "address": "0x39b1a0e069fce84b34d80fdc3e9fd78b85430659b80aa26962e164bb3aa35e4",
-      "class_hash": "0x65fc19b3502ad623e1e257cd482b3ed086dbf069068cc5456ce722d7970d4f2",
+      "address": "0x14aefc8245c5f2c17204857372944aba413ec639547359b629682c542eca555",
+      "class_hash": "0x8c00d09117eaf6d654a3281630b8589c4c47f67e42a4733f089e42c654a340",
       "abi": [
         {
           "type": "impl",
@@ -4788,7 +4788,7 @@
       ]
     },
     {
-      "address": "0x20ad55f118e70feca5ca5529055a232e92f8cebff83aa43d1b8203d06712b85",
+      "address": "0x4f9942c30902cbdad8ec67a18d7310c0738f7a51ada791a222fd3ced61dbbdf",
       "class_hash": "0x6d8009e0d5d84cc26e55f906c16dc61c0fb3e11d053a8ecfa107e5254a41ea8",
       "abi": [
         {
@@ -5594,7 +5594,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x643899f17d0f52ecb8c8379a81359fc343a65378ef82219fc2c012d291fb3b5",
+      "class_hash": "0x156fc6f1b2e8fdaccf2ab0532c28bb3f4ab59bb6f4f32f0495350d9c4ea40c1",
       "tag": "pve_blobert-PVEChallengeAttempt",
       "selector": "0x7757fdedd83d82c2cd12e226c05b5f7c863199de7b6bc4d005ff2200379ba09"
     },
@@ -5603,6 +5603,12 @@
       "class_hash": "0x2f6de89326e41f09914a9c183e456d461d0630d249eeefd59c0f3a205a63360",
       "tag": "pve_blobert-PVECollectionAllowed",
       "selector": "0x4529fa4c78d7ad06798fb77345a202687442ce76db2f06dd3edf5abc6b98811"
+    },
+    {
+      "members": [],
+      "class_hash": "0x208b230641e464930f3f6ca2f8b87d5fa9592869028feb21e06a8f2c18d8d9f",
+      "tag": "pve_blobert-PVECurrentChallengeAttempt",
+      "selector": "0x6c8976d142a9a003780a3d18f86d49085a6413dcd02dd4f5598c79c2af09016"
     },
     {
       "members": [],
@@ -5659,6 +5665,12 @@
       "class_hash": "0x449129c2e2efc830d7137c37b277dd45a17d4ba19fe38e622d24923cc50600c",
       "tag": "blob_arena-AttackName",
       "selector": "0x4e7b25e16a9bdcc89775cfc5c5bcce2d60cce5977d51a2d9b0d89590c7b311"
+    },
+    {
+      "members": [],
+      "class_hash": "0x211443a93008fe54d728d9ba5d5940a28b6114f127899bca6d684a9f7d2bcef",
+      "tag": "blob_arena-AttackRequirements",
+      "selector": "0x1ca3072dd91997930d20176d9b12a1ef99459a2d93ea3f052eb524c742c207c"
     },
     {
       "members": [],
