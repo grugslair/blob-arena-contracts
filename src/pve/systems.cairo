@@ -5,10 +5,10 @@ use blob_arena::{
     attacks::{Attack, AttackInput, AttackTrait},
     pve::{
         PVEGame, PVEOpponent, PVEOpponentInput, PVEBlobertInfo, PVEStorage, PVEPhase, PVEStore,
-        PVEChallengeAttempt, PVEPhaseTrait, PVEEndAttemptSchema,
+        PVEChallengeAttempt, PVEPhaseTrait, PVEAttemptEnd,
         components::{
             OPPONENT_TAG_GROUP, CHALLENGE_TAG_GROUP, ARCADE_CHALLENGE_MAX_RESPAWNS,
-            PVEChallengeAttemptRespawnSchema,
+            PVEAttemptRespawn,
         },
     },
     game::{GameStorage, GameTrait, GameProgress},
@@ -401,18 +401,14 @@ impl PVEImpl of PVETrait {
     }
 
     fn end_pve_challenge_attempt(
-        ref self: WorldStorage, attempt_id: felt252, attempt: PVEEndAttemptSchema,
+        ref self: WorldStorage, attempt_id: felt252, attempt: PVEAttemptEnd,
     ) {
         attempt.phase.assert_active();
-        let phase = self.get_pve_game_phase(self.get_pve_stage_game_id(attempt_id, attempt.stage));
-        let won = match phase {
-            PVEPhase::PlayerWon => {
-                assert(
-                    self.get_pve_stage_game_id(attempt.challenge, attempt.stage + 1).is_zero(),
-                    'Not last stage',
-                );
-                true
-            },
+        let won =
+            match self.get_pve_game_phase(self.get_pve_stage_game_id(attempt_id, attempt.stage)) {
+            PVEPhase::PlayerWon => self
+                .get_pve_stage_game_id(attempt.challenge, attempt.stage + 1)
+                .is_zero(),
             PVEPhase::PlayerLost => false,
             _ => panic!("Combat not ended"),
         };

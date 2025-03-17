@@ -11,7 +11,7 @@ const PVE_NAMESPACE_HASH: felt252 = bytearray_hash!("pve_blobert");
 const OPPONENT_TAG_GROUP: felt252 = 'pve-opponent';
 const CHALLENGE_TAG_GROUP: felt252 = 'pve-challenge';
 const ARCADE_CHALLENGE_TIME_LIMIT: u64 = 60 * 60 * 2; // 2 hours
-const ARCADE_CHALLENGE_MAX_RESPAWNS: u32 = 3;   
+const ARCADE_CHALLENGE_MAX_RESPAWNS: u32 = 3;
 
 #[derive(Drop, Copy, Introspect, PartialEq, Serde)]
 enum PVEPhase {
@@ -239,41 +239,30 @@ struct PVECurrentChallengeAttempt {
 }
 
 #[derive(Drop, Serde, Introspect)]
-struct PVEChallengeAttemptNextStageSchema {
+struct PVEAttemptNextStage {
     challenge: felt252,
     player: ContractAddress,
     stats: UStats,
     attacks: Array<felt252>,
-    stage: u32,
     expiry: u64,
+    stage: u32,
     phase: PVEPhase,
 }
 
 #[derive(Drop, Serde, Introspect)]
-struct PVEChallengeAttemptRespawnSchema {
+struct PVEAttemptRespawn {
     challenge: felt252,
     player: ContractAddress,
     stats: UStats,
     attacks: Array<felt252>,
-    stage: u32,
     expiry: u64,
+    stage: u32,
+    phase: PVEPhase,
     respawns: u32,
-    phase: PVEPhase,
 }
 
 #[derive(Drop, Serde, Introspect)]
-struct PVEChallengeAttemptRound{
-    challenge: felt252,
-    player: ContractAddress,
-    stats: UStats,
-    attacks: Array<felt252>,
-    expiry: u64,
-    stage: u32,
-    phase: PVEPhase,
-}
-
-#[derive(Drop, Serde, Introspect)]
-struct PVEEndAttemptSchema {
+struct PVEAttemptEnd {
     challenge: felt252,
     player: ContractAddress,
     collection: ContractAddress,
@@ -478,7 +467,7 @@ impl PVEStorageImpl of PVEStorage {
         id: felt252,
         challenge: felt252,
         player: ContractAddress,
-        collection:ContractAddress,
+        collection: ContractAddress,
         token_id: u256,
         stats: UStats,
         attacks: Array<felt252>,
@@ -517,17 +506,13 @@ impl PVEStorageImpl of PVEStorage {
     }
     fn get_pve_challenge_attempt_next_stage(
         self: @WorldStorage, id: felt252,
-    ) -> PVEChallengeAttemptNextStageSchema {
+    ) -> PVEAttemptNextStage {
         self.get_pve_challenge_attempt_schema(id)
     }
-    fn get_pve_challenge_attempt_respawn(
-        self: @WorldStorage, id: felt252,
-    ) -> PVEChallengeAttemptRespawnSchema {
+    fn get_pve_challenge_attempt_respawn(self: @WorldStorage, id: felt252) -> PVEAttemptRespawn {
         self.get_pve_challenge_attempt_schema(id)
     }
-    fn get_pve_challenge_attempt_end_schema(
-        self: @WorldStorage, id: felt252,
-    ) -> PVEEndAttemptSchema {
+    fn get_pve_challenge_attempt_end_schema(self: @WorldStorage, id: felt252) -> PVEAttemptEnd {
         self.get_pve_challenge_attempt_schema(id)
     }
 
@@ -585,24 +570,23 @@ impl PVEStorageImpl of PVEStorage {
         self.read_member(Model::<PVEPaidGames>::ptr_from_keys(player), selector!("games"))
     }
 
-    fn emit_pve_respawn(ref self: WorldStorage, attempt_id: felt252, respawns: u32, stage: u32, game_id: felt252) {
+    fn emit_pve_respawn(
+        ref self: WorldStorage, attempt_id: felt252, respawns: u32, stage: u32, game_id: felt252,
+    ) {
         self
             .emit_event(
                 @PVEChallengeRespawn {
-                    challenge_id: attempt_id,
-                    respawn: respawns,
-                    stage: stage,
-                    game_id,
+                    challenge_id: attempt_id, respawn: respawns, stage: stage, game_id,
                 },
             );
     }
 
     fn get_pve_current_challenge_attempt(
-        self: @WorldStorage, player: ContractAddress, collection: ContractAddress, token_id: u256, 
+        self: @WorldStorage, player: ContractAddress, collection: ContractAddress, token_id: u256,
     ) -> felt252 {
         self
             .read_member(
-                Model::<PVECurrentChallengeAttempt>::ptr_from_keys((player, collection, token_id )),
+                Model::<PVECurrentChallengeAttempt>::ptr_from_keys((player, collection, token_id)),
                 selector!("current_challenge"),
             )
     }
@@ -614,10 +598,7 @@ impl PVEStorageImpl of PVEStorage {
         token_id: u256,
         attempt_id: felt252,
     ) {
-        self
-            .write_model(
-                @PVECurrentChallengeAttempt { collection, token_id, player, attempt_id },
-            );
+        self.write_model(@PVECurrentChallengeAttempt { collection, token_id, player, attempt_id });
     }
 
     fn remove_pve_current_challenge_attempt(
@@ -626,6 +607,6 @@ impl PVEStorageImpl of PVEStorage {
         collection: ContractAddress,
         token_id: u256,
     ) {
-        self.set_pve_current_challenge_attempt(player, collection, token_id, , 0);
+        self.set_pve_current_challenge_attempt(player, collection, token_id, 0);
     }
 }

@@ -200,7 +200,7 @@ mod pve_blobert_actions {
             let caller = get_caller_address();
             assert(erc721_owner_of(collection_address, token_id) == caller, 'Not owner');
             assert(
-                self
+                store
                     .pve
                     .get_pve_current_challenge_attempt(caller, collection_address, token_id)
                     .is_zero(),
