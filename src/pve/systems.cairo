@@ -5,8 +5,11 @@ use blob_arena::{
     attacks::{Attack, AttackInput, AttackTrait},
     pve::{
         PVEGame, PVEOpponent, PVEOpponentInput, PVEBlobertInfo, PVEStorage, PVEPhase, PVEStore,
-        PVEChallengeAttempt, PVEPhaseTrait, PVEEndAttemptSchema,
-        components::{OPPONENT_TAG_GROUP, CHALLENGE_TAG_GROUP},
+        PVEChallengeAttempt, PVEPhaseTrait, PVEAttemptEnd,
+        components::{
+            OPPONENT_TAG_GROUP, CHALLENGE_TAG_GROUP, ARCADE_CHALLENGE_MAX_RESPAWNS,
+            PVEAttemptRespawn,
+        },
     },
     game::{GameStorage, GameTrait, GameProgress},
     combatants::{CombatantStorage, CombatantTrait, CombatantState, CombatantSetup},
@@ -291,32 +294,44 @@ impl PVEImpl of PVETrait {
         ref self: PVEStore,
         challenge_id: felt252,
         player: ContractAddress,
-        player_collection_address: ContractAddress,
-        player_token_id: u256,
-        player_attacks: Array<(felt252, felt252)>,
+        collection: ContractAddress,
+        token_id: u256,
+        attacks: Array<(felt252, felt252)>,
     ) -> felt252 {
-        self.pve.assert_collection_allowed(challenge_id, player_collection_address);
+        self.pve.assert_collection_allowed(challenge_id, collection);
         let id = uuid();
-        let (stats, attacks) = self
-            .ba
-            .get_token_stats_and_attacks(
-                player_collection_address, player_token_id, player_attacks,
+        let (stats, attacks) = self.ba.get_token_stats_and_attacks(collection, token_id, attacks);
+        self.ba.set_combatant_token(id, collection, token_id);
+        let attempt = self
+            .pve
+            .new_pve_challenge_attempt(
+                id, challenge_id, player, collection, token_id, stats, attacks,
             );
-        self.ba.set_combatant_token(id, player_collection_address, player_token_id);
-        let attempt = self.pve.new_pve_challenge_attempt(id, challenge_id, player, stats, attacks);
-
-        self.create_pve_challenge_attempt_round(attempt, stats.get_max_health());
+        self.pve.set_pve_current_challenge_attempt(player, collection, token_id, id);
+        self
+            .create_pve_challenge_attempt_round(
+                attempt.id,
+                attempt.challenge,
+                attempt.player,
+                attempt.stats,
+                attempt.attacks,
+                attempt.stage,
+                stats.get_max_health(),
+            );
         id
     }
 
-    fn next_pve_challenge_round(ref self: PVEStore, mut attempt: PVEChallengeAttempt) {
+    fn next_pve_challenge_round(ref self: PVEStore, attempt_id: felt252) {
+        let mut attempt = self.pve.get_pve_challenge_attempt_next_stage(attempt_id);
+        assert(attempt.player == get_caller_address(), 'Not player');
+        attempt.phase.assert_active();
         let (combatant_id, phase) = self
             .pve
             .get_pve_game_combatant_phase(
-                self.pve.get_pve_stage_game_id(attempt.id, attempt.stage),
+                self.pve.get_pve_stage_game_id(attempt_id, attempt.stage),
             );
         assert(phase == PVEPhase::PlayerWon, 'Player not won last round');
-
+        assert(get_block_timestamp() <= attempt.expiry, 'Challenge expired');
         let health = calc_restored_health(
             self.ba.get_combatant_health(combatant_id),
             attempt.stats.vitality,
@@ -325,54 +340,84 @@ impl PVEImpl of PVETrait {
 
         attempt.stage += 1;
 
-        self.pve.set_pve_challenge_stage(attempt.id, attempt.stage);
-        self.create_pve_challenge_attempt_round(attempt, health);
+        self.pve.set_pve_challenge_stage(attempt_id, attempt.stage);
+
+        self
+            .create_pve_challenge_attempt_round(
+                attempt_id,
+                attempt.challenge,
+                attempt.player,
+                attempt.stats,
+                attempt.attacks,
+                attempt.stage,
+                health,
+            );
     }
 
     fn create_pve_challenge_attempt_round(
-        ref self: PVEStore, attempt: PVEChallengeAttempt, health: u8,
+        ref self: PVEStore,
+        id: felt252,
+        challenge: felt252,
+        player: ContractAddress,
+        stats: UStats,
+        attacks: Array<felt252>,
+        stage: u32,
+        health: u8,
     ) {
-        let opponent = self.pve.get_pve_stage_opponent(attempt.challenge, attempt.stage);
+        let opponent = self.pve.get_pve_stage_opponent(challenge, stage);
         assert(opponent.is_non_zero(), 'No more stages');
         let game = self
-            .setup_pve_opponent_in_combat(
-                attempt.player, attempt.stats, health, attempt.attacks.span(), opponent,
-            );
-        self.pve.set_pve_stage_game(attempt.id, attempt.stage, game.id);
+            .setup_pve_opponent_in_combat(player, stats, health, attacks.span(), opponent);
+        self.pve.set_pve_stage_game(id, stage, game.id);
     }
 
-    fn respawn_pve_challenge_attempt(ref self: PVEStore, mut attempt: PVEChallengeAttempt) {
-        let game_id = self.pve.get_pve_stage_game_id(attempt.id, attempt.stage);
+    fn respawn_pve_challenge_attempt(ref self: PVEStore, attempt_id: felt252) {
+        let mut attempt = self.pve.get_pve_challenge_attempt_respawn(attempt_id);
+        let game_id = self.pve.get_pve_stage_game_id(attempt_id, attempt.stage);
         let phase = self.pve.get_pve_game_phase(game_id);
 
+        attempt.phase.assert_active();
+        assert(attempt.player == get_caller_address(), 'Not player');
+        assert(get_block_timestamp() <= attempt.expiry, 'Challenge expired');
         assert(phase == PVEPhase::PlayerLost, 'Player not lost round');
+        assert(attempt.respawns < ARCADE_CHALLENGE_MAX_RESPAWNS, 'Max respawns');
+        self.pve.use_game(attempt.player);
+
         attempt.respawns += 1;
 
-        self.pve.set_pve_challenge_respawns(attempt.id, attempt.respawns);
-        self.pve.emit_pve_respawn(@attempt, game_id);
+        self.pve.set_pve_challenge_respawns(attempt_id, attempt.respawns);
+        self.pve.emit_pve_respawn(attempt_id, attempt.respawns, attempt.stage, game_id);
         let health = attempt.stats.get_max_health();
-        self.create_pve_challenge_attempt_round(attempt, health);
+        self
+            .create_pve_challenge_attempt_round(
+                attempt_id,
+                attempt.challenge,
+                attempt.player,
+                attempt.stats,
+                attempt.attacks,
+                attempt.stage,
+                health,
+            );
     }
 
     fn end_pve_challenge_attempt(
-        ref self: WorldStorage, attempt_id: felt252, attempt: PVEEndAttemptSchema,
+        ref self: WorldStorage, attempt_id: felt252, attempt: PVEAttemptEnd,
     ) {
         attempt.phase.assert_active();
-        let phase = self.get_pve_game_phase(self.get_pve_stage_game_id(attempt_id, attempt.stage));
-        let won = match phase {
-            PVEPhase::PlayerWon => {
-                assert(
-                    self.get_pve_stage_game_id(attempt.challenge, attempt.stage + 1).is_zero(),
-                    'Not last stage',
-                );
-                true
-            },
+        let won =
+            match self.get_pve_game_phase(self.get_pve_stage_game_id(attempt_id, attempt.stage)) {
+            PVEPhase::PlayerWon => self
+                .get_pve_stage_game_id(attempt.challenge, attempt.stage + 1)
+                .is_zero(),
             PVEPhase::PlayerLost => false,
             _ => panic!("Combat not ended"),
         };
+        self
+            .remove_pve_current_challenge_attempt(
+                attempt.player, attempt.collection, attempt.token_id,
+            );
         self.set_pve_challenge_attempt_ended(attempt_id, won);
     }
-
 
     fn use_free_game(ref self: WorldStorage, player: ContractAddress) -> bool {
         let games = self.get_number_of_free_games(player);
@@ -382,6 +427,7 @@ impl PVEImpl of PVETrait {
         };
         available
     }
+
     fn use_paid_game(ref self: WorldStorage, player: ContractAddress) {
         let games = self.get_number_of_paid_games(player);
         assert(games > 0, 'No paid games');

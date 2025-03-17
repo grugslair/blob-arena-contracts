@@ -2645,7 +2645,7 @@
     },
     {
       "address": "0xfdd0cb2ee098b6926dda79bcbb1e808017dd687528f307d9a56c4d921b071",
-      "class_hash": "0x231e0ab5845d2e0b36f0dd28c43ce7bd680f209cb8317f40260ad61886c7628",
+      "class_hash": "0x7e6ba358b08dc8e1f88bf1925d341e2b0ec61da2b8fab1e30178791e3fd2422",
       "abi": [
         {
           "type": "impl",
@@ -3322,7 +3322,7 @@
     },
     {
       "address": "0x1e86e467529e611c365ea3a738c8f21bf22d3727beec60139505a94a5561f03",
-      "class_hash": "0x95452c55c03a1d1fe6c3c3e7b1f1bd6122975fdd63cd55097ae3b9b038535b",
+      "class_hash": "0x4c23390b9b2dbfa48e55a62587971e38335f4e0b3534d198bd4353461ece366",
       "abi": [
         {
           "type": "impl",
@@ -3471,18 +3471,6 @@
             },
             {
               "type": "function",
-              "name": "rescind_response",
-              "inputs": [
-                {
-                  "name": "challenge_id",
-                  "type": "core::felt252"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
               "name": "reject_invite",
               "inputs": [
                 {
@@ -3495,7 +3483,7 @@
             },
             {
               "type": "function",
-              "name": "reject_response",
+              "name": "rescind_response",
               "inputs": [
                 {
                   "name": "challenge_id",
@@ -3508,6 +3496,18 @@
             {
               "type": "function",
               "name": "accept_response",
+              "inputs": [
+                {
+                  "name": "challenge_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "reject_response",
               "inputs": [
                 {
                   "name": "challenge_id",
@@ -3641,10 +3641,10 @@
         "send_invite",
         "rescind_invite",
         "respond_invite",
-        "rescind_response",
         "reject_invite",
-        "reject_response",
+        "rescind_response",
         "accept_response",
+        "reject_response",
         "upgrade"
       ]
     },
@@ -4470,7 +4470,7 @@
     },
     {
       "address": "0x39b1a0e069fce84b34d80fdc3e9fd78b85430659b80aa26962e164bb3aa35e4",
-      "class_hash": "0x4ff8f18f294368b0c11679db403127d16526fb4eccc077fdbc9a83bbd8f6e19",
+      "class_hash": "0x65fc19b3502ad623e1e257cd482b3ed086dbf069068cc5456ce722d7970d4f2",
       "abi": [
         {
           "type": "impl",
