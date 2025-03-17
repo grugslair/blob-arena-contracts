@@ -301,7 +301,6 @@ impl PVEImpl of PVETrait {
         self.pve.assert_collection_allowed(challenge_id, collection);
         let id = uuid();
         let (stats, attacks) = self.ba.get_token_stats_and_attacks(collection, token_id, attacks);
-        self.ba.set_combatant_token(id, collection, token_id);
         let attempt = self
             .pve
             .new_pve_challenge_attempt(
