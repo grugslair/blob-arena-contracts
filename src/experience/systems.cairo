@@ -4,203 +4,129 @@ use core::cmp::min;
 use starknet::ContractAddress;
 use starknet::storage::{StorageMapReadAccess, StorageMapWriteAccess};
 use dojo::world::{WorldStorage, IWorldDispatcher};
-use super::contract::experience::ContractState;
-use super::events::ExperienceEvents;
+use crate::world::WorldTrait;
+use super::ExperienceStorage;
 
-
-fn experience_key(collection: ContractAddress, token: u256, player: ContractAddress) -> felt252 {
-    poseidon_hash_span(
-        [collection.into(), token.low.into(), token.high.into(), player.into()].span(),
-    )
-}
-
-fn token_key(collection: ContractAddress, token: u256) -> felt252 {
-    poseidon_hash_span([collection.into(), token.low.into(), token.high.into()].span())
-}
-
-fn collection_player_key(collection: ContractAddress, player: ContractAddress) -> felt252 {
-    poseidon_hash_span([collection.into(), player.into()].span())
-}
 
 #[generate_trait]
 impl ExperienceImpl of ExperienceTrait {
     fn increase_experience(
-        ref self: ContractState,
+        ref self: WorldStorage,
         collection: ContractAddress,
         token: u256,
         player: ContractAddress,
         increase: u128,
     ) {
-        let (increase, experience) = self
-            .increase_experience_value(collection, token, player, increase);
-
-        let total_experience = self.increase_total_experience(increase);
-        let collection_experience = self.increase_collection_experience(collection, increase);
-        let player_experience = self.increase_player_experience(player, increase);
-
-        let collection_player_experience = self
-            .increase_collection_player_experience(collection, player, increase);
-        let token_experience = self.increase_token_experience(collection, token, increase);
-        self
-            .emit_experiences(
-                collection,
-                token,
-                player,
-                total_experience,
-                collection_experience,
-                player_experience,
-                collection_player_experience,
-                token_experience,
-                experience,
-            );
-    }
-
-    fn increase_experience_value(
-        ref self: ContractState,
-        collection: ContractAddress,
-        token: u256,
-        player: ContractAddress,
-        mut increase: u128,
-    ) -> (u128, u128) {
-        let key = experience_key(collection, token, player);
-        let collection_cap = self.collection_cap.read(collection);
-        let mut new_experience = self.experience.read(key) + increase;
-        if new_experience > collection_cap {
-            increase -= new_experience - collection_cap;
-            new_experience = collection_cap;
-        };
-        self.experience.write(key, new_experience);
-        (increase, new_experience)
-    }
-
-    fn increase_total_experience(ref self: ContractState, increase: u128) -> u128 {
-        let new_experience = self.total_experience.read() + increase;
-        self.total_experience.write(new_experience);
-        new_experience
-    }
-
-    fn increase_player_experience(
-        ref self: ContractState, player: ContractAddress, increase: u128,
-    ) -> u128 {
-        let new_experience = self.player_experience.read(player) + increase;
-        self.player_experience.write(player, new_experience);
-        new_experience
-    }
-
-    fn increase_collection_player_experience(
-        ref self: ContractState,
-        collection: ContractAddress,
-        player: ContractAddress,
-        increase: u128,
-    ) -> u128 {
-        let key = collection_player_key(collection, player);
-        let new_experience = self.collection_player_experience.read(key) + increase;
-        self.collection_player_experience.write(key, new_experience);
-        new_experience
-    }
-
-    fn increase_token_experience(
-        ref self: ContractState, collection: ContractAddress, token: u256, increase: u128,
-    ) -> u128 {
-        let key = token_key(collection, token);
-        let new_experience = self.token_experience.read(key) + increase;
-        self.token_experience.write(key, new_experience);
-        new_experience
-    }
-
-    fn increase_collection_experience(
-        ref self: ContractState, collection: ContractAddress, increase: u128,
-    ) -> u128 {
-        let new_experience = self.collection_experience.read(collection) + increase;
-        self.collection_experience.write(collection, new_experience);
-        new_experience
+        let mut storage = self.experience_storage();
+        if increase > 0 {
+            let increase = storage.increase_experience_value(collection, token, player, increase);
+            if increase > 0 {
+                storage.increase_total_experiences(collection, token, player, increase);
+            }
+        }
     }
 
     fn decrease_experience(
-        ref self: ContractState,
+        ref self: WorldStorage,
         collection: ContractAddress,
         token: u256,
         player: ContractAddress,
         decrease: u128,
     ) {
-        let (decrease, experience) = self
-            .decrease_experience_value(collection, token, player, decrease);
-        let total_experience = self.decrease_total_experience(decrease);
-        let collection_experience = self.decrease_collection_experience(collection, decrease);
-        let player_experience = self.decrease_player_experience(player, decrease);
-        let collection_player_experience = self
-            .decrease_collection_player_experience(collection, player, decrease);
-        let token_experience = self.decrease_token_experience(collection, token, decrease);
-
-        self
-            .emit_experiences(
-                collection,
-                token,
-                player,
-                total_experience,
-                collection_experience,
-                player_experience,
-                collection_player_experience,
-                token_experience,
-                experience,
-            );
+        let mut storage = self.experience_storage();
+        if decrease > 0 {
+            let decrease = storage.decrease_experience_value(collection, token, player, decrease);
+            if decrease > 0 {
+                storage.decrease_total_experiences(collection, token, player, decrease);
+            }
+        }
     }
 
+    fn increase_experience_value(
+        ref self: WorldStorage,
+        collection: ContractAddress,
+        token: u256,
+        player: ContractAddress,
+        increase: u128,
+    ) -> u128 {
+        let cap = self.get_experience_cap(collection);
+        let experience = self.get_experience(collection, token, player);
+        if experience >= cap {
+            0
+        } else if experience + increase > cap {
+            self.set_experience(collection, token, player, cap);
+            cap - experience
+        } else {
+            self.set_experience(collection, token, player, experience + increase);
+            increase
+        }
+    }
 
     fn decrease_experience_value(
-        ref self: ContractState,
+        ref self: WorldStorage,
         collection: ContractAddress,
         token: u256,
         player: ContractAddress,
         decrease: u128,
-    ) -> (u128, u128) {
-        let key = experience_key(collection, token, player);
-        let decrease = min(decrease, self.experience.read(key));
-        let new_experience = self.experience.read(key) - decrease;
-        self.experience.write(key, new_experience);
-        (decrease, new_experience)
-    }
-
-    fn decrease_total_experience(ref self: ContractState, decrease: u128) -> u128 {
-        let new_experience = self.total_experience.read() - decrease;
-        self.total_experience.write(new_experience);
-        new_experience
-    }
-
-    fn decrease_player_experience(
-        ref self: ContractState, player: ContractAddress, decrease: u128,
     ) -> u128 {
-        let new_experience = self.player_experience.read(player) - decrease;
-        self.player_experience.write(player, new_experience);
-        new_experience
+        let experience = self.get_experience(collection, token, player);
+        if experience < decrease {
+            self.set_experience(collection, token, player, 0);
+            experience
+        } else {
+            self.set_experience(collection, token, player, experience - decrease);
+            decrease
+        }
     }
 
-    fn decrease_collection_player_experience(
-        ref self: ContractState,
+    fn increase_total_experiences(
+        ref self: WorldStorage,
         collection: ContractAddress,
+        token: u256,
+        player: ContractAddress,
+        increase: u128,
+    ) {
+        self.set_player_experience(player, self.get_player_experience(player) + increase);
+        self
+            .set_collection_experience(
+                collection, self.get_collection_experience(collection) + increase,
+            );
+        self
+            .set_token_experience(
+                collection, token, self.get_token_experience(collection, token) + increase,
+            );
+        self
+            .set_collection_player_experience(
+                collection,
+                player,
+                self.get_collection_player_experience(collection, player) + increase,
+            );
+        self.set_total_experience(self.get_total_experience() + increase);
+    }
+
+    fn decrease_total_experiences(
+        ref self: WorldStorage,
+        collection: ContractAddress,
+        token: u256,
         player: ContractAddress,
         decrease: u128,
-    ) -> u128 {
-        let key = collection_player_key(collection, player);
-        let new_experience = self.collection_player_experience.read(key) - decrease;
-        self.collection_player_experience.write(key, new_experience);
-        new_experience
-    }
-
-    fn decrease_token_experience(
-        ref self: ContractState, collection: ContractAddress, token: u256, decrease: u128,
-    ) -> u128 {
-        let key = token_key(collection, token);
-        let new_experience = self.token_experience.read(key) - decrease;
-        self.token_experience.write(key, new_experience);
-        new_experience
-    }
-
-    fn decrease_collection_experience(
-        ref self: ContractState, collection: ContractAddress, decrease: u128,
-    ) -> u128 {
-        let new_experience = self.collection_experience.read(collection) - decrease;
-        self.collection_experience.write(collection, new_experience);
-        new_experience
+    ) {
+        self.set_player_experience(player, self.get_player_experience(player) - decrease);
+        self
+            .set_collection_experience(
+                collection, self.get_collection_experience(collection) - decrease,
+            );
+        self
+            .set_token_experience(
+                collection, token, self.get_token_experience(collection, token) - decrease,
+            );
+        self
+            .set_collection_player_experience(
+                collection,
+                player,
+                self.get_collection_player_experience(collection, player) - decrease,
+            );
+        self.set_total_experience(self.get_total_experience() - decrease);
     }
 }
+

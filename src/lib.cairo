@@ -78,10 +78,9 @@ mod pve {
 }
 
 mod experience {
-    mod events;
-    mod contract;
+    mod components;
     mod systems;
-    mod interface;
+    use components::{ExperienceStorage};
 }
 
 pub use world::{default_namespace, DefaultStorage};
