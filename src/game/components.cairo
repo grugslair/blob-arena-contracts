@@ -72,6 +72,14 @@ struct Player {
     token: ERC721Token,
 }
 
+#[dojo::model]
+#[derive(Drop, Serde, Copy)]
+struct CurrentSeason {
+    #[key]
+    collection: ContractAddress,
+    season_id: felt252,
+}
+
 /// The way a game concluded with a winner.
 ///
 /// # Variants

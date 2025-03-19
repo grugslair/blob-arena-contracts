@@ -2,9 +2,8 @@ use core::num::traits::Zero;
 use starknet::ContractAddress;
 use dojo::{world::{WorldStorage, IWorldDispatcher}, model::{Model, ModelStorage}};
 use crate::world::WorldTrait;
-use super::contract::experience::ContractState;
 
-const NAMESPACE_HASH: felt252 = bytearray_hash!("experience");
+const STORAGE_NAMESPACE_HASH: felt252 = bytearray_hash!("experience");
 
 #[dojo::model]
 #[derive(Drop, Serde)]
@@ -66,36 +65,36 @@ struct ExperienceCap {
 #[generate_trait]
 impl ExperienceStorageImpl of ExperienceStorage {
     fn get_experience_member<M, K, T, +Model<M>, +Drop<M>, +Serde<K>, +Drop<K>, +Serde<T>>(
-        self: WorldStorage, keys: K,
+        self: @WorldStorage, keys: K,
     ) -> u128 {
         self.read_member(Model::<M>::ptr_from_keys(keys), selector!("experience"))
     }
 
     fn get_experience(
-        self: WorldStorage, collection: ContractAddress, token: u256, player: ContractAddress,
+        self: @WorldStorage, collection: ContractAddress, token: u256, player: ContractAddress,
     ) -> u128 {
         self.read_experience_member::<Experience>((collection, token, player))
     }
 
-    fn get_token_experience(self: WorldStorage, collection: ContractAddress, token: u256) -> u128 {
+    fn get_token_experience(self: @WorldStorage, collection: ContractAddress, token: u256) -> u128 {
         self.read_experience_member::<TokenExperience>((collection, token))
     }
 
     fn get_collection_player_experience(
-        self: WorldStorage, collection: ContractAddress, player: ContractAddress,
+        self: @WorldStorage, collection: ContractAddress, player: ContractAddress,
     ) -> u128 {
         self.read_experience_member::<PlayerCollectionExperience>((player, collection))
     }
 
-    fn get_player_experience(self: WorldStorage, player: ContractAddress) -> u128 {
+    fn get_player_experience(self: @WorldStorage, player: ContractAddress) -> u128 {
         self.read_experience_member::<PlayerExperience>(player)
     }
 
-    fn get_collection_experience(self: WorldStorage, collection: ContractAddress) -> u128 {
+    fn get_collection_experience(self: @WorldStorage, collection: ContractAddress) -> u128 {
         self.read_experience_member::<CollectionExperience>(collection)
     }
 
-    fn get_total_experience(self: WorldStorage) -> u128 {
+    fn get_total_experience(self: @WorldStorage) -> u128 {
         self.read_collection_experience(Zero::zero())
     }
 
@@ -138,11 +137,15 @@ impl ExperienceStorageImpl of ExperienceStorage {
         self.set_collection_experience(Zero::zero(), experience);
     }
 
-    fn get_experience_cap(self: WorldStorage, collection: ContractAddress) -> u128 {
+    fn get_experience_cap(self: @WorldStorage, collection: ContractAddress) -> u128 {
         self.read_member(Model::<ExperienceCap>::ptr_from_keys(collection), selector!("cap"))
     }
 
-    fn experience_storage(self: WorldStorage) -> WorldStorage {
-        self.new_storage(NAMESPACE_HASH)
+    fn set_experience_cap(ref self: WorldStorage, collection: ContractAddress, cap: u128) {
+        self.write_model(@ExperienceCap { collection, cap });
+    }
+
+    fn experience_storage(self: @WorldStorage) -> WorldStorage {
+        self.new_storage(STORAGE_NAMESPACE_HASH)
     }
 }
