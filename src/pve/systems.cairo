@@ -447,4 +447,8 @@ impl PVEImpl of PVETrait {
             self.use_paid_game(player);
         };
     }
+
+    fn end_pvp_game(ref self: WorldStorage, game_id: felt252, player: ContractAddress, won: bool) {
+        self.set_pve_ended(game_id, won);
+    }
 }
