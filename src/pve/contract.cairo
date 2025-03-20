@@ -184,10 +184,10 @@ mod pve_blobert_actions {
         }
         fn attack(ref self: ContractState, game_id: felt252, attack_id: felt252) {
             let mut store = self.get_storage();
-            let game = store.pve.get_pve_game(game_id);
+            let game = store.pve.get_pve_game_run_round(game_id);
             assert(game.player == get_caller_address(), 'Not player');
             let randomness = get_transaction_hash(); //TODO: Use real randomness
-            store.run_pve_round(game, attack_id, randomness);
+            store.run_pve_round(game_id, game, attack_id, randomness);
         }
         fn start_challenge(
             ref self: ContractState,
@@ -199,13 +199,7 @@ mod pve_blobert_actions {
             let mut store = self.get_storage();
             let caller = get_caller_address();
             assert(erc721_owner_of(collection_address, token_id) == caller, 'Not owner');
-            assert(
-                store
-                    .pve
-                    .get_pve_current_challenge_attempt(caller, collection_address, token_id)
-                    .is_zero(),
-                'Already in challenge',
-            );
+
             store.pve.use_game(caller);
 
             store

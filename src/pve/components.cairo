@@ -50,6 +50,7 @@ struct PVEOpponent {
     id: felt252,
     stats: UStats,
     attacks: Array<felt252>,
+    xp: u128,
 }
 
 /// Event emitted when for a pve blobert for off chain use only
@@ -135,10 +136,11 @@ struct PVECollectionAllowed {
 ///
 /// # Arguments
 /// * `id` - Unique identifier for the game instance
-/// * `combatant_id` - Identifier for the player's combatant
 /// * `player` - Contract address of the player
+/// * `player_token` - Token identifier for the player
+/// * `player_combatant` - Identifier for the player's combatant
 /// * `opponent_token` - Token identifier for the opponent
-/// * `opponent_id` - Identifier for the opponent combatant
+/// * `opponent_combatant` - Identifier for the opponent combatant
 /// * `round` - Current round number of the game
 /// * `phase` - Current phase of the game
 #[dojo::model]
@@ -146,10 +148,11 @@ struct PVECollectionAllowed {
 struct PVEGame {
     #[key]
     id: felt252,
-    combatant_id: felt252,
     player: ContractAddress,
+    player_token: felt252,
+    player_combatant: felt252,
+    opponent_combatant: felt252,
     opponent_token: felt252,
-    opponent_id: felt252,
     round: u32,
     phase: PVEPhase,
 }
@@ -162,6 +165,7 @@ struct PVEGame {
 /// * `id` - Unique identifier for this challenge attempt
 /// * `challenge` - The identifier of the PVE challenge being attempted
 /// * `player` - The player's contract address
+/// * `token` - The token identifier for the player's combatant
 /// * `stats` - The current stats of the player during this attempt
 /// * `attacks` - Array of attack moves performed by the player
 /// * `stage` - Current stage number in the challenge
@@ -174,8 +178,7 @@ struct PVEChallengeAttempt {
     id: felt252,
     challenge: felt252,
     player: ContractAddress,
-    collection: ContractAddress,
-    token_id: u256,
+    token: felt252,
     stats: UStats,
     attacks: Array<felt252>,
     stage: u32,
@@ -232,16 +235,25 @@ struct PVECurrentChallengeAttempt {
     #[key]
     player: ContractAddress,
     #[key]
-    collection: ContractAddress,
-    #[key]
-    token_id: u256,
+    token: felt252,
     attempt_id: felt252,
+}
+
+#[derive(Drop, Serde, Introspect)]
+struct PVEGameRunRound {
+    player: ContractAddress,
+    player_combatant: felt252,
+    opponent_combatant: felt252,
+    opponent_token: felt252,
+    round: u32,
+    phase: PVEPhase,
 }
 
 #[derive(Drop, Serde, Introspect)]
 struct PVEAttemptNextStage {
     challenge: felt252,
     player: ContractAddress,
+    token: felt252,
     stats: UStats,
     attacks: Array<felt252>,
     expiry: u64,
@@ -253,6 +265,7 @@ struct PVEAttemptNextStage {
 struct PVEAttemptRespawn {
     challenge: felt252,
     player: ContractAddress,
+    token: felt252,
     stats: UStats,
     attacks: Array<felt252>,
     expiry: u64,
@@ -265,8 +278,7 @@ struct PVEAttemptRespawn {
 struct PVEAttemptEnd {
     challenge: felt252,
     player: ContractAddress,
-    collection: ContractAddress,
-    token_id: u256,
+    token: felt252,
     stage: u32,
     phase: PVEPhase,
 }
@@ -279,6 +291,7 @@ struct PVEOpponentInput {
     attributes: TokenAttributes,
     stats: UStats,
     attacks: Array<IdTagNew<AttackInput>>,
+    xp: u128,
     collections_allowed: Array<ContractAddress>,
 }
 
@@ -329,17 +342,19 @@ impl PVEStorageImpl of PVEStorage {
     fn new_pve_game_model(
         ref self: WorldStorage,
         game_id: felt252,
-        combatant_id: felt252,
         player: ContractAddress,
+        player_token: felt252,
+        player_combatant: felt252,
         opponent_token: felt252,
-        opponent_id: felt252,
+        opponent_combatant: felt252,
     ) -> PVEGame {
         let game = PVEGame {
             id: game_id,
-            combatant_id,
             player,
+            player_token,
+            player_combatant,
             opponent_token,
-            opponent_id,
+            opponent_combatant,
             round: 1,
             phase: PVEPhase::Active,
         };
@@ -349,10 +364,13 @@ impl PVEStorageImpl of PVEStorage {
     fn get_pve_game(self: @WorldStorage, game_id: felt252) -> PVEGame {
         self.read_model(game_id)
     }
+    fn get_pve_game_run_round(self: @WorldStorage, game_id: felt252) -> PVEGameRunRound {
+        self.read_schema(Model::<PVEGame>::ptr_from_keys(game_id))
+    }
     fn set_pve_opponent(
-        ref self: WorldStorage, id: felt252, stats: UStats, attacks: Array<felt252>,
+        ref self: WorldStorage, id: felt252, stats: UStats, attacks: Array<felt252>, xp: u128,
     ) {
-        self.write_model(@PVEOpponent { id, stats, attacks });
+        self.write_model(@PVEOpponent { id, stats, attacks, xp });
     }
     fn check_pve_opponent_exists(self: @WorldStorage, id: felt252) -> bool {
         let value: u32 = self
@@ -467,8 +485,7 @@ impl PVEStorageImpl of PVEStorage {
         id: felt252,
         challenge: felt252,
         player: ContractAddress,
-        collection: ContractAddress,
-        token_id: u256,
+        token: felt252,
         stats: UStats,
         attacks: Array<felt252>,
     ) -> PVEChallengeAttempt {
@@ -476,8 +493,7 @@ impl PVEStorageImpl of PVEStorage {
             id,
             challenge,
             player,
-            collection,
-            token_id,
+            token,
             stats,
             attacks,
             stage: 0,
@@ -582,31 +598,24 @@ impl PVEStorageImpl of PVEStorage {
     }
 
     fn get_pve_current_challenge_attempt(
-        self: @WorldStorage, player: ContractAddress, collection: ContractAddress, token_id: u256,
+        self: @WorldStorage, player: ContractAddress, token: felt252,
     ) -> felt252 {
         self
             .read_member(
-                Model::<PVECurrentChallengeAttempt>::ptr_from_keys((player, collection, token_id)),
+                Model::<PVECurrentChallengeAttempt>::ptr_from_keys((player, token)),
                 selector!("current_challenge"),
             )
     }
 
     fn set_pve_current_challenge_attempt(
-        ref self: WorldStorage,
-        player: ContractAddress,
-        collection: ContractAddress,
-        token_id: u256,
-        attempt_id: felt252,
+        ref self: WorldStorage, player: ContractAddress, token: felt252, attempt_id: felt252,
     ) {
-        self.write_model(@PVECurrentChallengeAttempt { collection, token_id, player, attempt_id });
+        self.write_model(@PVECurrentChallengeAttempt { token, player, attempt_id });
     }
 
     fn remove_pve_current_challenge_attempt(
-        ref self: WorldStorage,
-        player: ContractAddress,
-        collection: ContractAddress,
-        token_id: u256,
+        ref self: WorldStorage, player: ContractAddress, token: felt252,
     ) {
-        self.set_pve_current_challenge_attempt(player, collection, token_id, 0);
+        self.set_pve_current_challenge_attempt(player, token, 0);
     }
 }

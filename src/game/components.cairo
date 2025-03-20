@@ -1,5 +1,5 @@
 use starknet::{ContractAddress, get_contract_address};
-use blob_arena::collections::ERC721Token;
+use blob_arena::erc721::ERC721Token;
 
 /// Game Models
 
@@ -41,7 +41,7 @@ struct Initiator {
 /// * `game_id` - The unique identifier for the game
 /// * `timestamp` - The latest timestamp recorded for this game (in seconds)
 #[dojo::model]
-#[derive(Drop, Serde, Copy)]
+#[derive(Drop, Serde)]
 struct LastTimestamp {
     #[key]
     game_id: felt252,
@@ -56,7 +56,7 @@ struct LastTimestamp {
 /// * `loser` - The player who lost the combat
 /// * `via` - The method by which the winner achieved victory
 #[dojo::event]
-#[derive(Drop, Serde, Copy)]
+#[derive(Drop, Serde)]
 struct CombatEnd {
     #[key]
     game_id: felt252,
@@ -70,14 +70,6 @@ struct Player {
     player: ContractAddress,
     combatant_id: felt252,
     token: ERC721Token,
-}
-
-#[dojo::model]
-#[derive(Drop, Serde, Copy)]
-struct CurrentSeason {
-    #[key]
-    collection: ContractAddress,
-    season_id: felt252,
 }
 
 /// The way a game concluded with a winner.

@@ -1,6 +1,6 @@
 use starknet::ContractAddress;
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}};
-use crate::collections::ERC721Token;
+use crate::erc721::ERC721Token;
 
 #[dojo::model]
 #[derive(Drop, Serde)]

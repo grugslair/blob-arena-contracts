@@ -1,6 +1,6 @@
 use starknet::ContractAddress;
 use dojo::world::WorldStorage;
-use crate::collections::ERC721Token;
+use crate::erc721::ERC721Token;
 use crate::season::SeasonStorage;
 use super::PvpExperienceStorage;
 use super::super::ExperienceTrait;

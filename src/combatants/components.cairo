@@ -2,7 +2,7 @@ use core::{fmt::{Display, Formatter, Error, Debug}, cmp::{min, max}, poseidon::p
 use starknet::{ContractAddress, get_caller_address};
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}};
 use blob_arena::{
-    collections::ERC721Token, core::{SaturatingInto, SaturatingAdd, in_range},
+    erc721::ERC721Token, core::{SaturatingInto, SaturatingAdd, in_range},
     constants::STARTING_HEALTH, combat::calculations::{apply_luck_modifier, get_new_stun_chance},
     stats::{UStats, IStats, StatsTrait, StatTypes}, utils, utils::SeedProbability,
     constants::{NZ_255},

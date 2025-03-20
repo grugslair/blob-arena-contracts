@@ -1,5 +1,5 @@
 use starknet::ContractAddress;
-use dojo::{world::WorldStorage, model::{ModelStorage, Model}};
+use dojo::{world::WorldStorage, model::{ModelStorage, Model}, event::EventStorage};
 
 #[dojo::model]
 #[derive(Drop, Serde)]
@@ -29,7 +29,7 @@ impl SeasonStorageImpl of SeasonStorage {
     }
 
     fn set_current_season_name(ref self: WorldStorage, season: felt252, name: ByteArray) {
-        self.emit_model(@SeasonName { season, name });
+        self.emit_event(@SeasonName { season, name });
     }
 }
 

@@ -81,6 +81,23 @@ impl StatsImpl of StatsTrait {
     fn get_max_health(self: @UStats) -> u8 {
         *self.vitality + STARTING_HEALTH
     }
+
+    fn assert_in_range(self: @UStats) {
+        assert(
+            *self.strength <= MAX_STAT
+                && *self.vitality <= MAX_STAT
+                && *self.dexterity <= MAX_STAT
+                && *self.luck <= MAX_STAT,
+            'A Stat is above the max',
+        );
+    }
+
+    fn sum(self: @UStats) -> u16 {
+        ((*self.strength).into()
+            + (*self.vitality).into()
+            + (*self.dexterity).into()
+            + (*self.luck).into())
+    }
 }
 
 

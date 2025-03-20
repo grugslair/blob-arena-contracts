@@ -64,7 +64,7 @@ struct ExperienceCap {
 
 #[generate_trait]
 impl ExperienceStorageImpl of ExperienceStorage {
-    fn get_experience_member<M, K, T, +Model<M>, +Drop<M>, +Serde<K>, +Drop<K>, +Serde<T>>(
+    fn get_experience_member<M, K, +Model<M>, +Drop<M>, +Serde<K>, +Drop<K>>(
         self: @WorldStorage, keys: K,
     ) -> u128 {
         self.read_member(Model::<M>::ptr_from_keys(keys), selector!("experience"))
@@ -73,29 +73,29 @@ impl ExperienceStorageImpl of ExperienceStorage {
     fn get_experience(
         self: @WorldStorage, collection: ContractAddress, token: u256, player: ContractAddress,
     ) -> u128 {
-        self.read_experience_member::<Experience>((collection, token, player))
+        self.get_experience_member::<Experience>((collection, token, player))
     }
 
     fn get_token_experience(self: @WorldStorage, collection: ContractAddress, token: u256) -> u128 {
-        self.read_experience_member::<TokenExperience>((collection, token))
+        self.get_experience_member::<TokenExperience>((collection, token))
     }
 
     fn get_collection_player_experience(
         self: @WorldStorage, collection: ContractAddress, player: ContractAddress,
     ) -> u128 {
-        self.read_experience_member::<PlayerCollectionExperience>((player, collection))
+        self.get_experience_member::<PlayerCollectionExperience>((player, collection))
     }
 
     fn get_player_experience(self: @WorldStorage, player: ContractAddress) -> u128 {
-        self.read_experience_member::<PlayerExperience>(player)
+        self.get_experience_member::<PlayerExperience>(player)
     }
 
     fn get_collection_experience(self: @WorldStorage, collection: ContractAddress) -> u128 {
-        self.read_experience_member::<CollectionExperience>(collection)
+        self.get_experience_member::<CollectionExperience>(collection)
     }
 
     fn get_total_experience(self: @WorldStorage) -> u128 {
-        self.read_collection_experience(Zero::zero())
+        self.get_collection_experience(Zero::zero())
     }
 
     fn set_experience(

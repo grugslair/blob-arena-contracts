@@ -14,6 +14,7 @@ trait IPVEAdmin<TContractState> {
     /// * `attributes` - Token attributes for the opponent (for off chain generation)
     /// * `stats` - Base stats for the opponent
     /// * `attacks` - Array of attacks available to the opponent
+    /// * `xp` - Experience points gained from the opponent
     /// * `collections_allowed` - Array of collection addresses that can challenge this opponent
     ///
     /// Models:
@@ -32,6 +33,7 @@ trait IPVEAdmin<TContractState> {
         attributes: TokenAttributes,
         stats: UStats,
         attacks: Array<IdTagNew<AttackInput>>,
+        xp: u128,
         collections_allowed: Array<ContractAddress>,
     ) -> felt252;
 
@@ -148,6 +150,7 @@ mod pve_blobert_admin_actions {
             attributes: TokenAttributes,
             stats: UStats,
             attacks: Array<IdTagNew<AttackInput>>,
+            xp: u128,
             collections_allowed: Array<ContractAddress>,
         ) -> felt252 {
             let mut store = self.get_pve_storage();
@@ -155,7 +158,7 @@ mod pve_blobert_admin_actions {
             let attack_ids = store.create_or_get_attacks_external(attacks);
             store
                 .setup_new_opponent(
-                    name, collection, attributes, stats, attack_ids, collections_allowed,
+                    name, collection, attributes, stats, attack_ids, xp, collections_allowed,
                 )
         }
         fn new_challenge(
