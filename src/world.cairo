@@ -7,7 +7,12 @@ use starknet::{
 use dojo::{
     world::{WorldStorage, IWorldDispatcher, WorldStorageTrait, IWorldDispatcherTrait},
     model::{Model, ModelIndex, ModelStorage},
-    contract::{IContractDispatcherTrait, IContractDispatcher},
+    contract::{
+        IContractDispatcherTrait, IContractDispatcher,
+        components::world_provider::world_provider_cpt::{
+            WorldProvider, HasComponent as WorldComponent,
+        },
+    },
     utils::{deserialize_unwrap, entity_id_from_keys}, meta::{Introspect, Layout, FieldLayout},
 };
 
@@ -52,7 +57,7 @@ fn get_default_storage() -> WorldStorage {
 }
 
 #[generate_trait]
-impl WorldImpl of WorldTrait {
+impl ModelImpl of ModelTrait {
     fn write_models_check<M, +Model<M>, +Drop<M>>(ref self: WorldStorage, models: Span<@M>) {
         let len = models.len();
         if len.is_one() {
@@ -61,11 +66,35 @@ impl WorldImpl of WorldTrait {
             self.write_models(models);
         }
     }
+}
+
+trait WorldTrait<T> {
+    fn new_storage(self: @T, namespace_hash: felt252) -> WorldStorage;
+    fn new_default_storage(
+        self: @T,
+    ) -> WorldStorage {
+        Self::new_storage(self, DEFAULT_NAMESPACE_HASH)
+    }
+}
+
+impl IWorldDispatcherWorldImpl of WorldTrait<IWorldDispatcher> {
+    fn new_storage(self: @IWorldDispatcher, namespace_hash: felt252) -> WorldStorage {
+        WorldStorageTrait::new_from_hash(*self, namespace_hash)
+    }
+}
+
+impl WorldStorageWorldImpl of WorldTrait<WorldStorage> {
     fn new_storage(self: @WorldStorage, namespace_hash: felt252) -> WorldStorage {
         WorldStorageTrait::new_from_hash(*self.dispatcher, namespace_hash)
     }
-    fn new_default_storage(self: @WorldStorage) -> WorldStorage {
-        self.new_storage(DEFAULT_NAMESPACE_HASH)
+}
+
+#[generate_trait]
+impl WorldDispatcherImpl<
+    TContractState, +WorldComponent<TContractState>,
+> of WorldDispatcher<TContractState> {
+    fn world_dispatcher(self: @TContractState) -> IWorldDispatcher {
+        self.get_component().world_dispatcher()
     }
 }
 

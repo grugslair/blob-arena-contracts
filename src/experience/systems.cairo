@@ -10,8 +10,13 @@ use super::ExperienceStorage;
 
 #[generate_trait]
 impl ExperienceImpl of ExperienceTrait {
+    fn get_experience(
+        self: @IWorldDispatcher, collection: ContractAddress, token: u256, player: ContractAddress,
+    ) -> u128 {
+        self.experience_storage().get_experience_value(collection, token, player)
+    }
     fn increase_experience(
-        ref self: WorldStorage,
+        ref self: IWorldDispatcher,
         collection: ContractAddress,
         token: u256,
         player: ContractAddress,
@@ -27,7 +32,7 @@ impl ExperienceImpl of ExperienceTrait {
     }
 
     fn decrease_experience(
-        ref self: WorldStorage,
+        ref self: IWorldDispatcher,
         collection: ContractAddress,
         token: u256,
         player: ContractAddress,
@@ -50,7 +55,7 @@ impl ExperienceImpl of ExperienceTrait {
         increase: u128,
     ) -> u128 {
         let cap = self.get_experience_cap(collection);
-        let experience = self.get_experience(collection, token, player);
+        let experience = self.get_experience_value(collection, token, player);
         if experience >= cap {
             0
         } else if experience + increase > cap {

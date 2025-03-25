@@ -24,11 +24,13 @@ trait IAMMABlobert<TContractState> {
 
 #[dojo::contract]
 mod amma_blobert_actions {
+    use dojo::contract::components::world_provider::IWorldProvider;
     use core::poseidon::poseidon_hash_span;
     use starknet::{ContractAddress, get_caller_address};
-    use dojo::world::WorldStorage;
+    use dojo::world::{WorldStorage, IWorldDispatcher};
     use blob_arena::{
         DefaultStorage, attacks::components::AttackInput, stats::UStats, default_namespace,
+        world::WorldTrait,
     };
     use blob_arena::collections::{blobert, arcade_blobert, interface::ICollection};
     use arcade_blobert::{ArcadeBlobertStorage, BlobertCollectionTrait};
@@ -36,6 +38,7 @@ mod amma_blobert_actions {
         blobert_namespace, BlobertTrait, BlobertStorage, TokenAttributes, BlobertItemKey,
         to_seed_key, BlobertAttribute,
     };
+    use crate::collections::{BlobertStore, BlobertWorld};
     use super::IAMMABlobert;
     const AMMA_BLOBERT_NAMESPACE_HASH: felt252 = bytearray_hash!("amma_blobert");
 
@@ -56,6 +59,23 @@ mod amma_blobert_actions {
         }
     }
 
+    impl ArcadeBlobertStoreImpl of BlobertStore<ContractState> {
+        fn dispatcher(self: @ContractState) -> IWorldDispatcher {
+            self.world_dispatcher()
+        }
+
+        fn local_store(self: @IWorldDispatcher) -> WorldStorage {
+            self.new_from_hash(AMMA_BLOBERT_NAMESPACE_HASH)
+        }
+        fn item_store(self: @IWorldDispatcher) -> WorldStorage {
+            Self::local_store(self)
+        }
+        fn attributes(self: @IWorldDispatcher) -> TokenAttributes {
+            let store = self.item_store();
+        }
+        fn owner(self: @IWorldDispatcher) -> ContractAddress {}
+    }
+
     impl ArcadeBlobertCollectionImpl of BlobertCollectionTrait<ContractState> {
         fn blobert_storage(self: @ContractState) -> WorldStorage {
             self.default_storage()
@@ -67,6 +87,7 @@ mod amma_blobert_actions {
             self.default_storage().get_blobert_token_owner(token_id)
         }
     }
+
 
     #[abi(embed_v0)]
     impl IAMMABlobertItems =

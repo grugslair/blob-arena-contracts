@@ -11,23 +11,6 @@ trait ICollection<TContractState> {
     /// * `ContractAddress` - The address of the token owner
     fn owner_of(self: @TContractState, token_id: u256) -> ContractAddress;
 
-    /// Returns the approved address for a specific token
-    /// # Arguments
-    /// * `token_id` - The unique identifier of the token
-    /// # Returns
-    /// * `ContractAddress` - The address approved to transfer the token
-    fn get_approved(self: @TContractState, token_id: u256) -> ContractAddress;
-
-    /// Checks if an operator is approved to manage all tokens of an owner
-    /// # Arguments
-    /// * `owner` - The address of the token owner
-    /// * `operator` - The address of the operator to check
-    /// # Returns
-    /// * `bool` - True if the operator is approved for all, false otherwise
-    fn is_approved_for_all(
-        self: @TContractState, owner: ContractAddress, operator: ContractAddress,
-    ) -> bool;
-
     /// Retrieves the stats for a specific token
     /// # Arguments
     /// * `token_id` - The unique identifier of the token

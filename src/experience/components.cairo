@@ -70,7 +70,7 @@ impl ExperienceStorageImpl of ExperienceStorage {
         self.read_member(Model::<M>::ptr_from_keys(keys), selector!("experience"))
     }
 
-    fn get_experience(
+    fn get_experience_value(
         self: @WorldStorage, collection: ContractAddress, token: u256, player: ContractAddress,
     ) -> u128 {
         self.get_experience_member::<Experience>((collection, token, player))
@@ -145,7 +145,7 @@ impl ExperienceStorageImpl of ExperienceStorage {
         self.write_model(@ExperienceCap { collection, cap });
     }
 
-    fn experience_storage(self: @WorldStorage) -> WorldStorage {
+    fn experience_storage<T, +WorldTrait<T>, +Drop<T>>(self: @T) -> WorldStorage {
         self.new_storage(STORAGE_NAMESPACE_HASH)
     }
 }

@@ -1,5 +1,5 @@
 use core::num::traits::One;
-use dojo::world::{WorldStorage, WorldStorageTrait};
+use dojo::world::{WorldStorage, IWorldDispatcher, WorldStorageTrait};
 use blob_arena::{
     attacks::{Attack, AttackStorage, components::{AttackInput, AttackInputTrait, ATTACK_TAG_GROUP}},
     tags::{Tag, IdTagNew}, world::{get_default_storage, WorldTrait}, hash::hash_value,
@@ -88,16 +88,16 @@ impl AttackImpl of AttackTrait {
         self.set_tags(ATTACK_TAG_GROUP, tags);
         ids
     }
-    fn create_or_get_attack_external(
-        ref self: WorldStorage, attack: IdTagNew<AttackInput>,
+    fn create_or_get_attack_external<T, +WorldTrait<T>, +Drop<T>>(
+        ref self: T, attack: IdTagNew<AttackInput>,
     ) -> felt252 {
-        let mut attack_world = get_default_storage();
+        let mut attack_world = self.new_default_storage();
         attack_world.create_or_get_attack(attack)
     }
-    fn create_or_get_attacks_external(
-        ref self: WorldStorage, attacks: Array<IdTagNew<AttackInput>>,
+    fn create_or_get_attacks_external<T, +WorldTrait<T>, +Drop<T>>(
+        ref self: T, attacks: Array<IdTagNew<AttackInput>>,
     ) -> Array<felt252> {
-        let mut attack_world = get_default_storage();
+        let mut attack_world = self.new_default_storage();
         attack_world.create_or_get_attacks(attacks)
     }
 }

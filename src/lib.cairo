@@ -87,6 +87,7 @@ mod experience {
     }
     use components::{ExperienceStorage};
     use systems::ExperienceTrait;
+    mod stats;
 }
 
 mod season {

@@ -7,10 +7,10 @@ use blob_arena::{
         Attack, Effect,
         components::{
             AttackInputTrait, AttackInput, PlannedAttack, AttackAvailable, AttackLastUsed,
-            AttackAvailableValue, AttackLastUsedValue, AttackName, AttackExists,
+            AttackName, AttackExists,
         },
     },
-    uuid, world::WorldTrait, tags::Tag,
+    uuid, world::{ModelTrait}, tags::Tag,
 };
 
 
@@ -64,13 +64,19 @@ impl AttackStorageImpl of AttackStorage {
     fn check_attack_available(
         self: @WorldStorage, combatant_id: felt252, attack_id: felt252,
     ) -> bool {
-        let value: AttackAvailableValue = self.read_value((combatant_id, attack_id));
-        value.available
+        self
+            .read_member(
+                Model::<AttackAvailable>::ptr_from_keys((combatant_id, attack_id)),
+                selector!("available"),
+            )
     }
 
     fn get_attack_last_used(self: @WorldStorage, combatant_id: felt252, attack_id: felt252) -> u32 {
-        let value: AttackLastUsedValue = self.read_value((combatant_id, attack_id));
-        value.last_used
+        self
+            .read_member(
+                Model::<AttackLastUsed>::ptr_from_keys((combatant_id, attack_id)),
+                selector!("last_used"),
+            )
     }
 
     fn set_attack_available(ref self: WorldStorage, combatant_id: felt252, attack_id: felt252) {

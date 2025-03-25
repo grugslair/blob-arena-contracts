@@ -1,8 +1,24 @@
 mod interface;
-mod blobert;
-mod arcade_blobert;
-mod amma_blobert;
+mod attributes;
+mod collection;
+mod store;
+mod world_blobert;
 
-use super::collections::interface::{
+mod items {
+    mod component;
+    mod storage;
+    mod systems;
+    use storage::BlobertItemStorage;
+    use systems::BlobertItemsTrait;
+}
+
+use interface::{
     get_collection_dispatcher, ICollection, ICollectionDispatcher, ICollectionDispatcherTrait,
 };
+use attributes::{
+    SeedItem, BlobertItemKey, TokenAttributes, Seed, BlobertAttribute, to_seed_key, SeedTrait,
+    TokenAttributesTrait,
+};
+use store::{BlobertStore, BlobertItems};
+use world_blobert::WorldBlobertStorage;
+
