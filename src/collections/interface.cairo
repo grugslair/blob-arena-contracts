@@ -40,7 +40,13 @@ trait ICollection<TContractState> {
     ) -> Array<felt252>;
 }
 
-fn get_collection_dispatcher(contract_address: ContractAddress) -> ICollectionDispatcher {
+fn collection_dispatcher(contract_address: ContractAddress) -> ICollectionDispatcher {
     ICollectionDispatcher { contract_address }
+}
+
+impl ContractAddressIntoICollectionDispatcher of Into<ContractAddress, ICollectionDispatcher> {
+    fn into(self: ContractAddress) -> ICollectionDispatcher {
+        collection_dispatcher(self)
+    }
 }
 

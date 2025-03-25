@@ -7,7 +7,7 @@ use blob_arena::{
         components::{get_combatant_id, make_combatant_state}, CombatantStorage, CombatantSetup,
     },
     combat::{CombatState, CombatTrait}, stats::{UStats, StatsTrait},
-    collections::{get_collection_dispatcher, ICollectionDispatcherTrait, ICollectionDispatcher},
+    collections::{collection_dispatcher, ICollectionDispatcherTrait, ICollectionDispatcher},
 };
 
 #[generate_trait]
@@ -26,14 +26,22 @@ impl CombatantImpl of CombatantTrait {
         self.setup_combatant_state_and_attacks(combatant_id, collection_address, token_id, attacks);
     }
 
-    fn get_token_stats_and_attacks(
-        self: @WorldStorage,
-        collection_address: ContractAddress,
+    fn get_token_stats_and_attacks<T, +Into<T, ICollectionDispatcher>>(
+        self: T, token_id: u256, attacks: Array<(felt252, felt252)>,
+    ) -> (UStats, Array<felt252>) {
+        let dispatcher: ICollectionDispatcher = self.into();
+        (dispatcher.get_stats(token_id), dispatcher.get_attack_slots(token_id, attacks))
+    }
+
+    fn get_total_stats_and_attacks(
+        ref self: WorldStorage,
+        collection: ContractAddress,
         token_id: u256,
+        player: ContractAddress,
         attacks: Array<(felt252, felt252)>,
     ) -> (UStats, Array<felt252>) {
-        let collection = get_collection_dispatcher(collection_address);
-        (collection.get_stats(token_id), collection.get_attack_slots(token_id, attacks))
+        let (stats, attacks) = collection.get_token_stats_and_attacks(token_id, attacks);
+        let experience = self.get_experience(collection, token_id, player);
     }
 
     fn setup_combatant_state_and_attacks(
@@ -43,8 +51,9 @@ impl CombatantImpl of CombatantTrait {
         token_id: u256,
         attacks: Array<(felt252, felt252)>,
     ) {
-        let (stats, attack_ids) = self
-            .get_token_stats_and_attacks(collection_address, token_id, attacks);
+        let collection_dispatcher = collection_dispatcher(collection_address);
+        let (stats, attack_ids) = collection_dispatcher
+            .get_token_stats_and_attacks(token_id, attacks);
         self.set_combatant_stats_and_attacks(combatant_id, stats, attack_ids.span());
     }
 
@@ -75,7 +84,7 @@ impl CombatantImpl of CombatantTrait {
         token_id: u256,
         attacks: Array<(felt252, felt252)>,
     ) -> Array<felt252> {
-        let collection_dispatcher = get_collection_dispatcher(collection_address);
+        let collection_dispatcher = collection_dispatcher(collection_address);
         let owner = collection_dispatcher.owner_of(token_id);
         assert(player == owner, 'Not Owner');
         self.set_combatant_info(combatant_id, combat_id, player);

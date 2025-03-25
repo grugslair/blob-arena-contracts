@@ -34,7 +34,7 @@ mod model {
 #[generate_trait]
 impl ERC721TokenStorageImpl of ERC721TokenStorage {
     fn erc721_token_storage(self: @WorldStorage) -> WorldStorage {
-        self.new_storage(ERC721_NAMESPACE_HASH)
+        self.storage(ERC721_NAMESPACE_HASH)
     }
 
     fn get_erc721_token(self: WorldStorage, key: felt252) -> ERC721Token {

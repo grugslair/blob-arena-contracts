@@ -81,14 +81,6 @@ impl BlobertItemStorageImpl of BlobertItemStorage {
         self.read_member_of_models(Model::<BlobertItem>::ptrs_from_keys(keys), selector!("stats"))
     }
 
-    fn get_item_stats_sum(self: @WorldStorage, keys: Span<BlobertItemKey>) -> UStats {
-        let mut stats: UStats = Default::default();
-        for item in self.get_blobert_items(keys) {
-            stats += item.stats;
-        };
-        stats
-    }
-
     fn get_blobert_attack_slot(
         self: @WorldStorage, item_key: BlobertItemKey, slot: felt252,
     ) -> felt252 {

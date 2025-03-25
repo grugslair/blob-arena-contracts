@@ -69,23 +69,27 @@ impl ModelImpl of ModelTrait {
 }
 
 trait WorldTrait<T> {
-    fn new_storage(self: @T, namespace_hash: felt252) -> WorldStorage;
-    fn new_default_storage(
-        self: @T,
-    ) -> WorldStorage {
-        Self::new_storage(self, DEFAULT_NAMESPACE_HASH)
+    fn storage(self: @T, namespace_hash: felt252) -> WorldStorage;
+    fn default_storage(self: @T) -> WorldStorage {
+        Self::storage(self, DEFAULT_NAMESPACE_HASH)
     }
 }
 
 impl IWorldDispatcherWorldImpl of WorldTrait<IWorldDispatcher> {
-    fn new_storage(self: @IWorldDispatcher, namespace_hash: felt252) -> WorldStorage {
+    fn storage(self: @IWorldDispatcher, namespace_hash: felt252) -> WorldStorage {
         WorldStorageTrait::new_from_hash(*self, namespace_hash)
     }
 }
 
 impl WorldStorageWorldImpl of WorldTrait<WorldStorage> {
-    fn new_storage(self: @WorldStorage, namespace_hash: felt252) -> WorldStorage {
+    fn storage(self: @WorldStorage, namespace_hash: felt252) -> WorldStorage {
         WorldStorageTrait::new_from_hash(*self.dispatcher, namespace_hash)
+    }
+}
+
+impl ContractStateWorldImpl<TState, +WorldComponent<TState>> of WorldTrait<TState> {
+    fn storage(self: @TState, namespace_hash: felt252) -> WorldStorage {
+        WorldStorageTrait::new_from_hash(self.get_component().world_dispatcher(), namespace_hash)
     }
 }
 

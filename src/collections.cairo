@@ -13,7 +13,7 @@ mod items {
 }
 
 use interface::{
-    get_collection_dispatcher, ICollection, ICollectionDispatcher, ICollectionDispatcherTrait,
+    collection_dispatcher, ICollection, ICollectionDispatcher, ICollectionDispatcherTrait,
 };
 use attributes::{
     SeedItem, BlobertItemKey, TokenAttributes, Seed, BlobertAttribute, to_seed_key, SeedTrait,

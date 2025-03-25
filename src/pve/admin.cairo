@@ -1,6 +1,6 @@
 use starknet::ContractAddress;
 use blob_arena::{
-    stats::UStats, pve::PVEOpponentInput, collections::blobert::{TokenAttributes, BlobertItemKey},
+    stats::UStats, pve::PVEOpponentInput, collections::{TokenAttributes, BlobertItemKey},
     tags::IdTagNew, attacks::components::AttackInput,
 };
 
@@ -126,18 +126,21 @@ trait IPVEAdmin<TContractState> {
 mod pve_blobert_admin_actions {
     use starknet::{ContractAddress, get_caller_address};
     use dojo::world::WorldStorage;
-    use blob_arena::{
-        attacks::{AttackInput, AttackTrait}, permissions::{Permissions, Role},
-        pve::{PVEStore, PVETrait, PVEStorage, PVE_NAMESPACE_HASH, PVEOpponentInput}, stats::UStats,
-        collections::blobert::{TokenAttributes, BlobertItemKey, BlobertStorage}, tags::IdTagNew,
-        world::DEFAULT_NAMESPACE_HASH,
-    };
+
+    use crate::attacks::{AttackInput, AttackTrait};
+    use crate::permissions::{Permissions, Role};
+    use crate::pve::{PVEStore, PVETrait, PVEStorage, PVE_NAMESPACE_HASH, PVEOpponentInput};
+    use crate::stats::UStats;
+    use crate::collections::{TokenAttributes, BlobertItemKey};
+    use crate::tags::IdTagNew;
+    use crate::world::WorldTrait;
+
     use super::IPVEAdmin;
 
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
         fn get_pve_storage(self: @ContractState) -> WorldStorage {
-            self.world_ns_hash(PVE_NAMESPACE_HASH)
+            self.storage(PVE_NAMESPACE_HASH)
         }
     }
 
@@ -153,7 +156,7 @@ mod pve_blobert_admin_actions {
             xp: u128,
             collections_allowed: Array<ContractAddress>,
         ) -> felt252 {
-            let mut store = self.get_pve_storage();
+            let mut store = self.storage(PVE_NAMESPACE_HASH);
             store.assert_caller_has_permission(Role::PveSetter);
             let attack_ids = store.create_or_get_attacks_external(attacks);
             store
@@ -168,14 +171,14 @@ mod pve_blobert_admin_actions {
             opponents: Array<IdTagNew<PVEOpponentInput>>,
             collections_allowed: Array<ContractAddress>,
         ) {
-            let mut store = self.get_pve_storage();
+            let mut store = self.storage(PVE_NAMESPACE_HASH);
             store.assert_caller_has_permission(Role::PveSetter);
             store.setup_new_challenge(name, health_recovery_pc, opponents, collections_allowed);
         }
         fn set_collection(
             ref self: ContractState, id: felt252, collection: ContractAddress, available: bool,
         ) {
-            let mut store = self.get_pve_storage();
+            let mut store = self.storage(PVE_NAMESPACE_HASH);
             store.assert_caller_has_permission(Role::PveSetter);
             store.set_collection_allowed(id, collection, available);
         }
@@ -185,7 +188,7 @@ mod pve_blobert_admin_actions {
             collections: Array<ContractAddress>,
             available: bool,
         ) {
-            let mut store = self.get_pve_storage();
+            let mut store = self.storage(PVE_NAMESPACE_HASH);
             store.assert_caller_has_permission(Role::PveSetter);
             store.set_collections_allowed(id, collections, available);
         }
@@ -195,12 +198,12 @@ mod pve_blobert_admin_actions {
             collection: ContractAddress,
             available: bool,
         ) {
-            let mut store = self.get_pve_storage();
+            let mut store = self.storage(PVE_NAMESPACE_HASH);
             store.assert_caller_has_permission(Role::PveSetter);
             store.set_multiple_collection_allowed(ids, collection, available);
         }
         fn mint_free_games(ref self: ContractState, player: ContractAddress, amount: u32) {
-            let mut store = self.get_pve_storage();
+            let mut store = self.storage(PVE_NAMESPACE_HASH);
             store.assert_caller_has_permission(Role::PveFreeMinter);
             let mut model = store.get_free_games(player);
             model.games += amount;
@@ -211,7 +214,7 @@ mod pve_blobert_admin_actions {
             }
         }
         fn mint_paid_games(ref self: ContractState, player: ContractAddress, amount: u32) {
-            let mut store = self.get_pve_storage();
+            let mut store = self.storage(PVE_NAMESPACE_HASH);
             store.assert_caller_has_permission(Role::PvePaidMinter);
             let games = store.get_number_of_paid_games(player);
             store.set_number_of_paid_games(player, games + amount);

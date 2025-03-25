@@ -2,9 +2,17 @@ use core::num::traits::Zero;
 use starknet::ContractAddress;
 use dojo::{world::{WorldStorage, IWorldDispatcher}, model::{Model, ModelStorage}};
 use crate::world::WorldTrait;
-
+use crate::stats::UStats;
 const STORAGE_NAMESPACE_HASH: felt252 = bytearray_hash!("experience");
 
+/// Experience model tracks a player's experience points for a specific token in a collection
+///
+/// # Arguments
+///
+/// * `player` - The address of the player
+/// * `collection` - The address of the NFT collection contract
+/// * `token` - The token ID within the collection
+/// * `experience` - The amount of experience points accumulated
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct Experience {
@@ -17,6 +25,13 @@ struct Experience {
     experience: u128,
 }
 
+/// Represents a player's experience for a specific NFT collection
+///
+/// # Arguments
+///
+/// * `player` - The address of the player
+/// * `collection` - The address of the NFT collection
+/// * `experience` - The amount of experience points earned for this collection
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct PlayerCollectionExperience {
@@ -27,6 +42,12 @@ struct PlayerCollectionExperience {
     experience: u128,
 }
 
+/// Records and tracks experience points (XP) for specific tokens within a collection
+///
+/// # Fields
+/// * `collection` - The contract address of the NFT collection
+/// * `token` - The unique identifier of the specific token within the collection
+/// * `experience` - The amount of experience points accumulated by the token
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct TokenExperience {
@@ -37,6 +58,12 @@ struct TokenExperience {
     experience: u128,
 }
 
+/// Represents a player's experience points in the game
+///
+/// # Fields
+///
+/// * `player` - The ContractAddress representing the player's unique identifier
+/// * `experience` - The amount of experience points the player has accumulated
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct PlayerExperience {
@@ -45,6 +72,11 @@ struct PlayerExperience {
     experience: u128,
 }
 
+/// A model component representing the experience points accumulated by a collection
+///
+/// # Arguments
+/// * `collection` - The contract address of the collection
+/// * `experience` - The amount of experience points the collection has accumulated
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct CollectionExperience {
@@ -53,12 +85,44 @@ struct CollectionExperience {
     experience: u128,
 }
 
+/// Represents the maximum experience points achievable for a specific collection
+///
+/// # Fields
+///
+/// * `collection` - The contract address of the collection this cap applies to
+/// * `cap` - The maximum experience points that can be earned for a token in this collection
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct ExperienceCap {
     #[key]
     collection: ContractAddress,
     cap: u128,
+}
+
+/// Represents the bonus experience stats for a player's NFT.
+///
+/// # Fields
+///
+/// * `collection` - The NFT collection contract address
+/// * `token` - The specific NFT token ID within the collection
+/// * `player` - The wallet address of the player who owns the NFT
+/// * `strength` - The strength stat of the NFT (0-100)
+/// * `vitality` - The vitality stat of the NFT (0-100)
+/// * `dexterity` - The dexterity stat of the NFT (0-100)
+/// * `luck` - The luck stat of the NFT (0-100)
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct ExperienceStats {
+    #[key]
+    collection: ContractAddress,
+    #[key]
+    token: u256,
+    #[key]
+    player: ContractAddress,
+    strength: u8,
+    vitality: u8,
+    dexterity: u8,
+    luck: u8,
 }
 
 
@@ -146,6 +210,26 @@ impl ExperienceStorageImpl of ExperienceStorage {
     }
 
     fn experience_storage<T, +WorldTrait<T>, +Drop<T>>(self: @T) -> WorldStorage {
-        self.new_storage(STORAGE_NAMESPACE_HASH)
+        self.storage(STORAGE_NAMESPACE_HASH)
+    }
+
+    fn get_experience_stats(
+        self: @WorldStorage, collection: ContractAddress, token: u256, player: ContractAddress,
+    ) -> UStats {
+        self.read_schema(Model::<ExperienceStats>::ptr_from_keys((token, player)))
+    }
+
+    fn set_experience_stats(
+        ref self: WorldStorage,
+        collection: ContractAddress,
+        token: u256,
+        player: ContractAddress,
+        stats: UStats,
+    ) {
+        let UStats { strength, vitality, dexterity, luck } = stats;
+        self
+            .write_model(
+                @ExperienceStats { collection, token, player, strength, vitality, dexterity, luck },
+            );
     }
 }

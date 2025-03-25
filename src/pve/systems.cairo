@@ -1,23 +1,32 @@
 use core::{cmp::min, poseidon::poseidon_hash_span, num::traits::WideMul};
+
 use starknet::{ContractAddress, get_caller_address, get_contract_address, get_block_timestamp};
+
 use dojo::world::WorldStorage;
-use blob_arena::{
-    attacks::{Attack, AttackInput, AttackTrait},
-    pve::{
-        PVEGame, PVEOpponent, PVEOpponentInput, PVEBlobertInfo, PVEStorage, PVEPhase, PVEStore,
-        PVEChallengeAttempt, PVEPhaseTrait, PVEAttemptEnd,
-        components::{
-            OPPONENT_TAG_GROUP, CHALLENGE_TAG_GROUP, ARCADE_CHALLENGE_MAX_RESPAWNS,
-            PVEAttemptRespawn, PVEGameRunRound,
-        },
+
+
+use crate::attacks::{Attack, AttackInput, AttackTrait};
+use crate::pve::{
+    PVEGame, PVEOpponent, PVEOpponentInput, PVEBlobertInfo, PVEStorage, PVEPhase, PVEStore,
+    PVEChallengeAttempt, PVEPhaseTrait, PVEAttemptEnd,
+    components::{
+        OPPONENT_TAG_GROUP, CHALLENGE_TAG_GROUP, ARCADE_CHALLENGE_MAX_RESPAWNS, PVEAttemptRespawn,
+        PVEGameRunRound,
     },
-    game::{GameStorage, GameTrait, GameProgress},
-    combatants::{CombatantStorage, CombatantTrait, CombatantState, CombatantSetup},
-    attacks::AttackStorage, combat::CombatTrait, world::uuid,
-    hash::{make_hash_state, felt252_to_u128}, stats::UStats, collections::blobert::TokenAttributes,
-    constants::{STARTING_HEALTH, SECONDS_12_HOURS}, stats::StatsTrait, iter::Iteration,
-    tags::{Tag, IdTagNew}, core::byte_array_to_felt252_array,
 };
+use crate::game::{GameStorage, GameTrait, GameProgress};
+use crate::combatants::{CombatantStorage, CombatantTrait, CombatantState, CombatantSetup};
+use crate::attacks::AttackStorage;
+use crate::combat::CombatTrait;
+use crate::world::uuid;
+use crate::hash::{make_hash_state, felt252_to_u128};
+use crate::stats::UStats;
+use crate::collections::TokenAttributes;
+use crate::constants::{STARTING_HEALTH, SECONDS_12_HOURS};
+use crate::stats::StatsTrait;
+use crate::iter::Iteration;
+use crate::tags::{Tag, IdTagNew};
+use crate::core::byte_array_to_felt252_array;
 use crate::erc721::ERC721TokenStorage;
 
 fn calc_restored_health(current_health: u8, vitality: u8, health_recovery_percent: u8) -> u8 {
@@ -86,11 +95,8 @@ impl PVEImpl of PVETrait {
         player_attacks: Array<(felt252, felt252)>,
         opponent_token: felt252,
     ) -> (PVEGame, UStats, Array<felt252>) {
-        let (stats, attacks) = self
-            .ba
-            .get_token_stats_and_attacks(
-                player_collection_address, player_token_id, player_attacks,
-            );
+        let (stats, attacks) = player_collection_address
+            .get_token_stats_and_attacks(player_token_id, player_attacks);
         let token = self.ba.set_erc721_token(player_collection_address, player_token_id);
         let game = self
             .setup_pve_opponent_in_combat(
@@ -323,7 +329,7 @@ impl PVEImpl of PVETrait {
     ) -> felt252 {
         self.pve.assert_collection_allowed(challenge_id, collection);
         let id = uuid();
-        let (stats, attacks) = self.ba.get_token_stats_and_attacks(collection, token_id, attacks);
+        let (stats, attacks) = collection.get_token_stats_and_attacks(token_id, attacks);
         let token = self.ba.set_erc721_token(collection, token_id);
         assert(
             self.pve.get_pve_current_challenge_attempt(player, token).is_zero(),

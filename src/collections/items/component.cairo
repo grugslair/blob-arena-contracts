@@ -1,9 +1,10 @@
 use crate::stats::UStats;
 use crate::tags::IdTagNew;
-use crate::attacks::AttackInput;
+use crate::attacks::{AttackInput, AttackTrait};
 use crate::world::{WorldDispatcher, WorldComponent};
 use crate::permissions::{Permissions, Role};
-use super::super::{BlobertItemKey, BlobertAttribute, BlobertStore};
+use super::super::{BlobertItemKey, BlobertAttribute, BlobertStore, to_seed_key};
+use super::{BlobertItemsTrait, BlobertItemStorage};
 
 use dojo::world::WorldStorage;
 

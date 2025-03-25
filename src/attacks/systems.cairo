@@ -91,13 +91,13 @@ impl AttackImpl of AttackTrait {
     fn create_or_get_attack_external<T, +WorldTrait<T>, +Drop<T>>(
         ref self: T, attack: IdTagNew<AttackInput>,
     ) -> felt252 {
-        let mut attack_world = self.new_default_storage();
+        let mut attack_world = self.default_storage();
         attack_world.create_or_get_attack(attack)
     }
     fn create_or_get_attacks_external<T, +WorldTrait<T>, +Drop<T>>(
         ref self: T, attacks: Array<IdTagNew<AttackInput>>,
     ) -> Array<felt252> {
-        let mut attack_world = self.new_default_storage();
+        let mut attack_world = self.default_storage();
         attack_world.create_or_get_attacks(attacks)
     }
 }

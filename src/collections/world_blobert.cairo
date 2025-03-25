@@ -55,11 +55,11 @@ impl WorldBlobertStore<
     const LOCAL_NAMESPACE_HASH: felt252, const ITEM_NAMESPACE_HASH: felt252,
 > of BlobertStore {
     fn local_store(self: @IWorldDispatcher) -> WorldStorage {
-        self.new_storage(LOCAL_NAMESPACE_HASH)
+        self.storage(LOCAL_NAMESPACE_HASH)
     }
 
     fn item_store(self: @IWorldDispatcher) -> WorldStorage {
-        self.new_storage(ITEM_NAMESPACE_HASH)
+        self.storage(ITEM_NAMESPACE_HASH)
     }
 
     fn attributes(self: @IWorldDispatcher, token_id: u256) -> TokenAttributes {
