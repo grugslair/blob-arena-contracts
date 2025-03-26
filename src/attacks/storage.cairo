@@ -7,7 +7,7 @@ use blob_arena::{
         Attack, Effect,
         components::{
             AttackInputTrait, AttackInput, PlannedAttack, AttackAvailable, AttackLastUsed,
-            AttackName, AttackExists,
+            AttackName, AttackExists, AttackRequirement,
         },
     },
     uuid, world::{ModelTrait}, tags::Tag,
@@ -146,6 +146,16 @@ impl AttackStorageImpl of AttackStorage {
     fn check_attack_exists(self: @WorldStorage, attack_id: felt252) -> bool {
         let schema: AttackExists = self.read_schema(Model::<Attack>::ptr_from_keys(attack_id));
         schema.hit.is_non_zero() || schema.miss.is_non_zero()
+    }
+
+    fn get_attack_requirements(self: @WorldStorage, id: felt252) -> Array<AttackRequirement> {
+        self.read_member(Model::<Attack>::ptr_from_keys(id), selector!("requirements"))
+    }
+
+    fn get_attacks_requirements(
+        self: @WorldStorage, ids: Span<felt252>,
+    ) -> Array<Array<AttackRequirement>> {
+        self.read_member_of_models(Model::<Attack>::ptrs_from_keys(ids), selector!("requirements"))
     }
 }
 

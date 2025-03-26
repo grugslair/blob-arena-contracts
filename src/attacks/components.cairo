@@ -25,6 +25,7 @@ struct Attack {
     cooldown: u8,
     hit: Array<Effect>,
     miss: Array<Effect>,
+    requirements: Array<AttackRequirement>,
 }
 
 #[dojo::event]
@@ -93,6 +94,7 @@ struct AttackInput {
     cooldown: u8,
     hit: Array<EffectInput>,
     miss: Array<EffectInput>,
+    requirements: Array<AttackRequirement>,
 }
 
 /// Represents an effect that can be applied during the game.
@@ -118,6 +120,12 @@ struct EffectInput {
 enum Target {
     Player,
     Opponent,
+}
+
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
+enum AttackRequirement {
+    MinExperience: u128,
+    MaxExperience: u128,
 }
 
 /// Represents different types of effects that can be applied in the game
@@ -245,6 +253,7 @@ impl AttackInputImpl of AttackInputTrait {
                 cooldown: self.cooldown,
                 hit: self.hit.into(),
                 miss: self.miss.into(),
+                requirements: self.requirements,
             },
             self.name,
         )

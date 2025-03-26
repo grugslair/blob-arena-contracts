@@ -213,7 +213,7 @@ impl ExperienceStorageImpl of ExperienceStorage {
         self.storage(STORAGE_NAMESPACE_HASH)
     }
 
-    fn get_experience_stats(
+    fn get_experience_stats_value(
         self: @WorldStorage, collection: ContractAddress, token: u256, player: ContractAddress,
     ) -> UStats {
         self.read_schema(Model::<ExperienceStats>::ptr_from_keys((token, player)))

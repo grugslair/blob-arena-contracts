@@ -1,14 +1,15 @@
 use starknet::{ContractAddress, get_caller_address};
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}};
-use blob_arena::{
-    attacks::AttackStorage,
-    combatants::{
-        CombatantInfo, CombatantInfoTrait, CombatantStateTrait, CombatantToken,
-        components::{get_combatant_id, make_combatant_state}, CombatantStorage, CombatantSetup,
-    },
-    combat::{CombatState, CombatTrait}, stats::{UStats, StatsTrait},
-    collections::{collection_dispatcher, ICollectionDispatcherTrait, ICollectionDispatcher},
+
+use crate::attacks::{AttackStorage, AttackTrait};
+use crate::combatants::{
+    CombatantInfo, CombatantInfoTrait, CombatantStateTrait, CombatantToken,
+    components::{get_combatant_id, make_combatant_state}, CombatantStorage, CombatantSetup,
 };
+use crate::combat::{CombatState, CombatTrait};
+use crate::stats::{UStats, StatsTrait};
+use crate::collections::{collection_dispatcher, ICollectionDispatcherTrait, ICollectionDispatcher};
+use crate::experience::ExperienceTrait;
 
 #[generate_trait]
 impl CombatantImpl of CombatantTrait {
@@ -42,6 +43,9 @@ impl CombatantImpl of CombatantTrait {
     ) -> (UStats, Array<felt252>) {
         let (stats, attacks) = collection.get_token_stats_and_attacks(token_id, attacks);
         let experience = self.get_experience(collection, token_id, player);
+        let bonus_stats = self.get_experience_stats(collection, token_id, player);
+
+        ((stats + bonus_stats).limit_stats(), self.check_attacks_requirements(experience, attacks))
     }
 
     fn setup_combatant_state_and_attacks(

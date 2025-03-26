@@ -1,12 +1,9 @@
 use crate::stats::UStats;
 use crate::tags::IdTagNew;
-use crate::attacks::{AttackInput, AttackTrait};
-use crate::world::{WorldDispatcher, WorldComponent};
-use crate::permissions::{Permissions, Role};
-use super::super::{BlobertItemKey, BlobertAttribute, BlobertStore, to_seed_key};
-use super::{BlobertItemsTrait, BlobertItemStorage};
+use crate::attacks::AttackInput;
 
-use dojo::world::WorldStorage;
+use super::super::{BlobertItemKey, BlobertAttribute};
+
 
 /// Interface for managing Blobert items, their stats, names, and attacks
 #[starknet::interface]
@@ -168,97 +165,127 @@ trait IBlobertItems<TContractState> {
     );
 }
 
-#[starknet::embeddable]
-impl IBlobertItemsImpl<
-    TContractState, +BlobertStore, +Drop<TContractState>, +WorldComponent<TContractState>,
-> of IBlobertItems<TContractState> {
-    fn set_item(ref self: TContractState, key: BlobertItemKey, name: ByteArray, stats: UStats) {
-        let mut storage = self.permissioned_item_storage();
-        storage.set_blobert_item(key, name, stats);
-    }
+mod cmp {
+    use dojo::world::WorldStorage;
 
-    fn set_item_with_attacks(
-        ref self: TContractState,
-        key: BlobertItemKey,
-        name: ByteArray,
-        stats: UStats,
-        attacks: Array<IdTagNew<AttackInput>>,
-    ) {
-        let mut storage = self.permissioned_item_storage();
-        storage.set_blobert_item_with_attacks(key, name, stats, attacks);
-    }
+    use crate::permissions::{Permissions, Role};
+    use crate::world::{WorldDispatcher, WorldComponent};
+    use crate::attacks::AttackTrait;
 
-    fn set_item_stats(ref self: TContractState, key: BlobertItemKey, stats: UStats) {
-        let mut storage = self.permissioned_item_storage();
-        storage.set_blobert_item_stats(key, stats);
-    }
+    use super::{BlobertItemKey, UStats, AttackInput, IdTagNew, BlobertAttribute};
+    use super::super::{BlobertItemsTrait, BlobertItemStorage};
+    use super::super::super::to_seed_key;
 
-    fn set_item_name(ref self: TContractState, key: BlobertItemKey, name: ByteArray) {
-        let mut storage = self.permissioned_item_storage();
-        storage.set_blobert_item_name(key, name);
-    }
+    #[starknet::embeddable]
+    impl IBlobertItemsImpl<
+        TContractState,
+        impl BlobertStore: super::super::super::BlobertStore,
+        +Drop<TContractState>,
+        +WorldComponent<TContractState>,
+    > of super::IBlobertItems<TContractState> {
+        fn set_item(ref self: TContractState, key: BlobertItemKey, name: ByteArray, stats: UStats) {
+            let dispactcher = self.world_dispatcher();
+            dispactcher.assert_caller_has_permission(Role::BlobertAdmin);
+            let mut storage = dispactcher.item_store();
+            storage.set_blobert_item(key, name, stats);
+        }
 
-    fn set_item_attack_slot(
-        ref self: TContractState, key: BlobertItemKey, slot: felt252, attack: IdTagNew<AttackInput>,
-    ) {
-        let mut storage = self.permissioned_item_storage();
-        let id = storage.create_or_get_attack_external(attack);
-        storage.set_blobert_item_attack_slot(key, slot, id);
-    }
+        fn set_item_with_attacks(
+            ref self: TContractState,
+            key: BlobertItemKey,
+            name: ByteArray,
+            stats: UStats,
+            attacks: Array<IdTagNew<AttackInput>>,
+        ) {
+            let dispactcher = self.world_dispatcher();
+            dispactcher.assert_caller_has_permission(Role::BlobertAdmin);
+            let mut storage = dispactcher.item_store();
+            storage.set_blobert_item_with_attacks(key, name, stats, attacks);
+        }
 
-    fn fill_item_attack_slots(
-        ref self: TContractState, key: BlobertItemKey, attacks: Array<IdTagNew<AttackInput>>,
-    ) {
-        let mut storage = self.permissioned_item_storage();
-        let ids = storage.create_or_get_attacks_external(attacks);
-        storage.fill_blobert_item_attack_slots(key, ids);
-    }
+        fn set_item_stats(ref self: TContractState, key: BlobertItemKey, stats: UStats) {
+            let dispactcher = self.world_dispatcher();
+            dispactcher.assert_caller_has_permission(Role::BlobertAdmin);
+            let mut storage = dispactcher.item_store();
+            storage.set_blobert_item_stats(key, stats);
+        }
 
-    fn set_seed_item(
-        ref self: TContractState,
-        attribute: BlobertAttribute,
-        id: u32,
-        name: ByteArray,
-        stats: UStats,
-    ) {
-        let mut storage = self.permissioned_item_storage();
-        storage.set_blobert_item(to_seed_key(attribute, id), name, stats);
-    }
+        fn set_item_name(ref self: TContractState, key: BlobertItemKey, name: ByteArray) {
+            let dispactcher = self.world_dispatcher();
+            dispactcher.assert_caller_has_permission(Role::BlobertAdmin);
+            let mut storage = dispactcher.item_store();
+            storage.set_blobert_item_name(key, name);
+        }
 
-    fn set_seed_item_with_attacks(
-        ref self: TContractState,
-        attribute: BlobertAttribute,
-        id: u32,
-        name: ByteArray,
-        stats: UStats,
-        attacks: Array<IdTagNew<AttackInput>>,
-    ) {
-        let mut storage = self.permissioned_item_storage();
-        storage.set_blobert_item_with_attacks(to_seed_key(attribute, id), name, stats, attacks);
-    }
+        fn set_item_attack_slot(
+            ref self: TContractState,
+            key: BlobertItemKey,
+            slot: felt252,
+            attack: IdTagNew<AttackInput>,
+        ) {
+            let dispactcher = self.world_dispatcher();
+            dispactcher.assert_caller_has_permission(Role::BlobertAdmin);
+            let mut storage = dispactcher.item_store();
+            let id = storage.create_or_get_attack_external(attack);
+            storage.set_blobert_item_attack_slot(key, slot, id);
+        }
 
-    fn set_custom_item(ref self: TContractState, id: felt252, name: ByteArray, stats: UStats) {
-        let mut storage = self.permissioned_item_storage();
-        storage.set_blobert_item(BlobertItemKey::Custom(id), name, stats);
-    }
+        fn fill_item_attack_slots(
+            ref self: TContractState, key: BlobertItemKey, attacks: Array<IdTagNew<AttackInput>>,
+        ) {
+            let dispactcher = self.world_dispatcher();
+            dispactcher.assert_caller_has_permission(Role::BlobertAdmin);
+            let mut storage = dispactcher.item_store();
+            let ids = storage.create_or_get_attacks_external(attacks);
+            storage.fill_blobert_item_attack_slots(key, ids);
+        }
 
-    fn set_custom_item_with_attacks(
-        ref self: TContractState,
-        id: felt252,
-        name: ByteArray,
-        stats: UStats,
-        attacks: Array<IdTagNew<AttackInput>>,
-    ) {
-        let mut storage = self.permissioned_item_storage();
-        storage.set_blobert_item_with_attacks(BlobertItemKey::Custom(id), name, stats, attacks);
+        fn set_seed_item(
+            ref self: TContractState,
+            attribute: BlobertAttribute,
+            id: u32,
+            name: ByteArray,
+            stats: UStats,
+        ) {
+            let dispactcher = self.world_dispatcher();
+            dispactcher.assert_caller_has_permission(Role::BlobertAdmin);
+            let mut storage = dispactcher.item_store();
+            storage.set_blobert_item(to_seed_key(attribute, id), name, stats);
+        }
+
+        fn set_seed_item_with_attacks(
+            ref self: TContractState,
+            attribute: BlobertAttribute,
+            id: u32,
+            name: ByteArray,
+            stats: UStats,
+            attacks: Array<IdTagNew<AttackInput>>,
+        ) {
+            let dispactcher = self.world_dispatcher();
+            dispactcher.assert_caller_has_permission(Role::BlobertAdmin);
+            let mut storage = dispactcher.item_store();
+            storage.set_blobert_item_with_attacks(to_seed_key(attribute, id), name, stats, attacks);
+        }
+
+        fn set_custom_item(ref self: TContractState, id: felt252, name: ByteArray, stats: UStats) {
+            let dispactcher = self.world_dispatcher();
+            dispactcher.assert_caller_has_permission(Role::BlobertAdmin);
+            let mut storage = dispactcher.item_store();
+            storage.set_blobert_item(BlobertItemKey::Custom(id), name, stats);
+        }
+
+        fn set_custom_item_with_attacks(
+            ref self: TContractState,
+            id: felt252,
+            name: ByteArray,
+            stats: UStats,
+            attacks: Array<IdTagNew<AttackInput>>,
+        ) {
+            let dispactcher = self.world_dispatcher();
+            dispactcher.assert_caller_has_permission(Role::BlobertAdmin);
+            let mut storage = dispactcher.item_store();
+            storage.set_blobert_item_with_attacks(BlobertItemKey::Custom(id), name, stats, attacks);
+        }
     }
 }
 
-#[generate_trait]
-impl PrivateImpl<TState, +BlobertStore, +WorldComponent<TState>> of PrivateTrait<TState> {
-    fn permissioned_item_storage(self: @TState) -> WorldStorage {
-        let dispactcher = self.world_dispatcher();
-        dispactcher.assert_caller_has_permission(Role::BlobertAdmin);
-        dispactcher.item_store()
-    }
-}

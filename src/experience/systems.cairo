@@ -1,12 +1,22 @@
 use core::num::traits::Zero;
 use core::poseidon::poseidon_hash_span;
 use core::cmp::min;
-use starknet::ContractAddress;
+use starknet::{ContractAddress, get_contract_address};
 use starknet::storage::{StorageMapReadAccess, StorageMapWriteAccess};
 use dojo::world::{WorldStorage, IWorldDispatcher};
+
 use crate::world::WorldTrait;
+use crate::collections::{collection_dispatcher, ICollectionDispatcherTrait};
+use crate::stats::{UStats, StatsTrait, MAX_STAT};
+
 use super::ExperienceStorage;
 
+const STATS_PER_LEVEL: u16 = 3;
+
+
+fn calculate_max_experience_stats(experience: u128) -> u16 {
+    0
+}
 
 #[generate_trait]
 impl ExperienceImpl of ExperienceTrait {
@@ -14,6 +24,11 @@ impl ExperienceImpl of ExperienceTrait {
         self: @T, collection: ContractAddress, token: u256, player: ContractAddress,
     ) -> u128 {
         self.experience_storage().get_experience_value(collection, token, player)
+    }
+    fn get_experience_stats<T, +WorldTrait<T>, +Drop<T>>(
+        self: @T, collection: ContractAddress, token: u256, player: ContractAddress,
+    ) -> UStats {
+        self.experience_storage().get_experience_stats_value(collection, token, player)
     }
     fn increase_experience<T, +WorldTrait<T>, +Drop<T>>(
         ref self: T,
@@ -132,6 +147,50 @@ impl ExperienceImpl of ExperienceTrait {
                 self.get_collection_player_experience(collection, player) - decrease,
             );
         self.set_total_experience(self.get_total_experience() - decrease);
+    }
+
+    fn increase_experience_stats(
+        ref self: IWorldDispatcher,
+        collection: ContractAddress,
+        token: u256,
+        player: ContractAddress,
+        stats_increase: UStats,
+    ) {
+        let max_stats = calculate_max_experience_stats(
+            self.get_experience(get_contract_address(), token, player),
+        );
+        let mut storage = self.default_storage();
+
+        let new_stats = storage.get_experience_stats(collection, token, player) + stats_increase;
+
+        assert(new_stats.sum() <= max_stats, 'Not enough experience');
+        (new_stats + collection_dispatcher(collection).get_stats(token)).assert_in_range();
+
+        storage.set_experience_stats(collection, token, player, new_stats);
+    }
+
+    fn remove_overflowing_experience_stats(
+        ref self: IWorldDispatcher,
+        collection: ContractAddress,
+        token: u256,
+        player: ContractAddress,
+    ) {
+        let mut storage = self.default_storage();
+
+        let current_stats = storage.get_experience_stats(collection, token, player);
+        let base_stats = collection_dispatcher(collection).get_stats(token);
+        storage
+            .set_experience_stats(
+                collection,
+                token,
+                player,
+                UStats {
+                    strength: min(current_stats.strength, MAX_STAT - base_stats.strength),
+                    vitality: min(current_stats.vitality, MAX_STAT - base_stats.vitality),
+                    dexterity: min(current_stats.dexterity, MAX_STAT - base_stats.dexterity),
+                    luck: min(current_stats.luck, MAX_STAT - base_stats.luck),
+                },
+            );
     }
 }
 

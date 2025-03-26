@@ -7,7 +7,6 @@ use dojo::world::{WorldStorage, IWorldDispatcher};
 
 use crate::world::WorldTrait;
 use crate::collections::{collection_dispatcher, ICollectionDispatcherTrait};
-use crate::stats::{UStats, StatsTrait, MAX_STAT};
 
 use super::ExperienceTrait;
 
@@ -21,7 +20,7 @@ fn calculate_max_experience_stats(experience: u128) -> u16 {
 
 #[generate_trait]
 impl ExperienceStatsImpl of ExperienceStatsTrait {
-    fn increase_stats(
+    fn increase_experience_stats(
         ref self: IWorldDispatcher,
         collection: ContractAddress,
         token: u256,
@@ -41,7 +40,7 @@ impl ExperienceStatsImpl of ExperienceStatsTrait {
         storage.set_experience_stats(collection, token, player, new_stats);
     }
 
-    fn remove_overflowing_stats(
+    fn remove_overflowing_experience_stats(
         ref self: IWorldDispatcher,
         collection: ContractAddress,
         token: u256,

@@ -3,6 +3,7 @@ mod attributes;
 mod collection;
 mod store;
 mod world_blobert;
+mod amma_blobert;
 
 mod items {
     mod component;
@@ -10,6 +11,7 @@ mod items {
     mod systems;
     use storage::BlobertItemStorage;
     use systems::BlobertItemsTrait;
+    use component::{cmp, IBlobertItems, IBlobertItemsDispatcher, IBlobertItemsDispatcherTrait};
 }
 
 use interface::{
@@ -21,4 +23,5 @@ use attributes::{
 };
 use store::{BlobertStore, BlobertItems};
 use world_blobert::WorldBlobertStorage;
+use collection::IBlobertCollectionImpl;
 

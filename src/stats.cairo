@@ -58,7 +58,15 @@ fn add_buff(stat: u8, buff: i8) -> u8 {
 
 #[generate_trait]
 impl StatsImpl of StatsTrait {
-    fn limit_stats(ref self: UStats) {
+    fn limit_stats(self: UStats) -> UStats {
+        UStats {
+            strength: min(self.strength, MAX_STAT),
+            vitality: min(self.vitality, MAX_STAT),
+            dexterity: min(self.dexterity, MAX_STAT),
+            luck: min(self.luck, MAX_STAT),
+        }
+    }
+    fn apply_limit(ref self: UStats) {
         self.strength = min(self.strength, MAX_STAT);
         self.vitality = min(self.vitality, MAX_STAT);
         self.dexterity = min(self.dexterity, MAX_STAT);

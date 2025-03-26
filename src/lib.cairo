@@ -23,7 +23,9 @@ mod attacks {
     mod results;
     mod storage;
     mod systems;
-    use components::{Stat, Target, Affect, Damage, Attack, Effect, PlannedAttack, AttackInput};
+    use components::{
+        Stat, Target, Affect, Damage, Attack, Effect, PlannedAttack, AttackInput, AttackRequirement,
+    };
     use storage::AttackStorage;
     use systems::AttackTrait;
 }
@@ -87,7 +89,6 @@ mod experience {
     }
     use components::{ExperienceStorage};
     use systems::ExperienceTrait;
-    mod stats;
 }
 
 mod season {
