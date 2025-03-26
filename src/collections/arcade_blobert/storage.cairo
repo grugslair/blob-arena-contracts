@@ -36,6 +36,14 @@ struct LastMint {
     timestamp: u64,
 }
 
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct AmountTokensOwned {
+    #[key]
+    player: ContractAddress,
+    amount: u64,
+}
+
 #[generate_trait]
 impl ArcadeBlobertStorageImpl of ArcadeBlobertStorage {
     fn get_last_mint(self: @WorldStorage, caller: ContractAddress) -> u64 {
@@ -43,5 +51,11 @@ impl ArcadeBlobertStorageImpl of ArcadeBlobertStorage {
     }
     fn set_last_mint(ref self: WorldStorage, player: ContractAddress, timestamp: u64) {
         self.write_model(@LastMint { player, timestamp });
+    }
+    fn set_amount_tokens_owned(ref self: WorldStorage, player: ContractAddress, amount: u64) {
+        self.write_model(@AmountTokensOwned { player, amount });
+    }
+    fn get_amount_tokens_owned(self: @WorldStorage, player: ContractAddress) -> u64 {
+        self.read_member(Model::<AmountTokensOwned>::ptr_from_keys(player), selector!("amount"))
     }
 }
