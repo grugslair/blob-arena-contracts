@@ -149,7 +149,7 @@ impl ExperienceImpl of ExperienceTrait {
         self.set_total_experience(self.get_total_experience() - decrease);
     }
 
-    fn increase_experience_stats(
+    fn allocate_experience_stats(
         ref self: IWorldDispatcher,
         collection: ContractAddress,
         token: u256,

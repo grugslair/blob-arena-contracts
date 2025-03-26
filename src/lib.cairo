@@ -87,6 +87,7 @@ mod experience {
         mod systems;
         use components::PvpExperienceStorage;
     }
+    mod contract;
     use components::{ExperienceStorage};
     use systems::ExperienceTrait;
 }

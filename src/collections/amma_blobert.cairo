@@ -32,22 +32,21 @@ mod amma_blobert_actions {
     use super::super::world_blobert::{WorldBlobertStore, WorldBlobertStorage};
     use super::super::items::cmp;
     use super::super::collection;
-    // use super::super::items::IBlobertItemsImpl;
     use super::super::{IBlobertCollectionImpl, TokenAttributes};
     use super::IAmmaBlobert;
     const AMMA_BLOBERT_NAMESPACE_HASH: felt252 = bytearray_hash!("amma_blobert");
 
 
-    impl ArcadeBlobertStoreImpl =
+    impl AmmaBlobertStoreImpl =
         WorldBlobertStore<AMMA_BLOBERT_NAMESPACE_HASH, AMMA_BLOBERT_NAMESPACE_HASH>;
 
     #[abi(embed_v0)]
     impl IAmmaBlobertItems =
-        cmp::IBlobertItemsImpl<ContractState, ArcadeBlobertStoreImpl>;
+        cmp::IBlobertItemsImpl<ContractState, AmmaBlobertStoreImpl>;
 
     #[abi(embed_v0)]
     impl IAmmaBlobertCollectionImpl =
-        collection::IBlobertCollectionImpl<ContractState, ArcadeBlobertStoreImpl>;
+        collection::IBlobertCollectionImpl<ContractState, AmmaBlobertStoreImpl>;
 
     #[abi(embed_v0)]
     impl IAmmaBlobertImpl of IAmmaBlobert<ContractState> {

@@ -3,9 +3,12 @@ use core::num::traits::Zero;
 use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
 use dojo::world::WorldStorage;
 
-use blob_arena::{utils::SeedProbability, collections::blobert::Seed, constants::SECONDS_24_HOURS};
+use crate::utils::SeedProbability;
+use crate::constants::SECONDS_24_HOURS;
 
-use super::{ArcadeBlobertStorage, storage::TokenAttributes};
+use super::ArcadeBlobertStorage;
+use super::super::{TokenAttributes, Seed};
+use super::super::world_blobert::WorldBlobertStorage;
 
 const ARMOUR_COUNT: u8 = 17;
 const JEWELRY_COUNT: u8 = 8;
@@ -58,7 +61,10 @@ impl ArcadeBlobertImpl of ArcadeBlobertTrait {
         assert(current_tokens_owned < MAX_TOKENS_OWNED, 'Max tokens owned');
         self.set_amount_tokens_owned(owner, current_tokens_owned + 1);
         self.set_last_mint(owner, timestamp);
-        self.set_blobert_token(randomness, owner, TokenAttributes::Seed(generate_seed(randomness)));
+        self
+            .set_blobert_token(
+                randomness.into(), owner, TokenAttributes::Seed(generate_seed(randomness)),
+            );
         randomness.into()
     }
     fn burn_blobert(ref self: WorldStorage, token_id: u256) {

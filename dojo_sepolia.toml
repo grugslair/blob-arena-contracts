@@ -1,7 +1,6 @@
 [world]
-name = "blob_arena-0.12"
-seed = "blob-arena-0.12"
-
+name = "blob_arena-0.13"
+seed = "blob-arena-0.13"
 
 [env]
 rpc_url = "https://api.cartridge.gg/rpc/starknet-sepolia"
@@ -25,6 +24,7 @@ mappings = { "blob_arena" = [
     "arcade_blobert_actions",
     "LastMint",
     "BlobertToken",
+    "AmountTokensOwned",
 ], "amma_blobert" = [
     "amma_blobert_actions",
     "BlobertToken",
@@ -50,6 +50,15 @@ mappings = { "blob_arena" = [
     "PVEChallengeRespawn",
 ], "ba_permissions" = [
     "Permission",
+], "experience" = [
+    "experience_actions",
+    "Experience",
+    "PlayerCollectionExperience",
+    "TokenExperience",
+    "PlayerExperience",
+    "CollectionExperience",
+    "ExperienceCap",
+    "ExperienceStats",
 ] }
 
 [writers]
@@ -128,7 +137,11 @@ mappings = { "blob_arena" = [
 "pve_blobert-PVEChallengeRespawn" = ["pve_blobert-pve_blobert_actions"]
 "pve_blobert-CombatantToken" = ["pve_blobert-pve_blobert_actions"]
 
+"experience-ExperienceCap" = ["experience-experience_actions"]
+"experience-ExperienceStats" = ["experience-experience_actions"]
+
 "blobert" = ["blobert-blobert_actions"]
 "arcade_blobert" = ["arcade_blobert-arcade_blobert_actions"]
 "amma_blobert" = ["amma_blobert-amma_blobert_actions"]
 "pve_blobert" = ["pve_blobert-pve_blobert_admin_actions"]
+"experience" = ["blob_arena-game_actions", "pve_blobert-pve_blobert_actions"]
