@@ -4,6 +4,7 @@ mod collection;
 mod store;
 mod world_blobert;
 mod amma_blobert;
+mod blobert;
 
 mod items {
     mod component;

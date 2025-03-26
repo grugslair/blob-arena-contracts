@@ -1,42 +1,31 @@
 use blob_arena::{attacks::components::AttackInput, stats::UStats};
 use super::{TokenAttributes, BlobertAttribute, Seed, BlobertItemKey};
 
+const BLOBERT_CONTRACT_ADDRESS: felt252 =
+    0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578d0549d;
 
 #[dojo::contract]
 mod blobert_actions {
     use starknet::{ContractAddress, get_contract_address};
-    use dojo::world::WorldStorage;
-    use blob_arena::{
-        collections::interface::ICollection, attacks::components::AttackInput, stats::UStats,
-        world::default_namespace, DefaultStorage,
-    };
-    use super::super as blobert;
-    use blobert::{
-        TokenAttributes, BlobertAttribute, Seed, BlobertItemKey, BlobertTrait, BlobertStorage,
-        to_seed_key, external::{get_blobert_dispatcher, IBlobertDispatcherTrait},
-    };
+    use dojo::world::{WorldStorage, IWorldDispatcher};
+    use crate::world::WorldTrait;
+    use super::super::BlobertStore;
 
-    #[generate_trait]
-    impl PrivateImpl of PrivateTrait {
-        fn get_blobert_attributes(self: @WorldStorage, token_id: u256) -> TokenAttributes {
-            get_blobert_dispatcher().traits(token_id)
+    impl BlobertStoreImpl of BlobertStore {
+        fn local_store(self: @IWorldDispatcher) -> WorldStorage {
+            self.storage(LOCAL_NAMESPACE_HASH)
         }
-    }
 
-    impl DefaultStorageImpl of DefaultStorage<ContractState> {
-        fn default_storage(self: @ContractState) -> WorldStorage {
-            self.world(@"blobert")
+        fn item_store(self: @IWorldDispatcher) -> WorldStorage {
+            Self::local_store(self)
         }
-    }
 
-    mod permissioned_storage {
-        use super::{DefaultStorage, ContractState, WorldStorage};
-        use blob_arena::{permissions::{Permissions, Role}, world::get_default_storage};
-        impl DefaultStorageImpl of DefaultStorage<ContractState> {
-            fn default_storage(self: @ContractState) -> WorldStorage {
-                get_default_storage().assert_caller_has_permission(Role::BlobertAdmin);
-                super::DefaultStorageImpl::default_storage(self)
-            }
+        fn attributes(self: @IWorldDispatcher, token_id: u256) -> TokenAttributes {
+            Self::local_store(self).get_blobert_token_attributes(token_id)
+        }
+
+        fn owner(self: @IWorldDispatcher, token_id: u256) -> ContractAddress {
+            Self::local_store(self).get_blobert_token_owner(token_id)
         }
     }
 
