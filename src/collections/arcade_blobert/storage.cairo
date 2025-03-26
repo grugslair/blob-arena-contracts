@@ -37,7 +37,7 @@ struct LastMint {
 }
 
 #[generate_trait]
-impl WorldBlobertImpl of WorldBlobertStorage {
+impl ArcadeBlobertStorageImpl of ArcadeBlobertStorage {
     fn get_last_mint(self: @WorldStorage, caller: ContractAddress) -> u64 {
         self.read_member(Model::<LastMint>::ptr_from_keys(caller), selector!("timestamp"))
     }

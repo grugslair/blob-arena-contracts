@@ -4,7 +4,11 @@ mod collection;
 mod store;
 mod world_blobert;
 mod amma_blobert;
-mod blobert;
+mod blobert {
+    mod contract;
+    mod external;
+    use external::{blobert_dispatcher, IBlobertDispatcher, IBlobertDispatcherTrait};
+}
 
 mod items {
     mod component;
