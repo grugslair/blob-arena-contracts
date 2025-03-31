@@ -117,7 +117,7 @@ impl CombatantInfoImpl of CombatantInfoTrait {
 #[generate_trait]
 impl CombatantStateImpl of CombatantStateTrait {
     fn limit_buffs(ref self: CombatantState) {
-        self.stats.limit_stats();
+        self.stats.apply_limit();
     }
 
     fn apply_buffs(ref self: CombatantState, buffs: IStats) {
