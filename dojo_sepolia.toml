@@ -12,26 +12,26 @@ keystore_path = "/home/ben/sn-accounts/0x058e3b49d870f08c96a02f794c82b5f6c868c07
 
 [namespace]
 default = "blob_arena"
-mappings = { "blob_arena" = [
+mappings = { blob_arena = [
     "CombatantToken",
     "Tag",
-], "blobert" = [
+], blobert = [
     "blobert_actions",
     "BlobertItem",
     "AttackSlot",
     "BlobertItemName",
-], "arcade_blobert" = [
+], arcade_blobert = [
     "arcade_blobert_actions",
     "LastMint",
     "BlobertToken",
     "AmountTokensOwned",
-], "amma_blobert" = [
+], amma_blobert = [
     "amma_blobert_actions",
     "BlobertToken",
     "BlobertItem",
     "AttackSlot",
     "BlobertItemName",
-], "pve_blobert" = [
+], pve_blobert = [
     "pve_blobert_actions",
     "pve_blobert_admin_actions",
     "Tag",
@@ -49,9 +49,9 @@ mappings = { "blob_arena" = [
     "PVEStageGame",
     "PVEChallengeRespawn",
     "PVECurrentChallengeAttempt",
-], "ba_permissions" = [
+], ba_permissions = [
     "Permission",
-], "experience" = [
+], experience = [
     "experience_actions",
     "Experience",
     "PlayerCollectionExperience",
