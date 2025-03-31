@@ -1,5 +1,5 @@
 use starknet::ContractAddress;
-use blob_arena::{stats::UStats, collections::blobert::{TokenAttributes, BlobertItemKey}};
+use blob_arena::{stats::UStats, collections::{TokenAttributes, BlobertItemKey}};
 
 
 /// Interface for the PVE (Player vs Environment) game contract
@@ -151,19 +151,21 @@ mod pve_blobert_actions {
     use starknet::{ContractAddress, get_caller_address};
     use dojo::world::WorldStorage;
     use blob_arena::{
-        pve::{PVETrait, PVEStorage, PVE_NAMESPACE_HASH, PVEStore},
-        world::{uuid, DEFAULT_NAMESPACE_HASH}, game::GameProgress, utils::get_transaction_hash,
-        stats::UStats, collections::blobert::{TokenAttributes, BlobertItemKey, BlobertStorage},
-        erc721::erc721_owner_of,
+        pve::{PVETrait, PVEStorage, PVE_NAMESPACE_HASH, PVEStore}, world::{uuid, WorldTrait},
+        game::GameProgress, utils::get_transaction_hash, stats::UStats,
+        collections::{TokenAttributes, BlobertItemKey}, erc721::erc721_owner_of,
     };
     use super::{IPVE};
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
         fn get_storage(self: @ContractState) -> PVEStore {
-            PVEStore { ba: self.world_ns_hash(DEFAULT_NAMESPACE_HASH), pve: self.get_pve_storage() }
+            let dispatcher = self.world_dispatcher();
+            PVEStore {
+                ba: dispatcher.default_storage(), pve: dispatcher.storage(PVE_NAMESPACE_HASH),
+            }
         }
         fn get_pve_storage(self: @ContractState) -> WorldStorage {
-            self.world_ns_hash(PVE_NAMESPACE_HASH)
+            self.storage(PVE_NAMESPACE_HASH)
         }
     }
 
@@ -184,10 +186,10 @@ mod pve_blobert_actions {
         }
         fn attack(ref self: ContractState, game_id: felt252, attack_id: felt252) {
             let mut store = self.get_storage();
-            let game = store.pve.get_pve_game(game_id);
+            let game = store.pve.get_pve_game_run_round(game_id);
             assert(game.player == get_caller_address(), 'Not player');
             let randomness = get_transaction_hash(); //TODO: Use real randomness
-            store.run_pve_round(game, attack_id, randomness);
+            store.run_pve_round(game_id, game, attack_id, randomness);
         }
         fn start_challenge(
             ref self: ContractState,
@@ -199,13 +201,7 @@ mod pve_blobert_actions {
             let mut store = self.get_storage();
             let caller = get_caller_address();
             assert(erc721_owner_of(collection_address, token_id) == caller, 'Not owner');
-            assert(
-                store
-                    .pve
-                    .get_pve_current_challenge_attempt(caller, collection_address, token_id)
-                    .is_zero(),
-                'Already in challenge',
-            );
+
             store.pve.use_game(caller);
 
             store

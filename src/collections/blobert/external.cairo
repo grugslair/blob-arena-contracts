@@ -1,10 +1,10 @@
-use starknet::{ContractAddress, class_hash::class_hash_const, contract_address_const};
-use super::TokenAttributes;
-
+use starknet::{ContractAddress, contract_address_const};
+use super::super::TokenAttributes;
 
 const BLOBERT_CONTRACT_ADDRESS: felt252 =
     0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578d0549d;
-
+// const BLOBERT_CONTRACT_ADDRESS: felt252 =
+//     0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578d0549d;
 
 /// Interface for Blobert NFT collection management
 /// # Interface Functions
@@ -33,6 +33,6 @@ trait IBlobert<TContractState> {
     ) -> bool;
 }
 
-fn get_blobert_dispatcher() -> IBlobertDispatcher {
+fn blobert_dispatcher() -> IBlobertDispatcher {
     IBlobertDispatcher { contract_address: contract_address_const::<BLOBERT_CONTRACT_ADDRESS>() }
 }

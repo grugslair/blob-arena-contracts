@@ -23,7 +23,9 @@ mod attacks {
     mod results;
     mod storage;
     mod systems;
-    use components::{Stat, Target, Affect, Damage, Attack, Effect, PlannedAttack, AttackInput};
+    use components::{
+        Stat, Target, Affect, Damage, Attack, Effect, PlannedAttack, AttackInput, AttackRequirement,
+    };
     use storage::AttackStorage;
     use systems::AttackTrait;
 }
@@ -75,6 +77,25 @@ mod pve {
         PVEPhaseTrait, PVEAttemptEnd, PVEOpponentInput, PVE_NAMESPACE_HASH,
         ARCADE_CHALLENGE_MAX_RESPAWNS,
     };
+}
+
+mod experience {
+    mod components;
+    mod systems;
+    mod pvp {
+        mod components;
+        mod systems;
+        use components::PvpExperienceStorage;
+    }
+    mod contract;
+    use components::{ExperienceStorage};
+    use systems::ExperienceTrait;
+}
+
+mod season {
+    mod components;
+    mod systems;
+    use components::SeasonStorage;
 }
 
 pub use world::{default_namespace, DefaultStorage};

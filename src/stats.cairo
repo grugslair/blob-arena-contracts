@@ -58,7 +58,15 @@ fn add_buff(stat: u8, buff: i8) -> u8 {
 
 #[generate_trait]
 impl StatsImpl of StatsTrait {
-    fn limit_stats(ref self: UStats) {
+    fn limit_stats(self: UStats) -> UStats {
+        UStats {
+            strength: min(self.strength, MAX_STAT),
+            vitality: min(self.vitality, MAX_STAT),
+            dexterity: min(self.dexterity, MAX_STAT),
+            luck: min(self.luck, MAX_STAT),
+        }
+    }
+    fn apply_limit(ref self: UStats) {
         self.strength = min(self.strength, MAX_STAT);
         self.vitality = min(self.vitality, MAX_STAT);
         self.dexterity = min(self.dexterity, MAX_STAT);
@@ -80,6 +88,23 @@ impl StatsImpl of StatsTrait {
     }
     fn get_max_health(self: @UStats) -> u8 {
         *self.vitality + STARTING_HEALTH
+    }
+
+    fn assert_in_range(self: @UStats) {
+        assert(
+            *self.strength <= MAX_STAT
+                && *self.vitality <= MAX_STAT
+                && *self.dexterity <= MAX_STAT
+                && *self.luck <= MAX_STAT,
+            'A Stat is above the max',
+        );
+    }
+
+    fn sum(self: @UStats) -> u16 {
+        ((*self.strength).into()
+            + (*self.vitality).into()
+            + (*self.dexterity).into()
+            + (*self.luck).into())
     }
 }
 

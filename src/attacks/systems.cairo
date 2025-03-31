@@ -1,9 +1,14 @@
 use core::num::traits::One;
-use dojo::world::{WorldStorage, WorldStorageTrait};
-use blob_arena::{
-    attacks::{Attack, AttackStorage, components::{AttackInput, AttackInputTrait, ATTACK_TAG_GROUP}},
-    tags::{Tag, IdTagNew}, world::{get_default_storage, WorldTrait}, hash::hash_value,
+use dojo::world::{WorldStorage, IWorldDispatcher, WorldStorageTrait};
+
+use crate::attacks::{
+    Attack, AttackStorage, AttackRequirement,
+    components::{AttackInput, AttackInputTrait, ATTACK_TAG_GROUP},
 };
+use crate::tags::{Tag, IdTagNew};
+use crate::world::{get_default_storage, WorldTrait};
+use crate::hash::hash_value;
+use crate::iter::Iteration;
 
 
 #[generate_trait]
@@ -88,16 +93,51 @@ impl AttackImpl of AttackTrait {
         self.set_tags(ATTACK_TAG_GROUP, tags);
         ids
     }
-    fn create_or_get_attack_external(
-        ref self: WorldStorage, attack: IdTagNew<AttackInput>,
+    fn create_or_get_attack_external<T, +WorldTrait<T>, +Drop<T>>(
+        ref self: T, attack: IdTagNew<AttackInput>,
     ) -> felt252 {
-        let mut attack_world = get_default_storage();
+        let mut attack_world = self.default_storage();
         attack_world.create_or_get_attack(attack)
     }
-    fn create_or_get_attacks_external(
-        ref self: WorldStorage, attacks: Array<IdTagNew<AttackInput>>,
+    fn create_or_get_attacks_external<T, +WorldTrait<T>, +Drop<T>>(
+        ref self: T, attacks: Array<IdTagNew<AttackInput>>,
     ) -> Array<felt252> {
-        let mut attack_world = get_default_storage();
+        let mut attack_world = self.default_storage();
         attack_world.create_or_get_attacks(attacks)
+    }
+    fn check_attacks_requirements(
+        self: @WorldStorage, experience: u128, attack_ids: Array<felt252>,
+    ) -> Array<felt252> {
+        let mut valid_attacks = ArrayTrait::<felt252>::new();
+        for (n, requirements) in self.get_attacks_requirements(attack_ids.span()).enumerate() {
+            if self.check_attack_requirements(experience, requirements) {
+                valid_attacks.append(*attack_ids[n]);
+            }
+        };
+        valid_attacks
+    }
+
+    fn check_attack_requirements(
+        self: @WorldStorage, experience: u128, mut requirements: Array<AttackRequirement>,
+    ) -> bool {
+        loop {
+            match requirements.pop_front() {
+                Option::Some(requirements) => {
+                    match requirements {
+                        AttackRequirement::MinExperience(limit) => {
+                            if limit > experience {
+                                break false;
+                            }
+                        },
+                        AttackRequirement::MaxExperience(limit) => {
+                            if limit < experience {
+                                break false;
+                            }
+                        },
+                    }
+                },
+                Option::None => { break true; },
+            }
+        }
     }
 }

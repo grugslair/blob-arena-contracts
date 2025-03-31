@@ -9,3 +9,4 @@ const NZ_255: NonZero<u128> = 255;
 const NZ_100: NonZero<u128> = 100;
 const MAX_STAT: u8 = 100;
 const SECONDS_12_HOURS: u64 = 43200;
+const SECONDS_24_HOURS: u64 = 86400;

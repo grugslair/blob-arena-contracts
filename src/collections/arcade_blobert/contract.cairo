@@ -20,54 +20,50 @@ use blob_arena::collections::blobert::external::TokenAttributes;
 #[starknet::interface]
 trait IArcadeBlobert<TContractState> {
     fn mint(ref self: TContractState) -> u256;
+    fn burn(ref self: TContractState, token_id: u256);
     fn traits(self: @TContractState, token_id: u256) -> TokenAttributes;
 }
 
+const ARCADE_BLOBERT_NAMESPACE_HASH: felt252 = bytearray_hash!("arcade_blobert");
+
 #[dojo::contract]
 mod arcade_blobert_actions {
+    use core::poseidon::poseidon_hash_span;
     use starknet::{ContractAddress, get_caller_address};
     use dojo::world::WorldStorage;
-    use blob_arena::{
-        collections::{ICollection, blobert, arcade_blobert}, stats::UStats, default_namespace,
-    };
-    use blobert::{blobert_namespace, BlobertTrait, BlobertStorage, TokenAttributes};
-    use arcade_blobert::{
-        ArcadeBlobertStorage, mint::ArcadeBlobertMintTrait, collection::BlobertCollectionTrait,
-    };
-    use super::IArcadeBlobert;
 
-    #[generate_trait]
-    impl PrivateImpl of PrivateTrait {
-        fn storage(self: @ContractState) -> WorldStorage {
-            self.world(@"arcade_blobert")
-        }
-    }
+    use crate::world::{WorldTrait, incrementor};
+    use super::super::systems::ArcadeBlobertTrait;
+    use super::super::super::blobert::BLOBERT_NAMESPACE_HASH;
+    use super::super::super::world_blobert;
+    use super::super::super::items::cmp;
+    use super::super::super::collection;
+    use super::super::super::{IBlobertCollectionImpl, TokenAttributes};
 
-    impl ArcadeBlobertCollectionImpl of BlobertCollectionTrait<ContractState> {
-        fn blobert_storage(self: @ContractState) -> WorldStorage {
-            self.world(blobert_namespace())
-        }
-        fn attributes(self: @ContractState, token_id: u256) -> TokenAttributes {
-            self.storage().get_blobert_token_attributes(token_id)
-        }
-        fn owner(self: @ContractState, token_id: u256) -> ContractAddress {
-            self.storage().get_blobert_token_owner(token_id)
-        }
-    }
+    use super::{IArcadeBlobert, ARCADE_BLOBERT_NAMESPACE_HASH};
+
+    impl ArcadeBlobertStoreImpl =
+        world_blobert::WorldBlobertStore<ARCADE_BLOBERT_NAMESPACE_HASH, BLOBERT_NAMESPACE_HASH>;
 
     #[abi(embed_v0)]
     impl IArcadeBlobertCollectionImpl =
-        arcade_blobert::collection::IBlobertCollectionImpl<ContractState>;
+        collection::IBlobertCollectionImpl<ContractState, ArcadeBlobertStoreImpl>;
 
 
     #[abi(embed_v0)]
     impl IArcadeBlobertImpl of IArcadeBlobert<ContractState> {
         fn mint(ref self: ContractState) -> u256 {
-            let mut storage = self.storage();
-            storage.mint_random_blobert(get_caller_address())
+            let mut storage = self.storage(ARCADE_BLOBERT_NAMESPACE_HASH);
+            let randomness = poseidon_hash_span(['arcade', incrementor('SEED-ITER')].span());
+            storage.mint_random_blobert(get_caller_address(), randomness)
+        }
+        fn burn(ref self: ContractState, token_id: u256) {
+            let mut storage = self.storage(ARCADE_BLOBERT_NAMESPACE_HASH);
+            storage.burn_blobert(token_id);
         }
         fn traits(self: @ContractState, token_id: u256) -> TokenAttributes {
-            self.attributes(token_id)
+            let dispactcher = self.world_dispatcher();
+            dispactcher.attributes(token_id)
         }
     }
 }

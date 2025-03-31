@@ -47,57 +47,6 @@ enum BlobertAttribute {
     Weapon,
 }
 
-/// Setup Models
-
-/// A struct representing an item that can be equipped by a Blobert
-///
-/// # Fields
-/// * `key` - The unique identifier for this item, represented by a BlobertItemKey
-/// * `stats` - The stats associated with this item, stored as UStats
-///
-/// # Notes
-/// This is a Dojo model that can be dropped, serialized, and copied.
-#[dojo::model]
-#[derive(Drop, Serde, Copy)]
-struct BlobertItem {
-    #[key]
-    key: BlobertItemKey,
-    stats: UStats,
-}
-
-
-/// Contains a Blobert item's name information.
-///
-/// # Fields
-/// * `id` - The unique identifier of the item
-/// * `name` - The name of the item as a ByteArray
-///
-/// # Events
-/// Emitted when a Blobert item's name is created or updated
-#[dojo::event]
-#[derive(Drop, Serde)]
-struct BlobertItemName {
-    #[key]
-    id: felt252,
-    name: ByteArray,
-}
-
-/// Represents an attack slot associated with a Blobert item
-///
-/// # Fields
-/// * `item_key` - The unique identifier for the Blobert item
-/// * `slot` - The slot position number
-/// * `attack_id` - The identifier of the attack assigned to this slot
-#[dojo::model]
-#[derive(Drop, Serde)]
-struct AttackSlot {
-    #[key]
-    item_key: BlobertItemKey,
-    #[key]
-    slot: felt252,
-    attack_id: felt252,
-}
-
 
 fn to_seed_key(attribute: BlobertAttribute, attribute_id: u32) -> BlobertItemKey {
     BlobertItemKey::Seed(SeedItem { attribute, attribute_id })
