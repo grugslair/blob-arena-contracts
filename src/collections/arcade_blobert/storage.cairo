@@ -30,7 +30,7 @@ struct AmountTokensOwned {
 }
 
 #[generate_trait]
-impl ArcadeBlobertStorageImpl of ArcadeBlobertStorage {
+impl FreeBlobertStorageImpl of FreeBlobertStorage {
     fn get_last_mint(self: @WorldStorage, caller: ContractAddress) -> u64 {
         self.read_member(Model::<LastMint>::ptr_from_keys(caller), selector!("timestamp"))
     }
