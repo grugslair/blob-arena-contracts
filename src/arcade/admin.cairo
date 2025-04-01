@@ -1,12 +1,12 @@
 use starknet::ContractAddress;
 use blob_arena::{
-    stats::UStats, pve::PVEOpponentInput, collections::{TokenAttributes, BlobertItemKey},
+    stats::UStats, arcade::ArcadeOpponentInput, collections::{TokenAttributes, BlobertItemKey},
     tags::IdTagNew, attacks::components::AttackInput,
 };
 
-/// Interface for managing PVE (Player vs Environment) administrative functions.
+/// Interface for managing Arcade (Player vs Environment) administrative functions.
 #[starknet::interface]
-trait IPVEAdmin<TContractState> {
+trait IArcadeAdmin<TContractState> {
     /// Creates a new opponent with specified attributes and allowed collections
     /// # Arguments
     /// * `name` - Name of the opponent
@@ -20,12 +20,12 @@ trait IPVEAdmin<TContractState> {
     /// Models:
     /// - Tag
     /// - Attack
-    /// - PveOpponent
-    /// - PVECollectionAllowed
+    /// - ArcadeOpponent
+    /// - ArcadeCollectionAllowed
     ///
     /// Events:
     /// - AttackName
-    /// - PVEBlobertInfo
+    /// - ArcadeBlobertInfo
     fn new_opponent(
         ref self: TContractState,
         name: ByteArray,
@@ -37,7 +37,7 @@ trait IPVEAdmin<TContractState> {
         collections_allowed: Array<ContractAddress>,
     ) -> felt252;
 
-    /// Creates a new PVE challenge with defined opponents and collection restrictions
+    /// Creates a new Arcade challenge with defined opponents and collection restrictions
     /// # Arguments
     /// * `name` - Name of the challenge
     /// * `health_recovery_pc` - Health recovery percentage between fights
@@ -47,21 +47,21 @@ trait IPVEAdmin<TContractState> {
     /// Models:
     /// - Tag
     /// - Attack
-    /// - PveOpponent
-    /// - PVECollectionAllowed
-    /// - PVEChallenge
-    /// - PVEStageOpponent
+    /// - ArcadeOpponent
+    /// - ArcadeCollectionAllowed
+    /// - ArcadeChallenge
+    /// - ArcadeStageOpponent
     ///
     /// Events:
     /// - AttackName
-    /// - PVEBlobertInfo
-    /// - PVEChallengeName
+    /// - ArcadeBlobertInfo
+    /// - ArcadeChallengeName
     ///
     fn new_challenge(
         ref self: TContractState,
         name: ByteArray,
         health_recovery_pc: u8,
-        opponents: Array<IdTagNew<PVEOpponentInput>>,
+        opponents: Array<IdTagNew<ArcadeOpponentInput>>,
         collections_allowed: Array<ContractAddress>,
     );
 
@@ -72,7 +72,7 @@ trait IPVEAdmin<TContractState> {
     /// * `available` - Whether collection should be available
     ///
     /// Models:
-    /// - PVECollectionAllowed
+    /// - ArcadeCollectionAllowed
     ///
     fn set_collection(
         ref self: TContractState, id: felt252, collection: ContractAddress, available: bool,
@@ -85,7 +85,7 @@ trait IPVEAdmin<TContractState> {
     /// * `available` - Whether collections should be available
     ///
     /// Models:
-    /// - PVECollectionAllowed
+    /// - ArcadeCollectionAllowed
     fn set_collections(
         ref self: TContractState, id: felt252, collections: Array<ContractAddress>, available: bool,
     );
@@ -97,7 +97,7 @@ trait IPVEAdmin<TContractState> {
     /// * `available` - Whether collection should be available
     ///
     /// Models:
-    /// - PVECollectionAllowed
+    /// - ArcadeCollectionAllowed
     fn set_ids_collection(
         ref self: TContractState, ids: Array<felt252>, collection: ContractAddress, available: bool,
     );
@@ -108,7 +108,7 @@ trait IPVEAdmin<TContractState> {
     /// * `amount` - Number of free games to mint
     ///
     /// Models
-    /// - PVEFreeGames
+    /// - ArcadeFreeGames
     fn mint_free_games(ref self: TContractState, player: ContractAddress, amount: u32);
 
     /// Mints paid game passes for a player
@@ -117,35 +117,37 @@ trait IPVEAdmin<TContractState> {
     /// * `amount` - Number of paid games to mint
     ///
     /// Models:
-    /// - PVEPaidGames
+    /// - ArcadePaidGames
     fn mint_paid_games(ref self: TContractState, player: ContractAddress, amount: u32);
 }
 
 
 #[dojo::contract]
-mod pve_blobert_admin_actions {
+mod arcade_mode_admin_actions {
     use starknet::{ContractAddress, get_caller_address};
     use dojo::world::WorldStorage;
 
     use crate::attacks::{AttackInput, AttackTrait};
     use crate::permissions::{Permissions, Role};
-    use crate::pve::{PVEStore, PVETrait, PVEStorage, PVE_NAMESPACE_HASH, PVEOpponentInput};
+    use crate::arcade::{
+        ArcadeStore, ArcadeTrait, ArcadeStorage, ARCADE_NAMESPACE_HASH, ArcadeOpponentInput,
+    };
     use crate::stats::UStats;
     use crate::collections::{TokenAttributes, BlobertItemKey};
     use crate::tags::IdTagNew;
     use crate::world::WorldTrait;
 
-    use super::IPVEAdmin;
+    use super::IArcadeAdmin;
 
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
-        fn get_pve_storage(self: @ContractState) -> WorldStorage {
-            self.storage(PVE_NAMESPACE_HASH)
+        fn get_arcade_storage(self: @ContractState) -> WorldStorage {
+            self.storage(ARCADE_NAMESPACE_HASH)
         }
     }
 
     #[abi(embed_v0)]
-    impl IPVEAdminImpl of IPVEAdmin<ContractState> {
+    impl IArcadeAdminImpl of IArcadeAdmin<ContractState> {
         fn new_opponent(
             ref self: ContractState,
             name: ByteArray,
@@ -156,8 +158,8 @@ mod pve_blobert_admin_actions {
             xp: u128,
             collections_allowed: Array<ContractAddress>,
         ) -> felt252 {
-            let mut store = self.storage(PVE_NAMESPACE_HASH);
-            store.assert_caller_has_permission(Role::PveSetter);
+            let mut store = self.storage(ARCADE_NAMESPACE_HASH);
+            store.assert_caller_has_permission(Role::ArcadeSetter);
             let attack_ids = store.create_or_get_attacks_external(attacks);
             store
                 .setup_new_opponent(
@@ -168,18 +170,18 @@ mod pve_blobert_admin_actions {
             ref self: ContractState,
             name: ByteArray,
             health_recovery_pc: u8,
-            opponents: Array<IdTagNew<PVEOpponentInput>>,
+            opponents: Array<IdTagNew<ArcadeOpponentInput>>,
             collections_allowed: Array<ContractAddress>,
         ) {
-            let mut store = self.storage(PVE_NAMESPACE_HASH);
-            store.assert_caller_has_permission(Role::PveSetter);
+            let mut store = self.storage(ARCADE_NAMESPACE_HASH);
+            store.assert_caller_has_permission(Role::ArcadeSetter);
             store.setup_new_challenge(name, health_recovery_pc, opponents, collections_allowed);
         }
         fn set_collection(
             ref self: ContractState, id: felt252, collection: ContractAddress, available: bool,
         ) {
-            let mut store = self.storage(PVE_NAMESPACE_HASH);
-            store.assert_caller_has_permission(Role::PveSetter);
+            let mut store = self.storage(ARCADE_NAMESPACE_HASH);
+            store.assert_caller_has_permission(Role::ArcadeSetter);
             store.set_collection_allowed(id, collection, available);
         }
         fn set_collections(
@@ -188,8 +190,8 @@ mod pve_blobert_admin_actions {
             collections: Array<ContractAddress>,
             available: bool,
         ) {
-            let mut store = self.storage(PVE_NAMESPACE_HASH);
-            store.assert_caller_has_permission(Role::PveSetter);
+            let mut store = self.storage(ARCADE_NAMESPACE_HASH);
+            store.assert_caller_has_permission(Role::ArcadeSetter);
             store.set_collections_allowed(id, collections, available);
         }
         fn set_ids_collection(
@@ -198,13 +200,13 @@ mod pve_blobert_admin_actions {
             collection: ContractAddress,
             available: bool,
         ) {
-            let mut store = self.storage(PVE_NAMESPACE_HASH);
-            store.assert_caller_has_permission(Role::PveSetter);
+            let mut store = self.storage(ARCADE_NAMESPACE_HASH);
+            store.assert_caller_has_permission(Role::ArcadeSetter);
             store.set_multiple_collection_allowed(ids, collection, available);
         }
         fn mint_free_games(ref self: ContractState, player: ContractAddress, amount: u32) {
-            let mut store = self.storage(PVE_NAMESPACE_HASH);
-            store.assert_caller_has_permission(Role::PveFreeMinter);
+            let mut store = self.storage(ARCADE_NAMESPACE_HASH);
+            store.assert_caller_has_permission(Role::ArcadeFreeMinter);
             let mut model = store.get_free_games(player);
             model.games += amount;
             if model.last_claim.is_non_zero() {
@@ -214,8 +216,8 @@ mod pve_blobert_admin_actions {
             }
         }
         fn mint_paid_games(ref self: ContractState, player: ContractAddress, amount: u32) {
-            let mut store = self.storage(PVE_NAMESPACE_HASH);
-            store.assert_caller_has_permission(Role::PvePaidMinter);
+            let mut store = self.storage(ARCADE_NAMESPACE_HASH);
+            store.assert_caller_has_permission(Role::ArcadePaidMinter);
             let games = store.get_number_of_paid_games(player);
             store.set_number_of_paid_games(player, games + amount);
         }

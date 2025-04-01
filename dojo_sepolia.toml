@@ -31,24 +31,24 @@ mappings = { blob_arena = [
     "BlobertItem",
     "AttackSlot",
     "BlobertItemName",
-], pve_blobert = [
-    "pve_blobert_actions",
-    "pve_blobert_admin_actions",
+], arcade_mode = [
+    "arcade_mode_actions",
+    "arcade_mode_admin_actions",
     "Tag",
     "CombatantToken",
-    "PVEOpponent",
-    "PVECollectionAllowed",
-    "PVEBlobertInfo",
-    "PVEChallenge",
-    "PVEChallengeName",
-    "PVEStageOpponent",
-    "PVEGame",
-    "PVEFreeGames",
-    "PVEPaidGames",
-    "PVEChallengeAttempt",
-    "PVEStageGame",
-    "PVEChallengeRespawn",
-    "PVECurrentChallengeAttempt",
+    "ArcadeOpponent",
+    "ArcadeCollectionAllowed",
+    "ArcadeBlobertInfo",
+    "ArcadeChallenge",
+    "ArcadeChallengeName",
+    "ArcadeStageOpponent",
+    "ArcadeGame",
+    "ArcadeFreeGames",
+    "ArcadePaidGames",
+    "ArcadeChallengeAttempt",
+    "ArcadeStageGame",
+    "ArcadeChallengeRespawn",
+    "ArcadeCurrentChallengeAttempt",
 ], ba_permissions = [
     "Permission",
 ], experience = [
@@ -82,25 +82,25 @@ mappings = { blob_arena = [
     "blob_arena-game_actions",
     "blob_arena-lobby_actions",
     "blob_arena-game_admin",
-    "pve_blobert-pve_blobert_actions",
+    "arcade_mode-arcade_mode_actions",
 ]
 
 "blob_arena-AttackAvailable" = [
     "blob_arena-lobby_actions",
     "blob_arena-game_admin",
-    "pve_blobert-pve_blobert_actions",
+    "arcade_mode-arcade_mode_actions",
 ]
 
 "blob_arena-AttackLastUsed" = [
     "blob_arena-game_actions",
-    "pve_blobert-pve_blobert_actions",
+    "arcade_mode-arcade_mode_actions",
 ]
 
 "blob_arena-CombatState" = [
     "blob_arena-game_actions",
     "blob_arena-lobby_actions",
     "blob_arena-game_admin",
-    "pve_blobert-pve_blobert_actions",
+    "arcade_mode-arcade_mode_actions",
 ]
 
 "blob_arena-Commitment" = ["blob_arena-game_actions"]
@@ -111,7 +111,7 @@ mappings = { blob_arena = [
 
 "blob_arena-RoundResult" = [
     "blob_arena-game_actions",
-    "pve_blobert-pve_blobert_actions",
+    "arcade_mode-arcade_mode_actions",
 ]
 
 "blob_arena-Attack" = [
@@ -126,17 +126,19 @@ mappings = { blob_arena = [
 "blob_arena-Tag" = [
     "blobert-blobert_actions",
     "amma_blobert-amma_blobert_actions",
-    "pve_blobert-pve_blobert_admin_actions",
+    "arcade_mode-arcade_mode_admin_actions",
 ]
 
-"pve_blobert-PVEChallengeAttempt" = ["pve_blobert-pve_blobert_actions"]
-"pve_blobert-PVEStageGame" = ["pve_blobert-pve_blobert_actions"]
-"pve_blobert-PVEGame" = ["pve_blobert-pve_blobert_actions"]
-"pve_blobert-PVEFreeGames" = ["pve_blobert-pve_blobert_actions"]
-"pve_blobert-PVEPaidGames" = ["pve_blobert-pve_blobert_actions"]
-"pve_blobert-PVEChallengeRespawn" = ["pve_blobert-pve_blobert_actions"]
-"pve_blobert-CombatantToken" = ["pve_blobert-pve_blobert_actions"]
-"pve_blobert-PVECurrentChallengeAttempt" = ["pve_blobert-pve_blobert_actions"]
+"arcade_mode-ArcadeChallengeAttempt" = ["arcade_mode-arcade_mode_actions"]
+"arcade_mode-ArcadeStageGame" = ["arcade_mode-arcade_mode_actions"]
+"arcade_mode-ArcadeGame" = ["arcade_mode-arcade_mode_actions"]
+"arcade_mode-ArcadeFreeGames" = ["arcade_mode-arcade_mode_actions"]
+"arcade_mode-ArcadePaidGames" = ["arcade_mode-arcade_mode_actions"]
+"arcade_mode-ArcadeChallengeRespawn" = ["arcade_mode-arcade_mode_actions"]
+"arcade_mode-CombatantToken" = ["arcade_mode-arcade_mode_actions"]
+"arcade_mode-ArcadeCurrentChallengeAttempt" = [
+    "arcade_mode-arcade_mode_actions",
+]
 
 "experience-ExperienceCap" = ["experience-experience_actions"]
 "experience-ExperienceStats" = ["experience-experience_actions"]
@@ -144,5 +146,5 @@ mappings = { blob_arena = [
 "blobert" = ["blobert-blobert_actions"]
 "free_blobert" = ["free_blobert-free_blobert_actions"]
 "amma_blobert" = ["amma_blobert-amma_blobert_actions"]
-"pve_blobert" = ["pve_blobert-pve_blobert_admin_actions"]
-"experience" = ["blob_arena-game_actions", "pve_blobert-pve_blobert_actions"]
+"arcade_mode" = ["arcade_mode-arcade_mode_admin_actions"]
+"experience" = ["blob_arena-game_actions", "arcade_mode-arcade_mode_actions"]

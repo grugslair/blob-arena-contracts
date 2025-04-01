@@ -166,10 +166,10 @@ const parseAttackStruct = (attack) => {
   return new CairoCustomEnum({ New: parseNewAttack(attack) });
 };
 
-const parseNewPVEOpponent = (opponent) => {
+const parseNewArcadeOpponent = (opponent) => {
   return {
     name: opponent.name,
-    collection: PVECollectionAddresses[opponent.collection],
+    collection: ArcadeCollectionAddresses[opponent.collection],
     attributes: new CairoCustomEnum(opponent.attributes),
     stats: opponent.stats,
     attacks: makeAttacksStruct(opponent.attacks),
@@ -177,7 +177,7 @@ const parseNewPVEOpponent = (opponent) => {
   };
 };
 
-const makePveOpponentsStruct = (opponents) => {
+const makeArcadeOpponentsStruct = (opponents) => {
   let opponentsStructs = [];
   for (const opponent of opponents) {
     opponentsStructs.push(parseOpponentStruct(opponent));
@@ -195,7 +195,7 @@ const parseOpponentStruct = (opponent) => {
   if (opponent.new != null) {
     return new CairoCustomEnum({ New: opponent.new });
   }
-  return new CairoCustomEnum({ New: parseNewPVEOpponent(opponent) });
+  return new CairoCustomEnum({ New: parseNewArcadeOpponent(opponent) });
 };
 
 const makeSeedItemCallData = (trait, n, item) => {
@@ -229,16 +229,16 @@ const makeAttackSlots = (attack_slots) => {
 const makeCollectionsAllowed = (collections) => {
   let allowed = [];
   for (const collection of collections) {
-    allowed.push(PVECollectionAddresses[collection]);
+    allowed.push(ArcadeCollectionAddresses[collection]);
   }
   return allowed;
 };
 
-const makePveChallengeCallData = (challenge) => {
+const makeArcadeChallengeCallData = (challenge) => {
   return {
     name: challenge.name,
     health_recovery_pc: challenge.health_recovery,
-    opponents: makePveOpponentsStruct(challenge.opponents),
+    opponents: makeArcadeOpponentsStruct(challenge.opponents),
     collections_allowed: makeCollectionsAllowed(challenge.collections_allowed),
   };
 };
@@ -261,7 +261,7 @@ const profile = options.profile;
 const seed_data = loadJson("./seed-attributes.json");
 const custom_data = loadJson("./custom-attributes.json");
 const amma_data = loadJson("./amma-attributes.json");
-const pve_data = loadJson("./arcade-mode.json");
+const arcade_data = loadJson("./arcade-mode.json");
 const role_data = loadJson("./roles.json")[profile];
 const manifest = loadJson(`../manifest_${profile}.json`);
 const dojo_toml = loadToml(`../dojo_${profile}.toml`);
@@ -281,13 +281,13 @@ const account = new Account({ nodeUrl: rpcUrl }, accountAddress, privateKey);
 const blobertContractTag = "blobert-blobert_actions";
 const freeBlobertContractTag = "free_blobert-free_blobert_actions";
 const ammaBlobertContractTag = "amma_blobert-amma_blobert_actions";
-const pveBlobertContractTag = "pve_blobert-pve_blobert_admin_actions";
+const arcadeBlobertContractTag = "arcade_blobert-arcade_blobert_admin_actions";
 const gameAdminContractTag = "blob_arena-game_admin";
 
 const seedEntrypoint = "set_seed_item_with_attacks";
 const customEntrypoint = "set_custom_item_with_attacks";
-const pveOpponentEntrypoint = "new_opponent";
-const pveChallengeEntrypoint = "new_challenge";
+const arcadeOpponentEntrypoint = "new_opponent";
+const arcadeChallengeEntrypoint = "new_challenge";
 const setPermissionsEntrypoint = "set_multiple_has_role";
 
 const blobertContractAddress = getContractAddress(manifest, blobertContractTag);
@@ -299,9 +299,9 @@ const ammaBlobertContractAddress = getContractAddress(
   manifest,
   ammaBlobertContractTag
 );
-const pveBlobertContractAddress = getContractAddress(
+const arcadeBlobertContractAddress = getContractAddress(
   manifest,
-  pveBlobertContractTag
+  arcadeBlobertContractTag
 );
 const gameAdminContractAddress = getContractAddress(
   manifest,
@@ -313,13 +313,13 @@ const ammaBlobertContract = await getContract(
   account,
   ammaBlobertContractAddress
 );
-const pveBlobertContract = await getContract(
+const arcadeBlobertContract = await getContract(
   account,
-  pveBlobertContractAddress
+  arcadeBlobertContractAddress
 );
 const gameAdminContract = await getContract(account, gameAdminContractAddress);
 
-const PVECollectionAddresses = {
+const ArcadeCollectionAddresses = {
   blobert: blobertContractAddress,
   free_blobert: freeBlobertContractAddress,
   amma_blobert: ammaBlobertContractAddress,
@@ -371,23 +371,23 @@ for (const [n, item] of Object.entries(amma_data)) {
   ]);
 }
 
-for (const opponent of pve_data["opponents"]) {
+for (const opponent of arcade_data["opponents"]) {
   calls.push([
-    `pve: ${opponent.name}`,
+    `arcade: ${opponent.name}`,
     makeCall(
-      pveBlobertContract,
-      pveOpponentEntrypoint,
-      parseNewPVEOpponent(opponent)
+      arcadeBlobertContract,
+      arcadeOpponentEntrypoint,
+      parseNewArcadeOpponent(opponent)
     ),
   ]);
 }
-for (const challenge of pve_data["challenges"]) {
+for (const challenge of arcade_data["challenges"]) {
   calls.push([
-    `pve: ${challenge.name}`,
+    `arcade: ${challenge.name}`,
     makeCall(
-      pveBlobertContract,
-      pveChallengeEntrypoint,
-      makePveChallengeCallData(challenge)
+      arcadeBlobertContract,
+      arcadeChallengeEntrypoint,
+      makeArcadeChallengeCallData(challenge)
     ),
   ]);
 }

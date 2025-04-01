@@ -13,10 +13,10 @@ impl ParentRolesImpl of ParentRoles {
             Role::AmmaAdmin => array![Role::Admin],
             Role::BlobertAdmin => array![Role::Admin],
             Role::Creator => array![Role::Admin],
-            Role::PvePaidMinter => array![Role::Admin, Role::PveMinter],
-            Role::PveFreeMinter => array![Role::Admin, Role::PveMinter],
-            Role::PveMinter => array![Role::Admin],
-            Role::PveSetter => array![Role::Admin],
+            Role::ArcadePaidMinter => array![Role::Admin, Role::ArcadeMinter],
+            Role::ArcadeFreeMinter => array![Role::Admin, Role::ArcadeMinter],
+            Role::ArcadeMinter => array![Role::Admin],
+            Role::ArcadeSetter => array![Role::Admin],
         }
     }
 }

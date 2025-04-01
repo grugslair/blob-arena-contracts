@@ -8,10 +8,10 @@ enum Role {
     AmmaAdmin,
     BlobertAdmin,
     Creator,
-    PvePaidMinter,
-    PveFreeMinter,
-    PveMinter,
-    PveSetter,
+    ArcadePaidMinter,
+    ArcadeFreeMinter,
+    ArcadeMinter,
+    ArcadeSetter,
 }
 
 impl RoleIntoByteArrayImpl of Into<Role, ByteArray> {
@@ -21,10 +21,10 @@ impl RoleIntoByteArrayImpl of Into<Role, ByteArray> {
             Role::AmmaAdmin => "amma admin",
             Role::BlobertAdmin => "Blobert admin",
             Role::Creator => "creator",
-            Role::PvePaidMinter => "paid minter",
-            Role::PveFreeMinter => "free minter",
-            Role::PveMinter => "minter",
-            Role::PveSetter => "pve setter",
+            Role::ArcadePaidMinter => "paid minter",
+            Role::ArcadeFreeMinter => "free minter",
+            Role::ArcadeMinter => "minter",
+            Role::ArcadeSetter => "arcade setter",
         }
     }
 }
