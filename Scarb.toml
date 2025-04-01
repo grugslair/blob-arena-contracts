@@ -11,13 +11,18 @@ sierra-replace-ids = true
 dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.3.1" }
 cubit = { git = "https://github.com/bengineer42/cubit", tag = "cairo--2.8.0" }
 openzeppelin_token = { git = "https://github.com/OpenZeppelin/cairo-contracts", tag = "v0.19.0" }
+arcade_trophy = { git = "https://github.com/cartridge-gg/arcade", tag = "v1.2.1" }
 
 [tool.dojo]
 initializer_class_hash = "0xbeef"
 
 [[target.starknet-contract]]
 sierra = true
-build-external-contracts = ["dojo::world::world_contract::world"]
+build-external-contracts = [
+    "dojo::world::world_contract::world",
+    "arcade_trophy::events::index::e_TrophyCreation",
+    "arcade_trophy::events::index::e_TrophyProgression",
+]
 
 [dev-dependencies]
 dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.3.1" }

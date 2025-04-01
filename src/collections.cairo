@@ -14,7 +14,7 @@ mod arcade_blobert {
     mod contract;
     mod storage;
     mod systems;
-    use storage::ArcadeBlobertStorage;
+    use storage::FreeBlobertStorage;
 }
 
 mod items {

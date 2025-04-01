@@ -6,7 +6,7 @@ use dojo::world::WorldStorage;
 use crate::utils::SeedProbability;
 use crate::constants::SECONDS_24_HOURS;
 
-use super::ArcadeBlobertStorage;
+use super::FreeBlobertStorage;
 use super::super::{TokenAttributes, Seed};
 use super::super::world_blobert::WorldBlobertStorage;
 
@@ -48,7 +48,7 @@ fn generate_seed(randomness: felt252) -> Seed {
 }
 
 #[generate_trait]
-impl ArcadeBlobertImpl of ArcadeBlobertTrait {
+impl FreeBlobertImpl of FreeBlobertTrait {
     fn mint_random_blobert(
         ref self: WorldStorage, owner: ContractAddress, randomness: felt252,
     ) -> u256 {

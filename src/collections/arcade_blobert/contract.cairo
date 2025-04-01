@@ -1,7 +1,7 @@
 use starknet::ContractAddress;
 use blob_arena::collections::blobert::external::TokenAttributes;
 
-/// Interface for the ArcadeBlobert NFT contract
+/// Interface for the FreeBlobert NFT contract
 ///
 /// # Interface Functions
 ///
@@ -18,7 +18,7 @@ use blob_arena::collections::blobert::external::TokenAttributes;
 ///    Returns:
 ///    * `TokenAttributes` - The attributes associated with the token
 #[starknet::interface]
-trait IArcadeBlobert<TContractState> {
+trait IFreeBlobert<TContractState> {
     fn mint(ref self: TContractState) -> u256;
     fn burn(ref self: TContractState, token_id: u256);
     fn traits(self: @TContractState, token_id: u256) -> TokenAttributes;
@@ -33,25 +33,25 @@ mod arcade_blobert_actions {
     use dojo::world::WorldStorage;
 
     use crate::world::{WorldTrait, incrementor};
-    use super::super::systems::ArcadeBlobertTrait;
+    use super::super::systems::FreeBlobertTrait;
     use super::super::super::blobert::BLOBERT_NAMESPACE_HASH;
     use super::super::super::world_blobert;
     use super::super::super::items::cmp;
     use super::super::super::collection;
     use super::super::super::{IBlobertCollectionImpl, TokenAttributes};
 
-    use super::{IArcadeBlobert, ARCADE_BLOBERT_NAMESPACE_HASH};
+    use super::{IFreeBlobert, ARCADE_BLOBERT_NAMESPACE_HASH};
 
-    impl ArcadeBlobertStoreImpl =
+    impl FreeBlobertStoreImpl =
         world_blobert::WorldBlobertStore<ARCADE_BLOBERT_NAMESPACE_HASH, BLOBERT_NAMESPACE_HASH>;
 
     #[abi(embed_v0)]
-    impl IArcadeBlobertCollectionImpl =
-        collection::IBlobertCollectionImpl<ContractState, ArcadeBlobertStoreImpl>;
+    impl IFreeBlobertCollectionImpl =
+        collection::IBlobertCollectionImpl<ContractState, FreeBlobertStoreImpl>;
 
 
     #[abi(embed_v0)]
-    impl IArcadeBlobertImpl of IArcadeBlobert<ContractState> {
+    impl IFreeBlobertImpl of IFreeBlobert<ContractState> {
         fn mint(ref self: ContractState) -> u256 {
             let mut storage = self.storage(ARCADE_BLOBERT_NAMESPACE_HASH);
             let randomness = poseidon_hash_span(['arcade', incrementor('SEED-ITER')].span());
