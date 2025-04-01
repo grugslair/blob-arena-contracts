@@ -4470,7 +4470,7 @@
     },
     {
       "address": "0x14aefc8245c5f2c17204857372944aba413ec639547359b629682c542eca555",
-      "class_hash": "0x8c00d09117eaf6d654a3281630b8589c4c47f67e42a4733f089e42c654a340",
+      "class_hash": "0x38db9c0a4b223d427ea9e27fa0bc181771681aea408d1f25aba6789fe43af54",
       "abi": [
         {
           "type": "impl",
@@ -5665,12 +5665,6 @@
       "class_hash": "0x449129c2e2efc830d7137c37b277dd45a17d4ba19fe38e622d24923cc50600c",
       "tag": "blob_arena-AttackName",
       "selector": "0x4e7b25e16a9bdcc89775cfc5c5bcce2d60cce5977d51a2d9b0d89590c7b311"
-    },
-    {
-      "members": [],
-      "class_hash": "0x211443a93008fe54d728d9ba5d5940a28b6114f127899bca6d684a9f7d2bcef",
-      "tag": "blob_arena-AttackRequirements",
-      "selector": "0x1ca3072dd91997930d20176d9b12a1ef99459a2d93ea3f052eb524c742c207c"
     },
     {
       "members": [],
