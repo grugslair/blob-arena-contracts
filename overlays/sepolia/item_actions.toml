@@ -1,2 +1,0 @@
-tag = "blob_arena-item_actions"
-writes = ["blob_arena-Item", "blob_arena-Attack", "blob_arena-HasAttack"]
