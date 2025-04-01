@@ -10,7 +10,7 @@ mod blobert {
     use external::{blobert_dispatcher, IBlobertDispatcher, IBlobertDispatcherTrait};
     use contract::BLOBERT_NAMESPACE_HASH;
 }
-mod arcade_blobert {
+mod free_blobert {
     mod contract;
     mod storage;
     mod systems;

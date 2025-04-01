@@ -24,10 +24,10 @@ trait IFreeBlobert<TContractState> {
     fn traits(self: @TContractState, token_id: u256) -> TokenAttributes;
 }
 
-const ARCADE_BLOBERT_NAMESPACE_HASH: felt252 = bytearray_hash!("arcade_blobert");
+const FREE_BLOBERT_NAMESPACE_HASH: felt252 = bytearray_hash!("free_blobert");
 
 #[dojo::contract]
-mod arcade_blobert_actions {
+mod free_blobert_actions {
     use core::poseidon::poseidon_hash_span;
     use starknet::{ContractAddress, get_caller_address};
     use dojo::world::WorldStorage;
@@ -40,10 +40,10 @@ mod arcade_blobert_actions {
     use super::super::super::collection;
     use super::super::super::{IBlobertCollectionImpl, TokenAttributes};
 
-    use super::{IFreeBlobert, ARCADE_BLOBERT_NAMESPACE_HASH};
+    use super::{IFreeBlobert, FREE_BLOBERT_NAMESPACE_HASH};
 
     impl FreeBlobertStoreImpl =
-        world_blobert::WorldBlobertStore<ARCADE_BLOBERT_NAMESPACE_HASH, BLOBERT_NAMESPACE_HASH>;
+        world_blobert::WorldBlobertStore<FREE_BLOBERT_NAMESPACE_HASH, BLOBERT_NAMESPACE_HASH>;
 
     #[abi(embed_v0)]
     impl IFreeBlobertCollectionImpl =
@@ -53,12 +53,12 @@ mod arcade_blobert_actions {
     #[abi(embed_v0)]
     impl IFreeBlobertImpl of IFreeBlobert<ContractState> {
         fn mint(ref self: ContractState) -> u256 {
-            let mut storage = self.storage(ARCADE_BLOBERT_NAMESPACE_HASH);
+            let mut storage = self.storage(FREE_BLOBERT_NAMESPACE_HASH);
             let randomness = poseidon_hash_span(['arcade', incrementor('SEED-ITER')].span());
             storage.mint_random_blobert(get_caller_address(), randomness)
         }
         fn burn(ref self: ContractState, token_id: u256) {
-            let mut storage = self.storage(ARCADE_BLOBERT_NAMESPACE_HASH);
+            let mut storage = self.storage(FREE_BLOBERT_NAMESPACE_HASH);
             storage.burn_blobert(token_id);
         }
         fn traits(self: @ContractState, token_id: u256) -> TokenAttributes {

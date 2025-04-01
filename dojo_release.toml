@@ -14,8 +14,8 @@ mappings = { "blobert" = [
     "BlobertItem",
     "AttackSlot",
     "BlobertItemName",
-], "arcade_blobert" = [
-    "arcade_blobert_actions",
+], "free_blobert" = [
+    "free_blobert_actions",
     "LastMint",
     "BlobertToken",
 ], "amma_blobert" = [
@@ -79,7 +79,7 @@ mappings = { "blobert" = [
 
 
 "blobert" = ["blobert-blobert_actions"]
-"arcade_blobert" = ["arcade_blobert-arcade_blobert_actions"]
+"free_blobert" = ["free_blobert-free_blobert_actions"]
 "amma_blobert" = ["amma_blobert-amma_blobert_actions"]
 
 "blob_arena-Tag" = [
