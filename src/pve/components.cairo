@@ -590,7 +590,7 @@ impl PVEStorageImpl of PVEStorage {
         self
             .read_member(
                 Model::<PVECurrentChallengeAttempt>::ptr_from_keys((player, collection, token_id)),
-                selector!("current_challenge"),
+                selector!("attempt_id"),
             )
     }
 
