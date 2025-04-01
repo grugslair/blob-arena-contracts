@@ -13,6 +13,7 @@ use blob_arena::collections::blobert::{Seed, TokenAttributes};
 ///
 /// This model is used to store token ownership and attribute data for Bloberts in the game.
 /// It is decorated with Dojo model and implements Drop and Serde traits.
+
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct BlobertToken {
@@ -28,6 +29,7 @@ struct BlobertToken {
 ///
 /// * `player` - The contract address of the player who minted, used as key
 /// * `timestamp` - timestamp in seconds of when the last mint occurred
+
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct LastMint {
