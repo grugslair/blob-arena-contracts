@@ -54,7 +54,7 @@ mod free_blobert_actions {
     impl IFreeBlobertImpl of IFreeBlobert<ContractState> {
         fn mint(ref self: ContractState) -> u256 {
             let mut storage = self.storage(FREE_BLOBERT_NAMESPACE_HASH);
-            let randomness = poseidon_hash_span(['arcade', incrementor('SEED-ITER')].span());
+            let randomness = poseidon_hash_span(['free', incrementor('SEED-ITER')].span());
             storage.mint_random_blobert(get_caller_address(), randomness)
         }
         fn burn(ref self: ContractState, token_id: u256) {

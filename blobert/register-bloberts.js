@@ -279,7 +279,7 @@ const privateKey = await readKeystorePK(
 const account = new Account({ nodeUrl: rpcUrl }, accountAddress, privateKey);
 
 const blobertContractTag = "blobert-blobert_actions";
-const arcadeBlobertContractTag = "free_blobert-free_blobert_actions";
+const freeBlobertContractTag = "free_blobert-free_blobert_actions";
 const ammaBlobertContractTag = "amma_blobert-amma_blobert_actions";
 const pveBlobertContractTag = "pve_blobert-pve_blobert_admin_actions";
 const gameAdminContractTag = "blob_arena-game_admin";
@@ -291,9 +291,9 @@ const pveChallengeEntrypoint = "new_challenge";
 const setPermissionsEntrypoint = "set_multiple_has_role";
 
 const blobertContractAddress = getContractAddress(manifest, blobertContractTag);
-const arcadeContractAddress = getContractAddress(
+const freeBlobertContractAddress = getContractAddress(
   manifest,
-  arcadeBlobertContractTag
+  freeBlobertContractTag
 );
 const ammaBlobertContractAddress = getContractAddress(
   manifest,
@@ -321,7 +321,7 @@ const gameAdminContract = await getContract(account, gameAdminContractAddress);
 
 const PVECollectionAddresses = {
   blobert: blobertContractAddress,
-  free_blobert: arcadeContractAddress,
+  free_blobert: freeBlobertContractAddress,
   amma_blobert: ammaBlobertContractAddress,
 };
 
