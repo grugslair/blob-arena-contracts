@@ -10,7 +10,7 @@ fn create_achievements(world: WorldStorage) {}
 fn achievements() -> Span<TrophyCreation> {
     [
         TrophyCreation {
-            id: 'start-arcade',
+            id: 'battle-victory',
             hidden: false,
             index: 1,
             points: 10,
@@ -20,7 +20,10 @@ fn achievements() -> Span<TrophyCreation> {
             icon: 'something',
             title: 'Start Arcade',
             description: "Play some arcade games",
-            tasks: [Task { id: 'start-arcade', total: 1, description: "Play an arcade games" }]
+            tasks: [
+                Task { id: 'start-arcade', total: 1, description: "Play an arcade games" },
+                Task { id: 'start-arcade', total: 1, description: "Play an arcade games" },
+            ]
                 .span(),
             data: "",
         },
