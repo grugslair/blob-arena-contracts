@@ -77,6 +77,8 @@ mod pve {
     };
 }
 
+mod achievements;
+
 pub use world::{default_namespace, DefaultStorage};
 #[cfg(test)]
 mod tests {
