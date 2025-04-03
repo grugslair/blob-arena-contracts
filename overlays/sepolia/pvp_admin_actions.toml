@@ -1,8 +1,0 @@
-tag = "blob_arena-pvp_admin_actions"
-writes = [
-    "blob_arena-AvailableAttack",
-    "blob_arena-CombatState",
-    "blob_arena-CombatantInfo",
-    "blob_arena-CombatantState",
-    "blob_arena-PvPCombatants",
-]
