@@ -76,7 +76,7 @@
       "collections_allowed": ["blobert", "arcade_blobert"]
     },
     {
-      "name": "Brick Behemoth ",
+      "name": "Brick Behemoth",
       "collection": "blobert",
       "attributes": {
         "Seed": {
@@ -371,7 +371,7 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "Andrzej Studencki ",
+      "name": "Andrzej Studencki",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 3
@@ -391,7 +391,7 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "Brett Skinner ",
+      "name": "Brett Skinner",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 1
@@ -459,7 +459,7 @@
         { "tag": "Byte Basher" },
         { "tag": "Cyber Crusher" },
         { "tag": "Balloon Bruiser" },
-        { "tag": "Brick Behemoth " },
+        { "tag": "Brick Behemoth" },
         { "tag": "Quantum Gladiator" },
         { "tag": "Code Conqueror" },
         { "tag": "Diamond Destroyer" },
@@ -479,8 +479,8 @@
         { "tag": "Taylor Jones" },
         { "tag": "Daniel Winter" },
         { "tag": "Antonio Penedo" },
-        { "tag": "Andrzej Studencki " },
-        { "tag": "Brett Skinner " },
+        { "tag": "Andrzej Studencki" },
+        { "tag": "Brett Skinner" },
         { "tag": "Daniel Winter" },
         { "tag": "Mickey Gallus" }
       ],
