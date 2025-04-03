@@ -1,0 +1,21 @@
+{
+  "arcade_completion_1": {
+    "hidden": false,
+    "index": 1,
+    "points": 20,
+    "start": 0,
+    "end": 0,
+    "group": "Arcade Completion",
+    "icon": "shield",
+    "title": "Arena Squire",
+    "description": "Won 1 Arcade Challenge",
+    "tasks": [
+      {
+        "id": "ArcadeCompletion",
+        "total": 1,
+        "description": "Won 1 Arcade Challenge"
+      }
+    ],
+    "data": ""
+  }
+}
