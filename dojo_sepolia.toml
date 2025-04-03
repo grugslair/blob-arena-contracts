@@ -1,10 +1,138 @@
 [world]
-name = "blob_arena"
-seed = "blob-arena-0.4-alpha.12-fix-5"
+name = "blob_arena-0.12"
+seed = "blob-arena-0.12.beef"
+
+
+[env]
+rpc_url = "https://api.cartridge.gg/rpc/starknet-sepolia"
+account_address = "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d2194723B5bd"
+keystore_path = "/home/ben/sn-accounts/0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd-keystore.json"
+
+[init_call_args]
+"blob_arena-game_admin" = []
+"blobert-blobert_actions" = [
+    "0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578d0549d",
+]
 
 [namespace]
 default = "blob_arena"
+mappings = { blob_arena = [
+    "CombatantToken",
+    "Tag",
+], blobert = [
+    "blobert_actions",
+    "BlobertItem",
+    "AttackSlot",
+    "BlobertItemName",
+], arcade_blobert = [
+    "arcade_blobert_actions",
+    "LastMint",
+    "BlobertToken",
+], amma_blobert = [
+    "amma_blobert_actions",
+    "BlobertToken",
+    "BlobertItem",
+    "AttackSlot",
+    "BlobertItemName",
+], pve_blobert = [
+    "pve_blobert_actions",
+    "pve_blobert_admin_actions",
+    "Tag",
+    "CombatantToken",
+    "PVEOpponent",
+    "PVECollectionAllowed",
+    "PVEBlobertInfo",
+    "PVEChallenge",
+    "PVEChallengeName",
+    "PVEStageOpponent",
+    "PVEGame",
+    "PVEFreeGames",
+    "PVEPaidGames",
+    "PVEChallengeAttempt",
+    "PVEStageGame",
+    "PVEChallengeRespawn",
+    "PVECurrentChallengeAttempt",
+], ba_permissions = [
+    "Permission",
+] }
 
-[env]
-rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
-account_address = "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d2194723B5bd"
+[writers]
+"blob_arena-Lobby" = ["blob_arena-lobby_actions"]
+"blob_arena-LobbyCreated" = ["blob_arena-lobby_actions"]
+
+"blob_arena-GameInfo" = ["blob_arena-lobby_actions", "blob_arena-game_admin"]
+"blob_arena-Initiator" = ["blob_arena-lobby_actions", "blob_arena-game_admin"]
+
+"blob_arena-CombatantToken" = [
+    "blob_arena-lobby_actions",
+    "blob_arena-game_admin",
+]
+"blob_arena-CombatantInfo" = [
+    "blob_arena-lobby_actions",
+    "blob_arena-game_admin",
+]
+
+"blob_arena-CombatantState" = [
+    "blob_arena-game_actions",
+    "blob_arena-lobby_actions",
+    "blob_arena-game_admin",
+    "pve_blobert-pve_blobert_actions",
+]
+
+"blob_arena-AttackAvailable" = [
+    "blob_arena-lobby_actions",
+    "blob_arena-game_admin",
+    "pve_blobert-pve_blobert_actions",
+]
+
+"blob_arena-AttackLastUsed" = [
+    "blob_arena-game_actions",
+    "pve_blobert-pve_blobert_actions",
+]
+
+"blob_arena-CombatState" = [
+    "blob_arena-game_actions",
+    "blob_arena-lobby_actions",
+    "blob_arena-game_admin",
+    "pve_blobert-pve_blobert_actions",
+]
+
+"blob_arena-Commitment" = ["blob_arena-game_actions"]
+"blob_arena-LastTimestamp" = ["blob_arena-game_actions"]
+"blob_arena-PlannedAttack" = ["blob_arena-game_actions"]
+"blob_arena-CombatEnd" = ["blob_arena-game_actions"]
+"ba_permissions-Permission" = ["blob_arena-game_admin"]
+
+"blob_arena-RoundResult" = [
+    "blob_arena-game_actions",
+    "pve_blobert-pve_blobert_actions",
+]
+
+"blob_arena-Attack" = [
+    "blobert-blobert_actions",
+    "amma_blobert-amma_blobert_actions",
+]
+"blob_arena-AttackName" = [
+    "blobert-blobert_actions",
+    "amma_blobert-amma_blobert_actions",
+]
+
+"blob_arena-Tag" = [
+    "blobert-blobert_actions",
+    "amma_blobert-amma_blobert_actions",
+    "pve_blobert-pve_blobert_admin_actions",
+]
+
+"pve_blobert-PVEChallengeAttempt" = ["pve_blobert-pve_blobert_actions"]
+"pve_blobert-PVEStageGame" = ["pve_blobert-pve_blobert_actions"]
+"pve_blobert-PVEGame" = ["pve_blobert-pve_blobert_actions"]
+"pve_blobert-PVEFreeGames" = ["pve_blobert-pve_blobert_actions"]
+"pve_blobert-PVEPaidGames" = ["pve_blobert-pve_blobert_actions"]
+"pve_blobert-PVEChallengeRespawn" = ["pve_blobert-pve_blobert_actions"]
+"pve_blobert-CombatantToken" = ["pve_blobert-pve_blobert_actions"]
+"pve_blobert-PVECurrentChallengeAttempt" = ["pve_blobert-pve_blobert_actions"]
+
+"blobert" = ["blobert-blobert_actions"]
+"arcade_blobert" = ["arcade_blobert-arcade_blobert_actions"]
+"amma_blobert" = ["amma_blobert-amma_blobert_actions"]
+"pve_blobert" = ["pve_blobert-pve_blobert_admin_actions"]

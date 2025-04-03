@@ -1,22 +1,29 @@
-import {
-  RpcProvider,
-  Account,
-  CallData,
-  byteArray,
-  CairoCustomEnum,
-  Contract,
-} from "starknet";
+#!/usr/bin/env node
 
+import { Account, CairoCustomEnum, Contract } from "starknet";
+import { upperFirst, camelCase } from "lodash-es";
 import * as fs from "fs";
 import * as path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import commandLineArgs from "command-line-args";
+import * as accounts from "web3-eth-accounts";
+import * as toml from "toml";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const pascalCase = (str) => {
+  return upperFirst(camelCase(str));
+};
 
-const loadJson = (rpath) => {
-  return JSON.parse(fs.readFileSync(path.resolve(__dirname, rpath)));
+const loadJson = (path) => {
+  return JSON.parse(fs.readFileSync(resolvePath(path)));
+};
+
+const loadToml = (path) => {
+  return toml.parse(fs.readFileSync(resolvePath(path)));
+};
+
+const resolvePath = (rpath) => {
+  return path.resolve(__dirname, rpath);
 };
 
 const getContractAddress = (mainfest, contractName) => {
@@ -28,45 +35,17 @@ const getContractAddress = (mainfest, contractName) => {
   return null;
 };
 
+const readKeystorePK = async (keystorePath, accountAddress, password) => {
+  let data = loadJson(keystorePath);
+  data.address = accountAddress;
+  return (await accounts.decrypt(data, password)).privateKey;
+};
+
 const getContract = async (provider, contractAddress) => {
   console.log(contractAddress);
   const { abi: abi } = await provider.getClassAt(contractAddress);
   return new Contract(abi, contractAddress, provider);
 };
-
-const seed_data = loadJson("./seed-attributes.json");
-const custom_data = loadJson("./custom-attributes.json");
-const amma_data = loadJson("./amma-attributes.json");
-const manifest = loadJson(
-  `../manifests/${process.argv[2]}/deployment/manifest.json`
-);
-
-const blobertContractTag = "blob_arena-blobert_actions";
-const arcadeBlobertTag = "blob_arena-arcade_blobert_actions";
-const seedEntrypoint = "new_seed_item_with_attacks";
-const customEntrypoint = "new_custom_item_with_attacks";
-
-const amma_offset = 50;
-
-const provider = new RpcProvider({ nodeUrl: process.env.STARKNET_RPC_URL });
-const account1Address = process.env.DOJO_ACCOUNT_ADDRESS;
-const privateKey1 = process.env.DOJO_PRIVATE_KEY;
-const account = new Account(provider, account1Address, privateKey1);
-
-const blobertContract = await getContract(
-  provider,
-  getContractAddress(manifest, blobertContractTag)
-);
-const arcadeBlobertContract = await getContract(
-  provider,
-  getContractAddress(manifest, arcadeBlobertTag)
-);
-
-const TRAITS_ENUM = ["Background", "Armour", "Jewelry", "Mask", "Weapon"];
-const TARGET_ENUM = ["Player", "Opponent"];
-const STAT_TYPES_ENUM = ["Strength", "Vitality", "Dexterity", "Luck"];
-const AFFECTS_ENUM = ["Stats", "Stat", "Damage", "Stun", "Health"];
-const STAT_KEYS = ["strength", "vitality", "dexterity", "luck"];
 
 const toSigned = (x) => {
   if (x >= 0) {
@@ -102,6 +81,21 @@ const parseEnumObject = (obj) => {
   }
 };
 
+const parseBlobertItemKey = (itemKey) => {
+  const [key, value] = Object.entries(itemKey)[0];
+  if (key == "Seed") {
+    return new CairoCustomEnum({
+      Seed: {
+        attribute: new CairoCustomEnum({ [value.attribute]: {} }),
+        attribute_id: value.attribute_id,
+      },
+    });
+  }
+  if (key == "Custom") {
+    return new CairoCustomEnum({ Custom: value });
+  }
+};
+
 const makeEffectStruct = (effect) => {
   let [key, affect] = parseEnumObject(effect.affect);
 
@@ -126,31 +120,125 @@ const makeEffectsArray = (effects) => {
   return effectsArray;
 };
 
+const makeRequirementsArray = (input) => {
+  let requirements = [];
+  if (input) {
+    for (const requirement of input) {
+      const [key, value] = Object.entries(requirement)[0];
+      requirements.push(
+        new CairoCustomEnum({ [pascalCase(key)]: Number(value) })
+      );
+    }
+  }
+  return requirements;
+};
+
+const parseNewAttack = (attack) => {
+  return {
+    name: attack.name,
+    speed: attack.speed,
+    accuracy: attack.accuracy,
+    cooldown: attack.cooldown,
+    hit: makeEffectsArray(attack.hit),
+    miss: makeEffectsArray(attack.miss),
+  };
+};
+
 const makeAttacksStruct = (attacks) => {
   let attacksStructs = [];
   for (const attack of attacks) {
-    attacksStructs.push({
-      name: attack.name,
-      // name: byteArray.byteArrayFromString(attack.name),
-      speed: attack.speed,
-      accuracy: attack.accuracy,
-      cooldown: attack.cooldown,
-      hit: makeEffectsArray(attack.hit),
-      miss: makeEffectsArray(attack.miss),
-    });
+    attacksStructs.push(parseAttackStruct(attack));
   }
   return attacksStructs;
 };
 
-const makeItemCallData = (trait, n, item) => {
+const parseAttackStruct = (attack) => {
+  if (typeof attack.tag === "string") {
+    return new CairoCustomEnum({ Tag: attack.tag });
+  }
+  if (attack.id != null) {
+    return new CairoCustomEnum({ Id: attack.id });
+  }
+  if (attack.new != null) {
+    return new CairoCustomEnum({ New: attack.new });
+  }
+  return new CairoCustomEnum({ New: parseNewAttack(attack) });
+};
+
+const parseNewPVEOpponent = (opponent) => {
+  return {
+    name: opponent.name,
+    collection: PVECollectionAddresses[opponent.collection],
+    attributes: new CairoCustomEnum(opponent.attributes),
+    stats: opponent.stats,
+    attacks: makeAttacksStruct(opponent.attacks),
+    collections_allowed: makeCollectionsAllowed(opponent.collections_allowed),
+  };
+};
+
+const makePveOpponentsStruct = (opponents) => {
+  let opponentsStructs = [];
+  for (const opponent of opponents) {
+    opponentsStructs.push(parseOpponentStruct(opponent));
+  }
+  return opponentsStructs;
+};
+
+const parseOpponentStruct = (opponent) => {
+  if (typeof opponent.tag === "string") {
+    return new CairoCustomEnum({ Tag: opponent.tag });
+  }
+  if (opponent.id != null) {
+    return new CairoCustomEnum({ Id: opponent.id });
+  }
+  if (opponent.new != null) {
+    return new CairoCustomEnum({ New: opponent.new });
+  }
+  return new CairoCustomEnum({ New: parseNewPVEOpponent(opponent) });
+};
+
+const makeSeedItemCallData = (trait, n, item) => {
   const trait_str = trait.charAt(0).toUpperCase() + trait.slice(1);
   return {
-    blobert_trait: makeCairoEnum(trait_str),
-    trait_id: Number(n),
-    // item_name: byteArray.byteArrayFromString(item.name),
-    item_name: item.name,
+    attribute: makeCairoEnum(trait_str),
+    id: Number(n),
+    name: item.name,
     stats: item.stats,
     attacks: makeAttacksStruct(item.attacks),
+  };
+};
+
+const makeCustomItemCallData = (n, item) => {
+  return {
+    id: Number(n),
+    name: item.name,
+    stats: item.stats,
+    attacks: makeAttacksStruct(item.attacks),
+  };
+};
+
+const makeAttackSlots = (attack_slots) => {
+  let slots = [];
+  for (const [item, slot] of attack_slots) {
+    slots.push([parseBlobertItemKey(item), slot]);
+  }
+  return slots;
+};
+
+const makeCollectionsAllowed = (collections) => {
+  let allowed = [];
+  for (const collection of collections) {
+    allowed.push(PVECollectionAddresses[collection]);
+  }
+  return allowed;
+};
+
+const makePveChallengeCallData = (challenge) => {
+  return {
+    name: challenge.name,
+    health_recovery_pc: challenge.health_recovery,
+    opponents: makePveOpponentsStruct(challenge.opponents),
+    collections_allowed: makeCollectionsAllowed(challenge.collections_allowed),
   };
 };
 
@@ -158,64 +246,158 @@ const makeCall = (contract, entrypoint, calldata) => {
   return contract.populate(entrypoint, calldata);
 };
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const optionDefinitions = [
+  { name: "profile", type: String, defaultOption: true },
+  { name: "password", alias: "p", type: String },
+];
+
+const options = commandLineArgs(optionDefinitions);
+const profile = options.profile;
+
+const seed_data = loadJson("./seed-attributes.json");
+const custom_data = loadJson("./custom-attributes.json");
+const amma_data = loadJson("./amma-attributes.json");
+const pve_data = loadJson("./pve.json");
+const role_data = loadJson("./roles.json")[profile];
+const manifest = loadJson(`../manifest_${profile}.json`);
+const dojo_toml = loadToml(`../dojo_${profile}.toml`);
+
+const rpcUrl = dojo_toml.env.rpc_url;
+const accountAddress = dojo_toml.env.account_address;
+const keystorePath = resolvePath(dojo_toml.env.keystore_path);
+
+const privateKey = await readKeystorePK(
+  keystorePath,
+  accountAddress,
+  options.password
+);
+
+const account = new Account({ nodeUrl: rpcUrl }, accountAddress, privateKey);
+
+const blobertContractTag = "blobert-blobert_actions";
+const arcadeBlobertContractTag = "arcade_blobert-arcade_blobert_actions";
+const ammaBlobertContractTag = "amma_blobert-amma_blobert_actions";
+const pveBlobertContractTag = "pve_blobert-pve_blobert_admin_actions";
+const gameAdminContractTag = "blob_arena-game_admin";
+
+const seedEntrypoint = "set_seed_item_with_attacks";
+const customEntrypoint = "set_custom_item_with_attacks";
+const pveOpponentEntrypoint = "new_opponent";
+const pveChallengeEntrypoint = "new_challenge";
+const setPermissionsEntrypoint = "set_multiple_has_role";
+
+const blobertContractAddress = getContractAddress(manifest, blobertContractTag);
+const arcadeContractAddress = getContractAddress(
+  manifest,
+  arcadeBlobertContractTag
+);
+const ammaBlobertContractAddress = getContractAddress(
+  manifest,
+  ammaBlobertContractTag
+);
+const pveBlobertContractAddress = getContractAddress(
+  manifest,
+  pveBlobertContractTag
+);
+const gameAdminContractAddress = getContractAddress(
+  manifest,
+  gameAdminContractTag
+);
+
+const blobertContract = await getContract(account, blobertContractAddress);
+const ammaBlobertContract = await getContract(
+  account,
+  ammaBlobertContractAddress
+);
+const pveBlobertContract = await getContract(
+  account,
+  pveBlobertContractAddress
+);
+const gameAdminContract = await getContract(account, gameAdminContractAddress);
+
+const PVECollectionAddresses = {
+  blobert: blobertContractAddress,
+  arcade_blobert: arcadeContractAddress,
+  amma_blobert: ammaBlobertContractAddress,
+};
+
 let calls = [];
+for (const [role, users] of Object.entries(role_data)) {
+  calls.push([
+    `role: ${role}`,
+    makeCall(gameAdminContract, setPermissionsEntrypoint, {
+      users,
+      role: new CairoCustomEnum({ [role]: {} }),
+      has: true,
+    }),
+  ]);
+}
+
 for (const [trait, traits] of Object.entries(seed_data)) {
   for (const [n, item] of Object.entries(traits)) {
-    console.log(`seed: ${item.name}`);
     calls.push([
-      `seed: ${item.name}`,
+      `seed: ${trait} ${n} ${item.name}`,
       makeCall(
         blobertContract,
         seedEntrypoint,
-        makeItemCallData(trait, n, item)
+        makeSeedItemCallData(trait, n, item)
       ),
     ]);
   }
 }
 
-for (const [n, traits] of Object.entries(custom_data)) {
-  for (const [trait, item] of Object.entries(traits)) {
-    calls.push([
-      `custom: ${item.name}`,
-      makeCall(
-        blobertContractAddress,
-        customEntrypoint,
-        makeItemCallData(trait, n, item)
-      ),
-    ]);
-  }
-}
-
-for (const [n, fighter] of Object.entries(amma_data)) {
-  let custom_id = Number(n) + amma_offset;
+for (const [n, item] of Object.entries(custom_data)) {
   calls.push([
-    `fighter ${fighter.name}`,
-    makeCall(arcadeBlobertContract, "set_amma_fighter", {
-      fighter_id: n,
-      name: fighter.name,
-      custom_id: custom_id,
-    }),
+    `custom: ${n} ${item.name}`,
+    makeCall(
+      blobertContract,
+      customEntrypoint,
+      makeCustomItemCallData(trait, n, item)
+    ),
   ]);
-  for (const [trait, item] of Object.entries(fighter.traits)) {
-    calls.push([
-      `custom: ${item.name}`,
-      makeCall(
-        blobertContract,
-        customEntrypoint,
-        makeItemCallData(trait, custom_id, item)
-      ),
-    ]);
-  }
+}
+for (const [n, item] of Object.entries(amma_data)) {
+  calls.push([
+    `amma: ${n} ${item.name}`,
+    makeCall(
+      ammaBlobertContract,
+      customEntrypoint,
+      makeCustomItemCallData(n, item)
+    ),
+  ]);
 }
 
-const multiCallSize = 20;
+for (const opponent of pve_data["opponents"]) {
+  calls.push([
+    `pve: ${opponent.name}`,
+    makeCall(
+      pveBlobertContract,
+      pveOpponentEntrypoint,
+      parseNewPVEOpponent(opponent)
+    ),
+  ]);
+}
+for (const challenge of pve_data["challenges"]) {
+  calls.push([
+    `pve: ${challenge.name}`,
+    makeCall(
+      pveBlobertContract,
+      pveChallengeEntrypoint,
+      makePveChallengeCallData(challenge)
+    ),
+  ]);
+}
+const multiCallSize = 70;
 for (let i = 0, x = 0; i < calls.length; i += multiCallSize, x += 1) {
   const chunk = calls.slice(i, i + multiCallSize);
   const names = chunk.map(([name, call]) => name);
   const multicall = chunk.map(([name, call]) => call);
   console.log(names);
   const transaction = await account.execute(multicall);
-  const response = await provider.waitForTransaction(
+  const response = await account.waitForTransaction(
     transaction.transaction_hash
   );
   console.log(response.transaction_hash);

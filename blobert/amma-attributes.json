@@ -1,1048 +1,590 @@
 {
   "1": {
     "name": "AMMA 1",
-    "traits": {
-      "background": {
-        "name": "USA",
-        "stats": {
-          "strength": 11,
-          "vitality": 9,
-          "dexterity": 10,
-          "luck": 10
-        },
-        "attacks": []
-      },
-      "armour": {
-        "name": "Brigandine",
-        "stats": {
-          "strength": 4,
-          "vitality": 19,
-          "dexterity": 7,
-          "luck": 10
-        },
-        "attacks": []
-      },
-      "jewelry": {
-        "name": "Warrior's Pendant",
-        "stats": {
-          "strength": 9,
-          "vitality": 7,
-          "dexterity": 6,
-          "luck": 10
-        },
-        "attacks": []
-      },
-      "mask": {
-        "name": "Barbute Helm",
-        "stats": {
-          "strength": 6,
-          "vitality": 11,
-          "dexterity": 9,
-          "luck": 5
-        },
-        "attacks": []
-      },
-      "weapon": {
-        "name": "Broadsword & Punch Shield",
-        "stats": {
-          "strength": 15,
-          "vitality": 5,
-          "dexterity": 14,
-          "luck": 10
-        },
-        "attacks": [
+    "stats": {
+      "strength": 45,
+      "vitality": 51,
+      "dexterity": 46,
+      "luck": 45
+    },
+    "attacks": [
+      {
+        "name": "Sword Slash",
+        "speed": 85,
+        "accuracy": 95,
+        "cooldown": 0,
+        "hit": [
           {
-            "name": "Sword Slash",
-            "speed": 85,
-            "accuracy": 95,
-            "cooldown": 1,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 30,
-                    "critical": 20
-                  }
-                }
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 30,
+                "critical": 20
               }
-            ],
-            "miss": []
-          },
-          {
-            "name": "Shield Punch",
-            "speed": 70,
-            "accuracy": 80,
-            "cooldown": 2,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 40,
-                    "critical": 0
-                  }
-                }
-              },
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Stun": 40
-                }
-              }
-            ],
-            "miss": []
-          },
-          {
-            "name": "Grapple",
-            "speed": 65,
-            "accuracy": 90,
-            "cooldown": 4,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 40,
-                    "critical": 0
-                  }
-                }
-              },
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Stun": 30
-                }
-              },
-              {
-                "target": "Player",
-                "affect": {
-                  "Stats": {
-                    "strength": 10,
-                    "vitality": 0,
-                    "dexterity": 0,
-                    "luck": 0
-                  }
-                }
-              }
-            ],
-            "miss": []
-          },
-          {
-            "name": "Osoto Gari",
-            "speed": 45,
-            "accuracy": 80,
-            "cooldown": 10,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 80,
-                    "critical": 0
-                  }
-                }
-              },
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Stun": 40
-                }
-              }
-            ],
-            "miss": []
+            }
           }
-        ]
+        ],
+        "miss": []
+      },
+      {
+        "name": "Shield Punch",
+        "speed": 70,
+        "accuracy": 80,
+        "cooldown": 1,
+        "hit": [
+          {
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 40,
+                "critical": 0
+              }
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
+              "Stun": 40
+            }
+          }
+        ],
+        "miss": []
+      },
+      {
+        "name": "Grapple",
+        "speed": 65,
+        "accuracy": 90,
+        "cooldown": 3,
+        "hit": [
+          {
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 40,
+                "critical": 0
+              }
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
+              "Stun": 30
+            }
+          },
+          {
+            "target": "Player",
+            "affect": {
+              "Stats": {
+                "strength": 10,
+                "vitality": 0,
+                "dexterity": 0,
+                "luck": 0
+              }
+            }
+          }
+        ],
+        "miss": []
+      },
+      {
+        "name": "Osoto Gari",
+        "speed": 45,
+        "accuracy": 80,
+        "cooldown": 10,
+        "hit": [
+          {
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 80,
+                "critical": 0
+              }
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
+              "Stun": 40
+            }
+          }
+        ],
+        "miss": []
       }
-    }
+    ]
   },
   "2": {
     "name": "AMMA 2",
-    "traits": {
-      "background": {
-        "name": "United Kingdom",
-        "stats": {
-          "strength": 12,
-          "vitality": 10,
-          "dexterity": 9,
-          "luck": 11
-        },
-        "attacks": []
+    "stats": {
+      "strength": 44,
+      "vitality": 52,
+      "dexterity": 42,
+      "luck": 50
+    },
+    "attacks": [
+      {
+        "tag": "Sword Slash"
       },
-      "armour": {
-        "name": "Surcoat & Mail",
-        "stats": {
-          "strength": 3,
-          "vitality": 14,
-          "dexterity": 9,
-          "luck": 9
-        },
-        "attacks": []
-      },
-      "jewelry": {
-        "name": "Commander's Medallion",
-        "stats": {
-          "strength": 8,
-          "vitality": 6,
-          "dexterity": 9,
-          "luck": 11
-        },
-        "attacks": []
-      },
-      "mask": {
-        "name": "Barred Great Helm",
-        "stats": {
-          "strength": 3,
-          "vitality": 18,
-          "dexterity": 5,
-          "luck": 7
-        },
-        "attacks": []
-      },
-      "weapon": {
-        "name": "Falchion & Buckler",
-        "stats": {
-          "strength": 18,
-          "vitality": 4,
-          "dexterity": 10,
-          "luck": 12
-        },
-        "attacks": [
+      {
+        "name": "Ground and Pound",
+        "speed": 65,
+        "accuracy": 80,
+        "cooldown": 1,
+        "hit": [
           {
-            "name": "Sword Slash",
-            "speed": 85,
-            "accuracy": 95,
-            "cooldown": 1,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 30,
-                    "critical": 20
-                  }
-                }
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 60,
+                "critical": 0
               }
-            ],
-            "miss": []
+            }
           },
           {
-            "name": "Ground and Pound",
-            "speed": 65,
-            "accuracy": 80,
-            "cooldown": 3,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 60,
-                    "critical": 0
-                  }
-                }
-              },
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Stun": 20
-                }
-              }
-            ],
-            "miss": []
-          },
-          {
-            "name": "Grind",
-            "speed": 45,
-            "accuracy": 70,
-            "cooldown": 10,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 40,
-                    "critical": 0
-                  }
-                }
-              },
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Stun": 0
-                }
-              },
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Stats": {
-                    "strength": -25,
-                    "vitality": 0,
-                    "dexterity": 0,
-                    "luck": 0
-                  }
-                }
-              }
-            ],
-            "miss": []
-          },
-          {
-            "name": "White Company",
-            "speed": 40,
-            "accuracy": 90,
-            "cooldown": 10,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 90,
-                    "critical": 0
-                  }
-                }
-              }
-            ],
-            "miss": []
+            "target": "Opponent",
+            "affect": {
+              "Stun": 20
+            }
           }
-        ]
+        ],
+        "miss": []
+      },
+      {
+        "name": "Grind",
+        "speed": 45,
+        "accuracy": 70,
+        "cooldown": 3,
+        "hit": [
+          {
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 40,
+                "critical": 0
+              }
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
+              "Stun": 0
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
+              "Stats": {
+                "strength": -25,
+                "vitality": 0,
+                "dexterity": 0,
+                "luck": 0
+              }
+            }
+          }
+        ],
+        "miss": []
+      },
+      {
+        "name": "White Company",
+        "speed": 40,
+        "accuracy": 90,
+        "cooldown": 10,
+        "hit": [
+          {
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 90,
+                "critical": 0
+              }
+            }
+          }
+        ],
+        "miss": []
       }
-    }
+    ]
   },
   "3": {
     "name": "AMMA 3",
-    "traits": {
-      "background": {
-        "name": "Poland",
-        "stats": {
-          "strength": 10,
-          "vitality": 11,
-          "dexterity": 12,
-          "luck": 9
-        },
-        "attacks": []
+    "stats": {
+      "strength": 46,
+      "vitality": 49,
+      "dexterity": 56,
+      "luck": 47
+    },
+    "attacks": [
+      {
+        "tag": "Sword Slash"
       },
-      "armour": {
-        "name": "Brigandine with Chainmail",
-        "stats": {
-          "strength": 5,
-          "vitality": 13,
-          "dexterity": 10,
-          "luck": 11
-        },
-        "attacks": []
-      },
-      "jewelry": {
-        "name": "Victory Band",
-        "stats": {
-          "strength": 10,
-          "vitality": 7,
-          "dexterity": 8,
-          "luck": 9
-        },
-        "attacks": []
-      },
-      "mask": {
-        "name": "Chainmail Coif",
-        "stats": {
-          "strength": 7,
-          "vitality": 12,
-          "dexterity": 10,
-          "luck": 4
-        },
-        "attacks": []
-      },
-      "weapon": {
-        "name": "Saber & Buckler",
-        "stats": {
-          "strength": 14,
-          "vitality": 6,
-          "dexterity": 16,
-          "luck": 14
-        },
-        "attacks": [
+      {
+        "name": "Shield Block",
+        "speed": 60,
+        "accuracy": 90,
+        "cooldown": 3,
+        "hit": [
           {
-            "name": "Sword Slash",
-            "speed": 85,
-            "accuracy": 95,
-            "cooldown": 1,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 30,
-                    "critical": 20
-                  }
-                }
+            "target": "Player",
+            "affect": {
+              "Stats": {
+                "strength": 0,
+                "vitality": 30,
+                "dexterity": 0,
+                "luck": 0
               }
-            ],
-            "miss": []
+            }
           },
           {
-            "name": "Shield Block",
-            "speed": 60,
-            "accuracy": 90,
-            "cooldown": 3,
-            "hit": [
-              {
-                "target": "Player",
-                "affect": {
-                  "Stats": {
-                    "strength": 0,
-                    "vitality": 30,
-                    "dexterity": 0,
-                    "luck": 0
-                  }
-                }
-              },
-              {
-                "target": "Player",
-                "affect": {
-                  "Health": 30
-                }
-              },
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Stats": {
-                    "strength": -15,
-                    "vitality": 0,
-                    "dexterity": 0,
-                    "luck": 0
-                  }
-                }
-              }
-            ],
-            "miss": []
+            "target": "Player",
+            "affect": {
+              "Health": 30
+            }
           },
           {
-            "name": "Sword Dance",
-            "speed": 85,
-            "accuracy": 90,
-            "cooldown": 4,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 50,
-                    "critical": 15
-                  }
-                }
-              },
-              {
-                "target": "Player",
-                "affect": {
-                  "Stats": {
-                    "strength": 10,
-                    "vitality": 0,
-                    "dexterity": 0,
-                    "luck": 0
-                  }
-                }
+            "target": "Opponent",
+            "affect": {
+              "Stats": {
+                "strength": -15,
+                "vitality": 0,
+                "dexterity": 0,
+                "luck": 0
               }
-            ],
-            "miss": []
-          },
-          {
-            "name": "Spin Attack",
-            "speed": 50,
-            "accuracy": 90,
-            "cooldown": 10,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 70,
-                    "critical": 20
-                  }
-                }
-              }
-            ],
-            "miss": []
+            }
           }
-        ]
+        ],
+        "miss": []
+      },
+      {
+        "name": "Sword Dance",
+        "speed": 85,
+        "accuracy": 90,
+        "cooldown": 3,
+        "hit": [
+          {
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 50,
+                "critical": 15
+              }
+            }
+          },
+          {
+            "target": "Player",
+            "affect": {
+              "Stats": {
+                "strength": 10,
+                "vitality": 0,
+                "dexterity": 0,
+                "luck": 0
+              }
+            }
+          }
+        ],
+        "miss": []
+      },
+      {
+        "name": "Spin Attack",
+        "speed": 50,
+        "accuracy": 90,
+        "cooldown": 10,
+        "hit": [
+          {
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 70,
+                "critical": 20
+              }
+            }
+          }
+        ],
+        "miss": []
       }
-    }
+    ]
   },
   "4": {
     "name": "AMMA 4",
-    "traits": {
-      "background": {
-        "name": "USA",
-        "stats": {
-          "strength": 11,
-          "vitality": 9,
-          "dexterity": 10,
-          "luck": 10
-        },
-        "attacks": []
+    "stats": {
+      "strength": 46,
+      "vitality": 51,
+      "dexterity": 44,
+      "luck": 49
+    },
+    "attacks": [
+      {
+        "tag": "Sword Slash"
       },
-      "armour": {
-        "name": "Crusader's Surcoat & Plate",
-        "stats": {
-          "strength": 3,
-          "vitality": 18,
-          "dexterity": 5,
-          "luck": 8
-        },
-        "attacks": []
-      },
-      "jewelry": {
-        "name": "Lone Star Pendant",
-        "stats": {
-          "strength": 9,
-          "vitality": 6,
-          "dexterity": 10,
-          "luck": 11
-        },
-        "attacks": []
-      },
-      "mask": {
-        "name": "Great Bascinet Helm",
-        "stats": {
-          "strength": 6,
-          "vitality": 13,
-          "dexterity": 7,
-          "luck": 5
-        },
-        "attacks": []
-      },
-      "weapon": {
-        "name": "Arming Sword & Punch Shield",
-        "stats": {
-          "strength": 17,
-          "vitality": 5,
-          "dexterity": 12,
-          "luck": 15
-        },
-        "attacks": [
+      {
+        "name": "Low Kick",
+        "speed": 75,
+        "accuracy": 100,
+        "cooldown": 1,
+        "hit": [
           {
-            "name": "Sword Slash",
-            "speed": 85,
-            "accuracy": 95,
-            "cooldown": 1,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 30,
-                    "critical": 20
-                  }
-                }
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 30,
+                "critical": 0
               }
-            ],
-            "miss": []
+            }
           },
           {
-            "name": "Low Kick",
-            "speed": 75,
-            "accuracy": 100,
-            "cooldown": 3,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 30,
-                    "critical": 0
-                  }
-                }
-              },
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Stats": {
-                    "strength": 0,
-                    "vitality": 0,
-                    "dexterity": -10,
-                    "luck": -10
-                  }
-                }
+            "target": "Opponent",
+            "affect": {
+              "Stats": {
+                "strength": 0,
+                "vitality": 0,
+                "dexterity": -10,
+                "luck": -10
               }
-            ],
-            "miss": []
-          },
-          {
-            "name": "Swag",
-            "speed": 65,
-            "accuracy": 90,
-            "cooldown": 10,
-            "hit": [
-              {
-                "target": "Player",
-                "affect": {
-                  "Stats": {
-                    "strength": 20,
-                    "vitality": 0,
-                    "dexterity": 20,
-                    "luck": 20
-                  }
-                }
-              }
-            ],
-            "miss": []
-          },
-          {
-            "name": "Mega Shield Bash",
-            "speed": 50,
-            "accuracy": 80,
-            "cooldown": 10,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 60,
-                    "critical": 0
-                  }
-                }
-              },
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Stun": 50
-                }
-              }
-            ],
-            "miss": []
+            }
           }
-        ]
+        ],
+        "miss": []
+      },
+      {
+        "name": "Swag",
+        "speed": 65,
+        "accuracy": 90,
+        "cooldown": 3,
+        "hit": [
+          {
+            "target": "Player",
+            "affect": {
+              "Stats": {
+                "strength": 20,
+                "vitality": 0,
+                "dexterity": 20,
+                "luck": 20
+              }
+            }
+          }
+        ],
+        "miss": []
+      },
+      {
+        "name": "Mega Shield Bash",
+        "speed": 50,
+        "accuracy": 80,
+        "cooldown": 3,
+        "hit": [
+          {
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 60,
+                "critical": 0
+              }
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
+              "Stun": 50
+            }
+          }
+        ],
+        "miss": []
       }
-    }
+    ]
   },
   "5": {
     "name": "AMMA 5",
-    "traits": {
-      "background": {
-        "name": "USA",
-        "stats": {
-          "strength": 11,
-          "vitality": 9,
-          "dexterity": 10,
-          "luck": 10
-        },
-        "attacks": []
-      },
-      "armour": {
-        "name": "Gambeson & Steel Greaves",
-        "stats": {
-          "strength": 2,
-          "vitality": 20,
-          "dexterity": 3,
-          "luck": 9
-        },
-        "attacks": []
-      },
-      "jewelry": {
-        "name": "Shield Amulet",
-        "stats": {
-          "strength": 7,
-          "vitality": 8,
-          "dexterity": 7,
-          "luck": 12
-        },
-        "attacks": []
-      },
-      "mask": {
-        "name": "Great Helm",
-        "stats": {
-          "strength": 4,
-          "vitality": 20,
-          "dexterity": 4,
-          "luck": 6
-        },
-        "attacks": []
-      },
-      "weapon": {
-        "name": "Battle Axe & Buckler",
-        "stats": {
-          "strength": 20,
-          "vitality": 5,
-          "dexterity": 9,
-          "luck": 16
-        },
-        "attacks": [
+    "stats": {
+      "strength": 44,
+      "vitality": 62,
+      "dexterity": 33,
+      "luck": 53
+    },
+    "attacks": [
+      {
+        "name": "Axe Attack",
+        "speed": 60,
+        "accuracy": 85,
+        "cooldown": 0,
+        "hit": [
           {
-            "name": "Axe Attack",
-            "speed": 60,
-            "accuracy": 85,
-            "cooldown": 1,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 40,
-                    "critical": 10
-                  }
-                }
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 40,
+                "critical": 10
               }
-            ],
-            "miss": []
-          },
-          {
-            "name": "Shield Punch",
-            "speed": 70,
-            "accuracy": 80,
-            "cooldown": 2,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 40,
-                    "critical": 0
-                  }
-                }
-              },
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Stun": 40
-                }
-              }
-            ],
-            "miss": []
-          },
-          {
-            "name": "Grind",
-            "speed": 45,
-            "accuracy": 70,
-            "cooldown": 10,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 40,
-                    "critical": 0
-                  }
-                }
-              },
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Stun": 0
-                }
-              },
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Stats": {
-                    "strength": -25,
-                    "vitality": 0,
-                    "dexterity": 0,
-                    "luck": 0
-                  }
-                }
-              }
-            ],
-            "miss": []
-          },
-          {
-            "name": "Reverse Throw",
-            "speed": 40,
-            "accuracy": 80,
-            "cooldown": 10,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 50,
-                    "critical": 0
-                  }
-                }
-              },
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Stats": {
-                    "strength": 0,
-                    "vitality": -20,
-                    "dexterity": -20,
-                    "luck": 0
-                  }
-                }
-              }
-            ],
-            "miss": []
+            }
           }
-        ]
+        ],
+        "miss": []
+      },
+      {
+        "tag": "Shield Punch"
+      },
+      {
+        "tag": "Grind"
+      },
+      {
+        "name": "Reverse Throw",
+        "speed": 40,
+        "accuracy": 80,
+        "cooldown": 3,
+        "hit": [
+          {
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 50,
+                "critical": 0
+              }
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
+              "Health": -20
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
+              "Stats": {
+                "strength": 0,
+                "vitality": -20,
+                "dexterity": -20,
+                "luck": 0
+              }
+            }
+          }
+        ],
+        "miss": []
       }
-    }
+    ]
   },
   "6": {
     "name": "AMMA 6",
-    "traits": {
-      "background": {
-        "name": "Mexico",
-        "stats": {
-          "strength": 11,
-          "vitality": 10,
-          "dexterity": 14,
-          "luck": 9
-        },
-        "attacks": []
+    "stats": {
+      "strength": 45,
+      "vitality": 46,
+      "dexterity": 63,
+      "luck": 42
+    },
+    "attacks": [
+      {
+        "tag": "Sword Slash"
       },
-      "armour": {
-        "name": "Brigandine with Steel Plates",
-        "stats": {
-          "strength": 5,
-          "vitality": 15,
-          "dexterity": 9,
-          "luck": 10
-        },
-        "attacks": []
+      {
+        "tag": "Shield Punch"
       },
-      "jewelry": {
-        "name": "Speed Amulet",
-        "stats": {
-          "strength": 10,
-          "vitality": 5,
-          "dexterity": 11,
-          "luck": 9
-        },
-        "attacks": []
-      },
-      "mask": {
-        "name": "Chainmail Coif",
-        "stats": {
-          "strength": 7,
-          "vitality": 10,
-          "dexterity": 11,
-          "luck": 4
-        },
-        "attacks": []
-      },
-      "weapon": {
-        "name": "Rapier & Buckler",
-        "stats": {
-          "strength": 12,
-          "vitality": 6,
-          "dexterity": 18,
-          "luck": 10
-        },
-        "attacks": [
+      {
+        "name": "Swift Attack",
+        "speed": 90,
+        "accuracy": 90,
+        "cooldown": 1,
+        "hit": [
           {
-            "name": "Sword Slash",
-            "speed": 85,
-            "accuracy": 95,
-            "cooldown": 1,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 30,
-                    "critical": 20
-                  }
-                }
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 40,
+                "critical": 0
               }
-            ],
-            "miss": []
-          },
-          {
-            "name": "Shield Punch",
-            "speed": 70,
-            "accuracy": 80,
-            "cooldown": 2,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 40,
-                    "critical": 0
-                  }
-                }
-              },
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Stun": 40
-                }
-              }
-            ],
-            "miss": []
-          },
-          {
-            "name": "Swift Attack",
-            "speed": 90,
-            "accuracy": 90,
-            "cooldown": 3,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 40,
-                    "critical": 0
-                  }
-                }
-              }
-            ],
-            "miss": []
-          },
-          {
-            "name": "Comeback Kid",
-            "speed": 50,
-            "accuracy": 100,
-            "cooldown": 10,
-            "hit": [
-              {
-                "target": "Player",
-                "affect": {
-                  "Health": 80
-                }
-              }
-            ],
-            "miss": []
+            }
           }
-        ]
+        ],
+        "miss": []
+      },
+      {
+        "name": "Comeback Kid",
+        "speed": 50,
+        "accuracy": 100,
+        "cooldown": 10,
+        "hit": [
+          {
+            "target": "Player",
+            "affect": {
+              "Health": 80
+            }
+          }
+        ],
+        "miss": []
       }
-    }
+    ]
   },
   "7": {
     "name": "AMMA 7",
-    "traits": {
-      "background": {
-        "name": "USA",
-        "stats": {
-          "strength": 11,
-          "vitality": 10,
-          "dexterity": 14,
-          "luck": 9
-        },
-        "attacks": []
+    "stats": {
+      "strength": 52,
+      "vitality": 66,
+      "dexterity": 58,
+      "luck": 68
+    },
+    "attacks": [
+      {
+        "tag": "Sword Slash"
       },
-      "armour": {
-        "name": "Gallus's Plate",
-        "stats": {
-          "strength": 8,
-          "vitality": 20,
-          "dexterity": 10,
-          "luck": 12
-        },
-        "attacks": []
-      },
-      "jewelry": {
-        "name": "Founder's Pendant",
-        "stats": {
-          "strength": 12,
-          "vitality": 8,
-          "dexterity": 8,
-          "luck": 14
-        },
-        "attacks": []
-      },
-      "mask": {
-        "name": "Veteran's Visor",
-        "stats": {
-          "strength": 5,
-          "vitality": 18,
-          "dexterity": 12,
-          "luck": 15
-        },
-        "attacks": []
-      },
-      "weapon": {
-        "name": "Gallant Blade & Buckler",
-        "stats": {
-          "strength": 16,
-          "vitality": 10,
-          "dexterity": 14,
-          "luck": 18
-        },
-        "attacks": [
+      {
+        "name": "Weapon Master",
+        "speed": 40,
+        "accuracy": 80,
+        "cooldown": 1,
+        "hit": [
           {
-            "name": "Sword Slash",
-            "speed": 85,
-            "accuracy": 95,
-            "cooldown": 1,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 30,
-                    "critical": 20
-                  }
-                }
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 40,
+                "critical": 30
               }
-            ],
-            "miss": []
-          },
-          {
-            "name": "Weapon Master",
-            "speed": 40,
-            "accuracy": 80,
-            "cooldown": 2,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 40,
-                    "critical": 30
-                  }
-                }
-              }
-            ],
-            "miss": []
-          },
-          {
-            "name": "Superman Shield Punch",
-            "speed": 60,
-            "accuracy": 75,
-            "cooldown": 3,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 60,
-                    "critical": 0
-                  }
-                }
-              },
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Stun": 30
-                }
-              }
-            ],
-            "miss": []
-          },
-          {
-            "name": "People's Elbow",
-            "speed": 30,
-            "accuracy": 70,
-            "cooldown": 255,
-            "hit": [
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Damage": {
-                    "power": 80,
-                    "critical": 0
-                  }
-                }
-              },
-              {
-                "target": "Opponent",
-                "affect": {
-                  "Stun": 50
-                }
-              }
-            ],
-            "miss": []
+            }
           }
-        ]
+        ],
+        "miss": []
+      },
+      {
+        "name": "Superman Shield Punch",
+        "speed": 60,
+        "accuracy": 75,
+        "cooldown": 3,
+        "hit": [
+          {
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 60,
+                "critical": 0
+              }
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
+              "Stun": 30
+            }
+          }
+        ],
+        "miss": []
+      },
+      {
+        "name": "People's Elbow",
+        "speed": 30,
+        "accuracy": 70,
+        "cooldown": 10,
+        "hit": [
+          {
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 80,
+                "critical": 0
+              }
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
+              "Stun": 50
+            }
+          }
+        ],
+        "miss": []
       }
-    }
+    ]
   }
 }

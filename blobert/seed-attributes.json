@@ -20,7 +20,7 @@
               "affect": {
                 "Stats": {
                   "strength": 0,
-                  "vitality": 15,
+                  "vitality": 20,
                   "dexterity": 0,
                   "luck": 0
                 }
@@ -29,7 +29,7 @@
             {
               "target": "Player",
               "affect": {
-                "Health": 10
+                "Health": 20
               }
             }
           ],
@@ -62,6 +62,12 @@
                   "luck": 0
                 }
               }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 10
+              }
             }
           ],
           "miss": []
@@ -92,6 +98,12 @@
                   "dexterity": 0,
                   "luck": 0
                 }
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 25
               }
             }
           ],
@@ -161,6 +173,12 @@
                   "luck": 0
                 }
               }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 10
+              }
             }
           ],
           "miss": []
@@ -229,6 +247,12 @@
                   "luck": 0
                 }
               }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 25
+              }
             }
           ],
           "miss": []
@@ -260,6 +284,12 @@
                   "luck": 0
                 }
               }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 15
+              }
             }
           ],
           "miss": []
@@ -281,6 +311,12 @@
           "accuracy": 100,
           "cooldown": 3,
           "hit": [
+            {
+              "target": "Player",
+              "affect": {
+                "Health": -10
+              }
+            },
             {
               "target": "Player",
               "affect": {
@@ -317,7 +353,7 @@
               "affect": {
                 "Stats": {
                   "strength": 0,
-                  "vitality": 15,
+                  "vitality": 20,
                   "dexterity": 0,
                   "luck": 0
                 }
@@ -326,7 +362,7 @@
             {
               "target": "Player",
               "affect": {
-                "Health": 10
+                "Health": 20
               }
             }
           ],
@@ -359,6 +395,12 @@
                   "luck": 0
                 }
               }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 30
+              }
             }
           ],
           "miss": []
@@ -389,6 +431,12 @@
                   "dexterity": 10,
                   "luck": 0
                 }
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 15
               }
             }
           ],
@@ -421,6 +469,12 @@
                   "luck": 0
                 }
               }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 20
+              }
             }
           ],
           "miss": []
@@ -452,6 +506,12 @@
                   "luck": 0
                 }
               }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 15
+              }
             }
           ],
           "miss": []
@@ -471,7 +531,7 @@
           "name": "Bare Minimum Defense",
           "speed": 90,
           "accuracy": 100,
-          "cooldown": 255,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Player",
@@ -482,6 +542,12 @@
                   "dexterity": 20,
                   "luck": 0
                 }
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 10
               }
             }
           ],
@@ -502,7 +568,7 @@
           "name": "Casual Guard",
           "speed": 70,
           "accuracy": 100,
-          "cooldown": 255,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Player",
@@ -513,6 +579,12 @@
                   "dexterity": 10,
                   "luck": 0
                 }
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 10
               }
             }
           ],
@@ -533,8 +605,14 @@
           "name": "Risky Offense",
           "speed": 60,
           "accuracy": 100,
-          "cooldown": 255,
+          "cooldown": 3,
           "hit": [
+            {
+              "target": "Player",
+              "affect": {
+                "Health": -10
+              }
+            },
             {
               "target": "Player",
               "affect": {
@@ -688,24 +766,13 @@
           "name": "Power Infusion",
           "speed": 75,
           "accuracy": 100,
-          "cooldown": 2,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Player",
               "affect": {
                 "Stats": {
                   "strength": 15,
-                  "vitality": 0,
-                  "dexterity": 0,
-                  "luck": 0
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stats": {
-                  "strength": -10,
                   "vitality": 0,
                   "dexterity": 0,
                   "luck": 0
@@ -730,7 +797,7 @@
           "name": "Swift Maneuver",
           "speed": 85,
           "accuracy": 100,
-          "cooldown": 2,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Player",
@@ -739,17 +806,6 @@
                   "strength": 0,
                   "vitality": 0,
                   "dexterity": 20,
-                  "luck": 0
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stats": {
-                  "strength": 0,
-                  "vitality": 0,
-                  "dexterity": -15,
                   "luck": 0
                 }
               }
@@ -772,14 +828,8 @@
           "name": "Golden Sacrifice",
           "speed": 60,
           "accuracy": 100,
-          "cooldown": 255,
+          "cooldown": 3,
           "hit": [
-            {
-              "target": "Player",
-              "affect": {
-                "Health": -20
-              }
-            },
             {
               "target": "Player",
               "affect": {
@@ -790,16 +840,15 @@
                   "luck": 0
                 }
               }
-            }
-          ],
-          "miss": [
+            },
             {
               "target": "Player",
               "affect": {
-                "Health": -20
+                "Health": 20
               }
             }
-          ]
+          ],
+          "miss": []
         }
       ]
     },
@@ -816,7 +865,7 @@
           "name": "Golden Fortitude",
           "speed": 70,
           "accuracy": 100,
-          "cooldown": 2,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Player",
@@ -847,7 +896,7 @@
           "name": "Defender's Grace",
           "speed": 65,
           "accuracy": 100,
-          "cooldown": 2,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Player",
@@ -858,6 +907,12 @@
                   "dexterity": 0,
                   "luck": 0
                 }
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 25
               }
             }
           ],
@@ -909,7 +964,7 @@
           "name": "Reflex Guard",
           "speed": 80,
           "accuracy": 100,
-          "cooldown": 2,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Player",
@@ -920,6 +975,12 @@
                   "dexterity": 15,
                   "luck": 0
                 }
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 10
               }
             }
           ],
@@ -1234,22 +1295,16 @@
         {
           "name": "Binary Bash",
           "speed": 60,
-          "accuracy": 70,
+          "accuracy": 80,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 20,
-                  "critical": 15
+                  "power": 25,
+                  "critical": 20
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
@@ -1258,7 +1313,7 @@
         {
           "name": "Algorithm Assault",
           "speed": 40,
-          "accuracy": 80,
+          "accuracy": 90,
           "cooldown": 1,
           "hit": [
             {
@@ -1266,7 +1321,7 @@
               "affect": {
                 "Damage": {
                   "power": 40,
-                  "critical": 20
+                  "critical": 10
                 }
               }
             },
@@ -1282,39 +1337,26 @@
         {
           "name": "Algorithmic Overload",
           "speed": 30,
-          "accuracy": 50,
-          "cooldown": 255,
+          "accuracy": 75,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 90,
-                  "critical": 20
+                  "power": 80,
+                  "critical": 0
                 }
               }
             },
             {
               "target": "Opponent",
               "affect": {
-                "Stun": 10
-              }
-            },
-            {
-              "target": "Player",
-              "affect": {
-                "Health": -30
+                "Stun": 15
               }
             }
           ],
-          "miss": [
-            {
-              "target": "Player",
-              "affect": {
-                "Health": -30
-              }
-            }
-          ]
+          "miss": []
         }
       ]
     },
@@ -1330,22 +1372,16 @@
         {
           "name": "Argent Assault",
           "speed": 70,
-          "accuracy": 80,
+          "accuracy": 90,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 18,
+                  "power": 20,
                   "critical": 20
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
               }
             }
           ],
@@ -1354,7 +1390,7 @@
         {
           "name": "Argent Crush",
           "speed": 50,
-          "accuracy": 75,
+          "accuracy": 85,
           "cooldown": 1,
           "hit": [
             {
@@ -1362,7 +1398,7 @@
               "affect": {
                 "Damage": {
                   "power": 35,
-                  "critical": 25
+                  "critical": 20
                 }
               }
             },
@@ -1378,14 +1414,14 @@
         {
           "name": "Two Factor Authentication",
           "speed": 60,
-          "accuracy": 80,
-          "cooldown": 1,
+          "accuracy": 90,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 30,
+                  "power": 45,
                   "critical": 20
                 }
               }
@@ -1413,15 +1449,15 @@
         {
           "name": "Helium Blast",
           "speed": 90,
-          "accuracy": 95,
+          "accuracy": 100,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 15,
-                  "critical": 10
+                  "power": 20,
+                  "critical": 20
                 }
               }
             }
@@ -1431,7 +1467,7 @@
         {
           "name": "Balloon Bombardment",
           "speed": 60,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 1,
           "hit": [
             {
@@ -1439,7 +1475,7 @@
               "affect": {
                 "Damage": {
                   "power": 30,
-                  "critical": 15
+                  "critical": 20
                 }
               }
             },
@@ -1455,15 +1491,15 @@
         {
           "name": "Inflatable Explosion",
           "speed": 100,
-          "accuracy": 85,
-          "cooldown": 2,
+          "accuracy": 90,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 25,
-                  "critical": 10
+                  "power": 40,
+                  "critical": 30
                 }
               }
             }
@@ -1484,22 +1520,16 @@
         {
           "name": "Fury Lash",
           "speed": 60,
-          "accuracy": 70,
+          "accuracy": 80,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 25,
+                  "power": 30,
                   "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
@@ -1508,7 +1538,7 @@
         {
           "name": "Banner Javelin",
           "speed": 40,
-          "accuracy": 75,
+          "accuracy": 80,
           "cooldown": 1,
           "hit": [
             {
@@ -1516,14 +1546,14 @@
               "affect": {
                 "Damage": {
                   "power": 45,
-                  "critical": 20
+                  "critical": 10
                 }
               }
             },
             {
               "target": "Opponent",
               "affect": {
-                "Stun": 10
+                "Stun": 15
               }
             }
           ],
@@ -1532,15 +1562,15 @@
         {
           "name": "Rage Unleashed",
           "speed": 50,
-          "accuracy": 70,
-          "cooldown": 2,
+          "accuracy": 80,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 40,
-                  "critical": 25
+                  "power": 55,
+                  "critical": 15
                 }
               }
             },
@@ -1567,63 +1597,36 @@
         {
           "name": "Brilliant Flash",
           "speed": 80,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 20,
-                  "critical": 20
+                  "power": 25,
+                  "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
           "miss": []
         },
         {
-          "name": "Banner Javelin",
-          "speed": 50,
-          "accuracy": 85,
-          "cooldown": 1,
-          "hit": [
-            {
-              "target": "Opponent",
-              "affect": {
-                "Damage": {
-                  "power": 35,
-                  "critical": 30
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
-              }
-            }
-          ],
-          "miss": []
+          "tag": "Banner Javelin"
         },
         {
           "name": "Blinding Radiance",
           "speed": 70,
-          "accuracy": 75,
-          "cooldown": 1,
+          "accuracy": 85,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 30,
-                  "critical": 30
+                  "power": 45,
+                  "critical": 20
                 }
               }
             },
@@ -1650,14 +1653,14 @@
         {
           "name": "Keen Eye",
           "speed": 70,
-          "accuracy": 95,
+          "accuracy": 100,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 20,
+                  "power": 25,
                   "critical": 10
                 }
               }
@@ -1666,40 +1669,19 @@
           "miss": []
         },
         {
-          "name": "Banner Javelin",
-          "speed": 50,
-          "accuracy": 80,
-          "cooldown": 1,
-          "hit": [
-            {
-              "target": "Opponent",
-              "affect": {
-                "Damage": {
-                  "power": 35,
-                  "critical": 25
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
-              }
-            }
-          ],
-          "miss": []
+          "tag": "Banner Javelin"
         },
         {
           "name": "True Sight",
           "speed": 60,
-          "accuracy": 85,
-          "cooldown": 1,
+          "accuracy": 90,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 35,
+                  "power": 50,
                   "critical": 20
                 }
               }
@@ -1727,63 +1709,36 @@
         {
           "name": "Wisdom's Edge",
           "speed": 80,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 18,
-                  "critical": 15
+                  "power": 20,
+                  "critical": 20
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
           "miss": []
         },
         {
-          "name": "Banner Javelin",
-          "speed": 50,
-          "accuracy": 85,
-          "cooldown": 1,
-          "hit": [
-            {
-              "target": "Opponent",
-              "affect": {
-                "Damage": {
-                  "power": 40,
-                  "critical": 20
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
-              }
-            }
-          ],
-          "miss": []
+          "tag": "Banner Javelin"
         },
         {
           "name": "Divine Insight",
           "speed": 50,
-          "accuracy": 75,
-          "cooldown": 2,
+          "accuracy": 85,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 40,
-                  "critical": 30
+                  "power": 55,
+                  "critical": 15
                 }
               }
             },
@@ -1810,63 +1765,36 @@
         {
           "name": "Frenzied Blow",
           "speed": 70,
-          "accuracy": 75,
+          "accuracy": 85,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 25,
+                  "power": 30,
                   "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
               }
             }
           ],
           "miss": []
         },
         {
-          "name": "Banner Javelin",
-          "speed": 40,
-          "accuracy": 70,
-          "cooldown": 1,
-          "hit": [
-            {
-              "target": "Opponent",
-              "affect": {
-                "Damage": {
-                  "power": 45,
-                  "critical": 15
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 15
-              }
-            }
-          ],
-          "miss": []
+          "tag": "Banner Javelin"
         },
         {
           "name": "Wrathful Smite",
           "speed": 40,
-          "accuracy": 65,
-          "cooldown": 2,
+          "accuracy": 75,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 60,
-                  "critical": 20
+                  "power": 65,
+                  "critical": 0
                 }
               }
             },
@@ -1893,63 +1821,36 @@
         {
           "name": "Colossal Swing",
           "speed": 60,
-          "accuracy": 70,
+          "accuracy": 80,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 20,
-                  "critical": 15
+                  "power": 25,
+                  "critical": 20
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
               }
             }
           ],
           "miss": []
         },
         {
-          "name": "Banner Javelin",
-          "speed": 30,
-          "accuracy": 70,
-          "cooldown": 1,
-          "hit": [
-            {
-              "target": "Opponent",
-              "affect": {
-                "Damage": {
-                  "power": 50,
-                  "critical": 15
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 20
-              }
-            }
-          ],
-          "miss": []
+          "tag": "Banner Javelin"
         },
         {
           "name": "Giant's Hammer",
           "speed": 30,
-          "accuracy": 40,
-          "cooldown": 255,
+          "accuracy": 60,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 80,
-                  "critical": 25
+                  "power": 65,
+                  "critical": 10
                 }
               }
             },
@@ -1976,70 +1877,37 @@
         {
           "name": "Flawless Hit",
           "speed": 75,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 20,
-                  "critical": 20
+                  "power": 25,
+                  "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
           "miss": []
         },
         {
-          "name": "Banner Javelin",
-          "speed": 60,
-          "accuracy": 90,
-          "cooldown": 1,
-          "hit": [
-            {
-              "target": "Opponent",
-              "affect": {
-                "Damage": {
-                  "power": 35,
-                  "critical": 30
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
-              }
-            }
-          ],
-          "miss": []
+          "tag": "Banner Javelin"
         },
         {
           "name": "Perfect Strike",
           "speed": 60,
-          "accuracy": 85,
-          "cooldown": 2,
+          "accuracy": 100,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 50,
-                  "critical": 35
+                  "power": 60,
+                  "critical": 0
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
@@ -2059,56 +1927,29 @@
         {
           "name": "Forceful Blow",
           "speed": 70,
-          "accuracy": 85,
+          "accuracy": 90,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 22,
-                  "critical": 15
+                  "power": 30,
+                  "critical": 0
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
           "miss": []
         },
         {
-          "name": "Banner Javelin",
-          "speed": 50,
-          "accuracy": 80,
-          "cooldown": 1,
-          "hit": [
-            {
-              "target": "Opponent",
-              "affect": {
-                "Damage": {
-                  "power": 40,
-                  "critical": 20
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
-              }
-            }
-          ],
-          "miss": []
+          "tag": "Banner Javelin"
         },
         {
           "name": "Energy Overload",
           "speed": 30,
-          "accuracy": 60,
-          "cooldown": 255,
+          "accuracy": 70,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
@@ -2118,22 +1959,9 @@
                   "critical": 0
                 }
               }
-            },
-            {
-              "target": "Player",
-              "affect": {
-                "Health": -40
-              }
             }
           ],
-          "miss": [
-            {
-              "target": "Player",
-              "affect": {
-                "Health": -40
-              }
-            }
-          ]
+          "miss": []
         }
       ]
     },
@@ -2149,63 +1977,36 @@
         {
           "name": "Shielding Bash",
           "speed": 70,
-          "accuracy": 80,
+          "accuracy": 90,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 18,
+                  "power": 20,
                   "critical": 20
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
               }
             }
           ],
           "miss": []
         },
         {
-          "name": "Banner Javelin",
-          "speed": 50,
-          "accuracy": 75,
-          "cooldown": 1,
-          "hit": [
-            {
-              "target": "Opponent",
-              "affect": {
-                "Damage": {
-                  "power": 35,
-                  "critical": 25
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 15
-              }
-            }
-          ],
-          "miss": []
+          "tag": "Banner Javelin"
         },
         {
           "name": "Guardian's Blow",
           "speed": 50,
-          "accuracy": 75,
-          "cooldown": 1,
+          "accuracy": 85,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 35,
-                  "critical": 15
+                  "power": 50,
+                  "critical": 10
                 }
               }
             },
@@ -2232,63 +2033,36 @@
         {
           "name": "Savage Blow",
           "speed": 70,
-          "accuracy": 75,
+          "accuracy": 85,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 25,
+                  "power": 30,
                   "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
               }
             }
           ],
           "miss": []
         },
         {
-          "name": "Banner Javelin",
-          "speed": 40,
-          "accuracy": 75,
-          "cooldown": 1,
-          "hit": [
-            {
-              "target": "Opponent",
-              "affect": {
-                "Damage": {
-                  "power": 45,
-                  "critical": 20
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 15
-              }
-            }
-          ],
-          "miss": []
+          "tag": "Banner Javelin"
         },
         {
           "name": "Vengeful Strike",
           "speed": 40,
-          "accuracy": 60,
-          "cooldown": 2,
+          "accuracy": 70,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 40,
-                  "critical": 20
+                  "power": 55,
+                  "critical": 15
                 }
               }
             },
@@ -2315,62 +2089,35 @@
         {
           "name": "Mirror Smash",
           "speed": 75,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 20,
-                  "critical": 15
+                  "power": 25,
+                  "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
           "miss": []
         },
         {
-          "name": "Banner Javelin",
-          "speed": 50,
-          "accuracy": 85,
-          "cooldown": 1,
-          "hit": [
-            {
-              "target": "Opponent",
-              "affect": {
-                "Damage": {
-                  "power": 35,
-                  "critical": 25
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
-              }
-            }
-          ],
-          "miss": []
+          "tag": "Banner Javelin"
         },
         {
           "name": "Echoing Blow",
           "speed": 60,
-          "accuracy": 85,
-          "cooldown": 1,
+          "accuracy": 90,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 30,
+                  "power": 45,
                   "critical": 20
                 }
               }
@@ -2398,14 +2145,14 @@
         {
           "name": "Precision Hit",
           "speed": 80,
-          "accuracy": 95,
+          "accuracy": 100,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 18,
+                  "power": 20,
                   "critical": 20
                 }
               }
@@ -2414,41 +2161,20 @@
           "miss": []
         },
         {
-          "name": "Banner Javelin",
-          "speed": 50,
-          "accuracy": 85,
-          "cooldown": 1,
-          "hit": [
-            {
-              "target": "Opponent",
-              "affect": {
-                "Damage": {
-                  "power": 35,
-                  "critical": 30
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
-              }
-            }
-          ],
-          "miss": []
+          "tag": "Banner Javelin"
         },
         {
           "name": "Masterful Blow",
           "speed": 50,
-          "accuracy": 70,
-          "cooldown": 2,
+          "accuracy": 80,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 50,
-                  "critical": 30
+                  "power": 60,
+                  "critical": 10
                 }
               }
             },
@@ -2475,63 +2201,36 @@
         {
           "name": "Deceptive Swipe",
           "speed": 90,
-          "accuracy": 85,
+          "accuracy": 90,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 22,
-                  "critical": 15
+                  "power": 30,
+                  "critical": 0
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
           "miss": []
         },
         {
-          "name": "Banner Javelin",
-          "speed": 50,
-          "accuracy": 80,
-          "cooldown": 1,
-          "hit": [
-            {
-              "target": "Opponent",
-              "affect": {
-                "Damage": {
-                  "power": 40,
-                  "critical": 25
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
-              }
-            }
-          ],
-          "miss": []
+          "tag": "Banner Javelin"
         },
         {
           "name": "Cunning Strike",
           "speed": 50,
-          "accuracy": 80,
-          "cooldown": 1,
+          "accuracy": 90,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 40,
-                  "critical": 25
+                  "power": 55,
+                  "critical": 10
                 }
               }
             },
@@ -2558,63 +2257,36 @@
         {
           "name": "Dual Fang",
           "speed": 70,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 20,
-                  "critical": 20
+                  "power": 25,
+                  "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
           "miss": []
         },
         {
-          "name": "Banner Javelin",
-          "speed": 50,
-          "accuracy": 80,
-          "cooldown": 1,
-          "hit": [
-            {
-              "target": "Opponent",
-              "affect": {
-                "Damage": {
-                  "power": 40,
-                  "critical": 20
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
-              }
-            }
-          ],
-          "miss": []
+          "tag": "Banner Javelin"
         },
         {
           "name": "Twin Assault",
           "speed": 50,
-          "accuracy": 75,
-          "cooldown": 2,
+          "accuracy": 85,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 45,
-                  "critical": 20
+                  "power": 60,
+                  "critical": 10
                 }
               }
             },
@@ -2641,63 +2313,36 @@
         {
           "name": "Colossal Impact",
           "speed": 60,
-          "accuracy": 75,
+          "accuracy": 85,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 18,
-                  "critical": 15
+                  "power": 30,
+                  "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
               }
             }
           ],
           "miss": []
         },
         {
-          "name": "Banner Javelin",
-          "speed": 40,
-          "accuracy": 75,
-          "cooldown": 1,
-          "hit": [
-            {
-              "target": "Opponent",
-              "affect": {
-                "Damage": {
-                  "power": 45,
-                  "critical": 20
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 15
-              }
-            }
-          ],
-          "miss": []
+          "tag": "Banner Javelin"
         },
         {
           "name": "Gargantuan Blow",
           "speed": 40,
-          "accuracy": 60,
-          "cooldown": 2,
+          "accuracy": 70,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 50,
-                  "critical": 20
+                  "power": 60,
+                  "critical": 10
                 }
               }
             },
@@ -2724,63 +2369,36 @@
         {
           "name": "Skate Slam",
           "speed": 90,
-          "accuracy": 85,
+          "accuracy": 90,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 22,
-                  "critical": 15
+                  "power": 30,
+                  "critical": 0
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
           "miss": []
         },
         {
-          "name": "Banner Javelin",
-          "speed": 50,
-          "accuracy": 80,
-          "cooldown": 1,
-          "hit": [
-            {
-              "target": "Opponent",
-              "affect": {
-                "Damage": {
-                  "power": 40,
-                  "critical": 25
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
-              }
-            }
-          ],
-          "miss": []
+          "tag": "Banner Javelin"
         },
         {
           "name": "Kickflip Crush",
           "speed": 50,
-          "accuracy": 80,
-          "cooldown": 1,
+          "accuracy": 90,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 40,
-                  "critical": 20
+                  "power": 55,
+                  "critical": 10
                 }
               }
             },
@@ -2807,63 +2425,36 @@
         {
           "name": "Corrosive Hit",
           "speed": 70,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 20,
-                  "critical": 20
+                  "power": 25,
+                  "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
           "miss": []
         },
         {
-          "name": "Banner Javelin",
-          "speed": 50,
-          "accuracy": 85,
-          "cooldown": 1,
-          "hit": [
-            {
-              "target": "Opponent",
-              "affect": {
-                "Damage": {
-                  "power": 35,
-                  "critical": 30
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
-              }
-            }
-          ],
-          "miss": []
+          "tag": "Banner Javelin"
         },
         {
           "name": "Acidic Strike",
           "speed": 50,
-          "accuracy": 70,
-          "cooldown": 1,
+          "accuracy": 80,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 30,
-                  "critical": 30
+                  "power": 45,
+                  "critical": 20
                 }
               }
             },
@@ -2890,63 +2481,36 @@
         {
           "name": "Standard Strike",
           "speed": 80,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 20,
+                  "power": 25,
                   "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
           "miss": []
         },
         {
-          "name": "Banner Javelin",
-          "speed": 50,
-          "accuracy": 85,
-          "cooldown": 1,
-          "hit": [
-            {
-              "target": "Opponent",
-              "affect": {
-                "Damage": {
-                  "power": 35,
-                  "critical": 20
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
-              }
-            }
-          ],
-          "miss": []
+          "tag": "Banner Javelin"
         },
         {
           "name": "Banner Whirlwind",
           "speed": 50,
-          "accuracy": 75,
-          "cooldown": 2,
+          "accuracy": 85,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 35,
-                  "critical": 25
+                  "power": 50,
+                  "critical": 20
                 }
               }
             },
@@ -2973,22 +2537,16 @@
         {
           "name": "Briq Bash",
           "speed": 50,
-          "accuracy": 70,
+          "accuracy": 80,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 25,
+                  "power": 30,
                   "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 15
               }
             }
           ],
@@ -2997,7 +2555,7 @@
         {
           "name": "Briq Breaker",
           "speed": 30,
-          "accuracy": 75,
+          "accuracy": 85,
           "cooldown": 1,
           "hit": [
             {
@@ -3005,7 +2563,7 @@
               "affect": {
                 "Damage": {
                   "power": 45,
-                  "critical": 15
+                  "critical": 0
                 }
               }
             },
@@ -3021,15 +2579,15 @@
         {
           "name": "Briq Avalanche",
           "speed": 40,
-          "accuracy": 60,
-          "cooldown": 2,
+          "accuracy": 70,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 45,
-                  "critical": 20
+                  "power": 60,
+                  "critical": 10
                 }
               }
             },
@@ -3056,22 +2614,16 @@
         {
           "name": "Hash Hit",
           "speed": 70,
-          "accuracy": 85,
+          "accuracy": 90,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 18,
-                  "critical": 25
+                  "power": 20,
+                  "critical": 20
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
@@ -3080,7 +2632,7 @@
         {
           "name": "Calculated Crush",
           "speed": 50,
-          "accuracy": 80,
+          "accuracy": 90,
           "cooldown": 1,
           "hit": [
             {
@@ -3088,7 +2640,7 @@
               "affect": {
                 "Damage": {
                   "power": 40,
-                  "critical": 25
+                  "critical": 10
                 }
               }
             },
@@ -3104,15 +2656,15 @@
         {
           "name": "Quantum Singularity",
           "speed": 50,
-          "accuracy": 70,
-          "cooldown": 2,
+          "accuracy": 80,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 50,
-                  "critical": 25
+                  "power": 60,
+                  "critical": 10
                 }
               }
             },
@@ -3139,22 +2691,16 @@
         {
           "name": "Code Crush",
           "speed": 75,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 20,
-                  "critical": 20
+                  "power": 25,
+                  "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
@@ -3163,7 +2709,7 @@
         {
           "name": "Debug Destruction",
           "speed": 50,
-          "accuracy": 85,
+          "accuracy": 90,
           "cooldown": 1,
           "hit": [
             {
@@ -3171,7 +2717,7 @@
               "affect": {
                 "Damage": {
                   "power": 35,
-                  "critical": 30
+                  "critical": 20
                 }
               }
             },
@@ -3187,15 +2733,15 @@
         {
           "name": "Algorithm Overload",
           "speed": 50,
-          "accuracy": 75,
-          "cooldown": 1,
+          "accuracy": 85,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 40,
-                  "critical": 30
+                  "power": 55,
+                  "critical": 15
                 }
               }
             },
@@ -3222,22 +2768,16 @@
         {
           "name": "Diamond Strike",
           "speed": 70,
-          "accuracy": 80,
+          "accuracy": 90,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 18,
+                  "power": 20,
                   "critical": 20
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
               }
             }
           ],
@@ -3246,7 +2786,7 @@
         {
           "name": "Diamond Destruction",
           "speed": 50,
-          "accuracy": 80,
+          "accuracy": 90,
           "cooldown": 1,
           "hit": [
             {
@@ -3254,7 +2794,7 @@
               "affect": {
                 "Damage": {
                   "power": 40,
-                  "critical": 20
+                  "critical": 10
                 }
               }
             },
@@ -3270,15 +2810,15 @@
         {
           "name": "Diamond Hand",
           "speed": 50,
-          "accuracy": 70,
-          "cooldown": 2,
+          "accuracy": 80,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 50,
-                  "critical": 20
+                  "power": 60,
+                  "critical": 10
                 }
               }
             },
@@ -3305,22 +2845,16 @@
         {
           "name": "Bullet Blast",
           "speed": 80,
-          "accuracy": 70,
+          "accuracy": 80,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 25,
-                  "critical": 15
+                  "power": 30,
+                  "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
@@ -3329,7 +2863,7 @@
         {
           "name": "Bullet Barrage",
           "speed": 60,
-          "accuracy": 70,
+          "accuracy": 80,
           "cooldown": 1,
           "hit": [
             {
@@ -3337,7 +2871,7 @@
               "affect": {
                 "Damage": {
                   "power": 45,
-                  "critical": 15
+                  "critical": 10
                 }
               }
             },
@@ -3353,14 +2887,14 @@
         {
           "name": "Desperation Toss",
           "speed": 60,
-          "accuracy": 75,
-          "cooldown": 2,
+          "accuracy": 85,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 40,
+                  "power": 55,
                   "critical": 15
                 }
               }
@@ -3388,22 +2922,16 @@
         {
           "name": "Spectral Hit",
           "speed": 75,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 18,
-                  "critical": 15
+                  "power": 20,
+                  "critical": 20
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
@@ -3412,7 +2940,7 @@
         {
           "name": "Phantom Pulse",
           "speed": 50,
-          "accuracy": 85,
+          "accuracy": 90,
           "cooldown": 1,
           "hit": [
             {
@@ -3420,7 +2948,7 @@
               "affect": {
                 "Damage": {
                   "power": 35,
-                  "critical": 25
+                  "critical": 20
                 }
               }
             },
@@ -3436,15 +2964,15 @@
         {
           "name": "Phantom Blast",
           "speed": 50,
-          "accuracy": 80,
-          "cooldown": 1,
+          "accuracy": 90,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 35,
-                  "critical": 25
+                  "power": 50,
+                  "critical": 20
                 }
               }
             },
@@ -3471,22 +2999,16 @@
         {
           "name": "Arcane Assault",
           "speed": 70,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 20,
-                  "critical": 20
+                  "power": 25,
+                  "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
@@ -3495,7 +3017,7 @@
         {
           "name": "Dark Devastation",
           "speed": 50,
-          "accuracy": 80,
+          "accuracy": 90,
           "cooldown": 1,
           "hit": [
             {
@@ -3503,7 +3025,7 @@
               "affect": {
                 "Damage": {
                   "power": 40,
-                  "critical": 20
+                  "critical": 10
                 }
               }
             },
@@ -3519,15 +3041,15 @@
         {
           "name": "Spellstorm",
           "speed": 50,
-          "accuracy": 70,
-          "cooldown": 2,
+          "accuracy": 80,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 45,
-                  "critical": 20
+                  "power": 60,
+                  "critical": 10
                 }
               }
             },
@@ -3554,22 +3076,16 @@
         {
           "name": "Grug's Crush",
           "speed": 50,
-          "accuracy": 70,
+          "accuracy": 80,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 25,
+                  "power": 30,
                   "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 15
               }
             }
           ],
@@ -3578,7 +3094,7 @@
         {
           "name": "Grug's Smash",
           "speed": 30,
-          "accuracy": 75,
+          "accuracy": 85,
           "cooldown": 1,
           "hit": [
             {
@@ -3586,7 +3102,7 @@
               "affect": {
                 "Damage": {
                   "power": 45,
-                  "critical": 15
+                  "critical": 0
                 }
               }
             },
@@ -3602,15 +3118,15 @@
         {
           "name": "Giant Rock Uppercut Grapple",
           "speed": 30,
-          "accuracy": 50,
-          "cooldown": 255,
+          "accuracy": 60,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 90,
-                  "critical": 25
+                  "power": 80,
+                  "critical": 0
                 }
               }
             },
@@ -3637,22 +3153,16 @@
         {
           "name": "Saber Slash",
           "speed": 80,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 20,
-                  "critical": 20
+                  "power": 25,
+                  "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
@@ -3661,7 +3171,7 @@
         {
           "name": "Saber Storm",
           "speed": 50,
-          "accuracy": 80,
+          "accuracy": 90,
           "cooldown": 1,
           "hit": [
             {
@@ -3669,7 +3179,7 @@
               "affect": {
                 "Damage": {
                   "power": 40,
-                  "critical": 20
+                  "critical": 10
                 }
               }
             },
@@ -3685,15 +3195,15 @@
         {
           "name": "Force Swap",
           "speed": 50,
-          "accuracy": 80,
-          "cooldown": 2,
+          "accuracy": 90,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 40,
-                  "critical": 25
+                  "power": 55,
+                  "critical": 10
                 }
               }
             },
@@ -3720,22 +3230,16 @@
         {
           "name": "Blade Swipe",
           "speed": 90,
-          "accuracy": 95,
+          "accuracy": 100,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 18,
-                  "critical": 25
+                  "power": 20,
+                  "critical": 20
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
@@ -3744,7 +3248,7 @@
         {
           "name": "Swift Slice",
           "speed": 60,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 1,
           "hit": [
             {
@@ -3752,7 +3256,7 @@
               "affect": {
                 "Damage": {
                   "power": 35,
-                  "critical": 30
+                  "critical": 15
                 }
               }
             },
@@ -3768,15 +3272,15 @@
         {
           "name": "Dragon's Fury",
           "speed": 60,
-          "accuracy": 85,
-          "cooldown": 1,
+          "accuracy": 90,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 35,
-                  "critical": 35
+                  "power": 50,
+                  "critical": 20
                 }
               }
             },
@@ -3803,22 +3307,16 @@
         {
           "name": "Noble Strike",
           "speed": 75,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 20,
-                  "critical": 15
+                  "power": 25,
+                  "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
@@ -3827,7 +3325,7 @@
         {
           "name": "Noble Bash",
           "speed": 50,
-          "accuracy": 85,
+          "accuracy": 90,
           "cooldown": 1,
           "hit": [
             {
@@ -3835,7 +3333,7 @@
               "affect": {
                 "Damage": {
                   "power": 35,
-                  "critical": 25
+                  "critical": 20
                 }
               }
             },
@@ -3851,15 +3349,15 @@
         {
           "name": "Royal Whirlwind",
           "speed": 50,
-          "accuracy": 80,
-          "cooldown": 2,
+          "accuracy": 90,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 40,
-                  "critical": 25
+                  "power": 55,
+                  "critical": 10
                 }
               }
             },
@@ -3886,22 +3384,16 @@
         {
           "name": "Chill Strike",
           "speed": 75,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 20,
-                  "critical": 15
+                  "power": 25,
+                  "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
@@ -3910,7 +3402,7 @@
         {
           "name": "Ice Cold Crush",
           "speed": 50,
-          "accuracy": 80,
+          "accuracy": 90,
           "cooldown": 1,
           "hit": [
             {
@@ -3918,7 +3410,7 @@
               "affect": {
                 "Damage": {
                   "power": 40,
-                  "critical": 20
+                  "critical": 10
                 }
               }
             },
@@ -3934,15 +3426,15 @@
         {
           "name": "Ultimate Burn",
           "speed": 50,
-          "accuracy": 70,
-          "cooldown": 2,
+          "accuracy": 80,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 45,
-                  "critical": 20
+                  "power": 60,
+                  "critical": 10
                 }
               }
             },
@@ -3969,22 +3461,16 @@
         {
           "name": "Melody Strike",
           "speed": 75,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 18,
+                  "power": 20,
                   "critical": 20
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
@@ -3993,7 +3479,7 @@
         {
           "name": "Harmonic Hit",
           "speed": 50,
-          "accuracy": 85,
+          "accuracy": 90,
           "cooldown": 1,
           "hit": [
             {
@@ -4001,7 +3487,7 @@
               "affect": {
                 "Damage": {
                   "power": 35,
-                  "critical": 25
+                  "critical": 20
                 }
               }
             },
@@ -4017,15 +3503,15 @@
         {
           "name": "Harmony Burst",
           "speed": 50,
-          "accuracy": 75,
-          "cooldown": 1,
+          "accuracy": 85,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 30,
-                  "critical": 30
+                  "power": 45,
+                  "critical": 20
                 }
               }
             },
@@ -4052,22 +3538,16 @@
         {
           "name": "Sign Slam",
           "speed": 75,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 20,
-                  "critical": 15
+                  "power": 25,
+                  "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
@@ -4076,7 +3556,7 @@
         {
           "name": "We Are So Back",
           "speed": 50,
-          "accuracy": 80,
+          "accuracy": 90,
           "cooldown": 1,
           "hit": [
             {
@@ -4084,7 +3564,7 @@
               "affect": {
                 "Damage": {
                   "power": 40,
-                  "critical": 20
+                  "critical": 10
                 }
               }
             },
@@ -4100,15 +3580,15 @@
         {
           "name": "It's So Over",
           "speed": 50,
-          "accuracy": 80,
-          "cooldown": 2,
+          "accuracy": 90,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 40,
-                  "critical": 25
+                  "power": 55,
+                  "critical": 10
                 }
               }
             },
@@ -4135,22 +3615,16 @@
         {
           "name": "Signature Hit",
           "speed": 75,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 20,
-                  "critical": 15
+                  "power": 25,
+                  "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
@@ -4159,7 +3633,7 @@
         {
           "name": "Signature Slam",
           "speed": 50,
-          "accuracy": 85,
+          "accuracy": 90,
           "cooldown": 1,
           "hit": [
             {
@@ -4167,7 +3641,7 @@
               "affect": {
                 "Damage": {
                   "power": 35,
-                  "critical": 25
+                  "critical": 20
                 }
               }
             },
@@ -4183,15 +3657,15 @@
         {
           "name": "Banner Whirlwind",
           "speed": 50,
-          "accuracy": 80,
-          "cooldown": 2,
+          "accuracy": 90,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 40,
-                  "critical": 25
+                  "power": 55,
+                  "critical": 10
                 }
               }
             },
@@ -4218,22 +3692,16 @@
         {
           "name": "Dark Slash",
           "speed": 80,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 18,
+                  "power": 20,
                   "critical": 20
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
@@ -4242,7 +3710,7 @@
         {
           "name": "Sith Strike",
           "speed": 50,
-          "accuracy": 80,
+          "accuracy": 90,
           "cooldown": 1,
           "hit": [
             {
@@ -4250,7 +3718,7 @@
               "affect": {
                 "Damage": {
                   "power": 40,
-                  "critical": 20
+                  "critical": 10
                 }
               }
             },
@@ -4266,15 +3734,15 @@
         {
           "name": "Force Surge",
           "speed": 50,
-          "accuracy": 70,
-          "cooldown": 2,
+          "accuracy": 80,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 45,
-                  "critical": 20
+                  "power": 60,
+                  "critical": 10
                 }
               }
             },
@@ -4301,14 +3769,14 @@
         {
           "name": "Noodle Strike",
           "speed": 80,
-          "accuracy": 85,
+          "accuracy": 90,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 15,
+                  "power": 20,
                   "critical": 20
                 }
               }
@@ -4319,7 +3787,7 @@
         {
           "name": "Pasta Pummel",
           "speed": 60,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 1,
           "hit": [
             {
@@ -4327,7 +3795,7 @@
               "affect": {
                 "Damage": {
                   "power": 30,
-                  "critical": 15
+                  "critical": 20
                 }
               }
             },
@@ -4343,15 +3811,15 @@
         {
           "name": "Pasta Tornado",
           "speed": 100,
-          "accuracy": 90,
-          "cooldown": 2,
+          "accuracy": 95,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 30,
-                  "critical": 15
+                  "power": 45,
+                  "critical": 20
                 }
               }
             }
@@ -4372,22 +3840,16 @@
         {
           "name": "Tentacle Strike",
           "speed": 70,
-          "accuracy": 85,
+          "accuracy": 90,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 22,
-                  "critical": 20
+                  "power": 30,
+                  "critical": 0
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
@@ -4396,7 +3858,7 @@
         {
           "name": "Kraken's Crush",
           "speed": 50,
-          "accuracy": 80,
+          "accuracy": 90,
           "cooldown": 1,
           "hit": [
             {
@@ -4404,7 +3866,7 @@
               "affect": {
                 "Damage": {
                   "power": 40,
-                  "critical": 20
+                  "critical": 10
                 }
               }
             },
@@ -4420,15 +3882,15 @@
         {
           "name": "Tentacle Fury",
           "speed": 40,
-          "accuracy": 65,
-          "cooldown": 2,
+          "accuracy": 75,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 50,
-                  "critical": 20
+                  "power": 60,
+                  "critical": 10
                 }
               }
             },
@@ -4455,22 +3917,16 @@
         {
           "name": "Magic Blast",
           "speed": 70,
-          "accuracy": 90,
+          "accuracy": 95,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 20,
-                  "critical": 20
+                  "power": 25,
+                  "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 5
               }
             }
           ],
@@ -4479,7 +3935,7 @@
         {
           "name": "Arcane Annihilation",
           "speed": 50,
-          "accuracy": 85,
+          "accuracy": 90,
           "cooldown": 1,
           "hit": [
             {
@@ -4487,7 +3943,7 @@
               "affect": {
                 "Damage": {
                   "power": 45,
-                  "critical": 15
+                  "critical": 5
                 }
               }
             },
@@ -4503,15 +3959,15 @@
         {
           "name": "Cairo Burst",
           "speed": 30,
-          "accuracy": 40,
-          "cooldown": 255,
+          "accuracy": 60,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 90,
-                  "critical": 25
+                  "power": 70,
+                  "critical": 10
                 }
               }
             },
@@ -4538,22 +3994,16 @@
         {
           "name": "Shield Bash",
           "speed": 70,
-          "accuracy": 80,
+          "accuracy": 90,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 18,
+                  "power": 20,
                   "critical": 20
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
               }
             }
           ],
@@ -4562,7 +4012,7 @@
         {
           "name": "Iron Wall",
           "speed": 50,
-          "accuracy": 85,
+          "accuracy": 90,
           "cooldown": 1,
           "hit": [
             {
@@ -4570,7 +4020,7 @@
               "affect": {
                 "Damage": {
                   "power": 35,
-                  "critical": 25
+                  "critical": 20
                 }
               }
             },
@@ -4586,15 +4036,15 @@
         {
           "name": "Cairo Blast",
           "speed": 50,
-          "accuracy": 70,
-          "cooldown": 2,
+          "accuracy": 80,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 35,
-                  "critical": 25
+                  "power": 50,
+                  "critical": 20
                 }
               }
             },
@@ -4621,22 +4071,16 @@
         {
           "name": "Stool Smash",
           "speed": 50,
-          "accuracy": 70,
+          "accuracy": 80,
           "cooldown": 0,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 25,
+                  "power": 30,
                   "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 15
               }
             }
           ],
@@ -4645,7 +4089,7 @@
         {
           "name": "Stool Toss",
           "speed": 30,
-          "accuracy": 75,
+          "accuracy": 85,
           "cooldown": 1,
           "hit": [
             {
@@ -4653,7 +4097,7 @@
               "affect": {
                 "Damage": {
                   "power": 45,
-                  "critical": 15
+                  "critical": 0
                 }
               }
             },
@@ -4669,15 +4113,15 @@
         {
           "name": "Heavy Stool Slam",
           "speed": 40,
-          "accuracy": 60,
-          "cooldown": 2,
+          "accuracy": 70,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 45,
-                  "critical": 20
+                  "power": 60,
+                  "critical": 10
                 }
               }
             },
@@ -4711,15 +4155,9 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 20,
+                  "power": 25,
                   "critical": 20
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
               }
             }
           ],
@@ -4728,7 +4166,7 @@
         {
           "name": "Warhammer Wreck",
           "speed": 40,
-          "accuracy": 80,
+          "accuracy": 90,
           "cooldown": 1,
           "hit": [
             {
@@ -4736,7 +4174,7 @@
               "affect": {
                 "Damage": {
                   "power": 50,
-                  "critical": 20
+                  "critical": 0
                 }
               }
             },
@@ -4752,22 +4190,22 @@
         {
           "name": "Earthquake Hammer",
           "speed": 30,
-          "accuracy": 40,
-          "cooldown": 255,
+          "accuracy": 70,
+          "cooldown": 3,
           "hit": [
             {
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 90,
-                  "critical": 25
+                  "power": 70,
+                  "critical": 0
                 }
               }
             },
             {
               "target": "Opponent",
               "affect": {
-                "Stun": 10
+                "Stun": 20
               }
             }
           ],

@@ -3,7 +3,7 @@ use core::{
     poseidon::{PoseidonTrait, HashState}
 };
 
-use blob_arena::utils::ArrayHash;
+use blob_arena::hash::SpanHash;
 
 #[test]
 fn test_array_hash() {
@@ -13,7 +13,7 @@ fn test_array_hash() {
     let mut array: Array<u8> = array![];
     while n < 10 {
         array.append(n);
-        let new_hash = hash_state.update_with(array.clone()).finalize();
+        let new_hash = hash_state.update_with(array.span()).finalize();
         assert_ne!(hash, new_hash);
         hash = new_hash;
         n += 1;

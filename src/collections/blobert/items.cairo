@@ -1,150 +1,252 @@
-use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
-use super::external::{Seed, TokenTrait};
 use blob_arena::{
-    core::TTupleSize5, utils::{value_to_uuid, HashStateTrait},
-    components::{stats::{Stats}, item::{ItemTrait, ItemsTrait, AttackInput}},
+    DefaultStorage, stats::UStats, attacks::{AttackTrait, components::AttackInput}, tags::IdTagNew,
 };
-use core::hash::into_felt252_based;
-type SeedIds = TTupleSize5<felt252>;
+use super::{BlobertItemKey, BlobertAttribute, BlobertStorage, BlobertTrait, to_seed_key};
 
-const SEED_TRAIT_TYPE: felt252 = 'seed';
-const CUSTOM_TRAIT_TYPE: felt252 = 'custom';
 
-struct BlobertTraitsSeed {
-    background: felt252,
-    armour: felt252,
-    jewelry: felt252,
-    mask: felt252,
-    weapon: felt252,
+/// Interface for managing Blobert items, their stats, names, and attacks
+#[starknet::interface]
+trait IBlobertItems<TContractState> {
+    /// Sets both name and stats for a Blobert item
+    /// * `key` - The unique identifier for the item
+    /// * `name` - The name to set for the item
+    /// * `stats` - The stats to set for the item
+    ///
+    /// Models:
+    /// - BlobertItem
+    ///
+    /// Events:
+    /// - BlobertItemName
+    fn set_item(ref self: TContractState, key: BlobertItemKey, name: ByteArray, stats: UStats);
+
+    /// Sets name, stats and attacks for a Blobert item
+    /// * `key` - The unique identifier for the item
+    /// * `name` - The name to set for the item
+    /// * `stats` - The stats to set for the item
+    /// * `attacks` - Array of attacks to assign to the item
+    ///
+    /// Models:
+    /// - BlobertItem
+    /// - AttackSlot
+    /// - Attack
+    ///
+    /// Events:
+    /// - BlobertItemName
+    /// - AttackName
+    fn set_item_with_attacks(
+        ref self: TContractState,
+        key: BlobertItemKey,
+        name: ByteArray,
+        stats: UStats,
+        attacks: Array<IdTagNew<AttackInput>>,
+    );
+
+    /// Updates just the stats for an existing Blobert item
+    /// * `key` - The unique identifier for the item
+    /// * `stats` - The new stats to set
+    ///
+    /// Models:
+    /// - BlobertItem
+    fn set_item_stats(ref self: TContractState, key: BlobertItemKey, stats: UStats);
+
+    /// Updates just the name for an existing Blobert item
+    /// * `key` - The unique identifier for the item
+    /// * `name` - The new name to set
+    ///
+    /// Events:
+    /// - BlobertItemName
+    fn set_item_name(ref self: TContractState, key: BlobertItemKey, name: ByteArray);
+
+    /// Sets a single attack in a specific slot for a Blobert item
+    /// * `key` - The unique identifier for the item
+    /// * `slot` - The slot number to place the attack in
+    /// * `attack` - The attack to set in the specified slot
+    ///
+    /// Models:
+    /// - AttackSlot
+    /// - Attack
+    ///
+    /// Events:
+    /// - AttackName
+    fn set_item_attack_slot(
+        ref self: TContractState, key: BlobertItemKey, slot: felt252, attack: IdTagNew<AttackInput>,
+    );
+
+    /// Fills all attack slots for a Blobert item
+    /// * `key` - The unique identifier for the item
+    /// * `attacks` - Array of attacks to fill the slots with
+    ///
+    /// Models:
+    /// - AttackSlot
+    /// - Attack
+    ///
+    /// Events:
+    /// - AttackName
+    fn fill_item_attack_slots(
+        ref self: TContractState, key: BlobertItemKey, attacks: Array<IdTagNew<AttackInput>>,
+    );
+
+    /// Creates a new seed item with specified attribute
+    /// * `attribute` - The attribute type for the seed item
+    /// * `id` - Unique identifier for the seed item
+    /// * `name` - Name of the seed item
+    /// * `stats` - Stats for the seed item
+    ///
+    /// Models:
+    /// - BlobertItem
+    ///
+    /// Events:
+    /// - BlobertItemName
+    fn set_seed_item(
+        ref self: TContractState,
+        attribute: BlobertAttribute,
+        id: u32,
+        name: ByteArray,
+        stats: UStats,
+    );
+
+    /// Creates a new seed item with attacks
+    /// * `attribute` - The attribute type for the seed item
+    /// * `id` - Unique identifier for the seed item
+    /// * `name` - Name of the seed item
+    /// * `stats` - Stats for the seed item
+    /// * `attacks` - Array of attacks for the seed item
+    ///
+    /// Models:
+    /// - BlobertItem
+    /// - AttackSlot
+    /// - Attack
+    ///
+    /// Events:
+    /// - BlobertItemName
+    /// - AttackName
+    fn set_seed_item_with_attacks(
+        ref self: TContractState,
+        attribute: BlobertAttribute,
+        id: u32,
+        name: ByteArray,
+        stats: UStats,
+        attacks: Array<IdTagNew<AttackInput>>,
+    );
+
+    /// Creates a custom item with specified parameters
+    /// * `id` - Custom identifier for the item
+    /// * `name` - Name of the custom item
+    /// * `stats` - Stats for the custom item
+    ///
+    /// Models:
+    /// - BlobertItem
+    ///
+    /// Events:
+    /// - BlobertItemName
+    fn set_custom_item(ref self: TContractState, id: felt252, name: ByteArray, stats: UStats);
+
+    /// Creates a custom item with attacks
+    /// * `id` - Custom identifier for the item
+    /// * `name` - Name of the custom item
+    /// * `stats` - Stats for the custom item
+    /// * `attacks` - Array of attacks for the custom item
+    ///
+    /// Models:
+    /// - BlobertItem
+    /// - AttackSlot
+    /// - Attack
+    ///
+    /// Events:
+    /// - BlobertItemName
+    /// - AttackName
+    fn set_custom_item_with_attacks(
+        ref self: TContractState,
+        id: felt252,
+        name: ByteArray,
+        stats: UStats,
+        attacks: Array<IdTagNew<AttackInput>>,
+    );
 }
 
-impl U8IntoBlobertSeedImpl of Into<u8, Seed> {
-    fn into(self: u8) -> Seed {
-        Seed { background: self, armour: self, jewelry: self, mask: self, weapon: self, }
+#[starknet::embeddable]
+impl IBlobertItemsImpl<
+    TContractState, +DefaultStorage<TContractState>, +Drop<TContractState>,
+> of IBlobertItems<TContractState> {
+    fn set_item(ref self: TContractState, key: BlobertItemKey, name: ByteArray, stats: UStats) {
+        let mut storage = self.default_storage();
+        storage.set_blobert_item(key, name, stats);
     }
-}
 
-#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
-enum BlobertTrait {
-    Background,
-    Armour,
-    Jewelry,
-    Mask,
-    Weapon,
-}
-
-impl HashBlobertTrait<S, +HashStateTrait<S>, +Drop<S>> =
-    into_felt252_based::HashImpl<BlobertTrait, S>;
-
-impl BlobertTraitIntoFelt252 of Into<BlobertTrait, felt252> {
-    fn into(self: BlobertTrait) -> felt252 {
-        match self {
-            BlobertTrait::Background => 'background',
-            BlobertTrait::Armour => 'armour',
-            BlobertTrait::Jewelry => 'jewelry',
-            BlobertTrait::Mask => 'mask',
-            BlobertTrait::Weapon => 'weapon',
-        }
-    }
-}
-
-impl U8IntoBlobertTrait of Into<u8, BlobertTrait> {
-    fn into(self: u8) -> BlobertTrait {
-        match self {
-            0 => BlobertTrait::Background,
-            1 => BlobertTrait::Armour,
-            2 => BlobertTrait::Jewelry,
-            3 => BlobertTrait::Mask,
-            4 => BlobertTrait::Weapon,
-            _ => panic!("Invalid BlobertTrait"),
-        }
-    }
-}
-
-#[dojo::model]
-#[derive(Drop, Serde, Copy)]
-struct ItemMap {
-    #[key]
-    trait_type: felt252,
-    #[key]
-    blobert_trait: BlobertTrait,
-    #[key]
-    blobert_trait_id: u8,
-    item_id: felt252,
-}
-
-#[generate_trait]
-impl BlobertItems of BlobertItemsTrait {
-    fn set_item_id(
-        self: IWorldDispatcher,
-        trait_type: felt252,
-        blobert_trait: BlobertTrait,
-        blobert_trait_id: u8,
-        item_id: felt252
+    fn set_item_with_attacks(
+        ref self: TContractState,
+        key: BlobertItemKey,
+        name: ByteArray,
+        stats: UStats,
+        attacks: Array<IdTagNew<AttackInput>>,
     ) {
-        ItemMap { trait_type, blobert_trait, blobert_trait_id, item_id, }.set(self);
+        let mut storage = self.default_storage();
+        storage.set_blobert_item_with_attacks(key, name, stats, attacks);
     }
-    fn get_item_id(
-        self: @IWorldDispatcher,
-        trait_type: felt252,
-        blobert_trait: BlobertTrait,
-        blobert_trait_id: u8
-    ) -> felt252 {
-        ItemMapStore::get_item_id(*self, trait_type, blobert_trait, blobert_trait_id)
+
+    fn set_item_stats(ref self: TContractState, key: BlobertItemKey, stats: UStats) {
+        let mut storage = self.default_storage();
+        storage.set_blobert_item_stats(key, stats);
     }
-    fn get_seed_item_ids(self: @IWorldDispatcher, trait_type: felt252, traits: Seed) -> SeedIds {
-        (
-            self.get_item_id(trait_type, BlobertTrait::Background, traits.background),
-            self.get_item_id(trait_type, BlobertTrait::Armour, traits.armour),
-            self.get_item_id(trait_type, BlobertTrait::Jewelry, traits.jewelry),
-            self.get_item_id(trait_type, BlobertTrait::Mask, traits.mask),
-            self.get_item_id(trait_type, BlobertTrait::Weapon, traits.weapon),
-        )
+
+    fn set_item_name(ref self: TContractState, key: BlobertItemKey, name: ByteArray) {
+        let mut storage = self.default_storage();
+        storage.set_blobert_item_name(key, name);
     }
-    fn get_item_ids(self: @IWorldDispatcher, blobert_trait: TokenTrait) -> SeedIds {
-        match blobert_trait {
-            TokenTrait::Regular(seed) => self.get_seed_item_ids(SEED_TRAIT_TYPE, seed),
-            TokenTrait::Custom(custom_id) => self
-                .get_seed_item_ids(CUSTOM_TRAIT_TYPE, custom_id.into()),
-        }
+
+    fn set_item_attack_slot(
+        ref self: TContractState, key: BlobertItemKey, slot: felt252, attack: IdTagNew<AttackInput>,
+    ) {
+        let mut storage = self.default_storage();
+        let id = storage.create_or_get_attack_external(attack);
+        storage.set_blobert_item_attack_slot(key, slot, id);
+    }
+
+    fn fill_item_attack_slots(
+        ref self: TContractState, key: BlobertItemKey, attacks: Array<IdTagNew<AttackInput>>,
+    ) {
+        let mut storage = self.default_storage();
+        let ids = storage.create_or_get_attacks_external(attacks);
+        storage.fill_blobert_item_attack_slots(key, ids);
+    }
+
+    fn set_seed_item(
+        ref self: TContractState,
+        attribute: BlobertAttribute,
+        id: u32,
+        name: ByteArray,
+        stats: UStats,
+    ) {
+        let mut storage = self.default_storage();
+        storage.set_blobert_item(to_seed_key(attribute, id), name, stats);
+    }
+
+    fn set_seed_item_with_attacks(
+        ref self: TContractState,
+        attribute: BlobertAttribute,
+        id: u32,
+        name: ByteArray,
+        stats: UStats,
+        attacks: Array<IdTagNew<AttackInput>>,
+    ) {
+        let mut storage = self.default_storage();
+        storage.set_blobert_item_with_attacks(to_seed_key(attribute, id), name, stats, attacks);
+    }
+
+    fn set_custom_item(ref self: TContractState, id: felt252, name: ByteArray, stats: UStats) {
+        let mut storage = self.default_storage();
+        storage.set_blobert_item(BlobertItemKey::Custom(id), name, stats);
+    }
+
+    fn set_custom_item_with_attacks(
+        ref self: TContractState,
+        id: felt252,
+        name: ByteArray,
+        stats: UStats,
+        attacks: Array<IdTagNew<AttackInput>>,
+    ) {
+        let mut storage = self.default_storage();
+        storage.set_blobert_item_with_attacks(BlobertItemKey::Custom(id), name, stats, attacks);
     }
 }
 
-#[generate_trait]
-impl BlobertStatsImpl of BlobertStatsTrait {
-    fn get_blobert_item_ids(self: @IWorldDispatcher, blobert_trait: TokenTrait) -> Array<felt252> {
-        let (background, armour, jewelry, mask, weapon) = self.get_item_ids(blobert_trait);
-        array![background, armour, jewelry, mask, weapon]
-    }
-    fn get_blobert_stats(self: @IWorldDispatcher, blobert_trait: TokenTrait) -> Stats {
-        self.get_items(self.get_blobert_item_ids(blobert_trait).span()).get_stats()
-    }
-    fn get_blobert_health(self: @IWorldDispatcher, blobert_trait: TokenTrait) -> u8 {
-        let stats = self.get_blobert_stats(blobert_trait);
-        if stats.vitality > 155 {
-            255
-        } else {
-            100 + stats.vitality
-        }
-    }
-    fn blobert_has_attack(
-        self: @IWorldDispatcher, blobert_trait: TokenTrait, item_id: felt252, attack_id: felt252
-    ) -> bool {
-        let mut item_ids = self.get_blobert_item_ids(blobert_trait);
-        let mut has = false;
-        loop {
-            match item_ids.pop_front() {
-                Option::Some(id) => { if id == item_id {
-                    has = true;
-                    break;
-                } },
-                Option::None => { break; },
-            }
-        };
-        if has {
-            self.check_has_attack(item_id, attack_id)
-        } else {
-            false
-        }
-    }
-}

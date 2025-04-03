@@ -1,10 +1,7 @@
 use core::{
     traits::Neg, num::traits::{Bounded, Zero, One, OverflowingSub, OverflowingAdd, OverflowingMul},
-    cmp::{min, max}
+    cmp::{min, max},
 };
-
-#[derive(Copy, Drop)]
-type TTupleSize5<T> = (T, T, T, T, T);
 
 trait BoundedT<T, S> {
     fn min() -> S;
@@ -46,7 +43,7 @@ pub trait SaturatingMul<T> {
 }
 
 pub impl TSaturatingAdd<
-    T, +Drop<T>, +Copy<T>, +OverflowingAdd<T>, +Bounded<T>, +Zero<T>, +PartialOrd<T>
+    T, +Drop<T>, +Copy<T>, +OverflowingAdd<T>, +Bounded<T>, +Zero<T>, +PartialOrd<T>,
 > of SaturatingAdd<T> {
     fn saturating_add(self: T, other: T) -> T {
         let (result, overflow) = self.overflowing_add(other);
@@ -62,7 +59,7 @@ pub impl TSaturatingAdd<
 }
 
 pub impl TSaturatingSub<
-    T, +Drop<T>, +Copy<T>, +OverflowingSub<T>, +Bounded<T>, +Zero<T>, +PartialOrd<T>
+    T, +Drop<T>, +Copy<T>, +OverflowingSub<T>, +Bounded<T>, +Zero<T>, +PartialOrd<T>,
 > of SaturatingSub<T> {
     fn saturating_sub(self: T, other: T) -> T {
         let (result, overflow) = self.overflowing_sub(other);
@@ -79,7 +76,7 @@ pub impl TSaturatingSub<
 
 
 pub impl TSaturatingMul<
-    T, +Drop<T>, +Copy<T>, +OverflowingMul<T>, +Bounded<T>, +Zero<T>, +PartialOrd<T>
+    T, +Drop<T>, +Copy<T>, +OverflowingMul<T>, +Bounded<T>, +Zero<T>, +PartialOrd<T>,
 > of SaturatingMul<T> {
     fn saturating_mul(self: T, other: T) -> T {
         let (result, overflow) = self.overflowing_mul(other);
@@ -97,7 +94,15 @@ pub impl TSaturatingMul<
 }
 
 pub impl TSaturatingIntoS<
-    T, S, +Drop<T>, +Copy<T>, +TryInto<T, S>, +Bounded<S>, +BoundedT<S, T>, +PartialOrd<T>, +Zero<T>
+    T,
+    S,
+    +Drop<T>,
+    +Copy<T>,
+    +TryInto<T, S>,
+    +Bounded<S>,
+    +BoundedT<S, T>,
+    +PartialOrd<T>,
+    +Zero<T>,
 > of SaturatingInto<T, S> {
     fn saturating_into(self: T) -> S {
         match self.try_into() {
@@ -106,7 +111,17 @@ pub impl TSaturatingIntoS<
                 Bounded::MAX
             } else {
                 Bounded::MIN
-            } }
+            } },
+        }
+    }
+}
+
+impl ArrayTryIntoFixed2Array<T, +Drop<T>> of TryInto<Array<T>, [T; 2]> {
+    fn try_into(mut self: Array<T>) -> Option<[T; 2]> {
+        if self.len() == 2 {
+            Option::Some([self.pop_front().unwrap(), self.pop_front().unwrap()])
+        } else {
+            Option::None
         }
     }
 }
@@ -118,11 +133,11 @@ impl Felt252BitAnd of BitAnd<felt252> {
     }
 }
 
-fn in_range<T, +PartialOrd<T>, +Drop<T>, +Copy<T>>(min: T, max: T, value: T) -> T {
-    max(min, min(max, value))
+fn in_range<T, +PartialOrd<T>, +Drop<T>, +Copy<T>>(lower: T, upper: T, value: T) -> T {
+    max(lower, min(upper, value))
 }
 
-#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
+#[derive(Copy, Drop, Serde, PartialEq)]
 struct Signed<T> {
     value: T,
     sign: bool,
@@ -148,7 +163,105 @@ impl SignedTryIntoI<T, S, +TryInto<T, S>, +Neg<S>> of TryInto<Signed<T>, S> {
         })
     }
 }
-// impl U8ArrayCopyImpl of Copy<Array<u8>>;
-// impl U128ArrayCopyImpl of Copy<Array<u128>>;
+
+impl BoolIntoFelt252Impl of Into<bool, felt252> {
+    fn into(self: bool) -> felt252 {
+        if self {
+            1
+        } else {
+            0
+        }
+    }
+}
+
+impl Felt252IntoBoolImpl of Into<felt252, bool> {
+    fn into(self: felt252) -> bool {
+        self != 0
+    }
+}
+
+impl Felt252TryIntoBoolImpl of TryInto<felt252, bool> {
+    fn try_into(self: felt252) -> Option<bool> {
+        match self {
+            0 => Option::Some(false),
+            1 => Option::Some(true),
+            _ => Option::None,
+        }
+    }
+}
+impl ArrayTryIntoTTupleSized2<T, +Drop<T>, +Copy<T>> of TryInto<Array<T>, (T, T)> {
+    fn try_into(self: Array<T>) -> Option<(T, T)> {
+        if self.len() == 2 {
+            Option::Some((*self[0], *self[1]))
+        } else {
+            Option::None
+        }
+    }
+}
+
+impl TTupleSized2IntoFixed<T, +Drop<T>> of Into<(T, T), [T; 2]> {
+    fn into(self: (T, T)) -> [T; 2] {
+        let (a, b) = self;
+        [a, b]
+    }
+}
+
+impl TTupleSized2ToSpan<T, +Drop<T>, +Copy<T>> of ToSpanTrait<(T, T), T> {
+    fn span(self: @(T, T)) -> Span<T> {
+        let (a, b) = *self;
+        array![a, b].span()
+    }
+}
+
+trait Sum<T, S> {
+    fn sum(self: T) -> S;
+}
+
+
+impl SumTArray<S, +Add<S>, +Zeroable<S>, +Drop<S>> of Sum<Array<S>, S> {
+    fn sum(self: Array<S>) -> S {
+        let mut result = Zeroable::<S>::zero();
+        for value in self {
+            result = result + value;
+        };
+        result
+    }
+}
+
+fn byte31_array_to_felt252_array(array: Span<bytes31>) -> Array<felt252> {
+    let mut result = ArrayTrait::<felt252>::new();
+    for bytes in array {
+        result.append((*bytes).into());
+    };
+    result
+}
+
+fn byte_array_to_felt252_array(data: @ByteArray) -> Array<felt252> {
+    let mut result = byte31_array_to_felt252_array(data.data.span());
+    if data.pending_word_len.is_non_zero() {
+        result.append(*data.pending_word);
+    }
+    result
+}
+// trait Enumerate<T, S> {
+//     fn enumerate(self: T) -> Array<(usize, S)>;
+// }
+
+// impl EnumerateArrayImpl<S, +Drop<S>> of Enumerate<Array<S>, S> {
+//     fn enumerate(mut self: Array<S>) -> Array<(usize, S)> {
+//         let mut result = ArrayTrait::<(usize, S)>::new();
+//         let mut n = 0;
+//         loop {
+//             match self.pop_front() {
+//                 Option::Some(value) => {
+//                     result.append((n, value));
+//                     n += 1;
+//                 },
+//                 Option::None => { break; },
+//             }
+//         };
+//         result
+//     }
+// }
 
 

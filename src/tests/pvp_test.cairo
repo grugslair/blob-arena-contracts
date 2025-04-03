@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod test {
-    use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
+    use dojo::world::{WorldStorage, ModelStorage};
     use blob_arena::{
         components::{combatant::{CombatantState, CombatantStats}, attack::{Attack}},
         systems::combat::{damage_calculation, apply_luck_modifier}
