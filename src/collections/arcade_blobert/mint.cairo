@@ -6,7 +6,7 @@ use starknet::{
 use dojo::{world::WorldStorage, model::{ModelStorage, Model, ModelValueStorage}};
 
 use blob_arena::{
-    uuid, world::incrementor, utils::SeedProbability, collections::blobert::Seed, world::WorldTrait,
+    uuid, world::incrementor, utils::SeedProbability, collections::blobert::Seed,
     core::SaturatingInto,
 };
 

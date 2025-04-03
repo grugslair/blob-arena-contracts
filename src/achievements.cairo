@@ -1,46 +1,30 @@
-use dojo::world::WorldStorage;
+use starknet::ContractAddress;
+use dojo::{world::WorldStorage, event::EventStorage};
 use achievement::types::task::Task;
-use achievement::events::creation::{TrophyCreation, CreationTrait};
+use achievement::events::creation::TrophyCreation;
+use achievement::events::progress::TrophyProgression;
+use crate::world::WorldTrait;
 
 const ACHIEVEMENTS_NAMESPACE_HASH: felt252 = bytearray_hash!("achievements");
 
-fn create_achievements(world: WorldStorage) {}
+fn get_achievements() -> Span<TrophyCreation> {
+    [].span()
+}
 
+#[generate_trait]
+impl AchievementImpl<S, +WorldTrait<S>, +Drop<S>> of AchievementTrait<S> {
+    fn create_achievements(ref self: S) {
+        let mut storage = self.storage(ACHIEVEMENTS_NAMESPACE_HASH);
+        for achievement in get_achievements() {
+            storage.emit_event(achievement);
+        };
+    }
 
-fn achievements() -> Span<TrophyCreation> {
-    [
-        TrophyCreation {
-            id: 'battle-victory',
-            hidden: false,
-            index: 1,
-            points: 10,
-            start: 0,
-            end: 0,
-            group: 0,
-            icon: 'something',
-            title: 'Start Arcade',
-            description: "Play some arcade games",
-            tasks: [
-                Task { id: 'start-arcade', total: 1, description: "Play an arcade games" },
-                Task { id: 'start-arcade', total: 1, description: "Play an arcade games" },
-            ]
-                .span(),
-            data: "",
-        },
-        TrophyCreation {
-            id: 'start-pvp',
-            hidden: false,
-            index: 2,
-            points: 10,
-            start: 0,
-            end: 0,
-            group: 0,
-            icon: 'something',
-            title: 'Start PVP',
-            description: "Play some pvp games",
-            tasks: [Task { id: 'start-pvp', total: 1, description: "Play some pvp games" }].span(),
-            data: "",
-        },
-    ]
-        .span()
+    fn progress_achievement(
+        ref self: S, player_id: ContractAddress, task_id: felt252, count: u32, time: u64,
+    ) {
+        let mut storage = self.storage(ACHIEVEMENTS_NAMESPACE_HASH);
+        storage
+            .emit_event(@TrophyProgression { player_id: player_id.into(), task_id, count, time });
+    }
 }

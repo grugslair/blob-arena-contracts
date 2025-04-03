@@ -10,7 +10,7 @@ use blob_arena::{
             AttackAvailableValue, AttackLastUsedValue, AttackName, AttackExists,
         },
     },
-    uuid, world::WorldTrait, tags::Tag,
+    uuid, world::ModelsTrait, tags::Tag,
 };
 
 

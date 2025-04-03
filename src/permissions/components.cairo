@@ -52,7 +52,7 @@ trait PermissionStorage {
 /// Requires that P can be converted from felt252
 impl PermissionImpl of PermissionStorage {
     fn get_permissions_storage(self: @WorldStorage) -> WorldStorage {
-        self.new_storage(bytearray_hash!("ba_permissions"))
+        self.storage(bytearray_hash!("ba_permissions"))
     }
 
     fn get_permission(self: @WorldStorage, requester: ContractAddress, role: Role) -> bool {
