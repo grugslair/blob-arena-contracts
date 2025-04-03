@@ -1,22 +1,29 @@
-import {
-  RpcProvider,
-  Account,
-  CallData,
-  byteArray,
-  CairoCustomEnum,
-  Contract,
-} from "starknet";
+#!/usr/bin/env node
 
+import { Account, CairoCustomEnum, Contract } from "starknet";
+import { upperFirst, camelCase } from "lodash-es";
 import * as fs from "fs";
 import * as path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import commandLineArgs from "command-line-args";
+import * as accounts from "web3-eth-accounts";
+import * as toml from "toml";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const pascalCase = (str) => {
+  return upperFirst(camelCase(str));
+};
 
-const loadJson = (rpath) => {
-  return JSON.parse(fs.readFileSync(path.resolve(__dirname, rpath)));
+const loadJson = (path) => {
+  return JSON.parse(fs.readFileSync(resolvePath(path)));
+};
+
+const loadToml = (path) => {
+  return toml.parse(fs.readFileSync(resolvePath(path)));
+};
+
+const resolvePath = (rpath) => {
+  return path.resolve(__dirname, rpath);
 };
 
 const getContractAddress = (mainfest, contractName) => {
@@ -28,71 +35,16 @@ const getContractAddress = (mainfest, contractName) => {
   return null;
 };
 
+const readKeystorePK = async (keystorePath, accountAddress, password) => {
+  let data = loadJson(keystorePath);
+  data.address = accountAddress;
+  return (await accounts.decrypt(data, password)).privateKey;
+};
+
 const getContract = async (provider, contractAddress) => {
   console.log(contractAddress);
   const { abi: abi } = await provider.getClassAt(contractAddress);
   return new Contract(abi, contractAddress, provider);
-};
-
-const profile = process.argv[2];
-
-const seed_data = loadJson("./seed-attributes.json");
-const custom_data = loadJson("./custom-attributes.json");
-const amma_data = loadJson("./amma-attributes.json");
-const pve_data = loadJson("./pve.json");
-const role_data = loadJson("./roles.json")[profile];
-const manifest = loadJson(`../manifest_${profile}.json`);
-
-const blobertContractTag = "blobert-blobert_actions";
-const arcadeBlobertContractTag = "arcade_blobert-arcade_blobert_actions";
-const ammaBlobertContractTag = "amma_blobert-amma_blobert_actions";
-const pveBlobertContractTag = "pve_blobert-pve_blobert_admin_actions";
-const gameAdminContractTag = "blob_arena-game_admin";
-
-const seedEntrypoint = "set_seed_item_with_attacks";
-const customEntrypoint = "set_custom_item_with_attacks";
-const pveOpponentEntrypoint = "new_opponent";
-const pveChallengeEntrypoint = "new_challenge";
-const setPermissionsEntrypoint = "set_multiple_has_role";
-
-const provider = new RpcProvider({ nodeUrl: process.env.STARKNET_RPC_URL });
-const account1Address = process.env.DOJO_ACCOUNT_ADDRESS;
-const privateKey1 = process.env.DOJO_PRIVATE_KEY;
-const account = new Account(provider, account1Address, privateKey1);
-
-const blobertContractAddress = getContractAddress(manifest, blobertContractTag);
-const arcadeContractAddress = getContractAddress(
-  manifest,
-  arcadeBlobertContractTag
-);
-const ammaBlobertContractAddress = getContractAddress(
-  manifest,
-  ammaBlobertContractTag
-);
-const pveBlobertContractAddress = getContractAddress(
-  manifest,
-  pveBlobertContractTag
-);
-const gameAdminContractAddress = getContractAddress(
-  manifest,
-  gameAdminContractTag
-);
-
-const blobertContract = await getContract(provider, blobertContractAddress);
-const ammaBlobertContract = await getContract(
-  provider,
-  ammaBlobertContractAddress
-);
-const pveBlobertContract = await getContract(
-  provider,
-  pveBlobertContractAddress
-);
-const gameAdminContract = await getContract(provider, gameAdminContractAddress);
-
-const PVECollectionAddresses = {
-  blobert: blobertContractAddress,
-  arcade_blobert: arcadeContractAddress,
-  amma_blobert: ammaBlobertContractAddress,
 };
 
 const toSigned = (x) => {
@@ -166,6 +118,19 @@ const makeEffectsArray = (effects) => {
     effectsArray.push(makeEffectStruct(effect));
   });
   return effectsArray;
+};
+
+const makeRequirementsArray = (input) => {
+  let requirements = [];
+  if (input) {
+    for (const requirement of input) {
+      const [key, value] = Object.entries(requirement)[0];
+      requirements.push(
+        new CairoCustomEnum({ [pascalCase(key)]: Number(value) })
+      );
+    }
+  }
+  return requirements;
 };
 
 const parseNewAttack = (attack) => {
@@ -281,6 +246,84 @@ const makeCall = (contract, entrypoint, calldata) => {
   return contract.populate(entrypoint, calldata);
 };
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const optionDefinitions = [
+  { name: "profile", type: String, defaultOption: true },
+  { name: "password", alias: "p", type: String },
+];
+
+const options = commandLineArgs(optionDefinitions);
+const profile = options.profile;
+
+const seed_data = loadJson("./seed-attributes.json");
+const custom_data = loadJson("./custom-attributes.json");
+const amma_data = loadJson("./amma-attributes.json");
+const pve_data = loadJson("./pve.json");
+const role_data = loadJson("./roles.json")[profile];
+const manifest = loadJson(`../manifest_${profile}.json`);
+const dojo_toml = loadToml(`../dojo_${profile}.toml`);
+
+const rpcUrl = dojo_toml.env.rpc_url;
+const accountAddress = dojo_toml.env.account_address;
+const keystorePath = resolvePath(dojo_toml.env.keystore_path);
+
+const privateKey = await readKeystorePK(
+  keystorePath,
+  accountAddress,
+  options.password
+);
+
+const account = new Account({ nodeUrl: rpcUrl }, accountAddress, privateKey);
+
+const blobertContractTag = "blobert-blobert_actions";
+const arcadeBlobertContractTag = "arcade_blobert-arcade_blobert_actions";
+const ammaBlobertContractTag = "amma_blobert-amma_blobert_actions";
+const pveBlobertContractTag = "pve_blobert-pve_blobert_admin_actions";
+const gameAdminContractTag = "blob_arena-game_admin";
+
+const seedEntrypoint = "set_seed_item_with_attacks";
+const customEntrypoint = "set_custom_item_with_attacks";
+const pveOpponentEntrypoint = "new_opponent";
+const pveChallengeEntrypoint = "new_challenge";
+const setPermissionsEntrypoint = "set_multiple_has_role";
+
+const blobertContractAddress = getContractAddress(manifest, blobertContractTag);
+const arcadeContractAddress = getContractAddress(
+  manifest,
+  arcadeBlobertContractTag
+);
+const ammaBlobertContractAddress = getContractAddress(
+  manifest,
+  ammaBlobertContractTag
+);
+const pveBlobertContractAddress = getContractAddress(
+  manifest,
+  pveBlobertContractTag
+);
+const gameAdminContractAddress = getContractAddress(
+  manifest,
+  gameAdminContractTag
+);
+
+const blobertContract = await getContract(account, blobertContractAddress);
+const ammaBlobertContract = await getContract(
+  account,
+  ammaBlobertContractAddress
+);
+const pveBlobertContract = await getContract(
+  account,
+  pveBlobertContractAddress
+);
+const gameAdminContract = await getContract(account, gameAdminContractAddress);
+
+const PVECollectionAddresses = {
+  blobert: blobertContractAddress,
+  arcade_blobert: arcadeContractAddress,
+  amma_blobert: ammaBlobertContractAddress,
+};
+
 let calls = [];
 for (const [role, users] of Object.entries(role_data)) {
   calls.push([
@@ -354,7 +397,7 @@ for (let i = 0, x = 0; i < calls.length; i += multiCallSize, x += 1) {
   const multicall = chunk.map(([name, call]) => call);
   console.log(names);
   const transaction = await account.execute(multicall);
-  const response = await provider.waitForTransaction(
+  const response = await account.waitForTransaction(
     transaction.transaction_hash
   );
   console.log(response.transaction_hash);

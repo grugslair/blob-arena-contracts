@@ -1,6 +1,6 @@
 [world]
 name = "blob_arena-0.12"
-seed = "blob-arena-0.12"
+seed = "blob-arena-0.12.beef"
 
 
 [env]
@@ -10,28 +10,31 @@ keystore_path = "/home/ben/sn-accounts/0x058e3b49d870f08c96a02f794c82b5f6c868c07
 
 [init_call_args]
 "blob_arena-game_admin" = []
+"blobert-blobert_actions" = [
+    "0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578d0549d",
+]
 
 [namespace]
 default = "blob_arena"
-mappings = { "blob_arena" = [
+mappings = { blob_arena = [
     "CombatantToken",
     "Tag",
-], "blobert" = [
+], blobert = [
     "blobert_actions",
     "BlobertItem",
     "AttackSlot",
     "BlobertItemName",
-], "arcade_blobert" = [
+], arcade_blobert = [
     "arcade_blobert_actions",
     "LastMint",
     "BlobertToken",
-], "amma_blobert" = [
+], amma_blobert = [
     "amma_blobert_actions",
     "BlobertToken",
     "BlobertItem",
     "AttackSlot",
     "BlobertItemName",
-], "pve_blobert" = [
+], pve_blobert = [
     "pve_blobert_actions",
     "pve_blobert_admin_actions",
     "Tag",
@@ -49,7 +52,7 @@ mappings = { "blob_arena" = [
     "PVEStageGame",
     "PVEChallengeRespawn",
     "PVECurrentChallengeAttempt",
-], "ba_permissions" = [
+], ba_permissions = [
     "Permission",
 ] }
 
