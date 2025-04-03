@@ -13,13 +13,26 @@ mod blobert_actions {
     use super::super as blobert;
     use blobert::{
         TokenAttributes, BlobertAttribute, Seed, BlobertItemKey, BlobertTrait, BlobertStorage,
-        to_seed_key, external::{get_blobert_dispatcher, IBlobertDispatcherTrait},
+        to_seed_key, external::{IBlobertDispatcher, IBlobertDispatcherTrait},
     };
+
+    fn dojo_init(ref self: ContractState, blobert_contract_address: ContractAddress) {
+        self.blobert_contract_address.write(blobert_contract_address);
+    }
+
+    #[storage]
+    struct Storage {
+        blobert_contract_address: ContractAddress,
+    }
 
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
-        fn get_blobert_attributes(self: @WorldStorage, token_id: u256) -> TokenAttributes {
-            get_blobert_dispatcher().traits(token_id)
+        fn blobert_dispatcher(self: @ContractState) -> IBlobertDispatcher {
+            IBlobertDispatcher { contract_address: self.blobert_contract_address.read() }
+        }
+
+        fn get_blobert_attributes(self: @ContractState, token_id: u256) -> TokenAttributes {
+            self.blobert_dispatcher().traits(token_id)
         }
     }
 
@@ -47,31 +60,31 @@ mod blobert_actions {
     #[abi(embed_v0)]
     impl ICollectionImpl of ICollection<ContractState> {
         fn owner_of(self: @ContractState, token_id: u256) -> ContractAddress {
-            get_blobert_dispatcher().owner_of(token_id)
+            self.blobert_dispatcher().owner_of(token_id)
         }
         fn get_approved(self: @ContractState, token_id: u256) -> ContractAddress {
-            get_blobert_dispatcher().get_approved(token_id)
+            self.blobert_dispatcher().get_approved(token_id)
         }
         fn is_approved_for_all(
             self: @ContractState, owner: ContractAddress, operator: ContractAddress,
         ) -> bool {
-            get_blobert_dispatcher().is_approved_for_all(owner, operator)
+            self.blobert_dispatcher().is_approved_for_all(owner, operator)
         }
         fn get_stats(self: @ContractState, token_id: u256) -> UStats {
             let storage = self.default_storage();
-            storage.get_blobert_stats(storage.get_blobert_attributes(token_id))
+            storage.get_blobert_stats(self.get_blobert_attributes(token_id))
         }
         fn get_attack_slot(
             self: @ContractState, token_id: u256, item_id: felt252, slot: felt252,
         ) -> felt252 {
             let storage = self.default_storage();
-            storage.get_blobert_attack(storage.get_blobert_attributes(token_id), item_id, slot)
+            storage.get_blobert_attack(self.get_blobert_attributes(token_id), item_id, slot)
         }
         fn get_attack_slots(
             self: @ContractState, token_id: u256, item_slots: Array<(felt252, felt252)>,
         ) -> Array<felt252> {
             let storage = self.default_storage();
-            storage.get_blobert_attacks(storage.get_blobert_attributes(token_id), item_slots)
+            storage.get_blobert_attacks(self.get_blobert_attributes(token_id), item_slots)
         }
     }
 }
