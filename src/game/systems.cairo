@@ -6,6 +6,7 @@ use blob_arena::{
         components::{LastTimestamp, Initiator, GameInfo, GameInfoTrait, WinVia, GameProgress},
         storage::GameStorage,
     },
+    collections::ERC721Token,
     combat::{CombatTrait, Phase, CombatState, CombatStorage, components::PhaseTrait},
     commitments::Commitment, utils::get_transaction_hash,
     combatants::{CombatantTrait, CombatantInfo, CombatantStorage, CombatantState},
@@ -16,6 +17,7 @@ use blob_arena::{
         TTupleSized2IntoFixed,
     },
 };
+use crate::achievements::Achievements;
 
 
 #[generate_trait]
@@ -48,11 +50,13 @@ impl GameImpl of GameTrait {
         self.set_combat_phase(combat_id, Phase::Ended(winner.id));
         self.emit_combat_end(combat_id, winner, loser, via);
     }
+
     fn end_game_from_ids(
         ref self: WorldStorage,
         combat_id: felt252,
         winner_id: felt252,
         loser_id: felt252,
+        timestamp: u64,
         via: WinVia,
     ) {
         let (winner, looser) = self.get_combatants_info_tuple((winner_id, loser_id));
@@ -119,7 +123,12 @@ impl GameImpl of GameTrait {
             GameProgress::Active => self.next_round(combat, combatants_span),
             GameProgress::Ended([
                 winner, looser,
-            ]) => { self.end_game_from_ids(combat.id, winner, looser, WinVia::Combat); },
+            ]) => {
+                self
+                    .end_game_from_ids(
+                        combat.id, winner, looser, get_block_timestamp(), WinVia::Combat,
+                    );
+            },
         }
     }
 

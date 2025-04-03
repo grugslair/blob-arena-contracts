@@ -11,8 +11,93 @@ fn get_achievements() -> Span<TrophyCreation> {
     [].span()
 }
 
+
+#[derive(Drop, Serde)]
+struct TaskInput {
+    id: TaskId,
+    total: u32,
+    description: ByteArray,
+}
+
+struct TrophyCreationInput {
+    id: felt252,
+    hidden: bool,
+    index: u8,
+    points: u16,
+    start: u64,
+    end: u64,
+    group: felt252,
+    icon: felt252,
+    title: felt252,
+    description: ByteArray,
+    tasks: Array<TaskInput>,
+    data: ByteArray,
+}
+
+impl TaskInputIntoTask of Into<TaskInput, Task> {
+    fn into(self: TaskInput) -> Task {
+        Task { id: self.task.into(), total: self.total, description: self.description }
+    }
+}
+
+impl CreationInputIntoTrophyCreation of Into<TrophyCreationInput, TrophyCreation> {
+    fn into(self: TrophyCreationInput) -> TrophyCreation {
+        let mut tasks = ArrayTrait::<Task>::new();
+        for task in self.tasks {
+            tasks.append(task.into());
+        };
+        TrophyCreation {
+            id: self.id,
+            hidden: self.hidden,
+            index: self.index,
+            points: self.points,
+            start: self.start,
+            end: self.end,
+            group: self.group,
+            icon: self.icon,
+            title: self.title,
+            description: self.description,
+            tasks: tasks.span(),
+            data: self.data,
+        }
+    }
+}
+
+#[derive(Drop, Serde, Copy, PartialEq)]
+enum TaskId {
+    PvpBattleVictories,
+    ArcadeBattleVictories,
+    ArcadeTotalDamage,
+    PvpUniqueOpponent,
+    ArcadeConsecutiveVictories,
+    CriticalHits,
+    ClassicUniqueMoves,
+    AmmaUniqueMoves,
+    ArcadeStarted,
+    ArcadeCompletion,
+    PvpWagerWon,
+}
+
+impl TaskIdIntoFelt252 of Into<TaskId, felt252> {
+    fn into(self: TaskId) -> felt252 {
+        match self {
+            TaskId::PvpBattleVictories => 'pvp_battle_victories',
+            TaskId::ArcadeBattleVictories => 'arcade_battle_victories',
+            TaskId::ArcadeTotalDamage => 'arcade_total_damage',
+            TaskId::PvpUniqueOpponent => 'pvp_unique_opponent',
+            TaskId::ArcadeConsecutiveVictories => 'arcade_consecutive_victories',
+            TaskId::CriticalHits => 'critical_hits',
+            TaskId::ClassicUniqueMoves => 'classic_unique_moves',
+            TaskId::AmmaUniqueMoves => 'amma_unique_moves',
+            TaskId::ArcadeStarted => 'arcade_started',
+            TaskId::ArcadeCompletion => 'arcade_completion',
+            TaskId::PvpWagerWon => 'pvp_wager_won',
+        }
+    }
+}
+
 #[generate_trait]
-impl AchievementImpl<S, +WorldTrait<S>, +Drop<S>> of AchievementTrait<S> {
+impl AchievementImpl<S, +WorldTrait<S>, +Drop<S>> of Achievements<S> {
     fn create_achievements(ref self: S) {
         let mut storage = self.storage(ACHIEVEMENTS_NAMESPACE_HASH);
         for achievement in get_achievements() {
@@ -21,10 +106,14 @@ impl AchievementImpl<S, +WorldTrait<S>, +Drop<S>> of AchievementTrait<S> {
     }
 
     fn progress_achievement(
-        ref self: S, player_id: ContractAddress, task_id: felt252, count: u32, time: u64,
+        ref self: S, player_id: ContractAddress, task: TaskId, count: u32, time: u64,
     ) {
         let mut storage = self.storage(ACHIEVEMENTS_NAMESPACE_HASH);
         storage
-            .emit_event(@TrophyProgression { player_id: player_id.into(), task_id, count, time });
+            .emit_event(
+                @TrophyProgression {
+                    player_id: player_id.into(), task_id: task.into(), count, time,
+                },
+            );
     }
 }

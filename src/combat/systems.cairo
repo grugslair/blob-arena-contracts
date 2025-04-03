@@ -11,6 +11,8 @@ use blob_arena::{
     commitments::Commitment, utils::SeedProbability, hash::UpdateHashToU128, constants::NZ_100,
 };
 
+use crate::collections::ERC721Token;
+
 #[generate_trait]
 impl CombatImpl of CombatTrait {
     fn assert_commit_phase(self: @WorldStorage, id: felt252) {
@@ -132,5 +134,42 @@ impl CombatImpl of CombatTrait {
         AttackResult {
             combatant_id: attacker_state.id, attack: attack_id, target: defender_state.id, result,
         }
+    }
+
+    fn increase_consecutive_wins(
+        ref self: WorldStorage, player: ContractAddress, token: ERC721Token, combatant_id: felt252,
+    ) {
+        let mut update = false;
+        let mut player_model = self.get_combat_consecutive_wins(player);
+        let token_model = self.get_combat_consecutive_token_wins(player, token);
+
+        let token_current = token_model.current + 1;
+        player_model.current += 1;
+
+        if token_current > token_model.max {
+            self.set_combat_consecutive_token_wins(player, token, token_current);
+            if token_current > player_model.token_max {
+                player_model.token_max = token_current;
+            }
+            update = true;
+        } else {
+            self.set_combat_current_consecutive_token_wins(player, token, token_current);
+        };
+
+        if player_model.current > player_model.max {
+            player_model.max = player_model.current;
+            update = true;
+        };
+
+        if update {
+            self.set_combat_consecutive_wins(player_model);
+        } else {
+            self.set_combat_current_consecutive_wins(player, player_model.current);
+        };
+    }
+
+    fn reset_consecutive_wins(ref self: WorldStorage, player: ContractAddress, token: ERC721Token) {
+        self.reset_combat_current_consecutive_wins(player);
+        self.reset_combat_current_consecutive_token_wins(player, token);
     }
 }

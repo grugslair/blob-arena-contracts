@@ -111,7 +111,7 @@ trait IGame<TContractState> {
 
 #[dojo::contract]
 mod game_actions {
-    use starknet::{ContractAddress, get_caller_address, get_contract_address};
+    use starknet::{ContractAddress, get_caller_address, get_contract_address, get_block_timestamp};
     use dojo::{world::{WorldStorage, WorldStorageTrait}};
     use blob_arena::{
         attacks::AttackStorage, combat::{Phase, CombatTrait, CombatState, CombatStorage},
@@ -151,7 +151,7 @@ mod game_actions {
             if world.check_commitment_set(opponent_id) {
                 world.set_combat_phase(game.combat_id, Phase::Reveal);
             } else if game.time_limit.is_non_zero() {
-                world.set_last_timestamp(game.combat_id);
+                world.set_last_timestamp_now(game.combat_id);
             }
         }
         fn reveal(ref self: ContractState, combatant_id: felt252, attack: felt252, salt: felt252) {
@@ -160,15 +160,20 @@ mod game_actions {
             let game = world.get_owners_game(combatant.combat_id, get_contract_address());
 
             let opponent_id = game.get_opponent_id(combatant_id);
+            let timestamp = get_block_timestamp();
             if world.consume_and_compare_commitment_value(combatant_id, @(attack, salt)) {
                 world.set_planned_attack(combatant_id, attack, opponent_id, salt);
                 if world.check_commitment_set(opponent_id) {
-                    world.set_last_timestamp(game.combat_id);
+                    world.set_last_timestamp(game.combat_id, timestamp);
                 }
             } else {
                 world
                     .end_game_from_ids(
-                        game.combat_id, opponent_id, combatant_id, WinVia::IncorrectReveal,
+                        game.combat_id,
+                        opponent_id,
+                        combatant_id,
+                        timestamp,
+                        WinVia::IncorrectReveal,
                     );
             }
         }
@@ -201,7 +206,10 @@ mod game_actions {
                 (false, false) => panic!("Neither players have played"),
             };
 
-            storage.end_game_from_ids(game.combat_id, winner_id, looser_id, WinVia::TimeLimit);
+            storage
+                .end_game_from_ids(
+                    game.combat_id, winner_id, looser_id, get_block_timestamp(), WinVia::TimeLimit,
+                );
         }
 
         fn forfeit(ref self: ContractState, combatant_id: felt252) {

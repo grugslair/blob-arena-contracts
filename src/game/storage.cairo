@@ -24,8 +24,12 @@ impl GameStorageImpl of GameStorage {
         self.read_member(Model::<LastTimestamp>::ptr_from_keys(game_id), selector!("timestamp"))
     }
 
-    fn set_last_timestamp(ref self: WorldStorage, game_id: felt252) {
-        self.write_model(@LastTimestamp { game_id, timestamp: get_block_timestamp() });
+    fn set_last_timestamp(ref self: WorldStorage, game_id: felt252, timestamp: u64) {
+        self.write_model(@LastTimestamp { game_id, timestamp });
+    }
+
+    fn set_last_timestamp_now(ref self: WorldStorage, game_id: felt252) {
+        self.set_last_timestamp(game_id, get_block_timestamp());
     }
 
     fn get_game_info(self: @WorldStorage, game_id: felt252) -> GameInfo {
@@ -35,6 +39,7 @@ impl GameStorageImpl of GameStorage {
     fn get_game_combatants(self: @WorldStorage, game_id: felt252) -> (felt252, felt252) {
         self.read_member(Model::<GameInfo>::ptr_from_keys(game_id), selector!("combatant_ids"))
     }
+
 
     fn set_game_combatants(
         ref self: WorldStorage, game_id: felt252, combatant_a: felt252, combatant_b: felt252,

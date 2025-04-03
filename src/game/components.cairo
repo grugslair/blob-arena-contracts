@@ -1,6 +1,5 @@
 use starknet::{ContractAddress, get_contract_address};
-use blob_arena::collections::ERC721Token;
-
+use crate::collections::ERC721Token;
 /// Game Models
 
 /// Represents game information for a combat encounter
@@ -56,7 +55,7 @@ struct LastTimestamp {
 /// * `loser` - The player who lost the combat
 /// * `via` - The method by which the winner achieved victory
 #[dojo::event]
-#[derive(Drop, Serde, Copy)]
+#[derive(Drop, Serde)]
 struct CombatEnd {
     #[key]
     game_id: felt252,
@@ -64,6 +63,7 @@ struct CombatEnd {
     loser: Player,
     via: WinVia,
 }
+
 
 #[derive(Drop, Serde, Copy, Introspect)]
 struct Player {
