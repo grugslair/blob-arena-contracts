@@ -397,7 +397,7 @@ for (let i = 0, x = 0; i < calls.length; i += multiCallSize, x += 1) {
   const multicall = chunk.map(([name, call]) => call);
   console.log(names);
   const transaction = await account.execute(multicall);
-  const response = await provider.waitForTransaction(
+  const response = await account.waitForTransaction(
     transaction.transaction_hash
   );
   console.log(response.transaction_hash);
