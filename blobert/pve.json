@@ -371,7 +371,7 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "Andrzej Studencki",
+      "name": "A. Studencki Prime",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 3
@@ -391,7 +391,7 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "Brett Skinner",
+      "name": "B. Skinner Prime",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 1
@@ -411,7 +411,7 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "Daniel Winter",
+      "name": "D. Winter Prime",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 4
@@ -479,9 +479,9 @@
         { "tag": "Taylor Jones" },
         { "tag": "Daniel Winter" },
         { "tag": "Antonio Penedo" },
-        { "tag": "Andrzej Studencki" },
-        { "tag": "Brett Skinner" },
-        { "tag": "Daniel Winter" },
+        { "tag": "A. Studencki Prime" },
+        { "tag": "B. Skinner Prime" },
+        { "tag": "D. Winter Prime" },
         { "tag": "Mickey Gallus" }
       ],
       "collections_allowed": ["amma_blobert"]
