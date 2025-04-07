@@ -1,14 +1,14 @@
 use starknet::{ContractAddress, get_caller_address};
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}};
-use blob_arena::{
-    attacks::AttackStorage,
-    combatants::{
-        CombatantInfo, CombatantInfoTrait, CombatantStateTrait, CombatantToken,
-        components::{get_combatant_id, make_combatant_state}, CombatantStorage, CombatantSetup,
-    },
-    combat::{CombatState, CombatTrait}, stats::{UStats, StatsTrait},
-    collections::{get_collection_dispatcher, ICollectionDispatcherTrait, ICollectionDispatcher},
+
+use crate::attacks::{AttackStorage, AttackTrait};
+use crate::combatants::{
+    CombatantInfo, CombatantInfoTrait, CombatantStateTrait, CombatantToken,
+    components::{get_combatant_id, make_combatant_state}, CombatantStorage, CombatantSetup,
 };
+use crate::combat::{CombatState, CombatTrait};
+use crate::stats::{UStats, StatsTrait};
+use crate::collections::{collection_dispatcher, ICollectionDispatcherTrait, ICollectionDispatcher};
 
 #[generate_trait]
 impl CombatantImpl of CombatantTrait {
@@ -32,7 +32,7 @@ impl CombatantImpl of CombatantTrait {
         token_id: u256,
         attacks: Array<(felt252, felt252)>,
     ) -> (UStats, Array<felt252>) {
-        let collection = get_collection_dispatcher(collection_address);
+        let collection = collection_dispatcher(collection_address);
         (collection.get_stats(token_id), collection.get_attack_slots(token_id, attacks))
     }
 
@@ -75,7 +75,7 @@ impl CombatantImpl of CombatantTrait {
         token_id: u256,
         attacks: Array<(felt252, felt252)>,
     ) -> Array<felt252> {
-        let collection_dispatcher = get_collection_dispatcher(collection_address);
+        let collection_dispatcher = collection_dispatcher(collection_address);
         let owner = collection_dispatcher.owner_of(token_id);
         assert(player == owner, 'Not Owner');
         self.set_combatant_info(combatant_id, combat_id, player);

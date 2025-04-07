@@ -4,12 +4,12 @@ mod collection;
 mod store;
 mod world_blobert;
 mod amma_blobert;
-// mod blobert {
-//     mod contract;
-//     mod external;
-//     use external::{blobert_dispatcher, IBlobertDispatcher, IBlobertDispatcherTrait};
-//     use contract::BLOBERT_NAMESPACE_HASH;
-// }
+mod blobert {
+    mod contract;
+    mod external;
+    use external::{blobert_dispatcher, IBlobertDispatcher, IBlobertDispatcherTrait};
+    use contract::BLOBERT_NAMESPACE_HASH;
+}
 mod free_blobert {
     mod contract;
     mod storage;

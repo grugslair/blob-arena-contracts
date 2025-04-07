@@ -1,8 +1,7 @@
 use starknet::ContractAddress;
 use blob_arena::{
-    stats::UStats, arcade::ArcadeOpponentInput,
-    collections::blobert::{TokenAttributes, BlobertItemKey}, tags::IdTagNew,
-    attacks::components::AttackInput,
+    stats::UStats, arcade::ArcadeOpponentInput, collections::{TokenAttributes, BlobertItemKey},
+    tags::IdTagNew, attacks::components::AttackInput,
 };
 
 /// Interface for managing Arcade (Player vs Environment) administrative functions.
@@ -130,8 +129,7 @@ mod arcade_admin_actions {
         arcade::{
             ArcadeStore, ArcadeTrait, ArcadeStorage, ARCADE_NAMESPACE_HASH, ArcadeOpponentInput,
         },
-        stats::UStats, collections::blobert::{TokenAttributes, BlobertItemKey, BlobertStorage},
-        tags::IdTagNew, world::WorldTrait,
+        stats::UStats, collections::TokenAttributes, tags::IdTagNew, world::WorldTrait,
     };
     use super::IArcadeAdmin;
 

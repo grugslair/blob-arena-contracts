@@ -1,11 +1,15 @@
-use dojo::model::ModelValueStorage;
 use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
-use dojo::{
-    world::WorldStorage, model::{ModelStorage, Model}, event::EventStorage, meta::Introspect,
-};
-use blob_arena::{
-    attacks::AttackInput, stats::UStats, collections::blobert::TokenAttributes, tags::IdTagNew,
-};
+
+use dojo::model::ModelValueStorage;
+use dojo::world::WorldStorage;
+use dojo::model::{ModelStorage, Model};
+use dojo::event::EventStorage;
+use dojo::meta::Introspect;
+
+use crate::attacks::AttackInput;
+use crate::stats::UStats;
+use crate::tags::IdTagNew;
+use crate::collections::TokenAttributes;
 
 const ARCADE_NAMESPACE_HASH: felt252 = bytearray_hash!("arcade");
 const OPPONENT_TAG_GROUP: felt252 = 'arcade-opponent';

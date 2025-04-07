@@ -2,7 +2,7 @@ use dojo::event::EventStorage;
 use starknet::{get_block_timestamp, get_caller_address, ContractAddress};
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}};
 use blob_arena::{
-    collections::ERC721Token,
+    erc721::ERC721Token,
     game::components::{
         GameInfo, Initiator, LastTimestamp, Player, WinVia, CombatEnd, GameInfoTrait,
     },

@@ -1,7 +1,7 @@
 use starknet::ContractAddress;
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}, event::EventStorage};
 use crate::{combat::{CombatState, Phase}, attacks::results::{AttackResult, RoundResult}};
-use crate::collections::ERC721Token;
+use crate::erc721::ERC721Token;
 use super::components::{ConsecutiveWins, ConsecutiveTokenWins};
 
 

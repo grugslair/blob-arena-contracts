@@ -1,6 +1,4 @@
 use starknet::ContractAddress;
-use blob_arena::{stats::UStats, collections::blobert::{TokenAttributes, BlobertItemKey}};
-
 
 /// Interface for the Arcade (Player vs Environment) game contract
 ///
@@ -153,9 +151,7 @@ mod arcade_actions {
     use dojo::world::WorldStorage;
     use blob_arena::{
         arcade::{ArcadeTrait, ArcadeStorage, ARCADE_NAMESPACE_HASH, ArcadeStore}, world::WorldTrait,
-        game::GameProgress, utils::get_transaction_hash, stats::UStats,
-        collections::blobert::{TokenAttributes, BlobertItemKey, BlobertStorage},
-        erc721::erc721_owner_of,
+        game::GameProgress, utils::get_transaction_hash, erc721::erc721_owner_of,
     };
     use super::{IArcade};
     #[generate_trait]

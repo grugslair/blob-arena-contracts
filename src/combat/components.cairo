@@ -8,7 +8,7 @@ use blob_arena::{
     combat::calculations::{damage_calculation, did_critical}, hash::{HashUpdate, UpdateHashToU128},
     iter::Iteration,
 };
-use crate::collections::ERC721Token;
+use crate::erc721::ERC721Token;
 
 
 /// Phase represents the different states of a combat encounter

@@ -1,5 +1,5 @@
 use starknet::{ContractAddress, get_contract_address};
-use crate::collections::ERC721Token;
+use crate::erc721::ERC721Token;
 /// Game Models
 
 /// Represents game information for a combat encounter

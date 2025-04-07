@@ -11,7 +11,7 @@ use blob_arena::{
     commitments::Commitment, utils::SeedProbability, hash::UpdateHashToU128, constants::NZ_100,
 };
 
-use crate::collections::ERC721Token;
+use crate::erc721::ERC721Token;
 
 #[generate_trait]
 impl CombatImpl of CombatTrait {

@@ -6,7 +6,7 @@ use blob_arena::{
         components::{LastTimestamp, Initiator, GameInfo, GameInfoTrait, WinVia, GameProgress},
         storage::GameStorage,
     },
-    collections::ERC721Token,
+    erc721::ERC721Token,
     combat::{CombatTrait, Phase, CombatState, CombatStorage, components::PhaseTrait},
     commitments::Commitment, utils::get_transaction_hash,
     combatants::{CombatantTrait, CombatantInfo, CombatantStorage, CombatantState},
