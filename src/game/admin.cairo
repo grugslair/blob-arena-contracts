@@ -85,25 +85,17 @@ mod game_admin {
     use dojo::world::WorldStorage;
     use starknet::{ContractAddress, get_tx_info, get_caller_address};
     use blob_arena::{
-        world::{DEFAULT_NAMESPACE_HASH, uuid, get_world_address}, game::GameStorage,
-        combatants::CombatantTrait, combat::CombatStorage,
-        permissions::{Role, Permissions, Permission, PermissionStorage},
+        world::{WorldTrait, uuid, get_world_address}, game::GameStorage, combatants::CombatantTrait,
+        combat::CombatStorage, permissions::{Role, Permissions, Permission, PermissionStorage},
     };
 
     use super::IGameAdmin;
 
     fn dojo_init(ref self: ContractState) {
-        let mut world = self.get_storage();
+        let mut world = self.default_storage();
 
         let admin = get_tx_info().unbox().account_contract_address;
         world.set_permission(admin, Role::Admin, true);
-    }
-
-    #[generate_trait]
-    impl PrivateImpl of PrivateTrait {
-        fn get_storage(self: @ContractState) -> WorldStorage {
-            self.world_ns_hash(DEFAULT_NAMESPACE_HASH)
-        }
     }
 
 
@@ -123,7 +115,7 @@ mod game_admin {
             token_id_b: u256,
             attacks_b: Array<(felt252, felt252)>,
         ) -> felt252 {
-            let mut world = self.get_storage();
+            let mut world = self.default_storage();
             world.assert_caller_is_admin();
 
             let id = uuid();
@@ -146,20 +138,20 @@ mod game_admin {
         }
 
         fn set_has_role(ref self: ContractState, user: ContractAddress, role: Role, has: bool) {
-            let mut world = self.get_storage();
+            let mut world = self.default_storage();
             world.assert_caller_is_admin();
             world.set_permission(user, role, has);
         }
 
         fn get_has_role(self: @ContractState, user: ContractAddress, role: Role) -> bool {
-            let world = self.get_storage();
+            let world = self.default_storage();
             world.get_permission(user, role)
         }
 
         fn set_multiple_has_role(
             ref self: ContractState, users: Array<ContractAddress>, role: Role, has: bool,
         ) {
-            let mut world = self.get_storage();
+            let mut world = self.default_storage();
             world.assert_caller_is_admin();
             let mut permissions = ArrayTrait::<Permission>::new();
             for user in users {
