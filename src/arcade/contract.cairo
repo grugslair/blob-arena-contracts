@@ -152,21 +152,22 @@ mod arcade_actions {
     use starknet::{ContractAddress, get_caller_address};
     use dojo::world::WorldStorage;
     use blob_arena::{
-        arcade::{ArcadeTrait, ArcadeStorage, ARCADE_NAMESPACE_HASH, ArcadeStore},
-        world::{uuid, DEFAULT_NAMESPACE_HASH}, game::GameProgress, utils::get_transaction_hash,
-        stats::UStats, collections::blobert::{TokenAttributes, BlobertItemKey, BlobertStorage},
+        arcade::{ArcadeTrait, ArcadeStorage, ARCADE_NAMESPACE_HASH, ArcadeStore}, world::WorldTrait,
+        game::GameProgress, utils::get_transaction_hash, stats::UStats,
+        collections::blobert::{TokenAttributes, BlobertItemKey, BlobertStorage},
         erc721::erc721_owner_of,
     };
     use super::{IArcade};
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
         fn get_storage(self: @ContractState) -> ArcadeStore {
+            let dispatcher = self.world_dispatcher();
             ArcadeStore {
-                ba: self.world_ns_hash(DEFAULT_NAMESPACE_HASH), arcade: self.get_arcade_storage(),
+                ba: dispatcher.default_storage(), arcade: dispatcher.storage(ARCADE_NAMESPACE_HASH),
             }
         }
         fn get_arcade_storage(self: @ContractState) -> WorldStorage {
-            self.world_ns_hash(ARCADE_NAMESPACE_HASH)
+            self.storage(ARCADE_NAMESPACE_HASH)
         }
     }
 

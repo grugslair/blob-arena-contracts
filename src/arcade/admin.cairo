@@ -131,16 +131,9 @@ mod arcade_admin_actions {
             ArcadeStore, ArcadeTrait, ArcadeStorage, ARCADE_NAMESPACE_HASH, ArcadeOpponentInput,
         },
         stats::UStats, collections::blobert::{TokenAttributes, BlobertItemKey, BlobertStorage},
-        tags::IdTagNew, world::DEFAULT_NAMESPACE_HASH,
+        tags::IdTagNew, world::WorldTrait,
     };
     use super::IArcadeAdmin;
-
-    #[generate_trait]
-    impl PrivateImpl of PrivateTrait {
-        fn get_arcade_storage(self: @ContractState) -> WorldStorage {
-            self.world_ns_hash(ARCADE_NAMESPACE_HASH)
-        }
-    }
 
     #[abi(embed_v0)]
     impl IArcadeAdminImpl of IArcadeAdmin<ContractState> {
@@ -153,7 +146,7 @@ mod arcade_admin_actions {
             attacks: Array<IdTagNew<AttackInput>>,
             collections_allowed: Array<ContractAddress>,
         ) -> felt252 {
-            let mut store = self.get_arcade_storage();
+            let mut store = self.storage(ARCADE_NAMESPACE_HASH);
             store.assert_caller_has_permission(Role::ArcadeSetter);
             let attack_ids = store.create_or_get_attacks_external(attacks);
             store
@@ -168,14 +161,14 @@ mod arcade_admin_actions {
             opponents: Array<IdTagNew<ArcadeOpponentInput>>,
             collections_allowed: Array<ContractAddress>,
         ) {
-            let mut store = self.get_arcade_storage();
+            let mut store = self.storage(ARCADE_NAMESPACE_HASH);
             store.assert_caller_has_permission(Role::ArcadeSetter);
             store.setup_new_challenge(name, health_recovery_pc, opponents, collections_allowed);
         }
         fn set_collection(
             ref self: ContractState, id: felt252, collection: ContractAddress, available: bool,
         ) {
-            let mut store = self.get_arcade_storage();
+            let mut store = self.storage(ARCADE_NAMESPACE_HASH);
             store.assert_caller_has_permission(Role::ArcadeSetter);
             store.set_collection_allowed(id, collection, available);
         }
@@ -185,7 +178,7 @@ mod arcade_admin_actions {
             collections: Array<ContractAddress>,
             available: bool,
         ) {
-            let mut store = self.get_arcade_storage();
+            let mut store = self.storage(ARCADE_NAMESPACE_HASH);
             store.assert_caller_has_permission(Role::ArcadeSetter);
             store.set_collections_allowed(id, collections, available);
         }
@@ -195,12 +188,12 @@ mod arcade_admin_actions {
             collection: ContractAddress,
             available: bool,
         ) {
-            let mut store = self.get_arcade_storage();
+            let mut store = self.storage(ARCADE_NAMESPACE_HASH);
             store.assert_caller_has_permission(Role::ArcadeSetter);
             store.set_multiple_collection_allowed(ids, collection, available);
         }
         fn mint_free_games(ref self: ContractState, player: ContractAddress, amount: u32) {
-            let mut store = self.get_arcade_storage();
+            let mut store = self.storage(ARCADE_NAMESPACE_HASH);
             store.assert_caller_has_permission(Role::ArcadeFreeMinter);
             let mut model = store.get_free_games(player);
             model.games += amount;
@@ -211,7 +204,7 @@ mod arcade_admin_actions {
             }
         }
         fn mint_paid_games(ref self: ContractState, player: ContractAddress, amount: u32) {
-            let mut store = self.get_arcade_storage();
+            let mut store = self.storage(ARCADE_NAMESPACE_HASH);
             store.assert_caller_has_permission(Role::ArcadePaidMinter);
             let games = store.get_number_of_paid_games(player);
             store.set_number_of_paid_games(player, games + amount);
