@@ -23,4 +23,3 @@ build-external-contracts = ["dojo::world::world_contract::world"]
 dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.2.2" }
 
 [profile.sepolia]
-[profile.release]
