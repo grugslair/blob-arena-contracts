@@ -30,3 +30,11 @@ struct LobbyCreated {
     sender: ContractAddress,
     receiver: ContractAddress,
 }
+
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct GamesPlayed {
+    #[key]
+    players: (ContractAddress, ContractAddress),
+    played: u64,
+}

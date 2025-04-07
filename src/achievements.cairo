@@ -1,4 +1,4 @@
-use starknet::ContractAddress;
+use starknet::{ContractAddress, get_block_timestamp};
 use dojo::{world::WorldStorage, event::EventStorage};
 use achievement::types::task::Task;
 use achievement::events::creation::TrophyCreation;
@@ -7,11 +7,6 @@ use crate::world::WorldTrait;
 
 const ACHIEVEMENTS_NAMESPACE_HASH: felt252 = bytearray_hash!("achievements");
 
-fn get_achievements() -> Span<TrophyCreation> {
-    [].span()
-}
-
-
 #[derive(Drop, Serde)]
 struct TaskInput {
     id: TaskId,
@@ -19,6 +14,7 @@ struct TaskInput {
     description: ByteArray,
 }
 
+#[derive(Drop, Serde)]
 struct TrophyCreationInput {
     id: felt252,
     hidden: bool,
@@ -36,7 +32,7 @@ struct TrophyCreationInput {
 
 impl TaskInputIntoTask of Into<TaskInput, Task> {
     fn into(self: TaskInput) -> Task {
-        Task { id: self.task.into(), total: self.total, description: self.description }
+        Task { id: self.id.into(), total: self.total, description: self.description }
     }
 }
 
@@ -98,10 +94,11 @@ impl TaskIdIntoFelt252 of Into<TaskId, felt252> {
 
 #[generate_trait]
 impl AchievementImpl<S, +WorldTrait<S>, +Drop<S>> of Achievements<S> {
-    fn create_achievements(ref self: S) {
+    fn create_achievements(ref self: S, achievements: Array<TrophyCreationInput>) {
         let mut storage = self.storage(ACHIEVEMENTS_NAMESPACE_HASH);
-        for achievement in get_achievements() {
-            storage.emit_event(achievement);
+        for achievement_input in achievements {
+            let achievement: TrophyCreation = achievement_input.into();
+            storage.emit_event(@achievement);
         };
     }
 
@@ -115,5 +112,17 @@ impl AchievementImpl<S, +WorldTrait<S>, +Drop<S>> of Achievements<S> {
                     player_id: player_id.into(), task_id: task.into(), count, time,
                 },
             );
+    }
+
+    fn progress_achievement_now(ref self: S, player_id: ContractAddress, task: TaskId, count: u32) {
+        self.progress_achievement(player_id, task, count, get_block_timestamp());
+    }
+
+    fn increment_achievement(ref self: S, player_id: ContractAddress, task: TaskId, time: u64) {
+        self.progress_achievement(player_id, task, 1, time);
+    }
+
+    fn increment_achievement_now(ref self: S, player_id: ContractAddress, task: TaskId) {
+        self.increment_achievement(player_id, task, get_block_timestamp());
     }
 }
