@@ -3,5 +3,5 @@ mod mint;
 mod contract;
 mod collection;
 
-use storage::ArcadeBlobertStorage;
+use storage::FreeBlobertStorage;
 use collection::BlobertCollectionTrait;

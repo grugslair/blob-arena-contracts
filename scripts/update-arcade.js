@@ -11,11 +11,11 @@ import { CairoCustomEnum } from "starknet";
 
 import commandLineArgs from "command-line-args";
 import {
-  pveOpponentEntrypoint,
-  pveChallengeEntrypoint,
-  pveBlobertContractTag,
+  arcadeOpponentEntrypoint,
+  arcadeChallengeEntrypoint,
+  arcadeContractTag,
   blobertContractTag,
-  arcadeBlobertContractTag,
+  freeBlobertContractTag,
   ammaBlobertContractTag,
 } from "./contract-defs.js";
 
@@ -24,14 +24,12 @@ import { makeAttacksStruct } from "./update-attributes.js";
 export const makeCollectionAddressDict = (account_manifest) => {
   return {
     blobert: account_manifest.getContractAddress(blobertContractTag),
-    arcade_blobert: account_manifest.getContractAddress(
-      arcadeBlobertContractTag
-    ),
+    free_blobert: account_manifest.getContractAddress(freeBlobertContractTag),
     amma_blobert: account_manifest.getContractAddress(ammaBlobertContractTag),
   };
 };
 
-export const parseNewPVEOpponent = (opponent, collectionAddresses) => {
+export const parseNewArcadeOpponent = (opponent, collectionAddresses) => {
   return {
     name: opponent.name,
     collection: collectionAddresses[opponent.collection],
@@ -45,7 +43,7 @@ export const parseNewPVEOpponent = (opponent, collectionAddresses) => {
   };
 };
 
-export const makePveOpponentsStruct = (opponents) => {
+export const makeArcadeOpponentsStruct = (opponents) => {
   let opponentsStructs = [];
   for (const opponent of opponents) {
     opponentsStructs.push(parseOpponentStruct(opponent));
@@ -63,7 +61,7 @@ export const parseOpponentStruct = (opponent) => {
   if (opponent.new != null) {
     return new CairoCustomEnum({ New: opponent.new });
   }
-  return new CairoCustomEnum({ New: parseNewPVEOpponent(opponent) });
+  return new CairoCustomEnum({ New: parseNewArcadeOpponent(opponent) });
 };
 
 export const makeCollectionsAllowed = (collections, collectionAddresses) => {
@@ -74,11 +72,11 @@ export const makeCollectionsAllowed = (collections, collectionAddresses) => {
   return allowed;
 };
 
-export const makePveChallengeCallData = (challenge, collectionAddresses) => {
+export const makeArcadeChallengeCallData = (challenge, collectionAddresses) => {
   return {
     name: challenge.name,
     health_recovery_pc: challenge.health_recovery,
-    opponents: makePveOpponentsStruct(challenge.opponents),
+    opponents: makeArcadeOpponentsStruct(challenge.opponents),
     collections_allowed: makeCollectionsAllowed(
       challenge.collections_allowed,
       collectionAddresses
@@ -86,33 +84,33 @@ export const makePveChallengeCallData = (challenge, collectionAddresses) => {
   };
 };
 
-export const makePveOpponentsCalls = async (account_manifest, data) => {
-  let contract = await account_manifest.getContract(pveBlobertContractTag);
+export const makeArcadeOpponentsCalls = async (account_manifest, data) => {
+  let contract = await account_manifest.getContract(arcadeContractTag);
   let collectionAddresses = makeCollectionAddressDict(account_manifest);
   let calls = [];
   for (const opponent of data) {
     calls.push([
       contract.populate(
-        pveOpponentEntrypoint,
-        parseNewPVEOpponent(opponent, collectionAddresses)
+        arcadeOpponentEntrypoint,
+        parseNewArcadeOpponent(opponent, collectionAddresses)
       ),
-      { description: `pve opponent: ${opponent.name}` },
+      { description: `arcade opponent: ${opponent.name}` },
     ]);
   }
   return calls;
 };
 
-export const makePveChallengeCalls = async (account_manifest, data) => {
-  let contract = await account_manifest.getContract(pveBlobertContractTag);
+export const makeArcadeChallengeCalls = async (account_manifest, data) => {
+  let contract = await account_manifest.getContract(arcadeContractTag);
   let collectionAddresses = makeCollectionAddressDict(account_manifest);
   let calls = [];
   for (const challenge of data) {
     calls.push([
       contract.populate(
-        pveChallengeEntrypoint,
-        makePveChallengeCallData(challenge, collectionAddresses)
+        arcadeChallengeEntrypoint,
+        makeArcadeChallengeCallData(challenge, collectionAddresses)
       ),
-      { description: `pve challenge: ${challenge.name}` },
+      { description: `arcade challenge: ${challenge.name}` },
     ]);
   }
   return calls;
@@ -129,10 +127,16 @@ const main = async () => {
     options.profile,
     options.password
   );
-  let pve_data = loadJson("../post-deploy-config/pve.json");
+  let arcade_data = loadJson("../post-deploy-config/arcade.json");
   const calls_metas = [
-    ...(await makePveOpponentsCalls(account_manifest, pve_data.opponents)),
-    ...(await makePveChallengeCalls(account_manifest, pve_data.challenges)),
+    ...(await makeArcadeOpponentsCalls(
+      account_manifest,
+      arcade_data.opponents
+    )),
+    ...(await makeArcadeChallengeCalls(
+      account_manifest,
+      arcade_data.challenges
+    )),
   ];
   const [calls, descriptions] = splitCallDescriptions(calls_metas);
   console.log(descriptions);

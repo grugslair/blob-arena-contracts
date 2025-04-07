@@ -2,7 +2,7 @@ use starknet::ContractAddress;
 
 mod interface;
 mod blobert;
-mod arcade_blobert;
+mod free_blobert;
 mod amma_blobert;
 
 use super::collections::interface::{

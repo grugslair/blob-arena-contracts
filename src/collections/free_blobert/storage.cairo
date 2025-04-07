@@ -37,7 +37,7 @@ struct LastMint {
 }
 
 #[generate_trait]
-impl ArcadeBlobertImpl of ArcadeBlobertStorage {
+impl FreeBlobertImpl of FreeBlobertStorage {
     fn set_blobert_token(
         ref self: WorldStorage, id: felt252, owner: ContractAddress, attributes: TokenAttributes,
     ) {

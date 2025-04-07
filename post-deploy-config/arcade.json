@@ -23,7 +23,7 @@
         { "tag": "Algorithm Assault" },
         { "tag": "Algorithmic Overload" }
       ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      "collections_allowed": ["blobert", "free_blobert"]
     },
     {
       "name": "Cyber Crusher",
@@ -48,7 +48,7 @@
         { "tag": "Argent Crush" },
         { "tag": "Two Factor Authentication" }
       ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      "collections_allowed": ["blobert", "free_blobert"]
     },
     {
       "name": "Balloon Bruiser",
@@ -73,7 +73,7 @@
         { "tag": "Balloon Bombardment" },
         { "tag": "Inflatable Explosion" }
       ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      "collections_allowed": ["blobert", "free_blobert"]
     },
     {
       "name": "Brick Behemoth",
@@ -98,7 +98,7 @@
         { "tag": "Briq Breaker" },
         { "tag": "Briq Avalanche" }
       ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      "collections_allowed": ["blobert", "free_blobert"]
     },
     {
       "name": "Quantum Gladiator",
@@ -123,7 +123,7 @@
         { "tag": "Calculated Crush" },
         { "tag": "Quantum Singularity" }
       ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      "collections_allowed": ["blobert", "free_blobert"]
     },
     {
       "name": "Code Conqueror",
@@ -148,7 +148,7 @@
         { "tag": "Debug Destruction" },
         { "tag": "Algorithm Overload" }
       ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      "collections_allowed": ["blobert", "free_blobert"]
     },
     {
       "name": "Diamond Destroyer",
@@ -173,7 +173,7 @@
         { "tag": "Diamond Destruction" },
         { "tag": "Diamond Hand" }
       ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      "collections_allowed": ["blobert", "free_blobert"]
     },
     {
       "name": "Bullet Barrager",
@@ -198,7 +198,7 @@
         { "tag": "Bullet Barrage" },
         { "tag": "Desperation Toss" }
       ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      "collections_allowed": ["blobert", "free_blobert"]
     },
     {
       "name": "Phantom Wraith",
@@ -223,7 +223,7 @@
         { "tag": "Phantom Pulse" },
         { "tag": "Phantom Blast" }
       ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      "collections_allowed": ["blobert", "free_blobert"]
     },
     {
       "name": "Grug the Colossal",
@@ -248,7 +248,7 @@
         { "tag": "Grug's Smash" },
         { "tag": "Giant Rock Uppercut Grapple" }
       ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      "collections_allowed": ["blobert", "free_blobert"]
     },
     {
       "name": "Andrzej Studencki",
@@ -467,7 +467,7 @@
         { "tag": "Phantom Wraith" },
         { "tag": "Grug the Colossal" }
       ],
-      "collections_allowed": ["arcade_blobert"]
+      "collections_allowed": ["free_blobert"]
     },
     {
       "name": "AMMA Challenge",

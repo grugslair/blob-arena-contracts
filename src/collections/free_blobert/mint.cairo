@@ -11,7 +11,7 @@ use blob_arena::{
 };
 
 
-use super::{ArcadeBlobertStorage, storage::TokenAttributes};
+use super::{FreeBlobertStorage, storage::TokenAttributes};
 
 const ARMOUR_COUNT: u8 = 17;
 const JEWELRY_COUNT: u8 = 8;
@@ -51,9 +51,9 @@ fn generate_seed(randomness: felt252) -> Seed {
 }
 
 #[generate_trait]
-impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
+impl FreeBlobertMintImpl of FreeBlobertMintTrait {
     fn mint_random_blobert(ref self: WorldStorage, owner: ContractAddress) -> u256 {
-        let token_id = poseidon_hash_span(['arcade', incrementor('SEED-ITER')].span());
+        let token_id = poseidon_hash_span(['free', incrementor('SEED-ITER')].span());
 
         self.set_blobert_token(token_id, owner, TokenAttributes::Seed(generate_seed(token_id)));
         token_id.into()

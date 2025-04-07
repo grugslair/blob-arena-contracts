@@ -3,12 +3,12 @@ use starknet::{ContractAddress, get_caller_address, get_contract_address, get_bl
 use dojo::world::WorldStorage;
 use blob_arena::{
     attacks::{Attack, AttackInput, AttackTrait},
-    pve::{
-        PVEGame, PVEOpponent, PVEOpponentInput, PVEBlobertInfo, PVEStorage, PVEPhase, PVEStore,
-        PVEChallengeAttempt, PVEPhaseTrait, PVEAttemptEnd,
+    arcade::{
+        ArcadeGame, ArcadeOpponent, ArcadeOpponentInput, ArcadeBlobertInfo, ArcadeStorage,
+        ArcadePhase, ArcadeStore, ArcadeChallengeAttempt, ArcadePhaseTrait, ArcadeAttemptEnd,
         components::{
             OPPONENT_TAG_GROUP, CHALLENGE_TAG_GROUP, ARCADE_CHALLENGE_MAX_RESPAWNS,
-            PVEAttemptRespawn,
+            ArcadeAttemptRespawn,
         },
     },
     game::{GameStorage, GameTrait, GameProgress},
@@ -25,7 +25,7 @@ fn calc_restored_health(current_health: u8, vitality: u8, health_recovery_percen
     min(max_health, current_health + health_recovery)
 }
 
-fn get_pve_challenge_id(
+fn get_arcade_challenge_id(
     name: @ByteArray, health_recovery: u8, opponents: Span<felt252>,
 ) -> felt252 {
     let mut output = byte_array_to_felt252_array(name);
@@ -36,7 +36,7 @@ fn get_pve_challenge_id(
     poseidon_hash_span(output.span())
 }
 
-fn get_pve_opponent_id(
+fn get_arcade_opponent_id(
     name: @ByteArray,
     collection: ContractAddress,
     attributes: @TokenAttributes,
@@ -54,13 +54,13 @@ fn get_pve_opponent_id(
 }
 
 #[generate_trait]
-impl PVEImpl of PVETrait {
+impl ArcadeImpl of ArcadeTrait {
     fn assert_collection_allowed(self: @WorldStorage, id: felt252, collection: ContractAddress) {
         assert(self.get_collection_allowed(id, collection), 'Collection not allowed');
     }
 
-    fn new_pve_game(
-        ref self: PVEStore,
+    fn new_arcade_game(
+        ref self: ArcadeStore,
         opponent_token: felt252,
         player: ContractAddress,
         player_collection_address: ContractAddress,
@@ -68,53 +68,57 @@ impl PVEImpl of PVETrait {
         player_attacks: Array<(felt252, felt252)>,
     ) -> felt252 {
         assert(
-            self.pve.get_collection_allowed(opponent_token, player_collection_address),
+            self.arcade.get_collection_allowed(opponent_token, player_collection_address),
             'Collection not allowed',
         );
         let (game, _, _) = self
-            .new_pve_opponent_in_combat(
+            .new_arcade_opponent_in_combat(
                 player, player_collection_address, player_token_id, player_attacks, opponent_token,
             );
         self.ba.set_combatant_token(game.combatant_id, player_collection_address, player_token_id);
         game.id
     }
-    fn new_pve_opponent_in_combat(
-        ref self: PVEStore,
+    fn new_arcade_opponent_in_combat(
+        ref self: ArcadeStore,
         player: ContractAddress,
         player_collection_address: ContractAddress,
         player_token_id: u256,
         player_attacks: Array<(felt252, felt252)>,
         opponent_token: felt252,
-    ) -> (PVEGame, UStats, Array<felt252>) {
+    ) -> (ArcadeGame, UStats, Array<felt252>) {
         let (stats, attacks) = self
             .ba
             .get_token_stats_and_attacks(
                 player_collection_address, player_token_id, player_attacks,
             );
         let game = self
-            .setup_pve_opponent_in_combat(
+            .setup_arcade_opponent_in_combat(
                 player, stats, stats.get_max_health(), attacks.span(), opponent_token,
             );
         (game, stats, attacks)
     }
 
 
-    fn setup_pve_opponent_in_combat(
-        ref self: PVEStore,
+    fn setup_arcade_opponent_in_combat(
+        ref self: ArcadeStore,
         player: ContractAddress,
         stats: UStats,
         health: u8,
         attacks: Span<felt252>,
         opponent_token: felt252,
-    ) -> PVEGame {
+    ) -> ArcadeGame {
         let game_id = uuid();
         let opponent_id = uuid();
         let combatant_id = uuid();
         self
             .ba
-            .create_combatant_state(opponent_id, self.pve.get_pve_opponent_stats(opponent_token));
+            .create_combatant_state(
+                opponent_id, self.arcade.get_arcade_opponent_stats(opponent_token),
+            );
         self.ba.set_combatant_stats_health_and_attacks(combatant_id, stats, health, attacks);
-        self.pve.new_pve_game_model(game_id, combatant_id, player, opponent_token, opponent_id)
+        self
+            .arcade
+            .new_arcade_game_model(game_id, combatant_id, player, opponent_token, opponent_id)
     }
 
 
@@ -127,20 +131,20 @@ impl PVEImpl of PVETrait {
         attack_ids: Array<felt252>,
         collections_allowed: Array<ContractAddress>,
     ) -> felt252 {
-        let token_id = get_pve_opponent_id(
+        let token_id = get_arcade_opponent_id(
             @name, collection, @attributes, @stats, attack_ids.span(),
         );
-        if !self.check_pve_opponent_exists(token_id) {
-            self.set_pve_opponent(token_id, stats, attack_ids);
+        if !self.check_arcade_opponent_exists(token_id) {
+            self.set_arcade_opponent(token_id, stats, attack_ids);
             self.set_tag(OPPONENT_TAG_GROUP, @name, token_id);
-            self.set_pve_blobert_info(token_id, name, collection, attributes);
+            self.set_arcade_info(token_id, name, collection, attributes);
         };
         self.set_collections_allowed(token_id, collections_allowed, true);
         token_id
     }
 
     fn setup_new_opponent_from_input(
-        ref self: WorldStorage, opponent: PVEOpponentInput,
+        ref self: WorldStorage, opponent: ArcadeOpponentInput,
     ) -> felt252 {
         self
             .setup_new_opponent(
@@ -153,25 +157,25 @@ impl PVEImpl of PVETrait {
             )
     }
     fn make_opponent_model_from_input(
-        ref self: WorldStorage, opponent: PVEOpponentInput,
-    ) -> (PVEOpponent, @ByteArray, bool) {
+        ref self: WorldStorage, opponent: ArcadeOpponentInput,
+    ) -> (ArcadeOpponent, @ByteArray, bool) {
         let attack_ids = self.create_or_get_attacks_external(opponent.attacks);
         let sname = @opponent.name;
-        let id = get_pve_opponent_id(
+        let id = get_arcade_opponent_id(
             sname, opponent.collection, @opponent.attributes, @opponent.stats, attack_ids.span(),
         );
-        let exists = self.check_pve_opponent_exists(id);
+        let exists = self.check_arcade_opponent_exists(id);
         if !exists {
-            self.set_pve_blobert_info(id, opponent.name, opponent.collection, opponent.attributes);
+            self.set_arcade_info(id, opponent.name, opponent.collection, opponent.attributes);
         };
 
         self.set_collections_allowed(id, opponent.collections_allowed, true);
 
-        (PVEOpponent { id, stats: opponent.stats, attacks: attack_ids }, sname, exists)
+        (ArcadeOpponent { id, stats: opponent.stats, attacks: attack_ids }, sname, exists)
     }
 
     fn create_or_get_opponent(
-        ref self: WorldStorage, opponent: IdTagNew<PVEOpponentInput>,
+        ref self: WorldStorage, opponent: IdTagNew<ArcadeOpponentInput>,
     ) -> felt252 {
         match opponent {
             IdTagNew::Id(id) => id,
@@ -181,9 +185,9 @@ impl PVEImpl of PVETrait {
     }
 
     fn create_or_get_opponents(
-        ref self: WorldStorage, opponents: Array<IdTagNew<PVEOpponentInput>>,
+        ref self: WorldStorage, opponents: Array<IdTagNew<ArcadeOpponentInput>>,
     ) -> Array<felt252> {
-        let mut models = ArrayTrait::<@PVEOpponent>::new();
+        let mut models = ArrayTrait::<@ArcadeOpponent>::new();
         let mut tags = ArrayTrait::<(@ByteArray, felt252)>::new();
         let mut ids = ArrayTrait::<felt252>::new();
         for opponent in opponents {
@@ -204,16 +208,16 @@ impl PVEImpl of PVETrait {
                     },
                 );
         };
-        self.set_pve_opponents(models);
+        self.set_arcade_opponents(models);
         self.set_tags(OPPONENT_TAG_GROUP, tags);
         ids
     }
 
-    fn check_pve_challenge_exists(self: @WorldStorage, id: felt252) -> bool {
-        self.get_pve_stage_opponent(id, 1).is_non_zero()
+    fn check_arcade_challenge_exists(self: @WorldStorage, id: felt252) -> bool {
+        self.get_arcade_stage_opponent(id, 1).is_non_zero()
     }
 
-    fn get_pve_challenge_id(
+    fn get_arcade_challenge_id(
         name: @ByteArray, health_recovery: u8, opponents: Span<felt252>,
     ) -> felt252 {
         let mut output = byte_array_to_felt252_array(name);
@@ -228,41 +232,41 @@ impl PVEImpl of PVETrait {
         ref self: WorldStorage,
         name: ByteArray,
         health_recovery: u8,
-        opponents: Array<IdTagNew<PVEOpponentInput>>,
+        opponents: Array<IdTagNew<ArcadeOpponentInput>>,
         collections_allowed: Array<ContractAddress>,
     ) {
         let opponent_ids = self.create_or_get_opponents(opponents);
-        let challenge_id = get_pve_challenge_id(@name, health_recovery, opponent_ids.span());
-        if !self.check_pve_challenge_exists(challenge_id) {
+        let challenge_id = get_arcade_challenge_id(@name, health_recovery, opponent_ids.span());
+        if !self.check_arcade_challenge_exists(challenge_id) {
             self.set_tag(CHALLENGE_TAG_GROUP, @name, challenge_id);
-            self.emit_pve_challenge_name(challenge_id, name);
-            self.set_pve_challenge(challenge_id, health_recovery);
+            self.emit_arcade_challenge_name(challenge_id, name);
+            self.set_arcade_challenge(challenge_id, health_recovery);
             for (n, id) in opponent_ids.enumerate() {
-                self.set_pve_stage_opponent(challenge_id, n, id);
+                self.set_arcade_stage_opponent(challenge_id, n, id);
             }
         };
         self.set_collections_allowed(challenge_id, collections_allowed, true);
     }
 
-    fn run_pve_round(
-        ref self: PVEStore, game: PVEGame, player_attack: felt252, randomness: felt252,
+    fn run_arcade_round(
+        ref self: ArcadeStore, game: ArcadeGame, player_attack: felt252, randomness: felt252,
     ) {
-        assert(game.phase == PVEPhase::Active, 'Not active');
+        assert(game.phase == ArcadePhase::Active, 'Not active');
         let hash = make_hash_state(randomness);
         let combatants = [game.combatant_id, game.opponent_id];
-        let opponent_attacks = self.pve.get_pve_opponent_attacks(game.opponent_token);
+        let opponent_attacks = self.arcade.get_arcade_opponent_attacks(game.opponent_token);
         let attacks = [
             player_attack, self.ba.get_opponent_attack(@game, opponent_attacks, randomness),
         ];
         match self.ba.run_round(game.id, game.round, combatants, attacks, [false, true], hash) {
-            GameProgress::Active => { self.pve.set_pve_round(game.id, game.round + 1); },
+            GameProgress::Active => { self.arcade.set_arcade_round(game.id, game.round + 1); },
             GameProgress::Ended([winner, _]) => self
-                .pve
-                .set_pve_ended(game.id, winner == game.combatant_id),
+                .arcade
+                .set_arcade_ended(game.id, winner == game.combatant_id),
         }
     }
     fn get_opponent_attack(
-        ref self: WorldStorage, game: @PVEGame, attacks: Array<felt252>, randomness: felt252,
+        ref self: WorldStorage, game: @ArcadeGame, attacks: Array<felt252>, randomness: felt252,
     ) -> felt252 {
         let (mut n, n_attacks) = (0, attacks.len());
         let sn = (felt252_to_u128(randomness) % n_attacks.into()).try_into().unwrap();
@@ -283,32 +287,34 @@ impl PVEImpl of PVETrait {
         }
     }
 
-    fn get_pve_players_challenge_attempt(self: @WorldStorage, id: felt252) -> PVEChallengeAttempt {
-        let attempt = self.get_pve_challenge_attempt(id);
+    fn get_arcade_players_challenge_attempt(
+        self: @WorldStorage, id: felt252,
+    ) -> ArcadeChallengeAttempt {
+        let attempt = self.get_arcade_challenge_attempt(id);
         assert(attempt.player == get_caller_address(), 'Not player');
         attempt.phase.assert_active();
         attempt
     }
 
-    fn new_pve_challenge_attempt(
-        ref self: PVEStore,
+    fn new_arcade_challenge_attempt(
+        ref self: ArcadeStore,
         challenge_id: felt252,
         player: ContractAddress,
         collection: ContractAddress,
         token_id: u256,
         attacks: Array<(felt252, felt252)>,
     ) -> felt252 {
-        self.pve.assert_collection_allowed(challenge_id, collection);
+        self.arcade.assert_collection_allowed(challenge_id, collection);
         let id = uuid();
         let (stats, attacks) = self.ba.get_token_stats_and_attacks(collection, token_id, attacks);
         let attempt = self
-            .pve
-            .new_pve_challenge_attempt(
+            .arcade
+            .new_arcade_challenge_attempt(
                 id, challenge_id, player, collection, token_id, stats, attacks,
             );
-        self.pve.set_pve_current_challenge_attempt(player, collection, token_id, id);
+        self.arcade.set_arcade_current_challenge_attempt(player, collection, token_id, id);
         self
-            .create_pve_challenge_attempt_round(
+            .create_arcade_challenge_attempt_round(
                 attempt.id,
                 attempt.challenge,
                 attempt.player,
@@ -320,29 +326,29 @@ impl PVEImpl of PVETrait {
         id
     }
 
-    fn next_pve_challenge_round(ref self: PVEStore, attempt_id: felt252) {
-        let mut attempt = self.pve.get_pve_challenge_attempt_next_stage(attempt_id);
+    fn next_arcade_challenge_round(ref self: ArcadeStore, attempt_id: felt252) {
+        let mut attempt = self.arcade.get_arcade_challenge_attempt_next_stage(attempt_id);
         assert(attempt.player == get_caller_address(), 'Not player');
         attempt.phase.assert_active();
         let (combatant_id, phase) = self
-            .pve
-            .get_pve_game_combatant_phase(
-                self.pve.get_pve_stage_game_id(attempt_id, attempt.stage),
+            .arcade
+            .get_arcade_game_combatant_phase(
+                self.arcade.get_arcade_stage_game_id(attempt_id, attempt.stage),
             );
-        assert(phase == PVEPhase::PlayerWon, 'Player not won last round');
+        assert(phase == ArcadePhase::PlayerWon, 'Player not won last round');
         assert(get_block_timestamp() <= attempt.expiry, 'Challenge expired');
         let health = calc_restored_health(
             self.ba.get_combatant_health(combatant_id),
             attempt.stats.vitality,
-            self.pve.get_pve_challenge_health_recovery(attempt.challenge),
+            self.arcade.get_arcade_challenge_health_recovery(attempt.challenge),
         );
 
         attempt.stage += 1;
 
-        self.pve.set_pve_challenge_stage(attempt_id, attempt.stage);
+        self.arcade.set_arcade_challenge_stage(attempt_id, attempt.stage);
 
         self
-            .create_pve_challenge_attempt_round(
+            .create_arcade_challenge_attempt_round(
                 attempt_id,
                 attempt.challenge,
                 attempt.player,
@@ -353,8 +359,8 @@ impl PVEImpl of PVETrait {
             );
     }
 
-    fn create_pve_challenge_attempt_round(
-        ref self: PVEStore,
+    fn create_arcade_challenge_attempt_round(
+        ref self: ArcadeStore,
         id: felt252,
         challenge: felt252,
         player: ContractAddress,
@@ -363,32 +369,32 @@ impl PVEImpl of PVETrait {
         stage: u32,
         health: u8,
     ) {
-        let opponent = self.pve.get_pve_stage_opponent(challenge, stage);
+        let opponent = self.arcade.get_arcade_stage_opponent(challenge, stage);
         assert(opponent.is_non_zero(), 'No more stages');
         let game = self
-            .setup_pve_opponent_in_combat(player, stats, health, attacks.span(), opponent);
-        self.pve.set_pve_stage_game(id, stage, game.id);
+            .setup_arcade_opponent_in_combat(player, stats, health, attacks.span(), opponent);
+        self.arcade.set_arcade_stage_game(id, stage, game.id);
     }
 
-    fn respawn_pve_challenge_attempt(ref self: PVEStore, attempt_id: felt252) {
-        let mut attempt = self.pve.get_pve_challenge_attempt_respawn(attempt_id);
-        let game_id = self.pve.get_pve_stage_game_id(attempt_id, attempt.stage);
-        let phase = self.pve.get_pve_game_phase(game_id);
+    fn respawn_arcade_challenge_attempt(ref self: ArcadeStore, attempt_id: felt252) {
+        let mut attempt = self.arcade.get_arcade_challenge_attempt_respawn(attempt_id);
+        let game_id = self.arcade.get_arcade_stage_game_id(attempt_id, attempt.stage);
+        let phase = self.arcade.get_arcade_game_phase(game_id);
 
         attempt.phase.assert_active();
         assert(attempt.player == get_caller_address(), 'Not player');
         assert(get_block_timestamp() <= attempt.expiry, 'Challenge expired');
-        assert(phase == PVEPhase::PlayerLost, 'Player not lost round');
+        assert(phase == ArcadePhase::PlayerLost, 'Player not lost round');
         assert(attempt.respawns < ARCADE_CHALLENGE_MAX_RESPAWNS, 'Max respawns');
-        self.pve.use_game(attempt.player);
+        self.arcade.use_game(attempt.player);
 
         attempt.respawns += 1;
 
-        self.pve.set_pve_challenge_respawns(attempt_id, attempt.respawns);
-        self.pve.emit_pve_respawn(attempt_id, attempt.respawns, attempt.stage, game_id);
+        self.arcade.set_arcade_challenge_respawns(attempt_id, attempt.respawns);
+        self.arcade.emit_arcade_respawn(attempt_id, attempt.respawns, attempt.stage, game_id);
         let health = attempt.stats.get_max_health();
         self
-            .create_pve_challenge_attempt_round(
+            .create_arcade_challenge_attempt_round(
                 attempt_id,
                 attempt.challenge,
                 attempt.player,
@@ -400,27 +406,27 @@ impl PVEImpl of PVETrait {
     }
 
 
-    fn end_pve_challenge_attempt(
-        ref self: WorldStorage, attempt_id: felt252, attempt: PVEAttemptEnd,
+    fn end_arcade_challenge_attempt(
+        ref self: WorldStorage, attempt_id: felt252, attempt: ArcadeAttemptEnd,
     ) {
         attempt.phase.assert_active();
-        let game_id = self.get_pve_stage_game_id(attempt_id, attempt.stage);
-        let won = match self.get_pve_game_phase(game_id) {
-            PVEPhase::PlayerWon => {
-                self.get_pve_stage_game_id(attempt.challenge, attempt.stage + 1).is_zero()
+        let game_id = self.get_arcade_stage_game_id(attempt_id, attempt.stage);
+        let won = match self.get_arcade_game_phase(game_id) {
+            ArcadePhase::PlayerWon => {
+                self.get_arcade_stage_game_id(attempt.challenge, attempt.stage + 1).is_zero()
             },
-            PVEPhase::PlayerLost => false,
-            PVEPhase::Active => {
-                self.set_pve_ended(game_id, false);
+            ArcadePhase::PlayerLost => false,
+            ArcadePhase::Active => {
+                self.set_arcade_ended(game_id, false);
                 false
             },
             _ => panic!("Combat not started"),
         };
         self
-            .remove_pve_current_challenge_attempt(
+            .remove_arcade_current_challenge_attempt(
                 attempt.player, attempt.collection, attempt.token_id,
             );
-        self.set_pve_challenge_attempt_ended(attempt_id, won);
+        self.set_arcade_challenge_attempt_ended(attempt_id, won);
     }
 
     fn use_free_game(ref self: WorldStorage, player: ContractAddress) -> bool {

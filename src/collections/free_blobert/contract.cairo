@@ -1,7 +1,7 @@
 use starknet::ContractAddress;
 use blob_arena::collections::blobert::external::TokenAttributes;
 
-/// Interface for the ArcadeBlobert NFT contract
+/// Interface for the FreeBlobert NFT contract
 ///
 /// # Interface Functions
 ///
@@ -18,32 +18,32 @@ use blob_arena::collections::blobert::external::TokenAttributes;
 ///    Returns:
 ///    * `TokenAttributes` - The attributes associated with the token
 #[starknet::interface]
-trait IArcadeBlobert<TContractState> {
+trait IFreeBlobert<TContractState> {
     fn mint(ref self: TContractState) -> u256;
     fn traits(self: @TContractState, token_id: u256) -> TokenAttributes;
 }
 
 #[dojo::contract]
-mod arcade_blobert_actions {
+mod free_blobert_actions {
     use starknet::{ContractAddress, get_caller_address};
     use dojo::world::WorldStorage;
     use blob_arena::{
-        collections::{ICollection, blobert, arcade_blobert}, stats::UStats, default_namespace,
+        collections::{ICollection, blobert, free_blobert}, stats::UStats, default_namespace,
     };
     use blobert::{blobert_namespace, BlobertTrait, BlobertStorage, TokenAttributes};
-    use arcade_blobert::{
-        ArcadeBlobertStorage, mint::ArcadeBlobertMintTrait, collection::BlobertCollectionTrait,
+    use free_blobert::{
+        FreeBlobertStorage, mint::FreeBlobertMintTrait, collection::BlobertCollectionTrait,
     };
-    use super::IArcadeBlobert;
+    use super::IFreeBlobert;
 
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
         fn storage(self: @ContractState) -> WorldStorage {
-            self.world(@"arcade_blobert")
+            self.world(@"free_blobert")
         }
     }
 
-    impl ArcadeBlobertCollectionImpl of BlobertCollectionTrait<ContractState> {
+    impl FreeBlobertCollectionImpl of BlobertCollectionTrait<ContractState> {
         fn blobert_storage(self: @ContractState) -> WorldStorage {
             self.world(blobert_namespace())
         }
@@ -56,12 +56,12 @@ mod arcade_blobert_actions {
     }
 
     #[abi(embed_v0)]
-    impl IArcadeBlobertCollectionImpl =
-        arcade_blobert::collection::IBlobertCollectionImpl<ContractState>;
+    impl IFreeBlobertCollectionImpl =
+        free_blobert::collection::IBlobertCollectionImpl<ContractState>;
 
 
     #[abi(embed_v0)]
-    impl IArcadeBlobertImpl of IArcadeBlobert<ContractState> {
+    impl IFreeBlobertImpl of IFreeBlobert<ContractState> {
         fn mint(ref self: ContractState) -> u256 {
             let mut storage = self.storage();
             storage.mint_random_blobert(get_caller_address())

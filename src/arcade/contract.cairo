@@ -2,11 +2,11 @@ use starknet::ContractAddress;
 use blob_arena::{stats::UStats, collections::blobert::{TokenAttributes, BlobertItemKey}};
 
 
-/// Interface for the PVE (Player vs Environment) game contract
+/// Interface for the Arcade (Player vs Environment) game contract
 ///
 /// # Functions
 ///
-/// * `start_game` - Initiates a new PVE game session
+/// * `start_game` - Initiates a new Arcade game session
 ///   * `opponent_id` - Identifier for the opponent to fight
 ///   * `collection_address` - Contract address of the NFT collection
 ///   * `token_id` - ID of the token being used
@@ -38,8 +38,8 @@ use blob_arena::{stats::UStats, collections::blobert::{TokenAttributes, BlobertI
 ///
 
 #[starknet::interface]
-trait IPVE<TContractState> {
-    /// Starts a new PVE game against an opponent.
+trait IArcade<TContractState> {
+    /// Starts a new Arcade game against an opponent.
     /// # Arguments
     /// * `opponent_id` - The unique identifier of the opponent to fight against
     /// * `collection_address` - The contract address of the NFT collection
@@ -49,12 +49,12 @@ trait IPVE<TContractState> {
     /// * `felt252` - The game ID of the newly created game
     ///
     /// Models:
-    /// - PVEFreeGames
-    /// - PVEPaidGames
+    /// - ArcadeFreeGames
+    /// - ArcadePaidGames
     /// - AttackAvailable
     /// - CombatantToken
     /// - CombatantState
-    /// - PVEGame
+    /// - ArcadeGame
     fn start_game(
         ref self: TContractState,
         opponent_id: felt252,
@@ -70,7 +70,7 @@ trait IPVE<TContractState> {
     ///
     /// Models:
     /// - CombatantState
-    /// - PVEGame
+    /// - ArcadeGame
     /// - AttackLastUsed
     ///
     /// Events:
@@ -85,14 +85,14 @@ trait IPVE<TContractState> {
     /// * `attacks` - Array of attack tuples (attack_id, attack_power)
     ///
     /// Models:
-    /// - PVEFreeGames
-    /// - PVEPaidGames
+    /// - ArcadeFreeGames
+    /// - ArcadePaidGames
     /// - AttackAvailable
     /// - CombatantToken
     /// - CombatantState
-    /// - PVEGame
-    /// - PVEChallengeAttempt
-    /// - PVEStageGame
+    /// - ArcadeGame
+    /// - ArcadeChallengeAttempt
+    /// - ArcadeStageGame
     fn start_challenge(
         ref self: TContractState,
         challenge_id: felt252,
@@ -108,9 +108,9 @@ trait IPVE<TContractState> {
     /// Models:
     /// - AttackAvailable
     /// - CombatantState
-    /// - PVEGame
-    /// - PVEChallengeAttempt
-    /// - PVEStageGame
+    /// - ArcadeGame
+    /// - ArcadeChallengeAttempt
+    /// - ArcadeStageGame
     fn next_challenge_round(ref self: TContractState, attempt_id: felt252);
 
     /// Restarts a challenge attempt from the beginning.
@@ -118,16 +118,16 @@ trait IPVE<TContractState> {
     /// * `attempt_id` - The unique identifier of the challenge attempt to respawn
     ///
     /// Models:
-    /// - PVEFreeGames
-    /// - PVEPaidGames
+    /// - ArcadeFreeGames
+    /// - ArcadePaidGames
     /// - AttackAvailable
     /// - CombatantState
-    /// - PVEGame
-    /// - PVEChallengeAttempt
-    /// - PVEStageGame
+    /// - ArcadeGame
+    /// - ArcadeChallengeAttempt
+    /// - ArcadeStageGame
     ///
     /// Events:
-    /// - PVEChallengeRespawn
+    /// - ArcadeChallengeRespawn
     fn respawn_challenge(ref self: TContractState, attempt_id: felt252);
 
     /// Completes and finalizes an active challenge attempt.
@@ -135,41 +135,43 @@ trait IPVE<TContractState> {
     /// * `attempt_id` - The unique identifier of the challenge attempt to end
     ///
     /// Models:
-    /// - PVEChallengeAttempt
-    /// - PVEStageGame
+    /// - ArcadeChallengeAttempt
+    /// - ArcadeStageGame
     fn end_challenge(ref self: TContractState, attempt_id: felt252);
 
     /// Claims a free game attempt.
     ///
     /// Models:
-    /// - PVEFreeGames
+    /// - ArcadeFreeGames
     fn claim_free_game(ref self: TContractState);
 }
 
 
 #[dojo::contract]
-mod pve_blobert_actions {
+mod arcade_actions {
     use starknet::{ContractAddress, get_caller_address};
     use dojo::world::WorldStorage;
     use blob_arena::{
-        pve::{PVETrait, PVEStorage, PVE_NAMESPACE_HASH, PVEStore},
+        arcade::{ArcadeTrait, ArcadeStorage, ARCADE_NAMESPACE_HASH, ArcadeStore},
         world::{uuid, DEFAULT_NAMESPACE_HASH}, game::GameProgress, utils::get_transaction_hash,
         stats::UStats, collections::blobert::{TokenAttributes, BlobertItemKey, BlobertStorage},
         erc721::erc721_owner_of,
     };
-    use super::{IPVE};
+    use super::{IArcade};
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
-        fn get_storage(self: @ContractState) -> PVEStore {
-            PVEStore { ba: self.world_ns_hash(DEFAULT_NAMESPACE_HASH), pve: self.get_pve_storage() }
+        fn get_storage(self: @ContractState) -> ArcadeStore {
+            ArcadeStore {
+                ba: self.world_ns_hash(DEFAULT_NAMESPACE_HASH), arcade: self.get_arcade_storage(),
+            }
         }
-        fn get_pve_storage(self: @ContractState) -> WorldStorage {
-            self.world_ns_hash(PVE_NAMESPACE_HASH)
+        fn get_arcade_storage(self: @ContractState) -> WorldStorage {
+            self.world_ns_hash(ARCADE_NAMESPACE_HASH)
         }
     }
 
     #[abi(embed_v0)]
-    impl IPVEImpl of IPVE<ContractState> {
+    impl IArcadeImpl of IArcade<ContractState> {
         fn start_game(
             ref self: ContractState,
             opponent_id: felt252,
@@ -180,15 +182,15 @@ mod pve_blobert_actions {
             let mut store = self.get_storage();
             let caller = get_caller_address();
             assert(erc721_owner_of(collection_address, token_id) == caller, 'Not owner');
-            store.pve.use_game(caller);
-            store.new_pve_game(opponent_id, caller, collection_address, token_id, attacks)
+            store.arcade.use_game(caller);
+            store.new_arcade_game(opponent_id, caller, collection_address, token_id, attacks)
         }
         fn attack(ref self: ContractState, game_id: felt252, attack_id: felt252) {
             let mut store = self.get_storage();
-            let game = store.pve.get_pve_game(game_id);
+            let game = store.arcade.get_arcade_game(game_id);
             assert(game.player == get_caller_address(), 'Not player');
             let randomness = get_transaction_hash(); //TODO: Use real randomness
-            store.run_pve_round(game, attack_id, randomness);
+            store.run_arcade_round(game, attack_id, randomness);
         }
         fn start_challenge(
             ref self: ContractState,
@@ -202,37 +204,37 @@ mod pve_blobert_actions {
             assert(erc721_owner_of(collection_address, token_id) == caller, 'Not owner');
             assert(
                 store
-                    .pve
-                    .get_pve_current_challenge_attempt(caller, collection_address, token_id)
+                    .arcade
+                    .get_arcade_current_challenge_attempt(caller, collection_address, token_id)
                     .is_zero(),
                 'Already in challenge',
             );
-            store.pve.use_game(caller);
+            store.arcade.use_game(caller);
 
             store
-                .new_pve_challenge_attempt(
+                .new_arcade_challenge_attempt(
                     challenge_id, caller, collection_address, token_id, attacks,
                 );
         }
         fn next_challenge_round(ref self: ContractState, attempt_id: felt252) {
             let mut store = self.get_storage();
-            store.next_pve_challenge_round(attempt_id);
+            store.next_arcade_challenge_round(attempt_id);
         }
         fn respawn_challenge(ref self: ContractState, attempt_id: felt252) {
             let mut store = self.get_storage();
-            store.respawn_pve_challenge_attempt(attempt_id);
+            store.respawn_arcade_challenge_attempt(attempt_id);
         }
         fn end_challenge(ref self: ContractState, attempt_id: felt252) {
-            let mut store = self.get_pve_storage();
-            let attempt = store.get_pve_challenge_attempt_end_schema(attempt_id);
+            let mut store = self.get_arcade_storage();
+            let attempt = store.get_arcade_challenge_attempt_end_schema(attempt_id);
 
             assert(attempt.player == get_caller_address(), 'Not player');
 
-            store.end_pve_challenge_attempt(attempt_id, attempt);
+            store.end_arcade_challenge_attempt(attempt_id, attempt);
         }
 
         fn claim_free_game(ref self: ContractState) {
-            let mut store = self.get_pve_storage();
+            let mut store = self.get_arcade_storage();
             store.mint_free_game(get_caller_address());
         }
     }

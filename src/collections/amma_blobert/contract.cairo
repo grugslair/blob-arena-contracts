@@ -30,8 +30,8 @@ mod amma_blobert_actions {
     use blob_arena::{
         DefaultStorage, attacks::components::AttackInput, stats::UStats, default_namespace,
     };
-    use blob_arena::collections::{blobert, arcade_blobert, interface::ICollection};
-    use arcade_blobert::{ArcadeBlobertStorage, BlobertCollectionTrait};
+    use blob_arena::collections::{blobert, free_blobert, interface::ICollection};
+    use free_blobert::{FreeBlobertStorage, BlobertCollectionTrait};
     use blobert::{
         blobert_namespace, BlobertTrait, BlobertStorage, TokenAttributes, BlobertItemKey,
         to_seed_key, BlobertAttribute,
@@ -56,7 +56,7 @@ mod amma_blobert_actions {
         }
     }
 
-    impl ArcadeBlobertCollectionImpl of BlobertCollectionTrait<ContractState> {
+    impl FreeBlobertCollectionImpl of BlobertCollectionTrait<ContractState> {
         fn blobert_storage(self: @ContractState) -> WorldStorage {
             self.default_storage()
         }
@@ -73,8 +73,8 @@ mod amma_blobert_actions {
         blobert::items::IBlobertItemsImpl<ContractState, permissioned_storage::DefaultStorageImpl>;
 
     #[abi(embed_v0)]
-    impl IArcadeBlobertCollectionImpl =
-        arcade_blobert::collection::IBlobertCollectionImpl<ContractState>;
+    impl IFreeBlobertCollectionImpl =
+        free_blobert::collection::IBlobertCollectionImpl<ContractState>;
 
     #[abi(embed_v0)]
     impl IAMMABlobertImpl of IAMMABlobert<ContractState> {
