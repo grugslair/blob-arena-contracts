@@ -136,6 +136,7 @@ trait IPVE<TContractState> {
     ///
     /// Models:
     /// - PVEChallengeAttempt
+    /// - PVEStageGame
     fn end_challenge(ref self: TContractState, attempt_id: felt252);
 
     /// Claims a free game attempt.
