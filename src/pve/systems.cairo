@@ -399,17 +399,22 @@ impl PVEImpl of PVETrait {
             );
     }
 
+
     fn end_pve_challenge_attempt(
         ref self: WorldStorage, attempt_id: felt252, attempt: PVEAttemptEnd,
     ) {
         attempt.phase.assert_active();
-        let won =
-            match self.get_pve_game_phase(self.get_pve_stage_game_id(attempt_id, attempt.stage)) {
-            PVEPhase::PlayerWon => self
-                .get_pve_stage_game_id(attempt.challenge, attempt.stage + 1)
-                .is_zero(),
+        let game_id = self.get_pve_stage_game_id(attempt_id, attempt.stage);
+        let won = match self.get_pve_game_phase(game_id) {
+            PVEPhase::PlayerWon => {
+                self.get_pve_stage_game_id(attempt.challenge, attempt.stage + 1).is_zero()
+            },
             PVEPhase::PlayerLost => false,
-            _ => panic!("Combat not ended"),
+            PVEPhase::Active => {
+                self.set_pve_ended(game_id, false);
+                false
+            },
+            _ => panic!("Combat not started"),
         };
         self
             .remove_pve_current_challenge_attempt(
