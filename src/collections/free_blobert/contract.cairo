@@ -20,54 +20,50 @@ use blob_arena::collections::blobert::external::TokenAttributes;
 #[starknet::interface]
 trait IFreeBlobert<TContractState> {
     fn mint(ref self: TContractState) -> u256;
+    fn burn(ref self: TContractState, token_id: u256);
     fn traits(self: @TContractState, token_id: u256) -> TokenAttributes;
 }
 
+const FREE_BLOBERT_NAMESPACE_HASH: felt252 = bytearray_hash!("free_blobert");
+
 #[dojo::contract]
 mod free_blobert_actions {
+    use core::poseidon::poseidon_hash_span;
     use starknet::{ContractAddress, get_caller_address};
     use dojo::world::WorldStorage;
-    use blob_arena::{
-        collections::{ICollection, blobert, free_blobert}, stats::UStats, default_namespace,
-    };
-    use blobert::{blobert_namespace, BlobertTrait, BlobertStorage, TokenAttributes};
-    use free_blobert::{
-        FreeBlobertStorage, mint::FreeBlobertMintTrait, collection::BlobertCollectionTrait,
-    };
-    use super::IFreeBlobert;
 
-    #[generate_trait]
-    impl PrivateImpl of PrivateTrait {
-        fn storage(self: @ContractState) -> WorldStorage {
-            self.world(@"free_blobert")
-        }
-    }
+    use crate::world::{WorldTrait, incrementor};
+    use super::super::systems::FreeBlobertTrait;
+    use super::super::super::blobert::BLOBERT_NAMESPACE_HASH;
+    use super::super::super::world_blobert;
+    use super::super::super::items::cmp;
+    use super::super::super::collection;
+    use super::super::super::{IBlobertCollectionImpl, TokenAttributes};
 
-    impl FreeBlobertCollectionImpl of BlobertCollectionTrait<ContractState> {
-        fn blobert_storage(self: @ContractState) -> WorldStorage {
-            self.world(blobert_namespace())
-        }
-        fn attributes(self: @ContractState, token_id: u256) -> TokenAttributes {
-            self.storage().get_blobert_token_attributes(token_id)
-        }
-        fn owner(self: @ContractState, token_id: u256) -> ContractAddress {
-            self.storage().get_blobert_token_owner(token_id)
-        }
-    }
+    use super::{IFreeBlobert, FREE_BLOBERT_NAMESPACE_HASH};
+
+    impl FreeBlobertStoreImpl =
+        world_blobert::WorldBlobertStore<FREE_BLOBERT_NAMESPACE_HASH, BLOBERT_NAMESPACE_HASH>;
 
     #[abi(embed_v0)]
     impl IFreeBlobertCollectionImpl =
-        free_blobert::collection::IBlobertCollectionImpl<ContractState>;
+        collection::IBlobertCollectionImpl<ContractState, FreeBlobertStoreImpl>;
 
 
     #[abi(embed_v0)]
     impl IFreeBlobertImpl of IFreeBlobert<ContractState> {
         fn mint(ref self: ContractState) -> u256 {
-            let mut storage = self.storage();
-            storage.mint_random_blobert(get_caller_address())
+            let mut storage = self.storage(FREE_BLOBERT_NAMESPACE_HASH);
+            let randomness = poseidon_hash_span(['free', incrementor('SEED-ITER')].span());
+            storage.mint_random_blobert(get_caller_address(), randomness)
+        }
+        fn burn(ref self: ContractState, token_id: u256) {
+            let mut storage = self.storage(FREE_BLOBERT_NAMESPACE_HASH);
+            storage.burn_blobert(token_id);
         }
         fn traits(self: @ContractState, token_id: u256) -> TokenAttributes {
-            self.attributes(token_id)
+            let dispactcher = self.world_dispatcher();
+            dispactcher.attributes(token_id)
         }
     }
 }
