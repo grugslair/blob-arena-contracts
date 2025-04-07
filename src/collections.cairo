@@ -7,7 +7,7 @@ mod amma_blobert;
 mod blobert {
     mod contract;
     mod external;
-    use external::{blobert_dispatcher, IBlobertDispatcher, IBlobertDispatcherTrait};
+    use external::{IBlobertDispatcher, IBlobertDispatcherTrait};
     use contract::BLOBERT_NAMESPACE_HASH;
 }
 mod free_blobert {
