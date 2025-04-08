@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x59e36489c5d252e11b8c84740bac77c09bb789ae5fe2660f7a0475a20dd09d6",
-      "class_hash": "0x4b6115f1441292689ad17c9a5ecf129d6cf897441c2ca82381e7e9ace522032",
+      "address": "0x65bf7bf975c09be51099db39131cb6490695fa9e26ff79104f6bad9c4638059",
+      "class_hash": "0xc7f07535ef602c8fce666390f578e6dc983c896270ff9efaf26db5721f76e2",
       "abi": [
         {
           "type": "impl",
@@ -1367,8 +1367,8 @@
         },
         {
           "type": "impl",
-          "name": "IAMMABlobertImpl",
-          "interface_name": "blob_arena::collections::amma_blobert::contract::IAMMABlobert"
+          "name": "IAmmaBlobertImpl",
+          "interface_name": "blob_arena::collections::amma_blobert::IAmmaBlobert"
         },
         {
           "type": "struct",
@@ -1386,7 +1386,7 @@
         },
         {
           "type": "struct",
-          "name": "blob_arena::collections::blobert::components::Seed",
+          "name": "blob_arena::collections::attributes::Seed",
           "members": [
             {
               "name": "background",
@@ -1412,11 +1412,11 @@
         },
         {
           "type": "enum",
-          "name": "blob_arena::collections::blobert::components::TokenAttributes",
+          "name": "blob_arena::collections::attributes::TokenAttributes",
           "variants": [
             {
               "name": "Seed",
-              "type": "blob_arena::collections::blobert::components::Seed"
+              "type": "blob_arena::collections::attributes::Seed"
             },
             {
               "name": "Custom",
@@ -1426,7 +1426,7 @@
         },
         {
           "type": "interface",
-          "name": "blob_arena::collections::amma_blobert::contract::IAMMABlobert",
+          "name": "blob_arena::collections::amma_blobert::IAmmaBlobert",
           "items": [
             {
               "type": "function",
@@ -1455,7 +1455,7 @@
               ],
               "outputs": [
                 {
-                  "type": "blob_arena::collections::blobert::components::TokenAttributes"
+                  "type": "blob_arena::collections::attributes::TokenAttributes"
                 }
               ],
               "state_mutability": "view"
@@ -1526,12 +1526,12 @@
         },
         {
           "type": "impl",
-          "name": "IAMMABlobertItems",
-          "interface_name": "blob_arena::collections::blobert::items::IBlobertItems"
+          "name": "IAmmaBlobertItems",
+          "interface_name": "blob_arena::collections::items::component::IBlobertItems"
         },
         {
           "type": "enum",
-          "name": "blob_arena::collections::blobert::components::BlobertAttribute",
+          "name": "blob_arena::collections::attributes::BlobertAttribute",
           "variants": [
             {
               "name": "Background",
@@ -1557,11 +1557,11 @@
         },
         {
           "type": "struct",
-          "name": "blob_arena::collections::blobert::components::SeedItem",
+          "name": "blob_arena::collections::attributes::SeedItem",
           "members": [
             {
               "name": "attribute",
-              "type": "blob_arena::collections::blobert::components::BlobertAttribute"
+              "type": "blob_arena::collections::attributes::BlobertAttribute"
             },
             {
               "name": "attribute_id",
@@ -1571,11 +1571,11 @@
         },
         {
           "type": "enum",
-          "name": "blob_arena::collections::blobert::components::BlobertItemKey",
+          "name": "blob_arena::collections::attributes::BlobertItemKey",
           "variants": [
             {
               "name": "Seed",
-              "type": "blob_arena::collections::blobert::components::SeedItem"
+              "type": "blob_arena::collections::attributes::SeedItem"
             },
             {
               "name": "Custom",
@@ -1809,7 +1809,7 @@
         },
         {
           "type": "interface",
-          "name": "blob_arena::collections::blobert::items::IBlobertItems",
+          "name": "blob_arena::collections::items::component::IBlobertItems",
           "items": [
             {
               "type": "function",
@@ -1817,7 +1817,7 @@
               "inputs": [
                 {
                   "name": "key",
-                  "type": "blob_arena::collections::blobert::components::BlobertItemKey"
+                  "type": "blob_arena::collections::attributes::BlobertItemKey"
                 },
                 {
                   "name": "name",
@@ -1837,7 +1837,7 @@
               "inputs": [
                 {
                   "name": "key",
-                  "type": "blob_arena::collections::blobert::components::BlobertItemKey"
+                  "type": "blob_arena::collections::attributes::BlobertItemKey"
                 },
                 {
                   "name": "name",
@@ -1861,7 +1861,7 @@
               "inputs": [
                 {
                   "name": "key",
-                  "type": "blob_arena::collections::blobert::components::BlobertItemKey"
+                  "type": "blob_arena::collections::attributes::BlobertItemKey"
                 },
                 {
                   "name": "stats",
@@ -1877,7 +1877,7 @@
               "inputs": [
                 {
                   "name": "key",
-                  "type": "blob_arena::collections::blobert::components::BlobertItemKey"
+                  "type": "blob_arena::collections::attributes::BlobertItemKey"
                 },
                 {
                   "name": "name",
@@ -1893,7 +1893,7 @@
               "inputs": [
                 {
                   "name": "key",
-                  "type": "blob_arena::collections::blobert::components::BlobertItemKey"
+                  "type": "blob_arena::collections::attributes::BlobertItemKey"
                 },
                 {
                   "name": "slot",
@@ -1913,7 +1913,7 @@
               "inputs": [
                 {
                   "name": "key",
-                  "type": "blob_arena::collections::blobert::components::BlobertItemKey"
+                  "type": "blob_arena::collections::attributes::BlobertItemKey"
                 },
                 {
                   "name": "attacks",
@@ -1929,7 +1929,7 @@
               "inputs": [
                 {
                   "name": "attribute",
-                  "type": "blob_arena::collections::blobert::components::BlobertAttribute"
+                  "type": "blob_arena::collections::attributes::BlobertAttribute"
                 },
                 {
                   "name": "id",
@@ -1953,7 +1953,7 @@
               "inputs": [
                 {
                   "name": "attribute",
-                  "type": "blob_arena::collections::blobert::components::BlobertAttribute"
+                  "type": "blob_arena::collections::attributes::BlobertAttribute"
                 },
                 {
                   "name": "id",
@@ -2023,7 +2023,7 @@
         },
         {
           "type": "impl",
-          "name": "IFreeBlobertCollectionImpl",
+          "name": "IAmmaBlobertCollectionImpl",
           "interface_name": "blob_arena::collections::interface::ICollection"
         },
         {
@@ -2042,42 +2042,6 @@
               "outputs": [
                 {
                   "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "get_approved",
-              "inputs": [
-                {
-                  "name": "token_id",
-                  "type": "core::integer::u256"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "is_approved_for_all",
-              "inputs": [
-                {
-                  "name": "owner",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                },
-                {
-                  "name": "operator",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::bool"
                 }
               ],
               "state_mutability": "view"
@@ -2181,7 +2145,7 @@
         },
         {
           "type": "event",
-          "name": "blob_arena::collections::amma_blobert::contract::amma_blobert_actions::Event",
+          "name": "blob_arena::collections::amma_blobert::amma_blobert_actions::Event",
           "kind": "enum",
           "variants": [
             {
@@ -2216,8 +2180,8 @@
       ]
     },
     {
-      "address": "0x67933394c42715851c9bbdf1aec09c05792349f1647253fe3f543cf50c59c86",
-      "class_hash": "0x83a87182b5b6f0d4281141ff59b3ce7a13173344eb644441d1cd0d9f519ba1",
+      "address": "0x4c0a96cbafa765fc4e1bc5eec39a53bcdc0216ba5affdc56d9595e1fc854d91",
+      "class_hash": "0x7ac67ae3cb8b58fd21d3f1add23e6d64950cb955cea705948da6027af32c47f",
       "abi": [
         {
           "type": "impl",
@@ -2535,8 +2499,8 @@
       ]
     },
     {
-      "address": "0x37eec0ad1a609afb1c0f2db4e696bc3489ec3dbb6cf56c44e3a08c280b00975",
-      "class_hash": "0xb3ca3d2bce147aa40dd87dae83e903d4578a5187de9664fad4bf5da2530925",
+      "address": "0x31064b0b33cfbda9ddc43e9804561e535085d3630d3da62b46b8257785b6372",
+      "class_hash": "0x3995e571cb4773b2e91b50438417f607a4a665ef3437dde7897aba18d577a89",
       "abi": [
         {
           "type": "impl",
@@ -2595,7 +2559,7 @@
         },
         {
           "type": "struct",
-          "name": "blob_arena::collections::blobert::components::Seed",
+          "name": "blob_arena::collections::attributes::Seed",
           "members": [
             {
               "name": "background",
@@ -2621,11 +2585,11 @@
         },
         {
           "type": "enum",
-          "name": "blob_arena::collections::blobert::components::TokenAttributes",
+          "name": "blob_arena::collections::attributes::TokenAttributes",
           "variants": [
             {
               "name": "Seed",
-              "type": "blob_arena::collections::blobert::components::Seed"
+              "type": "blob_arena::collections::attributes::Seed"
             },
             {
               "name": "Custom",
@@ -2871,7 +2835,7 @@
             },
             {
               "name": "attributes",
-              "type": "blob_arena::collections::blobert::components::TokenAttributes"
+              "type": "blob_arena::collections::attributes::TokenAttributes"
             },
             {
               "name": "stats",
@@ -2923,7 +2887,7 @@
                 },
                 {
                   "name": "attributes",
-                  "type": "blob_arena::collections::blobert::components::TokenAttributes"
+                  "type": "blob_arena::collections::attributes::TokenAttributes"
                 },
                 {
                   "name": "stats",
@@ -3193,8 +3157,8 @@
       ]
     },
     {
-      "address": "0x65a800f909db44f5e18f835fd7018d84f6b778d2967c7c512b56b6428d34bab",
-      "class_hash": "0x2b97dd439cd8f34342eb50e0bae1eb3c0a43719eb628998fa5234796dd0702",
+      "address": "0x1425edb1e172ee11e1a6ba2b555b5671c2630b1205d340647395bcf1e734139",
+      "class_hash": "0x39bc7cf46f8227c413471db33c74500982df7946184e4a40714b4c24f2c4f5b",
       "abi": [
         {
           "type": "impl",
@@ -4198,8 +4162,8 @@
       ]
     },
     {
-      "address": "0x60573b4b02cf23b445deee8894ac39e71f1214a420b4003b8c94ff04e9b3a91",
-      "class_hash": "0x58d70e2a6ba2fe1b41f428f3df02a9d32724984f238b1cde7f4e18abfeac4fd",
+      "address": "0x1be30085353103dfe4eca6569559b10eaab73ebf8e4d3bcf382605b571fd0fe",
+      "class_hash": "0x26b065eff817b78ad794bae427cf2c5b97d87f3147088c8972caf848f2cdf82",
       "abi": [
         {
           "type": "impl",
@@ -4265,179 +4229,6 @@
         },
         {
           "type": "impl",
-          "name": "ICollectionImpl",
-          "interface_name": "blob_arena::collections::interface::ICollection"
-        },
-        {
-          "type": "struct",
-          "name": "core::integer::u256",
-          "members": [
-            {
-              "name": "low",
-              "type": "core::integer::u128"
-            },
-            {
-              "name": "high",
-              "type": "core::integer::u128"
-            }
-          ]
-        },
-        {
-          "type": "enum",
-          "name": "core::bool",
-          "variants": [
-            {
-              "name": "False",
-              "type": "()"
-            },
-            {
-              "name": "True",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "blob_arena::stats::TStats::<core::integer::u8>",
-          "members": [
-            {
-              "name": "strength",
-              "type": "core::integer::u8"
-            },
-            {
-              "name": "vitality",
-              "type": "core::integer::u8"
-            },
-            {
-              "name": "dexterity",
-              "type": "core::integer::u8"
-            },
-            {
-              "name": "luck",
-              "type": "core::integer::u8"
-            }
-          ]
-        },
-        {
-          "type": "interface",
-          "name": "blob_arena::collections::interface::ICollection",
-          "items": [
-            {
-              "type": "function",
-              "name": "owner_of",
-              "inputs": [
-                {
-                  "name": "token_id",
-                  "type": "core::integer::u256"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "get_approved",
-              "inputs": [
-                {
-                  "name": "token_id",
-                  "type": "core::integer::u256"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "is_approved_for_all",
-              "inputs": [
-                {
-                  "name": "owner",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                },
-                {
-                  "name": "operator",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::bool"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "get_stats",
-              "inputs": [
-                {
-                  "name": "token_id",
-                  "type": "core::integer::u256"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "blob_arena::stats::TStats::<core::integer::u8>"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "get_attack_slot",
-              "inputs": [
-                {
-                  "name": "token_id",
-                  "type": "core::integer::u256"
-                },
-                {
-                  "name": "item_id",
-                  "type": "core::felt252"
-                },
-                {
-                  "name": "slot",
-                  "type": "core::felt252"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::felt252"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "get_attack_slots",
-              "inputs": [
-                {
-                  "name": "token_id",
-                  "type": "core::integer::u256"
-                },
-                {
-                  "name": "item_slots",
-                  "type": "core::array::Array::<(core::felt252, core::felt252)>"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::array::Array::<core::felt252>"
-                }
-              ],
-              "state_mutability": "view"
-            }
-          ]
-        },
-        {
-          "type": "impl",
           "name": "WorldProviderImpl",
           "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
         },
@@ -4493,12 +4284,12 @@
         },
         {
           "type": "impl",
-          "name": "IBlobertLocalItems",
-          "interface_name": "blob_arena::collections::blobert::items::IBlobertItems"
+          "name": "IBlobertItems",
+          "interface_name": "blob_arena::collections::items::component::IBlobertItems"
         },
         {
           "type": "enum",
-          "name": "blob_arena::collections::blobert::components::BlobertAttribute",
+          "name": "blob_arena::collections::attributes::BlobertAttribute",
           "variants": [
             {
               "name": "Background",
@@ -4524,11 +4315,11 @@
         },
         {
           "type": "struct",
-          "name": "blob_arena::collections::blobert::components::SeedItem",
+          "name": "blob_arena::collections::attributes::SeedItem",
           "members": [
             {
               "name": "attribute",
-              "type": "blob_arena::collections::blobert::components::BlobertAttribute"
+              "type": "blob_arena::collections::attributes::BlobertAttribute"
             },
             {
               "name": "attribute_id",
@@ -4538,15 +4329,37 @@
         },
         {
           "type": "enum",
-          "name": "blob_arena::collections::blobert::components::BlobertItemKey",
+          "name": "blob_arena::collections::attributes::BlobertItemKey",
           "variants": [
             {
               "name": "Seed",
-              "type": "blob_arena::collections::blobert::components::SeedItem"
+              "type": "blob_arena::collections::attributes::SeedItem"
             },
             {
               "name": "Custom",
               "type": "core::felt252"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::stats::TStats::<core::integer::u8>",
+          "members": [
+            {
+              "name": "strength",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "vitality",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "dexterity",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "luck",
+              "type": "core::integer::u8"
             }
           ]
         },
@@ -4560,6 +4373,20 @@
             },
             {
               "name": "Opponent",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
               "type": "()"
             }
           ]
@@ -4740,7 +4567,7 @@
         },
         {
           "type": "interface",
-          "name": "blob_arena::collections::blobert::items::IBlobertItems",
+          "name": "blob_arena::collections::items::component::IBlobertItems",
           "items": [
             {
               "type": "function",
@@ -4748,7 +4575,7 @@
               "inputs": [
                 {
                   "name": "key",
-                  "type": "blob_arena::collections::blobert::components::BlobertItemKey"
+                  "type": "blob_arena::collections::attributes::BlobertItemKey"
                 },
                 {
                   "name": "name",
@@ -4768,7 +4595,7 @@
               "inputs": [
                 {
                   "name": "key",
-                  "type": "blob_arena::collections::blobert::components::BlobertItemKey"
+                  "type": "blob_arena::collections::attributes::BlobertItemKey"
                 },
                 {
                   "name": "name",
@@ -4792,7 +4619,7 @@
               "inputs": [
                 {
                   "name": "key",
-                  "type": "blob_arena::collections::blobert::components::BlobertItemKey"
+                  "type": "blob_arena::collections::attributes::BlobertItemKey"
                 },
                 {
                   "name": "stats",
@@ -4808,7 +4635,7 @@
               "inputs": [
                 {
                   "name": "key",
-                  "type": "blob_arena::collections::blobert::components::BlobertItemKey"
+                  "type": "blob_arena::collections::attributes::BlobertItemKey"
                 },
                 {
                   "name": "name",
@@ -4824,7 +4651,7 @@
               "inputs": [
                 {
                   "name": "key",
-                  "type": "blob_arena::collections::blobert::components::BlobertItemKey"
+                  "type": "blob_arena::collections::attributes::BlobertItemKey"
                 },
                 {
                   "name": "slot",
@@ -4844,7 +4671,7 @@
               "inputs": [
                 {
                   "name": "key",
-                  "type": "blob_arena::collections::blobert::components::BlobertItemKey"
+                  "type": "blob_arena::collections::attributes::BlobertItemKey"
                 },
                 {
                   "name": "attacks",
@@ -4860,7 +4687,7 @@
               "inputs": [
                 {
                   "name": "attribute",
-                  "type": "blob_arena::collections::blobert::components::BlobertAttribute"
+                  "type": "blob_arena::collections::attributes::BlobertAttribute"
                 },
                 {
                   "name": "id",
@@ -4884,7 +4711,7 @@
               "inputs": [
                 {
                   "name": "attribute",
-                  "type": "blob_arena::collections::blobert::components::BlobertAttribute"
+                  "type": "blob_arena::collections::attributes::BlobertAttribute"
                 },
                 {
                   "name": "id",
@@ -4949,6 +4776,107 @@
               ],
               "outputs": [],
               "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IBlobertCollection",
+          "interface_name": "blob_arena::collections::interface::ICollection"
+        },
+        {
+          "type": "struct",
+          "name": "core::integer::u256",
+          "members": [
+            {
+              "name": "low",
+              "type": "core::integer::u128"
+            },
+            {
+              "name": "high",
+              "type": "core::integer::u128"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "blob_arena::collections::interface::ICollection",
+          "items": [
+            {
+              "type": "function",
+              "name": "owner_of",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_stats",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "blob_arena::stats::TStats::<core::integer::u8>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_attack_slot",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                },
+                {
+                  "name": "item_id",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "slot",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_attack_slots",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                },
+                {
+                  "name": "item_slots",
+                  "type": "core::array::Array::<(core::felt252, core::felt252)>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Array::<core::felt252>"
+                }
+              ],
+              "state_mutability": "view"
             }
           ]
         },
@@ -5026,8 +4954,8 @@
       ]
     },
     {
-      "address": "0x582b16800b58f6a77b87c1146509710d42bca13286aa37ef830385cf79d1cd2",
-      "class_hash": "0x234a8b734cb4dfc6f1cadf1d60e901120ce5b32fd4cf94fb9df73d3f626fb46",
+      "address": "0x62d46e153b0de64ae7030443e31f7903a6c12c8fc886094f4c07179f13f778c",
+      "class_hash": "0x29e922f333262752ec340c887d1433a897bebd31d4f152d621317889cf39189",
       "abi": [
         {
           "type": "impl",
@@ -5100,7 +5028,7 @@
         },
         {
           "type": "struct",
-          "name": "blob_arena::collections::blobert::components::Seed",
+          "name": "blob_arena::collections::attributes::Seed",
           "members": [
             {
               "name": "background",
@@ -5126,11 +5054,11 @@
         },
         {
           "type": "enum",
-          "name": "blob_arena::collections::blobert::components::TokenAttributes",
+          "name": "blob_arena::collections::attributes::TokenAttributes",
           "variants": [
             {
               "name": "Seed",
-              "type": "blob_arena::collections::blobert::components::Seed"
+              "type": "blob_arena::collections::attributes::Seed"
             },
             {
               "name": "Custom",
@@ -5155,6 +5083,18 @@
             },
             {
               "type": "function",
+              "name": "burn",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
               "name": "traits",
               "inputs": [
                 {
@@ -5164,7 +5104,7 @@
               ],
               "outputs": [
                 {
-                  "type": "blob_arena::collections::blobert::components::TokenAttributes"
+                  "type": "blob_arena::collections::attributes::TokenAttributes"
                 }
               ],
               "state_mutability": "view"
@@ -5239,20 +5179,6 @@
           "interface_name": "blob_arena::collections::interface::ICollection"
         },
         {
-          "type": "enum",
-          "name": "core::bool",
-          "variants": [
-            {
-              "name": "False",
-              "type": "()"
-            },
-            {
-              "name": "True",
-              "type": "()"
-            }
-          ]
-        },
-        {
           "type": "struct",
           "name": "blob_arena::stats::TStats::<core::integer::u8>",
           "members": [
@@ -5290,42 +5216,6 @@
               "outputs": [
                 {
                   "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "get_approved",
-              "inputs": [
-                {
-                  "name": "token_id",
-                  "type": "core::integer::u256"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "is_approved_for_all",
-              "inputs": [
-                {
-                  "name": "owner",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                },
-                {
-                  "name": "operator",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::bool"
                 }
               ],
               "state_mutability": "view"
@@ -5450,6 +5340,7 @@
       "selector": "0x3a839ea0a4e2888a1e12bd26476d900679550072b92d0db7b32f59250cee541",
       "systems": [
         "mint",
+        "burn",
         "upgrade"
       ]
     }
@@ -5458,19 +5349,19 @@
   "models": [
     {
       "members": [],
-      "class_hash": "0x5d8b167649dfb3832865b0c0f11c2f5153114eddfb055390ea8d77b8961da42",
+      "class_hash": "0x662c4f77752c22b831d5daa5e3858b2c1e13bc93f08c94b5d9a88d23be1d80",
       "tag": "amma_blobert-AttackSlot",
       "selector": "0x3f95f1403fa2000077a4b9d690c2278e8b32a173662b0db7b764afd73e5582"
     },
     {
       "members": [],
-      "class_hash": "0x2ace52ef425b8121ffaef3b0ece54c893bff217472fa329a3d5c3ec3a22b702",
+      "class_hash": "0x69b920fb3890e4e5e58fe1c813327e874a92c6ffdcc64a10301c991bf797949",
       "tag": "amma_blobert-BlobertItem",
       "selector": "0x1f2b4eecd1b85cdfb0cfa8ea7bc33c355fffb24e4d7ac7c52640376edc48e4"
     },
     {
       "members": [],
-      "class_hash": "0x164dfae269c0c7a0e632deee910437e35b2133afb1154ffcabbccb219220f83",
+      "class_hash": "0x70c08d22f9fb5423dd5bd65a2aa0f7ac11e15e258a745413fe99537c1a1a0f2",
       "tag": "amma_blobert-BlobertToken",
       "selector": "0x75950f84e6f938e4384dea960753f45547a876ce2984f89f3e72d63398140cd"
     },
@@ -5554,6 +5445,12 @@
     },
     {
       "members": [],
+      "class_hash": "0x2265657caf50b8ea2a8efc57edb8f437bc67f3765af9edcd054b29791473aa5",
+      "tag": "blob_arena-AmountTokensOwned",
+      "selector": "0x75a6369f9b3972df00942f2886270a12955895297edbd43b374d491288395a0"
+    },
+    {
+      "members": [],
       "class_hash": "0x3122be20cb587022b0ff4069ca4cb44f687ab974d8b175fa3afb5efd5ca418b",
       "tag": "blob_arena-Attack",
       "selector": "0x7e21e142953aef1863c9e0b51413ed1e2de11b6b45238d13567868cbdd81850"
@@ -5602,7 +5499,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x2d338b7b74ce85f37baf59c90ce0a5a9ae08f4ea4af114a9906eb3a93754422",
+      "class_hash": "0x64f81559ade1d56c73197990731a78d3ed1e7e7cf46bf2e7a63e7f3c1601025",
       "tag": "blob_arena-ConsecutiveTokenWins",
       "selector": "0x5239f9d7520a8aa113e9faebbbc786772892c6c8452271be2fbe7d2be24c11a"
     },
@@ -5611,6 +5508,12 @@
       "class_hash": "0x4cf7df469d1b7dca82eed65eb539b13357e117552430ef9b9c6fe503326063b",
       "tag": "blob_arena-ConsecutiveWins",
       "selector": "0x5c86b18aaf0536cc5bce8affdd0fbd2492206d0a810669196d8d25bf43b9301"
+    },
+    {
+      "members": [],
+      "class_hash": "0x21935ade30b58465cffad81cc9e3ff1ac7e91cc9b760c0f4ab5a2a581e1b361",
+      "tag": "blob_arena-ERC721Token",
+      "selector": "0x55b3045939f099d615634ac48a50c66fea6a9cb70e728eda1c097c5fd354fc"
     },
     {
       "members": [],
@@ -5656,19 +5559,19 @@
     },
     {
       "members": [],
-      "class_hash": "0x5d8b167649dfb3832865b0c0f11c2f5153114eddfb055390ea8d77b8961da42",
+      "class_hash": "0x662c4f77752c22b831d5daa5e3858b2c1e13bc93f08c94b5d9a88d23be1d80",
       "tag": "blobert-AttackSlot",
       "selector": "0x7f77914d0bf4f02bb41ab8131bba8df6fad148bf436f18ff9dfe0d97a495650"
     },
     {
       "members": [],
-      "class_hash": "0x2ace52ef425b8121ffaef3b0ece54c893bff217472fa329a3d5c3ec3a22b702",
+      "class_hash": "0x69b920fb3890e4e5e58fe1c813327e874a92c6ffdcc64a10301c991bf797949",
       "tag": "blobert-BlobertItem",
       "selector": "0x1eb8dc949a0848de6ecda53d9fe49124136424ee308527fd8274b54616211c5"
     },
     {
       "members": [],
-      "class_hash": "0x164dfae269c0c7a0e632deee910437e35b2133afb1154ffcabbccb219220f83",
+      "class_hash": "0x70c08d22f9fb5423dd5bd65a2aa0f7ac11e15e258a745413fe99537c1a1a0f2",
       "tag": "free_blobert-BlobertToken",
       "selector": "0x2f22f7118472b57415964d6940aa82f33c5ac450cd7bfe92c9bb24035a245b1"
     },
@@ -5682,13 +5585,13 @@
   "events": [
     {
       "members": [],
-      "class_hash": "0x18b76bdc75e9a4bd58f820999299a719dd066cf610a77280261611c90a0d3ab",
+      "class_hash": "0x4b45282bcdc160f71e60353f65492a65a1eac408b7b5772cbd44dabff8ab919",
       "tag": "amma_blobert-BlobertItemName",
       "selector": "0x523b3e8e216d160c64ea210598ccbd8f0940fd5699ec7fcbbb439c96b52305c"
     },
     {
       "members": [],
-      "class_hash": "0x7ff652f479b7f5f8a8fbf47f2f8ff168ccd4e20257c82fef1500afe07913372",
+      "class_hash": "0x1bdae4b326c04033d11113ade8de617ceb4188a2c413241d021b30c34ee640",
       "tag": "arcade-ArcadeBlobertInfo",
       "selector": "0x39995367e907d3d7d0052606d7ce70ed847e33f67eb67a486eb9f91eb5384b0"
     },
@@ -5712,7 +5615,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x49f17eedf8d28fc4539f02d7425c910a4787fbe450d68a4da0bf71747e05247",
+      "class_hash": "0x2663ef12efe9864f07160af665421a2337cf71d3965eab9ac1c2228764a5dc4",
       "tag": "blob_arena-CombatEnd",
       "selector": "0xe7cdf29adf83bbe5840856288de06ac5e57971bf4d14409651b69de892deaf"
     },
@@ -5730,7 +5633,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x18b76bdc75e9a4bd58f820999299a719dd066cf610a77280261611c90a0d3ab",
+      "class_hash": "0x4b45282bcdc160f71e60353f65492a65a1eac408b7b5772cbd44dabff8ab919",
       "tag": "blobert-BlobertItemName",
       "selector": "0x3c65933b654646718218b7b044c12f8e25aabdd31201f6e7e040063d7b6d7b"
     }
