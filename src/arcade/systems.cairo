@@ -454,7 +454,8 @@ impl ArcadeImpl of ArcadeTrait {
         let timestamp = get_block_timestamp();
         if won {
             match self.default_storage().get_collection_group(attempt.collection) {
-                CollectionGroup::ClassicBlobert => {
+                CollectionGroup::ClassicBlobert |
+                CollectionGroup::FreeBlobert => {
                     self
                         .increment_achievement(
                             attempt.player, TaskId::ClassicArcadeCompletion, timestamp,

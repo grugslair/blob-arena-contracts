@@ -67,7 +67,7 @@ struct EffectResult {
 /// * `Stats` - Multiple stat modifications represented by IStats interface
 /// * `Stat` - A single stat modification
 /// * `Stun` - Overall stun chance
-#[derive(Drop, Serde, PartialEq)]
+#[derive(Drop, Serde, PartialEq, Introspect)]
 enum AffectResult {
     Health: i32,
     Damage: DamageResult,

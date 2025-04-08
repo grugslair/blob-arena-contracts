@@ -4,6 +4,7 @@ use dojo::{world::WorldStorage, model::{ModelStorage, Model}};
 #[derive(Drop, Copy, Serde, Introspect, PartialEq)]
 enum CollectionGroup {
     None,
+    FreeBlobert,
     ClassicBlobert,
     AmmaBlobert,
 }

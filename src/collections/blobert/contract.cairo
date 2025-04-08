@@ -2,7 +2,7 @@ const BLOBERT_NAMESPACE_HASH: felt252 = bytearray_hash!("blobert");
 
 #[dojo::contract]
 mod blobert_actions {
-    use starknet::{ContractAddress, get_contract_address, contract_address_const};
+    use starknet::{ContractAddress, get_contract_address};
     use dojo::world::{WorldStorage, IWorldDispatcher};
     use crate::world::WorldTrait;
     use crate::erc721::erc721_owner_of;
