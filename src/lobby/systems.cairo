@@ -3,7 +3,7 @@ use core::poseidon::HashState;
 use starknet::{ContractAddress, get_caller_address};
 use dojo::{world::WorldStorage, model::ModelStorage};
 use blob_arena::{
-    lobby::storage::{LobbyStorage, sort_players}, combat::CombatTrait, combatants::CombatantTrait,
+    lobby::storage::{LobbyStorage}, combat::CombatTrait, combatants::CombatantTrait,
     game::GameStorage, achievements::{Achievements, TaskId},
 };
 
@@ -40,17 +40,6 @@ impl LobbyImpl of LobbyTrait {
         assert(receiver_id.is_non_zero(), 'No response');
         self.assert_caller_player(sender_id);
         sender_id
-    }
-    fn increase_games_played(
-        ref self: WorldStorage, player_1: ContractAddress, player_2: ContractAddress,
-    ) {
-        let players = sort_players(player_1, player_2);
-        let played = self.get_games_played_value(players) + 1;
-        if played == 1 {
-            self.increment_achievement_now(player_1, TaskId::PvpUniqueOpponent);
-            self.increment_achievement_now(player_2, TaskId::PvpUniqueOpponent);
-        };
-        self.set_games_players(players, self.get_games_played_value(players) + 1);
     }
 }
 

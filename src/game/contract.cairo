@@ -213,7 +213,10 @@ mod game_actions {
 
             let opponent = world.get_opponent(game, combatant_id);
 
-            world.end_game(game.combat_id, opponent, combatant, WinVia::Forfeit);
+            world
+                .end_game(
+                    game.combat_id, opponent, combatant, get_block_timestamp(), WinVia::Forfeit,
+                );
         }
 
         fn get_winning_player(self: @ContractState, combat_id: felt252) -> ContractAddress {
