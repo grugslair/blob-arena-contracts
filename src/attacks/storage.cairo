@@ -7,7 +7,7 @@ use blob_arena::{
         Attack, Effect,
         components::{
             AttackInputTrait, AttackInput, PlannedAttack, AttackAvailable, AttackLastUsed,
-            AttackAvailableValue, AttackLastUsedValue, AttackName, AttackExists,
+            AttackName, AttackExists,
         },
     },
     uuid, world::ModelsTrait, tags::Tag,
