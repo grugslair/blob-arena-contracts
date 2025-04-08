@@ -25,16 +25,23 @@ trait IAmmaBlobert<TContractState> {
 #[dojo::contract]
 mod amma_blobert_actions {
     use core::poseidon::poseidon_hash_span;
-    use starknet::{ContractAddress, get_caller_address};
+    use starknet::{ContractAddress, get_caller_address, get_contract_address};
     use dojo::world::{WorldStorage, IWorldDispatcher};
 
     use crate::world::WorldTrait;
     use super::super::world_blobert::{WorldBlobertStore, WorldBlobertStorage};
     use super::super::items::cmp;
     use super::super::collection;
-    use super::super::{IBlobertCollectionImpl, TokenAttributes};
+    use super::super::{
+        IBlobertCollectionImpl, TokenAttributes, CollectionGroupStorage, CollectionGroup,
+    };
     use super::IAmmaBlobert;
     const AMMA_BLOBERT_NAMESPACE_HASH: felt252 = bytearray_hash!("amma_blobert");
+
+    fn dojo_init(ref self: ContractState) {
+        let mut storage = self.default_storage();
+        storage.set_collection_group(get_contract_address(), CollectionGroup::AmmaBlobert);
+    }
 
 
     impl AmmaBlobertStoreImpl =

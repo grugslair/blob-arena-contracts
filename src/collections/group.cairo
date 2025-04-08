@@ -3,8 +3,9 @@ use dojo::{world::WorldStorage, model::{ModelStorage, Model}};
 
 #[derive(Drop, Copy, Serde, Introspect, PartialEq)]
 enum CollectionGroup {
-    BlobertClassic,
-    BlobertAmma,
+    None,
+    ClassicBlobert,
+    AmmaBlobert,
 }
 
 mod model {

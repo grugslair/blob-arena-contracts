@@ -38,9 +38,16 @@ mod free_blobert_actions {
     use super::super::super::world_blobert;
     use super::super::super::items::cmp;
     use super::super::super::collection;
-    use super::super::super::{IBlobertCollectionImpl, TokenAttributes};
+    use super::super::super::{
+        IBlobertCollectionImpl, TokenAttributes, CollectionGroupStorage, CollectionGroup,
+    };
 
     use super::{IFreeBlobert, FREE_BLOBERT_NAMESPACE_HASH};
+
+    fn dojo_init(ref self: ContractState) {
+        let mut storage = self.default_storage();
+        storage.set_collection_group(get_contract_address(), CollectionGroup::ClassicBlobert);
+    }
 
     impl FreeBlobertStoreImpl =
         world_blobert::WorldBlobertStore<FREE_BLOBERT_NAMESPACE_HASH, BLOBERT_NAMESPACE_HASH>;

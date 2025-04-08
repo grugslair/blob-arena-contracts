@@ -9,7 +9,9 @@ mod blobert_actions {
     use crate::storage::read_value_from_felt252;
     use super::BLOBERT_NAMESPACE_HASH;
     use super::super::{IBlobertDispatcher, IBlobertDispatcherTrait};
-    use super::super::super::{BlobertStore, TokenAttributes, ICollection};
+    use super::super::super::{
+        BlobertStore, TokenAttributes, ICollection, CollectionGroupStorage, CollectionGroup,
+    };
     use super::super::super::items::cmp;
     use super::super::super::collection;
 
@@ -18,6 +20,8 @@ mod blobert_actions {
 
     fn dojo_init(ref self: ContractState, blobert_contract_address: ContractAddress) {
         self.blobert_contract_address.write(blobert_contract_address);
+        let mut storage = self.default_storage();
+        storage.set_collection_group(get_contract_address(), CollectionGroup::ClassicBlobert);
     }
 
     #[storage]

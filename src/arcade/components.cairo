@@ -276,6 +276,7 @@ struct ArcadeAttemptEnd {
     token_id: u256,
     stage: u32,
     phase: ArcadePhase,
+    respawns: u32,
 }
 
 

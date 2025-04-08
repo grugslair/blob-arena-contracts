@@ -70,7 +70,9 @@ enum TaskId {
     PvpUniqueMoves,
     ArcadeUniqueMoves,
     ArcadeStarted,
-    ArcadeCompletion,
+    ClassicArcadeCompletion,
+    AmmaArcadeCompletion,
+    ArcadeCompletionNoRespawn,
     PvpWagerWon,
 }
 
@@ -86,7 +88,9 @@ impl TaskIdIntoFelt252 of Into<TaskId, felt252> {
             TaskId::PvpUniqueMoves => 'pvp_unique_moves',
             TaskId::ArcadeUniqueMoves => 'arcade_unique_moves',
             TaskId::ArcadeStarted => 'arcade_started',
-            TaskId::ArcadeCompletion => 'arcade_completion',
+            TaskId::ClassicArcadeCompletion => 'classic_arcade_completion',
+            TaskId::AmmaArcadeCompletion => 'amma_arcade_completion',
+            TaskId::ArcadeCompletionNoRespawn => 'arcade_completion_no_respawn',
             TaskId::PvpWagerWon => 'pvp_wager_won',
         }
     }

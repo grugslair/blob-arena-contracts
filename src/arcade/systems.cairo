@@ -18,10 +18,10 @@ use crate::game::{GameStorage, GameTrait, GameProgress};
 use crate::combatants::{CombatantStorage, CombatantTrait, CombatantState, CombatantSetup};
 use crate::attacks::AttackStorage;
 use crate::combat::CombatTrait;
-use crate::world::uuid;
+use crate::world::{uuid, WorldTrait};
 use crate::hash::{make_hash_state, felt252_to_u128};
 use crate::stats::UStats;
-use crate::collections::TokenAttributes;
+use crate::collections::{TokenAttributes, CollectionGroupStorage, CollectionGroup};
 use crate::constants::{STARTING_HEALTH, SECONDS_12_HOURS};
 use crate::stats::StatsTrait;
 use crate::iter::Iteration;
@@ -451,9 +451,29 @@ impl ArcadeImpl of ArcadeTrait {
                 attempt.player, attempt.collection, attempt.token_id,
             );
         self.set_arcade_challenge_attempt_ended(attempt_id, won);
-
+        let timestamp = get_block_timestamp();
         if won {
-            self.increment_achievement_now(attempt.player, TaskId::ArcadeCompletion);
+            match self.default_storage().get_collection_group(attempt.collection) {
+                CollectionGroup::ClassicBlobert => {
+                    self
+                        .increment_achievement(
+                            attempt.player, TaskId::ClassicArcadeCompletion, timestamp,
+                        );
+                },
+                CollectionGroup::AmmaBlobert => {
+                    self
+                        .increment_achievement(
+                            attempt.player, TaskId::AmmaArcadeCompletion, timestamp,
+                        );
+                },
+                _ => {},
+            };
+            if attempt.respawns.is_zero() {
+                self
+                    .increment_achievement(
+                        attempt.player, TaskId::ArcadeCompletionNoRespawn, timestamp,
+                    );
+            }
         }
     }
 
