@@ -1,3 +1,4 @@
+use starknet::ContractAddress;
 use blob_arena::{
     core::Signed, stats::{IStats, StatTypes, SignedStats}, id_trait::{IdTrait, TIdsImpl},
 };
@@ -191,6 +192,16 @@ struct AttackAvailable {
     #[key]
     attack_id: felt252,
     available: bool,
+}
+
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct AttackUses {
+    #[key]
+    player: ContractAddress,
+    #[key]
+    attack_id: felt252,
+    uses: u32,
 }
 
 
