@@ -28,6 +28,7 @@ use crate::iter::Iteration;
 use crate::tags::{Tag, IdTagNew};
 use crate::core::byte_array_to_felt252_array;
 use crate::erc721::ERC721TokenStorage;
+use crate::achievements::{Achievements, TaskId};
 
 fn calc_restored_health(current_health: u8, vitality: u8, health_recovery_percent: u8) -> u8 {
     let max_health = STARTING_HEALTH + vitality;
@@ -263,17 +264,30 @@ impl ArcadeImpl of ArcadeTrait {
     ) {
         assert(game.phase == ArcadePhase::Active, 'Not active');
         let hash = make_hash_state(randomness);
+        let timestamp = get_block_timestamp();
         let combatants = [game.combatant_id, game.opponent_id];
         let opponent_attacks = self.arcade.get_arcade_opponent_attacks(game.opponent_token);
         let attacks = [
             player_attack, self.ba.get_opponent_attack(@game, opponent_attacks, randomness),
         ];
-        match self.ba.run_round(game.id, game.round, combatants, attacks, [false, true], hash) {
+        let (progress, results) = self
+            .ba
+            .run_round(game.id, game.round, combatants, attacks, [false, true], hash);
+        match progress {
             GameProgress::Active => { self.arcade.set_arcade_round(game.id, game.round + 1); },
             GameProgress::Ended([winner, _]) => self
                 .arcade
                 .set_arcade_ended(game.id, winner == game.combatant_id),
         }
+        for result in results {
+            if result.combatant_id == game.combatant_id {
+                if self.arcade.increment_attack_uses(game.player, player_attack).is_zero() {
+                    self
+                        .arcade
+                        .increment_achievement(game.player, TaskId::ArcadeUniqueMoves, timestamp);
+                }
+            }
+        };
     }
     fn get_opponent_attack(
         ref self: WorldStorage, game: @ArcadeGame, attacks: Array<felt252>, randomness: felt252,
@@ -437,6 +451,10 @@ impl ArcadeImpl of ArcadeTrait {
                 attempt.player, attempt.collection, attempt.token_id,
             );
         self.set_arcade_challenge_attempt_ended(attempt_id, won);
+
+        if won {
+            self.increment_achievement_now(attempt.player, TaskId::ArcadeCompletion);
+        }
     }
 
     fn use_free_game(ref self: WorldStorage, player: ContractAddress) -> bool {

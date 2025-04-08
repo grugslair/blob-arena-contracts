@@ -33,7 +33,7 @@ impl CombatImpl of CombatStorage {
     }
 
     fn emit_round_result(
-        ref self: WorldStorage, combat_id: felt252, round: u32, attacks: Array<AttackResult>,
+        ref self: WorldStorage, combat_id: felt252, round: u32, attacks: Span<AttackResult>,
     ) {
         self.emit_event(@RoundResult { combat_id, round, attacks: attacks });
     }
