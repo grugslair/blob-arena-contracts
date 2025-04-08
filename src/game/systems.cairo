@@ -4,7 +4,7 @@ use dojo::{world::WorldStorage, model::{ModelStorage, Model}, event::EventStorag
 use blob_arena::{
     game::{
         components::{LastTimestamp, Initiator, GameInfo, GameInfoTrait, WinVia, GameProgress},
-        storage::GameStorage,
+        storage::{GameStorage, sort_players},
     },
     erc721::ERC721Token,
     combat::{CombatTrait, Phase, CombatState, CombatStorage, components::PhaseTrait},
@@ -17,7 +17,7 @@ use blob_arena::{
         TTupleSized2IntoFixed,
     },
 };
-use crate::achievements::Achievements;
+use crate::achievements::{Achievements, TaskId};
 
 
 #[generate_trait]
@@ -45,9 +45,17 @@ impl GameImpl of GameTrait {
         combat_id: felt252,
         winner: CombatantInfo,
         loser: CombatantInfo,
+        timestamp: u64,
         via: WinVia,
     ) {
         self.set_combat_phase(combat_id, Phase::Ended(winner.id));
+        if via == WinVia::Combat {
+            self.increment_achievement(winner.player, TaskId::PvpBattleVictories, timestamp);
+            if self.increase_games_completed(winner.player, loser.player).is_zero() {
+                self.increment_achievement(winner.player, TaskId::PvpUniqueOpponent, timestamp);
+                self.increment_achievement(loser.player, TaskId::PvpUniqueOpponent, timestamp);
+            }
+        }
         self.emit_combat_end(combat_id, winner, loser, via);
     }
 
@@ -60,7 +68,7 @@ impl GameImpl of GameTrait {
         via: WinVia,
     ) {
         let (winner, looser) = self.get_combatants_info_tuple((winner_id, loser_id));
-        self.end_game(combat_id, winner, looser, via);
+        self.end_game(combat_id, winner, looser, timestamp, via);
     }
 
     fn if_winner_end(
@@ -164,6 +172,15 @@ impl GameImpl of GameTrait {
         self.set_combatant_states([@state_1, @state_2].span());
         self.emit_round_result(combat_id, round, results);
         progress
+    }
+
+    fn increase_games_completed(
+        ref self: WorldStorage, player_1: ContractAddress, player_2: ContractAddress,
+    ) -> u64 {
+        let players = sort_players(player_1, player_2);
+        let value = self.get_games_completed_value(players);
+        self.set_games_completed(players, value + 1);
+        value
     }
 }
 

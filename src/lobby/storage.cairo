@@ -2,16 +2,8 @@ use starknet::ContractAddress;
 use dojo::{
     world::WorldStorage, model::{ModelStorage, Model, ModelValueStorage}, event::EventStorage,
 };
-use blob_arena::lobby::components::{Lobby, LobbyValue, LobbyCreated, GamesPlayed};
+use blob_arena::lobby::components::{Lobby, LobbyValue, LobbyCreated, GamesCompleted};
 
-fn sort_players(
-    player_1: ContractAddress, player_2: ContractAddress,
-) -> (ContractAddress, ContractAddress) {
-    match player_1 < player_2 {
-        true => (player_1, player_2),
-        false => (player_2, player_1),
-    }
-}
 
 #[generate_trait]
 impl LobbyStorageImpl of LobbyStorage {
@@ -32,28 +24,6 @@ impl LobbyStorageImpl of LobbyStorage {
         ref self: WorldStorage, id: felt252, sender: ContractAddress, receiver: ContractAddress,
     ) {
         self.emit_event(@LobbyCreated { id, sender, receiver });
-    }
-
-    fn get_games_played(
-        self: @WorldStorage, player_1: ContractAddress, player_2: ContractAddress,
-    ) -> u64 {
-        self
-            .read_member(
-                Model::<GamesPlayed>::ptr_from_keys(sort_players(player_1, player_2)),
-                selector!("played"),
-            )
-    }
-
-    fn get_games_played_value(
-        self: @WorldStorage, players: (ContractAddress, ContractAddress),
-    ) -> u64 {
-        self.read_member(Model::<GamesPlayed>::ptr_from_keys(players), selector!("played"))
-    }
-
-    fn set_games_players(
-        ref self: WorldStorage, players: (ContractAddress, ContractAddress), played: u64,
-    ) {
-        self.write_model(@GamesPlayed { players, played });
     }
     // fn set_lobby_response(ref self: WorldStorage, id: felt252, response: bool) {
 //     self.write_member(Model::<Lobby>::ptr_from_keys(id), selector!("responded"), response);
