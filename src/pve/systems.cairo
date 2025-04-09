@@ -125,7 +125,6 @@ impl PVEImpl of PVETrait {
         attributes: TokenAttributes,
         stats: UStats,
         attack_ids: Array<felt252>,
-        collections_allowed: Array<ContractAddress>,
     ) -> felt252 {
         let token_id = get_pve_opponent_id(
             @name, collection, @attributes, @stats, attack_ids.span(),
@@ -135,7 +134,6 @@ impl PVEImpl of PVETrait {
             self.set_tag(OPPONENT_TAG_GROUP, @name, token_id);
             self.set_pve_blobert_info(token_id, name, collection, attributes);
         };
-        self.set_collections_allowed(token_id, collections_allowed, true);
         token_id
     }
 
@@ -149,7 +147,6 @@ impl PVEImpl of PVETrait {
                 opponent.attributes,
                 opponent.stats,
                 self.create_or_get_attacks_external(opponent.attacks),
-                opponent.collections_allowed,
             )
     }
     fn make_opponent_model_from_input(
@@ -164,8 +161,6 @@ impl PVEImpl of PVETrait {
         if !exists {
             self.set_pve_blobert_info(id, opponent.name, opponent.collection, opponent.attributes);
         };
-
-        self.set_collections_allowed(id, opponent.collections_allowed, true);
 
         (PVEOpponent { id, stats: opponent.stats, attacks: attack_ids }, sname, exists)
     }

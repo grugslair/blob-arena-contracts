@@ -282,7 +282,6 @@ struct PVEOpponentInput {
     attributes: TokenAttributes,
     stats: UStats,
     attacks: Array<IdTagNew<AttackInput>>,
-    collections_allowed: Array<ContractAddress>,
 }
 
 #[derive(Drop, Serde, Introspect)]

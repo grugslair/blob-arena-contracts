@@ -32,7 +32,6 @@ trait IPVEAdmin<TContractState> {
         attributes: TokenAttributes,
         stats: UStats,
         attacks: Array<IdTagNew<AttackInput>>,
-        collections_allowed: Array<ContractAddress>,
     ) -> felt252;
 
     /// Creates a new PVE challenge with defined opponents and collection restrictions
@@ -148,15 +147,11 @@ mod pve_blobert_admin_actions {
             attributes: TokenAttributes,
             stats: UStats,
             attacks: Array<IdTagNew<AttackInput>>,
-            collections_allowed: Array<ContractAddress>,
         ) -> felt252 {
             let mut store = self.get_pve_storage();
             store.assert_caller_has_permission(Role::PveSetter);
             let attack_ids = store.create_or_get_attacks_external(attacks);
-            store
-                .setup_new_opponent(
-                    name, collection, attributes, stats, attack_ids, collections_allowed,
-                )
+            store.setup_new_opponent(name, collection, attributes, stats, attack_ids)
         }
         fn new_challenge(
             ref self: ContractState,
