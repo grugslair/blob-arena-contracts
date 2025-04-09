@@ -38,10 +38,6 @@ export const parseNewPVEOpponent = (opponent, collectionAddresses) => {
     attributes: new CairoCustomEnum(opponent.attributes),
     stats: opponent.stats,
     attacks: makeAttacksStruct(opponent.attacks),
-    collections_allowed: makeCollectionsAllowed(
-      opponent.collections_allowed,
-      collectionAddresses
-    ),
   };
 };
 
