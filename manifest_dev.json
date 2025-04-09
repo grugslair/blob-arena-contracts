@@ -2181,8 +2181,8 @@
       ]
     },
     {
-      "address": "0x1a99bf8a96105970ec73b611171a086fa9fe86913a333f6c9f3f4fa0be4b83d",
-      "class_hash": "0x1814da47afd0619bfd81222b4e88bd5a889db01fb2fdfce3541f546be15a31c",
+      "address": "0xff8de9168945aa3e4e26e4c19e8ea58b721242b7fd096eadd1006d995714b3",
+      "class_hash": "0xac251065a7284e33daecf52d92946bfb92610126514c499c9fe4c576d75e88",
       "abi": [
         {
           "type": "impl",
@@ -2945,8 +2945,8 @@
       ]
     },
     {
-      "address": "0x5770ccc4c9bef37f07dfc98499e307bb0522eb8132294e93b26b7636acdf602",
-      "class_hash": "0x52c969b2225b9c6cbc5dc5e6e062744c163b1189dbe7055399bde86b8e8cd19",
+      "address": "0x1732c136a7d325865ba5fe4deb5d177485fee31323033d60e350d1318626843",
+      "class_hash": "0x79f3d54f11de295d577499bbc26ea9ddad99be73f2ae99b352412c92499d764",
       "abi": [
         {
           "type": "impl",
@@ -3158,7 +3158,7 @@
               "type": "()"
             },
             {
-              "name": "PvpUniqueOpponent",
+              "name": "PvpUniqueOpponents",
               "type": "()"
             },
             {
@@ -4072,8 +4072,8 @@
       ]
     },
     {
-      "address": "0x4d4f882737bc67637811b73603a26570e307d0d1fb7bf32485dff9f624262b7",
-      "class_hash": "0x64095cfb4e6d3acdf1c63d3cc8f3cc564d3a743eaa20f5aa1dcbc12870acddc",
+      "address": "0x6d99b905fe08f4a51342082540955ed1697c35b0c6c3f6085f089ce09fc303b",
+      "class_hash": "0x5a6ec93d0af7be3ba6760510db562beb37d38af7ffb9b5aeda24d24b1d6d330",
       "abi": [
         {
           "type": "impl",

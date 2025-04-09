@@ -55,8 +55,8 @@ impl GameImpl of GameTrait {
         if via == WinVia::Combat {
             self.increment_achievement(winner.player, TaskId::PvpBattleVictories, timestamp);
             if self.increase_games_completed(winner.player, loser.player).is_zero() {
-                self.increment_achievement(winner.player, TaskId::PvpUniqueOpponent, timestamp);
-                self.increment_achievement(loser.player, TaskId::PvpUniqueOpponent, timestamp);
+                self.increment_achievement(winner.player, TaskId::PvpUniqueOpponents, timestamp);
+                self.increment_achievement(loser.player, TaskId::PvpUniqueOpponents, timestamp);
             }
         }
         self.emit_combat_end(combat_id, winner, loser, via);
