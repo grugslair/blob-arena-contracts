@@ -1,157 +1,157 @@
 {
-  "arcade_completion_1": {
+  "amma_arcade_completion_1": {
     "hidden": false,
     "index": 1,
     "points": 20,
     "start": 0,
     "end": 0,
-    "group": "Arcade Completion",
+    "group": "AMMA Arcade Completion",
     "icon": "shield",
-    "title": "Arcade Squire",
+    "title": "AMMA Academy",
     "description": "Won 1 Arcade Challenge",
     "tasks": [
       {
-        "id": "arcade_completion",
+        "id": "AmmaArcadeCompletion",
         "total": 1,
         "description": "Won 1 Arcade Challenge"
       }
     ],
     "data": ""
   },
-  "arcade_completion_5": {
+  "amma_arcade_completion_5": {
     "hidden": false,
     "index": 2,
     "points": 50,
     "start": 0,
     "end": 0,
-    "group": "Arcade Completion",
+    "group": "AMMA Arcade Completion",
     "icon": "shield-halved",
-    "title": "Arcade Knight",
+    "title": "AMMA Recruit",
     "description": "Won 5 Arcade Challenges",
     "tasks": [
       {
-        "id": "arcade_completion",
+        "id": "AmmaArcadeCompletion",
         "total": 5,
         "description": "Won 5 Arcade Challenges"
       }
     ],
     "data": ""
   },
-  "arcade_completion_20": {
+  "amma_arcade_completion_20": {
     "hidden": false,
     "index": 3,
     "points": 100,
     "start": 0,
     "end": 0,
-    "group": "Arcade Completion",
+    "group": "AMMA Arcade Completion",
     "icon": "shield-quartered",
-    "title": "Arcade Warlord",
+    "title": "Arcade Contender",
     "description": "Won 20 Arcade Challenges",
     "tasks": [
       {
-        "id": "arcade_completion",
+        "id": "AmmaArcadeCompletion",
         "total": 20,
         "description": "Won 20 Arcade Challenges"
       }
     ],
     "data": ""
   },
-  "arcade_completion_50": {
+  "amma_arcade_completion_50": {
     "hidden": false,
     "index": 4,
     "points": 200,
     "start": 0,
     "end": 0,
-    "group": "Arcade Completion",
-    "icon": "dragon",
-    "title": "Arcade Master",
+    "group": "AMMA Arcade Completion",
+    "icon": "medal",
+    "title": "AMMA Champion",
     "description": "Won 50 Arcade Challenges",
     "tasks": [
       {
-        "id": "arcade_completion",
+        "id": "AmmaArcadeCompletion",
         "total": 50,
         "description": "Won 50 Arcade Challenges"
       }
     ],
     "data": ""
   },
-  "arcade_consecutive_win_3": {
+  "classic_arcade_completion_1": {
     "hidden": false,
     "index": 1,
-    "points": 10,
-    "start": 0,
-    "end": 0,
-    "group": "Arcade Consecutive Win",
-    "icon": "chess-pawn",
-    "title": "Arcade Strategist I",
-    "description": "Won 3 consecutive Arcade battles",
-    "tasks": [
-      {
-        "id": "ArcadeConsecutiveWin",
-        "total": 3,
-        "description": "Won 3 consecutive Arcade battles"
-      }
-    ],
-    "data": ""
-  },
-  "arcade_consecutive_win_5": {
-    "hidden": false,
-    "index": 2,
     "points": 20,
     "start": 0,
     "end": 0,
-    "group": "Arcade Consecutive Win",
-    "icon": "chess-knight",
-    "title": "Arcade Strategist II",
-    "description": "Won 5 consecutive Arcade battles",
+    "group": "Classic Arcade Completion",
+    "icon": "chess-pawn",
+    "title": "Arcade Squire",
+    "description": "Won 1 Arcade Challenge",
     "tasks": [
       {
-        "id": "ArcadeConsecutiveWin",
-        "total": 5,
-        "description": "Won 5 consecutive Arcade battles"
+        "id": "ClassicArcadeCompletion",
+        "total": 1,
+        "description": "Won 1 Arcade Challenge"
       }
     ],
     "data": ""
   },
-  "arcade_consecutive_win_10": {
+  "classic_arcade_completion_5": {
     "hidden": false,
-    "index": 3,
+    "index": 2,
     "points": 50,
     "start": 0,
     "end": 0,
-    "group": "Arcade Consecutive Win",
-    "icon": "chess-queen",
-    "title": "Arcade Strategist III",
-    "description": "Won 10 consecutive Arcade battles",
+    "group": "Classic Arcade Completion",
+    "icon": "chess-knight",
+    "title": "Arcade Knight",
+    "description": "Won 5 Arcade Challenges",
     "tasks": [
       {
-        "id": "ArcadeConsecutiveWin",
-        "total": 10,
-        "description": "Won 10 consecutive Arcade battles"
+        "id": "ClassicArcadeCompletion",
+        "total": 5,
+        "description": "Won 5 Arcade Challenges"
       }
     ],
     "data": ""
   },
-  "arcade_consecutive_win_20": {
+  "classic_arcade_completion_20": {
     "hidden": false,
-    "index": 4,
+    "index": 3,
     "points": 100,
     "start": 0,
     "end": 0,
-    "group": "Arcade Consecutive Win",
-    "icon": "chess-king",
-    "title": "Arcade Strategist IV",
-    "description": "Won 20 consecutive Arcade battles",
+    "group": "Classic Arcade Completion",
+    "icon": "chess-queen",
+    "title": "Arcade Warlord",
+    "description": "Won 20 Arcade Challenges",
     "tasks": [
       {
-        "id": "ArcadeConsecutiveWin",
+        "id": "ClassicArcadeCompletion",
         "total": 20,
-        "description": "Won 20 consecutive Arcade battles"
+        "description": "Won 20 Arcade Challenges"
       }
     ],
     "data": ""
   },
-  "arcade_damage_1000": {
+  "classic_arcade_completion_50": {
+    "hidden": false,
+    "index": 4,
+    "points": 200,
+    "start": 0,
+    "end": 0,
+    "group": "Classic Arcade Completion",
+    "icon": "chess-king",
+    "title": "Arcade Master",
+    "description": "Won 50 Arcade Challenges",
+    "tasks": [
+      {
+        "id": "ClassicArcadeCompletion",
+        "total": 50,
+        "description": "Won 50 Arcade Challenges"
+      }
+    ],
+    "data": ""
+  },
+  "arcade_total_damage_1000": {
     "hidden": false,
     "index": 1,
     "points": 10,
@@ -170,7 +170,7 @@
     ],
     "data": ""
   },
-  "arcade_damage_5000": {
+  "arcade_total_damage_5000": {
     "hidden": false,
     "index": 2,
     "points": 20,
@@ -189,7 +189,7 @@
     ],
     "data": ""
   },
-  "arcade_damage_20000": {
+  "arcade_total_damage_20000": {
     "hidden": false,
     "index": 3,
     "points": 40,
@@ -208,7 +208,7 @@
     ],
     "data": ""
   },
-  "arcade_damage_50000": {
+  "arcade_total_damage_50000": {
     "hidden": false,
     "index": 4,
     "points": 80,
@@ -227,154 +227,154 @@
     ],
     "data": ""
   },
-  "amma_unique_moves_10": {
+  "pvp_unique_moves_10": {
     "hidden": false,
     "index": 1,
     "points": 10,
     "start": 0,
     "end": 0,
-    "group": "AMMA Unique Moves",
-    "icon": "person-walking",
+    "group": "PvP Unique Moves",
+    "icon": "book-open-cover",
     "title": "Tactician I",
-    "description": "Used 10 unique moves across all AMMA Bloberts",
+    "description": "Used 10 unique moves in PvP Mode",
     "tasks": [
       {
-        "id": "AMMAUniqueMoves",
+        "id": "PvpUniqueMoves",
         "total": 10,
-        "description": "Used 10 unique moves across all AMMA Bloberts"
+        "description": "Used 10 unique moves in PvP Mode"
       }
     ],
     "data": ""
   },
-  "amma_unique_moves_50": {
+  "pvp_unique_moves_50": {
     "hidden": false,
     "index": 2,
     "points": 20,
     "start": 0,
     "end": 0,
-    "group": "AMMA Unique Moves",
-    "icon": "hand-fist",
+    "group": "PvP Unique Moves",
+    "icon": "book-open-cover",
     "title": "Tactician II",
-    "description": "Used 50 unique moves across all AMMA Bloberts",
+    "description": "Used 50 unique moves in PvP Mode",
     "tasks": [
       {
-        "id": "AMMAUniqueMoves",
+        "id": "PvpUniqueMoves",
         "total": 50,
-        "description": "Used 50 unique moves across all AMMA Bloberts"
+        "description": "Used 50 unique moves in PvP Mode"
       }
     ],
     "data": ""
   },
-  "amma_unique_moves_100": {
+  "pvp_unique_moves_100": {
     "hidden": false,
     "index": 3,
     "points": 30,
     "start": 0,
     "end": 0,
-    "group": "AMMA Unique Moves",
-    "icon": "person-running",
+    "group": "PvP Unique Moves",
+    "icon": "book-open-cover",
     "title": "Tactician III",
-    "description": "Used 100 unique moves across all AMMA Bloberts",
+    "description": "Used 100 unique moves in PvP Mode",
     "tasks": [
       {
-        "id": "AMMAUniqueMoves",
+        "id": "PvpUniqueMoves",
         "total": 100,
-        "description": "Used 100 unique moves across all AMMA Bloberts"
+        "description": "Used 100 unique moves in PvP Mode"
       }
     ],
     "data": ""
   },
-  "amma_unique_moves_200": {
+  "pvp_unique_moves_200": {
     "hidden": false,
     "index": 4,
     "points": 40,
     "start": 0,
     "end": 0,
-    "group": "AMMA Unique Moves",
-    "icon": "dumbbell",
+    "group": "PvP Unique Moves",
+    "icon": "book-open-cover",
     "title": "Tactician IV",
-    "description": "Used 200 unique moves across all AMMA Bloberts",
+    "description": "Used 200 unique moves in PvP Mode",
     "tasks": [
       {
-        "id": "AMMAUniqueMoves",
+        "id": "PvpUniqueMoves",
         "total": 200,
-        "description": "Used 200 unique moves across all AMMA Bloberts"
+        "description": "Used 200 unique moves in PvP Mode"
       }
     ],
     "data": ""
   },
-  "classic_unique_moves_10": {
+  "arcade_unique_moves_10": {
     "hidden": false,
     "index": 1,
     "points": 10,
     "start": 0,
     "end": 0,
-    "group": "Classic Unique Moves",
-    "icon": "book",
+    "group": "Arcade Unique Moves",
+    "icon": "book-sparkles",
     "title": "Scholar I",
-    "description": "Used 10 unique moves across all Classic Bloberts",
+    "description": "Used 10 unique moves in Arcade Mode",
     "tasks": [
       {
-        "id": "ClassicUniqueMoves",
+        "id": "ArcadeUniqueMoves",
         "total": 10,
-        "description": "Used 10 unique moves across all Classic Bloberts"
+        "description": "Used 10 unique moves in Arcade Mode"
       }
     ],
     "data": ""
   },
-  "classic_unique_moves_50": {
+  "arcade_unique_moves_50": {
     "hidden": false,
     "index": 2,
     "points": 20,
     "start": 0,
     "end": 0,
-    "group": "Classic Unique Moves",
-    "icon": "book-open-cover",
+    "group": "Arcade Unique Moves",
+    "icon": "book-sparkles",
     "title": "Scholar II",
-    "description": "Used 50 unique moves across all Classic Bloberts",
+    "description": "Used 50 unique moves in Arcade Mode",
     "tasks": [
       {
-        "id": "ClassicUniqueMoves",
+        "id": "ArcadeUniqueMoves",
         "total": 50,
-        "description": "Used 50 unique moves across all Classic Bloberts"
+        "description": "Used 50 unique moves in Arcade Mode"
       }
     ],
     "data": ""
   },
-  "classic_unique_moves_100": {
+  "arcade_unique_moves_100": {
     "hidden": false,
     "index": 3,
     "points": 30,
     "start": 0,
     "end": 0,
-    "group": "Classic Unique Moves",
+    "group": "Arcade Unique Moves",
     "icon": "book-sparkles",
     "title": "Scholar III",
-    "description": "Used 100 unique moves across all Classic Bloberts",
+    "description": "Used 100 unique moves in Arcade Mode",
     "tasks": [
       {
-        "id": "ClassicUniqueMoves",
+        "id": "ArcadeUniqueMoves",
         "total": 100,
-        "description": "Used 100 unique moves across all Classic Bloberts"
+        "description": "Used 100 unique moves in Arcade Mode"
       }
     ],
     "data": ""
   },
-  "classic_unique_moves_200": {
+  "arcade_unique_moves_200": {
     "hidden": false,
     "index": 4,
     "points": 40,
     "start": 0,
     "end": 0,
-    "group": "Classic Unique Moves",
-    "icon": "hat-wizard",
+    "group": "Arcade Unique Moves",
+    "icon": "book-sparkles",
     "title": "Scholar IV",
-    "description": "Used 200 unique moves across all Classic Bloberts",
+    "description": "Used 200 unique moves in Arcade Mode",
     "tasks": [
       {
-        "id": "ClassicUniqueMoves",
+        "id": "ArcadeUniqueMoves",
         "total": 200,
-        "description": "Used 200 unique moves across all Classic Bloberts"
+        "description": "Used 200 unique moves in Arcade Mode"
       }
     ],
     "data": ""
@@ -521,12 +521,12 @@
     "group": "PvP Opponents",
     "icon": "people-group",
     "title": "Contender IV",
-    "description": "Faced 200 player in PvP battles",
+    "description": "Faced 200 players in PvP battles",
     "tasks": [
       {
         "id": "PvpUniqueOpponents",
         "total": 200,
-        "description": "Faced 200 player in PvP battles"
+        "description": "Faced 200 players in PvP battles"
       }
     ],
     "data": ""
@@ -603,6 +603,25 @@
         "id": "PvpBattleVictories",
         "total": 200,
         "description": "Won 200 PvP Battles"
+      }
+    ],
+    "data": ""
+  },
+  "arcade_completion_no_respawn": {
+    "hidden": false,
+    "index": 1,
+    "points": 50,
+    "start": 0,
+    "end": 0,
+    "group": "Arcade Completion No Respawn",
+    "icon": "shield-cross",
+    "title": "Iron Soul",
+    "description": "Completed an Arcade challenge without a respawn",
+    "tasks": [
+      {
+        "id": "ArcadeCompletionNoRespawn",
+        "total": 1,
+        "description": "Completed an Arcade challenge without a respawn"
       }
     ],
     "data": ""
