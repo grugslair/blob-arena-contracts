@@ -8,10 +8,10 @@ enum Role {
     AmmaAdmin,
     BlobertAdmin,
     Creator,
-    PvePaidMinter,
-    PveFreeMinter,
-    PveMinter,
-    PveSetter,
+    ArcadePaidMinter,
+    ArcadeFreeMinter,
+    ArcadeMinter,
+    ArcadeSetter,
 }
 
 impl RoleIntoByteArrayImpl of Into<Role, ByteArray> {
@@ -21,10 +21,10 @@ impl RoleIntoByteArrayImpl of Into<Role, ByteArray> {
             Role::AmmaAdmin => "amma admin",
             Role::BlobertAdmin => "Blobert admin",
             Role::Creator => "creator",
-            Role::PvePaidMinter => "paid minter",
-            Role::PveFreeMinter => "free minter",
-            Role::PveMinter => "minter",
-            Role::PveSetter => "pve setter",
+            Role::ArcadePaidMinter => "paid minter",
+            Role::ArcadeFreeMinter => "free minter",
+            Role::ArcadeMinter => "minter",
+            Role::ArcadeSetter => "arcade setter",
         }
     }
 }
@@ -40,33 +40,33 @@ struct Permission {
     has: bool,
 }
 
-trait PermissionStorage {
-    fn get_permissions_storage(self: @WorldStorage) -> WorldStorage;
-    fn get_permission(self: @WorldStorage, requester: ContractAddress, role: Role) -> bool;
-    fn set_permission(ref self: WorldStorage, requester: ContractAddress, role: Role, has: bool);
-    fn set_permissions(ref self: WorldStorage, permissions: Array<Permission>);
+trait PermissionStorage<T> {
+    fn get_permissions_storage(self: @T) -> WorldStorage;
+    fn get_permission(self: @T, requester: ContractAddress, role: Role) -> bool;
+    fn set_permission(ref self: T, requester: ContractAddress, role: Role, has: bool);
+    fn set_permissions(ref self: T, permissions: Array<Permission>);
 }
 
 /// Implementation of the Permissions trait
 ///
 /// Requires that P can be converted from felt252
-impl PermissionImpl of PermissionStorage {
-    fn get_permissions_storage(self: @WorldStorage) -> WorldStorage {
-        self.new_storage(bytearray_hash!("ba_permissions"))
+impl PermissionImpl<T, +WorldTrait<T>, +Drop<T>> of PermissionStorage<T> {
+    fn get_permissions_storage(self: @T) -> WorldStorage {
+        self.storage(bytearray_hash!("ba_permissions"))
     }
 
-    fn get_permission(self: @WorldStorage, requester: ContractAddress, role: Role) -> bool {
+    fn get_permission(self: @T, requester: ContractAddress, role: Role) -> bool {
         self
             .get_permissions_storage()
             .read_member(Model::<Permission>::ptr_from_keys((requester, role)), selector!("has"))
     }
 
-    fn set_permission(ref self: WorldStorage, requester: ContractAddress, role: Role, has: bool) {
+    fn set_permission(ref self: T, requester: ContractAddress, role: Role, has: bool) {
         let mut storage = self.get_permissions_storage();
         storage.write_model(@Permission { requester, role, has })
     }
 
-    fn set_permissions(ref self: WorldStorage, permissions: Array<Permission>) {
+    fn set_permissions(ref self: T, permissions: Array<Permission>) {
         let mut array = ArrayTrait::<@Permission>::new();
         for permission in permissions {
             array.append(@permission);

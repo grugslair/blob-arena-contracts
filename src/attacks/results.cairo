@@ -1,5 +1,6 @@
-use super::Target;
-
+use super::{Target, Stat};
+use crate::core::BoolIntoOneZero;
+use crate::stats::{IStats, IStatsTrait};
 
 /// Represents the outcome of a round in combat
 ///
@@ -16,7 +17,7 @@ struct RoundResult {
     combat_id: felt252,
     #[key]
     round: u32,
-    attacks: Array<AttackResult>,
+    attacks: Span<AttackResult>,
 }
 
 /// Represents the outcome of an attack action in the blob arena game
@@ -58,14 +59,21 @@ struct EffectResult {
     affect: AffectResult,
 }
 
-/// Represents the possible outcomes of an affect action
+
+/// Represents the possible outcomes or effects of an action in the game.
 /// # Variants
-/// * `Success` - The affect action was successful without causing damage
-/// * `Damage(DamageResult)` - The affect action resulted in damage, containing damage details
+/// * `Health` - A change in health points (positive for healing, negative for damage)
+/// * `Damage` - A complex damage result containing damage type and amount
+/// * `Stats` - Multiple stat modifications represented by IStats interface
+/// * `Stat` - A single stat modification
+/// * `Stun` - Overall stun chance
 #[derive(Drop, Serde, PartialEq, Introspect)]
 enum AffectResult {
-    Success,
+    Health: i32,
     Damage: DamageResult,
+    Stats: IStats,
+    Stat: Stat,
+    Stun: u8,
 }
 
 /// Represents the result of a damage calculation
@@ -75,4 +83,79 @@ enum AffectResult {
 struct DamageResult {
     damage: u8,
     critical: bool,
+}
+
+#[derive(Drop, Default)]
+struct AttackEffect {
+    criticals: u32,
+    damage: u32,
+    stats: IStats,
+    stun: u8,
+    health: i32,
+}
+
+#[generate_trait]
+impl AttackOutcomesImpl of AttackOutcomesTrait {
+    fn effects(self: @AttackOutcomes) -> (AttackEffect, AttackEffect) {
+        let mut player: AttackEffect = Default::default();
+        let mut opponent: AttackEffect = Default::default();
+        match self {
+            AttackOutcomes::Hit(effects) |
+            AttackOutcomes::Miss(effects) => {
+                for effect in effects.span() {
+                    match effect.affect {
+                        AffectResult::Damage(affect) => {
+                            match effect.target {
+                                Target::Player => {
+                                    player.damage += (*affect.damage).into();
+                                    player.criticals += (*affect.critical).into();
+                                },
+                                Target::Opponent => {
+                                    opponent.damage += (*affect.damage).into();
+                                    opponent.criticals += (*affect.critical).into();
+                                },
+                            }
+                        },
+                        AffectResult::Stats(affect) => {
+                            match effect.target {
+                                Target::Player => { player.stats += *affect; },
+                                Target::Opponent => { opponent.stats += *affect; },
+                            }
+                        },
+                        AffectResult::Stat(affect) => {
+                            match effect.target {
+                                Target::Player => {
+                                    player.stats.add_stat(*affect.stat, *affect.amount);
+                                },
+                                Target::Opponent => {
+                                    opponent.stats.add_stat(*affect.stat, *affect.amount);
+                                },
+                            }
+                        },
+                        AffectResult::Stun(affect) => {
+                            match effect.target {
+                                Target::Player => { player.stun += *affect; },
+                                Target::Opponent => { opponent.stun += *affect; },
+                            }
+                        },
+                        AffectResult::Health(affect) => {
+                            match effect.target {
+                                Target::Player => { player.health += *affect; },
+                                Target::Opponent => { opponent.health += *affect; },
+                            }
+                        },
+                    }
+                }
+            },
+            _ => {},
+        };
+        (player, opponent)
+    }
+}
+
+#[generate_trait]
+impl AttackResultImpl of AttackResultTrait {
+    fn effects(self: @AttackResult) -> (AttackEffect, AttackEffect) {
+        self.result.effects()
+    }
 }

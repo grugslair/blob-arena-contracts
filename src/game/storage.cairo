@@ -2,13 +2,24 @@ use dojo::event::EventStorage;
 use starknet::{get_block_timestamp, get_caller_address, ContractAddress};
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}};
 use blob_arena::{
-    collections::ERC721Token,
+    erc721::ERC721Token,
     game::components::{
         GameInfo, Initiator, LastTimestamp, Player, WinVia, CombatEnd, GameInfoTrait,
+        GamesCompleted,
     },
     combat::{CombatState, Phase, CombatTrait, CombatStorage}, commitments::Commitment,
     combatants::{CombatantStorage, CombatantInfo},
 };
+
+fn sort_players(
+    player_1: ContractAddress, player_2: ContractAddress,
+) -> (ContractAddress, ContractAddress) {
+    match player_1 < player_2 {
+        true => (player_1, player_2),
+        false => (player_2, player_1),
+    }
+}
+
 
 #[generate_trait]
 impl GameStorageImpl of GameStorage {
@@ -24,8 +35,12 @@ impl GameStorageImpl of GameStorage {
         self.read_member(Model::<LastTimestamp>::ptr_from_keys(game_id), selector!("timestamp"))
     }
 
-    fn set_last_timestamp(ref self: WorldStorage, game_id: felt252) {
-        self.write_model(@LastTimestamp { game_id, timestamp: get_block_timestamp() });
+    fn set_last_timestamp(ref self: WorldStorage, game_id: felt252, timestamp: u64) {
+        self.write_model(@LastTimestamp { game_id, timestamp });
+    }
+
+    fn set_last_timestamp_now(ref self: WorldStorage, game_id: felt252) {
+        self.set_last_timestamp(game_id, get_block_timestamp());
     }
 
     fn get_game_info(self: @WorldStorage, game_id: felt252) -> GameInfo {
@@ -35,6 +50,7 @@ impl GameStorageImpl of GameStorage {
     fn get_game_combatants(self: @WorldStorage, game_id: felt252) -> (felt252, felt252) {
         self.read_member(Model::<GameInfo>::ptr_from_keys(game_id), selector!("combatant_ids"))
     }
+
 
     fn set_game_combatants(
         ref self: WorldStorage, game_id: felt252, combatant_a: felt252, combatant_b: felt252,
@@ -125,5 +141,27 @@ impl GameStorageImpl of GameStorage {
 
     fn get_opponent(self: @WorldStorage, game: GameInfo, combatant_id: felt252) -> CombatantInfo {
         self.get_combatant_info(game.get_opponent_id(combatant_id))
+    }
+
+    fn get_games_completed(
+        self: @WorldStorage, player_1: ContractAddress, player_2: ContractAddress,
+    ) -> u64 {
+        self
+            .read_member(
+                Model::<GamesCompleted>::ptr_from_keys(sort_players(player_1, player_2)),
+                selector!("completed"),
+            )
+    }
+
+    fn get_games_completed_value(
+        self: @WorldStorage, players: (ContractAddress, ContractAddress),
+    ) -> u64 {
+        self.read_member(Model::<GamesCompleted>::ptr_from_keys(players), selector!("completed"))
+    }
+
+    fn set_games_completed(
+        ref self: WorldStorage, players: (ContractAddress, ContractAddress), completed: u64,
+    ) {
+        self.write_model(@GamesCompleted { players, completed });
     }
 }

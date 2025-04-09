@@ -3,7 +3,8 @@ use core::poseidon::HashState;
 use starknet::{ContractAddress, get_caller_address};
 use dojo::{world::WorldStorage, model::ModelStorage};
 use blob_arena::{
-    lobby::storage::LobbyStorage, combat::CombatTrait, combatants::CombatantTrait, game::GameStorage
+    lobby::storage::{LobbyStorage}, combat::CombatTrait, combatants::CombatantTrait,
+    game::GameStorage, achievements::{Achievements, TaskId},
 };
 
 
@@ -21,7 +22,7 @@ impl LobbyImpl of LobbyTrait {
         self.assert_caller_player(self.get_sender_combatant(challenge_id));
     }
     fn get_caller_receiver_from_open_lobby(
-        self: @WorldStorage, challenge_id: felt252
+        self: @WorldStorage, challenge_id: felt252,
     ) -> ContractAddress {
         let lobby = self.get_lobby(challenge_id);
         self.assert_combat_none(challenge_id);

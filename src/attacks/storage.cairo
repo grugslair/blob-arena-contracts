@@ -1,3 +1,4 @@
+use starknet::ContractAddress;
 use dojo::{
     world::{WorldStorage, WorldStorageTrait}, event::EventStorage,
     model::{ModelStorage, ModelValueStorage, Model},
@@ -7,10 +8,10 @@ use blob_arena::{
         Attack, Effect,
         components::{
             AttackInputTrait, AttackInput, PlannedAttack, AttackAvailable, AttackLastUsed,
-            AttackAvailableValue, AttackLastUsedValue, AttackName, AttackExists,
+            AttackName, AttackExists, AttackUses,
         },
     },
-    uuid, world::WorldTrait, tags::Tag,
+    uuid, world::ModelsTrait, tags::Tag,
 };
 
 
@@ -64,15 +65,20 @@ impl AttackStorageImpl of AttackStorage {
     fn check_attack_available(
         self: @WorldStorage, combatant_id: felt252, attack_id: felt252,
     ) -> bool {
-        let value: AttackAvailableValue = self.read_value((combatant_id, attack_id));
-        value.available
+        self
+            .read_member(
+                Model::<AttackAvailable>::ptr_from_keys((combatant_id, attack_id)),
+                selector!("available"),
+            )
     }
 
     fn get_attack_last_used(self: @WorldStorage, combatant_id: felt252, attack_id: felt252) -> u32 {
-        let value: AttackLastUsedValue = self.read_value((combatant_id, attack_id));
-        value.last_used
+        self
+            .read_member(
+                Model::<AttackLastUsed>::ptr_from_keys((combatant_id, attack_id)),
+                selector!("last_used"),
+            )
     }
-
     fn set_attack_available(ref self: WorldStorage, combatant_id: felt252, attack_id: felt252) {
         self.write_model(@AttackAvailable { combatant_id, attack_id, available: true });
     }
@@ -140,6 +146,17 @@ impl AttackStorageImpl of AttackStorage {
     fn check_attack_exists(self: @WorldStorage, attack_id: felt252) -> bool {
         let schema: AttackExists = self.read_schema(Model::<Attack>::ptr_from_keys(attack_id));
         schema.hit.is_non_zero() || schema.miss.is_non_zero()
+    }
+
+
+    fn get_attack_uses(self: @WorldStorage, player: ContractAddress, attack_id: felt252) -> u32 {
+        self.read_member(Model::<AttackUses>::ptr_from_keys((player, attack_id)), selector!("uses"))
+    }
+
+    fn set_attack_uses(
+        ref self: WorldStorage, player: ContractAddress, attack_id: felt252, uses: u32,
+    ) {
+        self.write_model(@AttackUses { player, attack_id, uses });
     }
 }
 

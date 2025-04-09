@@ -64,18 +64,20 @@ mod lobby {
     mod contract;
 }
 
-mod pve {
+mod arcade {
     mod components;
     mod systems;
     mod contract;
     mod admin;
-    use systems::PVETrait;
+    use systems::ArcadeTrait;
     use components::{
-        PVEGame, PVEOpponent, PVEBlobertInfo, PVEStorage, PVEPhase, PVEStore, PVEChallengeAttempt,
-        PVEPhaseTrait, PVEAttemptEnd, PVEOpponentInput, PVE_NAMESPACE_HASH,
-        ARCADE_CHALLENGE_MAX_RESPAWNS,
+        ArcadeGame, ArcadeOpponent, ArcadeBlobertInfo, ArcadeStorage, ArcadePhase, ArcadeStore,
+        ArcadeChallengeAttempt, ArcadePhaseTrait, ArcadeAttemptEnd, ArcadeOpponentInput,
+        ARCADE_NAMESPACE_HASH, ARCADE_CHALLENGE_MAX_RESPAWNS,
     };
 }
+
+mod achievements;
 
 pub use world::{default_namespace, DefaultStorage};
 #[cfg(test)]

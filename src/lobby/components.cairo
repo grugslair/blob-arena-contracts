@@ -30,3 +30,4 @@ struct LobbyCreated {
     sender: ContractAddress,
     receiver: ContractAddress,
 }
+

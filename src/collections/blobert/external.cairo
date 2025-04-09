@@ -1,5 +1,5 @@
 use starknet::ContractAddress;
-use super::TokenAttributes;
+use super::super::TokenAttributes;
 
 /// Interface for Blobert NFT collection management
 /// # Interface Functions

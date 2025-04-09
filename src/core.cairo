@@ -164,6 +164,15 @@ impl SignedTryIntoI<T, S, +TryInto<T, S>, +Neg<S>> of TryInto<Signed<T>, S> {
     }
 }
 
+impl BoolIntoOneZero<T, +Zero<T>, +One<T>> of Into<bool, T> {
+    fn into(self: bool) -> T {
+        match self {
+            true => One::one(),
+            false => Zero::zero(),
+        }
+    }
+}
+
 impl BoolIntoFelt252Impl of Into<bool, felt252> {
     fn into(self: bool) -> felt252 {
         if self {

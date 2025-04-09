@@ -1,5 +1,9 @@
+use starknet::ContractAddress;
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}, event::EventStorage};
-use blob_arena::{combat::{CombatState, Phase}, attacks::results::{AttackResult, RoundResult}};
+use crate::{combat::{CombatState, Phase}, attacks::results::{AttackResult, RoundResult}};
+use crate::erc721::ERC721Token;
+use super::components::{ConsecutiveWins, ConsecutiveTokenWins};
+
 
 #[generate_trait]
 impl CombatImpl of CombatStorage {
@@ -21,7 +25,7 @@ impl CombatImpl of CombatStorage {
     fn get_combat_winner(self: @WorldStorage, id: felt252) -> felt252 {
         match self.get_combat_phase(id) {
             Phase::Ended(winner) => winner,
-            _ => panic!("Combat not ended")
+            _ => panic!("Combat not ended"),
         }
     }
     fn set_combat_winner(ref self: WorldStorage, id: felt252, winner: felt252) {
@@ -29,8 +33,73 @@ impl CombatImpl of CombatStorage {
     }
 
     fn emit_round_result(
-        ref self: WorldStorage, combat_id: felt252, round: u32, attacks: Array<AttackResult>
+        ref self: WorldStorage, combat_id: felt252, round: u32, attacks: Span<AttackResult>,
     ) {
         self.emit_event(@RoundResult { combat_id, round, attacks: attacks });
+    }
+
+
+    fn get_combat_consecutive_wins(
+        self: @WorldStorage, player: ContractAddress,
+    ) -> ConsecutiveWins {
+        self.read_model(player)
+    }
+
+
+    fn set_combat_consecutive_wins(ref self: WorldStorage, model: ConsecutiveWins) {
+        self.write_model(@model);
+    }
+
+
+    fn set_combat_current_consecutive_wins(
+        ref self: WorldStorage, player: ContractAddress, current: u64,
+    ) {
+        self
+            .write_member(
+                Model::<ConsecutiveWins>::ptr_from_keys(player), selector!("current"), current,
+            );
+    }
+
+    fn reset_combat_current_consecutive_wins(ref self: WorldStorage, player: ContractAddress) {
+        let max_wins: u64 = self
+            .read_member(Model::<ConsecutiveWins>::ptr_from_keys(player), selector!("max"));
+        if max_wins.is_non_zero() {
+            self.set_combat_current_consecutive_wins(player, 0);
+        }
+    }
+
+    fn get_combat_consecutive_token_wins(
+        self: @WorldStorage, player: ContractAddress, token: ERC721Token,
+    ) -> ConsecutiveTokenWins {
+        self.read_model((player, token))
+    }
+
+    fn set_combat_consecutive_token_wins(
+        ref self: WorldStorage, player: ContractAddress, token: ERC721Token, wins: u64,
+    ) {
+        self.write_model(@ConsecutiveTokenWins { player, token, current: wins, max: wins });
+    }
+
+    fn set_combat_current_consecutive_token_wins(
+        ref self: WorldStorage, player: ContractAddress, token: ERC721Token, current: u64,
+    ) {
+        self
+            .write_member(
+                Model::<ConsecutiveTokenWins>::ptr_from_keys((player, token)),
+                selector!("current"),
+                current,
+            );
+    }
+
+    fn reset_combat_current_consecutive_token_wins(
+        ref self: WorldStorage, player: ContractAddress, token: ERC721Token,
+    ) {
+        let max_wins: u64 = self
+            .read_member(
+                Model::<ConsecutiveTokenWins>::ptr_from_keys((player, token)), selector!("max"),
+            );
+        if max_wins.is_non_zero() {
+            self.set_combat_current_consecutive_token_wins(player, token, 0);
+        }
     }
 }

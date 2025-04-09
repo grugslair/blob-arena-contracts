@@ -3,13 +3,61 @@ use dojo::{
     utils::entity_id_from_keys,
 };
 use blob_arena::{stats::UStats, iter::Iteration, attacks::AttackStorage};
-use super::components::{
-    BlobertItem, BlobertItemKey, BlobertAttribute, Seed, SeedItem, BlobertItemValue,
-    BlobertItemName, SeedTrait, AttackSlot, AttackSlotValue,
-};
+use super::super::{BlobertItemKey, BlobertAttribute, Seed, SeedItem, SeedTrait};
+
+/// Setup Models
+
+/// A struct representing an item that can be equipped by a Blobert
+///
+/// # Fields
+/// * `key` - The unique identifier for this item, represented by a BlobertItemKey
+/// * `stats` - The stats associated with this item, stored as UStats
+///
+/// # Notes
+/// This is a Dojo model that can be dropped, serialized, and copied.
+#[dojo::model]
+#[derive(Drop, Serde, Copy)]
+struct BlobertItem {
+    #[key]
+    key: BlobertItemKey,
+    stats: UStats,
+}
+
+
+/// Contains a Blobert item's name information.
+///
+/// # Fields
+/// * `id` - The unique identifier of the item
+/// * `name` - The name of the item as a ByteArray
+///
+/// # Events
+/// Emitted when a Blobert item's name is created or updated
+#[dojo::event]
+#[derive(Drop, Serde)]
+struct BlobertItemName {
+    #[key]
+    id: felt252,
+    name: ByteArray,
+}
+
+/// Represents an attack slot associated with a Blobert item
+///
+/// # Fields
+/// * `item_key` - The unique identifier for the Blobert item
+/// * `slot` - The slot position number
+/// * `attack_id` - The identifier of the attack assigned to this slot
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct AttackSlot {
+    #[key]
+    item_key: BlobertItemKey,
+    #[key]
+    slot: felt252,
+    attack_id: felt252,
+}
 
 #[generate_trait]
-impl BlobertStorageImpl of BlobertStorage {
+impl BlobertItemStorageImpl of BlobertItemStorage {
     fn set_blobert_item_stats(ref self: WorldStorage, key: BlobertItemKey, stats: UStats) {
         self.write_model(@BlobertItem { key, stats });
     }
@@ -25,26 +73,12 @@ impl BlobertStorageImpl of BlobertStorage {
         self.set_blobert_item_name(key, name);
     }
 
-    fn get_blobert_item(self: @WorldStorage, key: BlobertItemKey) -> BlobertItemValue {
-        self.read_value(key)
-    }
-
-    fn get_blobert_items(
-        self: @WorldStorage, keys: Span<BlobertItemKey>,
-    ) -> Array<BlobertItemValue> {
-        self.read_values(keys)
-    }
-
-    fn get_item_stats(self: @WorldStorage, key: BlobertItemKey) -> UStats {
+    fn get_blobert_item_stats(self: @WorldStorage, key: BlobertItemKey) -> UStats {
         self.read_member(Model::<BlobertItem>::ptr_from_keys(key), selector!("stats"))
     }
 
-    fn get_item_stats_sum(self: @WorldStorage, keys: Span<BlobertItemKey>) -> UStats {
-        let mut stats: UStats = Default::default();
-        for item in self.get_blobert_items(keys) {
-            stats += item.stats;
-        };
-        stats
+    fn get_blobert_items_stats(self: @WorldStorage, keys: Span<BlobertItemKey>) -> Array<UStats> {
+        self.read_member_of_models(Model::<BlobertItem>::ptrs_from_keys(keys), selector!("stats"))
     }
 
     fn get_blobert_attack_slot(
@@ -59,14 +93,10 @@ impl BlobertStorageImpl of BlobertStorage {
     fn get_blobert_attack_slots(
         self: @WorldStorage, item_slots: Span<(BlobertItemKey, felt252)>,
     ) -> Array<felt252> {
-        let values: Array<AttackSlotValue> = self.read_values(item_slots);
-        let mut array = ArrayTrait::<felt252>::new();
-        for value in values {
-            if value.attack_id.is_non_zero() {
-                array.append(value.attack_id);
-            };
-        };
-        array
+        self
+            .read_member_of_models(
+                Model::<AttackSlot>::ptrs_from_keys(item_slots), selector!("attack_id"),
+            )
     }
 
 
@@ -86,3 +116,4 @@ impl BlobertStorageImpl of BlobertStorage {
         self.write_models(models.span());
     }
 }
+

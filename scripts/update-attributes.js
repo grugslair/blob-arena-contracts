@@ -204,9 +204,8 @@ const main = async () => {
   for (const calls_metas_batch of batchCalls(calls_metas, 70)) {
     const [calls, descriptions] = splitCallDescriptions(calls_metas_batch);
     console.log(descriptions);
-    account_manifest.execute(calls).then((res) => {
-      console.log(res.transaction_hash);
-    });
+    const res = await account_manifest.execute(calls);
+    console.log(res.transaction_hash);
   }
 };
 

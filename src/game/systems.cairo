@@ -1,21 +1,26 @@
 use core::poseidon::HashState;
 use starknet::{get_block_timestamp, get_caller_address, ContractAddress};
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}, event::EventStorage};
-use blob_arena::{
-    game::{
-        components::{LastTimestamp, Initiator, GameInfo, GameInfoTrait, WinVia, GameProgress},
-        storage::GameStorage,
-    },
-    combat::{CombatTrait, Phase, CombatState, CombatStorage, components::PhaseTrait},
-    commitments::Commitment, utils::get_transaction_hash,
-    combatants::{CombatantTrait, CombatantInfo, CombatantStorage, CombatantState},
-    hash::{in_order, array_to_hash_state},
-    attacks::{results::{RoundResult, AttackResult}, Attack, AttackStorage},
-    core::{
-        TTupleSized2ToSpan, ArrayTryIntoTTupleSized2, ArrayTryIntoFixed2Array,
-        TTupleSized2IntoFixed,
-    },
+
+use crate::game::{
+    components::{LastTimestamp, Initiator, GameInfo, GameInfoTrait, WinVia, GameProgress},
+    storage::{GameStorage, sort_players},
 };
+use crate::erc721::ERC721Token;
+use crate::combat::{CombatTrait, Phase, CombatState, CombatStorage, components::PhaseTrait};
+use crate::commitments::Commitment;
+use crate::utils::get_transaction_hash;
+use crate::combatants::{CombatantTrait, CombatantInfo, CombatantStorage, CombatantState};
+use crate::hash::{in_order, array_to_hash_state};
+use crate::attacks::{
+    results::{RoundResult, AttackResult, AttackOutcomes, AttackResultTrait}, Attack, AttackStorage,
+};
+use crate::core::{
+    TTupleSized2ToSpan, ArrayTryIntoTTupleSized2, ArrayTryIntoFixed2Array, TTupleSized2IntoFixed,
+    BoolIntoOneZero,
+};
+use crate::attacks::AttackTrait;
+use crate::achievements::{Achievements, TaskId};
 
 
 #[generate_trait]
@@ -43,20 +48,30 @@ impl GameImpl of GameTrait {
         combat_id: felt252,
         winner: CombatantInfo,
         loser: CombatantInfo,
+        timestamp: u64,
         via: WinVia,
     ) {
         self.set_combat_phase(combat_id, Phase::Ended(winner.id));
+        if via == WinVia::Combat {
+            self.increment_achievement(winner.player, TaskId::PvpBattleVictories, timestamp);
+            if self.increase_games_completed(winner.player, loser.player).is_zero() {
+                self.increment_achievement(winner.player, TaskId::PvpUniqueOpponent, timestamp);
+                self.increment_achievement(loser.player, TaskId::PvpUniqueOpponent, timestamp);
+            }
+        }
         self.emit_combat_end(combat_id, winner, loser, via);
     }
+
     fn end_game_from_ids(
         ref self: WorldStorage,
         combat_id: felt252,
         winner_id: felt252,
         loser_id: felt252,
+        timestamp: u64,
         via: WinVia,
     ) {
         let (winner, looser) = self.get_combatants_info_tuple((winner_id, loser_id));
-        self.end_game(combat_id, winner, looser, via);
+        self.end_game(combat_id, winner, looser, timestamp, via);
     }
 
     fn if_winner_end(
@@ -100,6 +115,7 @@ impl GameImpl of GameTrait {
     fn run_game_round(ref self: WorldStorage, game: GameInfo) {
         let combat = self.get_combat_state(game.combat_id);
         combat.phase.assert_reveal();
+        let timestamp = get_block_timestamp();
 
         let combatants_span = game.combatant_ids.span();
         assert(self.check_commitments_unset(combatants_span), 'Not all attacks revealed');
@@ -107,7 +123,7 @@ impl GameImpl of GameTrait {
         let combatants = game.combatant_ids.into();
         let (attacks, salts) = self.get_attack_ids_from_combatant_ids(combatants_span);
         let hash = array_to_hash_state(salts);
-        match self
+        let (progress, results) = self
             .run_round(
                 combat.id,
                 combat.round,
@@ -115,11 +131,30 @@ impl GameImpl of GameTrait {
                 attacks.try_into().unwrap(),
                 [false, false],
                 hash,
-            ) {
+            );
+
+        match progress {
             GameProgress::Active => self.next_round(combat, combatants_span),
             GameProgress::Ended([
                 winner, looser,
-            ]) => { self.end_game_from_ids(combat.id, winner, looser, WinVia::Combat); },
+            ]) => { self.end_game_from_ids(combat.id, winner, looser, timestamp, WinVia::Combat); },
+        };
+        for result in results {
+            let player = self.get_player(result.combatant_id);
+            let new_attack_uses: u32 = self
+                .increment_attack_uses(player, result.attack)
+                .is_zero()
+                .into();
+            let (_, opponent) = result.effects();
+
+            self
+                .progress_achievements_now(
+                    player,
+                    array![
+                        (TaskId::PvpUniqueMoves, new_attack_uses),
+                        (TaskId::CriticalHits, opponent.criticals),
+                    ],
+                );
         }
     }
 
@@ -131,7 +166,7 @@ impl GameImpl of GameTrait {
         attacks: [felt252; 2],
         verified: [bool; 2],
         hash: HashState,
-    ) -> GameProgress {
+    ) -> (GameProgress, Array<AttackResult>) {
         let combatants = self.get_combatant_states(combatants_ids.span()).try_into().unwrap();
         // This needs to be another line beca compiler bs
         let [ca, cb]: [CombatantState; 2] = combatants;
@@ -153,8 +188,17 @@ impl GameImpl of GameTrait {
             progress = self.if_winner_end(combat_id, @state_1, @state_2)
         };
         self.set_combatant_states([@state_1, @state_2].span());
-        self.emit_round_result(combat_id, round, results);
-        progress
+        self.emit_round_result(combat_id, round, results.span());
+        (progress, results)
+    }
+
+    fn increase_games_completed(
+        ref self: WorldStorage, player_1: ContractAddress, player_2: ContractAddress,
+    ) -> u64 {
+        let players = sort_players(player_1, player_2);
+        let value = self.get_games_completed_value(players);
+        self.set_games_completed(players, value + 1);
+        value
     }
 }
 

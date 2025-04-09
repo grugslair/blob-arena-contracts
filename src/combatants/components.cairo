@@ -2,7 +2,7 @@ use core::{fmt::{Display, Formatter, Error, Debug}, cmp::{min, max}, poseidon::p
 use starknet::{ContractAddress, get_caller_address};
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}};
 use blob_arena::{
-    collections::ERC721Token, core::{SaturatingInto, SaturatingAdd, in_range},
+    erc721::ERC721Token, core::{SaturatingInto, SaturatingAdd, in_range},
     constants::STARTING_HEALTH, combat::calculations::{apply_luck_modifier, get_new_stun_chance},
     stats::{UStats, IStats, StatsTrait, StatTypes}, utils, utils::SeedProbability,
     constants::{NZ_255},
@@ -120,27 +120,31 @@ impl CombatantStateImpl of CombatantStateTrait {
         self.stats.limit_stats();
     }
 
-    fn apply_buffs(ref self: CombatantState, buffs: IStats) {
-        self.stats.apply_buffs(buffs);
+    fn apply_buffs(ref self: CombatantState, buffs: IStats) -> IStats {
+        let change = self.stats.apply_buffs(buffs);
         self.cap_health();
+        change
     }
 
     fn modify_health<T, +Into<u8, T>, +SaturatingAdd<T>, +SaturatingInto<T, u8>, +Drop<T>>(
         ref self: CombatantState, health: T,
-    ) {
+    ) -> i32 {
+        let starting_health: i32 = self.health.into();
         self
             .health =
                 min(
                     self.get_max_health(),
                     self.health.into().saturating_add(health).saturating_into(),
                 );
+        self.health.into() - starting_health
     }
 
-    fn apply_buff(ref self: CombatantState, stat: StatTypes, amount: i8) {
-        self.stats.apply_buff(stat, amount);
+    fn apply_buff(ref self: CombatantState, stat: StatTypes, amount: i8) -> i8 {
+        let result = self.stats.apply_buff(stat, amount);
         if stat == StatTypes::Vitality {
             self.cap_health();
         };
+        result
     }
 
     fn cap_health(ref self: CombatantState) {

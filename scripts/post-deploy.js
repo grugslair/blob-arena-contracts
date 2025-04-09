@@ -12,7 +12,10 @@ import {
   makeClassicBlobertCustomCalls,
   makeAmmaBlobertCustomCalls,
 } from "./update-attributes.js";
-import { makePveOpponentsCalls, makePveChallengeCalls } from "./update-pve.js";
+import {
+  makeArcadeOpponentsCalls,
+  makeArcadeChallengeCalls,
+} from "./update-arcade.js";
 import { makeRoleCalls } from "./update-roles.js";
 
 const main = async () => {
@@ -26,22 +29,27 @@ const main = async () => {
     options.profile,
     options.password
   );
-  let pve_data = loadJson("../post-deploy-config/pve.json");
+  let arcade_data = loadJson("../post-deploy-config/arcade.json");
 
   const calls_metas = [
     ...(await makeRoleCalls(account_manifest, options.profile)),
     ...(await makeClassicBlobertSeedCalls(account_manifest)),
     ...(await makeClassicBlobertCustomCalls(account_manifest)),
     ...(await makeAmmaBlobertCustomCalls(account_manifest)),
-    ...(await makePveOpponentsCalls(account_manifest, pve_data.opponents)),
-    ...(await makePveChallengeCalls(account_manifest, pve_data.challenges)),
+    ...(await makeArcadeOpponentsCalls(
+      account_manifest,
+      arcade_data.opponents
+    )),
+    ...(await makeArcadeChallengeCalls(
+      account_manifest,
+      arcade_data.challenges
+    )),
   ];
   for (const calls_metas_batch of batchCalls(calls_metas, 70)) {
     const [calls, descriptions] = splitCallDescriptions(calls_metas_batch);
     console.log(descriptions);
-    account_manifest.execute(calls).then((res) => {
-      console.log(res.transaction_hash);
-    });
+    const res = await account_manifest.execute(calls);
+    console.log(res.transaction_hash);
   }
 };
 

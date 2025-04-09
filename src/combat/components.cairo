@@ -8,6 +8,8 @@ use blob_arena::{
     combat::calculations::{damage_calculation, did_critical}, hash::{HashUpdate, UpdateHashToU128},
     iter::Iteration,
 };
+use crate::erc721::ERC721Token;
+
 
 /// Phase represents the different states of a combat encounter
 ///
@@ -53,6 +55,42 @@ enum AttackCooledDown {
     True: bool,
 }
 
+/// Tracks consecutive wins in combat for players
+///
+/// # Fields
+/// * `player` - The contract address of the player
+/// * `current` - The current number of consecutive wins
+/// * `token_max` - The maximum number of consecutive wins of a single token
+/// * `max` - The all-time maximum number of consecutive wins achieved
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct ConsecutiveWins {
+    #[key]
+    player: ContractAddress,
+    current: u64,
+    token_max: u64,
+    max: u64,
+}
+
+/// Tracks the number of consecutive wins for a specific player's token
+///
+/// # Fields
+///
+/// * `player` - ContractAddress of the player who owns the token
+/// * `token` - ERC721Token that is being tracked
+/// * `current` - Current number of consecutive wins for this token
+/// * `max` - Maximum number of consecutive wins achieved by this token
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct ConsecutiveTokenWins {
+    #[key]
+    player: ContractAddress,
+    #[key]
+    token: ERC721Token,
+    current: u64,
+    max: u64,
+}
+
 
 #[generate_trait]
 impl PhaseImpl of PhaseTrait {
@@ -94,20 +132,21 @@ fn run_effect(
 ) -> EffectResult {
     let result = match effect.affect {
         Affect::Stats(stats_effect) => {
-            match effect.target {
-                Target::Player => { attacker_state.apply_buffs(stats_effect) },
-                Target::Opponent => { defender_state.apply_buffs(stats_effect) },
-            };
-            AffectResult::Success
+            AffectResult::Stats(
+                match effect.target {
+                    Target::Player => { attacker_state.apply_buffs(stats_effect) },
+                    Target::Opponent => { defender_state.apply_buffs(stats_effect) },
+                },
+            )
         },
         Affect::Stat(Stat {
             stat, amount,
         }) => {
-            match effect.target {
+            let change = match effect.target {
                 Target::Player => { attacker_state.apply_buff(stat, amount) },
                 Target::Opponent => { defender_state.apply_buff(stat, amount) },
             };
-            AffectResult::Success
+            AffectResult::Stat(Stat { stat, amount: change })
         },
         Affect::Damage(damage) => {
             let mut seed = hash_state.update_to_u128(move_n);
@@ -126,14 +165,15 @@ fn run_effect(
                 Target::Player => { attacker_state.apply_stun(stun) },
                 Target::Opponent => { defender_state.apply_stun(stun) },
             };
-            AffectResult::Success
+            AffectResult::Stun(stun)
         },
         Affect::Health(health) => {
-            match effect.target {
-                Target::Player => { attacker_state.modify_health(health) },
-                Target::Opponent => { defender_state.modify_health(health) },
-            };
-            AffectResult::Success
+            AffectResult::Health(
+                match effect.target {
+                    Target::Player => { attacker_state.modify_health(health) },
+                    Target::Opponent => { defender_state.modify_health(health) },
+                },
+            )
         },
     };
     EffectResult { target: effect.target, affect: result }

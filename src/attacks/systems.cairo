@@ -1,4 +1,5 @@
 use core::num::traits::One;
+use starknet::ContractAddress;
 use dojo::world::{WorldStorage, WorldStorageTrait};
 use blob_arena::{
     attacks::{Attack, AttackStorage, components::{AttackInput, AttackInputTrait, ATTACK_TAG_GROUP}},
@@ -88,16 +89,24 @@ impl AttackImpl of AttackTrait {
         self.set_tags(ATTACK_TAG_GROUP, tags);
         ids
     }
-    fn create_or_get_attack_external(
-        ref self: WorldStorage, attack: IdTagNew<AttackInput>,
+    fn create_or_get_attack_external<T, +WorldTrait<T>, +Drop<T>>(
+        ref self: T, attack: IdTagNew<AttackInput>,
     ) -> felt252 {
-        let mut attack_world = get_default_storage();
+        let mut attack_world = self.default_storage();
         attack_world.create_or_get_attack(attack)
     }
-    fn create_or_get_attacks_external(
-        ref self: WorldStorage, attacks: Array<IdTagNew<AttackInput>>,
+    fn create_or_get_attacks_external<T, +WorldTrait<T>, +Drop<T>>(
+        ref self: T, attacks: Array<IdTagNew<AttackInput>>,
     ) -> Array<felt252> {
-        let mut attack_world = get_default_storage();
+        let mut attack_world = self.default_storage();
         attack_world.create_or_get_attacks(attacks)
+    }
+
+    fn increment_attack_uses(
+        ref self: WorldStorage, player: ContractAddress, attack_id: felt252,
+    ) -> u32 {
+        let uses = self.get_attack_uses(player, attack_id);
+        self.set_attack_uses(player, attack_id, uses + 1);
+        uses
     }
 }

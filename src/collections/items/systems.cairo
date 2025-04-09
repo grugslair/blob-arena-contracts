@@ -1,16 +1,14 @@
-use dojo::{
-    world::WorldStorage, event::EventStorage, model::{ModelStorage, ModelValueStorage, Model},
-};
-use blob_arena::{attacks::{AttackTrait, components::AttackInput}, stats::UStats, tags::IdTagNew};
+use dojo::world::WorldStorage;
 
-use super::{
-    BlobertStorage, Seed, BlobertItemKey, TokenAttributes, AttackSlot,
-    components::{SeedTrait, TokenAttributesTrait},
-};
+use crate::stats::{UStats, StatsTrait};
+use crate::tags::IdTagNew;
+use crate::attacks::{AttackInput, AttackTrait};
 
+use super::BlobertItemStorage;
+use super::super::{BlobertItemKey, TokenAttributes, SeedTrait, TokenAttributesTrait};
 
 #[generate_trait]
-impl BlobertImpl of BlobertTrait {
+impl BlobertItemsImpl of BlobertItemsTrait {
     fn set_blobert_item_with_attacks(
         ref self: WorldStorage,
         key: BlobertItemKey,
@@ -22,11 +20,21 @@ impl BlobertImpl of BlobertTrait {
         self.fill_blobert_item_attack_slots(key, self.create_or_get_attacks_external(attacks));
     }
 
+    fn get_blobert_item_stats_total(self: @WorldStorage, keys: Span<BlobertItemKey>) -> UStats {
+        let mut total: UStats = Default::default();
+        for stats in self.get_blobert_items_stats(keys) {
+            total += stats;
+        };
+        total
+    }
+
     fn get_blobert_stats(self: @WorldStorage, blobert: TokenAttributes) -> UStats {
         match blobert {
-            TokenAttributes::Seed(seed) => { self.get_item_stats_sum(seed.to_item_keys()) },
+            TokenAttributes::Seed(seed) => {
+                self.get_blobert_item_stats_total(seed.to_item_keys())
+            },
             TokenAttributes::Custom(custom) => {
-                self.get_item_stats(BlobertItemKey::Custom(custom))
+                self.get_blobert_item_stats(BlobertItemKey::Custom(custom))
             },
         }
     }
@@ -53,4 +61,3 @@ impl BlobertImpl of BlobertTrait {
         self.get_blobert_attack_slots(keys.span())
     }
 }
-

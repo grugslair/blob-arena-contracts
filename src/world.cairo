@@ -10,6 +10,9 @@ use dojo::{
     contract::{IContractDispatcherTrait, IContractDispatcher},
     utils::{deserialize_unwrap, entity_id_from_keys}, meta::{Introspect, Layout, FieldLayout},
 };
+use dojo::contract::components::world_provider::world_provider_cpt::{
+    WorldProvider, HasComponent as WorldComponent,
+};
 
 use blob_arena::{utils::{storage_read, storage_write}, hash::hash_value};
 const DEFAULT_NAMESPACE_HASH: felt252 = bytearray_hash!("blob_arena");
@@ -52,7 +55,7 @@ fn get_default_storage() -> WorldStorage {
 }
 
 #[generate_trait]
-impl WorldImpl of WorldTrait {
+impl ModelsImpl of ModelsTrait {
     fn write_models_check<M, +Model<M>, +Drop<M>>(ref self: WorldStorage, models: Span<@M>) {
         let len = models.len();
         if len.is_one() {
@@ -61,11 +64,39 @@ impl WorldImpl of WorldTrait {
             self.write_models(models);
         }
     }
-    fn new_storage(self: @WorldStorage, namespace_hash: felt252) -> WorldStorage {
+}
+
+trait WorldTrait<T> {
+    fn storage(self: @T, namespace_hash: felt252) -> WorldStorage;
+    fn default_storage(self: @T) -> WorldStorage {
+        Self::storage(self, DEFAULT_NAMESPACE_HASH)
+    }
+}
+
+impl IWorldDispatcherWorldImpl of WorldTrait<IWorldDispatcher> {
+    fn storage(self: @IWorldDispatcher, namespace_hash: felt252) -> WorldStorage {
+        WorldStorageTrait::new_from_hash(*self, namespace_hash)
+    }
+}
+
+impl WorldStorageWorldImpl of WorldTrait<WorldStorage> {
+    fn storage(self: @WorldStorage, namespace_hash: felt252) -> WorldStorage {
         WorldStorageTrait::new_from_hash(*self.dispatcher, namespace_hash)
     }
-    fn new_default_storage(self: @WorldStorage) -> WorldStorage {
-        self.new_storage(DEFAULT_NAMESPACE_HASH)
+}
+
+impl ContractStateWorldImpl<TState, +WorldComponent<TState>> of WorldTrait<TState> {
+    fn storage(self: @TState, namespace_hash: felt252) -> WorldStorage {
+        WorldStorageTrait::new_from_hash(self.get_component().world_dispatcher(), namespace_hash)
+    }
+}
+
+#[generate_trait]
+impl WorldDispatcherImpl<
+    TContractState, +WorldComponent<TContractState>,
+> of WorldDispatcher<TContractState> {
+    fn world_dispatcher(self: @TContractState) -> IWorldDispatcher {
+        self.get_component().world_dispatcher()
     }
 }
 

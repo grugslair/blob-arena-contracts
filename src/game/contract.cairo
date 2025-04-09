@@ -111,37 +111,29 @@ trait IGame<TContractState> {
 
 #[dojo::contract]
 mod game_actions {
-    use starknet::{ContractAddress, get_caller_address, get_contract_address};
+    use starknet::{ContractAddress, get_caller_address, get_contract_address, get_block_timestamp};
     use dojo::{world::{WorldStorage, WorldStorageTrait}};
     use blob_arena::{
         attacks::AttackStorage, combat::{Phase, CombatTrait, CombatState, CombatStorage},
         combatants::{CombatantTrait, CombatantStorage, CombatantInfo},
         game::{components::{GameInfoTrait, WinVia}, storage::{GameStorage}, systems::GameTrait},
-        world::DEFAULT_NAMESPACE_HASH, commitments::Commitment,
+        world::WorldTrait, commitments::Commitment,
         core::{TTupleSized2ToSpan, ArrayTryIntoTTupleSized2},
     };
     use super::IGame;
 
 
-    #[generate_trait]
-    impl PrivateImpl of PrivateTrait {
-        fn get_storage(self: @ContractState) -> WorldStorage {
-            self.world_ns_hash(DEFAULT_NAMESPACE_HASH)
-        }
-    }
-
-
     #[abi(embed_v0)]
     impl IGameImpl of IGame<ContractState> {
         fn start(ref self: ContractState, game_id: felt252) {
-            let mut world = self.get_storage();
+            let mut world = self.default_storage();
             world.assert_caller_initiator(game_id);
             world.assert_created_phase(game_id);
             world.assert_contract_is_owner(game_id);
             world.set_combat_phase(game_id, Phase::Commit);
         }
         fn commit(ref self: ContractState, combatant_id: felt252, hash: felt252) {
-            let mut world = self.get_storage();
+            let mut world = self.default_storage();
             let combatant = world.get_callers_combatant_info(combatant_id);
             let game = world.get_owners_game(combatant.combat_id, get_contract_address());
             let opponent_id = game.get_opponent_id(combatant_id);
@@ -151,35 +143,40 @@ mod game_actions {
             if world.check_commitment_set(opponent_id) {
                 world.set_combat_phase(game.combat_id, Phase::Reveal);
             } else if game.time_limit.is_non_zero() {
-                world.set_last_timestamp(game.combat_id);
+                world.set_last_timestamp_now(game.combat_id);
             }
         }
         fn reveal(ref self: ContractState, combatant_id: felt252, attack: felt252, salt: felt252) {
-            let mut world = self.get_storage();
+            let mut world = self.default_storage();
             let combatant = world.get_callers_combatant_info(combatant_id);
             let game = world.get_owners_game(combatant.combat_id, get_contract_address());
 
             let opponent_id = game.get_opponent_id(combatant_id);
+            let timestamp = get_block_timestamp();
             if world.consume_and_compare_commitment_value(combatant_id, @(attack, salt)) {
                 world.set_planned_attack(combatant_id, attack, opponent_id, salt);
                 if world.check_commitment_set(opponent_id) {
-                    world.set_last_timestamp(game.combat_id);
+                    world.set_last_timestamp(game.combat_id, timestamp);
                 }
             } else {
                 world
                     .end_game_from_ids(
-                        game.combat_id, opponent_id, combatant_id, WinVia::IncorrectReveal,
+                        game.combat_id,
+                        opponent_id,
+                        combatant_id,
+                        timestamp,
+                        WinVia::IncorrectReveal,
                     );
             }
         }
         fn run(ref self: ContractState, combat_id: felt252) {
-            let mut world = self.get_storage();
+            let mut world = self.default_storage();
 
             world.run_game_round(world.get_owners_game(combat_id, get_contract_address()));
         }
 
         fn kick_player(ref self: ContractState, combat_id: felt252) {
-            let mut storage = self.get_storage();
+            let mut storage = self.default_storage();
             let game = storage.get_owners_game(combat_id, get_contract_address());
             let (a, b) = game.combatant_ids;
             storage.assert_past_time_limit(game);
@@ -201,11 +198,14 @@ mod game_actions {
                 (false, false) => panic!("Neither players have played"),
             };
 
-            storage.end_game_from_ids(game.combat_id, winner_id, looser_id, WinVia::TimeLimit);
+            storage
+                .end_game_from_ids(
+                    game.combat_id, winner_id, looser_id, get_block_timestamp(), WinVia::TimeLimit,
+                );
         }
 
         fn forfeit(ref self: ContractState, combatant_id: felt252) {
-            let mut world = self.get_storage();
+            let mut world = self.default_storage();
             let combatant = world.get_callers_combatant_info(combatant_id);
             let game = world.get_owners_game(combatant.combat_id, get_contract_address());
 
@@ -213,11 +213,14 @@ mod game_actions {
 
             let opponent = world.get_opponent(game, combatant_id);
 
-            world.end_game(game.combat_id, opponent, combatant, WinVia::Forfeit);
+            world
+                .end_game(
+                    game.combat_id, opponent, combatant, get_block_timestamp(), WinVia::Forfeit,
+                );
         }
 
         fn get_winning_player(self: @ContractState, combat_id: felt252) -> ContractAddress {
-            let storage = self.get_storage();
+            let storage = self.default_storage();
             storage.get_winning_player(combat_id)
         }
     }
