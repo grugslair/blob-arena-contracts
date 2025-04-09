@@ -4478,7 +4478,7 @@
     },
     {
       "address": "0x26b7945aca46657f23dc8e328996ef0fc306ca54c8ee8788e1298a570539046",
-      "class_hash": "0x8f5520125cd754287ee2989541c33081bdbbfde84a1a8db86d0387fdcdc481",
+      "class_hash": "0x1a92b3bfadab39fe24266c8a54a5523b03652b408d302202fb3164d96469a0f",
       "abi": [
         {
           "type": "impl",
@@ -4553,34 +4553,6 @@
           "type": "interface",
           "name": "blob_arena::pve::contract::IPVE",
           "items": [
-            {
-              "type": "function",
-              "name": "start_game",
-              "inputs": [
-                {
-                  "name": "opponent_id",
-                  "type": "core::felt252"
-                },
-                {
-                  "name": "collection_address",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                },
-                {
-                  "name": "token_id",
-                  "type": "core::integer::u256"
-                },
-                {
-                  "name": "attacks",
-                  "type": "core::array::Array::<(core::felt252, core::felt252)>"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::felt252"
-                }
-              ],
-              "state_mutability": "external"
-            },
             {
               "type": "function",
               "name": "attack",
@@ -4785,7 +4757,6 @@
       "tag": "pve_blobert-pve_blobert_actions",
       "selector": "0x4a3d4964b4b5b8f11879283e18f52f1a27f2fa52da589aa9b95e5ea0213b4d3",
       "systems": [
-        "start_game",
         "attack",
         "start_challenge",
         "next_challenge_round",
@@ -4797,7 +4768,7 @@
     },
     {
       "address": "0x771e41ff92953babfa9322d68406a11dfeaf12f6fd976275332ae8a5f4f0761",
-      "class_hash": "0x6d8009e0d5d84cc26e55f906c16dc61c0fb3e11d053a8ecfa107e5254a41ea8",
+      "class_hash": "0x19dbb88a985df7d5b3ea6592e25a2c52346fbf7249947dabb7817806cde9cc7",
       "abi": [
         {
           "type": "impl",
@@ -5141,10 +5112,6 @@
             {
               "name": "attacks",
               "type": "core::array::Array::<blob_arena::tags::IdTagNew::<blob_arena::attacks::components::AttackInput>>"
-            },
-            {
-              "name": "collections_allowed",
-              "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
             }
           ]
         },
@@ -5193,10 +5160,6 @@
                 {
                   "name": "attacks",
                   "type": "core::array::Array::<blob_arena::tags::IdTagNew::<blob_arena::attacks::components::AttackInput>>"
-                },
-                {
-                  "name": "collections_allowed",
-                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
                 }
               ],
               "outputs": [
