@@ -54,7 +54,6 @@ mod game {
     use components::{GameProgress};
     use storage::GameStorage;
     use systems::GameTrait;
-    mod admin;
 }
 
 mod lobby {
@@ -68,7 +67,6 @@ mod arcade {
     mod components;
     mod systems;
     mod contract;
-    mod admin;
     use systems::ArcadeTrait;
     use components::{
         ArcadeGame, ArcadeOpponent, ArcadeBlobertInfo, ArcadeStorage, ArcadePhase, ArcadeStore,
