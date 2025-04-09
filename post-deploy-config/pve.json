@@ -22,8 +22,7 @@
         { "tag": "Binary Bash" },
         { "tag": "Algorithm Assault" },
         { "tag": "Algorithmic Overload" }
-      ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      ]
     },
     {
       "name": "Cyber Crusher",
@@ -47,8 +46,7 @@
         { "tag": "Argent Assault" },
         { "tag": "Argent Crush" },
         { "tag": "Two Factor Authentication" }
-      ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      ]
     },
     {
       "name": "Balloon Bruiser",
@@ -72,8 +70,7 @@
         { "tag": "Helium Blast" },
         { "tag": "Balloon Bombardment" },
         { "tag": "Inflatable Explosion" }
-      ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      ]
     },
     {
       "name": "Brick Behemoth",
@@ -97,8 +94,7 @@
         { "tag": "Briq Bash" },
         { "tag": "Briq Breaker" },
         { "tag": "Briq Avalanche" }
-      ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      ]
     },
     {
       "name": "Quantum Gladiator",
@@ -122,8 +118,7 @@
         { "tag": "Hash Hit" },
         { "tag": "Calculated Crush" },
         { "tag": "Quantum Singularity" }
-      ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      ]
     },
     {
       "name": "Code Conqueror",
@@ -147,8 +142,7 @@
         { "tag": "Code Crush" },
         { "tag": "Debug Destruction" },
         { "tag": "Algorithm Overload" }
-      ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      ]
     },
     {
       "name": "Diamond Destroyer",
@@ -172,8 +166,7 @@
         { "tag": "Diamond Strike" },
         { "tag": "Diamond Destruction" },
         { "tag": "Diamond Hand" }
-      ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      ]
     },
     {
       "name": "Bullet Barrager",
@@ -197,8 +190,7 @@
         { "tag": "Bullet Blast" },
         { "tag": "Bullet Barrage" },
         { "tag": "Desperation Toss" }
-      ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      ]
     },
     {
       "name": "Phantom Wraith",
@@ -222,8 +214,7 @@
         { "tag": "Spectral Hit" },
         { "tag": "Phantom Pulse" },
         { "tag": "Phantom Blast" }
-      ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      ]
     },
     {
       "name": "Grug the Colossal",
@@ -247,8 +238,7 @@
         { "tag": "Grug's Crush" },
         { "tag": "Grug's Smash" },
         { "tag": "Giant Rock Uppercut Grapple" }
-      ],
-      "collections_allowed": ["blobert", "arcade_blobert"]
+      ]
     },
     {
       "name": "The Street 1",
@@ -267,8 +257,7 @@
         { "tag": "Shield Punch" },
         { "tag": "Grind" },
         { "tag": "Reverse Throw" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+      ]
     },
     {
       "name": "The Street 2",
@@ -287,8 +276,7 @@
         { "tag": "Shield Punch" },
         { "tag": "Swift Attack" },
         { "tag": "Comeback Kid" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+      ]
     },
     {
       "name": "The Street 3",
@@ -307,8 +295,7 @@
         { "tag": "Low Kick" },
         { "tag": "Swag" },
         { "tag": "Mega Shield Bash" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+      ]
     },
     {
       "name": "The Training Room 1",
@@ -327,8 +314,7 @@
         { "tag": "Ground and Pound" },
         { "tag": "Grind" },
         { "tag": "White Company" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+      ]
     },
     {
       "name": "The Training Room 2",
@@ -347,8 +333,7 @@
         { "tag": "Shield Block" },
         { "tag": "Sword Dance" },
         { "tag": "Spin Attack" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+      ]
     },
     {
       "name": "The Training Room 3",
@@ -367,8 +352,7 @@
         { "tag": "Shield Punch" },
         { "tag": "Grapple" },
         { "tag": "Osoto Gari" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+      ]
     },
     {
       "name": "The Pit 1",
@@ -387,8 +371,7 @@
         { "tag": "Shield Punch" },
         { "tag": "Grind" },
         { "tag": "Reverse Throw" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+      ]
     },
     {
       "name": "The Pit 2",
@@ -407,8 +390,7 @@
         { "tag": "Shield Punch" },
         { "tag": "Swift Attack" },
         { "tag": "Comeback Kid" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+      ]
     },
     {
       "name": "The Pit 3",
@@ -427,8 +409,7 @@
         { "tag": "Low Kick" },
         { "tag": "Swag" },
         { "tag": "Mega Shield Bash" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+      ]
     },
     {
       "name": "The Arena",
@@ -447,8 +428,7 @@
         { "tag": "Weapon Master" },
         { "tag": "Superman Shield Punch" },
         { "tag": "People's Elbow" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+      ]
     }
   ],
   "challenges": [
