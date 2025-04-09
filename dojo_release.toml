@@ -127,7 +127,6 @@ mappings = { blob_arena = [
 
 "achievements-TrophyCreation" = ["blob_arena-admin_actions"]
 "achievements-TrophyProgression" = [
-    "blob_arena-game_actions",
     "blob_arena-lobby_actions",
     "blob_arena-game_actions",
     "arcade-arcade_actions",
