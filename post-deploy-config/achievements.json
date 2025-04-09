@@ -1,19 +1,627 @@
 {
-  "test_achievement": {
+  "amma_arcade_completion_1": {
     "hidden": false,
     "index": 1,
     "points": 20,
     "start": 0,
     "end": 0,
-    "group": "Test Achievement",
+    "group": "AMMA Arcade Completion",
     "icon": "shield",
-    "title": "Test Achievement 1",
-    "description": "Won 1 Achievement",
+    "title": "AMMA Academy",
+    "description": "Won 1 Arcade Challenge",
+    "tasks": [
+      {
+        "id": "AmmaArcadeCompletion",
+        "total": 1,
+        "description": "Won 1 Arcade Challenge"
+      }
+    ],
+    "data": ""
+  },
+  "amma_arcade_completion_5": {
+    "hidden": false,
+    "index": 2,
+    "points": 50,
+    "start": 0,
+    "end": 0,
+    "group": "AMMA Arcade Completion",
+    "icon": "shield-halved",
+    "title": "AMMA Recruit",
+    "description": "Won 5 Arcade Challenges",
+    "tasks": [
+      {
+        "id": "AmmaArcadeCompletion",
+        "total": 5,
+        "description": "Won 5 Arcade Challenges"
+      }
+    ],
+    "data": ""
+  },
+  "amma_arcade_completion_20": {
+    "hidden": false,
+    "index": 3,
+    "points": 100,
+    "start": 0,
+    "end": 0,
+    "group": "AMMA Arcade Completion",
+    "icon": "shield-quartered",
+    "title": "Arcade Contender",
+    "description": "Won 20 Arcade Challenges",
+    "tasks": [
+      {
+        "id": "AmmaArcadeCompletion",
+        "total": 20,
+        "description": "Won 20 Arcade Challenges"
+      }
+    ],
+    "data": ""
+  },
+  "amma_arcade_completion_50": {
+    "hidden": false,
+    "index": 4,
+    "points": 200,
+    "start": 0,
+    "end": 0,
+    "group": "AMMA Arcade Completion",
+    "icon": "medal",
+    "title": "AMMA Champion",
+    "description": "Won 50 Arcade Challenges",
+    "tasks": [
+      {
+        "id": "AmmaArcadeCompletion",
+        "total": 50,
+        "description": "Won 50 Arcade Challenges"
+      }
+    ],
+    "data": ""
+  },
+  "classic_arcade_completion_1": {
+    "hidden": false,
+    "index": 1,
+    "points": 20,
+    "start": 0,
+    "end": 0,
+    "group": "Classic Arcade Completion",
+    "icon": "chess-pawn",
+    "title": "Arcade Squire",
+    "description": "Won 1 Arcade Challenge",
+    "tasks": [
+      {
+        "id": "ClassicArcadeCompletion",
+        "total": 1,
+        "description": "Won 1 Arcade Challenge"
+      }
+    ],
+    "data": ""
+  },
+  "classic_arcade_completion_5": {
+    "hidden": false,
+    "index": 2,
+    "points": 50,
+    "start": 0,
+    "end": 0,
+    "group": "Classic Arcade Completion",
+    "icon": "chess-knight",
+    "title": "Arcade Knight",
+    "description": "Won 5 Arcade Challenges",
+    "tasks": [
+      {
+        "id": "ClassicArcadeCompletion",
+        "total": 5,
+        "description": "Won 5 Arcade Challenges"
+      }
+    ],
+    "data": ""
+  },
+  "classic_arcade_completion_20": {
+    "hidden": false,
+    "index": 3,
+    "points": 100,
+    "start": 0,
+    "end": 0,
+    "group": "Classic Arcade Completion",
+    "icon": "chess-queen",
+    "title": "Arcade Warlord",
+    "description": "Won 20 Arcade Challenges",
+    "tasks": [
+      {
+        "id": "ClassicArcadeCompletion",
+        "total": 20,
+        "description": "Won 20 Arcade Challenges"
+      }
+    ],
+    "data": ""
+  },
+  "classic_arcade_completion_50": {
+    "hidden": false,
+    "index": 4,
+    "points": 200,
+    "start": 0,
+    "end": 0,
+    "group": "Classic Arcade Completion",
+    "icon": "chess-king",
+    "title": "Arcade Master",
+    "description": "Won 50 Arcade Challenges",
+    "tasks": [
+      {
+        "id": "ClassicArcadeCompletion",
+        "total": 50,
+        "description": "Won 50 Arcade Challenges"
+      }
+    ],
+    "data": ""
+  },
+  "arcade_total_damage_1000": {
+    "hidden": false,
+    "index": 1,
+    "points": 10,
+    "start": 0,
+    "end": 0,
+    "group": "Arcade Total Damage",
+    "icon": "sparkle",
+    "title": "Damage Dealer I",
+    "description": "Dealt 1,000 total damage in Arcade Battles",
+    "tasks": [
+      {
+        "id": "ArcadeTotalDamage",
+        "total": 1000,
+        "description": "Dealt 1,000 total damage in Arcade Battles"
+      }
+    ],
+    "data": ""
+  },
+  "arcade_total_damage_5000": {
+    "hidden": false,
+    "index": 2,
+    "points": 20,
+    "start": 0,
+    "end": 0,
+    "group": "Arcade Total Damage",
+    "icon": "sparkles",
+    "title": "Damage Dealer II",
+    "description": "Dealt 5,000 total damage in Arcade Battles",
+    "tasks": [
+      {
+        "id": "ArcadeTotalDamage",
+        "total": 5000,
+        "description": "Dealt 5,000 total damage in Arcade Battles"
+      }
+    ],
+    "data": ""
+  },
+  "arcade_total_damage_20000": {
+    "hidden": false,
+    "index": 3,
+    "points": 40,
+    "start": 0,
+    "end": 0,
+    "group": "Arcade Total Damage",
+    "icon": "fire",
+    "title": "Damage Dealer III",
+    "description": "Dealt 20,000 total damage in Arcade Battles",
+    "tasks": [
+      {
+        "id": "ArcadeTotalDamage",
+        "total": 20000,
+        "description": "Dealt 20,000 total damage in Arcade Battles"
+      }
+    ],
+    "data": ""
+  },
+  "arcade_total_damage_50000": {
+    "hidden": false,
+    "index": 4,
+    "points": 80,
+    "start": 0,
+    "end": 0,
+    "group": "Arcade Total Damage",
+    "icon": "explosion",
+    "title": "Damage Dealer IV",
+    "description": "Dealt 50,000 total damage in Arcade Battles",
+    "tasks": [
+      {
+        "id": "ArcadeTotalDamage",
+        "total": 50000,
+        "description": "Dealt 50,000 total damage in Arcade Battles"
+      }
+    ],
+    "data": ""
+  },
+  "pvp_unique_moves_10": {
+    "hidden": false,
+    "index": 1,
+    "points": 10,
+    "start": 0,
+    "end": 0,
+    "group": "PvP Unique Moves",
+    "icon": "book-open-cover",
+    "title": "Tactician I",
+    "description": "Used 10 unique moves in PvP Mode",
+    "tasks": [
+      {
+        "id": "PvpUniqueMoves",
+        "total": 10,
+        "description": "Used 10 unique moves in PvP Mode"
+      }
+    ],
+    "data": ""
+  },
+  "pvp_unique_moves_50": {
+    "hidden": false,
+    "index": 2,
+    "points": 20,
+    "start": 0,
+    "end": 0,
+    "group": "PvP Unique Moves",
+    "icon": "book-open-cover",
+    "title": "Tactician II",
+    "description": "Used 50 unique moves in PvP Mode",
+    "tasks": [
+      {
+        "id": "PvpUniqueMoves",
+        "total": 50,
+        "description": "Used 50 unique moves in PvP Mode"
+      }
+    ],
+    "data": ""
+  },
+  "pvp_unique_moves_100": {
+    "hidden": false,
+    "index": 3,
+    "points": 30,
+    "start": 0,
+    "end": 0,
+    "group": "PvP Unique Moves",
+    "icon": "book-open-cover",
+    "title": "Tactician III",
+    "description": "Used 100 unique moves in PvP Mode",
+    "tasks": [
+      {
+        "id": "PvpUniqueMoves",
+        "total": 100,
+        "description": "Used 100 unique moves in PvP Mode"
+      }
+    ],
+    "data": ""
+  },
+  "pvp_unique_moves_200": {
+    "hidden": false,
+    "index": 4,
+    "points": 40,
+    "start": 0,
+    "end": 0,
+    "group": "PvP Unique Moves",
+    "icon": "book-open-cover",
+    "title": "Tactician IV",
+    "description": "Used 200 unique moves in PvP Mode",
+    "tasks": [
+      {
+        "id": "PvpUniqueMoves",
+        "total": 200,
+        "description": "Used 200 unique moves in PvP Mode"
+      }
+    ],
+    "data": ""
+  },
+  "arcade_unique_moves_10": {
+    "hidden": false,
+    "index": 1,
+    "points": 10,
+    "start": 0,
+    "end": 0,
+    "group": "Arcade Unique Moves",
+    "icon": "book-sparkles",
+    "title": "Scholar I",
+    "description": "Used 10 unique moves in Arcade Mode",
+    "tasks": [
+      {
+        "id": "ArcadeUniqueMoves",
+        "total": 10,
+        "description": "Used 10 unique moves in Arcade Mode"
+      }
+    ],
+    "data": ""
+  },
+  "arcade_unique_moves_50": {
+    "hidden": false,
+    "index": 2,
+    "points": 20,
+    "start": 0,
+    "end": 0,
+    "group": "Arcade Unique Moves",
+    "icon": "book-sparkles",
+    "title": "Scholar II",
+    "description": "Used 50 unique moves in Arcade Mode",
+    "tasks": [
+      {
+        "id": "ArcadeUniqueMoves",
+        "total": 50,
+        "description": "Used 50 unique moves in Arcade Mode"
+      }
+    ],
+    "data": ""
+  },
+  "arcade_unique_moves_100": {
+    "hidden": false,
+    "index": 3,
+    "points": 30,
+    "start": 0,
+    "end": 0,
+    "group": "Arcade Unique Moves",
+    "icon": "book-sparkles",
+    "title": "Scholar III",
+    "description": "Used 100 unique moves in Arcade Mode",
+    "tasks": [
+      {
+        "id": "ArcadeUniqueMoves",
+        "total": 100,
+        "description": "Used 100 unique moves in Arcade Mode"
+      }
+    ],
+    "data": ""
+  },
+  "arcade_unique_moves_200": {
+    "hidden": false,
+    "index": 4,
+    "points": 40,
+    "start": 0,
+    "end": 0,
+    "group": "Arcade Unique Moves",
+    "icon": "book-sparkles",
+    "title": "Scholar IV",
+    "description": "Used 200 unique moves in Arcade Mode",
+    "tasks": [
+      {
+        "id": "ArcadeUniqueMoves",
+        "total": 200,
+        "description": "Used 200 unique moves in Arcade Mode"
+      }
+    ],
+    "data": ""
+  },
+  "critical_hits_20": {
+    "hidden": false,
+    "index": 1,
+    "points": 10,
+    "start": 0,
+    "end": 0,
+    "group": "Critical Hits",
+    "icon": "bullseye",
+    "title": "Deadeye I",
+    "description": "Landed 20 critical hits across all Bloberts",
     "tasks": [
       {
         "id": "CriticalHits",
+        "total": 20,
+        "description": "Landed 20 critical hits across all Bloberts"
+      }
+    ],
+    "data": ""
+  },
+  "critical_hits_50": {
+    "hidden": false,
+    "index": 2,
+    "points": 20,
+    "start": 0,
+    "end": 0,
+    "group": "Critical Hits",
+    "icon": "crosshairs",
+    "title": "Deadeye II",
+    "description": "Landed 50 critical hits across all Bloberts",
+    "tasks": [
+      {
+        "id": "CriticalHits",
+        "total": 50,
+        "description": "Landed 50 critical hits across all Bloberts"
+      }
+    ],
+    "data": ""
+  },
+  "critical_hits_200": {
+    "hidden": false,
+    "index": 3,
+    "points": 30,
+    "start": 0,
+    "end": 0,
+    "group": "Critical Hits",
+    "icon": "burst",
+    "title": "Deadeye III",
+    "description": "Landed 200 critical hits across all Bloberts",
+    "tasks": [
+      {
+        "id": "CriticalHits",
+        "total": 200,
+        "description": "Landed 200 critical hits across all Bloberts"
+      }
+    ],
+    "data": ""
+  },
+  "critical_hits_500": {
+    "hidden": false,
+    "index": 4,
+    "points": 40,
+    "start": 0,
+    "end": 0,
+    "group": "Critical Hits",
+    "icon": "skull-crossbones",
+    "title": "Deadeye IV",
+    "description": "Landed 500 critical hits across all Bloberts",
+    "tasks": [
+      {
+        "id": "CriticalHits",
+        "total": 500,
+        "description": "Landed 500 critical hits across all Bloberts"
+      }
+    ],
+    "data": ""
+  },
+  "pvp_opponents_5": {
+    "hidden": false,
+    "index": 1,
+    "points": 10,
+    "start": 0,
+    "end": 0,
+    "group": "PvP Opponents",
+    "icon": "user",
+    "title": "Contender I",
+    "description": "Faced 5 players in PvP battles",
+    "tasks": [
+      {
+        "id": "PvpUniqueOpponents",
+        "total": 5,
+        "description": "Faced 5 players in PvP battles"
+      }
+    ],
+    "data": ""
+  },
+  "pvp_opponents_20": {
+    "hidden": false,
+    "index": 2,
+    "points": 20,
+    "start": 0,
+    "end": 0,
+    "group": "PvP Opponents",
+    "icon": "user-group",
+    "title": "Contender II",
+    "description": "Faced 20 players in PvP battles",
+    "tasks": [
+      {
+        "id": "PvpUniqueOpponents",
+        "total": 20,
+        "description": "Faced 20 players in PvP battles"
+      }
+    ],
+    "data": ""
+  },
+  "pvp_opponents_50": {
+    "hidden": false,
+    "index": 3,
+    "points": 30,
+    "start": 0,
+    "end": 0,
+    "group": "PvP Opponents",
+    "icon": "users",
+    "title": "Contender III",
+    "description": "Faced 50 players in PvP battles",
+    "tasks": [
+      {
+        "id": "PvpUniqueOpponents",
+        "total": 50,
+        "description": "Faced 50 players in PvP battles"
+      }
+    ],
+    "data": ""
+  },
+  "pvp_opponents_200": {
+    "hidden": false,
+    "index": 4,
+    "points": 40,
+    "start": 0,
+    "end": 0,
+    "group": "PvP Opponents",
+    "icon": "people-group",
+    "title": "Contender IV",
+    "description": "Faced 200 players in PvP battles",
+    "tasks": [
+      {
+        "id": "PvpUniqueOpponents",
+        "total": 200,
+        "description": "Faced 200 players in PvP battles"
+      }
+    ],
+    "data": ""
+  },
+  "pvp_victories_5": {
+    "hidden": false,
+    "index": 1,
+    "points": 10,
+    "start": 0,
+    "end": 0,
+    "group": "PvP Battle Victories",
+    "icon": "wand",
+    "title": "Duelist I",
+    "description": "Won 5 PvP Battles",
+    "tasks": [
+      {
+        "id": "PvpBattleVictories",
+        "total": 5,
+        "description": "Won 5 PvP Battles"
+      }
+    ],
+    "data": ""
+  },
+  "pvp_victories_20": {
+    "hidden": false,
+    "index": 2,
+    "points": 20,
+    "start": 0,
+    "end": 0,
+    "group": "PvP Battle Victories",
+    "icon": "sword",
+    "title": "Duelist II",
+    "description": "Won 20 PvP Battles",
+    "tasks": [
+      {
+        "id": "PvpBattleVictories",
+        "total": 20,
+        "description": "Won 20 PvP Battles"
+      }
+    ],
+    "data": ""
+  },
+  "pvp_victories_50": {
+    "hidden": false,
+    "index": 3,
+    "points": 30,
+    "start": 0,
+    "end": 0,
+    "group": "PvP Battle Victories",
+    "icon": "axe-battle",
+    "title": "Duelist III",
+    "description": "Won 50 PvP Battles",
+    "tasks": [
+      {
+        "id": "PvpBattleVictories",
+        "total": 50,
+        "description": "Won 50 PvP Battles"
+      }
+    ],
+    "data": ""
+  },
+  "pvp_victories_200": {
+    "hidden": false,
+    "index": 4,
+    "points": 40,
+    "start": 0,
+    "end": 0,
+    "group": "PvP Battle Victories",
+    "icon": "swords",
+    "title": "Duelist IV",
+    "description": "Won 200 PvP Battles",
+    "tasks": [
+      {
+        "id": "PvpBattleVictories",
+        "total": 200,
+        "description": "Won 200 PvP Battles"
+      }
+    ],
+    "data": ""
+  },
+  "arcade_completion_no_respawn": {
+    "hidden": false,
+    "index": 1,
+    "points": 50,
+    "start": 0,
+    "end": 0,
+    "group": "Arcade Completion No Respawn",
+    "icon": "shield-cross",
+    "title": "Iron Soul",
+    "description": "Completed an Arcade challenge without a respawn",
+    "tasks": [
+      {
+        "id": "ArcadeCompletionNoRespawn",
         "total": 1,
-        "description": "Won 1 Achievement"
+        "description": "Completed an Arcade challenge without a respawn"
       }
     ],
     "data": ""
