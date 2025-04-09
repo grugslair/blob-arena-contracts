@@ -22,8 +22,7 @@
         { "tag": "Binary Bash" },
         { "tag": "Algorithm Assault" },
         { "tag": "Algorithmic Overload" }
-      ],
-      "collections_allowed": ["blobert", "free_blobert"]
+      ]
     },
     {
       "name": "Cyber Crusher",
@@ -47,8 +46,7 @@
         { "tag": "Argent Assault" },
         { "tag": "Argent Crush" },
         { "tag": "Two Factor Authentication" }
-      ],
-      "collections_allowed": ["blobert", "free_blobert"]
+      ]
     },
     {
       "name": "Balloon Bruiser",
@@ -72,8 +70,7 @@
         { "tag": "Helium Blast" },
         { "tag": "Balloon Bombardment" },
         { "tag": "Inflatable Explosion" }
-      ],
-      "collections_allowed": ["blobert", "free_blobert"]
+      ]
     },
     {
       "name": "Brick Behemoth",
@@ -97,8 +94,7 @@
         { "tag": "Briq Bash" },
         { "tag": "Briq Breaker" },
         { "tag": "Briq Avalanche" }
-      ],
-      "collections_allowed": ["blobert", "free_blobert"]
+      ]
     },
     {
       "name": "Quantum Gladiator",
@@ -122,8 +118,7 @@
         { "tag": "Hash Hit" },
         { "tag": "Calculated Crush" },
         { "tag": "Quantum Singularity" }
-      ],
-      "collections_allowed": ["blobert", "free_blobert"]
+      ]
     },
     {
       "name": "Code Conqueror",
@@ -147,8 +142,7 @@
         { "tag": "Code Crush" },
         { "tag": "Debug Destruction" },
         { "tag": "Algorithm Overload" }
-      ],
-      "collections_allowed": ["blobert", "free_blobert"]
+      ]
     },
     {
       "name": "Diamond Destroyer",
@@ -172,8 +166,7 @@
         { "tag": "Diamond Strike" },
         { "tag": "Diamond Destruction" },
         { "tag": "Diamond Hand" }
-      ],
-      "collections_allowed": ["blobert", "free_blobert"]
+      ]
     },
     {
       "name": "Bullet Barrager",
@@ -197,8 +190,7 @@
         { "tag": "Bullet Blast" },
         { "tag": "Bullet Barrage" },
         { "tag": "Desperation Toss" }
-      ],
-      "collections_allowed": ["blobert", "free_blobert"]
+      ]
     },
     {
       "name": "Phantom Wraith",
@@ -222,8 +214,7 @@
         { "tag": "Spectral Hit" },
         { "tag": "Phantom Pulse" },
         { "tag": "Phantom Blast" }
-      ],
-      "collections_allowed": ["blobert", "free_blobert"]
+      ]
     },
     {
       "name": "Grug the Colossal",
@@ -247,14 +238,13 @@
         { "tag": "Grug's Crush" },
         { "tag": "Grug's Smash" },
         { "tag": "Giant Rock Uppercut Grapple" }
-      ],
-      "collections_allowed": ["blobert", "free_blobert"]
+      ]
     },
     {
-      "name": "Andrzej Studencki",
+      "name": "The Street 1",
       "collection": "amma_blobert",
       "attributes": {
-        "Custom": 3
+        "Custom": 5
       },
       "stats": {
         "strength": 15,
@@ -263,18 +253,17 @@
         "luck": 15
       },
       "attacks": [
-        { "tag": "Sword Slash" },
-        { "tag": "Shield Block" },
-        { "tag": "Sword Dance" },
-        { "tag": "Spin Attack" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+        { "tag": "Axe Attack" },
+        { "tag": "Shield Punch" },
+        { "tag": "Grind" },
+        { "tag": "Reverse Throw" }
+      ]
     },
     {
-      "name": "Brett Skinner",
+      "name": "The Street 2",
       "collection": "amma_blobert",
       "attributes": {
-        "Custom": 1
+        "Custom": 6
       },
       "stats": {
         "strength": 20,
@@ -285,16 +274,15 @@
       "attacks": [
         { "tag": "Sword Slash" },
         { "tag": "Shield Punch" },
-        { "tag": "Grapple" },
-        { "tag": "Osoto Gari" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+        { "tag": "Swift Attack" },
+        { "tag": "Comeback Kid" }
+      ]
     },
     {
-      "name": "Adam Harrigan",
+      "name": "The Street 3",
       "collection": "amma_blobert",
       "attributes": {
-        "Custom": 5
+        "Custom": 4
       },
       "stats": {
         "strength": 25,
@@ -303,18 +291,17 @@
         "luck": 25
       },
       "attacks": [
-        { "tag": "Axe Attack" },
-        { "tag": "Shield Punch" },
-        { "tag": "Grind" },
-        { "tag": "Reverse Throw" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+        { "tag": "Sword Slash" },
+        { "tag": "Low Kick" },
+        { "tag": "Swag" },
+        { "tag": "Mega Shield Bash" }
+      ]
     },
     {
-      "name": "Taylor Jones",
+      "name": "The Training Room 1",
       "collection": "amma_blobert",
       "attributes": {
-        "Custom": 6
+        "Custom": 2
       },
       "stats": {
         "strength": 30,
@@ -324,17 +311,16 @@
       },
       "attacks": [
         { "tag": "Sword Slash" },
-        { "tag": "Shield Punch" },
-        { "tag": "Swift Attack" },
-        { "tag": "Comeback Kid" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+        { "tag": "Ground and Pound" },
+        { "tag": "Grind" },
+        { "tag": "White Company" }
+      ]
     },
     {
-      "name": "Daniel Winter",
+      "name": "The Training Room 2",
       "collection": "amma_blobert",
       "attributes": {
-        "Custom": 4
+        "Custom": 3
       },
       "stats": {
         "strength": 35,
@@ -344,17 +330,16 @@
       },
       "attacks": [
         { "tag": "Sword Slash" },
-        { "tag": "Low Kick" },
-        { "tag": "Swag" },
-        { "tag": "Mega Shield Bash" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+        { "tag": "Shield Block" },
+        { "tag": "Sword Dance" },
+        { "tag": "Spin Attack" }
+      ]
     },
     {
-      "name": "Antonio Penedo",
+      "name": "The Training Room 3",
       "collection": "amma_blobert",
       "attributes": {
-        "Custom": 2
+        "Custom": 1
       },
       "stats": {
         "strength": 40,
@@ -364,17 +349,16 @@
       },
       "attacks": [
         { "tag": "Sword Slash" },
-        { "tag": "Ground and Pound" },
-        { "tag": "Grind" },
-        { "tag": "White Company" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+        { "tag": "Shield Punch" },
+        { "tag": "Grapple" },
+        { "tag": "Osoto Gari" }
+      ]
     },
     {
-      "name": "A. Studencki Prime",
+      "name": "The Pit 1",
       "collection": "amma_blobert",
       "attributes": {
-        "Custom": 3
+        "Custom": 5
       },
       "stats": {
         "strength": 45,
@@ -383,18 +367,17 @@
         "luck": 45
       },
       "attacks": [
-        { "tag": "Sword Slash" },
-        { "tag": "Shield Block" },
-        { "tag": "Sword Dance" },
-        { "tag": "Spin Attack" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+        { "tag": "Axe Attack" },
+        { "tag": "Shield Punch" },
+        { "tag": "Grind" },
+        { "tag": "Reverse Throw" }
+      ]
     },
     {
-      "name": "B. Skinner Prime",
+      "name": "The Pit 2",
       "collection": "amma_blobert",
       "attributes": {
-        "Custom": 1
+        "Custom": 6
       },
       "stats": {
         "strength": 50,
@@ -405,13 +388,12 @@
       "attacks": [
         { "tag": "Sword Slash" },
         { "tag": "Shield Punch" },
-        { "tag": "Grapple" },
-        { "tag": "Osoto Gari" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+        { "tag": "Swift Attack" },
+        { "tag": "Comeback Kid" }
+      ]
     },
     {
-      "name": "D. Winter Prime",
+      "name": "The Pit 3",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 4
@@ -424,14 +406,13 @@
       },
       "attacks": [
         { "tag": "Sword Slash" },
-        { "tag": "Shield Punch" },
-        { "tag": "Swift Attack" },
-        { "tag": "Comeback Kid" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+        { "tag": "Low Kick" },
+        { "tag": "Swag" },
+        { "tag": "Mega Shield Bash" }
+      ]
     },
     {
-      "name": "Mickey Gallus",
+      "name": "The Arena",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 7
@@ -447,13 +428,12 @@
         { "tag": "Weapon Master" },
         { "tag": "Superman Shield Punch" },
         { "tag": "People's Elbow" }
-      ],
-      "collections_allowed": ["amma_blobert"]
+      ]
     }
   ],
   "challenges": [
     {
-      "name": "Classic Challenge",
+      "name": "Classic Season 0",
       "health_recovery": 40,
       "opponents": [
         { "tag": "Byte Basher" },
@@ -470,19 +450,19 @@
       "collections_allowed": ["free_blobert"]
     },
     {
-      "name": "AMMA Challenge",
+      "name": "AMMA Season 0",
       "health_recovery": 40,
       "opponents": [
-        { "tag": "Andrzej Studencki" },
-        { "tag": "Brett Skinner" },
-        { "tag": "Adam Harrigan" },
-        { "tag": "Taylor Jones" },
-        { "tag": "Daniel Winter" },
-        { "tag": "Antonio Penedo" },
-        { "tag": "A. Studencki Prime" },
-        { "tag": "B. Skinner Prime" },
-        { "tag": "D. Winter Prime" },
-        { "tag": "Mickey Gallus" }
+        { "tag": "The Street 1" },
+        { "tag": "The Street 2" },
+        { "tag": "The Street 3" },
+        { "tag": "The Training Room 1" },
+        { "tag": "The Training Room 2" },
+        { "tag": "The Training Room 3" },
+        { "tag": "The Pit 1" },
+        { "tag": "The Pit 2" },
+        { "tag": "The Pit 3" },
+        { "tag": "The Arena" }
       ],
       "collections_allowed": ["amma_blobert"]
     }
