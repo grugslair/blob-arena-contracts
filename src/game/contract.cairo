@@ -1,31 +1,5 @@
 use starknet::ContractAddress;
-
-/// Interface trait for the Game contract, which manages combat-based gameplay mechanics.
-///
-/// # Interface Functions
-///
-/// * `start` - Initiates a new game with the specified game ID.
-/// * `commit` - Allows a player to commit their move hash for a combat round.
-/// * `reveal` - Reveals a player's previously committed move along with the salt used for hashing.
-/// * `run` - Executes a combat round for the specified combat ID.
-/// * `kick_player` - Removes an inactive player from the combat.
-/// * `forfeit` - Allows a player to voluntarily forfeit their position in the combat.
-/// * `get_winning_player` - Retrieves the address of the winning player for a specific combat.
-///
-/// # Arguments
-///
-/// * `TContractState` - The contract state type parameter used across all interface functions.
-/// * `game_id` - Unique identifier for a game session.
-/// * `combatant_id` - Unique identifier for a player in combat.
-/// * `hash` - Hashed combination of a player's move and salt.
-/// * `attack` - The revealed attack move value.
-/// * `salt` - Random value used in the commit-reveal scheme.
-/// * `combat_id` - Unique identifier for a specific combat instance.
-///
-/// This interface implements a commit-reveal pattern for fair gameplay,
-/// where players first commit their moves (hashed) and later reveal them
-/// to prevent front-running and ensure fairness.
-///
+use crate::permissions::Role;
 
 #[starknet::interface]
 trait IGame<TContractState> {
@@ -108,19 +82,64 @@ trait IGame<TContractState> {
     fn get_winning_player(self: @TContractState, combat_id: felt252) -> ContractAddress;
 }
 
+#[starknet::interface]
+trait IGameAdmin<TContractState> {
+    /// Creates a new game instance with specified parameters
+    ///
+    /// * `owner` - The owner of the game instance
+    /// * `initiator` - The address that initiates the game
+    /// * `time_limit` - Time limit for the game in seconds
+    /// * `player_a` - Address of the first player
+    /// * `collection_address_a` - NFT collection address for player A's blob
+    /// * `token_id_a` - Token ID of player A's blob
+    /// * `attacks_a` - Array of attack moves for player A as (felt252, felt252) tuples
+    /// * `player_b` - Address of the second player
+    /// * `collection_address_b` - NFT collection address for player B's blob
+    /// * `token_id_b` - Token ID of player B's blob
+    /// * `attacks_b` - Array of attack moves for player B as (felt252, felt252) tuples
+    ///
+    /// * Returns: A felt252 representing the game ID
+    ///
+    /// Models:
+    /// - CombatantInfo
+    /// - CombatantToken
+    /// - CombatantState
+    /// - AttackAvailable
+    /// - GameInfo
+    /// - Initiator
+    /// - CombatState
+    ///
+    fn create(
+        ref self: TContractState,
+        owner: ContractAddress,
+        initiator: ContractAddress,
+        time_limit: u64,
+        player_a: ContractAddress,
+        collection_address_a: ContractAddress,
+        token_id_a: u256,
+        attacks_a: Array<(felt252, felt252)>,
+        player_b: ContractAddress,
+        collection_address_b: ContractAddress,
+        token_id_b: u256,
+        attacks_b: Array<(felt252, felt252)>,
+    ) -> felt252;
+}
+
 
 #[dojo::contract]
 mod game_actions {
     use starknet::{ContractAddress, get_caller_address, get_contract_address, get_block_timestamp};
     use dojo::{world::{WorldStorage, WorldStorageTrait}};
-    use blob_arena::{
-        attacks::AttackStorage, combat::{Phase, CombatTrait, CombatState, CombatStorage},
-        combatants::{CombatantTrait, CombatantStorage, CombatantInfo},
-        game::{components::{GameInfoTrait, WinVia}, storage::{GameStorage}, systems::GameTrait},
-        world::WorldTrait, commitments::Commitment,
-        core::{TTupleSized2ToSpan, ArrayTryIntoTTupleSized2},
-    };
-    use super::IGame;
+    use crate::attacks::AttackStorage;
+    use crate::combat::{Phase, CombatTrait, CombatState, CombatStorage};
+    use crate::combatants::{CombatantTrait, CombatantStorage, CombatantInfo};
+    use crate::game::{components::{GameInfoTrait, WinVia}, GameStorage, systems::GameTrait};
+    use crate::world::{WorldTrait, uuid};
+    use crate::commitments::Commitment;
+    use crate::core::{TTupleSized2ToSpan, ArrayTryIntoTTupleSized2};
+    use crate::permissions::Permissions;
+
+    use super::{IGame, IGameAdmin};
 
 
     #[abi(embed_v0)]
@@ -222,6 +241,46 @@ mod game_actions {
         fn get_winning_player(self: @ContractState, combat_id: felt252) -> ContractAddress {
             let storage = self.default_storage();
             storage.get_winning_player(combat_id)
+        }
+    }
+
+
+    #[abi(embed_v0)]
+    impl IGameAdminImpl of IGameAdmin<ContractState> {
+        fn create(
+            ref self: ContractState,
+            owner: ContractAddress,
+            initiator: ContractAddress,
+            time_limit: u64,
+            player_a: ContractAddress,
+            collection_address_a: ContractAddress,
+            token_id_a: u256,
+            attacks_a: Array<(felt252, felt252)>,
+            player_b: ContractAddress,
+            collection_address_b: ContractAddress,
+            token_id_b: u256,
+            attacks_b: Array<(felt252, felt252)>,
+        ) -> felt252 {
+            let mut world = self.default_storage();
+            world.assert_caller_is_admin();
+
+            let id = uuid();
+            let player_a_id = uuid();
+            let player_b_id = uuid();
+
+            world
+                .create_player_combatant(
+                    player_a_id, player_a, id, collection_address_a, token_id_a, attacks_a,
+                );
+            world
+                .create_player_combatant(
+                    player_b_id, player_b, id, collection_address_b, token_id_b, attacks_b,
+                );
+
+            world.set_game_info(id, owner, time_limit, player_a_id, player_b_id);
+            world.set_initiator(id, initiator);
+            world.new_combat_state(id);
+            id
         }
     }
 }

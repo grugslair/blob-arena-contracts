@@ -1,6 +1,6 @@
 [world]
-name = "blob_arena-0.12"
-seed = "blob-arena-0.12.beef"
+name = "blob_arena-0.13"
+seed = "blob-arena-0.13"
 
 
 [env]
@@ -9,7 +9,6 @@ account_address = "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d219472
 keystore_path = "/home/ben/sn-accounts/0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd-keystore.json"
 
 [init_call_args]
-"blob_arena-game_admin_actions" = []
 "blobert-blobert_actions" = [
     "0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578d0549d",
 ]
@@ -36,7 +35,6 @@ mappings = { blob_arena = [
     "BlobertItemName",
 ], arcade = [
     "arcade_actions",
-    "arcade_admin_actions",
     "Tag",
     "CombatantToken",
     "ArcadeOpponent",
@@ -54,44 +52,35 @@ mappings = { blob_arena = [
     "ArcadeCurrentChallengeAttempt",
 ], ba_permissions = [
     "Permission",
+], achievements = [
+    "TrophyCreation",
+    "TrophyProgression",
 ] }
 
 [writers]
 "blob_arena-Lobby" = ["blob_arena-lobby_actions"]
 "blob_arena-LobbyCreated" = ["blob_arena-lobby_actions"]
 
-"blob_arena-GameInfo" = [
-    "blob_arena-lobby_actions",
-    "blob_arena-game_admin_actions",
-]
-"blob_arena-Initiator" = [
-    "blob_arena-lobby_actions",
-    "blob_arena-game_admin_actions",
-]
-
+"blob_arena-GameInfo" = ["blob_arena-lobby_actions", "blob_arena-game_actions"]
+"blob_arena-Initiator" = ["blob_arena-lobby_actions", "blob_arena-game_actions"]
 "blob_arena-CombatantToken" = [
     "blob_arena-lobby_actions",
-    "blob_arena-game_admin_actions",
+    "blob_arena-game_actions",
 ]
 "blob_arena-CombatantInfo" = [
     "blob_arena-lobby_actions",
-    "blob_arena-game_admin_actions",
+    "blob_arena-game_actions",
 ]
+
 
 "blob_arena-CombatantState" = [
     "blob_arena-game_actions",
     "blob_arena-lobby_actions",
-    "blob_arena-game_admin_actions",
     "arcade-arcade_actions",
 ]
 
 "blob_arena-AttackAvailable" = [
     "blob_arena-lobby_actions",
-    "blob_arena-game_admin_actions",
-    "arcade-arcade_actions",
-]
-
-"blob_arena-AttackLastUsed" = [
     "blob_arena-game_actions",
     "arcade-arcade_actions",
 ]
@@ -99,17 +88,19 @@ mappings = { blob_arena = [
 "blob_arena-CombatState" = [
     "blob_arena-game_actions",
     "blob_arena-lobby_actions",
-    "blob_arena-game_admin_actions",
     "arcade-arcade_actions",
 ]
+
+"blob_arena-AttackLastUsed" = [
+    "blob_arena-game_actions",
+    "arcade-arcade_actions",
+]
+"blob_arena-RoundResult" = ["blob_arena-game_actions", "arcade-arcade_actions"]
 
 "blob_arena-Commitment" = ["blob_arena-game_actions"]
 "blob_arena-LastTimestamp" = ["blob_arena-game_actions"]
 "blob_arena-PlannedAttack" = ["blob_arena-game_actions"]
 "blob_arena-CombatEnd" = ["blob_arena-game_actions"]
-"ba_permissions-Permission" = ["blob_arena-game_admin_actions"]
-
-"blob_arena-RoundResult" = ["blob_arena-game_actions", "arcade-arcade_actions"]
 
 "blob_arena-Attack" = [
     "blobert-blobert_actions",
@@ -123,19 +114,27 @@ mappings = { blob_arena = [
 "blob_arena-Tag" = [
     "blobert-blobert_actions",
     "amma_blobert-amma_blobert_actions",
-    "arcade-arcade_admin_actions",
+    "arcade-arcade_actions",
 ]
 
-"arcade-ArcadeChallengeAttempt" = ["arcade-arcade_actions"]
-"arcade-ArcadeStageGame" = ["arcade-arcade_actions"]
-"arcade-ArcadeGame" = ["arcade-arcade_actions"]
-"arcade-ArcadeFreeGames" = ["arcade-arcade_actions"]
-"arcade-ArcadePaidGames" = ["arcade-arcade_actions"]
-"arcade-ArcadeChallengeRespawn" = ["arcade-arcade_actions"]
-"arcade-CombatantToken" = ["arcade-arcade_actions"]
-"arcade-ArcadeCurrentChallengeAttempt" = ["arcade-arcade_actions"]
+"blob_arena-CollectionGroup" = [
+    "blobert-blobert_actions",
+    "free_blobert-free_blobert_actions",
+    "amma_blobert-amma_blobert_actions",
+]
+
+"ba_permissions-Permission" = ["blob_arena-admin_actions"]
+
+"achievements-TrophyCreation" = ["blob_arena-admin_actions"]
+"achievements-TrophyProgression" = [
+    "blob_arena-game_actions",
+    "blob_arena-lobby_actions",
+    "blob_arena-game_actions",
+    "arcade-arcade_actions",
+]
 
 "blobert" = ["blobert-blobert_actions"]
 "free_blobert" = ["free_blobert-free_blobert_actions"]
 "amma_blobert" = ["amma_blobert-amma_blobert_actions"]
-"arcade" = ["arcade-arcade_admin_actions"]
+
+"arcade" = ["arcade-arcade_actions"]

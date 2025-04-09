@@ -2181,8 +2181,8 @@
       ]
     },
     {
-      "address": "0x2bcd601918e14e35d59b5558630c63d34d0b3fd8c0d2b01653bd93925fe84bd",
-      "class_hash": "0x65cd469e55044b764a77ce630e297bd299204b84ebe947626635c16f9155f63",
+      "address": "0x1a99bf8a96105970ec73b611171a086fa9fe86913a333f6c9f3f4fa0be4b83d",
+      "class_hash": "0x1814da47afd0619bfd81222b4e88bd5a889db01fb2fdfce3541f546be15a31c",
       "abi": [
         {
           "type": "impl",
@@ -2343,6 +2343,473 @@
           ]
         },
         {
+          "type": "impl",
+          "name": "IArcadeAdminImpl",
+          "interface_name": "blob_arena::arcade::contract::IArcadeAdmin"
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::collections::attributes::Seed",
+          "members": [
+            {
+              "name": "background",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "armour",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "jewelry",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "mask",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "weapon",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::collections::attributes::TokenAttributes",
+          "variants": [
+            {
+              "name": "Seed",
+              "type": "blob_arena::collections::attributes::Seed"
+            },
+            {
+              "name": "Custom",
+              "type": "core::felt252"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::stats::TStats::<core::integer::u8>",
+          "members": [
+            {
+              "name": "strength",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "vitality",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "dexterity",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "luck",
+              "type": "core::integer::u8"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::attacks::components::Target",
+          "variants": [
+            {
+              "name": "Player",
+              "type": "()"
+            },
+            {
+              "name": "Opponent",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::core::Signed::<core::integer::u8>",
+          "members": [
+            {
+              "name": "value",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "sign",
+              "type": "core::bool"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::stats::TStats::<blob_arena::core::Signed::<core::integer::u8>>",
+          "members": [
+            {
+              "name": "strength",
+              "type": "blob_arena::core::Signed::<core::integer::u8>"
+            },
+            {
+              "name": "vitality",
+              "type": "blob_arena::core::Signed::<core::integer::u8>"
+            },
+            {
+              "name": "dexterity",
+              "type": "blob_arena::core::Signed::<core::integer::u8>"
+            },
+            {
+              "name": "luck",
+              "type": "blob_arena::core::Signed::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::stats::StatTypes",
+          "variants": [
+            {
+              "name": "Strength",
+              "type": "()"
+            },
+            {
+              "name": "Vitality",
+              "type": "()"
+            },
+            {
+              "name": "Dexterity",
+              "type": "()"
+            },
+            {
+              "name": "Luck",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::components::StatInput",
+          "members": [
+            {
+              "name": "stat",
+              "type": "blob_arena::stats::StatTypes"
+            },
+            {
+              "name": "amount",
+              "type": "blob_arena::core::Signed::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::components::Damage",
+          "members": [
+            {
+              "name": "critical",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "power",
+              "type": "core::integer::u8"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::attacks::components::AffectInput",
+          "variants": [
+            {
+              "name": "Stats",
+              "type": "blob_arena::stats::TStats::<blob_arena::core::Signed::<core::integer::u8>>"
+            },
+            {
+              "name": "Stat",
+              "type": "blob_arena::attacks::components::StatInput"
+            },
+            {
+              "name": "Damage",
+              "type": "blob_arena::attacks::components::Damage"
+            },
+            {
+              "name": "Stun",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "Health",
+              "type": "blob_arena::core::Signed::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::components::EffectInput",
+          "members": [
+            {
+              "name": "target",
+              "type": "blob_arena::attacks::components::Target"
+            },
+            {
+              "name": "affect",
+              "type": "blob_arena::attacks::components::AffectInput"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::components::AttackInput",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::byte_array::ByteArray"
+            },
+            {
+              "name": "speed",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "accuracy",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "cooldown",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "hit",
+              "type": "core::array::Array::<blob_arena::attacks::components::EffectInput>"
+            },
+            {
+              "name": "miss",
+              "type": "core::array::Array::<blob_arena::attacks::components::EffectInput>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::tags::IdTagNew::<blob_arena::attacks::components::AttackInput>",
+          "variants": [
+            {
+              "name": "Id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "Tag",
+              "type": "core::byte_array::ByteArray"
+            },
+            {
+              "name": "New",
+              "type": "blob_arena::attacks::components::AttackInput"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::arcade::components::ArcadeOpponentInput",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::byte_array::ByteArray"
+            },
+            {
+              "name": "collection",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "attributes",
+              "type": "blob_arena::collections::attributes::TokenAttributes"
+            },
+            {
+              "name": "stats",
+              "type": "blob_arena::stats::TStats::<core::integer::u8>"
+            },
+            {
+              "name": "attacks",
+              "type": "core::array::Array::<blob_arena::tags::IdTagNew::<blob_arena::attacks::components::AttackInput>>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::tags::IdTagNew::<blob_arena::arcade::components::ArcadeOpponentInput>",
+          "variants": [
+            {
+              "name": "Id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "Tag",
+              "type": "core::byte_array::ByteArray"
+            },
+            {
+              "name": "New",
+              "type": "blob_arena::arcade::components::ArcadeOpponentInput"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "blob_arena::arcade::contract::IArcadeAdmin",
+          "items": [
+            {
+              "type": "function",
+              "name": "new_opponent",
+              "inputs": [
+                {
+                  "name": "name",
+                  "type": "core::byte_array::ByteArray"
+                },
+                {
+                  "name": "collection",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "attributes",
+                  "type": "blob_arena::collections::attributes::TokenAttributes"
+                },
+                {
+                  "name": "stats",
+                  "type": "blob_arena::stats::TStats::<core::integer::u8>"
+                },
+                {
+                  "name": "attacks",
+                  "type": "core::array::Array::<blob_arena::tags::IdTagNew::<blob_arena::attacks::components::AttackInput>>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "new_challenge",
+              "inputs": [
+                {
+                  "name": "name",
+                  "type": "core::byte_array::ByteArray"
+                },
+                {
+                  "name": "health_recovery_pc",
+                  "type": "core::integer::u8"
+                },
+                {
+                  "name": "opponents",
+                  "type": "core::array::Array::<blob_arena::tags::IdTagNew::<blob_arena::arcade::components::ArcadeOpponentInput>>"
+                },
+                {
+                  "name": "collections_allowed",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_collection",
+              "inputs": [
+                {
+                  "name": "id",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "collection",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "available",
+                  "type": "core::bool"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_collections",
+              "inputs": [
+                {
+                  "name": "id",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "collections",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                },
+                {
+                  "name": "available",
+                  "type": "core::bool"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_ids_collection",
+              "inputs": [
+                {
+                  "name": "ids",
+                  "type": "core::array::Array::<core::felt252>"
+                },
+                {
+                  "name": "collection",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "available",
+                  "type": "core::bool"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "mint_free_games",
+              "inputs": [
+                {
+                  "name": "player",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "mint_paid_games",
+              "inputs": [
+                {
+                  "name": "player",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
           "type": "function",
           "name": "dojo_init",
           "inputs": [],
@@ -2467,11 +2934,495 @@
         "respawn_challenge",
         "end_challenge",
         "claim_free_game",
+        "new_opponent",
+        "new_challenge",
+        "set_collection",
+        "set_collections",
+        "set_ids_collection",
+        "mint_free_games",
+        "mint_paid_games",
         "upgrade"
       ]
     },
     {
-      "address": "0x575f98654394943184c5f2fe4eb271ad8698a9a5e70bf859a52739922624cd8",
+      "address": "0x5770ccc4c9bef37f07dfc98499e307bb0522eb8132294e93b26b7636acdf602",
+      "class_hash": "0x52c969b2225b9c6cbc5dc5e6e062744c163b1189dbe7055399bde86b8e8cd19",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "admin_actions__ContractImpl",
+          "interface_name": "dojo::contract::interface::IContract"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::interface::IContract",
+          "items": []
+        },
+        {
+          "type": "impl",
+          "name": "admin_actions__DeployedContractImpl",
+          "interface_name": "dojo::meta::interface::IDeployedResource"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::meta::interface::IDeployedResource",
+          "items": [
+            {
+              "type": "function",
+              "name": "dojo_name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "dojo_init",
+          "inputs": [],
+          "outputs": [],
+          "state_mutability": "external"
+        },
+        {
+          "type": "impl",
+          "name": "IPermissionsImpl",
+          "interface_name": "blob_arena::admin::IPermissions"
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::permissions::components::Role",
+          "variants": [
+            {
+              "name": "Admin",
+              "type": "()"
+            },
+            {
+              "name": "Manager",
+              "type": "()"
+            },
+            {
+              "name": "AmmaAdmin",
+              "type": "()"
+            },
+            {
+              "name": "BlobertAdmin",
+              "type": "()"
+            },
+            {
+              "name": "PvpCreator",
+              "type": "()"
+            },
+            {
+              "name": "ArcadePaidMinter",
+              "type": "()"
+            },
+            {
+              "name": "ArcadeFreeMinter",
+              "type": "()"
+            },
+            {
+              "name": "ArcadeMinter",
+              "type": "()"
+            },
+            {
+              "name": "ArcadeSetter",
+              "type": "()"
+            },
+            {
+              "name": "AchievementSetter",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "blob_arena::admin::IPermissions",
+          "items": [
+            {
+              "type": "function",
+              "name": "set_has_role",
+              "inputs": [
+                {
+                  "name": "user",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "role",
+                  "type": "blob_arena::permissions::components::Role"
+                },
+                {
+                  "name": "has",
+                  "type": "core::bool"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_has_role",
+              "inputs": [
+                {
+                  "name": "user",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "role",
+                  "type": "blob_arena::permissions::components::Role"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "set_multiple_has_role",
+              "inputs": [
+                {
+                  "name": "users",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                },
+                {
+                  "name": "role",
+                  "type": "blob_arena::permissions::components::Role"
+                },
+                {
+                  "name": "has",
+                  "type": "core::bool"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IAchievementsImpl",
+          "interface_name": "blob_arena::admin::IAchievements"
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::achievements::components::TaskId",
+          "variants": [
+            {
+              "name": "PvpBattleVictories",
+              "type": "()"
+            },
+            {
+              "name": "ArcadeBattleVictories",
+              "type": "()"
+            },
+            {
+              "name": "ArcadeTotalDamage",
+              "type": "()"
+            },
+            {
+              "name": "PvpUniqueOpponent",
+              "type": "()"
+            },
+            {
+              "name": "ArcadeConsecutiveVictories",
+              "type": "()"
+            },
+            {
+              "name": "CriticalHits",
+              "type": "()"
+            },
+            {
+              "name": "PvpUniqueMoves",
+              "type": "()"
+            },
+            {
+              "name": "ArcadeUniqueMoves",
+              "type": "()"
+            },
+            {
+              "name": "ArcadeStarted",
+              "type": "()"
+            },
+            {
+              "name": "ClassicArcadeCompletion",
+              "type": "()"
+            },
+            {
+              "name": "AmmaArcadeCompletion",
+              "type": "()"
+            },
+            {
+              "name": "ArcadeCompletionNoRespawn",
+              "type": "()"
+            },
+            {
+              "name": "PvpWagerWon",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::achievements::components::TaskInput",
+          "members": [
+            {
+              "name": "id",
+              "type": "blob_arena::achievements::components::TaskId"
+            },
+            {
+              "name": "total",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "description",
+              "type": "core::byte_array::ByteArray"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::achievements::components::TrophyCreationInput",
+          "members": [
+            {
+              "name": "id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "hidden",
+              "type": "core::bool"
+            },
+            {
+              "name": "index",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "points",
+              "type": "core::integer::u16"
+            },
+            {
+              "name": "start",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "end",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "group",
+              "type": "core::felt252"
+            },
+            {
+              "name": "icon",
+              "type": "core::felt252"
+            },
+            {
+              "name": "title",
+              "type": "core::felt252"
+            },
+            {
+              "name": "description",
+              "type": "core::byte_array::ByteArray"
+            },
+            {
+              "name": "tasks",
+              "type": "core::array::Array::<blob_arena::achievements::components::TaskInput>"
+            },
+            {
+              "name": "data",
+              "type": "core::byte_array::ByteArray"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "blob_arena::admin::IAchievements",
+          "items": [
+            {
+              "type": "function",
+              "name": "create_achievements",
+              "inputs": [
+                {
+                  "name": "achievements",
+                  "type": "core::array::Array::<blob_arena::achievements::components::TrophyCreationInput>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "create_achievement",
+              "inputs": [
+                {
+                  "name": "achievement",
+                  "type": "blob_arena::achievements::components::TrophyCreationInput"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "WorldProviderImpl",
+          "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
+        },
+        {
+          "type": "struct",
+          "name": "dojo::world::iworld::IWorldDispatcher",
+          "members": [
+            {
+              "name": "contract_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::world_provider::IWorldProvider",
+          "items": [
+            {
+              "type": "function",
+              "name": "world_dispatcher",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::world::iworld::IWorldDispatcher"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "UpgradeableImpl",
+          "interface_name": "dojo::contract::components::upgradeable::IUpgradeable"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::upgradeable::IUpgradeable",
+          "items": [
+            {
+              "type": "function",
+              "name": "upgrade",
+              "inputs": [
+                {
+                  "name": "new_class_hash",
+                  "type": "core::starknet::class_hash::ClassHash"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": []
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "class_hash",
+              "type": "core::starknet::class_hash::ClassHash",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "Upgraded",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+          "kind": "enum",
+          "variants": []
+        },
+        {
+          "type": "event",
+          "name": "blob_arena::admin::admin_actions::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "UpgradeableEvent",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+              "kind": "nested"
+            },
+            {
+              "name": "WorldProviderEvent",
+              "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+              "kind": "nested"
+            }
+          ]
+        }
+      ],
+      "init_calldata": [],
+      "tag": "blob_arena-admin_actions",
+      "selector": "0x78bae334ac1b5ac7441ab74f6192138a8a91c6b8cab3dac0b49a3b601a70084",
+      "systems": [
+        "dojo_init",
+        "set_has_role",
+        "set_multiple_has_role",
+        "create_achievements",
+        "create_achievement",
+        "upgrade"
+      ]
+    },
+    {
+      "address": "0x57975af61b781889dcb8d4626e81913c2a5d2f0c10e874f970cafb7effb4ed7",
       "class_hash": "0x76c339d26da0d050d0da668a15a4b65b3ee62fb0e1451ced566e7da893adadd",
       "abi": [
         {
@@ -3107,8 +4058,8 @@
         }
       ],
       "init_calldata": [],
-      "tag": "arcade-arcade_admin_actions",
-      "selector": "0x3aeca5b565c108f7e7e675254907647fe0cf4241651d82812733cbf95755557",
+      "tag": "blob_arena-arcade_admin_actions",
+      "selector": "0x48582d2cc2291a437176fb0154653a218c0ff288f349725e4b53cc425147eb3",
       "systems": [
         "new_opponent",
         "new_challenge",
@@ -3121,485 +4072,8 @@
       ]
     },
     {
-      "address": "0x5770ccc4c9bef37f07dfc98499e307bb0522eb8132294e93b26b7636acdf602",
-      "class_hash": "0x52c969b2225b9c6cbc5dc5e6e062744c163b1189dbe7055399bde86b8e8cd19",
-      "abi": [
-        {
-          "type": "impl",
-          "name": "admin_actions__ContractImpl",
-          "interface_name": "dojo::contract::interface::IContract"
-        },
-        {
-          "type": "interface",
-          "name": "dojo::contract::interface::IContract",
-          "items": []
-        },
-        {
-          "type": "impl",
-          "name": "admin_actions__DeployedContractImpl",
-          "interface_name": "dojo::meta::interface::IDeployedResource"
-        },
-        {
-          "type": "struct",
-          "name": "core::byte_array::ByteArray",
-          "members": [
-            {
-              "name": "data",
-              "type": "core::array::Array::<core::bytes_31::bytes31>"
-            },
-            {
-              "name": "pending_word",
-              "type": "core::felt252"
-            },
-            {
-              "name": "pending_word_len",
-              "type": "core::integer::u32"
-            }
-          ]
-        },
-        {
-          "type": "interface",
-          "name": "dojo::meta::interface::IDeployedResource",
-          "items": [
-            {
-              "type": "function",
-              "name": "dojo_name",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::byte_array::ByteArray"
-                }
-              ],
-              "state_mutability": "view"
-            }
-          ]
-        },
-        {
-          "type": "function",
-          "name": "dojo_init",
-          "inputs": [],
-          "outputs": [],
-          "state_mutability": "external"
-        },
-        {
-          "type": "impl",
-          "name": "IPermissionsImpl",
-          "interface_name": "blob_arena::admin::IPermissions"
-        },
-        {
-          "type": "enum",
-          "name": "blob_arena::permissions::components::Role",
-          "variants": [
-            {
-              "name": "Admin",
-              "type": "()"
-            },
-            {
-              "name": "Manager",
-              "type": "()"
-            },
-            {
-              "name": "AmmaAdmin",
-              "type": "()"
-            },
-            {
-              "name": "BlobertAdmin",
-              "type": "()"
-            },
-            {
-              "name": "PvpCreator",
-              "type": "()"
-            },
-            {
-              "name": "ArcadePaidMinter",
-              "type": "()"
-            },
-            {
-              "name": "ArcadeFreeMinter",
-              "type": "()"
-            },
-            {
-              "name": "ArcadeMinter",
-              "type": "()"
-            },
-            {
-              "name": "ArcadeSetter",
-              "type": "()"
-            },
-            {
-              "name": "AchievementSetter",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "enum",
-          "name": "core::bool",
-          "variants": [
-            {
-              "name": "False",
-              "type": "()"
-            },
-            {
-              "name": "True",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "interface",
-          "name": "blob_arena::admin::IPermissions",
-          "items": [
-            {
-              "type": "function",
-              "name": "set_has_role",
-              "inputs": [
-                {
-                  "name": "user",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                },
-                {
-                  "name": "role",
-                  "type": "blob_arena::permissions::components::Role"
-                },
-                {
-                  "name": "has",
-                  "type": "core::bool"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "get_has_role",
-              "inputs": [
-                {
-                  "name": "user",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                },
-                {
-                  "name": "role",
-                  "type": "blob_arena::permissions::components::Role"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::bool"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "set_multiple_has_role",
-              "inputs": [
-                {
-                  "name": "users",
-                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
-                },
-                {
-                  "name": "role",
-                  "type": "blob_arena::permissions::components::Role"
-                },
-                {
-                  "name": "has",
-                  "type": "core::bool"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            }
-          ]
-        },
-        {
-          "type": "impl",
-          "name": "IAchievementsImpl",
-          "interface_name": "blob_arena::admin::IAchievements"
-        },
-        {
-          "type": "enum",
-          "name": "blob_arena::achievements::components::TaskId",
-          "variants": [
-            {
-              "name": "PvpBattleVictories",
-              "type": "()"
-            },
-            {
-              "name": "ArcadeBattleVictories",
-              "type": "()"
-            },
-            {
-              "name": "ArcadeTotalDamage",
-              "type": "()"
-            },
-            {
-              "name": "PvpUniqueOpponent",
-              "type": "()"
-            },
-            {
-              "name": "ArcadeConsecutiveVictories",
-              "type": "()"
-            },
-            {
-              "name": "CriticalHits",
-              "type": "()"
-            },
-            {
-              "name": "PvpUniqueMoves",
-              "type": "()"
-            },
-            {
-              "name": "ArcadeUniqueMoves",
-              "type": "()"
-            },
-            {
-              "name": "ArcadeStarted",
-              "type": "()"
-            },
-            {
-              "name": "ClassicArcadeCompletion",
-              "type": "()"
-            },
-            {
-              "name": "AmmaArcadeCompletion",
-              "type": "()"
-            },
-            {
-              "name": "ArcadeCompletionNoRespawn",
-              "type": "()"
-            },
-            {
-              "name": "PvpWagerWon",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "blob_arena::achievements::components::TaskInput",
-          "members": [
-            {
-              "name": "id",
-              "type": "blob_arena::achievements::components::TaskId"
-            },
-            {
-              "name": "total",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "description",
-              "type": "core::byte_array::ByteArray"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "blob_arena::achievements::components::TrophyCreationInput",
-          "members": [
-            {
-              "name": "id",
-              "type": "core::felt252"
-            },
-            {
-              "name": "hidden",
-              "type": "core::bool"
-            },
-            {
-              "name": "index",
-              "type": "core::integer::u8"
-            },
-            {
-              "name": "points",
-              "type": "core::integer::u16"
-            },
-            {
-              "name": "start",
-              "type": "core::integer::u64"
-            },
-            {
-              "name": "end",
-              "type": "core::integer::u64"
-            },
-            {
-              "name": "group",
-              "type": "core::felt252"
-            },
-            {
-              "name": "icon",
-              "type": "core::felt252"
-            },
-            {
-              "name": "title",
-              "type": "core::felt252"
-            },
-            {
-              "name": "description",
-              "type": "core::byte_array::ByteArray"
-            },
-            {
-              "name": "tasks",
-              "type": "core::array::Array::<blob_arena::achievements::components::TaskInput>"
-            },
-            {
-              "name": "data",
-              "type": "core::byte_array::ByteArray"
-            }
-          ]
-        },
-        {
-          "type": "interface",
-          "name": "blob_arena::admin::IAchievements",
-          "items": [
-            {
-              "type": "function",
-              "name": "create_achievements",
-              "inputs": [
-                {
-                  "name": "achievements",
-                  "type": "core::array::Array::<blob_arena::achievements::components::TrophyCreationInput>"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "create_achievement",
-              "inputs": [
-                {
-                  "name": "achievement",
-                  "type": "blob_arena::achievements::components::TrophyCreationInput"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            }
-          ]
-        },
-        {
-          "type": "impl",
-          "name": "WorldProviderImpl",
-          "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
-        },
-        {
-          "type": "struct",
-          "name": "dojo::world::iworld::IWorldDispatcher",
-          "members": [
-            {
-              "name": "contract_address",
-              "type": "core::starknet::contract_address::ContractAddress"
-            }
-          ]
-        },
-        {
-          "type": "interface",
-          "name": "dojo::contract::components::world_provider::IWorldProvider",
-          "items": [
-            {
-              "type": "function",
-              "name": "world_dispatcher",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "dojo::world::iworld::IWorldDispatcher"
-                }
-              ],
-              "state_mutability": "view"
-            }
-          ]
-        },
-        {
-          "type": "impl",
-          "name": "UpgradeableImpl",
-          "interface_name": "dojo::contract::components::upgradeable::IUpgradeable"
-        },
-        {
-          "type": "interface",
-          "name": "dojo::contract::components::upgradeable::IUpgradeable",
-          "items": [
-            {
-              "type": "function",
-              "name": "upgrade",
-              "inputs": [
-                {
-                  "name": "new_class_hash",
-                  "type": "core::starknet::class_hash::ClassHash"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            }
-          ]
-        },
-        {
-          "type": "constructor",
-          "name": "constructor",
-          "inputs": []
-        },
-        {
-          "type": "event",
-          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
-          "kind": "struct",
-          "members": [
-            {
-              "name": "class_hash",
-              "type": "core::starknet::class_hash::ClassHash",
-              "kind": "data"
-            }
-          ]
-        },
-        {
-          "type": "event",
-          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
-          "kind": "enum",
-          "variants": [
-            {
-              "name": "Upgraded",
-              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
-              "kind": "nested"
-            }
-          ]
-        },
-        {
-          "type": "event",
-          "name": "dojo::contract::components::world_provider::world_provider_cpt::Event",
-          "kind": "enum",
-          "variants": []
-        },
-        {
-          "type": "event",
-          "name": "blob_arena::admin::admin_actions::Event",
-          "kind": "enum",
-          "variants": [
-            {
-              "name": "UpgradeableEvent",
-              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
-              "kind": "nested"
-            },
-            {
-              "name": "WorldProviderEvent",
-              "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
-              "kind": "nested"
-            }
-          ]
-        }
-      ],
-      "init_calldata": [],
-      "tag": "blob_arena-admin_actions",
-      "selector": "0x78bae334ac1b5ac7441ab74f6192138a8a91c6b8cab3dac0b49a3b601a70084",
-      "systems": [
-        "dojo_init",
-        "set_has_role",
-        "set_multiple_has_role",
-        "create_achievements",
-        "create_achievement",
-        "upgrade"
-      ]
-    },
-    {
-      "address": "0x23813a406ea428089437277cce6c61961107c4bd074d4642f7969463942d00f",
-      "class_hash": "0x4d6434dfa44fa1bffcaddd2132e27ba18dee005b46eaff09ffa3a122e951d60",
+      "address": "0x4d4f882737bc67637811b73603a26570e307d0d1fb7bf32485dff9f624262b7",
+      "class_hash": "0x64095cfb4e6d3acdf1c63d3cc8f3cc564d3a743eaa20f5aa1dcbc12870acddc",
       "abi": [
         {
           "type": "impl",
@@ -3763,6 +4237,87 @@
           ]
         },
         {
+          "type": "impl",
+          "name": "IGameAdminImpl",
+          "interface_name": "blob_arena::game::contract::IGameAdmin"
+        },
+        {
+          "type": "struct",
+          "name": "core::integer::u256",
+          "members": [
+            {
+              "name": "low",
+              "type": "core::integer::u128"
+            },
+            {
+              "name": "high",
+              "type": "core::integer::u128"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "blob_arena::game::contract::IGameAdmin",
+          "items": [
+            {
+              "type": "function",
+              "name": "create",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "initiator",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "time_limit",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "player_a",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "collection_address_a",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "token_id_a",
+                  "type": "core::integer::u256"
+                },
+                {
+                  "name": "attacks_a",
+                  "type": "core::array::Array::<(core::felt252, core::felt252)>"
+                },
+                {
+                  "name": "player_b",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "collection_address_b",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "token_id_b",
+                  "type": "core::integer::u256"
+                },
+                {
+                  "name": "attacks_b",
+                  "type": "core::array::Array::<(core::felt252, core::felt252)>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
           "type": "function",
           "name": "dojo_init",
           "inputs": [],
@@ -3887,6 +4442,7 @@
         "run",
         "kick_player",
         "forfeit",
+        "create",
         "upgrade"
       ]
     },
