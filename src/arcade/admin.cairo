@@ -32,7 +32,6 @@ trait IArcadeAdmin<TContractState> {
         attributes: TokenAttributes,
         stats: UStats,
         attacks: Array<IdTagNew<AttackInput>>,
-        collections_allowed: Array<ContractAddress>,
     ) -> felt252;
 
     /// Creates a new Arcade challenge with defined opponents and collection restrictions
@@ -142,15 +141,11 @@ mod arcade_admin_actions {
             attributes: TokenAttributes,
             stats: UStats,
             attacks: Array<IdTagNew<AttackInput>>,
-            collections_allowed: Array<ContractAddress>,
         ) -> felt252 {
             let mut store = self.storage(ARCADE_NAMESPACE_HASH);
             store.assert_caller_has_permission(Role::ArcadeSetter);
             let attack_ids = store.create_or_get_attacks_external(attacks);
-            store
-                .setup_new_opponent(
-                    name, collection, attributes, stats, attack_ids, collections_allowed,
-                )
+            store.setup_new_opponent(name, collection, attributes, stats, attack_ids)
         }
         fn new_challenge(
             ref self: ContractState,

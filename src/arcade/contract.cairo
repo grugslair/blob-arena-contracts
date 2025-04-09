@@ -1,66 +1,7 @@
 use starknet::ContractAddress;
 
-/// Interface for the Arcade (Player vs Environment) game contract
-///
-/// # Functions
-///
-/// * `start_game` - Initiates a new Arcade game session
-///   * `opponent_id` - Identifier for the opponent to fight
-///   * `collection_address` - Contract address of the NFT collection
-///   * `token_id` - ID of the token being used
-///   * `attacks` - Array of attack tuples (item_n, slot_n) where item_n is 1, 2, 3... for
-///   Background, Armour, Jewelry....
-///   * Returns: game_id as felt252
-///
-/// * `attack` - Executes an attack in an ongoing game
-///   * `game_id` - Identifier of the active game
-///   * `attack_id` - The id of the attack to perform
-///
-/// * `start_challenge` - Begins a new challenge mode session
-///   * `challenge_id` - Identifier for the specific challenge
-///   * `collection_address` - Contract address of the NFT collection
-///   * `token_id` - ID of the token being used
-///   * `attacks` - Array of attack tuples (item_n, slot_n) where item_n is 1, 2, 3... for
-///   Background, Armour, Jewelry....
-///
-/// * `next_challenge_round` - Advances to the next round in a challenge
-///   * `attempt_id` - Identifier for the current challenge attempt
-///
-/// * `respawn_challenge` - Restarts a challenge attempt
-///   * `attempt_id` - Identifier for the challenge attempt to respawn
-///
-/// * `end_challenge` - Concludes an active challenge
-///   * `attempt_id` - Identifier for the challenge attempt to end
-///
-/// * `claim_free_game` - Claims a free game session for the player
-///
-
 #[starknet::interface]
 trait IArcade<TContractState> {
-    /// Starts a new Arcade game against an opponent.
-    /// # Arguments
-    /// * `opponent_id` - The unique identifier of the opponent to fight against
-    /// * `collection_address` - The contract address of the NFT collection
-    /// * `token_id` - The token ID of the NFT being used
-    /// * `attacks` - Array of attack tuples (attack_id, attack_power)
-    /// # Returns
-    /// * `felt252` - The game ID of the newly created game
-    ///
-    /// Models:
-    /// - ArcadeFreeGames
-    /// - ArcadePaidGames
-    /// - AttackAvailable
-    /// - CombatantToken
-    /// - CombatantState
-    /// - ArcadeGame
-    fn start_game(
-        ref self: TContractState,
-        opponent_id: felt252,
-        collection_address: ContractAddress,
-        token_id: u256,
-        attacks: Array<(felt252, felt252)>,
-    ) -> felt252;
-
     /// Executes an attack move in an active game.
     /// # Arguments
     /// * `game_id` - The unique identifier of the active game
@@ -169,19 +110,6 @@ mod arcade_actions {
 
     #[abi(embed_v0)]
     impl IArcadeImpl of IArcade<ContractState> {
-        fn start_game(
-            ref self: ContractState,
-            opponent_id: felt252,
-            collection_address: ContractAddress,
-            token_id: u256,
-            attacks: Array<(felt252, felt252)>,
-        ) -> felt252 {
-            let mut store = self.get_storage();
-            let caller = get_caller_address();
-            assert(erc721_owner_of(collection_address, token_id) == caller, 'Not owner');
-            store.arcade.use_game(caller);
-            store.new_arcade_game(opponent_id, caller, collection_address, token_id, attacks)
-        }
         fn attack(ref self: ContractState, game_id: felt252, attack_id: felt252) {
             let mut store = self.get_storage();
             let game = store.arcade.get_arcade_game(game_id);
