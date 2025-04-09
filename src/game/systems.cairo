@@ -12,9 +12,12 @@ use crate::commitments::Commitment;
 use crate::utils::get_transaction_hash;
 use crate::combatants::{CombatantTrait, CombatantInfo, CombatantStorage, CombatantState};
 use crate::hash::{in_order, array_to_hash_state};
-use crate::attacks::{results::{RoundResult, AttackResult, AttackOutcomes}, Attack, AttackStorage};
+use crate::attacks::{
+    results::{RoundResult, AttackResult, AttackOutcomes, AttackResultTrait}, Attack, AttackStorage,
+};
 use crate::core::{
     TTupleSized2ToSpan, ArrayTryIntoTTupleSized2, ArrayTryIntoFixed2Array, TTupleSized2IntoFixed,
+    BoolIntoOneZero,
 };
 use crate::attacks::AttackTrait;
 use crate::achievements::{Achievements, TaskId};
@@ -134,18 +137,24 @@ impl GameImpl of GameTrait {
             GameProgress::Active => self.next_round(combat, combatants_span),
             GameProgress::Ended([
                 winner, looser,
-            ]) => {
-                self
-                    .end_game_from_ids(
-                        combat.id, winner, looser, get_block_timestamp(), WinVia::Combat,
-                    );
-            },
+            ]) => { self.end_game_from_ids(combat.id, winner, looser, timestamp, WinVia::Combat); },
         };
         for result in results {
             let player = self.get_player(result.combatant_id);
-            if self.increment_attack_uses(player, result.attack).is_zero() {
-                self.increment_achievement(player, TaskId::ArcadeUniqueMoves, timestamp);
-            }
+            let new_attack_uses: u32 = self
+                .increment_attack_uses(player, result.attack)
+                .is_zero()
+                .into();
+            let (_, opponent) = result.effects();
+
+            self
+                .progress_achievements_now(
+                    player,
+                    array![
+                        (TaskId::PvpUniqueMoves, new_attack_uses),
+                        (TaskId::CriticalHits, opponent.criticals),
+                    ],
+                );
         }
     }
 

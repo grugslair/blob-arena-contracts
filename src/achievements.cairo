@@ -97,6 +97,18 @@ impl TaskIdIntoFelt252 of Into<TaskId, felt252> {
 }
 
 #[generate_trait]
+impl AchievementsEventsImpl of AchievementsEventsTrait {
+    fn emit_progress_achievement(
+        ref self: WorldStorage, player_id: felt252, task: TaskId, count: u32, time: u64,
+    ) {
+        self
+            .emit_event(
+                @TrophyProgression { player_id: player_id, task_id: task.into(), count, time },
+            );
+    }
+}
+
+#[generate_trait]
 impl AchievementImpl<S, +WorldTrait<S>, +Drop<S>> of Achievements<S> {
     fn create_achievements(ref self: S, achievements: Array<TrophyCreationInput>) {
         let mut storage = self.storage(ACHIEVEMENTS_NAMESPACE_HASH);
@@ -110,12 +122,7 @@ impl AchievementImpl<S, +WorldTrait<S>, +Drop<S>> of Achievements<S> {
         ref self: S, player_id: ContractAddress, task: TaskId, count: u32, time: u64,
     ) {
         let mut storage = self.storage(ACHIEVEMENTS_NAMESPACE_HASH);
-        storage
-            .emit_event(
-                @TrophyProgression {
-                    player_id: player_id.into(), task_id: task.into(), count, time,
-                },
-            );
+        storage.emit_progress_achievement(player_id.into(), task, count, time);
     }
 
     fn progress_achievement(
@@ -125,6 +132,25 @@ impl AchievementImpl<S, +WorldTrait<S>, +Drop<S>> of Achievements<S> {
             self._progress_achievement(player_id, task, count, time);
         }
     }
+
+    fn progress_achievements(
+        ref self: S, player_id: ContractAddress, task_and_counts: Array<(TaskId, u32)>, time: u64,
+    ) {
+        let mut storage = self.storage(ACHIEVEMENTS_NAMESPACE_HASH);
+        let player_felt: felt252 = player_id.into();
+        for (task, count) in task_and_counts {
+            if count > 0 {
+                storage.emit_progress_achievement(player_felt, task, count, time);
+            }
+        };
+    }
+
+    fn progress_achievements_now(
+        ref self: S, player_id: ContractAddress, task_and_counts: Array<(TaskId, u32)>,
+    ) {
+        self.progress_achievements(player_id, task_and_counts, get_block_timestamp());
+    }
+
 
     fn progress_achievement_now(ref self: S, player_id: ContractAddress, task: TaskId, count: u32) {
         self.progress_achievement(player_id, task, count, get_block_timestamp());
@@ -136,5 +162,23 @@ impl AchievementImpl<S, +WorldTrait<S>, +Drop<S>> of Achievements<S> {
 
     fn increment_achievement_now(ref self: S, player_id: ContractAddress, task: TaskId) {
         self.increment_achievement(player_id, task, get_block_timestamp());
+    }
+
+    fn increment_achievements(
+        ref self: S, player_id: ContractAddress, task_and_counts: Array<(TaskId, u32)>, time: u64,
+    ) {
+        let mut storage = self.storage(ACHIEVEMENTS_NAMESPACE_HASH);
+        let player_felt: felt252 = player_id.into();
+        for (task, count) in task_and_counts {
+            if count > 0 {
+                storage.emit_progress_achievement(player_felt, task, count + 1, time);
+            }
+        };
+    }
+
+    fn increment_achievements_now(
+        ref self: S, player_id: ContractAddress, task_and_counts: Array<(TaskId, u32)>,
+    ) {
+        self.increment_achievements(player_id, task_and_counts, get_block_timestamp());
     }
 }

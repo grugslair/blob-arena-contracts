@@ -26,7 +26,7 @@ use crate::constants::{STARTING_HEALTH, SECONDS_12_HOURS};
 use crate::stats::StatsTrait;
 use crate::iter::Iteration;
 use crate::tags::{Tag, IdTagNew};
-use crate::core::byte_array_to_felt252_array;
+use crate::core::{byte_array_to_felt252_array, BoolIntoOneZero};
 use crate::erc721::ERC721TokenStorage;
 use crate::achievements::{Achievements, TaskId};
 
@@ -259,7 +259,6 @@ impl ArcadeImpl of ArcadeTrait {
     ) {
         assert(game.phase == ArcadePhase::Active, 'Not active');
         let hash = make_hash_state(randomness);
-        let timestamp = get_block_timestamp();
         let combatants = [game.combatant_id, game.opponent_id];
         let opponent_attacks = self.arcade.get_arcade_opponent_attacks(game.opponent_token);
         let attacks = [
@@ -276,11 +275,11 @@ impl ArcadeImpl of ArcadeTrait {
         }
         for result in results {
             if result.combatant_id == game.combatant_id {
-                if self.arcade.increment_attack_uses(game.player, player_attack).is_zero() {
-                    self
-                        .arcade
-                        .increment_achievement(game.player, TaskId::ArcadeUniqueMoves, timestamp);
-                };
+                let new_attack_uses: u32 = self
+                    .arcade
+                    .increment_attack_uses(game.player, player_attack)
+                    .is_zero()
+                    .into();
 
                 let (_, opponent) = result.effects();
                 let mut damage = opponent.damage;
@@ -289,8 +288,13 @@ impl ArcadeImpl of ArcadeTrait {
                 };
                 self
                     .arcade
-                    .progress_achievement(
-                        game.player, TaskId::ArcadeTotalDamage, damage, timestamp,
+                    .progress_achievements_now(
+                        game.player,
+                        array![
+                            (TaskId::ArcadeUniqueMoves, new_attack_uses),
+                            (TaskId::ArcadeTotalDamage, damage),
+                            (TaskId::CriticalHits, opponent.criticals),
+                        ],
                     );
             }
         };
