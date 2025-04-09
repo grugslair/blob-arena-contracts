@@ -194,6 +194,13 @@ struct AttackAvailable {
     available: bool,
 }
 
+/// Represents the number of times a player has used a specific attack
+///
+/// # Arguments
+///
+/// * `player` - The address of the player who owns the attack
+/// * `attack_id` - The unique identifier for the attack
+/// * `uses` - The number of times the attack has been used
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct AttackUses {
