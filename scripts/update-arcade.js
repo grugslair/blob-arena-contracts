@@ -1,15 +1,9 @@
 import {
   loadJson,
   splitCallDescriptions,
-  loadAccountManifest,
-  makeCairoEnum,
-  pascalCase,
-  parseEnumObject,
-  batchCalls,
+  loadAccountManifestFromCmdArgs,
 } from "./stark-utils.js";
 import { CairoCustomEnum } from "starknet";
-
-import commandLineArgs from "command-line-args";
 import {
   arcadeOpponentEntrypoint,
   arcadeChallengeEntrypoint,
@@ -113,16 +107,7 @@ export const makeArcadeChallengeCalls = async (account_manifest, data) => {
 };
 
 const main = async () => {
-  const optionDefinitions = [
-    { name: "profile", type: String, defaultOption: true },
-    { name: "password", alias: "p", type: String },
-  ];
-  const options = commandLineArgs(optionDefinitions);
-
-  const account_manifest = await loadAccountManifest(
-    options.profile,
-    options.password
-  );
+  const account_manifest = await loadAccountManifestFromCmdArgs();
   let arcade_data = loadJson("../post-deploy-config/arcade.json");
   const calls_metas = [
     ...(await makeArcadeOpponentsCalls(

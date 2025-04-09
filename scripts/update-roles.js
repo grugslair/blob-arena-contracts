@@ -1,19 +1,17 @@
 import {
   loadJson,
   splitCallDescriptions,
-  loadAccountManifest,
+  loadAccountManifestFromCmdArgs,
   makeCairoEnum,
   pascalCase,
 } from "./stark-utils.js";
-import commandLineArgs from "command-line-args";
-import {
-  gameAdminContractTag,
-  setPermissionsEntrypoint,
-} from "./contract-defs.js";
+import { adminContractTag, setPermissionsEntrypoint } from "./contract-defs.js";
 
-export const makeRoleCalls = async (account_manifest, profile) => {
-  const role_data = loadJson("../post-deploy-config/roles.json")[profile];
-  const contract = await account_manifest.getContract(gameAdminContractTag);
+export const makeRoleCalls = async (account_manifest) => {
+  const role_data = loadJson("../post-deploy-config/roles.json")[
+    account_manifest.profile
+  ];
+  const contract = await account_manifest.getContract(adminContractTag);
   let calls = [];
   for (const [role, users] of Object.entries(role_data)) {
     calls.push([
@@ -29,18 +27,8 @@ export const makeRoleCalls = async (account_manifest, profile) => {
 };
 
 const main = async () => {
-  const optionDefinitions = [
-    { name: "profile", type: String, defaultOption: true },
-    { name: "password", alias: "p", type: String },
-  ];
-  const options = commandLineArgs(optionDefinitions);
-
-  const account_manifest = await loadAccountManifest(
-    options.profile,
-    options.password
-  );
-
-  const calls_metas = await makeRoleCalls(account_manifest, options.profile);
+  const account_manifest = await loadAccountManifestFromCmdArgs();
+  const calls_metas = await makeRoleCalls(account_manifest);
   const [calls, descriptions] = splitCallDescriptions(calls_metas);
   console.log(descriptions);
   account_manifest.execute(calls).then((res) => {
