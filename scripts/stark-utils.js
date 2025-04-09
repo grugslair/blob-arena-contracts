@@ -2,6 +2,7 @@ import { Contract, CairoCustomEnum, Account } from "starknet";
 import { upperFirst, camelCase } from "lodash-es";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import commandLineArgs from "command-line-args";
 import * as fs from "fs";
 import * as path from "path";
 import * as accounts from "web3-eth-accounts";
@@ -46,7 +47,6 @@ export const readKeystorePK = async (
 };
 
 export const getContract = async (provider, contractAddress) => {
-  console.log(contractAddress);
   const { abi: abi } = await provider.getClassAt(contractAddress);
   return new Contract(abi, contractAddress, provider);
 };
@@ -71,13 +71,21 @@ export const makeCall = (contract, entrypoint, calldata) => {
 };
 
 export class AccountManifest {
-  constructor(dojo_toml_path, manifest_path) {
+  constructor(dojo_toml_path, manifest_path, profile) {
     this.dojo_toml = loadToml(dojo_toml_path);
     this.manifest = loadJson(manifest_path);
+    this.profile = profile;
+    if (this.dojo_toml.env.private_key) {
+      this.account = new Account(
+        { nodeUrl: this.dojo_toml.env.rpc_url },
+        this.dojo_toml.env.account_address,
+        this.dojo_toml.env.private_key
+      );
+    }
     this.contracts = {};
   }
 
-  async init(password) {
+  async init_keystore(password) {
     const privateKey = await readKeystorePK(
       await resolvePath(this.dojo_toml.env.keystore_path),
       this.dojo_toml.env.account_address,
@@ -130,11 +138,27 @@ export const splitCallDescriptions = (calls_metas) => {
   return [calls, descriptions];
 };
 
-export const loadAccountManifest = async (profile, password) => {
+export const loadAccountManifest = async (profile, password = null) => {
   const account_manifest = new AccountManifest(
     `../dojo_${profile}.toml`,
-    `../manifest_${profile}.json`
+    `../manifest_${profile}.json`,
+    profile
   );
-  await account_manifest.init(password);
+  if (password) {
+    await account_manifest.init_keystore(password);
+  } else if (account_manifest.dojo_toml.env.keystore_path) {
+    throw new Error(
+      `Keystore path is set, but no password provided. Please provide a password.`
+    );
+  }
   return account_manifest;
+};
+
+export const loadAccountManifestFromCmdArgs = async () => {
+  const optionDefinitions = [
+    { name: "profile", type: String, defaultOption: true, defaultValue: "dev" },
+    { name: "password", alias: "p", type: String, defaultValue: null },
+  ];
+  const options = commandLineArgs(optionDefinitions);
+  return await loadAccountManifest(options.profile, options.password);
 };

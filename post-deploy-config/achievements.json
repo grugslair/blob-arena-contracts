@@ -1,0 +1,21 @@
+{
+  "test_achievement": {
+    "hidden": false,
+    "index": 1,
+    "points": 20,
+    "start": 0,
+    "end": 0,
+    "group": "Test Achievement",
+    "icon": "shield",
+    "title": "Test Achievement 1",
+    "description": "Won 1 Achievement",
+    "tasks": [
+      {
+        "id": "CriticalHits",
+        "total": 1,
+        "description": "Won 1 Achievement"
+      }
+    ],
+    "data": ""
+  }
+}

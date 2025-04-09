@@ -29,7 +29,7 @@ const FREE_BLOBERT_NAMESPACE_HASH: felt252 = bytearray_hash!("free_blobert");
 #[dojo::contract]
 mod free_blobert_actions {
     use core::poseidon::poseidon_hash_span;
-    use starknet::{ContractAddress, get_caller_address};
+    use starknet::{ContractAddress, get_caller_address, get_contract_address};
     use dojo::world::WorldStorage;
 
     use crate::world::{WorldTrait, incrementor};
@@ -38,9 +38,16 @@ mod free_blobert_actions {
     use super::super::super::world_blobert;
     use super::super::super::items::cmp;
     use super::super::super::collection;
-    use super::super::super::{IBlobertCollectionImpl, TokenAttributes};
+    use super::super::super::{
+        IBlobertCollectionImpl, TokenAttributes, CollectionGroupStorage, CollectionGroup,
+    };
 
     use super::{IFreeBlobert, FREE_BLOBERT_NAMESPACE_HASH};
+
+    fn dojo_init(ref self: ContractState) {
+        let mut storage = self.default_storage();
+        storage.set_collection_group(get_contract_address(), CollectionGroup::FreeBlobert);
+    }
 
     impl FreeBlobertStoreImpl =
         world_blobert::WorldBlobertStore<FREE_BLOBERT_NAMESPACE_HASH, BLOBERT_NAMESPACE_HASH>;

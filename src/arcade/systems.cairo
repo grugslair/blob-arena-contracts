@@ -5,7 +5,7 @@ use starknet::{ContractAddress, get_caller_address, get_contract_address, get_bl
 use dojo::world::WorldStorage;
 
 
-use crate::attacks::{Attack, AttackInput, AttackTrait};
+use crate::attacks::{Attack, AttackInput, AttackTrait, results::AttackResultTrait};
 use crate::arcade::{
     ArcadeGame, ArcadeOpponent, ArcadeOpponentInput, ArcadeBlobertInfo, ArcadeStorage, ArcadePhase,
     ArcadeStore, ArcadeChallengeAttempt, ArcadePhaseTrait, ArcadeAttemptEnd,
@@ -18,16 +18,17 @@ use crate::game::{GameStorage, GameTrait, GameProgress};
 use crate::combatants::{CombatantStorage, CombatantTrait, CombatantState, CombatantSetup};
 use crate::attacks::AttackStorage;
 use crate::combat::CombatTrait;
-use crate::world::uuid;
+use crate::world::{uuid, WorldTrait};
 use crate::hash::{make_hash_state, felt252_to_u128};
 use crate::stats::UStats;
-use crate::collections::TokenAttributes;
+use crate::collections::{TokenAttributes, CollectionGroupStorage, CollectionGroup};
 use crate::constants::{STARTING_HEALTH, SECONDS_12_HOURS};
 use crate::stats::StatsTrait;
 use crate::iter::Iteration;
 use crate::tags::{Tag, IdTagNew};
-use crate::core::byte_array_to_felt252_array;
+use crate::core::{byte_array_to_felt252_array, BoolIntoOneZero};
 use crate::erc721::ERC721TokenStorage;
+use crate::achievements::{Achievements, TaskId};
 
 fn calc_restored_health(current_health: u8, vitality: u8, health_recovery_percent: u8) -> u8 {
     let max_health = STARTING_HEALTH + vitality;
@@ -263,12 +264,40 @@ impl ArcadeImpl of ArcadeTrait {
         let attacks = [
             player_attack, self.ba.get_opponent_attack(@game, opponent_attacks, randomness),
         ];
-        match self.ba.run_round(game.id, game.round, combatants, attacks, [false, true], hash) {
+        let (progress, results) = self
+            .ba
+            .run_round(game.id, game.round, combatants, attacks, [false, true], hash);
+        match progress {
             GameProgress::Active => { self.arcade.set_arcade_round(game.id, game.round + 1); },
             GameProgress::Ended([winner, _]) => self
                 .arcade
                 .set_arcade_ended(game.id, winner == game.combatant_id),
         }
+        for result in results {
+            if result.combatant_id == game.combatant_id {
+                let new_attack_uses: u32 = self
+                    .arcade
+                    .increment_attack_uses(game.player, player_attack)
+                    .is_zero()
+                    .into();
+
+                let (_, opponent) = result.effects();
+                let mut damage = opponent.damage;
+                if opponent.health < 0 {
+                    damage += (-opponent.health).try_into().unwrap();
+                };
+                self
+                    .arcade
+                    .progress_achievements_now(
+                        game.player,
+                        array![
+                            (TaskId::ArcadeUniqueMoves, new_attack_uses),
+                            (TaskId::ArcadeTotalDamage, damage),
+                            (TaskId::CriticalHits, opponent.criticals),
+                        ],
+                    );
+            }
+        };
     }
     fn get_opponent_attack(
         ref self: WorldStorage, game: @ArcadeGame, attacks: Array<felt252>, randomness: felt252,
@@ -432,6 +461,31 @@ impl ArcadeImpl of ArcadeTrait {
                 attempt.player, attempt.collection, attempt.token_id,
             );
         self.set_arcade_challenge_attempt_ended(attempt_id, won);
+        let timestamp = get_block_timestamp();
+        if won {
+            match self.default_storage().get_collection_group(attempt.collection) {
+                CollectionGroup::ClassicBlobert |
+                CollectionGroup::FreeBlobert => {
+                    self
+                        .increment_achievement(
+                            attempt.player, TaskId::ClassicArcadeCompletion, timestamp,
+                        );
+                },
+                CollectionGroup::AmmaBlobert => {
+                    self
+                        .increment_achievement(
+                            attempt.player, TaskId::AmmaArcadeCompletion, timestamp,
+                        );
+                },
+                _ => {},
+            };
+            if attempt.respawns.is_zero() {
+                self
+                    .increment_achievement(
+                        attempt.player, TaskId::ArcadeCompletionNoRespawn, timestamp,
+                    );
+            }
+        }
     }
 
     fn use_free_game(ref self: WorldStorage, player: ContractAddress) -> bool {

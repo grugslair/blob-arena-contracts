@@ -20,8 +20,8 @@ initializer_class_hash = "0xbeef"
 sierra = true
 build-external-contracts = [
     "dojo::world::world_contract::world",
-    "arcade_trophy::events::index::e_TrophyCreation",
-    "arcade_trophy::events::index::e_TrophyProgression",
+    "achievement::events::index::e_TrophyCreation",
+    "achievement::events::index::e_TrophyProgression",
 ]
 
 [dev-dependencies]

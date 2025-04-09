@@ -10,13 +10,15 @@ impl ParentRolesImpl of ParentRoles {
     fn parent_roles(self: Role) -> Array<Role> {
         match self {
             Role::Admin => array![],
-            Role::AmmaAdmin => array![Role::Admin],
-            Role::BlobertAdmin => array![Role::Admin],
-            Role::Creator => array![Role::Admin],
-            Role::ArcadePaidMinter => array![Role::Admin, Role::ArcadeMinter],
-            Role::ArcadeFreeMinter => array![Role::Admin, Role::ArcadeMinter],
-            Role::ArcadeMinter => array![Role::Admin],
-            Role::ArcadeSetter => array![Role::Admin],
+            Role::Manager => array![Role::Admin],
+            Role::AmmaAdmin => array![Role::Manager, Role::Admin],
+            Role::BlobertAdmin => array![Role::Manager, Role::Admin],
+            Role::PvpCreator => array![Role::Manager, Role::Admin],
+            Role::ArcadePaidMinter => array![Role::Manager, Role::Admin, Role::ArcadeMinter],
+            Role::ArcadeFreeMinter => array![Role::Manager, Role::Admin, Role::ArcadeMinter],
+            Role::ArcadeMinter => array![Role::Manager, Role::Admin],
+            Role::ArcadeSetter => array![Role::Manager, Role::Admin],
+            Role::AchievementSetter => array![Role::Manager, Role::Admin],
         }
     }
 }

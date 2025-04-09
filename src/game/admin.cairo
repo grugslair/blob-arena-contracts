@@ -43,61 +43,18 @@ trait IGameAdmin<TContractState> {
         token_id_b: u256,
         attacks_b: Array<(felt252, felt252)>,
     ) -> felt252;
-
-    /// Sets a role for a user
-    ///
-    /// * `user` - Address of the user to set role for
-    /// * `role` - Role to be assigned
-    /// * `has` - Boolean indicating if the role should be granted or revoked
-    ///
-    /// Models:
-    /// - Permission
-    fn set_has_role(ref self: TContractState, user: ContractAddress, role: Role, has: bool);
-
-    /// Checks if a user has a specific role
-    ///
-    /// * `user` - Address of the user to check
-    /// * `role` - Role to check for
-    ///
-    /// Returns: Boolean indicating if user has the role
-    fn get_has_role(self: @TContractState, user: ContractAddress, role: Role) -> bool;
-
-    /// Batch sets roles for multiple users
-    ///
-    /// * `users` - Array of user addresses
-    /// * `role` - Role to be assigned to all users
-    /// * `has` - Boolean indicating if the role should be granted or revoked
-    ///
-    /// Models:
-    /// - Permission
-    fn set_multiple_has_role(
-        ref self: TContractState, users: Array<ContractAddress>, role: Role, has: bool,
-    );
-
-    /// Retrieves the address of the world contract
-    ///
-    /// Returns: ContractAddress of the world contract
-    fn get_world_address(self: @TContractState) -> ContractAddress;
 }
 
 #[dojo::contract]
-mod game_admin {
+mod game_admin_actions {
     use dojo::world::WorldStorage;
-    use starknet::{ContractAddress, get_tx_info, get_caller_address};
+    use starknet::ContractAddress;
     use blob_arena::{
-        world::{WorldTrait, uuid, get_world_address}, game::GameStorage, combatants::CombatantTrait,
-        combat::CombatStorage, permissions::{Role, Permissions, Permission, PermissionStorage},
+        world::{WorldTrait, uuid}, game::GameStorage, combatants::CombatantTrait,
+        combat::CombatStorage, permissions::Permissions,
     };
 
     use super::IGameAdmin;
-
-    fn dojo_init(ref self: ContractState) {
-        let mut world = self.default_storage();
-
-        let admin = get_tx_info().unbox().account_contract_address;
-        world.set_permission(admin, Role::Admin, true);
-    }
-
 
     #[abi(embed_v0)]
     impl IGameAdminImpl of IGameAdmin<ContractState> {
@@ -135,33 +92,6 @@ mod game_admin {
             world.set_initiator(id, initiator);
             world.new_combat_state(id);
             id
-        }
-
-        fn set_has_role(ref self: ContractState, user: ContractAddress, role: Role, has: bool) {
-            let mut world = self.default_storage();
-            world.assert_caller_is_admin();
-            world.set_permission(user, role, has);
-        }
-
-        fn get_has_role(self: @ContractState, user: ContractAddress, role: Role) -> bool {
-            let world = self.default_storage();
-            world.get_permission(user, role)
-        }
-
-        fn set_multiple_has_role(
-            ref self: ContractState, users: Array<ContractAddress>, role: Role, has: bool,
-        ) {
-            let mut world = self.default_storage();
-            world.assert_caller_is_admin();
-            let mut permissions = ArrayTrait::<Permission>::new();
-            for user in users {
-                permissions.append(Permission { requester: user, role, has });
-            };
-            world.set_permissions(permissions);
-        }
-
-        fn get_world_address(self: @ContractState) -> ContractAddress {
-            get_world_address()
         }
     }
 }

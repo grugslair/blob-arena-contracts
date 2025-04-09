@@ -5,26 +5,30 @@ use blob_arena::world::WorldTrait;
 #[derive(Drop, Copy, Serde, PartialEq, Introspect)]
 enum Role {
     Admin,
+    Manager,
     AmmaAdmin,
     BlobertAdmin,
-    Creator,
+    PvpCreator,
     ArcadePaidMinter,
     ArcadeFreeMinter,
     ArcadeMinter,
     ArcadeSetter,
+    AchievementSetter,
 }
 
 impl RoleIntoByteArrayImpl of Into<Role, ByteArray> {
     fn into(self: Role) -> ByteArray {
         match self {
             Role::Admin => "admin",
+            Role::Manager => "manager",
             Role::AmmaAdmin => "amma admin",
             Role::BlobertAdmin => "Blobert admin",
-            Role::Creator => "creator",
+            Role::PvpCreator => "pvp game creator",
             Role::ArcadePaidMinter => "paid minter",
             Role::ArcadeFreeMinter => "free minter",
             Role::ArcadeMinter => "minter",
             Role::ArcadeSetter => "arcade setter",
+            Role::AchievementSetter => "achievement setter",
         }
     }
 }

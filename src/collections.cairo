@@ -4,6 +4,8 @@ mod collection;
 mod store;
 mod world_blobert;
 mod amma_blobert;
+mod group;
+use group::{CollectionGroupStorage, CollectionGroup};
 mod blobert {
     mod contract;
     mod external;

@@ -132,20 +132,21 @@ fn run_effect(
 ) -> EffectResult {
     let result = match effect.affect {
         Affect::Stats(stats_effect) => {
-            match effect.target {
-                Target::Player => { attacker_state.apply_buffs(stats_effect) },
-                Target::Opponent => { defender_state.apply_buffs(stats_effect) },
-            };
-            AffectResult::Success
+            AffectResult::Stats(
+                match effect.target {
+                    Target::Player => { attacker_state.apply_buffs(stats_effect) },
+                    Target::Opponent => { defender_state.apply_buffs(stats_effect) },
+                },
+            )
         },
         Affect::Stat(Stat {
             stat, amount,
         }) => {
-            match effect.target {
+            let change = match effect.target {
                 Target::Player => { attacker_state.apply_buff(stat, amount) },
                 Target::Opponent => { defender_state.apply_buff(stat, amount) },
             };
-            AffectResult::Success
+            AffectResult::Stat(Stat { stat, amount: change })
         },
         Affect::Damage(damage) => {
             let mut seed = hash_state.update_to_u128(move_n);
@@ -164,14 +165,15 @@ fn run_effect(
                 Target::Player => { attacker_state.apply_stun(stun) },
                 Target::Opponent => { defender_state.apply_stun(stun) },
             };
-            AffectResult::Success
+            AffectResult::Stun(stun)
         },
         Affect::Health(health) => {
-            match effect.target {
-                Target::Player => { attacker_state.modify_health(health) },
-                Target::Opponent => { defender_state.modify_health(health) },
-            };
-            AffectResult::Success
+            AffectResult::Health(
+                match effect.target {
+                    Target::Player => { attacker_state.modify_health(health) },
+                    Target::Opponent => { defender_state.modify_health(health) },
+                },
+            )
         },
     };
     EffectResult { target: effect.target, affect: result }

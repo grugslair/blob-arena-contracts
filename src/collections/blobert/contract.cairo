@@ -2,14 +2,16 @@ const BLOBERT_NAMESPACE_HASH: felt252 = bytearray_hash!("blobert");
 
 #[dojo::contract]
 mod blobert_actions {
-    use starknet::{ContractAddress, get_contract_address, contract_address_const};
+    use starknet::{ContractAddress, get_contract_address};
     use dojo::world::{WorldStorage, IWorldDispatcher};
     use crate::world::WorldTrait;
     use crate::erc721::erc721_owner_of;
     use crate::storage::read_value_from_felt252;
     use super::BLOBERT_NAMESPACE_HASH;
     use super::super::{IBlobertDispatcher, IBlobertDispatcherTrait};
-    use super::super::super::{BlobertStore, TokenAttributes, ICollection};
+    use super::super::super::{
+        BlobertStore, TokenAttributes, ICollection, CollectionGroupStorage, CollectionGroup,
+    };
     use super::super::super::items::cmp;
     use super::super::super::collection;
 
@@ -18,6 +20,8 @@ mod blobert_actions {
 
     fn dojo_init(ref self: ContractState, blobert_contract_address: ContractAddress) {
         self.blobert_contract_address.write(blobert_contract_address);
+        let mut storage = self.default_storage();
+        storage.set_collection_group(get_contract_address(), CollectionGroup::ClassicBlobert);
     }
 
     #[storage]

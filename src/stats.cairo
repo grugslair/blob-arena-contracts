@@ -56,6 +56,12 @@ fn add_buff(stat: u8, buff: i8) -> u8 {
     min(stat.saturating_into().saturating_add(buff).saturating_into(), 100)
 }
 
+fn apply_buff(ref stat: u8, buff: i8) -> i8 {
+    let prev_value: i32 = stat.into();
+    stat = add_buff(stat, buff);
+    (stat.into() - prev_value).saturating_into()
+}
+
 #[generate_trait]
 impl StatsImpl of StatsTrait {
     fn limit_stats(ref self: UStats) {
@@ -64,22 +70,36 @@ impl StatsImpl of StatsTrait {
         self.dexterity = min(self.dexterity, MAX_STAT);
         self.luck = min(self.luck, MAX_STAT);
     }
-    fn apply_buff(ref self: UStats, stat: StatTypes, amount: i8) {
+    fn apply_buff(ref self: UStats, stat: StatTypes, amount: i8) -> i8 {
         match stat {
-            StatTypes::Strength => { self.strength = add_buff(self.strength, amount) },
-            StatTypes::Vitality => { self.vitality = add_buff(self.vitality, amount) },
-            StatTypes::Dexterity => { self.dexterity = add_buff(self.dexterity, amount) },
-            StatTypes::Luck => { self.luck = add_buff(self.luck, amount) },
+            StatTypes::Strength => { apply_buff(ref self.strength, amount) },
+            StatTypes::Vitality => { apply_buff(ref self.vitality, amount) },
+            StatTypes::Dexterity => { apply_buff(ref self.dexterity, amount) },
+            StatTypes::Luck => { apply_buff(ref self.luck, amount) },
         }
     }
-    fn apply_buffs(ref self: UStats, buffs: TStats<i8>) {
-        self.strength = add_buff(self.strength, buffs.strength);
-        self.vitality = add_buff(self.vitality, buffs.vitality);
-        self.dexterity = add_buff(self.dexterity, buffs.dexterity);
-        self.luck = add_buff(self.luck, buffs.luck);
+    fn apply_buffs(ref self: UStats, buffs: TStats<i8>) -> IStats {
+        IStats {
+            strength: apply_buff(ref self.strength, buffs.strength),
+            vitality: apply_buff(ref self.vitality, buffs.vitality),
+            dexterity: apply_buff(ref self.dexterity, buffs.dexterity),
+            luck: apply_buff(ref self.luck, buffs.luck),
+        }
     }
     fn get_max_health(self: @UStats) -> u8 {
         *self.vitality + STARTING_HEALTH
+    }
+}
+
+#[generate_trait]
+impl IStatsImpl of IStatsTrait {
+    fn add_stat(ref self: IStats, stat: StatTypes, amount: i8) {
+        match stat {
+            StatTypes::Strength => { self.strength += amount },
+            StatTypes::Vitality => { self.vitality += amount },
+            StatTypes::Dexterity => { self.dexterity += amount },
+            StatTypes::Luck => { self.luck += amount },
+        }
     }
 }
 

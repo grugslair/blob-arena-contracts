@@ -77,7 +77,14 @@ mod arcade {
     };
 }
 
-mod achievements;
+mod achievements {
+    mod components;
+    mod systems;
+    use components::{TaskId, AchievementsEvents, ACHIEVEMENTS_NAMESPACE_HASH, TrophyCreationInput};
+    use systems::Achievements;
+}
+
+mod admin;
 
 pub use world::{default_namespace, DefaultStorage};
 #[cfg(test)]

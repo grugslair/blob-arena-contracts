@@ -5,10 +5,21 @@ use blob_arena::{
     erc721::ERC721Token,
     game::components::{
         GameInfo, Initiator, LastTimestamp, Player, WinVia, CombatEnd, GameInfoTrait,
+        GamesCompleted,
     },
     combat::{CombatState, Phase, CombatTrait, CombatStorage}, commitments::Commitment,
     combatants::{CombatantStorage, CombatantInfo},
 };
+
+fn sort_players(
+    player_1: ContractAddress, player_2: ContractAddress,
+) -> (ContractAddress, ContractAddress) {
+    match player_1 < player_2 {
+        true => (player_1, player_2),
+        false => (player_2, player_1),
+    }
+}
+
 
 #[generate_trait]
 impl GameStorageImpl of GameStorage {
@@ -130,5 +141,27 @@ impl GameStorageImpl of GameStorage {
 
     fn get_opponent(self: @WorldStorage, game: GameInfo, combatant_id: felt252) -> CombatantInfo {
         self.get_combatant_info(game.get_opponent_id(combatant_id))
+    }
+
+    fn get_games_completed(
+        self: @WorldStorage, player_1: ContractAddress, player_2: ContractAddress,
+    ) -> u64 {
+        self
+            .read_member(
+                Model::<GamesCompleted>::ptr_from_keys(sort_players(player_1, player_2)),
+                selector!("completed"),
+            )
+    }
+
+    fn get_games_completed_value(
+        self: @WorldStorage, players: (ContractAddress, ContractAddress),
+    ) -> u64 {
+        self.read_member(Model::<GamesCompleted>::ptr_from_keys(players), selector!("completed"))
+    }
+
+    fn set_games_completed(
+        ref self: WorldStorage, players: (ContractAddress, ContractAddress), completed: u64,
+    ) {
+        self.write_model(@GamesCompleted { players, completed });
     }
 }

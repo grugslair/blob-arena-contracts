@@ -64,6 +64,19 @@ struct CombatEnd {
     via: WinVia,
 }
 
+/// Tracks the number of games completed between two players
+///
+/// # Fields
+/// * `players` - A tuple of player contract addresses who played against each other in acending
+/// * `completed` - The total number of games completed between these players
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct GamesCompleted {
+    #[key]
+    players: (ContractAddress, ContractAddress),
+    completed: u64,
+}
+
 
 #[derive(Drop, Serde, Copy, Introspect)]
 struct Player {
