@@ -251,56 +251,16 @@
       "collections_allowed": ["blobert", "arcade_blobert"]
     },
     {
-      "name": "Andrzej Studencki",
+      "name": "The Street 1",
       "collection": "amma_blobert",
       "attributes": {
-        "Custom": 3
+        "Custom": 5
       },
       "stats": {
         "strength": 15,
         "vitality": 15,
         "dexterity": 15,
         "luck": 15
-      },
-      "attacks": [
-        { "tag": "Sword Slash" },
-        { "tag": "Shield Block" },
-        { "tag": "Sword Dance" },
-        { "tag": "Spin Attack" }
-      ],
-      "collections_allowed": ["amma_blobert"]
-    },
-    {
-      "name": "Brett Skinner",
-      "collection": "amma_blobert",
-      "attributes": {
-        "Custom": 1
-      },
-      "stats": {
-        "strength": 20,
-        "vitality": 20,
-        "dexterity": 20,
-        "luck": 20
-      },
-      "attacks": [
-        { "tag": "Sword Slash" },
-        { "tag": "Shield Punch" },
-        { "tag": "Grapple" },
-        { "tag": "Osoto Gari" }
-      ],
-      "collections_allowed": ["amma_blobert"]
-    },
-    {
-      "name": "Adam Harrigan",
-      "collection": "amma_blobert",
-      "attributes": {
-        "Custom": 5
-      },
-      "stats": {
-        "strength": 25,
-        "vitality": 25,
-        "dexterity": 25,
-        "luck": 25
       },
       "attacks": [
         { "tag": "Axe Attack" },
@@ -311,16 +271,16 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "Taylor Jones",
+      "name": "The Street 2",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 6
       },
       "stats": {
-        "strength": 30,
-        "vitality": 30,
-        "dexterity": 30,
-        "luck": 30
+        "strength": 20,
+        "vitality": 20,
+        "dexterity": 20,
+        "luck": 20
       },
       "attacks": [
         { "tag": "Sword Slash" },
@@ -331,16 +291,16 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "Daniel Winter",
+      "name": "The Street 3",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 4
       },
       "stats": {
-        "strength": 35,
-        "vitality": 35,
-        "dexterity": 35,
-        "luck": 35
+        "strength": 25,
+        "vitality": 25,
+        "dexterity": 25,
+        "luck": 25
       },
       "attacks": [
         { "tag": "Sword Slash" },
@@ -351,16 +311,16 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "Antonio Penedo",
+      "name": "The Training Room 1",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 2
       },
       "stats": {
-        "strength": 40,
-        "vitality": 40,
-        "dexterity": 40,
-        "luck": 40
+        "strength": 30,
+        "vitality": 30,
+        "dexterity": 30,
+        "luck": 30
       },
       "attacks": [
         { "tag": "Sword Slash" },
@@ -371,16 +331,16 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "A. Studencki Prime",
+      "name": "The Training Room 2",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 3
       },
       "stats": {
-        "strength": 45,
-        "vitality": 45,
-        "dexterity": 45,
-        "luck": 45
+        "strength": 35,
+        "vitality": 35,
+        "dexterity": 35,
+        "luck": 35
       },
       "attacks": [
         { "tag": "Sword Slash" },
@@ -391,16 +351,16 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "B. Skinner Prime",
+      "name": "The Training Room 3",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 1
       },
       "stats": {
-        "strength": 50,
-        "vitality": 50,
-        "dexterity": 50,
-        "luck": 50
+        "strength": 40,
+        "vitality": 40,
+        "dexterity": 40,
+        "luck": 40
       },
       "attacks": [
         { "tag": "Sword Slash" },
@@ -411,7 +371,47 @@
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "D. Winter Prime",
+      "name": "The Pit 1",
+      "collection": "amma_blobert",
+      "attributes": {
+        "Custom": 5
+      },
+      "stats": {
+        "strength": 45,
+        "vitality": 45,
+        "dexterity": 45,
+        "luck": 45
+      },
+      "attacks": [
+        { "tag": "Axe Attack" },
+        { "tag": "Shield Punch" },
+        { "tag": "Grind" },
+        { "tag": "Reverse Throw" }
+      ],
+      "collections_allowed": ["amma_blobert"]
+    },
+    {
+      "name": "The Pit 2",
+      "collection": "amma_blobert",
+      "attributes": {
+        "Custom": 6
+      },
+      "stats": {
+        "strength": 50,
+        "vitality": 50,
+        "dexterity": 50,
+        "luck": 50
+      },
+      "attacks": [
+        { "tag": "Sword Slash" },
+        { "tag": "Shield Punch" },
+        { "tag": "Swift Attack" },
+        { "tag": "Comeback Kid" }
+      ],
+      "collections_allowed": ["amma_blobert"]
+    },
+    {
+      "name": "The Pit 3",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 4
@@ -424,14 +424,14 @@
       },
       "attacks": [
         { "tag": "Sword Slash" },
-        { "tag": "Shield Punch" },
-        { "tag": "Swift Attack" },
-        { "tag": "Comeback Kid" }
+        { "tag": "Low Kick" },
+        { "tag": "Swag" },
+        { "tag": "Mega Shield Bash" }
       ],
       "collections_allowed": ["amma_blobert"]
     },
     {
-      "name": "Mickey Gallus",
+      "name": "The Arena",
       "collection": "amma_blobert",
       "attributes": {
         "Custom": 7
@@ -453,7 +453,7 @@
   ],
   "challenges": [
     {
-      "name": "Classic Challenge",
+      "name": "Classic Season 0",
       "health_recovery": 40,
       "opponents": [
         { "tag": "Byte Basher" },
@@ -470,19 +470,19 @@
       "collections_allowed": ["arcade_blobert"]
     },
     {
-      "name": "AMMA Challenge",
+      "name": "AMMA Season 0",
       "health_recovery": 40,
       "opponents": [
-        { "tag": "Andrzej Studencki" },
-        { "tag": "Brett Skinner" },
-        { "tag": "Adam Harrigan" },
-        { "tag": "Taylor Jones" },
-        { "tag": "Daniel Winter" },
-        { "tag": "Antonio Penedo" },
-        { "tag": "A. Studencki Prime" },
-        { "tag": "B. Skinner Prime" },
-        { "tag": "D. Winter Prime" },
-        { "tag": "Mickey Gallus" }
+        { "tag": "The Street 1" },
+        { "tag": "The Street 2" },
+        { "tag": "The Street 3" },
+        { "tag": "The Training Room 1" },
+        { "tag": "The Training Room 2" },
+        { "tag": "The Training Room 3" },
+        { "tag": "The Pit 1" },
+        { "tag": "The Pit 2" },
+        { "tag": "The Pit 3" },
+        { "tag": "The Arena" }
       ],
       "collections_allowed": ["amma_blobert"]
     }
