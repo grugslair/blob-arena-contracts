@@ -285,8 +285,13 @@ impl ArcadeImpl of ArcadeTrait {
                 let (_, opponent) = result.effects();
                 let mut damage = opponent.damage;
                 if opponent.health < 0 {
-                    damage -= opponent.health.try_into().unwrap();
+                    damage += (-opponent.health).try_into().unwrap();
                 };
+                self
+                    .arcade
+                    .progress_achievement(
+                        game.player, TaskId::ArcadeTotalDamage, damage, timestamp,
+                    );
             }
         };
     }

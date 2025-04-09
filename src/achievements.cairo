@@ -106,7 +106,7 @@ impl AchievementImpl<S, +WorldTrait<S>, +Drop<S>> of Achievements<S> {
         };
     }
 
-    fn progress_achievement(
+    fn _progress_achievement(
         ref self: S, player_id: ContractAddress, task: TaskId, count: u32, time: u64,
     ) {
         let mut storage = self.storage(ACHIEVEMENTS_NAMESPACE_HASH);
@@ -118,12 +118,20 @@ impl AchievementImpl<S, +WorldTrait<S>, +Drop<S>> of Achievements<S> {
             );
     }
 
+    fn progress_achievement(
+        ref self: S, player_id: ContractAddress, task: TaskId, count: u32, time: u64,
+    ) {
+        if count > 0 {
+            self._progress_achievement(player_id, task, count, time);
+        }
+    }
+
     fn progress_achievement_now(ref self: S, player_id: ContractAddress, task: TaskId, count: u32) {
         self.progress_achievement(player_id, task, count, get_block_timestamp());
     }
 
     fn increment_achievement(ref self: S, player_id: ContractAddress, task: TaskId, time: u64) {
-        self.progress_achievement(player_id, task, 1, time);
+        self._progress_achievement(player_id, task, 1, time);
     }
 
     fn increment_achievement_now(ref self: S, player_id: ContractAddress, task: TaskId) {
