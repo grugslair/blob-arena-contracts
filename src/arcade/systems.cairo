@@ -5,7 +5,7 @@ use starknet::{ContractAddress, get_caller_address, get_contract_address, get_bl
 use dojo::world::WorldStorage;
 
 
-use crate::attacks::{Attack, AttackInput, AttackTrait};
+use crate::attacks::{Attack, AttackInput, AttackTrait, results::AttackResultTrait};
 use crate::arcade::{
     ArcadeGame, ArcadeOpponent, ArcadeOpponentInput, ArcadeBlobertInfo, ArcadeStorage, ArcadePhase,
     ArcadeStore, ArcadeChallengeAttempt, ArcadePhaseTrait, ArcadeAttemptEnd,
@@ -280,7 +280,13 @@ impl ArcadeImpl of ArcadeTrait {
                     self
                         .arcade
                         .increment_achievement(game.player, TaskId::ArcadeUniqueMoves, timestamp);
-                }
+                };
+
+                let (_, opponent) = result.effects();
+                let mut damage = opponent.damage;
+                if opponent.health < 0 {
+                    damage -= opponent.health.try_into().unwrap();
+                };
             }
         };
     }
