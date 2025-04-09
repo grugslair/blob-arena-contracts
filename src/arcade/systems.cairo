@@ -140,7 +140,6 @@ impl ArcadeImpl of ArcadeTrait {
         attributes: TokenAttributes,
         stats: UStats,
         attack_ids: Array<felt252>,
-        collections_allowed: Array<ContractAddress>,
     ) -> felt252 {
         let token_id = get_arcade_opponent_id(
             @name, collection, @attributes, @stats, attack_ids.span(),
@@ -150,7 +149,6 @@ impl ArcadeImpl of ArcadeTrait {
             self.set_tag(OPPONENT_TAG_GROUP, @name, token_id);
             self.set_arcade_info(token_id, name, collection, attributes);
         };
-        self.set_collections_allowed(token_id, collections_allowed, true);
         token_id
     }
 
@@ -164,7 +162,6 @@ impl ArcadeImpl of ArcadeTrait {
                 opponent.attributes,
                 opponent.stats,
                 self.create_or_get_attacks_external(opponent.attacks),
-                opponent.collections_allowed,
             )
     }
     fn make_opponent_model_from_input(
@@ -179,8 +176,6 @@ impl ArcadeImpl of ArcadeTrait {
         if !exists {
             self.set_arcade_info(id, opponent.name, opponent.collection, opponent.attributes);
         };
-
-        self.set_collections_allowed(id, opponent.collections_allowed, true);
 
         (ArcadeOpponent { id, stats: opponent.stats, attacks: attack_ids }, sname, exists)
     }
