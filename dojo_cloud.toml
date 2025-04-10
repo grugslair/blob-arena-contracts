@@ -1,0 +1,138 @@
+[world]
+name = "blob_arena"
+seed = "dev"
+
+[env]
+rpc_url = "https://dev.grugslair.com/ba-katana/"
+account_address = "0xb1d543dc402cabc13d5b96d0b5fe8328a1f0351d5d15b30ddf0bce9369488"
+keystore_path = "/home/ben/.starknet_accounts/0xb1d543dc402cabc13d5b96d0b5fe8328a1f0351d5d15b30ddf0bce9369488-keystore.json"
+
+[init_call_args]
+"blobert-blobert_actions" = [
+    "0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578d0549d",
+]
+
+[namespace]
+default = "blob_arena"
+mappings = { blob_arena = [
+    "CombatantToken",
+    "Tag",
+], blobert = [
+    "blobert_actions",
+    "BlobertItem",
+    "AttackSlot",
+    "BlobertItemName",
+], free_blobert = [
+    "free_blobert_actions",
+    "LastMint",
+    "BlobertToken",
+], amma_blobert = [
+    "amma_blobert_actions",
+    "BlobertToken",
+    "BlobertItem",
+    "AttackSlot",
+    "BlobertItemName",
+], arcade = [
+    "arcade_actions",
+    "Tag",
+    "CombatantToken",
+    "ArcadeOpponent",
+    "ArcadeCollectionAllowed",
+    "ArcadeBlobertInfo",
+    "ArcadeChallenge",
+    "ArcadeChallengeName",
+    "ArcadeStageOpponent",
+    "ArcadeGame",
+    "ArcadeFreeGames",
+    "ArcadePaidGames",
+    "ArcadeChallengeAttempt",
+    "ArcadeStageGame",
+    "ArcadeChallengeRespawn",
+    "ArcadeCurrentChallengeAttempt",
+], ba_permissions = [
+    "Permission",
+], achievements = [
+    "TrophyCreation",
+    "TrophyProgression",
+] }
+
+[writers]
+"blob_arena-Lobby" = ["blob_arena-lobby_actions"]
+"blob_arena-LobbyCreated" = ["blob_arena-lobby_actions"]
+
+"blob_arena-GameInfo" = ["blob_arena-lobby_actions", "blob_arena-game_actions"]
+"blob_arena-Initiator" = ["blob_arena-lobby_actions", "blob_arena-game_actions"]
+"blob_arena-CombatantToken" = [
+    "blob_arena-lobby_actions",
+    "blob_arena-game_actions",
+]
+"blob_arena-CombatantInfo" = [
+    "blob_arena-lobby_actions",
+    "blob_arena-game_actions",
+]
+
+
+"blob_arena-CombatantState" = [
+    "blob_arena-game_actions",
+    "blob_arena-lobby_actions",
+    "arcade-arcade_actions",
+]
+
+"blob_arena-AttackAvailable" = [
+    "blob_arena-lobby_actions",
+    "blob_arena-game_actions",
+    "arcade-arcade_actions",
+]
+
+"blob_arena-CombatState" = [
+    "blob_arena-game_actions",
+    "blob_arena-lobby_actions",
+    "arcade-arcade_actions",
+]
+
+"blob_arena-AttackLastUsed" = [
+    "blob_arena-game_actions",
+    "arcade-arcade_actions",
+]
+"blob_arena-RoundResult" = ["blob_arena-game_actions", "arcade-arcade_actions"]
+
+"blob_arena-Commitment" = ["blob_arena-game_actions"]
+"blob_arena-LastTimestamp" = ["blob_arena-game_actions"]
+"blob_arena-PlannedAttack" = ["blob_arena-game_actions"]
+"blob_arena-CombatEnd" = ["blob_arena-game_actions"]
+
+"blob_arena-Attack" = [
+    "blobert-blobert_actions",
+    "amma_blobert-amma_blobert_actions",
+]
+"blob_arena-AttackName" = [
+    "blobert-blobert_actions",
+    "amma_blobert-amma_blobert_actions",
+]
+
+"blob_arena-Tag" = [
+    "blobert-blobert_actions",
+    "amma_blobert-amma_blobert_actions",
+    "arcade-arcade_actions",
+]
+
+"blob_arena-CollectionGroup" = [
+    "blobert-blobert_actions",
+    "free_blobert-free_blobert_actions",
+    "amma_blobert-amma_blobert_actions",
+]
+
+"ba_permissions-Permission" = ["blob_arena-admin_actions"]
+
+"achievements-TrophyCreation" = ["blob_arena-admin_actions"]
+"achievements-TrophyProgression" = [
+    "blob_arena-lobby_actions",
+    "blob_arena-game_actions",
+    "arcade-arcade_actions",
+]
+
+"blobert" = ["blobert-blobert_actions"]
+"free_blobert" = ["free_blobert-free_blobert_actions"]
+"amma_blobert" = ["amma_blobert-amma_blobert_actions"]
+
+"arcade" = ["arcade-arcade_actions"]

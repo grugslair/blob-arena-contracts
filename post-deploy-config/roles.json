@@ -1,4 +1,10 @@
 {
+  "cloud": {
+    "Manager": [
+      "0x21d62f540f8e6d4971a147b888b77efa725c35eaaf75f40d25988f30eee2c0",
+      "0x2791380ca0f1ecf6704f8cd4d55e66fa14ab16d272674964dc5c39ee525262"
+    ]
+  },
   "dev": {
     "Admin": [],
     "Manager": [
