@@ -8,9 +8,9 @@ import {
 import { adminContractTag, setPermissionsEntrypoint } from "./contract-defs.js";
 
 export const makeRoleCalls = async (account_manifest) => {
-  const role_data = loadJson("../post-deploy-config/roles.json")[
-    account_manifest.profile
-  ];
+  const role_data =
+    loadJson("../post-deploy-config/roles.json")[account_manifest.profile] ||
+    {};
   const contract = await account_manifest.getContract(adminContractTag);
   let calls = [];
   for (const [role, users] of Object.entries(role_data)) {
