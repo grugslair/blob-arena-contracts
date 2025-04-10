@@ -32,7 +32,9 @@
     "AmmaAdmin": [],
     "BlobertAdmin": [],
     "PvpCreator": [],
-    "ArcadeMinter": [],
+    "ArcadeMinter": [
+      "0x074666548Fe46DD08aAA3735Ca5aC00419a69f2AfF22314Bd0A1Fc9F5b8cE03D"
+    ],
     "ArcadeFreeMinter": [],
     "ArcadePaidMinter": [],
     "ArcadeSetter": []
@@ -50,7 +52,9 @@
     "AmmaAdmin": [],
     "BlobertAdmin": [],
     "PvpCreator": [],
-    "ArcadeMinter": [],
+    "ArcadeMinter": [
+      "0x03474353878b236171e4c08e52465d9F2cf6C3BaBf726cC292ff1566E68612C3"
+    ],
     "ArcadeFreeMinter": [],
     "ArcadePaidMinter": [],
     "ArcadeSetter": []
