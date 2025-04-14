@@ -190,6 +190,9 @@ impl CombatantStorageImpl of CombatantStorage {
             );
     }
 
+    fn get_combatant_combat_id(self: @WorldStorage, id: felt252) -> felt252 {
+        self.read_member(Model::<CombatantInfo>::ptr_from_keys(id), selector!("combat_id"))
+    }
     fn create_combatant_state(ref self: WorldStorage, id: felt252, stats: UStats) {
         self.write_model(@make_combatant_state(id, @stats));
     }
@@ -244,5 +247,12 @@ impl CombatantStorageImpl of CombatantStorage {
         ref self: WorldStorage, id: felt252, collection_address: ContractAddress, token_id: u256,
     ) {
         self.write_model(@CombatantToken { id, collection_address, token_id });
+    }
+
+    fn get_combatant_stats(self: @WorldStorage, id: felt252) -> UStats {
+        self.read_member(Model::<CombatantState>::ptr_from_keys(id), selector!("stats"))
+    }
+    fn get_combatant_stun_chance(self: @WorldStorage, id: felt252) -> u8 {
+        self.read_member(Model::<CombatantState>::ptr_from_keys(id), selector!("stun_chance"))
     }
 }

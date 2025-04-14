@@ -1,0 +1,13 @@
+# The World address to index.
+world_address = "0x7b13c367beb0ae350a651658fddd0c977a209144a708224fc041f026cea1b7"
+
+# Default RPC URL configuration
+rpc = "https://dev.grugslair.com/ba-katana/"
+
+# Database configuration
+# Optional: If not specified, uses in-memory database
+db_dir = "torii/cloud"
+
+
+[sql]
+historical = ["achievements-TrophyProgression"]

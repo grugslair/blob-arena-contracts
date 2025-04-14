@@ -33,6 +33,7 @@ mod free_blobert_actions {
     use dojo::world::WorldStorage;
 
     use crate::world::{WorldTrait, incrementor};
+    use crate::starknet::return_value;
     use super::super::systems::FreeBlobertTrait;
     use super::super::super::blobert::BLOBERT_NAMESPACE_HASH;
     use super::super::super::world_blobert;
@@ -41,7 +42,6 @@ mod free_blobert_actions {
     use super::super::super::{
         IBlobertCollectionImpl, TokenAttributes, CollectionGroupStorage, CollectionGroup,
     };
-
     use super::{IFreeBlobert, FREE_BLOBERT_NAMESPACE_HASH};
 
     fn dojo_init(ref self: ContractState) {
@@ -62,7 +62,7 @@ mod free_blobert_actions {
         fn mint(ref self: ContractState) -> u256 {
             let mut storage = self.storage(FREE_BLOBERT_NAMESPACE_HASH);
             let randomness = poseidon_hash_span(['free', incrementor('SEED-ITER')].span());
-            storage.mint_random_blobert(get_caller_address(), randomness)
+            return_value(storage.mint_random_blobert(get_caller_address(), randomness))
         }
         fn burn(ref self: ContractState, token_id: u256) {
             let mut storage = self.storage(FREE_BLOBERT_NAMESPACE_HASH);

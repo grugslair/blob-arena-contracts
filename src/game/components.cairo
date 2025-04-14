@@ -14,7 +14,6 @@ use crate::erc721::ERC721Token;
 struct GameInfo {
     #[key]
     combat_id: felt252,
-    owner: ContractAddress,
     time_limit: u64,
     combatant_ids: (felt252, felt252),
 }
@@ -120,9 +119,8 @@ impl GameInfoImpl of GameInfoTrait {
             panic!("Combatant not in combat")
         }
     }
-
-    fn assert_contract_is_owner(self: @GameInfo) {
-        assert(*self.owner == get_contract_address(), 'Not the contract owner');
-    }
+    // fn assert_contract_is_owner(self: @GameInfo) {
+//     assert(*self.owner == get_contract_address(), 'Not the contract owner');
+// }
 }
 

@@ -10,7 +10,7 @@ use blob_arena::{
 #[generate_trait]
 impl AttackImpl of AttackTrait {
     fn create_attack(ref self: WorldStorage, attack_input: AttackInput) -> felt252 {
-        let id = hash_value(@attack_input);
+        let id = attack_input.id();
         if !self.check_attack_exists(id) {
             let (attack, name) = attack_input.to_attack_and_name(id);
             self.set_attack_model(attack);
@@ -39,7 +39,7 @@ impl AttackImpl of AttackTrait {
         let mut attacks = ArrayTrait::<@Attack>::new();
         let mut tags = ArrayTrait::<(@ByteArray, felt252)>::new();
         for attack in attack_inputs {
-            let id = hash_value(@attack);
+            let id = attack.id();
             if !self.check_attack_exists(id) {
                 let (attack, name) = attack.to_attack_and_name(id);
                 attacks.append(@attack);

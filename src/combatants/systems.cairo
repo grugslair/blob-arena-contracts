@@ -76,8 +76,6 @@ impl CombatantImpl of CombatantTrait {
         attacks: Array<(felt252, felt252)>,
     ) -> Array<felt252> {
         let collection_dispatcher = collection_dispatcher(collection_address);
-        let owner = collection_dispatcher.owner_of(token_id);
-        assert(player == owner, 'Not Owner');
         self.set_combatant_info(combatant_id, combat_id, player);
         self.set_combatant_token(combatant_id, collection_address, token_id);
         self.create_combatant_state(combatant_id, collection_dispatcher.get_stats(token_id));

@@ -5,6 +5,7 @@ use dojo::world::WorldStorage;
 
 use crate::utils::SeedProbability;
 use crate::constants::SECONDS_24_HOURS;
+use crate::permissions::{Permissions, Role};
 
 use super::FreeBlobertStorage;
 use super::super::{TokenAttributes, Seed};
@@ -52,13 +53,16 @@ impl FreeBlobertImpl of FreeBlobertTrait {
     fn mint_random_blobert(
         ref self: WorldStorage, owner: ContractAddress, randomness: felt252,
     ) -> u256 {
-        let timestamp = get_block_timestamp();
-        assert(
-            timestamp >= self.get_last_mint(owner) + SECONDS_24_HOURS,
-            'Can only mint every 24 hours',
-        );
         let current_tokens_owned = self.get_amount_tokens_owned(owner);
-        assert(current_tokens_owned < MAX_TOKENS_OWNED, 'Max tokens owned');
+        let timestamp = get_block_timestamp();
+        if !self.has_permission(owner, Role::Tester) {
+            assert(
+                timestamp >= self.get_last_mint(owner) + SECONDS_24_HOURS,
+                'Can only mint every 24 hours',
+            );
+            let current_tokens_owned = self.get_amount_tokens_owned(owner);
+            assert(current_tokens_owned < MAX_TOKENS_OWNED, 'Max tokens owned');
+        };
         self.set_amount_tokens_owned(owner, current_tokens_owned + 1);
         self.set_last_mint(owner, timestamp);
         self

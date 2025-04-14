@@ -10,11 +10,17 @@ impl CombatImpl of CombatStorage {
     fn new_combat_state(ref self: WorldStorage, id: felt252) {
         self.write_model(@CombatState { id, phase: Phase::Created, round: 1 });
     }
+    fn new_started_combat_state(ref self: WorldStorage, id: felt252) {
+        self.write_model(@CombatState { id, phase: Phase::Commit, round: 1 });
+    }
     fn get_combat_state(self: @WorldStorage, id: felt252) -> CombatState {
         self.read_model(id)
     }
     fn set_combat_state(ref self: WorldStorage, state: CombatState) {
         self.write_model(@state);
+    }
+    fn get_combat_round(self: @WorldStorage, id: felt252) -> u32 {
+        self.read_member(Model::<CombatState>::ptr_from_keys(id), selector!("round"))
     }
     fn get_combat_phase(self: @WorldStorage, id: felt252) -> Phase {
         self.read_member(Model::<CombatState>::ptr_from_keys(id), selector!("phase"))

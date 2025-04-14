@@ -1,7 +1,7 @@
 use starknet::ContractAddress;
 use crate::permissions::Role;
 use crate::achievements::TrophyCreationInput;
-
+use crate::attacks::{Attack, AttackInput};
 
 #[starknet::interface]
 trait IPermissions<TContractState> {
@@ -56,6 +56,22 @@ trait IAchievements<TContractState> {
     fn create_achievement(ref self: TContractState, achievement: TrophyCreationInput);
 }
 
+#[starknet::interface]
+trait IAttacks<TContractState> {
+    /// Reads an attack
+    ///
+    /// * `attack_id` - The ID of the attack to read
+    ///
+    /// Returns: The attack details
+    fn attack(self: @TContractState, attack_id: felt252) -> Attack;
+    /// Reads the attack ID
+    ///
+    /// * `attack` - The attack input to read
+    ///
+    /// Returns: The ID of the attack
+    fn attack_id_from_input(self: @TContractState, attack: AttackInput) -> felt252;
+}
+
 #[dojo::contract]
 mod admin_actions {
     use dojo::world::WorldStorage;
@@ -63,7 +79,9 @@ mod admin_actions {
     use crate::world::{WorldTrait, get_world_address};
     use crate::permissions::{Role, Permissions, Permission, PermissionStorage};
     use crate::achievements::{Achievements, TrophyCreationInput};
-    use super::{IPermissions, IAchievements};
+    use crate::attacks::{AttackStorage, Attack, AttackInput, AttackInputTrait};
+
+    use super::{IPermissions, IAchievements, IAttacks};
 
     fn dojo_init(ref self: ContractState) {
         let mut world = self.default_storage();
@@ -111,6 +129,17 @@ mod admin_actions {
             let mut world = self.world_dispatcher();
             world.assert_caller_has_permission(Role::AchievementSetter);
             world.create_achievement(achievement);
+        }
+    }
+
+    #[abi(embed_v0)]
+    impl IAttacksImpl of IAttacks<ContractState> {
+        fn attack(self: @ContractState, attack_id: felt252) -> Attack {
+            self.default_storage().get_attack(attack_id)
+        }
+
+        fn attack_id_from_input(self: @ContractState, attack: AttackInput) -> felt252 {
+            attack.id()
         }
     }
 }

@@ -2,7 +2,7 @@ use starknet::ContractAddress;
 use blob_arena::{
     core::Signed, stats::{IStats, StatTypes, SignedStats}, id_trait::{IdTrait, TIdsImpl},
 };
-
+use crate::hash::hash_value;
 const ATTACK_TAG_GROUP: felt252 = 'attacks';
 
 /// Setup models
@@ -267,6 +267,10 @@ impl AttackInputImpl of AttackInputTrait {
             self.name,
         )
     }
+
+    fn id(self: @AttackInput) -> felt252 {
+        hash_value(self)
+    }
 }
 
 
@@ -277,4 +281,3 @@ impl AttackIdImpl of IdTrait<Attack> {
 }
 
 impl AttackIdsImpl = TIdsImpl<Attack>;
-

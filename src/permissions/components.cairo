@@ -14,6 +14,7 @@ enum Role {
     ArcadeMinter,
     ArcadeSetter,
     AchievementSetter,
+    Tester,
 }
 
 impl RoleIntoByteArrayImpl of Into<Role, ByteArray> {
@@ -29,6 +30,7 @@ impl RoleIntoByteArrayImpl of Into<Role, ByteArray> {
             Role::ArcadeMinter => "minter",
             Role::ArcadeSetter => "arcade setter",
             Role::AchievementSetter => "achievement setter",
+            Role::Tester => "tester",
         }
     }
 }

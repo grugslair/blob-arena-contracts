@@ -43,7 +43,7 @@ trait IArcade<TContractState> {
         collection_address: ContractAddress,
         token_id: u256,
         attacks: Array<(felt252, felt252)>,
-    );
+    ) -> (felt252, felt252);
 
     /// Advances to the next round in an active challenge.
     /// # Arguments
@@ -55,7 +55,7 @@ trait IArcade<TContractState> {
     /// - ArcadeGame
     /// - ArcadeChallengeAttempt
     /// - ArcadeStageGame
-    fn next_challenge_round(ref self: TContractState, attempt_id: felt252);
+    fn next_challenge_round(ref self: TContractState, attempt_id: felt252) -> felt252;
 
     /// Restarts a challenge attempt from the beginning.
     /// # Arguments
@@ -72,7 +72,7 @@ trait IArcade<TContractState> {
     ///
     /// Events:
     /// - ArcadeChallengeRespawn
-    fn respawn_challenge(ref self: TContractState, attempt_id: felt252);
+    fn respawn_challenge(ref self: TContractState, attempt_id: felt252) -> felt252;
 
     /// Completes and finalizes an active challenge attempt.
     /// # Arguments
@@ -146,7 +146,7 @@ trait IArcadeAdmin<TContractState> {
         health_recovery_pc: u8,
         opponents: Array<IdTagNew<ArcadeOpponentInput>>,
         collections_allowed: Array<ContractAddress>,
-    );
+    ) -> felt252;
 
     /// Sets availability of a single collection for a specific ID
     /// # Arguments
@@ -221,6 +221,7 @@ mod arcade_actions {
     use crate::tags::IdTagNew;
     use crate::utils::get_transaction_hash;
     use crate::erc721::erc721_owner_of;
+    use crate::starknet::return_value;
 
     use super::{IArcade, IArcadeAdmin};
     #[generate_trait]
@@ -251,7 +252,7 @@ mod arcade_actions {
             collection_address: ContractAddress,
             token_id: u256,
             attacks: Array<(felt252, felt252)>,
-        ) {
+        ) -> (felt252, felt252) {
             let mut store = self.get_storage();
             let caller = get_caller_address();
             assert(erc721_owner_of(collection_address, token_id) == caller, 'Not owner');
@@ -264,18 +265,20 @@ mod arcade_actions {
             );
             store.arcade.use_game(caller);
 
-            store
-                .new_arcade_challenge_attempt(
-                    challenge_id, caller, collection_address, token_id, attacks,
-                );
+            return_value(
+                store
+                    .new_arcade_challenge_attempt(
+                        challenge_id, caller, collection_address, token_id, attacks,
+                    ),
+            )
         }
-        fn next_challenge_round(ref self: ContractState, attempt_id: felt252) {
+        fn next_challenge_round(ref self: ContractState, attempt_id: felt252) -> felt252 {
             let mut store = self.get_storage();
-            store.next_arcade_challenge_round(attempt_id);
+            return_value(store.next_arcade_challenge_round(attempt_id))
         }
-        fn respawn_challenge(ref self: ContractState, attempt_id: felt252) {
+        fn respawn_challenge(ref self: ContractState, attempt_id: felt252) -> felt252 {
             let mut store = self.get_storage();
-            store.respawn_arcade_challenge_attempt(attempt_id);
+            return_value(store.respawn_arcade_challenge_attempt(attempt_id))
         }
         fn end_challenge(ref self: ContractState, attempt_id: felt252) {
             let mut store = self.get_arcade_storage();
@@ -306,7 +309,7 @@ mod arcade_actions {
             let mut store = self.storage(ARCADE_NAMESPACE_HASH);
             store.assert_caller_has_permission(Role::ArcadeSetter);
             let attack_ids = store.create_or_get_attacks_external(attacks);
-            store.setup_new_opponent(name, collection, attributes, stats, attack_ids)
+            return_value(store.setup_new_opponent(name, collection, attributes, stats, attack_ids))
         }
         fn new_challenge(
             ref self: ContractState,
@@ -314,10 +317,12 @@ mod arcade_actions {
             health_recovery_pc: u8,
             opponents: Array<IdTagNew<ArcadeOpponentInput>>,
             collections_allowed: Array<ContractAddress>,
-        ) {
+        ) -> felt252 {
             let mut store = self.storage(ARCADE_NAMESPACE_HASH);
             store.assert_caller_has_permission(Role::ArcadeSetter);
-            store.setup_new_challenge(name, health_recovery_pc, opponents, collections_allowed);
+            return_value(
+                store.setup_new_challenge(name, health_recovery_pc, opponents, collections_allowed),
+            )
         }
         fn set_collection(
             ref self: ContractState, id: felt252, collection: ContractAddress, available: bool,

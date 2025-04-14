@@ -66,7 +66,6 @@ impl GameStorageImpl of GameStorage {
     fn set_game_info(
         ref self: WorldStorage,
         game_id: felt252,
-        owner: ContractAddress,
         time_limit: u64,
         combatant_a: felt252,
         combatant_b: felt252,
@@ -74,10 +73,7 @@ impl GameStorageImpl of GameStorage {
         self
             .write_model(
                 @GameInfo {
-                    combat_id: game_id,
-                    owner,
-                    time_limit,
-                    combatant_ids: (combatant_a, combatant_b),
+                    combat_id: game_id, time_limit, combatant_ids: (combatant_a, combatant_b),
                 },
             );
     }
@@ -113,13 +109,13 @@ impl GameStorageImpl of GameStorage {
         }
     }
 
-    fn get_owners_game(
-        self: @WorldStorage, combat_id: felt252, caller: ContractAddress,
-    ) -> GameInfo {
-        let combat = self.get_game_info(combat_id);
-        assert(combat.owner == caller, 'Not the owner');
-        combat
-    }
+    // fn get_owners_game(
+    //     self: @WorldStorage, combat_id: felt252, caller: ContractAddress,
+    // ) -> GameInfo {
+    //     let combat = self.get_game_info(combat_id);
+    //     assert(combat.owner == caller, 'Not the owner');
+    //     combat
+    // }
 
     fn emit_combat_end(
         ref self: WorldStorage,

@@ -1,5 +1,9 @@
 use starknet::ContractAddress;
+use crate::combat::Phase;
 use crate::permissions::Role;
+use crate::stats::UStats;
+use crate::erc721::ERC721Token;
+
 
 #[starknet::interface]
 trait IGame<TContractState> {
@@ -80,6 +84,61 @@ trait IGame<TContractState> {
     /// # Returns
     /// * `ContractAddress` - The address of the winning player
     fn get_winning_player(self: @TContractState, combat_id: felt252) -> ContractAddress;
+
+    /// Returns the current combat phase for a specific game
+    /// # Arguments
+    /// * `combat_id` - The unique identifier of the combat to check
+    /// # Returns
+    /// * `Phase` - The current phase of the combat
+    fn combat_phase(self: @TContractState, combat_id: felt252) -> Phase;
+    /// Returns the current round number for a specific combat
+    /// # Arguments
+    /// * `combat_id` - The unique identifier of the combat to check
+    /// # Returns
+    /// * `u32` - The current round number of the combat
+    fn combat_round(self: @TContractState, combat_id: felt252) -> u32;
+    /// Returns the combatants involved in a specific game
+    /// # Arguments
+    /// * `combat_id` - The unique identifier of the combat to check
+    /// # Returns
+    /// * `[felt252; 2]` - An array containing the IDs of the two combatants
+    fn combatants(self: @TContractState, combat_id: felt252) -> [felt252; 2];
+    /// Returns the combatant combat ID
+    /// # Arguments
+    /// * `combatant_id` - The unique identifier of the combatant to check
+    /// # Returns
+    /// * `felt252` - The combat ID of the combatant
+    fn combatant_combat_id(self: @TContractState, combatant_id: felt252) -> felt252;
+    /// Returns the combatant player address
+    /// # Arguments
+    /// * `combatant_id` - The unique identifier of the combatant to check
+    /// # Returns
+    /// * `ContractAddress` - The address of the combatant player
+    fn combatant_player(self: @TContractState, combatant_id: felt252) -> ContractAddress;
+    /// Returns the health of a specific combatant
+    /// # Arguments
+    /// * `combatant_id` - The unique identifier of the combatant to check
+    /// # Returns
+    /// * `u8` - The current health of the combatant
+    fn combatant_health(self: @TContractState, combatant_id: felt252) -> u8;
+    /// Returns the stats of a combatant
+    /// # Arguments
+    /// * `combatant_id` - The unique identifier of the combatant
+    /// # Returns
+    /// * `UStats` - The stats of the combatant
+    fn combatant_stats(self: @TContractState, combatant_id: felt252) -> UStats;
+    /// Returns the stun chance of a combatant
+    /// # Arguments
+    /// * `combatant_id` - The unique identifier of the combatant
+    /// # Returns
+    /// * `u8` - The stun chance as as value between 0 and 255
+    fn combatant_stun_chance(self: @TContractState, combatant_id: felt252) -> u8;
+    /// Returns the ERC721 token associated with a combatant
+    /// # Arguments
+    /// * `combatant_id` - The unique identifier of the combatant
+    /// # Returns
+    /// * `ERC721Token` - The ERC721 token data
+    fn combatant_token(self: @TContractState, combatant_id: felt252) -> ERC721Token;
 }
 
 #[starknet::interface]
@@ -111,7 +170,6 @@ trait IGameAdmin<TContractState> {
     ///
     fn create(
         ref self: TContractState,
-        owner: ContractAddress,
         initiator: ContractAddress,
         time_limit: u64,
         player_a: ContractAddress,
@@ -137,7 +195,10 @@ mod game_actions {
     use crate::world::{WorldTrait, uuid};
     use crate::commitments::Commitment;
     use crate::core::{TTupleSized2ToSpan, ArrayTryIntoTTupleSized2};
-    use crate::permissions::Permissions;
+    use crate::permissions::{Permissions, Role};
+    use crate::starknet::return_value;
+    use crate::stats::UStats;
+    use crate::erc721::ERC721Token;
 
     use super::{IGame, IGameAdmin};
 
@@ -148,13 +209,12 @@ mod game_actions {
             let mut world = self.default_storage();
             world.assert_caller_initiator(game_id);
             world.assert_created_phase(game_id);
-            world.assert_contract_is_owner(game_id);
             world.set_combat_phase(game_id, Phase::Commit);
         }
         fn commit(ref self: ContractState, combatant_id: felt252, hash: felt252) {
             let mut world = self.default_storage();
             let combatant = world.get_callers_combatant_info(combatant_id);
-            let game = world.get_owners_game(combatant.combat_id, get_contract_address());
+            let game = world.get_game_info(combatant.combat_id);
             let opponent_id = game.get_opponent_id(combatant_id);
             world.assert_commit_phase(game.combat_id);
             world.set_new_commitment(combatant_id, hash);
@@ -168,7 +228,7 @@ mod game_actions {
         fn reveal(ref self: ContractState, combatant_id: felt252, attack: felt252, salt: felt252) {
             let mut world = self.default_storage();
             let combatant = world.get_callers_combatant_info(combatant_id);
-            let game = world.get_owners_game(combatant.combat_id, get_contract_address());
+            let game = world.get_game_info(combatant.combat_id);
 
             let opponent_id = game.get_opponent_id(combatant_id);
             let timestamp = get_block_timestamp();
@@ -191,12 +251,12 @@ mod game_actions {
         fn run(ref self: ContractState, combat_id: felt252) {
             let mut world = self.default_storage();
 
-            world.run_game_round(world.get_owners_game(combat_id, get_contract_address()));
+            world.run_game_round(world.get_game_info(combat_id));
         }
 
         fn kick_player(ref self: ContractState, combat_id: felt252) {
             let mut storage = self.default_storage();
-            let game = storage.get_owners_game(combat_id, get_contract_address());
+            let game = storage.get_game_info(combat_id);
             let (a, b) = game.combatant_ids;
             storage.assert_past_time_limit(game);
 
@@ -226,7 +286,7 @@ mod game_actions {
         fn forfeit(ref self: ContractState, combatant_id: felt252) {
             let mut world = self.default_storage();
             let combatant = world.get_callers_combatant_info(combatant_id);
-            let game = world.get_owners_game(combatant.combat_id, get_contract_address());
+            let game = world.get_game_info(combatant.combat_id);
 
             world.assert_combat_running(game.combat_id);
 
@@ -242,6 +302,42 @@ mod game_actions {
             let storage = self.default_storage();
             storage.get_winning_player(combat_id)
         }
+
+        fn combat_phase(self: @ContractState, combat_id: felt252) -> Phase {
+            self.default_storage().get_combat_phase(combat_id)
+        }
+        fn combat_round(self: @ContractState, combat_id: felt252) -> u32 {
+            self.default_storage().get_combat_round(combat_id)
+        }
+
+        fn combatants(self: @ContractState, combat_id: felt252) -> [felt252; 2] {
+            let (combatant_1, combatant_2) = self.default_storage().get_game_combatants(combat_id);
+            [combatant_1, combatant_2]
+        }
+
+        fn combatant_combat_id(self: @ContractState, combatant_id: felt252) -> felt252 {
+            self.default_storage().get_combatant_combat_id(combatant_id)
+        }
+
+        fn combatant_health(self: @ContractState, combatant_id: felt252) -> u8 {
+            self.default_storage().get_combatant_health(combatant_id)
+        }
+
+        fn combatant_player(self: @ContractState, combatant_id: felt252) -> ContractAddress {
+            self.default_storage().get_player(combatant_id)
+        }
+
+        fn combatant_stats(self: @ContractState, combatant_id: felt252) -> UStats {
+            self.default_storage().get_combatant_stats(combatant_id)
+        }
+
+        fn combatant_stun_chance(self: @ContractState, combatant_id: felt252) -> u8 {
+            self.default_storage().get_combatant_stun_chance(combatant_id)
+        }
+
+        fn combatant_token(self: @ContractState, combatant_id: felt252) -> ERC721Token {
+            self.default_storage().get_combatant_token(combatant_id)
+        }
     }
 
 
@@ -249,7 +345,6 @@ mod game_actions {
     impl IGameAdminImpl of IGameAdmin<ContractState> {
         fn create(
             ref self: ContractState,
-            owner: ContractAddress,
             initiator: ContractAddress,
             time_limit: u64,
             player_a: ContractAddress,
@@ -262,7 +357,7 @@ mod game_actions {
             attacks_b: Array<(felt252, felt252)>,
         ) -> felt252 {
             let mut world = self.default_storage();
-            world.assert_caller_is_admin();
+            world.assert_caller_has_permission(Role::PvpCreator);
 
             let id = uuid();
             let player_a_id = uuid();
@@ -277,10 +372,10 @@ mod game_actions {
                     player_b_id, player_b, id, collection_address_b, token_id_b, attacks_b,
                 );
 
-            world.set_game_info(id, owner, time_limit, player_a_id, player_b_id);
+            world.set_game_info(id, time_limit, player_a_id, player_b_id);
             world.set_initiator(id, initiator);
             world.new_combat_state(id);
-            id
+            return_value(id)
         }
     }
 }

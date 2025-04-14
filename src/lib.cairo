@@ -12,6 +12,7 @@ mod iter;
 mod tags;
 mod erc721;
 use world::uuid;
+mod starknet;
 mod permissions {
     mod components;
     mod systems;
@@ -23,7 +24,9 @@ mod attacks {
     mod results;
     mod storage;
     mod systems;
-    use components::{Stat, Target, Affect, Damage, Attack, Effect, PlannedAttack, AttackInput};
+    use components::{
+        Stat, Target, Affect, Damage, Attack, Effect, PlannedAttack, AttackInput, AttackInputTrait,
+    };
     use storage::AttackStorage;
     use systems::AttackTrait;
 }
@@ -82,7 +85,9 @@ mod achievements {
     use systems::Achievements;
 }
 
-mod admin;
+mod admin {
+    mod contract;
+}
 
 pub use world::{default_namespace, DefaultStorage};
 #[cfg(test)]

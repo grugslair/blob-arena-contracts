@@ -17,6 +17,8 @@ default = "blob_arena"
 mappings = { blob_arena = [
     "CombatantToken",
     "Tag",
+    "AttackUses",
+    "GamesCompleted",
 ], blobert = [
     "blobert_actions",
     "BlobertItem",
@@ -26,6 +28,7 @@ mappings = { blob_arena = [
     "free_blobert_actions",
     "LastMint",
     "BlobertToken",
+    "AmountTokensOwned",
 ], amma_blobert = [
     "amma_blobert_actions",
     "BlobertToken",
@@ -49,6 +52,7 @@ mappings = { blob_arena = [
     "ArcadeStageGame",
     "ArcadeChallengeRespawn",
     "ArcadeCurrentChallengeAttempt",
+    "AttackUses",
 ], ba_permissions = [
     "Permission",
 ], achievements = [
@@ -71,6 +75,8 @@ mappings = { blob_arena = [
     "blob_arena-game_actions",
 ]
 
+"blob_arena-AttackUses" = ["blob_arena-game_actions"]
+"blob_arena-GamesCompleted" = ["blob_arena-game_actions"]
 
 "blob_arena-CombatantState" = [
     "blob_arena-game_actions",

@@ -240,7 +240,7 @@ impl ArcadeImpl of ArcadeTrait {
         health_recovery: u8,
         opponents: Array<IdTagNew<ArcadeOpponentInput>>,
         collections_allowed: Array<ContractAddress>,
-    ) {
+    ) -> felt252 {
         let opponent_ids = self.create_or_get_opponents(opponents);
         let challenge_id = get_arcade_challenge_id(@name, health_recovery, opponent_ids.span());
         if !self.check_arcade_challenge_exists(challenge_id) {
@@ -252,6 +252,7 @@ impl ArcadeImpl of ArcadeTrait {
             }
         };
         self.set_collections_allowed(challenge_id, collections_allowed, true);
+        challenge_id
     }
 
     fn run_arcade_round(
@@ -337,7 +338,7 @@ impl ArcadeImpl of ArcadeTrait {
         collection: ContractAddress,
         token_id: u256,
         attacks: Array<(felt252, felt252)>,
-    ) -> felt252 {
+    ) -> (felt252, felt252) {
         self.arcade.assert_collection_allowed(challenge_id, collection);
         let id = uuid();
         let (stats, attacks) = self.ba.get_token_stats_and_attacks(collection, token_id, attacks);
@@ -347,7 +348,7 @@ impl ArcadeImpl of ArcadeTrait {
                 id, challenge_id, player, collection, token_id, stats, attacks,
             );
         self.arcade.set_arcade_current_challenge_attempt(player, collection, token_id, id);
-        self
+        let game_id = self
             .create_arcade_challenge_attempt_round(
                 attempt.id,
                 attempt.challenge,
@@ -357,10 +358,10 @@ impl ArcadeImpl of ArcadeTrait {
                 attempt.stage,
                 stats.get_max_health(),
             );
-        id
+        (id, game_id)
     }
 
-    fn next_arcade_challenge_round(ref self: ArcadeStore, attempt_id: felt252) {
+    fn next_arcade_challenge_round(ref self: ArcadeStore, attempt_id: felt252) -> felt252 {
         let mut attempt = self.arcade.get_arcade_challenge_attempt_next_stage(attempt_id);
         assert(attempt.player == get_caller_address(), 'Not player');
         attempt.phase.assert_active();
@@ -390,7 +391,7 @@ impl ArcadeImpl of ArcadeTrait {
                 attempt.attacks,
                 attempt.stage,
                 health,
-            );
+            )
     }
 
     fn create_arcade_challenge_attempt_round(
@@ -402,15 +403,16 @@ impl ArcadeImpl of ArcadeTrait {
         attacks: Array<felt252>,
         stage: u32,
         health: u8,
-    ) {
+    ) -> felt252 {
         let opponent = self.arcade.get_arcade_stage_opponent(challenge, stage);
         assert(opponent.is_non_zero(), 'No more stages');
         let game = self
             .setup_arcade_opponent_in_combat(player, stats, health, attacks.span(), opponent);
         self.arcade.set_arcade_stage_game(id, stage, game.id);
+        game.id
     }
 
-    fn respawn_arcade_challenge_attempt(ref self: ArcadeStore, attempt_id: felt252) {
+    fn respawn_arcade_challenge_attempt(ref self: ArcadeStore, attempt_id: felt252) -> felt252 {
         let mut attempt = self.arcade.get_arcade_challenge_attempt_respawn(attempt_id);
         let game_id = self.arcade.get_arcade_stage_game_id(attempt_id, attempt.stage);
         let phase = self.arcade.get_arcade_game_phase(game_id);
@@ -436,7 +438,7 @@ impl ArcadeImpl of ArcadeTrait {
                 attempt.attacks,
                 attempt.stage,
                 health,
-            );
+            )
     }
 
 

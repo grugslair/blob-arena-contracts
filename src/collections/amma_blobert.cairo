@@ -18,7 +18,7 @@ use super::TokenAttributes;
 
 #[starknet::interface]
 trait IAmmaBlobert<TContractState> {
-    fn mint(ref self: TContractState, fighter: felt252) -> felt252;
+    fn mint(ref self: TContractState, fighter: felt252) -> u256;
     fn traits(self: @TContractState, token_id: u256) -> TokenAttributes;
 }
 
@@ -29,6 +29,8 @@ mod amma_blobert_actions {
     use dojo::world::{WorldStorage, IWorldDispatcher};
 
     use crate::world::WorldTrait;
+    use crate::starknet::return_value;
+
     use super::super::world_blobert::{WorldBlobertStore, WorldBlobertStorage};
     use super::super::items::cmp;
     use super::super::collection;
@@ -57,12 +59,12 @@ mod amma_blobert_actions {
 
     #[abi(embed_v0)]
     impl IAmmaBlobertImpl of IAmmaBlobert<ContractState> {
-        fn mint(ref self: ContractState, fighter: felt252) -> felt252 {
+        fn mint(ref self: ContractState, fighter: felt252) -> u256 {
             let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
             let owner = get_caller_address();
             let id = poseidon_hash_span([owner.into(), fighter].span());
             storage.set_blobert_token(id.into(), owner, TokenAttributes::Custom(fighter));
-            id
+            return_value(id.into())
         }
         fn traits(self: @ContractState, token_id: u256) -> TokenAttributes {
             let storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);

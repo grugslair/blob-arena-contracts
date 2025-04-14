@@ -4,7 +4,6 @@ use starknet::ContractAddress;
 trait ILobby<TContractState> {
     /// ## send_invite
     /// Creates a new lobby invite for a PvP match
-    /// * `owner` - The owner of the lobby instance
     /// * `initiator` - The address that initiates the match
     /// * `time_limit` - Time limit for player inactivity in seconds
     /// * `receiver` - Address of the invited receiver
@@ -26,7 +25,6 @@ trait ILobby<TContractState> {
     /// - LobbyCreated
     fn send_invite(
         ref self: TContractState,
-        owner: ContractAddress,
         initiator: ContractAddress,
         time_limit: u64,
         receiver: ContractAddress,
@@ -98,11 +96,17 @@ mod lobby_actions {
     const SELECTOR: felt252 = selector!("blob_arena-pvp_actions");
     use starknet::{ContractAddress, get_caller_address};
     use dojo::world::WorldStorage;
-    use blob_arena::{
-        lobby::{systems::LobbyTrait, storage::LobbyStorage}, combat::{CombatTrait, CombatStorage},
-        game::GameStorage, combatants::{CombatantTrait, CombatantStorage},
-        utils::get_transaction_hash, world::{uuid, default_namespace},
-    };
+
+    use crate::lobby::{systems::LobbyTrait, storage::LobbyStorage};
+    use crate::combat::{CombatTrait, CombatStorage};
+    use crate::game::GameStorage;
+    use crate::combatants::{CombatantTrait, CombatantStorage};
+    use crate::utils::get_transaction_hash;
+    use crate::world::{uuid, default_namespace};
+    use crate::starknet::return_value;
+    use crate::erc721::erc721_owner_of;
+    use crate::permissions::{Role, Permissions};
+
     use super::ILobby;
 
     #[generate_trait]
@@ -116,7 +120,6 @@ mod lobby_actions {
     impl ILobbyImpl of ILobby<ContractState> {
         fn send_invite(
             ref self: ContractState,
-            owner: ContractAddress,
             initiator: ContractAddress,
             time_limit: u64,
             receiver: ContractAddress,
@@ -124,23 +127,26 @@ mod lobby_actions {
             token_id: u256,
             attacks: Array<(felt252, felt252)>,
         ) -> felt252 {
-            assert(attacks.len() <= 4, 'Too many attacks');
             let mut world = self.get_storage();
 
             let id = uuid();
             let sender_id = uuid();
             let caller = get_caller_address();
-
+            if !world.has_permission(caller, Role::Tester) {
+                assert(attacks.len() <= 4, 'Too many attacks');
+                assert(caller == erc721_owner_of(collection_address, token_id), 'Not Owner');
+            }
+            if initiator.is_non_zero() {
+                world.set_initiator(id, initiator);
+            };
             world.create_lobby(id, receiver);
-
-            world.set_game_info(id, owner, time_limit, sender_id, 0);
-            world.set_initiator(id, initiator);
+            world.set_game_info(id, time_limit, sender_id, 0);
             world.emit_lobby_created(id, caller, receiver);
             world
                 .create_player_combatant(
                     sender_id, caller, id, collection_address, token_id, attacks,
                 );
-            id
+            return_value(id)
         }
         fn rescind_invite(ref self: ContractState, challenge_id: felt252) {
             let mut world = self.get_storage();
@@ -154,15 +160,16 @@ mod lobby_actions {
             token_id: u256,
             attacks: Array<(felt252, felt252)>,
         ) {
-            assert(attacks.len() <= 4, 'Too many attacks');
-
             let mut world = self.get_storage();
             let receiver = world.get_caller_receiver_from_open_lobby(challenge_id);
             let combatant_id = uuid();
             let sender_id = world.get_sender_combatant(challenge_id);
 
             let collection_address = world.get_combatant_token_address(sender_id);
-
+            if !world.has_permission(receiver, Role::Tester) {
+                assert(attacks.len() <= 4, 'Too many attacks');
+                assert(receiver == erc721_owner_of(collection_address, token_id), 'Not Owner');
+            }
             world
                 .create_player_combatant(
                     combatant_id, receiver, challenge_id, collection_address, token_id, attacks,
@@ -187,7 +194,11 @@ mod lobby_actions {
         fn accept_response(ref self: ContractState, challenge_id: felt252) {
             let mut world = self.get_storage();
             world.assert_caller_can_respond(challenge_id);
-            world.new_combat_state(challenge_id);
+            if world.get_initiator(challenge_id).is_zero() {
+                world.new_started_combat_state(challenge_id);
+            } else {
+                world.new_combat_state(challenge_id);
+            }
         }
 
         fn reject_response(ref self: ContractState, challenge_id: felt252) {
