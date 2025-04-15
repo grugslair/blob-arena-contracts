@@ -11,8 +11,8 @@ impl ParentRolesImpl of ParentRoles {
         match self {
             Role::Admin => array![],
             Role::Manager => array![Role::Admin],
-            Role::AmmaAdmin => array![Role::Manager, Role::Admin],
-            Role::BlobertAdmin => array![Role::Manager, Role::Admin],
+            Role::AmmaBlobertAdmin => array![Role::Manager, Role::Admin],
+            Role::ClassicBlobertAdmin => array![Role::Manager, Role::Admin],
             Role::PvpCreator => array![Role::Manager, Role::Admin],
             Role::ArcadePaidMinter => array![Role::Manager, Role::Admin, Role::ArcadeMinter],
             Role::ArcadeFreeMinter => array![Role::Manager, Role::Admin, Role::ArcadeMinter],

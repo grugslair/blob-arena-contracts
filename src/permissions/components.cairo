@@ -6,8 +6,8 @@ use blob_arena::world::WorldTrait;
 enum Role {
     Admin,
     Manager,
-    AmmaAdmin,
-    BlobertAdmin,
+    AmmaBlobertAdmin,
+    ClassicBlobertAdmin,
     PvpCreator,
     ArcadePaidMinter,
     ArcadeFreeMinter,
@@ -22,8 +22,8 @@ impl RoleIntoByteArrayImpl of Into<Role, ByteArray> {
         match self {
             Role::Admin => "admin",
             Role::Manager => "manager",
-            Role::AmmaAdmin => "amma admin",
-            Role::BlobertAdmin => "Blobert admin",
+            Role::AmmaBlobertAdmin => "amma blobert admin",
+            Role::ClassicBlobertAdmin => "Blobert admin",
             Role::PvpCreator => "pvp game creator",
             Role::ArcadePaidMinter => "paid minter",
             Role::ArcadeFreeMinter => "free minter",

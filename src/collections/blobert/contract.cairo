@@ -7,6 +7,7 @@ mod blobert_actions {
     use crate::world::WorldTrait;
     use crate::erc721::erc721_owner_of;
     use crate::storage::read_value_from_felt252;
+    use crate::permissions::Role;
     use super::BLOBERT_NAMESPACE_HASH;
     use super::super::{IBlobertDispatcher, IBlobertDispatcherTrait};
     use super::super::super::{
@@ -55,7 +56,8 @@ mod blobert_actions {
 
 
     #[abi(embed_v0)]
-    impl IBlobertItems = cmp::IBlobertItemsImpl<ContractState, BlobertStoreImpl>;
+    impl IBlobertItems =
+        cmp::IBlobertItemsImpl<ContractState, Role::ClassicBlobertAdmin, BlobertStoreImpl>;
 
     #[abi(embed_v0)]
     impl IBlobertCollection =

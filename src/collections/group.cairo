@@ -7,6 +7,7 @@ enum CollectionGroup {
     FreeBlobert,
     ClassicBlobert,
     AmmaBlobert,
+    TestBlobert,
 }
 
 mod model {
