@@ -586,5 +586,227 @@
         "miss": []
       }
     ]
+  },
+  "8": {
+    "name": "AMMA 8",
+    "stats": {
+      "strength": 63,
+      "vitality": 58,
+      "dexterity": 43,
+      "luck": 48
+    },
+    "attacks": [
+      {
+        "name": "Two-Handed Slash",
+        "speed": 60,
+        "accuracy": 85,
+        "cooldown": 0,
+        "hit": [
+          {
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 40,
+                "critical": 10
+              }
+            }
+          }
+        ],
+        "miss": []
+      },
+      {
+        "name": "Sword Snipe",
+        "speed": 40,
+        "accuracy": 95,
+        "cooldown": 1,
+        "hit": [
+          {
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 40,
+                "critical": 30
+              }
+            }
+          }
+        ],
+        "miss": []
+      },
+      {
+        "name": "Multi Strike",
+        "speed": 70,
+        "accuracy": 75,
+        "cooldown": 3,
+        "hit": [
+          {
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 70,
+                "critical": 10
+              }
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
+              "Stun": 20
+            }
+          }
+        ],
+        "miss": []
+      },
+      {
+        "name": "Knight of Wakanda",
+        "speed": 80,
+        "accuracy": 100,
+        "cooldown": 10,
+        "hit": [
+          {
+            "target": "Player",
+            "affect": {
+              "Stats": {
+                "strength": 30,
+                "vitality": 30,
+                "dexterity": 30,
+                "luck": 30
+              }
+            }
+          },
+          {
+            "target": "Player",
+            "affect": {
+              "Health": 30
+            }
+          }
+        ],
+        "miss": []
+      }
+    ]
+  },
+  "9": {
+    "name": "AMMA 9",
+    "stats": {
+      "strength": 54,
+      "vitality": 42,
+      "dexterity": 59,
+      "luck": 47
+    },
+    "attacks": [
+      {
+        "tag": "Axe Attack"
+      },
+      {
+        "name": "Buckler Tap",
+        "speed": 90,
+        "accuracy": 90,
+        "cooldown": 1,
+        "hit": [
+          {
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 30,
+                "critical": 15
+              }
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
+              "Stun": 30
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
+              "Stats": {
+                "strength": 0,
+                "vitality": 0,
+                "dexterity": -10,
+                "luck": 0
+              }
+            }
+          }
+        ],
+        "miss": []
+      },
+      {
+        "name": "Jujitsu Throw",
+        "speed": 60,
+        "accuracy": 75,
+        "cooldown": 3,
+        "hit": [
+          {
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 60,
+                "critical": 10
+              }
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
+              "Stun": 20
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
+              "Health": -20
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
+              "Stats": {
+                "strength": 0,
+                "vitality": -20,
+                "dexterity": -20,
+                "luck": -20
+              }
+            }
+          }
+        ],
+        "miss": []
+      },
+      {
+        "name": "Steal Weapon",
+        "speed": 80,
+        "accuracy": 65,
+        "cooldown": 10,
+        "hit": [
+          {
+            "target": "Opponent",
+            "affect": {
+              "Damage": {
+                "power": 30,
+                "critical": 0
+              }
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
+              "Stun": 100
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
+              "Stats": {
+                "strength": -40,
+                "vitality": 0,
+                "dexterity": 0,
+                "luck": 0
+              }
+            }
+          }
+        ],
+        "miss": []
+      }
+    ]
   }
 }
