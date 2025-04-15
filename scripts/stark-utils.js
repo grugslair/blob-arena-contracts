@@ -1,4 +1,4 @@
-import { Contract, CairoCustomEnum, Account } from "starknet";
+import { Contract, CairoCustomEnum, Account, cairo, RPC } from "starknet";
 import { upperFirst, camelCase } from "lodash-es";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -10,6 +10,8 @@ import * as toml from "toml";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const returnKey =
+  "0x17c9a55536e844e86b35cd70d23a4e304a30e5e08de591b6788319186160f50";
 
 export const pascalCase = (str) => {
   return upperFirst(camelCase(str));
@@ -74,10 +76,11 @@ export class AccountManifest {
   constructor(dojo_toml_path, manifest_path, profile) {
     this.dojo_toml = loadToml(dojo_toml_path);
     this.manifest = loadJson(manifest_path);
+    this.rpc_url = this.dojo_toml.env.rpc_url;
     this.profile = profile;
     if (this.dojo_toml.env.private_key) {
       this.account = new Account(
-        { nodeUrl: this.dojo_toml.env.rpc_url },
+        { nodeUrl: this.rpc_url },
         this.dojo_toml.env.account_address,
         this.dojo_toml.env.private_key
       );
@@ -115,8 +118,19 @@ export class AccountManifest {
     return getContractAddress(this.manifest, tag);
   }
   async execute(calls) {
-    const transaction = await this.account.execute(calls);
-    return this.account.waitForTransaction(transaction.transaction_hash);
+    const { transaction_hash } = await this.account.execute(calls, {
+      version: 3,
+    });
+    await this.account.waitForTransaction(transaction_hash, {
+      retryInterval: 100,
+      successStates: [
+        RPC.ETransactionStatus.RECEIVED,
+        RPC.ETransactionExecutionStatus.SUCCEEDED,
+        RPC.ETransactionStatus.ACCEPTED_ON_L2,
+        RPC.ETransactionStatus.ACCEPTED_ON_L1,
+      ],
+    });
+    return transaction_hash;
   }
 }
 
@@ -161,4 +175,29 @@ export const loadAccountManifestFromCmdArgs = async () => {
   ];
   const options = commandLineArgs(optionDefinitions);
   return await loadAccountManifest(options.profile, options.password);
+};
+
+export const getReturns = async (rpc, txHash) => {
+  let receipt;
+  try {
+    receipt = await rpc.getTransactionReceipt(txHash);
+  } catch (e) {
+    await rpc.waitForTransaction(txHash);
+    receipt = await rpc.getTransactionReceipt(txHash);
+  }
+
+  let events = [];
+
+  for (const event of receipt.events) {
+    if (event.keys.length && event.keys[0] === returnKey) {
+      events.push(event);
+    }
+  }
+  return events;
+};
+export const getReturn = async (rpc, txHash) => {
+  return (await getReturns(rpc, txHash))[0].data;
+};
+export const dataToUint256 = (data) => {
+  return cairo.uint256(data[1] + data[0].substring(2));
 };
