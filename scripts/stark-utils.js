@@ -1,4 +1,4 @@
-import { Contract, CairoCustomEnum, Account, cairo } from "starknet";
+import { Contract, CairoCustomEnum, Account, cairo, RPC } from "starknet";
 import { upperFirst, camelCase } from "lodash-es";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -118,8 +118,19 @@ export class AccountManifest {
     return getContractAddress(this.manifest, tag);
   }
   async execute(calls) {
-    const transaction = await this.account.execute(calls, { version: 3 });
-    return this.account.waitForTransaction(transaction.transaction_hash);
+    const { transaction_hash } = await this.account.execute(calls, {
+      version: 3,
+    });
+    await this.account.waitForTransaction(transaction_hash, {
+      retryInterval: 100,
+      successStates: [
+        RPC.ETransactionStatus.RECEIVED,
+        RPC.ETransactionExecutionStatus.SUCCEEDED,
+        RPC.ETransactionStatus.ACCEPTED_ON_L2,
+        RPC.ETransactionStatus.ACCEPTED_ON_L1,
+      ],
+    });
+    return transaction_hash;
   }
 }
 
