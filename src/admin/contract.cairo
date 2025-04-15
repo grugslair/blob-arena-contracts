@@ -70,6 +70,18 @@ trait IAttacks<TContractState> {
     ///
     /// Returns: The ID of the attack
     fn attack_id_from_input(self: @TContractState, attack: AttackInput) -> felt252;
+    /// Reads when the attack was last used
+    ///
+    /// * `combatant_id` - The ID of the combatant
+    /// * `attack_id` - The ID of the attack
+    /// Returns: The last used round of the attack
+    fn attack_last_used(self: @TContractState, combatant_id: felt252, attack_id: felt252) -> u32;
+    /// Reads if the attack is available to the combatant
+    ///
+    /// * `combatant_id` - The ID of the combatant
+    /// * `attack_id` - The ID of the attack
+    /// Returns: Boolean indicating if the attack is available
+    fn attack_available(self: @TContractState, combatant_id: felt252, attack_id: felt252) -> bool;
 }
 
 #[dojo::contract]
@@ -140,6 +152,18 @@ mod admin_actions {
 
         fn attack_id_from_input(self: @ContractState, attack: AttackInput) -> felt252 {
             attack.id()
+        }
+
+        fn attack_last_used(
+            self: @ContractState, combatant_id: felt252, attack_id: felt252,
+        ) -> u32 {
+            self.default_storage().get_attack_last_used(combatant_id, attack_id)
+        }
+
+        fn attack_available(
+            self: @ContractState, combatant_id: felt252, attack_id: felt252,
+        ) -> bool {
+            self.default_storage().check_attack_available(combatant_id, attack_id)
         }
     }
 }

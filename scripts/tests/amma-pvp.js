@@ -90,7 +90,7 @@ const main = async () => {
   const player1Tokens = [];
   const player2Tokens = [];
   let wins = {};
-  for (let i = 1; i <= 7; i++) {
+  for (let i = 1; i <= 9; i++) {
     player1Tokens.push(await makeToken(account1, ammaContract, i));
     player2Tokens.push(await makeToken(account2, ammaContract, i));
     wins[i] = 0;
