@@ -55,14 +55,12 @@ impl FreeBlobertImpl of FreeBlobertTrait {
     ) -> u256 {
         let current_tokens_owned = self.get_amount_tokens_owned(owner);
         let timestamp = get_block_timestamp();
-        if !self.has_permission(owner, Role::Tester) {
-            assert(
-                timestamp >= self.get_last_mint(owner) + SECONDS_24_HOURS,
-                'Can only mint every 24 hours',
-            );
-            let current_tokens_owned = self.get_amount_tokens_owned(owner);
-            assert(current_tokens_owned < MAX_TOKENS_OWNED, 'Max tokens owned');
-        };
+
+        // assert(
+        //     timestamp >= self.get_last_mint(owner) + SECONDS_24_HOURS,
+        //     'Can only mint every 24 hours',
+        // );
+        assert(current_tokens_owned < MAX_TOKENS_OWNED, 'Max tokens owned');
         self.set_amount_tokens_owned(owner, current_tokens_owned + 1);
         self.set_last_mint(owner, timestamp);
         self

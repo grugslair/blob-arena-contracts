@@ -132,10 +132,8 @@ mod lobby_actions {
             let id = uuid();
             let sender_id = uuid();
             let caller = get_caller_address();
-            if !world.has_permission(caller, Role::Tester) {
-                assert(attacks.len() <= 4, 'Too many attacks');
-                assert(caller == erc721_owner_of(collection_address, token_id), 'Not Owner');
-            }
+            assert(attacks.len() <= 4, 'Too many attacks');
+            assert(caller == erc721_owner_of(collection_address, token_id), 'Not Owner');
             if initiator.is_non_zero() {
                 world.set_initiator(id, initiator);
             };
@@ -166,10 +164,9 @@ mod lobby_actions {
             let sender_id = world.get_sender_combatant(challenge_id);
 
             let collection_address = world.get_combatant_token_address(sender_id);
-            if !world.has_permission(receiver, Role::Tester) {
-                assert(attacks.len() <= 4, 'Too many attacks');
-                assert(receiver == erc721_owner_of(collection_address, token_id), 'Not Owner');
-            }
+
+            assert(attacks.len() <= 4, 'Too many attacks');
+            assert(receiver == erc721_owner_of(collection_address, token_id), 'Not Owner');
             world
                 .create_player_combatant(
                     combatant_id, receiver, challenge_id, collection_address, token_id, attacks,
