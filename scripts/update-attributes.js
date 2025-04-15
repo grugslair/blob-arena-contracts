@@ -1,15 +1,13 @@
 import {
   loadJson,
   splitCallDescriptions,
-  loadAccountManifest,
+  loadAccountManifestFromCmdArgs,
   makeCairoEnum,
   pascalCase,
   parseEnumObject,
   batchCalls,
 } from "./stark-utils.js";
 import { CairoCustomEnum } from "starknet";
-
-import commandLineArgs from "command-line-args";
 import {
   seedEntrypoint,
   customEntrypoint,
@@ -185,16 +183,7 @@ export const makeAmmaBlobertCustomCalls = async (account_manifest) => {
 };
 
 const main = async () => {
-  const optionDefinitions = [
-    { name: "profile", type: String, defaultOption: true },
-    { name: "password", alias: "p", type: String },
-  ];
-  const options = commandLineArgs(optionDefinitions);
-
-  const account_manifest = await loadAccountManifest(
-    options.profile,
-    options.password
-  );
+  const account_manifest = await loadAccountManifestFromCmdArgs();
 
   const calls_metas = [
     ...(await makeClassicBlobertSeedCalls(account_manifest)),
@@ -204,9 +193,8 @@ const main = async () => {
   for (const calls_metas_batch of batchCalls(calls_metas, 70)) {
     const [calls, descriptions] = splitCallDescriptions(calls_metas_batch);
     console.log(descriptions);
-    account_manifest.execute(calls).then((res) => {
-      console.log(res.transaction_hash);
-    });
+    const transaction_hash = await account_manifest.execute(calls);
+    console.log(transaction_hash);
   }
 };
 

@@ -1,15 +1,10 @@
 import {
   loadJson,
   splitCallDescriptions,
-  loadAccountManifest,
-  makeCairoEnum,
-  pascalCase,
-  parseEnumObject,
-  batchCalls,
+  loadAccountManifestFromCmdArgs,
 } from "./stark-utils.js";
 import { CairoCustomEnum } from "starknet";
 
-import commandLineArgs from "command-line-args";
 import {
   pveOpponentEntrypoint,
   pveChallengeEntrypoint,
@@ -115,16 +110,7 @@ export const makePveChallengeCalls = async (account_manifest, data) => {
 };
 
 const main = async () => {
-  const optionDefinitions = [
-    { name: "profile", type: String, defaultOption: true },
-    { name: "password", alias: "p", type: String },
-  ];
-  const options = commandLineArgs(optionDefinitions);
-
-  const account_manifest = await loadAccountManifest(
-    options.profile,
-    options.password
-  );
+  const account_manifest = await loadAccountManifestFromCmdArgs();
   let pve_data = loadJson("../post-deploy-config/pve.json");
   const calls_metas = [
     ...(await makePveOpponentsCalls(account_manifest, pve_data.opponents)),
@@ -132,9 +118,8 @@ const main = async () => {
   ];
   const [calls, descriptions] = splitCallDescriptions(calls_metas);
   console.log(descriptions);
-  account_manifest.execute(calls).then((res) => {
-    console.log(res.transaction_hash);
-  });
+  const transaction_hash = await account_manifest.execute(calls);
+  console.log(transaction_hash);
 };
 
 if (process.argv[1] === import.meta.filename) {
