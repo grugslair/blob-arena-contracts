@@ -1,7 +1,8 @@
-import { getReturn } from "../stark-utils.js";
+import { getReturn, callOptions } from "../stark-utils.js";
 
 export const sendInvite = async (
-  account,
+  caller,
+  signer,
   contract,
   receiver,
   collectionAddress,
@@ -16,46 +17,33 @@ export const sendInvite = async (
     receiver,
     attacks,
   });
-  const response = await account.execute(callData, contract.abi, {
+  let call1 = await signer.getOutsideTransaction(
+    callOptions(caller.address),
+    callData
+  );
+  const { transaction_hash } = await caller.executeFromOutside(call1, {
     version: 3,
   });
 
-  return (await getReturn(account, response.transaction_hash))[0];
+  return (await getReturn(caller, transaction_hash))[0];
 };
 
-export const respondInvite = async (
-  account,
-  contract,
-  lobbyId,
-  tokenId,
-  attacks
-) => {
-  await account.execute(
-    contract.populate("respond_invite", {
-      challenge_id: lobbyId,
-      token_id: tokenId,
-      attacks,
-    }),
-    contract.abi,
-    {
-      version: 3,
-    }
-  );
+export const respondInviteCall = (contract, lobbyId, tokenId, attacks) => {
+  contract.populate("respond_invite", {
+    challenge_id: lobbyId,
+    token_id: tokenId,
+    attacks,
+  });
 };
 
-export const acceptResponse = async (account, contract, lobbyId) => {
-  await account.execute(
-    contract.populate("accept_response", {
-      challenge_id: lobbyId,
-    }),
-    contract.abi,
-    {
-      version: 3,
-    }
-  );
+export const acceptResponseCall = (contract, lobbyId) => {
+  contract.populate("accept_response", {
+    challenge_id: lobbyId,
+  });
 };
 
 export const makeLobby = async (
+  account,
   account1,
   account2,
   lobbyContract,
@@ -67,6 +55,7 @@ export const makeLobby = async (
   attacks2
 ) => {
   const lobbyId = await sendInvite(
+    account,
     account1,
     lobbyContract,
     account2.address,
@@ -74,8 +63,20 @@ export const makeLobby = async (
     tokenId1,
     attacks1
   );
-  await respondInvite(account2, lobbyContract, lobbyId, tokenId2, attacks2);
-  await acceptResponse(account1, lobbyContract, lobbyId);
+  const respondCall = respondInviteCall(
+    lobbyContract,
+    lobbyId,
+    tokenId2,
+    attacks2
+  );
+  const acceptCall = acceptResponseCall(lobbyContract, lobbyId);
+  const calls = [
+    account2.getOutsideTransaction(callOptions(account.address), respondCall),
+    account1.getOutsideTransaction(callOptions(account.address), acceptCall),
+  ];
+  const { transaction_hash } = await account.executeFromOutside(calls, {
+    version: 3,
+  });
   const [combatant1, combatant2] = await gameContract.combatants(lobbyId);
   return [lobbyId, combatant1, combatant2];
 };

@@ -45,16 +45,15 @@ mod combat {
     mod components;
     mod systems;
     mod storage;
-    use components::{Phase, CombatState, AttackCooledDown};
+    use components::{Phase, CombatState, AttackCooledDown, CombatProgress};
     use systems::CombatTrait;
     use storage::CombatStorage;
 }
-mod game {
+mod pvp {
     mod components;
     mod storage;
     mod contract;
     mod systems;
-    use components::{GameProgress};
     use storage::GameStorage;
     use systems::GameTrait;
 }

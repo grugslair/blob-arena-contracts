@@ -91,6 +91,12 @@ struct ConsecutiveTokenWins {
     max: u64,
 }
 
+#[derive(Copy, Drop, Serde, PartialEq)]
+enum CombatProgress {
+    Active,
+    Ended: [felt252; 2],
+}
+
 
 #[generate_trait]
 impl PhaseImpl of PhaseTrait {

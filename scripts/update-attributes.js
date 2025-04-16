@@ -3,7 +3,6 @@ import {
   splitCallDescriptions,
   loadAccountManifestFromCmdArgs,
   makeCairoEnum,
-  pascalCase,
   parseEnumObject,
   batchCalls,
 } from "./stark-utils.js";
@@ -14,6 +13,7 @@ import {
   blobertContractTag,
   ammaBlobertContractTag,
 } from "./contract-defs.js";
+import { pascalCase } from "pascal-case";
 
 export const toSigned = (x) => {
   if (x >= 0) {

@@ -11,11 +11,11 @@ import {
   ammaBlobertContractTag,
   mintEntrypoint,
   lobbyContractTag,
-  gameContractTag,
+  pvpContractTag,
 } from "../contract-defs.js";
 import { cairo, Account } from "starknet";
 import { makeLobby } from "./lobby.js";
-import { runCombatRound } from "./game.js";
+import { runCombatRound } from "./pvp.js";
 const accounts = [
   {
     address:
@@ -85,7 +85,7 @@ const main = async () => {
     ammaBlobertContractTag
   );
   const lobbyContract = await account_manifest.getContract(lobbyContractTag);
-  const gameContract = await account_manifest.getContract(gameContractTag);
+  const gameContract = await account_manifest.getContract(pvpContractTag);
 
   const player1Tokens = [];
   const player2Tokens = [];
@@ -152,10 +152,6 @@ const main = async () => {
   }
   console.log("Wins: ");
   console.log(wins);
-};
-
-const randomElement = (array) => {
-  return array[Math.floor(Math.random() * array.length)];
 };
 
 if (process.argv[1] === import.meta.filename) {

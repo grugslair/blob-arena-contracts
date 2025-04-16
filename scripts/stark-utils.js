@@ -1,5 +1,14 @@
-import { Contract, CairoCustomEnum, Account, cairo, RPC } from "starknet";
-import { upperFirst, camelCase } from "lodash-es";
+import {
+  Contract,
+  CairoCustomEnum,
+  Account,
+  cairo,
+  RPC,
+  stark,
+  ec,
+  hash,
+  CallData,
+} from "starknet";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import commandLineArgs from "command-line-args";
@@ -12,10 +21,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const returnKey =
   "0x17c9a55536e844e86b35cd70d23a4e304a30e5e08de591b6788319186160f50";
-
-export const pascalCase = (str) => {
-  return upperFirst(camelCase(str));
-};
 
 export const loadJson = (path) => {
   return JSON.parse(fs.readFileSync(resolvePath(path)));
@@ -168,6 +173,32 @@ export const loadAccountManifest = async (profile, password = null) => {
   return account_manifest;
 };
 
+export const deployContract = async (
+  account,
+  classHash,
+  callData,
+  salt,
+  unique
+) => {
+  const deployResponse = await account.deployContract(
+    { classHash, salt, unique, constructorCalldata: callData },
+    { version: 3 }
+  );
+  await account.waitForTransaction(deployResponse.transaction_hash);
+  console.log(
+    `Deployed contract with class Hash: ${classHash} and address: ${deployResponse.contract_address}`
+  );
+  return {
+    salt,
+    unique,
+    contract_address: deployResponse.contract_address,
+    class_hash: classHash,
+    constructor_calldata: callData,
+    deployer_address: account.address,
+    transaction_hash: deployResponse.transaction_hash,
+  };
+};
+
 export const loadAccountManifestFromCmdArgs = async () => {
   const optionDefinitions = [
     { name: "profile", type: String, defaultOption: true, defaultValue: "dev" },
@@ -200,4 +231,78 @@ export const getReturn = async (rpc, txHash) => {
 };
 export const dataToUint256 = (data) => {
   return cairo.uint256(data[1] + data[0].substring(2));
+};
+
+export const newKeyPair = () => {
+  const privateKey = stark.randomAddress();
+  const publicKey = ec.starkCurve.getStarkKey(privateKey);
+  return {
+    privateKey,
+    publicKey,
+  };
+};
+
+export const newAccount = async (account, classHash, erc20) => {
+  const { privateKey, publicKey } = newKeyPair();
+  const constructorCalldata = CallData.compile({ public_key: publicKey });
+  // const contractAddress = hash.calculateContractAddressFromHash(
+  //   publicKey,
+  //   classHash,
+  //   constructorCalldata,
+  //   0
+  // );
+  const { transaction_hash, contract_address } = await account.deployContract(
+    {
+      classHash,
+      salt: publicKey,
+      unique: false,
+      constructorCalldata,
+    },
+    { version: 3 }
+  );
+  // const newAccount = new Account(
+  //   { nodeUrl: account.channel.nodeUrl },
+  //   contractAddress,
+  //   privateKey
+  // );
+  // await account.execute(
+  //   erc20.populate("transfer", {
+  //     recipient: contractAddress,
+  //     amount: cairo.uint256(30000000000 * 6627),
+  //   }),
+  //   { version: 3 }
+  // );
+  // const { transaction_hash, contract_address } = await newAccount.deployAccount(
+  //   {
+  //     classHash,
+  //     constructorCalldata,
+  //     addressSalt: publicKey,
+  //   },
+  //   { version: 3 }
+  // );
+  // await account.waitForTransaction(transaction_hash, {
+  //   retryInterval: 100,
+  //   successStates: [
+  //     RPC.ETransactionStatus.RECEIVED,
+  //     RPC.ETransactionExecutionStatus.SUCCEEDED,
+  //     RPC.ETransactionStatus.ACCEPTED_ON_L2,
+  //     RPC.ETransactionStatus.ACCEPTED_ON_L1,
+  //   ],
+  // });
+
+  console.log(`New account deployed with address: ${contract_address}`);
+  return new Account(
+    { nodeUrl: account.channel.nodeUrl },
+    contract_address,
+    privateKey
+  );
+};
+
+export const callOptions = (caller) => {
+  const now_seconds = Math.floor(Date.now() / 1000);
+  return {
+    caller,
+    execute_after: now_seconds - 3600,
+    execute_before: now_seconds + 3600,
+  };
 };

@@ -6,7 +6,7 @@ use crate::erc721::ERC721Token;
 
 
 #[starknet::interface]
-trait IGame<TContractState> {
+trait IPvp<TContractState> {
     /// Starts a new game already created with a given game ID
     /// # Arguments
     /// * `game_id` - The unique identifier for the game to start
@@ -142,7 +142,7 @@ trait IGame<TContractState> {
 }
 
 #[starknet::interface]
-trait IGameAdmin<TContractState> {
+trait IPvpAdmin<TContractState> {
     /// Creates a new game instance with specified parameters
     ///
     /// * `owner` - The owner of the game instance
@@ -164,7 +164,7 @@ trait IGameAdmin<TContractState> {
     /// - CombatantToken
     /// - CombatantState
     /// - AttackAvailable
-    /// - GameInfo
+    /// - PvpInfo
     /// - Initiator
     /// - CombatState
     ///
@@ -185,13 +185,13 @@ trait IGameAdmin<TContractState> {
 
 
 #[dojo::contract]
-mod game_actions {
+mod pvp_actions {
     use starknet::{ContractAddress, get_caller_address, get_contract_address, get_block_timestamp};
     use dojo::{world::{WorldStorage, WorldStorageTrait}};
     use crate::attacks::AttackStorage;
     use crate::combat::{Phase, CombatTrait, CombatState, CombatStorage};
     use crate::combatants::{CombatantTrait, CombatantStorage, CombatantInfo};
-    use crate::game::{components::{GameInfoTrait, WinVia}, GameStorage, systems::GameTrait};
+    use crate::pvp::{components::{GameInfoTrait, WinVia}, GameStorage, systems::GameTrait};
     use crate::world::{WorldTrait, uuid};
     use crate::commitments::Commitment;
     use crate::core::{TTupleSized2ToSpan, ArrayTryIntoTTupleSized2};
@@ -200,11 +200,11 @@ mod game_actions {
     use crate::stats::UStats;
     use crate::erc721::ERC721Token;
 
-    use super::{IGame, IGameAdmin};
+    use super::{IPvp, IPvpAdmin};
 
 
     #[abi(embed_v0)]
-    impl IGameImpl of IGame<ContractState> {
+    impl IPvpImpl of IPvp<ContractState> {
         fn start(ref self: ContractState, game_id: felt252) {
             let mut world = self.default_storage();
             world.assert_caller_initiator(game_id);
@@ -214,7 +214,7 @@ mod game_actions {
         fn commit(ref self: ContractState, combatant_id: felt252, hash: felt252) {
             let mut world = self.default_storage();
             let combatant = world.get_callers_combatant_info(combatant_id);
-            let game = world.get_game_info(combatant.combat_id);
+            let game = world.get_pvp_info(combatant.combat_id);
             let opponent_id = game.get_opponent_id(combatant_id);
             world.assert_commit_phase(game.combat_id);
             world.set_new_commitment(combatant_id, hash);
@@ -228,7 +228,7 @@ mod game_actions {
         fn reveal(ref self: ContractState, combatant_id: felt252, attack: felt252, salt: felt252) {
             let mut world = self.default_storage();
             let combatant = world.get_callers_combatant_info(combatant_id);
-            let game = world.get_game_info(combatant.combat_id);
+            let game = world.get_pvp_info(combatant.combat_id);
 
             let opponent_id = game.get_opponent_id(combatant_id);
             let timestamp = get_block_timestamp();
@@ -251,12 +251,12 @@ mod game_actions {
         fn run(ref self: ContractState, combat_id: felt252) {
             let mut world = self.default_storage();
 
-            world.run_game_round(world.get_game_info(combat_id));
+            world.run_game_round(world.get_pvp_info(combat_id));
         }
 
         fn kick_player(ref self: ContractState, combat_id: felt252) {
             let mut storage = self.default_storage();
-            let game = storage.get_game_info(combat_id);
+            let game = storage.get_pvp_info(combat_id);
             let (a, b) = game.combatant_ids;
             storage.assert_past_time_limit(game);
 
@@ -286,7 +286,7 @@ mod game_actions {
         fn forfeit(ref self: ContractState, combatant_id: felt252) {
             let mut world = self.default_storage();
             let combatant = world.get_callers_combatant_info(combatant_id);
-            let game = world.get_game_info(combatant.combat_id);
+            let game = world.get_pvp_info(combatant.combat_id);
 
             world.assert_combat_running(game.combat_id);
 
@@ -311,7 +311,7 @@ mod game_actions {
         }
 
         fn combatants(self: @ContractState, combat_id: felt252) -> [felt252; 2] {
-            let (combatant_1, combatant_2) = self.default_storage().get_game_combatants(combat_id);
+            let (combatant_1, combatant_2) = self.default_storage().get_pvp_combatants(combat_id);
             [combatant_1, combatant_2]
         }
 
@@ -342,7 +342,7 @@ mod game_actions {
 
 
     #[abi(embed_v0)]
-    impl IGameAdminImpl of IGameAdmin<ContractState> {
+    impl IPvpAdminImpl of IPvpAdmin<ContractState> {
         fn create(
             ref self: ContractState,
             initiator: ContractAddress,
@@ -372,7 +372,7 @@ mod game_actions {
                     player_b_id, player_b, id, collection_address_b, token_id_b, attacks_b,
                 );
 
-            world.set_game_info(id, time_limit, player_a_id, player_b_id);
+            world.set_pvp_info(id, time_limit, player_a_id, player_b_id);
             world.set_initiator(id, initiator);
             world.new_combat_state(id);
             return_value(id)

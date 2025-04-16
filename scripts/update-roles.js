@@ -3,10 +3,9 @@ import {
   splitCallDescriptions,
   loadAccountManifestFromCmdArgs,
   makeCairoEnum,
-  pascalCase,
 } from "./stark-utils.js";
 import { adminContractTag, setPermissionsEntrypoint } from "./contract-defs.js";
-
+import { pascalCase } from "pascal-case";
 export const makeRoleCalls = async (account_manifest) => {
   const role_data =
     loadJson("../post-deploy-config/roles.json")[account_manifest.profile] ||

@@ -2,12 +2,14 @@ use core::poseidon::HashState;
 use starknet::{get_block_timestamp, get_caller_address, ContractAddress};
 use dojo::{world::WorldStorage, model::{ModelStorage, Model}, event::EventStorage};
 
-use crate::game::{
-    components::{LastTimestamp, Initiator, GameInfo, GameInfoTrait, WinVia, GameProgress},
+use crate::pvp::{
+    components::{LastTimestamp, Initiator, PvpInfo, GameInfoTrait, WinVia},
     storage::{GameStorage, sort_players},
 };
 use crate::erc721::ERC721Token;
-use crate::combat::{CombatTrait, Phase, CombatState, CombatStorage, components::PhaseTrait};
+use crate::combat::{
+    CombatTrait, Phase, CombatState, CombatStorage, CombatProgress, components::PhaseTrait,
+};
 use crate::commitments::Commitment;
 use crate::utils::get_transaction_hash;
 use crate::combatants::{CombatantTrait, CombatantInfo, CombatantStorage, CombatantState};
@@ -28,7 +30,7 @@ impl GameImpl of GameTrait {
     fn assert_caller_initiator(self: @WorldStorage, game_id: felt252) {
         assert(self.get_initiator(game_id) == get_caller_address(), 'Not the initiator');
     }
-    fn assert_past_time_limit(self: @WorldStorage, game: GameInfo) {
+    fn assert_past_time_limit(self: @WorldStorage, game: PvpInfo) {
         assert(game.time_limit.is_non_zero(), 'No time limit set');
         assert(
             get_block_timestamp() - self.get_last_timestamp(game.combat_id) > game.time_limit,
@@ -76,13 +78,13 @@ impl GameImpl of GameTrait {
         combat_id: felt252,
         player_1: @CombatantState,
         player_2: @CombatantState,
-    ) -> GameProgress {
+    ) -> CombatProgress {
         if (*player_2.health).is_zero() {
-            GameProgress::Ended([*player_1.id, *player_2.id])
+            CombatProgress::Ended([*player_1.id, *player_2.id])
         } else if (*player_1.health).is_zero() {
-            GameProgress::Ended([*player_2.id, *player_1.id])
+            CombatProgress::Ended([*player_2.id, *player_1.id])
         } else {
-            GameProgress::Active
+            CombatProgress::Active
         }
     }
 
@@ -109,7 +111,7 @@ impl GameImpl of GameTrait {
         )
     }
 
-    fn run_game_round(ref self: WorldStorage, game: GameInfo) {
+    fn run_game_round(ref self: WorldStorage, game: PvpInfo) {
         let combat = self.get_combat_state(game.combat_id);
         combat.phase.assert_reveal();
         let timestamp = get_block_timestamp();
@@ -131,8 +133,8 @@ impl GameImpl of GameTrait {
             );
 
         match progress {
-            GameProgress::Active => self.next_round(combat, combatants_span),
-            GameProgress::Ended([
+            CombatProgress::Active => self.next_round(combat, combatants_span),
+            CombatProgress::Ended([
                 winner, looser,
             ]) => { self.end_game_from_ids(combat.id, winner, looser, timestamp, WinVia::Combat); },
         };
@@ -163,7 +165,7 @@ impl GameImpl of GameTrait {
         attacks: [felt252; 2],
         verified: [bool; 2],
         hash: HashState,
-    ) -> (GameProgress, Array<AttackResult>) {
+    ) -> (CombatProgress, Array<AttackResult>) {
         let combatants = self.get_combatant_states(combatants_ids.span()).try_into().unwrap();
         // This needs to be another line beca compiler bs
         let [ca, cb]: [CombatantState; 2] = combatants;
@@ -177,7 +179,7 @@ impl GameImpl of GameTrait {
         results
             .append(self.run_attack(ref state_1, ref state_2, attack_1, round, verified_1, hash));
         let mut progress = self.if_winner_end(combat_id, @state_2, @state_1);
-        if progress == GameProgress::Active {
+        if progress == CombatProgress::Active {
             results
                 .append(
                     self.run_attack(ref state_2, ref state_1, attack_2, round, verified_2, hash),
@@ -193,8 +195,8 @@ impl GameImpl of GameTrait {
         ref self: WorldStorage, player_1: ContractAddress, player_2: ContractAddress,
     ) -> u64 {
         let players = sort_players(player_1, player_2);
-        let value = self.get_games_completed_value(players);
-        self.set_games_completed(players, value + 1);
+        let value = self.get_pvps_completed_value(players);
+        self.set_pvps_completed(players, value + 1);
         value
     }
 }

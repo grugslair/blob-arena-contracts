@@ -4,18 +4,18 @@ use starknet::{ContractAddress, get_caller_address};
 use dojo::{world::WorldStorage, model::ModelStorage};
 use blob_arena::{
     lobby::storage::{LobbyStorage}, combat::CombatTrait, combatants::CombatantTrait,
-    game::GameStorage, achievements::{Achievements, TaskId},
+    pvp::GameStorage, achievements::{Achievements, TaskId},
 };
 
 
 #[generate_trait]
 impl LobbyImpl of LobbyTrait {
     fn get_sender_combatant(self: @WorldStorage, challenge_id: felt252) -> felt252 {
-        let (sender, _) = self.get_game_combatants(challenge_id);
+        let (sender, _) = self.get_pvp_combatants(challenge_id);
         sender
     }
     fn get_receiver_combatant(self: @WorldStorage, challenge_id: felt252) -> felt252 {
-        let (_, receiver) = self.get_game_combatants(challenge_id);
+        let (_, receiver) = self.get_pvp_combatants(challenge_id);
         receiver
     }
     fn assert_caller_sender(self: @WorldStorage, challenge_id: felt252) {
@@ -36,7 +36,7 @@ impl LobbyImpl of LobbyTrait {
     }
     fn assert_caller_can_respond(self: @WorldStorage, challenge_id: felt252) -> felt252 {
         self.assert_lobby_open(challenge_id);
-        let (sender_id, receiver_id) = self.get_game_combatants(challenge_id);
+        let (sender_id, receiver_id) = self.get_pvp_combatants(challenge_id);
         assert(receiver_id.is_non_zero(), 'No response');
         self.assert_caller_player(sender_id);
         sender_id

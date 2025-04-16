@@ -11,7 +11,7 @@ use crate::erc721::ERC721Token;
 
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
-struct GameInfo {
+struct PvpInfo {
     #[key]
     combat_id: felt252,
     time_limit: u64,
@@ -22,13 +22,13 @@ struct GameInfo {
 ///
 /// # Arguments
 ///
-/// * `game_id` - Unique identifier for the game session (key field)
+/// * `combat_id` - Unique identifier for the game session (key field)
 /// * `initiator` - Contract address of the account that can initiate the game
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
 struct Initiator {
     #[key]
-    game_id: felt252,
+    combat_id: felt252,
     initiator: ContractAddress,
 }
 
@@ -36,20 +36,20 @@ struct Initiator {
 ///
 /// # Arguments
 ///
-/// * `game_id` - The unique identifier for the game
+/// * `combat_id` - The unique identifier for the game
 /// * `timestamp` - The latest timestamp recorded for this game (in seconds)
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
 struct LastTimestamp {
     #[key]
-    game_id: felt252,
+    combat_id: felt252,
     timestamp: u64,
 }
 
 /// Event emitted when a combat instance ends
 ///
 /// # Arguments
-/// * `game_id` - The unique identifier of the game instance
+/// * `combat_id` - The unique identifier of the game instance
 /// * `winner` - The player who won the combat
 /// * `loser` - The player who lost the combat
 /// * `via` - The method by which the winner achieved victory
@@ -57,7 +57,7 @@ struct LastTimestamp {
 #[derive(Drop, Serde)]
 struct CombatEnd {
     #[key]
-    game_id: felt252,
+    combat_id: felt252,
     winner: Player,
     loser: Player,
     via: WinVia,
@@ -70,7 +70,7 @@ struct CombatEnd {
 /// * `completed` - The total number of games completed between these players
 #[dojo::model]
 #[derive(Drop, Serde)]
-struct GamesCompleted {
+struct PvpsCompleted {
     #[key]
     players: (ContractAddress, ContractAddress),
     completed: u64,
@@ -100,16 +100,9 @@ enum WinVia {
     IncorrectReveal,
 }
 
-
-#[derive(Copy, Drop, Serde, PartialEq)]
-enum GameProgress {
-    Active,
-    Ended: [felt252; 2],
-}
-
 #[generate_trait]
 impl GameInfoImpl of GameInfoTrait {
-    fn get_opponent_id(self: @GameInfo, combatant_id: felt252) -> felt252 {
+    fn get_opponent_id(self: @PvpInfo, combatant_id: felt252) -> felt252 {
         let (a, b) = *self.combatant_ids;
         if combatant_id == a {
             b
@@ -119,7 +112,7 @@ impl GameInfoImpl of GameInfoTrait {
             panic!("Combatant not in combat")
         }
     }
-    // fn assert_contract_is_owner(self: @GameInfo) {
+    // fn assert_contract_is_owner(self: @PvpInfo) {
 //     assert(*self.owner == get_contract_address(), 'Not the contract owner');
 // }
 }

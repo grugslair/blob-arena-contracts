@@ -4,8 +4,8 @@ seed = "dev"
 
 [env]
 rpc_url = "http://localhost:5050/"
-account_address = "0x127fd5f1fe78a71f8bcd1fec63e3fe2f0486b6ecd5c86a0466c3a21fa5cfcec"
-private_key = "0xc5b2fcab997346f3ea1c00b002ecf6f382c5f9c9659a3894eb783c5320f912"
+account_address = "0xa28dd411f1ed1bb1b19d61d10cbe1196b9c61f8937715de06470e64297f60"
+private_key = "0x1c9053c053edf324aec366a34c6901b1095b07af69495bffec7d7fe21effb1b"
 
 [init_call_args]
 "blobert-blobert_actions" = [
@@ -18,7 +18,7 @@ mappings = { blob_arena = [
     "CombatantToken",
     "Tag",
     "AttackUses",
-    "GamesCompleted",
+    "PvpsCompleted",
 ], blobert = [
     "blobert_actions",
     "BlobertItem",
@@ -70,48 +70,48 @@ mappings = { blob_arena = [
 "blob_arena-Lobby" = ["blob_arena-lobby_actions"]
 "blob_arena-LobbyCreated" = ["blob_arena-lobby_actions"]
 
-"blob_arena-GameInfo" = ["blob_arena-lobby_actions", "blob_arena-game_actions"]
-"blob_arena-Initiator" = ["blob_arena-lobby_actions", "blob_arena-game_actions"]
+"blob_arena-PvpInfo" = ["blob_arena-lobby_actions", "blob_arena-pvp_actions"]
+"blob_arena-Initiator" = ["blob_arena-lobby_actions", "blob_arena-pvp_actions"]
 "blob_arena-CombatantToken" = [
     "blob_arena-lobby_actions",
-    "blob_arena-game_actions",
+    "blob_arena-pvp_actions",
 ]
 "blob_arena-CombatantInfo" = [
     "blob_arena-lobby_actions",
-    "blob_arena-game_actions",
+    "blob_arena-pvp_actions",
 ]
 
-"blob_arena-AttackUses" = ["blob_arena-game_actions"]
-"blob_arena-GamesCompleted" = ["blob_arena-game_actions"]
+"blob_arena-AttackUses" = ["blob_arena-pvp_actions"]
+"blob_arena-PvpsCompleted" = ["blob_arena-pvp_actions"]
 
 "blob_arena-CombatantState" = [
-    "blob_arena-game_actions",
+    "blob_arena-pvp_actions",
     "blob_arena-lobby_actions",
     "arcade-arcade_actions",
 ]
 
 "blob_arena-AttackAvailable" = [
     "blob_arena-lobby_actions",
-    "blob_arena-game_actions",
+    "blob_arena-pvp_actions",
     "arcade-arcade_actions",
 ]
 
 "blob_arena-CombatState" = [
-    "blob_arena-game_actions",
+    "blob_arena-pvp_actions",
     "blob_arena-lobby_actions",
     "arcade-arcade_actions",
 ]
 
 "blob_arena-AttackLastUsed" = [
-    "blob_arena-game_actions",
+    "blob_arena-pvp_actions",
     "arcade-arcade_actions",
 ]
-"blob_arena-RoundResult" = ["blob_arena-game_actions", "arcade-arcade_actions"]
+"blob_arena-RoundResult" = ["blob_arena-pvp_actions", "arcade-arcade_actions"]
 
-"blob_arena-Commitment" = ["blob_arena-game_actions"]
-"blob_arena-LastTimestamp" = ["blob_arena-game_actions"]
-"blob_arena-PlannedAttack" = ["blob_arena-game_actions"]
-"blob_arena-CombatEnd" = ["blob_arena-game_actions"]
+"blob_arena-Commitment" = ["blob_arena-pvp_actions"]
+"blob_arena-LastTimestamp" = ["blob_arena-pvp_actions"]
+"blob_arena-PlannedAttack" = ["blob_arena-pvp_actions"]
+"blob_arena-CombatEnd" = ["blob_arena-pvp_actions"]
 
 "blob_arena-Attack" = [
     "blobert-blobert_actions",
@@ -143,7 +143,7 @@ mappings = { blob_arena = [
 "achievements-TrophyCreation" = ["blob_arena-admin_actions"]
 "achievements-TrophyProgression" = [
     "blob_arena-lobby_actions",
-    "blob_arena-game_actions",
+    "blob_arena-pvp_actions",
     "arcade-arcade_actions",
 ]
 

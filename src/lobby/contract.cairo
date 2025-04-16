@@ -14,7 +14,7 @@ trait ILobby<TContractState> {
     ///
     /// Models:
     /// - Lobby
-    /// - GameInfo
+    /// - PvpInfo
     /// - Initiator
     /// - CombatantInfo
     /// - CombatantToken
@@ -49,7 +49,7 @@ trait ILobby<TContractState> {
     ///
     /// Models:
     /// - CombatantInfo
-    /// - GameInfo
+    /// - PvpInfo
     /// - CombatantInfo
     /// - CombatantToken
     /// - CombatantState
@@ -72,7 +72,7 @@ trait ILobby<TContractState> {
     /// * `challenge_id` - ID of the lobby to withdraw from
     ///
     /// Models:
-    /// - GameInfo
+    /// - PvpInfo
     fn rescind_response(ref self: TContractState, challenge_id: felt252);
     /// ## accept_response
     /// Finalizes the lobby and starts the match
@@ -86,7 +86,7 @@ trait ILobby<TContractState> {
     /// * `challenge_id` - ID of the lobby response to reject
     ///
     /// Models:
-    /// - GameInfo
+    /// - PvpInfo
     fn reject_response(ref self: TContractState, challenge_id: felt252);
 }
 
@@ -99,7 +99,7 @@ mod lobby_actions {
 
     use crate::lobby::{systems::LobbyTrait, storage::LobbyStorage};
     use crate::combat::{CombatTrait, CombatStorage};
-    use crate::game::GameStorage;
+    use crate::pvp::GameStorage;
     use crate::combatants::{CombatantTrait, CombatantStorage};
     use crate::utils::get_transaction_hash;
     use crate::world::{uuid, default_namespace};
@@ -138,7 +138,7 @@ mod lobby_actions {
                 world.set_initiator(id, initiator);
             };
             world.create_lobby(id, receiver);
-            world.set_game_info(id, time_limit, sender_id, 0);
+            world.set_pvp_info(id, time_limit, sender_id, 0);
             world.emit_lobby_created(id, caller, receiver);
             world
                 .create_player_combatant(
@@ -171,7 +171,7 @@ mod lobby_actions {
                 .create_player_combatant(
                     combatant_id, receiver, challenge_id, collection_address, token_id, attacks,
                 );
-            world.set_game_combatants(challenge_id, sender_id, combatant_id);
+            world.set_pvp_combatants(challenge_id, sender_id, combatant_id);
         }
 
         fn reject_invite(ref self: ContractState, challenge_id: felt252) {
@@ -183,9 +183,9 @@ mod lobby_actions {
         fn rescind_response(ref self: ContractState, challenge_id: felt252) {
             let mut world = self.get_storage();
             world.get_caller_receiver_from_open_lobby(challenge_id);
-            let (sender_id, receiver_id) = world.get_game_combatants(challenge_id);
+            let (sender_id, receiver_id) = world.get_pvp_combatants(challenge_id);
             assert(receiver_id.is_non_zero(), 'No response');
-            world.set_game_combatants(challenge_id, sender_id, 0);
+            world.set_pvp_combatants(challenge_id, sender_id, 0);
         }
 
         fn accept_response(ref self: ContractState, challenge_id: felt252) {
@@ -201,7 +201,7 @@ mod lobby_actions {
         fn reject_response(ref self: ContractState, challenge_id: felt252) {
             let mut world = self.get_storage();
             let sender_id = world.assert_caller_can_respond(challenge_id);
-            world.set_game_combatants(challenge_id, sender_id, 0);
+            world.set_pvp_combatants(challenge_id, sender_id, 0);
         }
     }
 }

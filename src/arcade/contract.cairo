@@ -215,7 +215,7 @@ mod arcade_actions {
     use crate::attacks::{AttackInput, AttackTrait};
     use crate::permissions::{Permissions, Role};
     use crate::world::WorldTrait;
-    use crate::game::GameProgress;
+    use crate::combat::CombatProgress;
     use crate::stats::UStats;
     use crate::collections::TokenAttributes;
     use crate::tags::IdTagNew;

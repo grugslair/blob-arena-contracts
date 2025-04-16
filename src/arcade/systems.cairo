@@ -14,10 +14,10 @@ use crate::arcade::{
         ArcadeAttemptRespawn,
     },
 };
-use crate::game::{GameStorage, GameTrait, GameProgress};
+use crate::pvp::{GameStorage, GameTrait};
 use crate::combatants::{CombatantStorage, CombatantTrait, CombatantState, CombatantSetup};
 use crate::attacks::AttackStorage;
-use crate::combat::CombatTrait;
+use crate::combat::{CombatTrait, CombatProgress};
 use crate::world::{uuid, WorldTrait};
 use crate::hash::{make_hash_state, felt252_to_u128};
 use crate::stats::UStats;
@@ -269,8 +269,8 @@ impl ArcadeImpl of ArcadeTrait {
             .ba
             .run_round(game.id, game.round, combatants, attacks, [false, true], hash);
         match progress {
-            GameProgress::Active => { self.arcade.set_arcade_round(game.id, game.round + 1); },
-            GameProgress::Ended([winner, _]) => self
+            CombatProgress::Active => { self.arcade.set_arcade_round(game.id, game.round + 1); },
+            CombatProgress::Ended([winner, _]) => self
                 .arcade
                 .set_arcade_ended(game.id, winner == game.combatant_id),
         }

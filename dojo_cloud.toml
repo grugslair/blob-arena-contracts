@@ -60,46 +60,46 @@ mappings = { blob_arena = [
 "blob_arena-Lobby" = ["blob_arena-lobby_actions"]
 "blob_arena-LobbyCreated" = ["blob_arena-lobby_actions"]
 
-"blob_arena-GameInfo" = ["blob_arena-lobby_actions", "blob_arena-game_actions"]
-"blob_arena-Initiator" = ["blob_arena-lobby_actions", "blob_arena-game_actions"]
+"blob_arena-PvpInfo" = ["blob_arena-lobby_actions", "blob_arena-pvp_actions"]
+"blob_arena-Initiator" = ["blob_arena-lobby_actions", "blob_arena-pvp_actions"]
 "blob_arena-CombatantToken" = [
     "blob_arena-lobby_actions",
-    "blob_arena-game_actions",
+    "blob_arena-pvp_actions",
 ]
 "blob_arena-CombatantInfo" = [
     "blob_arena-lobby_actions",
-    "blob_arena-game_actions",
+    "blob_arena-pvp_actions",
 ]
 
 
 "blob_arena-CombatantState" = [
-    "blob_arena-game_actions",
+    "blob_arena-pvp_actions",
     "blob_arena-lobby_actions",
     "arcade-arcade_actions",
 ]
 
 "blob_arena-AttackAvailable" = [
     "blob_arena-lobby_actions",
-    "blob_arena-game_actions",
+    "blob_arena-pvp_actions",
     "arcade-arcade_actions",
 ]
 
 "blob_arena-CombatState" = [
-    "blob_arena-game_actions",
+    "blob_arena-pvp_actions",
     "blob_arena-lobby_actions",
     "arcade-arcade_actions",
 ]
 
 "blob_arena-AttackLastUsed" = [
-    "blob_arena-game_actions",
+    "blob_arena-pvp_actions",
     "arcade-arcade_actions",
 ]
-"blob_arena-RoundResult" = ["blob_arena-game_actions", "arcade-arcade_actions"]
+"blob_arena-RoundResult" = ["blob_arena-pvp_actions", "arcade-arcade_actions"]
 
-"blob_arena-Commitment" = ["blob_arena-game_actions"]
-"blob_arena-LastTimestamp" = ["blob_arena-game_actions"]
-"blob_arena-PlannedAttack" = ["blob_arena-game_actions"]
-"blob_arena-CombatEnd" = ["blob_arena-game_actions"]
+"blob_arena-Commitment" = ["blob_arena-pvp_actions"]
+"blob_arena-LastTimestamp" = ["blob_arena-pvp_actions"]
+"blob_arena-PlannedAttack" = ["blob_arena-pvp_actions"]
+"blob_arena-CombatEnd" = ["blob_arena-pvp_actions"]
 
 "blob_arena-Attack" = [
     "blobert-blobert_actions",
@@ -127,7 +127,7 @@ mappings = { blob_arena = [
 "achievements-TrophyCreation" = ["blob_arena-admin_actions"]
 "achievements-TrophyProgression" = [
     "blob_arena-lobby_actions",
-    "blob_arena-game_actions",
+    "blob_arena-pvp_actions",
     "arcade-arcade_actions",
 ]
 
