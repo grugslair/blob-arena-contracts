@@ -1,14 +1,27 @@
-import { loadAccountManifestFromCmdArgs, newAccounts } from "../stark-utils.js";
+import {
+  loadAccountManifestFromCmdArgs,
+  uint256ToHex,
+  getReturns,
+  dataToUint256,
+  newAccount,
+  callOptions,
+} from "../stark-utils.js";
 import { randomIndexes } from "../utils.js";
 import {
   freeBlobertContractTag,
+  mintEntrypoint,
   lobbyContractTag,
   pvpContractTag,
 } from "../contract-defs.js";
+import { cairo, Account, hash } from "starknet";
 import { makeLobby } from "./lobby.js";
 import { runRounds } from "./pvp.js";
 import { bigIntToHex } from "web3-eth-accounts";
-import { mintFreeTokenWithAttacks } from "./free-blobert.js";
+
+const ammAChallengeId =
+  "0x079fdc2acff4bbab416ea08f321087b0b99a53099443852175fd49b9ba2540fe";
+const classicChallengeId =
+  "0x033bd13f2718e9b2a90b3b8c7847b11c9eb5ce81c95009998380ab95b343f53d";
 
 const accountClassHash =
   "0x07489e371db016fcd31b78e49ccd201b93f4eab60af28b862390e800ec9096e2";
@@ -23,7 +36,7 @@ const main = async () => {
   const gameContract = await account_manifest.getContract(pvpContractTag);
 
   console.log("Deploying new accounts");
-  const [account1, account2] = await newAccounts(account, accountClassHash, 2);
+  const account1 = await newAccount(account, accountClassHash);
   console.log("Accounts deployed");
   const player1Tokens = [];
   const player2Tokens = [];

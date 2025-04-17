@@ -35,7 +35,7 @@ const main = async () => {
     )),
     ...(await makeAchievementsCalls(account_manifest)),
   ];
-  for (const calls_metas_batch of batchCalls(calls_metas, 100)) {
+  for (const calls_metas_batch of batchCalls(calls_metas, 50)) {
     const [calls, descriptions] = splitCallDescriptions(calls_metas_batch);
     console.log(descriptions);
     const transaction_hash = await account_manifest.execute(calls);

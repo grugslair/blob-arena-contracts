@@ -230,7 +230,13 @@ export const getReturn = async (rpc, txHash) => {
   return (await getReturns(rpc, txHash))[0].data;
 };
 export const dataToUint256 = (data) => {
-  return cairo.uint256(data[1] + data[0].substring(2));
+  return cairo.uint256(data[1] + data[0].substring(2).padStart(32, "0"));
+};
+
+export const uint256ToHex = (value) => {
+  const low = BigInt(value.low).toString(16).padStart(32, "0");
+  const high = BigInt(value.high).toString(16).padStart(32, "0");
+  return "0x" + high + low;
 };
 
 export const newKeyPair = () => {
@@ -242,24 +248,36 @@ export const newKeyPair = () => {
   };
 };
 
-export const newAccount = async (account, classHash, erc20) => {
-  const { privateKey, publicKey } = newKeyPair();
-  const constructorCalldata = CallData.compile({ public_key: publicKey });
+export const newAccounts = async (account, classHash, amount) => {
+  let calls = [];
+  let keys = [];
+  for (let i = 0; i < amount; i++) {
+    const { privateKey, publicKey } = newKeyPair();
+    calls.push({
+      classHash,
+      salt: publicKey,
+      unique: false,
+      constructorCalldata: CallData.compile({ public_key: publicKey }),
+    });
+    keys.push({ privateKey, publicKey });
+  }
+
   // const contractAddress = hash.calculateContractAddressFromHash(
   //   publicKey,
   //   classHash,
   //   constructorCalldata,
   //   0
   // );
-  const { transaction_hash, contract_address } = await account.deployContract(
-    {
-      classHash,
-      salt: publicKey,
-      unique: false,
-      constructorCalldata,
-    },
-    { version: 3 }
-  );
+  const { transaction_hash, contract_address } = await account.deploy(calls, {
+    version: 3,
+  });
+  return contract_address.map((address, i) => {
+    return new Account(
+      { nodeUrl: account.channel.nodeUrl },
+      address,
+      keys[i].privateKey
+    );
+  });
   // const newAccount = new Account(
   //   { nodeUrl: account.channel.nodeUrl },
   //   contractAddress,

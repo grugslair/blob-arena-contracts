@@ -29,7 +29,7 @@ export const sendInvite = async (
 };
 
 export const respondInviteCall = (contract, lobbyId, tokenId, attacks) => {
-  contract.populate("respond_invite", {
+  return contract.populate("respond_invite", {
     challenge_id: lobbyId,
     token_id: tokenId,
     attacks,
@@ -37,7 +37,7 @@ export const respondInviteCall = (contract, lobbyId, tokenId, attacks) => {
 };
 
 export const acceptResponseCall = (contract, lobbyId) => {
-  contract.populate("accept_response", {
+  return contract.populate("accept_response", {
     challenge_id: lobbyId,
   });
 };
@@ -71,8 +71,14 @@ export const makeLobby = async (
   );
   const acceptCall = acceptResponseCall(lobbyContract, lobbyId);
   const calls = [
-    account2.getOutsideTransaction(callOptions(account.address), respondCall),
-    account1.getOutsideTransaction(callOptions(account.address), acceptCall),
+    await account2.getOutsideTransaction(
+      callOptions(account.address),
+      respondCall
+    ),
+    await account1.getOutsideTransaction(
+      callOptions(account.address),
+      acceptCall
+    ),
   ];
   const { transaction_hash } = await account.executeFromOutside(calls, {
     version: 3,

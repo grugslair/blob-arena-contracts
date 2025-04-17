@@ -1,47 +1,55 @@
 import { hash } from "starknet";
-
-const commitAttack = async (account, contract, combatantId, commitment) => {
-  const { transaction_hash } = await account.execute(
-    contract.populate("commit", {
-      combatant_id: combatantId,
-      hash: commitment,
-    }),
-    contract.abi,
-    {
-      version: 3,
-    }
-  );
-  return transaction_hash;
+import { callOptions } from "../stark-utils.js";
+const commitAttackCall = (contract, combatantId, commitment) => {
+  return contract.populate("commit", {
+    combatant_id: combatantId,
+    hash: commitment,
+  });
 };
 
-const revealAttack = async (account, contract, combatantId, attack, salt) => {
-  const { transaction_hash } = await account.execute(
-    contract.populate("reveal", {
-      combatant_id: combatantId,
-      attack,
-      salt,
-    }),
-    contract.abi,
-    {
-      version: 3,
-    }
-  );
-  return transaction_hash;
+const revealAttackCall = (contract, combatantId, attack, salt) => {
+  return contract.populate("reveal", {
+    combatant_id: combatantId,
+    attack,
+    salt,
+  });
 };
 
-const runRound = async (account, contract, combatId) => {
-  await account.execute(
-    contract.populate("run", {
-      combat_id: combatId,
-    }),
-    contract.abi,
-    {
-      version: 3,
-    }
-  );
+const runRoundCall = (contract, combatId) => {
+  return contract.populate("run", {
+    combat_id: BigInt(combatId),
+  });
 };
 
 export const runCombatRound = async (
+  caller,
+  account1,
+  account2,
+  contract,
+  combatId,
+  combatant1,
+  combatant2,
+  attack1,
+  attack2
+) => {
+  const calls = await Promise.all(
+    combatRoundCalls(
+      caller,
+      account1,
+      account2,
+      contract,
+      combatId,
+      combatant1,
+      combatant2,
+      attack1,
+      attack2
+    )
+  );
+  await caller.executeFromOutside(calls, { version: 3 });
+};
+
+export const combatRoundCalls = (
+  caller,
   account1,
   account2,
   contract,
@@ -69,64 +77,67 @@ export const runCombatRound = async (
   );
   const commitment1 = hash.computePoseidonHashOnElements([attack1, salt1]);
   const commitment2 = hash.computePoseidonHashOnElements([attack2, salt2]);
+  const commit1 = account1.getOutsideTransaction(
+    callOptions(caller.address),
+    commitAttackCall(contract, combatant1, commitment1)
+  );
+  const commit2 = account2.getOutsideTransaction(
+    callOptions(caller.address),
+    commitAttackCall(contract, combatant2, commitment2)
+  );
+  const reveal1 = account1.getOutsideTransaction(
+    callOptions(caller.address),
+    revealAttackCall(contract, combatant1, attack1, salt1)
+  );
+  const reveal2 = account2.getOutsideTransaction(
+    callOptions(caller.address),
+    revealAttackCall(contract, combatant2, attack2, salt2)
+  );
+  const runRound = account1.getOutsideTransaction(
+    callOptions(caller.address),
+    runRoundCall(contract, combatId)
+  );
+  return [commit1, commit2, reveal1, reveal2, runRound];
+};
 
-  const commitTransactionHash1 = await commitAttack(
-    account1,
-    contract,
-    combatant1,
-    commitment1
-  );
-  const commitTransactionHash2 = await commitAttack(
-    account2,
-    contract,
-    combatant2,
-    commitment2
-  );
-  let revealTransactionHash1;
-  let revealTransactionHash2;
-  try {
-    revealTransactionHash1 = await revealAttack(
-      account1,
-      contract,
-      combatant1,
-      attack1,
-      salt1
+export const combatRoundsCalls = (
+  caller,
+  account1,
+  account2,
+  contract,
+  games
+) => {
+  let calls = [];
+  for (const game of games) {
+    const combatId = game.combat_id;
+    const combatant1 = game.combatant1;
+    const combatant2 = game.combatant2;
+    const attack1 = randomElement(combatant1.attacks);
+    const attack2 = randomElement(combatant2.attacks);
+    console.log(
+      `Combat ${combatId} Round ${game.round} Attacks: 0x${attack1.toString(
+        16
+      )} vs 0x${attack2.toString(16)}`
     );
-    revealTransactionHash2 = await revealAttack(
-      account2,
-      contract,
-      combatant2,
-      attack2,
-      salt2
-    );
-  } catch (e) {
-    await account1.waitForTransaction(commitTransactionHash1);
-    await account2.waitForTransaction(commitTransactionHash2);
-    revealTransactionHash1 = await revealAttack(
-      account1,
-      contract,
-      combatant1,
-      attack1,
-      salt1
-    );
-    revealTransactionHash2 = await revealAttack(
-      account2,
-      contract,
-      combatant2,
-      attack2,
-      salt2
+    calls.push(
+      ...combatRoundCalls(
+        caller,
+        account1,
+        account2,
+        contract,
+        combatId,
+        combatant1.id,
+        combatant2.id,
+        attack1,
+        attack2
+      )
     );
   }
-  try {
-    await runRound(account1, contract, combatId);
-  } catch (e) {
-    await account1.waitForTransaction(revealTransactionHash1);
-    await account2.waitForTransaction(revealTransactionHash2);
-    await runRound(account1, contract, combatId);
-  }
+  return calls;
 };
 
 export const runBattle = async (
+  caller,
   account1,
   account2,
   contract,
@@ -144,6 +155,7 @@ export const runBattle = async (
       )}`
     );
     await runCombatRound(
+      caller,
       account1,
       account2,
       contract,
@@ -155,6 +167,19 @@ export const runBattle = async (
     );
     n++;
   }
+};
+
+export const runRounds = async (
+  caller,
+  account1,
+  account2,
+  contract,
+  games
+) => {
+  const calls = await Promise.all(
+    combatRoundsCalls(caller, account1, account2, contract, games)
+  );
+  await caller.executeFromOutside(calls, { version: 3 });
 };
 
 const randomElement = (array) => {
