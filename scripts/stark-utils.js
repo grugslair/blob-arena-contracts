@@ -267,6 +267,26 @@ export const newKeyPair = () => {
   };
 };
 
+export const newAccount = async (account, classHash) => {
+  const { privateKey, publicKey } = newKeyPair();
+  const { transaction_hash, contract_address } = await account.deploy(
+    {
+      classHash,
+      salt: publicKey,
+      unique: false,
+      constructorCalldata: CallData.compile({ public_key: publicKey }),
+    },
+    {
+      version: 3,
+    }
+  );
+  return new Account(
+    { nodeUrl: account.channel.nodeUrl },
+    contract_address[0],
+    privateKey
+  );
+};
+
 export const newAccounts = async (account, classHash, amount) => {
   let calls = [];
   let keys = [];
@@ -281,12 +301,6 @@ export const newAccounts = async (account, classHash, amount) => {
     keys.push({ privateKey, publicKey });
   }
 
-  // const contractAddress = hash.calculateContractAddressFromHash(
-  //   publicKey,
-  //   classHash,
-  //   constructorCalldata,
-  //   0
-  // );
   const { transaction_hash, contract_address } = await account.deploy(calls, {
     version: 3,
   });
@@ -297,42 +311,6 @@ export const newAccounts = async (account, classHash, amount) => {
       keys[i].privateKey
     );
   });
-  // const newAccount = new Account(
-  //   { nodeUrl: account.channel.nodeUrl },
-  //   contractAddress,
-  //   privateKey
-  // );
-  // await account.execute(
-  //   erc20.populate("transfer", {
-  //     recipient: contractAddress,
-  //     amount: cairo.uint256(30000000000 * 6627),
-  //   }),
-  //   { version: 3 }
-  // );
-  // const { transaction_hash, contract_address } = await newAccount.deployAccount(
-  //   {
-  //     classHash,
-  //     constructorCalldata,
-  //     addressSalt: publicKey,
-  //   },
-  //   { version: 3 }
-  // );
-  // await account.waitForTransaction(transaction_hash, {
-  //   retryInterval: 100,
-  //   successStates: [
-  //     RPC.ETransactionStatus.RECEIVED,
-  //     RPC.ETransactionExecutionStatus.SUCCEEDED,
-  //     RPC.ETransactionStatus.ACCEPTED_ON_L2,
-  //     RPC.ETransactionStatus.ACCEPTED_ON_L1,
-  //   ],
-  // });
-
-  console.log(`New account deployed with address: ${contract_address}`);
-  return new Account(
-    { nodeUrl: account.channel.nodeUrl },
-    contract_address,
-    privateKey
-  );
 };
 
 export const callOptions = (caller) => {

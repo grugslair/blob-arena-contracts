@@ -85,15 +85,15 @@ const main = async () => {
         lobbyContract,
         gameContract,
         freeContract.address,
-        token1.token_id,
+        token1.id,
         attackSlots1,
-        token2.token_id,
+        token2.id,
         attackSlots2
       );
 
       const combatant1 = {
         id: combatantId1,
-        token_id: token1.token_id,
+        token_id: token1.id,
         attacks: Object.fromEntries(attacks1.map((a) => [a, 0])),
         attack_slots: attackSlots1,
         stats: await gameContract.combatant_stats(combatantId1),
@@ -102,7 +102,7 @@ const main = async () => {
       };
       const combatant2 = {
         id: combatantId2,
-        token_id: token2.token_id,
+        token_id: token2.id,
         attacks: Object.fromEntries(attacks2.map((a) => [a, 0])),
         attack_slots: attackSlots2,
         stats: await gameContract.combatant_stats(combatantId2),

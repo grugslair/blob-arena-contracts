@@ -4,7 +4,7 @@ use crate::arcade::ArcadeOpponentInput;
 use crate::collections::{TokenAttributes, BlobertItemKey};
 use crate::tags::IdTagNew;
 use crate::attacks::components::AttackInput;
-use super::{ArcadeGame, ArcadeChallengeAttempt};
+use super::{ArcadeGame, ArcadeChallengeAttempt, ArcadePhase};
 
 #[starknet::interface]
 trait IArcade<TContractState> {
@@ -108,6 +108,8 @@ trait IArcade<TContractState> {
     fn game(self: @TContractState, game_id: felt252) -> ArcadeGame;
 
     fn challenge_attempt_game(self: @TContractState, attempt_id: felt252) -> ArcadeGame;
+
+    fn game_phase(self: @TContractState, game_id: felt252) -> ArcadePhase;
 }
 
 /// Interface for managing Arcade (Player vs Environment) administrative functions.
@@ -231,7 +233,7 @@ mod arcade_actions {
     use dojo::world::WorldStorage;
     use crate::arcade::{
         ArcadeTrait, ArcadeStorage, ARCADE_NAMESPACE_HASH, ArcadeStore, ArcadeOpponentInput,
-        ArcadeChallengeAttempt, ArcadeGame,
+        ArcadeChallengeAttempt, ArcadeGame, ArcadePhase,
     };
     use crate::attacks::{AttackInput, AttackTrait};
     use crate::permissions::{Permissions, Role};
@@ -325,6 +327,10 @@ mod arcade_actions {
 
         fn challenge_attempt_game(self: @ContractState, attempt_id: felt252) -> ArcadeGame {
             self.get_arcade_storage().get_arcade_attempt_game(attempt_id)
+        }
+
+        fn game_phase(self: @ContractState, game_id: felt252) -> ArcadePhase {
+            self.get_arcade_storage().get_arcade_game_phase(game_id)
         }
     }
 

@@ -18,6 +18,27 @@ export const mintFreeToken = async (caller, signer, contract) => {
   return dataToUint256((await getReturns(caller, transaction_hash))[0].data);
 };
 
+export const mintFreeTokens = async (caller, signer, contract, number) => {
+  let calls = [];
+  for (let i = 0; i < number; i++) {
+    calls.push(
+      signer.getOutsideTransaction(
+        callOptions(caller.address),
+        contract.populate(mintEntrypoint)
+      )
+    );
+  }
+
+  const { transaction_hash } = await caller.executeFromOutside(
+    await Promise.all(calls),
+    {
+      version: 3,
+    }
+  );
+  const returns = await getReturns(caller, transaction_hash);
+  return returns.map((r) => dataToUint256(r.data));
+};
+
 export const getFreeAttacks = async (contract, tokenId) => {
   let allAttackSlots = [];
 
@@ -45,8 +66,29 @@ export const mintFreeTokenWithAttacks = async (caller, signer, contract) => {
   console.log(`Token Id: ${uint256ToHex(tokenId)}`);
   const [attacks, attackSlots] = await getFreeAttacks(contract, tokenId);
   return {
-    token_id: tokenId,
+    collection_address: contract.address,
+    id: tokenId,
     attacks,
     attack_slots: attackSlots,
   };
+};
+
+export const mintFreeTokensWithAttacks = async (
+  caller,
+  signer,
+  contract,
+  number
+) => {
+  const tokenIds = await mintFreeTokens(caller, signer, contract, number);
+  const tokens = tokenIds.map(async (tokenId) => {
+    const [attacks, attackSlots] = await getFreeAttacks(contract, tokenId);
+    return {
+      collection_address: contract.address,
+      id: tokenId,
+      attacks,
+      attack_slots: attackSlots,
+    };
+  });
+
+  return Promise.all(tokens);
 };
