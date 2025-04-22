@@ -983,28 +983,7 @@
             "tag": "Quick Slash"
         },
         {
-            "name": "Shield Punch",
-            "speed": 50,
-            "accuracy": 80,
-            "cooldown": 1,
-            "hit": [
-                {
-                    "target": "Opponent",
-                    "affect": {
-                        "Damage": {
-                            "power": 40,
-                            "critical": 0
-                        }
-                    }
-                },
-                {
-                    "target": "Opponent",
-                    "affect": {
-                        "Stun": 40
-                    }
-                }
-            ],
-            "miss": []
+            "tag": "Shield Punch"
         },
         {
             "name": "Power Arm",
