@@ -1,14 +1,15 @@
 import {
   Contract,
   CairoCustomEnum,
+  CallData,
   Account,
   cairo,
   RPC,
   stark,
   ec,
   hash,
-  CallData,
   byteArray,
+  events as cairoEvents,
 } from "starknet";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -17,6 +18,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as accounts from "web3-eth-accounts";
 import * as toml from "toml";
+import { isDict } from "./utils.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -374,3 +376,57 @@ export const getAllEvents = async (accountOrProvider, eventFilter) => {
   }
   return allEvents;
 };
+
+const isTopLevelEvent = (item) => {
+  return (
+    item.type === "event" &&
+    item.name.endsWith("::Event") &&
+    item.kind === "enum"
+  );
+};
+
+export const parseAbisTypes = (abis) => {
+  abis = Array.isArray(abis) ? abis : [abis];
+  let variants = {};
+  let abiTypes = {};
+  for (let abi of abis) {
+    if (isDict(abi) && "abi" in abi) {
+      abi = abi.abi;
+    }
+    for (const item of abi) {
+      if (["event", "struct", "enum"].includes(item.type)) {
+        if (isTopLevelEvent(item)) {
+          for (const variant of item.variants) {
+            variants[variant.type] = variant;
+          }
+        } else {
+          abiTypes[item.name] = item;
+        }
+      }
+    }
+  }
+  abiTypes.Event = {
+    type: "event",
+    name: "Event",
+    kind: "enum",
+    variants: Object.values(variants),
+  };
+  return abiTypes;
+};
+export class Abi {
+  constructor(abis) {
+    abis = Array.isArray(abis) ? abis : [abis];
+    this.abiTypes = parseAbisTypes(abis);
+    const abiAsArray = Object.values(this.abiTypes).concat([
+      { type: "interface" },
+    ]);
+    this.abiEvents = cairoEvents.getAbiEvents(abiAsArray);
+    this.abiStructs = CallData.getAbiStruct(abiAsArray);
+    this.abiEnums = CallData.getAbiEnum(abiAsArray);
+  }
+
+  parseType(typeName, rawData) {
+    const rawIter = rawData[Symbol.iterator]();
+    responseParser();
+  }
+}

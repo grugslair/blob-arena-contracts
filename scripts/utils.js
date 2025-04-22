@@ -23,3 +23,7 @@ export const randomIndexes = (len, n) => {
 export const randomElement = (array) => {
   return array[Math.floor(Math.random() * array.length)];
 };
+
+export const isDict = (obj) => {
+  return typeof obj === "object" && !Array.isArray(obj) && obj !== null;
+};

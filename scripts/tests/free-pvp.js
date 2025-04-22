@@ -1,7 +1,7 @@
 import {
-  dataToByteArray,
   loadAccountManifestFromCmdArgs,
   newAccounts,
+  Abi,
 } from "../stark-utils.js";
 import { randomIndexes } from "../utils.js";
 import {
@@ -11,10 +11,11 @@ import {
   adminContractTag,
 } from "../contract-defs.js";
 import { makeLobby } from "./lobby.js";
-import { runPvpBattles, runRounds } from "./pvp.js";
+import { runPvpBattles } from "./pvp.js";
 import { bigIntToHex } from "web3-eth-accounts";
 import { mintFreeTokenWithAttacks } from "./classic-blobert.js";
 import { getAttacks } from "./attacks.js";
+import { printRoundResults } from "./game.js";
 
 const accountClassHash =
   "0x07489e371db016fcd31b78e49ccd201b93f4eab60af28b862390e800ec9096e2";
@@ -29,7 +30,14 @@ const main = async () => {
   const gameContract = await account_manifest.getContract(pvpContractTag);
   const adminContract = await account_manifest.getContract(adminContractTag);
   const worldContract = await account_manifest.getWorldContract();
-
+  const abi = new Abi([
+    freeContract,
+    lobbyContract,
+    gameContract,
+    adminContract,
+    worldContract,
+  ]);
+  console.log(abi.abiTypes);
   console.log("Deploying new accounts");
   const [account1, account2] = await newAccounts(account, accountClassHash, 2);
   console.log("Accounts deployed");
@@ -113,7 +121,7 @@ const main = async () => {
       });
     }
   }
-  const results = await runPvpBattles(
+  await runPvpBattles(
     worldContract,
     account,
     account1,
@@ -122,81 +130,8 @@ const main = async () => {
     games,
     attacks
   );
-  for (const [combatId, rounds] of Object.entries(results)) {
-    console.log(combatId);
-
-    for (let i = 0; i < rounds.length; i++) {
-      const [combatant1, combatant2] = rounds[i];
-      const first = combatant1.order === 0 ? combatant1 : combatant2;
-      const second = combatant1.order !== 0 ? combatant1 : combatant2;
-      console.log(`Round ${i + 1}: `);
-      console.log(
-        `Combatant ${first.index}: ${
-          first.attack.name
-        } ${first.result.activeVariant()}`
-      );
-      if (second.attack) {
-        console.log(
-          `Combatant ${second.index}: ${
-            second.attack.name
-          } ${second.result.activeVariant()}`
-        );
-      }
-      let table = {};
-      table["Health"] = {
-        "Combatant 1": combatant1.health,
-        "Change 1": combatant1.health - combatants[combatant1.id].health,
-        "Combatant 2": combatant2.health,
-        "Change 2": combatant2.health - combatants[combatant2.id].health,
-      };
-      const stunChange1 =
-        combatant1.stun_chance - combatants[combatant1.id].stun_chance;
-      const stunChange2 =
-        combatant2.stun_chance - combatants[combatant2.id].stun_chance;
-      table["Stun Chance"] = {
-        "Combatant 1": combatant1.stun_chance,
-        "Change 1": stunChange1 < 0 ? "R" : stunChange1,
-        "Combatant 2": combatant2.stun_chance,
-        "Change 2": stunChange2 < 0 ? "R" : stunChange2,
-      };
-      table["Strength"] = {
-        "Combatant 1": combatant1.stats.strength,
-        "Change 1":
-          combatant1.stats.strength - combatants[combatant1.id].stats.strength,
-        "Combatant 2": combatant2.stats.strength,
-        "Change 2":
-          combatant2.stats.strength - combatants[combatant2.id].stats.strength,
-      };
-      table["Vitality"] = {
-        "Combatant 1": combatant1.stats.vitality,
-        "Change 1":
-          combatant1.stats.vitality - combatants[combatant1.id].stats.vitality,
-        "Combatant 2": combatant2.stats.vitality,
-        "Change 2":
-          combatant2.stats.vitality - combatants[combatant2.id].stats.vitality,
-      };
-      table["Dexterity"] = {
-        "Combatant 1": combatant1.stats.dexterity,
-        "Change 1":
-          combatant1.stats.dexterity -
-          combatants[combatant1.id].stats.dexterity,
-        "Combatant 2": combatant2.stats.dexterity,
-        "Change 2":
-          combatant2.stats.dexterity -
-          combatants[combatant2.id].stats.dexterity,
-      };
-      table["Luck"] = {
-        "Combatant 1": combatant1.stats.luck,
-        "Change 1":
-          combatant1.stats.luck - combatants[combatant1.id].stats.luck,
-        "Combatant 2": combatant2.stats.luck,
-        "Change 2":
-          combatant2.stats.luck - combatants[combatant2.id].stats.luck,
-      };
-      combatants[combatant1.id] = combatant1;
-      combatants[combatant2.id] = combatant2;
-      console.table(table);
-    }
+  for (const game of games) {
+    printRoundResults(game);
   }
 };
 

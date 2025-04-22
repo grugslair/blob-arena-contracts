@@ -1,13 +1,17 @@
 import { loadAccountManifestFromCmdArgs, newAccounts } from "../stark-utils.js";
+import { randomIndexes } from "../utils.js";
 import {
   ammaBlobertContractTag,
   lobbyContractTag,
   pvpContractTag,
+  adminContractTag,
 } from "../contract-defs.js";
 import { makeLobby } from "./lobby.js";
-import { runRounds } from "./pvp.js";
-import { randomIndexes } from "../utils.js";
-import { mintAmmaTokenWithAttacks } from "./amma-blobert.js";
+import { runPvpBattles } from "./pvp.js";
+import { bigIntToHex } from "web3-eth-accounts";
+import { mintAmmaTokenWithAttacks } from "./classic-blobert.js";
+import { getAttacks } from "./attacks.js";
+import { printRoundResults } from "./game.js";
 
 const accountClassHash =
   "0x07489e371db016fcd31b78e49ccd201b93f4eab60af28b862390e800ec9096e2";
@@ -20,12 +24,16 @@ const main = async () => {
   );
   const lobbyContract = await account_manifest.getContract(lobbyContractTag);
   const gameContract = await account_manifest.getContract(pvpContractTag);
+  const worldContract = await account_manifest.getWorldContract();
+  const adminContract = await account_manifest.getContract(adminContractTag);
+
   console.log("Deploying new accounts");
   const [account1, account2] = await newAccounts(account, accountClassHash, 2);
   console.log("Accounts deployed");
+
   const player1Tokens = [];
   const player2Tokens = [];
-
+  let allAttackIds = new Set();
   let wins = { 0: 0 };
   for (let i = 1; i <= 9; i++) {
     player1Tokens.push(
@@ -34,10 +42,17 @@ const main = async () => {
     player2Tokens.push(
       await mintAmmaTokenWithAttacks(account, account2, ammaContract, i)
     );
+    player1Tokens[i].attacks.forEach(allAttackIds.add, allAttackIds);
+    player2Tokens[i].attacks.forEach(allAttackIds.add, allAttackIds);
     wins[i] = 0;
   }
+  const attacks = await getAttacks(
+    worldContract,
+    adminContract,
+    Array.from(allAttackIds).map(bigIntToHex)
+  );
   let games = [];
-
+  let combatants = {};
   for (let i = 0; i < player1Tokens.length; i++) {
     const token1 = player1Tokens[i];
     for (let j = 0; j < player2Tokens.length; j++) {
@@ -68,55 +83,53 @@ const main = async () => {
 
       const combatant1 = {
         id: combatantId1,
-        fighter: i + 1,
         token_id: token1.token_id,
-        attacks: attacks1,
+        attacks: Object.fromEntries(attacks1.map((a) => [a, 0])),
         attack_slots: attackSlots1,
+        stats: await gameContract.combatant_stats(combatantId1),
+        health: await gameContract.combatant_health(combatantId1),
+        stun_chance: BigInt(0),
       };
       const combatant2 = {
         id: combatantId2,
-        fighter: j + 1,
         token_id: token2.token_id,
-        attacks: attacks2,
+        attacks: Object.fromEntries(attacks2.map((a) => [a, 0])),
         attack_slots: attackSlots2,
+        stats: await gameContract.combatant_stats(combatantId2),
+        health: await gameContract.combatant_health(combatantId2),
+        stun_chance: BigInt(0),
       };
+      combatants[combatantId1] = combatant1;
+      combatants[combatantId2] = combatant2;
       games.push({
-        combat_id: gameId,
+        combat_id: BigInt(gameId),
         combatant1,
         combatant2,
         round: 1,
         winner: null,
+        rounds: [],
       });
-
-      console.log(
-        `Game:${gameId}  Fighter ${combatant1.fighter} vs Fighter ${combatant2.fighter}`
-      );
     }
   }
 
-  const maxRunningGames = 9;
-  while (games.filter((game) => game.winner === null).length) {
-    const runningGames = games
-      .filter((game) => game.winner === null)
-      .slice(0, maxRunningGames);
-
-    await runRounds(account, account1, account2, gameContract, runningGames);
-    for (const game of runningGames) {
-      const phase = await gameContract.combat_phase(game.combat_id);
-      if (phase.activeVariant() !== "Commit") {
-        game.winner = phase.unwrap();
-        let winningFighter = 0;
-        if (game.winner === game.combatant1.id) {
-          winningFighter = game.combatant1.fighter;
-        } else if (game.winner === game.combatant2.id) {
-          winningFighter = game.combatant2.fighter;
-        }
-        wins[winningFighter]++;
-      }
+  await runPvpBattles(
+    worldContract,
+    account,
+    account1,
+    account2,
+    gameContract,
+    games,
+    attacks
+  );
+  for (const game of games) {
+    printRoundResults(game.results);
+    let winningFighter = 0;
+    if (game.winner === game.combatant1.id) {
+      winningFighter = game.combatant1.fighter;
+    } else if (game.winner === game.combatant2.id) {
+      winningFighter = game.combatant2.fighter;
     }
-    for (const game of runningGames) {
-      game.round++;
-    }
+    wins[winningFighter]++;
   }
   console.log("Wins: ");
   console.log(wins);

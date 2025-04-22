@@ -297,5 +297,7 @@ export const runPvpBattles = async (
       results[combat_id].push([result["1"], result["2"]]);
     }
   }
-  return results;
+  for (const game of games) {
+    game.results = results[game.combat_id];
+  }
 };
