@@ -26,6 +26,8 @@ const classicChallengeId =
 const accountClassHash =
   "0x07489e371db016fcd31b78e49ccd201b93f4eab60af28b862390e800ec9096e2";
 
+const makeAttack = (caller, signer, attacks) => {};
+
 const main = async () => {
   const account_manifest = await loadAccountManifestFromCmdArgs();
   const account = account_manifest.account;
@@ -81,13 +83,13 @@ const main = async () => {
       const combatant1 = {
         id: combatantId1,
         token_id: token1.token_id,
-        attacks: attacks1,
+        attacks: Object.fromEntries(attacks1.map((a) => [a, 0])),
         attack_slots: attackSlots1,
       };
       const combatant2 = {
         id: combatantId2,
         token_id: token2.token_id,
-        attacks: attacks2,
+        attacks: Object.fromEntries(attacks2.map((a) => [a, 0])),
         attack_slots: attackSlots2,
       };
       games.push({

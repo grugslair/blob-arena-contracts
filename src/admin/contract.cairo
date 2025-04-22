@@ -82,6 +82,11 @@ trait IAttacks<TContractState> {
     /// * `attack_id` - The ID of the attack
     /// Returns: Boolean indicating if the attack is available
     fn attack_available(self: @TContractState, combatant_id: felt252, attack_id: felt252) -> bool;
+    /// Reads the attack cooldown
+    ///
+    /// * `attack_id` - The ID of the attack
+    /// Returns: The cooldown of the attack
+    fn attack_cooldown(self: @TContractState, attack_id: felt252) -> u8;
 }
 
 #[dojo::contract]
@@ -164,6 +169,10 @@ mod admin_actions {
             self: @ContractState, combatant_id: felt252, attack_id: felt252,
         ) -> bool {
             self.default_storage().check_attack_available(combatant_id, attack_id)
+        }
+
+        fn attack_cooldown(self: @ContractState, attack_id: felt252) -> u8 {
+            self.default_storage().get_attack_cooldown(attack_id)
         }
     }
 }

@@ -188,9 +188,9 @@ trait IPvpAdmin<TContractState> {
 mod pvp_actions {
     use starknet::{ContractAddress, get_caller_address, get_contract_address, get_block_timestamp};
     use dojo::{world::{WorldStorage, WorldStorageTrait}};
-    use crate::attacks::AttackStorage;
+    use crate::attacks::{AttackStorage, results::RoundResult};
     use crate::combat::{Phase, CombatTrait, CombatState, CombatStorage};
-    use crate::combatants::{CombatantTrait, CombatantStorage, CombatantInfo};
+    use crate::combatants::{CombatantTrait, CombatantStorage, CombatantInfo, CombatantState};
     use crate::pvp::{components::{GameInfoTrait, WinVia}, GameStorage, systems::GameTrait};
     use crate::world::{WorldTrait, uuid};
     use crate::commitments::Commitment;
@@ -202,6 +202,12 @@ mod pvp_actions {
 
     use super::{IPvp, IPvpAdmin};
 
+    #[event]
+    #[derive(Drop, starknet::Event)]
+    enum Event {
+        RoundResult: RoundResult,
+        CombatantState: CombatantState,
+    }
 
     #[abi(embed_v0)]
     impl IPvpImpl of IPvp<ContractState> {

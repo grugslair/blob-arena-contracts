@@ -54,7 +54,7 @@ struct CombatantToken {
 /// including their health status and combat-related attributes.
 
 #[dojo::model]
-#[derive(Drop, Serde, Copy)]
+#[derive(Drop, Serde, Copy, starknet::Event)]
 struct CombatantState {
     #[key]
     id: felt252,

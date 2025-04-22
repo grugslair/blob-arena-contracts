@@ -11,7 +11,7 @@ use crate::stats::{IStats, IStatsTrait};
 ///
 /// This event is emitted at the end of each combat round to record all attack outcomes.
 #[dojo::event]
-#[derive(Drop, Serde)]
+#[derive(Drop, Serde, starknet::Event)]
 struct RoundResult {
     #[key]
     combat_id: felt252,

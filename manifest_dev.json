@@ -2961,8 +2961,8 @@
       ]
     },
     {
-      "address": "0x7d52df3cc7ea35258956fc8a168188036ec9166e3e81fbb9e0432bc0a354b2f",
-      "class_hash": "0x7d121d6b7756d2c50ba2340d7b56f44f1bfc643fb66000828cf91c4798a1860",
+      "address": "0x68baf36fa0617fd249763af721fb9b593488ef098e8134ec2a619b5bc2d90f6",
+      "class_hash": "0x32f377a46b98ef4a739d88f1af9eee92b2d3c1dbae9695915d04f72437930d7",
       "abi": [
         {
           "type": "impl",
@@ -3677,6 +3677,22 @@
                 }
               ],
               "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "attack_cooldown",
+              "inputs": [
+                {
+                  "name": "attack_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u8"
+                }
+              ],
+              "state_mutability": "view"
             }
           ]
         },
@@ -4125,8 +4141,8 @@
       ]
     },
     {
-      "address": "0x16d8d0c8bed37dd3b09fbe408d6253451ef9b6507bb470ed6aab286a540c755",
-      "class_hash": "0x5f8cbc02a8603d642516d952bb63cebaa6e35d2f518279eb52614af36363579",
+      "address": "0x703d3e0cd66accedd441cf3cb2cc813bd794168225ff9eb897a69c276aa9893",
+      "class_hash": "0x6fd459ffb09512cd4ba91c5d07fa3a4c5704f5dc8f9a360e8e0e1fdfbb3037e",
       "abi": [
         {
           "type": "impl",
@@ -4670,6 +4686,249 @@
           "variants": []
         },
         {
+          "type": "enum",
+          "name": "blob_arena::attacks::components::Target",
+          "variants": [
+            {
+              "name": "Player",
+              "type": "()"
+            },
+            {
+              "name": "Opponent",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::results::DamageResult",
+          "members": [
+            {
+              "name": "damage",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "critical",
+              "type": "core::bool"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::stats::TStats::<core::integer::i8>",
+          "members": [
+            {
+              "name": "strength",
+              "type": "core::integer::i8"
+            },
+            {
+              "name": "vitality",
+              "type": "core::integer::i8"
+            },
+            {
+              "name": "dexterity",
+              "type": "core::integer::i8"
+            },
+            {
+              "name": "luck",
+              "type": "core::integer::i8"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::stats::StatTypes",
+          "variants": [
+            {
+              "name": "Strength",
+              "type": "()"
+            },
+            {
+              "name": "Vitality",
+              "type": "()"
+            },
+            {
+              "name": "Dexterity",
+              "type": "()"
+            },
+            {
+              "name": "Luck",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::components::Stat",
+          "members": [
+            {
+              "name": "stat",
+              "type": "blob_arena::stats::StatTypes"
+            },
+            {
+              "name": "amount",
+              "type": "core::integer::i8"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::attacks::results::AffectResult",
+          "variants": [
+            {
+              "name": "Health",
+              "type": "core::integer::i32"
+            },
+            {
+              "name": "Damage",
+              "type": "blob_arena::attacks::results::DamageResult"
+            },
+            {
+              "name": "Stats",
+              "type": "blob_arena::stats::TStats::<core::integer::i8>"
+            },
+            {
+              "name": "Stat",
+              "type": "blob_arena::attacks::components::Stat"
+            },
+            {
+              "name": "Stun",
+              "type": "core::integer::u8"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::results::EffectResult",
+          "members": [
+            {
+              "name": "target",
+              "type": "blob_arena::attacks::components::Target"
+            },
+            {
+              "name": "affect",
+              "type": "blob_arena::attacks::results::AffectResult"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::attacks::results::AttackOutcomes",
+          "variants": [
+            {
+              "name": "Failed",
+              "type": "()"
+            },
+            {
+              "name": "Stunned",
+              "type": "()"
+            },
+            {
+              "name": "Miss",
+              "type": "core::array::Array::<blob_arena::attacks::results::EffectResult>"
+            },
+            {
+              "name": "Hit",
+              "type": "core::array::Array::<blob_arena::attacks::results::EffectResult>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::results::AttackResult",
+          "members": [
+            {
+              "name": "combatant_id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attack",
+              "type": "core::felt252"
+            },
+            {
+              "name": "target",
+              "type": "core::felt252"
+            },
+            {
+              "name": "result",
+              "type": "blob_arena::attacks::results::AttackOutcomes"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<blob_arena::attacks::results::AttackResult>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<blob_arena::attacks::results::AttackResult>"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "blob_arena::attacks::results::RoundResult",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "combat_id",
+              "type": "core::felt252",
+              "kind": "key"
+            },
+            {
+              "name": "round",
+              "type": "core::integer::u32",
+              "kind": "key"
+            },
+            {
+              "name": "attacks",
+              "type": "core::array::Span::<blob_arena::attacks::results::AttackResult>",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "blob_arena::combatants::components::CombatantState",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "id",
+              "type": "core::felt252",
+              "kind": "key"
+            },
+            {
+              "name": "health",
+              "type": "core::integer::u8",
+              "kind": "data"
+            },
+            {
+              "name": "stun_chance",
+              "type": "core::integer::u8",
+              "kind": "data"
+            },
+            {
+              "name": "stats",
+              "type": "blob_arena::stats::TStats::<core::integer::u8>",
+              "kind": "data"
+            }
+          ]
+        },
+        {
           "type": "event",
           "name": "blob_arena::pvp::contract::pvp_actions::Event",
           "kind": "enum",
@@ -4682,6 +4941,16 @@
             {
               "name": "WorldProviderEvent",
               "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+              "kind": "nested"
+            },
+            {
+              "name": "RoundResult",
+              "type": "blob_arena::attacks::results::RoundResult",
+              "kind": "nested"
+            },
+            {
+              "name": "CombatantState",
+              "type": "blob_arena::combatants::components::CombatantState",
               "kind": "nested"
             }
           ]

@@ -1,6 +1,4 @@
-const randomElement = (array) => {
-  return array[Math.floor(Math.random() * array.length)];
-};
+import { hash, byteArray, CallData } from "starknet";
 
 const nRandomElements = (array, n) => {
   if (n > array.length) {
@@ -20,4 +18,8 @@ export const randomIndexes = (len, n) => {
     indexes.splice(randomIndex, 1);
   }
   return randomIndexes;
+};
+
+export const randomElement = (array) => {
+  return array[Math.floor(Math.random() * array.length)];
 };

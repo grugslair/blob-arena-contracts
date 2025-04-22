@@ -8,6 +8,7 @@ import {
   ec,
   hash,
   CallData,
+  byteArray,
 } from "starknet";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -35,9 +36,13 @@ export const resolvePath = (rpath) => {
 };
 
 export const getContractAddress = (mainfest, contractName) => {
-  for (const contract of mainfest.contracts) {
+  return getContractFromManifest(mainfest, contractName)?.address;
+};
+
+export const getContractFromManifest = (manifest, contractName) => {
+  for (const contract of manifest.contracts) {
     if (contract.tag === contractName) {
-      return contract.address;
+      return contract;
     }
   }
   return null;
@@ -106,13 +111,17 @@ export class AccountManifest {
     );
   }
 
-  async getContract(tag) {
+  getContract(tag) {
     if (this.contracts[tag]) {
       return this.contracts[tag];
     } else {
-      const address = this.getContractAddress(tag);
-      if (address) {
-        this.contracts[tag] = await getContract(this.account, address);
+      const data = getContractFromManifest(this.manifest, tag);
+      if (data) {
+        this.contracts[tag] = new Contract(
+          data.abi,
+          data.address,
+          this.account
+        );
         return this.contracts[tag];
       } else {
         throw new Error(`Contract ${tag} not found in manifest`);
@@ -122,6 +131,7 @@ export class AccountManifest {
   getContractAddress(tag) {
     return getContractAddress(this.manifest, tag);
   }
+
   async execute(calls) {
     const { transaction_hash } = await this.account.execute(calls, {
       version: 3,
@@ -136,6 +146,13 @@ export class AccountManifest {
       ],
     });
     return transaction_hash;
+  }
+  getWorldContract() {
+    return new Contract(
+      this.manifest.world.abi,
+      this.manifest.world.address,
+      this.account
+    );
   }
 }
 
@@ -323,4 +340,37 @@ export const callOptions = (caller) => {
     execute_after: now_seconds - 3600,
     execute_before: now_seconds + 3600,
   };
+};
+
+export const stringToByteArrayCompiled = (string) => {
+  return CallData.toHex([byteArray.byteArrayFromString(string)]);
+};
+
+export const poseidonHashString = (string) => {
+  return hash.computePoseidonHashOnElements(stringToByteArrayCompiled(string));
+};
+
+export const dataToByteArray = (data) => {
+  const [pending_word, pending_word_len] = data.splice(-2);
+  return { data, pending_word, pending_word_len };
+};
+
+export const byteDataToString = (data) => {
+  return byteArray.stringFromByteArray(dataToByteArray(data));
+};
+
+export const getAllEvents = async (accountOrProvider, eventFilter) => {
+  let allEvents = [];
+  let { events, continuation_token } = await accountOrProvider.getEvents(
+    eventFilter
+  );
+  allEvents.push(...events);
+  while (parseInt(continuation_token.split(",").at(-1), 16)) {
+    ({ events, continuation_token } = await accountOrProvider.getEvents({
+      ...eventFilter,
+      continuation_token,
+    }));
+    allEvents.push(...events);
+  }
+  return allEvents;
 };

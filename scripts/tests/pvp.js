@@ -1,5 +1,22 @@
-import { hash } from "starknet";
+import { hash, events, num } from "starknet";
 import { callOptions } from "../stark-utils.js";
+import { randomUseableAttack } from "./attacks.js";
+import {
+  eventEmittedHash,
+  namespaceNameToHash,
+  storeSetRecordHash,
+  DojoParser,
+} from "../dojo.js";
+
+const roundResultHash = namespaceNameToHash("blob_arena-RoundResult");
+const combatantStateHash = namespaceNameToHash("blob_arena-CombatantState");
+const dojoNamespaceMap = {
+  [roundResultHash]: num.toHex(hash.starknetKeccak("RoundResult")),
+  [combatantStateHash]: num.toHex(hash.starknetKeccak("CombatantState")),
+};
+
+const roundResultPath = "blob_arena::attacks::results::RoundResult";
+const combatantStatePath = "blob_arena::combatants::components::CombatantState";
 const commitAttackCall = (contract, combatantId, commitment) => {
   return contract.populate("commit", {
     combatant_id: combatantId,
@@ -105,20 +122,28 @@ export const combatRoundsCalls = (
   account1,
   account2,
   contract,
-  games
+  games,
+  attacks
 ) => {
   let calls = [];
+
   for (const game of games) {
     const combatId = game.combat_id;
     const combatant1 = game.combatant1;
     const combatant2 = game.combatant2;
-    const attack1 = randomElement(combatant1.attacks);
-    const attack2 = randomElement(combatant2.attacks);
-    console.log(
-      `Combat ${combatId} Round ${game.round} Attacks: 0x${attack1.toString(
-        16
-      )} vs 0x${attack2.toString(16)}`
+    const attack1Id = randomUseableAttack(
+      attacks,
+      combatant1.attacks,
+      game.round
     );
+
+    const attack2Id = randomUseableAttack(
+      attacks,
+      combatant2.attacks,
+      game.round
+    );
+    combatant1.attacks[attack1Id] = BigInt(game.round);
+    combatant2.attacks[attack2Id] = BigInt(game.round);
     calls.push(
       ...combatRoundCalls(
         caller,
@@ -128,8 +153,8 @@ export const combatRoundsCalls = (
         combatId,
         combatant1.id,
         combatant2.id,
-        attack1,
-        attack2
+        attack1Id,
+        attack2Id
       )
     );
   }
@@ -174,14 +199,103 @@ export const runRounds = async (
   account1,
   account2,
   contract,
-  games
+  games,
+  attacks
 ) => {
   const calls = await Promise.all(
-    combatRoundsCalls(caller, account1, account2, contract, games)
+    combatRoundsCalls(caller, account1, account2, contract, games, attacks)
   );
-  await caller.executeFromOutside(calls, { version: 3 });
+  const { transaction_hash } = await caller.executeFromOutside(calls, {
+    version: 3,
+  });
+  return transaction_hash;
 };
 
-const randomElement = (array) => {
-  return array[Math.floor(Math.random() * array.length)];
+export const runPvpBattles = async (
+  world,
+  caller,
+  account1,
+  account2,
+  contract,
+  games,
+  attacks
+) => {
+  const maxRunningGames = 9;
+  let eventCalls = [];
+  const dojoParser = new DojoParser(contract.abi, dojoNamespaceMap);
+  while (games.filter((game) => game.winner === null).length) {
+    const runningGames = games
+      .filter((game) => game.winner === null)
+      .slice(0, maxRunningGames);
+
+    const transaction_hash = await runRounds(
+      caller,
+      account1,
+      account2,
+      contract,
+      runningGames,
+      attacks
+    );
+    for (const game of runningGames) {
+      const phase = await contract.combat_phase(game.combat_id);
+      if (phase.activeVariant() !== "Commit") {
+        game.winner = phase.unwrap();
+      }
+    }
+    for (const game of runningGames) {
+      game.round++;
+    }
+    eventCalls.push(
+      caller
+        .waitForTransaction(transaction_hash)
+        .then(({ events }) => dojoParser.parseEvents(events))
+    );
+  }
+  let combatants = {};
+  let results = {};
+  games.map(({ combat_id, combatant1, combatant2 }) => {
+    combatants[combatant1.id] = [combat_id, 1];
+    combatants[combatant2.id] = [combat_id, 2];
+    results[combat_id] = [];
+  });
+  const rounds = await Promise.all(eventCalls);
+  for (const round of rounds) {
+    let roundEvents = {};
+    for (const event of round) {
+      if (roundResultPath in event) {
+        const { combat_id, attacks: _attacks } = event[roundResultPath];
+        if (!(combat_id in roundEvents)) {
+          roundEvents[combat_id] = { 1: {}, 2: {} };
+        }
+        for (let i = 0; i < _attacks.length; i++) {
+          const { combatant_id, attack, result } = _attacks[i];
+          const [gameId, index] = combatants[combatant_id];
+
+          Object.assign(roundEvents[combat_id][index.toString()], {
+            order: i,
+            attack: attacks[attack],
+            result,
+          });
+        }
+      } else if (combatantStatePath in event) {
+        const { id, health, stun_chance, stats } = event[combatantStatePath];
+        const [combat_id, index] = combatants[id];
+        if (!(combat_id in roundEvents)) {
+          roundEvents[combat_id] = { 1: {}, 2: {} };
+        }
+        Object.assign(roundEvents[combat_id][index.toString()], {
+          id,
+          health,
+          stun_chance,
+          stats,
+          index,
+        });
+      }
+    }
+
+    for (const [combat_id, result] of Object.entries(roundEvents)) {
+      results[combat_id].push([result["1"], result["2"]]);
+    }
+  }
+  return results;
 };

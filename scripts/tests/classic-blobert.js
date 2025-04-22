@@ -22,7 +22,7 @@ export const getFreeAttacks = async (contract, tokenId) => {
   let allAttackSlots = [];
 
   for (let i = 1; i <= 5; i++) {
-    for (let j = 1; j < 5; j++) {
+    for (let j = 0; j < 5; j++) {
       allAttackSlots.push(cairo.tuple(i, j));
     }
   }
