@@ -808,5 +808,476 @@
         "miss": []
       }
     ]
-  }
+  },
+  "10": {
+    "name": "AMMA 10",
+    "stats": {
+        "strength": 44,
+        "vitality": 45,
+        "dexterity": 66,
+        "luck": 48
+    },
+    "attacks": [
+        {
+            "name": "Quick Slash",
+            "speed": 95,
+            "accuracy": 90,
+            "cooldown": 0,
+            "hit": [
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Damage": {
+                            "power": 30,
+                            "critical": 15
+                        }
+                    }
+                }
+            ],
+            "miss": []
+        },
+        {
+            "tag": "Buckler Tap"
+        },
+        {
+            "name": "Steel Sonata",
+            "speed": 70,
+            "accuracy": 80,
+            "cooldown": 10,
+            "hit": [
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Damage": {
+                            "power": 70,
+                            "critical": 20
+                        }
+                    }
+                },
+                {
+                    "target": "Player",
+                    "affect": {
+                        "Stats": {
+                            "strength": 30,
+                            "vitality": 30,
+                            "dexterity": 0,
+                            "luck": 0
+                        }
+                    }
+                }
+            ],
+            "miss": []
+        },
+        {
+          "name": "Circle Out",
+          "speed": 90,
+          "accuracy": 90,
+          "cooldown": 3,
+          "hit": [
+              {
+                  "target": "Player",
+                  "affect": {
+                      "Health": 50
+                  }
+              },
+              {
+                  "target": "Player",
+                  "affect": {
+                      "Stats": {
+                          "strength": 0,
+                          "vitality": 0,
+                          "dexterity": 30,
+                          "luck": 0
+                      }
+                  }
+              }
+          ],
+          "miss": []
+      }
+    ]
+},
+  "11": {
+    "name": "AMMA 11",
+    "stats": {
+        "strength": 62,
+        "vitality": 67,
+        "dexterity": 43,
+        "luck": 38
+    },
+    "attacks": [
+        {
+            "tag": "Axe Attack"
+        },
+        {
+            "name": "Hammer Fist",
+            "speed": 70,
+            "accuracy": 80,
+            "cooldown": 1,
+            "hit": [
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Damage": {
+                            "power": 45,
+                            "critical": 0
+                        }
+                    }
+                },
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Stun": 30
+                    }
+                }
+            ],
+            "miss": []
+        },
+        {
+            "name": "Spinning Axe",
+            "speed": 50,
+            "accuracy": 80,
+            "cooldown": 3,
+            "hit": [
+              {
+                  "target": "Opponent",
+                  "affect": {
+                      "Damage": {
+                          "power": 55,
+                          "critical": 20
+                      }
+                  }
+              }
+          ],
+            "miss": []
+        },
+        {
+            "name": "One Shot",
+            "speed": 40,
+            "accuracy": 50,
+            "cooldown": 10,
+            "hit": [
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Damage": {
+                            "power": 100,
+                            "critical": 0
+                        }
+                    }
+                }
+            ],
+            "miss": []
+        }
+    ]
+},
+  "12": {
+    "name": "AMMA 12",
+    "stats": {
+        "strength": 57,
+        "vitality": 46,
+        "dexterity": 53,
+        "luck": 58
+    },
+    "attacks": [
+        {
+            "tag": "Quick Slash"
+        },
+        {
+            "tag": "Shield Punch"
+        },
+        {
+            "name": "Power Arm",
+            "speed": 50,
+            "accuracy": 80,
+            "cooldown": 3,
+            "hit": [
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Damage": {
+                            "power": 60,
+                            "critical": 20
+                        }
+                    }
+                },
+                {
+                  "target": "Opponent",
+                  "affect": {
+                      "Stun": 10
+                  }
+              }
+            ],
+            "miss": []
+        },
+        {
+            "name": "Snap Shot",
+            "speed": 90,
+            "accuracy": 100,
+            "cooldown": 3,
+            "hit": [
+               {
+                "target": "Player",
+                "affect": {
+                    "Stats": {
+                        "strength": 30,
+                        "vitality": 0,
+                        "dexterity": 0,
+                        "luck": 30
+                    }
+                }
+                },
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Stats": {
+                            "strength": -20,
+                            "vitality": 0,
+                            "dexterity": -20,
+                            "luck": 0
+                        }
+                    }
+                }
+            ],
+            "miss": []
+        }
+    ]
+  },
+  "13": {
+    "name": "AMMA 13",
+    "stats": {
+        "strength": 48,
+        "vitality": 46,
+        "dexterity": 61,
+        "luck": 63
+    },
+    "attacks": [
+        {
+            "tag": "Quick Slash"
+        },
+        {
+            "name": "Knee Check",
+            "speed": 80,
+            "accuracy": 90,
+            "cooldown": 1,
+            "hit": [
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Damage": {
+                            "power": 40,
+                            "critical": 0
+                        }
+                    }
+                },
+                {
+                  "target": "Opponent",
+                  "affect": {
+                      "Stun": 15
+                  }
+                },
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Stats": {
+                            "dexterity": -15,
+                            "strength": 0,
+                            "vitality": 0,
+                            "luck": 0
+                        }
+                    }
+                }
+            ],
+            "miss": []
+        },
+        {
+            "name": "Headbutt",
+            "speed": 50,
+            "accuracy": 75,
+            "cooldown": 3,
+            "hit": [
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Damage": {
+                            "power": 60,
+                            "critical": 10
+                        }
+                    }
+                },
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Stun": 50
+                    }
+                },
+                {
+                    "target": "Player",
+                    "affect": {
+                        "Health": -20
+                    }
+                }
+            ],
+            "miss": []
+        },
+        {
+            "name": "Final Judgement",
+            "speed": 40,
+            "accuracy": 95,
+            "cooldown": 3,
+            "hit": [
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Damage": {
+                            "power": 75,
+                            "critical": 20
+                        }
+                    }
+                }
+            ],
+            "miss": []
+        }
+    ]
+},
+  "14": {
+    "name": "AMMA 14",
+    "stats": {
+        "strength": 55,
+        "vitality": 68,
+        "dexterity": 40,
+        "luck": 35
+    },
+    "attacks": [
+        {
+            "tag": "Sword Slash"
+        },
+        {
+            "name": "Shield Check",
+            "speed": 55,
+            "accuracy": 80,
+            "cooldown": 1,
+            "hit": [
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Damage": {
+                            "power": 50,
+                            "critical": 0
+                        }
+                    }
+                },
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Stun": 30
+                    }
+                }
+            ],
+            "miss": []
+        },
+        {
+            "name": "Hold The Line",
+            "speed": 60,
+            "accuracy": 100,
+            "cooldown": 3,
+            "hit": [
+               {
+                "target": "Player",
+                "affect": {
+                    "Health": 60
+                }
+              }
+            ],
+            "miss": []
+        },
+        {
+            "name": "Seismic Toss",
+            "speed": 30,
+            "accuracy": 75,
+            "cooldown": 3,
+            "hit": [
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Damage": {
+                            "power": 65,
+                            "critical": 10
+                        }
+                    }
+                },
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Stun": 50
+                    }
+                }
+            ],
+            "miss": []
+        }
+    ]
+  },
+  "15": {
+        "name": "AMMA 15",
+        "stats": {
+            "strength": 60,
+            "vitality": 63,
+            "dexterity": 45,
+            "luck": 42
+        },
+        "attacks": [
+            {
+                "tag": "Axe Attack"
+            },
+            {
+                "tag": "Hammer Fist"
+            },
+            {
+                "name": "Axe Thrust",
+                "speed": 50,
+                "accuracy": 70,
+                "cooldown": 2,
+                "hit": [
+                    {
+                        "target": "Opponent",
+                        "affect": {
+                            "Damage": {
+                                "power": 60,
+                                "critical": 10
+                            }
+                        }
+                    },
+                    {
+                      "target": "Player",
+                      "affect": {
+                          "Stats": {
+                              "dexterity": 0,
+                              "strength": 0,
+                              "vitality": 0,
+                              "luck": 30
+                          }
+                      }
+                  }
+                ],
+                "miss": []
+            },
+            {
+                "name": "Spartan Spear",
+                "speed": 70,
+                "accuracy": 80,
+                "cooldown": 3,
+                "hit": [
+                    {
+                        "target": "Opponent",
+                        "affect": {
+                            "Damage": {
+                                "power": 70,
+                                "critical": 20
+                            }
+                        }
+                    }
+                ],
+                "miss": []
+            }
+        ]
+    }
 }
