@@ -2182,7 +2182,7 @@
     },
     {
       "address": "0x38a324793bdc97b73520b9b8def8e9871694e3562d3da720544854f5182c536",
-      "class_hash": "0xd8455e0c6e6b0b89f351007b749b6cb7936cd3200110f8d93cdb689a7f0502",
+      "class_hash": "0x3b9e41cdd1b88719d36690fcf23171cf97c683bfb95d42da3fef6c094e7218a",
       "abi": [
         {
           "type": "impl",
@@ -2250,6 +2250,134 @@
             {
               "name": "high",
               "type": "core::integer::u128"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::stats::TStats::<core::integer::u8>",
+          "members": [
+            {
+              "name": "strength",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "vitality",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "dexterity",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "luck",
+              "type": "core::integer::u8"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::arcade::components::ArcadePhase",
+          "variants": [
+            {
+              "name": "None",
+              "type": "()"
+            },
+            {
+              "name": "Active",
+              "type": "()"
+            },
+            {
+              "name": "PlayerWon",
+              "type": "()"
+            },
+            {
+              "name": "PlayerLost",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::arcade::components::ArcadeChallengeAttempt",
+          "members": [
+            {
+              "name": "id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "challenge",
+              "type": "core::felt252"
+            },
+            {
+              "name": "player",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "collection",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "token_id",
+              "type": "core::integer::u256"
+            },
+            {
+              "name": "stats",
+              "type": "blob_arena::stats::TStats::<core::integer::u8>"
+            },
+            {
+              "name": "attacks",
+              "type": "core::array::Array::<core::felt252>"
+            },
+            {
+              "name": "expiry",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "stage",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "respawns",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "phase",
+              "type": "blob_arena::arcade::components::ArcadePhase"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::arcade::components::ArcadeGame",
+          "members": [
+            {
+              "name": "id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "combatant_id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "player",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "opponent_token",
+              "type": "core::felt252"
+            },
+            {
+              "name": "opponent_id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "round",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "phase",
+              "type": "blob_arena::arcade::components::ArcadePhase"
             }
           ]
         },
@@ -2351,6 +2479,54 @@
               "inputs": [],
               "outputs": [],
               "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "challenge_attempt",
+              "inputs": [
+                {
+                  "name": "attempt_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "blob_arena::arcade::components::ArcadeChallengeAttempt"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "game",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "blob_arena::arcade::components::ArcadeGame"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "challenge_attempt_game",
+              "inputs": [
+                {
+                  "name": "attempt_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "blob_arena::arcade::components::ArcadeGame"
+                }
+              ],
+              "state_mutability": "view"
             }
           ]
         },
@@ -2396,28 +2572,6 @@
             {
               "name": "Custom",
               "type": "core::felt252"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "blob_arena::stats::TStats::<core::integer::u8>",
-          "members": [
-            {
-              "name": "strength",
-              "type": "core::integer::u8"
-            },
-            {
-              "name": "vitality",
-              "type": "core::integer::u8"
-            },
-            {
-              "name": "dexterity",
-              "type": "core::integer::u8"
-            },
-            {
-              "name": "luck",
-              "type": "core::integer::u8"
             }
           ]
         },

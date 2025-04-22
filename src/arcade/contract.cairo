@@ -4,6 +4,7 @@ use crate::arcade::ArcadeOpponentInput;
 use crate::collections::{TokenAttributes, BlobertItemKey};
 use crate::tags::IdTagNew;
 use crate::attacks::components::AttackInput;
+use super::{ArcadeGame, ArcadeChallengeAttempt};
 
 #[starknet::interface]
 trait IArcade<TContractState> {
@@ -88,6 +89,25 @@ trait IArcade<TContractState> {
     /// Models:
     /// - ArcadeFreeGames
     fn claim_free_game(ref self: TContractState);
+
+    /// Gets the challenge attemt
+    ///
+    /// # Arguments
+    /// * `attempt_id` - The unique identifier of the challenge attempt
+    ///
+    /// Returns:
+    /// - `ArcadeChallengeAttempt` - The challenge attempt object
+    fn challenge_attempt(self: @TContractState, attempt_id: felt252) -> ArcadeChallengeAttempt;
+
+    /// Gets a arcade game
+    /// # Arguments
+    /// * `game_id` - The unique identifier of the game
+    ///
+    /// Returns:
+    /// - `ArcadeGame` - The game object
+    fn game(self: @TContractState, game_id: felt252) -> ArcadeGame;
+
+    fn challenge_attempt_game(self: @TContractState, attempt_id: felt252) -> ArcadeGame;
 }
 
 /// Interface for managing Arcade (Player vs Environment) administrative functions.
@@ -211,6 +231,7 @@ mod arcade_actions {
     use dojo::world::WorldStorage;
     use crate::arcade::{
         ArcadeTrait, ArcadeStorage, ARCADE_NAMESPACE_HASH, ArcadeStore, ArcadeOpponentInput,
+        ArcadeChallengeAttempt, ArcadeGame,
     };
     use crate::attacks::{AttackInput, AttackTrait};
     use crate::permissions::{Permissions, Role};
@@ -292,6 +313,18 @@ mod arcade_actions {
         fn claim_free_game(ref self: ContractState) {
             let mut store = self.get_arcade_storage();
             store.mint_free_game(get_caller_address());
+        }
+
+        fn challenge_attempt(self: @ContractState, attempt_id: felt252) -> ArcadeChallengeAttempt {
+            self.get_arcade_storage().get_arcade_challenge_attempt(attempt_id)
+        }
+
+        fn game(self: @ContractState, game_id: felt252) -> ArcadeGame {
+            self.get_arcade_storage().get_arcade_game(game_id)
+        }
+
+        fn challenge_attempt_game(self: @ContractState, attempt_id: felt252) -> ArcadeGame {
+            self.get_arcade_storage().get_arcade_attempt_game(attempt_id)
         }
     }
 

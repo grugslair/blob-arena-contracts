@@ -11,7 +11,7 @@ use crate::arcade::{
     ArcadeStore, ArcadeChallengeAttempt, ArcadePhaseTrait, ArcadeAttemptEnd,
     components::{
         OPPONENT_TAG_GROUP, CHALLENGE_TAG_GROUP, ARCADE_CHALLENGE_MAX_RESPAWNS,
-        ArcadeAttemptRespawn,
+        ArcadeAttemptRespawn, ArcadeAttemptGetGame,
     },
 };
 use crate::pvp::{GameStorage, GameTrait};
@@ -517,5 +517,10 @@ impl ArcadeImpl of ArcadeTrait {
         if !self.use_free_game(player) {
             self.use_paid_game(player);
         };
+    }
+
+    fn get_arcade_attempt_game(self: @WorldStorage, attempt_id: felt252) -> ArcadeGame {
+        let ArcadeAttemptGetGame { challenge, stage } = self.get_arcade_challenge_stage(attempt_id);
+        self.get_arcade_game(self.get_arcade_stage_game_id(challenge, stage))
     }
 }

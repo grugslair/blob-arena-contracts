@@ -301,6 +301,12 @@ struct ArcadeStore {
     arcade: WorldStorage,
 }
 
+#[derive(Drop, Serde, Introspect)]
+struct ArcadeAttemptGetGame {
+    challenge: felt252,
+    stage: u32,
+}
+
 
 /// Arcade gameplay components that track the number of available games for a player
 ///
@@ -556,6 +562,11 @@ impl ArcadeStorageImpl of ArcadeStorage {
                 selector!("stage"),
                 stage,
             );
+    }
+    fn get_arcade_challenge_stage(
+        self: @WorldStorage, attempt_id: felt252,
+    ) -> ArcadeAttemptGetGame {
+        self.get_arcade_challenge_attempt_schema(attempt_id)
     }
     fn set_arcade_challenge_attempt_ended(ref self: WorldStorage, id: felt252, won: bool) {
         self
