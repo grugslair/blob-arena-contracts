@@ -13,7 +13,7 @@ mod blobert_actions {
     use super::super::super::{
         BlobertStore, TokenAttributes, ICollection, CollectionGroupStorage, CollectionGroup,
     };
-    use super::super::super::items::cmp;
+    use super::super::super::items::{cmp, DefaultSetItemCallback};
     use super::super::super::collection;
 
     const BLOBERT_CONTRACT_ADDRESS_STORAGE_FELT: felt252 =
@@ -53,7 +53,6 @@ mod blobert_actions {
             blobert_dispatcher().owner_of(token_id)
         }
     }
-
 
     #[abi(embed_v0)]
     impl IBlobertItems =

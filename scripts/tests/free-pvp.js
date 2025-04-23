@@ -60,6 +60,7 @@ const main = async () => {
   );
   let games = [];
   let combatants = {};
+  let n = 0;
   for (let i = 0; i < player1Tokens.length; i++) {
     const token1 = player1Tokens[i];
     for (let j = 0; j < player2Tokens.length; j++) {
@@ -109,6 +110,7 @@ const main = async () => {
       combatants[combatantId1] = combatant1;
       combatants[combatantId2] = combatant2;
       games.push({
+        n: n++,
         combat_id: BigInt(gameId),
         combatant1,
         combatant2,

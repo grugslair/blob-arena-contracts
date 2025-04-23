@@ -4,7 +4,6 @@ mod collection;
 mod store;
 mod world_blobert;
 mod amma_blobert;
-mod test_blobert;
 mod group;
 use group::{CollectionGroupStorage, CollectionGroup};
 mod blobert {
@@ -26,7 +25,10 @@ mod items {
     mod systems;
     use storage::BlobertItemStorage;
     use systems::BlobertItemsTrait;
-    use component::{cmp, IBlobertItems, IBlobertItemsDispatcher, IBlobertItemsDispatcherTrait};
+    use component::{
+        cmp, IBlobertItems, IBlobertItemsDispatcher, IBlobertItemsDispatcherTrait,
+        DefaultSetItemCallback,
+    };
 }
 
 use interface::{

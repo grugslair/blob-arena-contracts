@@ -165,6 +165,10 @@ trait IBlobertItems<TContractState> {
     );
 }
 
+
+impl DefaultSetItemCallback<TContractState> of cmp::SetItemCallback<TContractState> {}
+
+
 mod cmp {
     use dojo::world::WorldStorage;
 
@@ -176,11 +180,18 @@ mod cmp {
     use super::super::{BlobertItemsTrait, BlobertItemStorage};
     use super::super::super::to_seed_key;
 
+    trait SetItemCallback<TContractState> {
+        fn set_item_callback(
+            ref self: TContractState, key: BlobertItemKey, name: ByteArray, stats: UStats,
+        ) {}
+    }
+
     #[starknet::embeddable]
     impl IBlobertItemsImpl<
         TContractState,
         const ROLE: Role,
         impl BlobertStore: super::super::super::BlobertStore,
+        +SetItemCallback<TContractState>,
         +Drop<TContractState>,
         +WorldComponent<TContractState>,
     > of super::IBlobertItems<TContractState> {

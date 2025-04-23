@@ -37,7 +37,6 @@ mod free_blobert_actions {
     use super::super::systems::FreeBlobertTrait;
     use super::super::super::blobert::BLOBERT_NAMESPACE_HASH;
     use super::super::super::world_blobert;
-    use super::super::super::items::cmp;
     use super::super::super::collection;
     use super::super::super::{
         IBlobertCollectionImpl, TokenAttributes, CollectionGroupStorage, CollectionGroup,

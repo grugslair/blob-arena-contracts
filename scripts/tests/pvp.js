@@ -7,6 +7,7 @@ import {
   storeSetRecordHash,
   DojoParser,
 } from "../dojo.js";
+const { toHex } = num;
 
 const roundResultHash = namespaceNameToHash("blob_arena-RoundResult");
 const combatantStateHash = namespaceNameToHash("blob_arena-CombatantState");
@@ -157,7 +158,14 @@ export const combatRoundsCalls = (
         attack2Id
       )
     );
+    const attack1Name = attacks[attack1Id].name;
+    const attack2Name = attacks[attack2Id].name;
+
+    console.log(
+      `Game ${game.n}: round: ${game.round} ${attack1Name} vs ${attack2Name}`
+    );
   }
+
   return calls;
 };
 

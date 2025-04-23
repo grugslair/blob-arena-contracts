@@ -26,26 +26,42 @@ trait IAmmaBlobert<TContractState> {
 mod amma_blobert_actions {
     use core::poseidon::poseidon_hash_span;
     use starknet::{ContractAddress, get_caller_address, get_contract_address};
+    use starknet::storage::Map;
     use dojo::world::{WorldStorage, IWorldDispatcher};
 
     use crate::world::WorldTrait;
     use crate::starknet::return_value;
     use crate::permissions::{Role, Permissions};
+    use crate::stats::UStats;
     use super::super::world_blobert::{WorldBlobertStore, WorldBlobertStorage};
     use super::super::items::cmp;
     use super::super::collection;
     use super::super::{
         IBlobertCollectionImpl, TokenAttributes, CollectionGroupStorage, CollectionGroup,
+        BlobertItemKey,
     };
     use super::IAmmaBlobert;
     const AMMA_BLOBERT_NAMESPACE_HASH: felt252 = bytearray_hash!("amma_blobert");
+
+    #[storage]
+    struct Storage {
+        fighters_exists: Map<felt252, bool>,
+    }
 
     fn dojo_init(ref self: ContractState) {
         let mut storage = self.default_storage();
         storage.set_collection_group(get_contract_address(), CollectionGroup::AmmaBlobert);
     }
 
-
+    impl AmmaBlobertCallback of cmp::SetItemCallback<ContractState> {
+        fn set_item_callback(
+            ref self: ContractState, key: BlobertItemKey, name: ByteArray, stats: UStats,
+        ) {
+            if let BlobertItemKey::Custom(id) = key {
+                self.fighters_exists.write(id, true);
+            }
+        }
+    }
     impl AmmaBlobertStoreImpl =
         WorldBlobertStore<AMMA_BLOBERT_NAMESPACE_HASH, AMMA_BLOBERT_NAMESPACE_HASH>;
 
@@ -63,6 +79,7 @@ mod amma_blobert_actions {
             let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
             let owner = get_caller_address();
             let id = poseidon_hash_span([owner.into(), fighter].span());
+            assert(self.fighters_exists.read(fighter), 'Fighter does not exist');
             storage.set_blobert_token(id.into(), owner, TokenAttributes::Custom(fighter));
             return_value(id.into())
         }

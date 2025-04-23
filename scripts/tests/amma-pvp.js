@@ -15,7 +15,7 @@ import { printRoundResults } from "./game.js";
 
 const accountClassHash =
   "0x07489e371db016fcd31b78e49ccd201b93f4eab60af28b862390e800ec9096e2";
-const ammaFighterIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const ammaFighterIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
 const main = async () => {
   const account_manifest = await loadAccountManifestFromCmdArgs();
@@ -58,7 +58,8 @@ const main = async () => {
   );
   let games = [];
   let combatants = {};
-  let wins = {};
+  let wins = { 0: 0 };
+  let n = 0;
   for (let i = 0; i < player1Tokens.length; i++) {
     const token1 = player1Tokens[i];
     wins[i + 1] = 0;
@@ -91,6 +92,7 @@ const main = async () => {
       const combatant1 = {
         id: combatantId1,
         token_id: token1.id,
+        fighter: i + 1,
         attacks: Object.fromEntries(attacks1.map((a) => [a, 0])),
         attack_slots: attackSlots1,
         stats: await gameContract.combatant_stats(combatantId1),
@@ -100,6 +102,7 @@ const main = async () => {
       const combatant2 = {
         id: combatantId2,
         token_id: token2.id,
+        fighter: j + 1,
         attacks: Object.fromEntries(attacks2.map((a) => [a, 0])),
         attack_slots: attackSlots2,
         stats: await gameContract.combatant_stats(combatantId2),
@@ -109,6 +112,7 @@ const main = async () => {
       combatants[combatantId1] = combatant1;
       combatants[combatantId2] = combatant2;
       games.push({
+        n: ++n,
         combat_id: BigInt(gameId),
         combatant1,
         combatant2,
@@ -129,7 +133,7 @@ const main = async () => {
     attacks
   );
   for (const game of games) {
-    printRoundResults(game.results);
+    printRoundResults(game);
     let winningFighter = 0;
     if (game.winner === game.combatant1.id) {
       winningFighter = game.combatant1.fighter;
