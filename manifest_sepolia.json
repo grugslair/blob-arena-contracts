@@ -1,8 +1,8 @@
 {
   "world": {
     "class_hash": "0x7c9469d45a9cdbab775035afb48e1fa73fb35ab059fcb9dfb0a301aa973e783",
-    "address": "0x56475a0893e2549b793cd0eee785ea7df5c6c1e151ddabefab3002f9a914054",
-    "seed": "blob-arena-rc-0.13-1",
+    "address": "0x5889c701561056654e583ec0dba453f78030e4ea624d07e7e6c224ad91a39fe",
+    "seed": "blob-arena-rc-0.13-2",
     "name": "blob_arena-0.13",
     "entrypoints": [
       "uuid",
@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0xe2d43e1d7c171136d26fab8b584c987007516a157b54abe271b44bcae26f8d",
-      "class_hash": "0x6dd5e8276bfa18a78622b88aa46af800bc30c2d2ae84980b754dc5ea0d7f849",
+      "address": "0x645aec04e61f286691b91d6589d010890bb66ca0af91bf24d12c8bc4387c868",
+      "class_hash": "0x54c74701d00f746bccbf637344d12c52fd3c88f7d6bad1905395776244fa466",
       "abi": [
         {
           "type": "impl",
@@ -1446,7 +1446,7 @@
               ],
               "outputs": [
                 {
-                  "type": "core::felt252"
+                  "type": "core::integer::u256"
                 }
               ],
               "state_mutability": "external"
@@ -2181,8 +2181,8 @@
       ]
     },
     {
-      "address": "0x31042a956660273e2a2196e0422e85df2aaa349f36e3e3c48e3b4d6879ff760",
-      "class_hash": "0xac251065a7284e33daecf52d92946bfb92610126514c499c9fe4c576d75e88",
+      "address": "0x1ad613db1957a576c1a9bae913f1d22a41add2f1d64d822d9e097f219b34954",
+      "class_hash": "0x79e6cf808b6e3140ad744469e1877d049a8b56d450675c95ec03555c14fc37c",
       "abi": [
         {
           "type": "impl",
@@ -2254,6 +2254,134 @@
           ]
         },
         {
+          "type": "struct",
+          "name": "blob_arena::stats::TStats::<core::integer::u8>",
+          "members": [
+            {
+              "name": "strength",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "vitality",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "dexterity",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "luck",
+              "type": "core::integer::u8"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::arcade::components::ArcadePhase",
+          "variants": [
+            {
+              "name": "None",
+              "type": "()"
+            },
+            {
+              "name": "Active",
+              "type": "()"
+            },
+            {
+              "name": "PlayerWon",
+              "type": "()"
+            },
+            {
+              "name": "PlayerLost",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::arcade::components::ArcadeChallengeAttempt",
+          "members": [
+            {
+              "name": "id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "challenge",
+              "type": "core::felt252"
+            },
+            {
+              "name": "player",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "collection",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "token_id",
+              "type": "core::integer::u256"
+            },
+            {
+              "name": "stats",
+              "type": "blob_arena::stats::TStats::<core::integer::u8>"
+            },
+            {
+              "name": "attacks",
+              "type": "core::array::Array::<core::felt252>"
+            },
+            {
+              "name": "expiry",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "stage",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "respawns",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "phase",
+              "type": "blob_arena::arcade::components::ArcadePhase"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::arcade::components::ArcadeGame",
+          "members": [
+            {
+              "name": "id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "combatant_id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "player",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "opponent_token",
+              "type": "core::felt252"
+            },
+            {
+              "name": "opponent_id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "round",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "phase",
+              "type": "blob_arena::arcade::components::ArcadePhase"
+            }
+          ]
+        },
+        {
           "type": "interface",
           "name": "blob_arena::arcade::contract::IArcade",
           "items": [
@@ -2294,7 +2422,11 @@
                   "type": "core::array::Array::<(core::felt252, core::felt252)>"
                 }
               ],
-              "outputs": [],
+              "outputs": [
+                {
+                  "type": "(core::felt252, core::felt252)"
+                }
+              ],
               "state_mutability": "external"
             },
             {
@@ -2306,7 +2438,11 @@
                   "type": "core::felt252"
                 }
               ],
-              "outputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
               "state_mutability": "external"
             },
             {
@@ -2318,7 +2454,11 @@
                   "type": "core::felt252"
                 }
               ],
-              "outputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
               "state_mutability": "external"
             },
             {
@@ -2339,6 +2479,70 @@
               "inputs": [],
               "outputs": [],
               "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "challenge_attempt",
+              "inputs": [
+                {
+                  "name": "attempt_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "blob_arena::arcade::components::ArcadeChallengeAttempt"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "game",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "blob_arena::arcade::components::ArcadeGame"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "challenge_attempt_game",
+              "inputs": [
+                {
+                  "name": "attempt_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "blob_arena::arcade::components::ArcadeGame"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "game_phase",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "blob_arena::arcade::components::ArcadePhase"
+                }
+              ],
+              "state_mutability": "view"
             }
           ]
         },
@@ -2384,28 +2588,6 @@
             {
               "name": "Custom",
               "type": "core::felt252"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "blob_arena::stats::TStats::<core::integer::u8>",
-          "members": [
-            {
-              "name": "strength",
-              "type": "core::integer::u8"
-            },
-            {
-              "name": "vitality",
-              "type": "core::integer::u8"
-            },
-            {
-              "name": "dexterity",
-              "type": "core::integer::u8"
-            },
-            {
-              "name": "luck",
-              "type": "core::integer::u8"
             }
           ]
         },
@@ -2712,7 +2894,11 @@
                   "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
                 }
               ],
-              "outputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
               "state_mutability": "external"
             },
             {
@@ -2945,8 +3131,8 @@
       ]
     },
     {
-      "address": "0x404f5466c04ff9d359ec415c23eeeeafb219c7760f9595c25e5c66d9f4a2daa",
-      "class_hash": "0x79f3d54f11de295d577499bbc26ea9ddad99be73f2ae99b352412c92499d764",
+      "address": "0x1b9c77e404bed42676bfcd9e95b087475a1118b51622191a041b32c4d855f61",
+      "class_hash": "0x32f377a46b98ef4a739d88f1af9eee92b2d3c1dbae9695915d04f72437930d7",
       "abi": [
         {
           "type": "impl",
@@ -3008,7 +3194,7 @@
         {
           "type": "impl",
           "name": "IPermissionsImpl",
-          "interface_name": "blob_arena::admin::IPermissions"
+          "interface_name": "blob_arena::admin::contract::IPermissions"
         },
         {
           "type": "enum",
@@ -3023,11 +3209,11 @@
               "type": "()"
             },
             {
-              "name": "AmmaAdmin",
+              "name": "AmmaBlobertAdmin",
               "type": "()"
             },
             {
-              "name": "BlobertAdmin",
+              "name": "ClassicBlobertAdmin",
               "type": "()"
             },
             {
@@ -3053,6 +3239,10 @@
             {
               "name": "AchievementSetter",
               "type": "()"
+            },
+            {
+              "name": "Tester",
+              "type": "()"
             }
           ]
         },
@@ -3072,7 +3262,7 @@
         },
         {
           "type": "interface",
-          "name": "blob_arena::admin::IPermissions",
+          "name": "blob_arena::admin::contract::IPermissions",
           "items": [
             {
               "type": "function",
@@ -3139,7 +3329,7 @@
         {
           "type": "impl",
           "name": "IAchievementsImpl",
-          "interface_name": "blob_arena::admin::IAchievements"
+          "interface_name": "blob_arena::admin::contract::IAchievements"
         },
         {
           "type": "enum",
@@ -3273,7 +3463,7 @@
         },
         {
           "type": "interface",
-          "name": "blob_arena::admin::IAchievements",
+          "name": "blob_arena::admin::contract::IAchievements",
           "items": [
             {
               "type": "function",
@@ -3303,6 +3493,381 @@
         },
         {
           "type": "impl",
+          "name": "IAttacksImpl",
+          "interface_name": "blob_arena::admin::contract::IAttacks"
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::attacks::components::Target",
+          "variants": [
+            {
+              "name": "Player",
+              "type": "()"
+            },
+            {
+              "name": "Opponent",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::stats::TStats::<core::integer::i8>",
+          "members": [
+            {
+              "name": "strength",
+              "type": "core::integer::i8"
+            },
+            {
+              "name": "vitality",
+              "type": "core::integer::i8"
+            },
+            {
+              "name": "dexterity",
+              "type": "core::integer::i8"
+            },
+            {
+              "name": "luck",
+              "type": "core::integer::i8"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::stats::StatTypes",
+          "variants": [
+            {
+              "name": "Strength",
+              "type": "()"
+            },
+            {
+              "name": "Vitality",
+              "type": "()"
+            },
+            {
+              "name": "Dexterity",
+              "type": "()"
+            },
+            {
+              "name": "Luck",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::components::Stat",
+          "members": [
+            {
+              "name": "stat",
+              "type": "blob_arena::stats::StatTypes"
+            },
+            {
+              "name": "amount",
+              "type": "core::integer::i8"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::components::Damage",
+          "members": [
+            {
+              "name": "critical",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "power",
+              "type": "core::integer::u8"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::attacks::components::Affect",
+          "variants": [
+            {
+              "name": "Stats",
+              "type": "blob_arena::stats::TStats::<core::integer::i8>"
+            },
+            {
+              "name": "Stat",
+              "type": "blob_arena::attacks::components::Stat"
+            },
+            {
+              "name": "Damage",
+              "type": "blob_arena::attacks::components::Damage"
+            },
+            {
+              "name": "Stun",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "Health",
+              "type": "core::integer::i16"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::components::Effect",
+          "members": [
+            {
+              "name": "target",
+              "type": "blob_arena::attacks::components::Target"
+            },
+            {
+              "name": "affect",
+              "type": "blob_arena::attacks::components::Affect"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::components::Attack",
+          "members": [
+            {
+              "name": "id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "speed",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "accuracy",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "cooldown",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "hit",
+              "type": "core::array::Array::<blob_arena::attacks::components::Effect>"
+            },
+            {
+              "name": "miss",
+              "type": "core::array::Array::<blob_arena::attacks::components::Effect>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::core::Signed::<core::integer::u8>",
+          "members": [
+            {
+              "name": "value",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "sign",
+              "type": "core::bool"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::stats::TStats::<blob_arena::core::Signed::<core::integer::u8>>",
+          "members": [
+            {
+              "name": "strength",
+              "type": "blob_arena::core::Signed::<core::integer::u8>"
+            },
+            {
+              "name": "vitality",
+              "type": "blob_arena::core::Signed::<core::integer::u8>"
+            },
+            {
+              "name": "dexterity",
+              "type": "blob_arena::core::Signed::<core::integer::u8>"
+            },
+            {
+              "name": "luck",
+              "type": "blob_arena::core::Signed::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::components::StatInput",
+          "members": [
+            {
+              "name": "stat",
+              "type": "blob_arena::stats::StatTypes"
+            },
+            {
+              "name": "amount",
+              "type": "blob_arena::core::Signed::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::attacks::components::AffectInput",
+          "variants": [
+            {
+              "name": "Stats",
+              "type": "blob_arena::stats::TStats::<blob_arena::core::Signed::<core::integer::u8>>"
+            },
+            {
+              "name": "Stat",
+              "type": "blob_arena::attacks::components::StatInput"
+            },
+            {
+              "name": "Damage",
+              "type": "blob_arena::attacks::components::Damage"
+            },
+            {
+              "name": "Stun",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "Health",
+              "type": "blob_arena::core::Signed::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::components::EffectInput",
+          "members": [
+            {
+              "name": "target",
+              "type": "blob_arena::attacks::components::Target"
+            },
+            {
+              "name": "affect",
+              "type": "blob_arena::attacks::components::AffectInput"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::components::AttackInput",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::byte_array::ByteArray"
+            },
+            {
+              "name": "speed",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "accuracy",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "cooldown",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "hit",
+              "type": "core::array::Array::<blob_arena::attacks::components::EffectInput>"
+            },
+            {
+              "name": "miss",
+              "type": "core::array::Array::<blob_arena::attacks::components::EffectInput>"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "blob_arena::admin::contract::IAttacks",
+          "items": [
+            {
+              "type": "function",
+              "name": "attack",
+              "inputs": [
+                {
+                  "name": "attack_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "blob_arena::attacks::components::Attack"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "attack_id_from_input",
+              "inputs": [
+                {
+                  "name": "attack",
+                  "type": "blob_arena::attacks::components::AttackInput"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "attack_last_used",
+              "inputs": [
+                {
+                  "name": "combatant_id",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "attack_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "attack_available",
+              "inputs": [
+                {
+                  "name": "combatant_id",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "attack_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "attack_cooldown",
+              "inputs": [
+                {
+                  "name": "attack_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u8"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
           "name": "WorldProviderImpl",
           "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
         },
@@ -3393,7 +3958,7 @@
         },
         {
           "type": "event",
-          "name": "blob_arena::admin::admin_actions::Event",
+          "name": "blob_arena::admin::contract::admin_actions::Event",
           "kind": "enum",
           "variants": [
             {
@@ -3422,383 +3987,8 @@
       ]
     },
     {
-      "address": "0x329500b88d93b2b337b4a9a86dc1428e4dda756e43497a99532046421e8adea",
-      "class_hash": "0x5a6ec93d0af7be3ba6760510db562beb37d38af7ffb9b5aeda24d24b1d6d330",
-      "abi": [
-        {
-          "type": "impl",
-          "name": "game_actions__ContractImpl",
-          "interface_name": "dojo::contract::interface::IContract"
-        },
-        {
-          "type": "interface",
-          "name": "dojo::contract::interface::IContract",
-          "items": []
-        },
-        {
-          "type": "impl",
-          "name": "game_actions__DeployedContractImpl",
-          "interface_name": "dojo::meta::interface::IDeployedResource"
-        },
-        {
-          "type": "struct",
-          "name": "core::byte_array::ByteArray",
-          "members": [
-            {
-              "name": "data",
-              "type": "core::array::Array::<core::bytes_31::bytes31>"
-            },
-            {
-              "name": "pending_word",
-              "type": "core::felt252"
-            },
-            {
-              "name": "pending_word_len",
-              "type": "core::integer::u32"
-            }
-          ]
-        },
-        {
-          "type": "interface",
-          "name": "dojo::meta::interface::IDeployedResource",
-          "items": [
-            {
-              "type": "function",
-              "name": "dojo_name",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::byte_array::ByteArray"
-                }
-              ],
-              "state_mutability": "view"
-            }
-          ]
-        },
-        {
-          "type": "impl",
-          "name": "IGameImpl",
-          "interface_name": "blob_arena::game::contract::IGame"
-        },
-        {
-          "type": "interface",
-          "name": "blob_arena::game::contract::IGame",
-          "items": [
-            {
-              "type": "function",
-              "name": "start",
-              "inputs": [
-                {
-                  "name": "game_id",
-                  "type": "core::felt252"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "commit",
-              "inputs": [
-                {
-                  "name": "combatant_id",
-                  "type": "core::felt252"
-                },
-                {
-                  "name": "hash",
-                  "type": "core::felt252"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "reveal",
-              "inputs": [
-                {
-                  "name": "combatant_id",
-                  "type": "core::felt252"
-                },
-                {
-                  "name": "attack",
-                  "type": "core::felt252"
-                },
-                {
-                  "name": "salt",
-                  "type": "core::felt252"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "run",
-              "inputs": [
-                {
-                  "name": "combat_id",
-                  "type": "core::felt252"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "kick_player",
-              "inputs": [
-                {
-                  "name": "combat_id",
-                  "type": "core::felt252"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "forfeit",
-              "inputs": [
-                {
-                  "name": "combatant_id",
-                  "type": "core::felt252"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "get_winning_player",
-              "inputs": [
-                {
-                  "name": "combat_id",
-                  "type": "core::felt252"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "state_mutability": "view"
-            }
-          ]
-        },
-        {
-          "type": "impl",
-          "name": "IGameAdminImpl",
-          "interface_name": "blob_arena::game::contract::IGameAdmin"
-        },
-        {
-          "type": "struct",
-          "name": "core::integer::u256",
-          "members": [
-            {
-              "name": "low",
-              "type": "core::integer::u128"
-            },
-            {
-              "name": "high",
-              "type": "core::integer::u128"
-            }
-          ]
-        },
-        {
-          "type": "interface",
-          "name": "blob_arena::game::contract::IGameAdmin",
-          "items": [
-            {
-              "type": "function",
-              "name": "create",
-              "inputs": [
-                {
-                  "name": "owner",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                },
-                {
-                  "name": "initiator",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                },
-                {
-                  "name": "time_limit",
-                  "type": "core::integer::u64"
-                },
-                {
-                  "name": "player_a",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                },
-                {
-                  "name": "collection_address_a",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                },
-                {
-                  "name": "token_id_a",
-                  "type": "core::integer::u256"
-                },
-                {
-                  "name": "attacks_a",
-                  "type": "core::array::Array::<(core::felt252, core::felt252)>"
-                },
-                {
-                  "name": "player_b",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                },
-                {
-                  "name": "collection_address_b",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                },
-                {
-                  "name": "token_id_b",
-                  "type": "core::integer::u256"
-                },
-                {
-                  "name": "attacks_b",
-                  "type": "core::array::Array::<(core::felt252, core::felt252)>"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::felt252"
-                }
-              ],
-              "state_mutability": "external"
-            }
-          ]
-        },
-        {
-          "type": "function",
-          "name": "dojo_init",
-          "inputs": [],
-          "outputs": [],
-          "state_mutability": "view"
-        },
-        {
-          "type": "impl",
-          "name": "WorldProviderImpl",
-          "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
-        },
-        {
-          "type": "struct",
-          "name": "dojo::world::iworld::IWorldDispatcher",
-          "members": [
-            {
-              "name": "contract_address",
-              "type": "core::starknet::contract_address::ContractAddress"
-            }
-          ]
-        },
-        {
-          "type": "interface",
-          "name": "dojo::contract::components::world_provider::IWorldProvider",
-          "items": [
-            {
-              "type": "function",
-              "name": "world_dispatcher",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "dojo::world::iworld::IWorldDispatcher"
-                }
-              ],
-              "state_mutability": "view"
-            }
-          ]
-        },
-        {
-          "type": "impl",
-          "name": "UpgradeableImpl",
-          "interface_name": "dojo::contract::components::upgradeable::IUpgradeable"
-        },
-        {
-          "type": "interface",
-          "name": "dojo::contract::components::upgradeable::IUpgradeable",
-          "items": [
-            {
-              "type": "function",
-              "name": "upgrade",
-              "inputs": [
-                {
-                  "name": "new_class_hash",
-                  "type": "core::starknet::class_hash::ClassHash"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            }
-          ]
-        },
-        {
-          "type": "constructor",
-          "name": "constructor",
-          "inputs": []
-        },
-        {
-          "type": "event",
-          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
-          "kind": "struct",
-          "members": [
-            {
-              "name": "class_hash",
-              "type": "core::starknet::class_hash::ClassHash",
-              "kind": "data"
-            }
-          ]
-        },
-        {
-          "type": "event",
-          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
-          "kind": "enum",
-          "variants": [
-            {
-              "name": "Upgraded",
-              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
-              "kind": "nested"
-            }
-          ]
-        },
-        {
-          "type": "event",
-          "name": "dojo::contract::components::world_provider::world_provider_cpt::Event",
-          "kind": "enum",
-          "variants": []
-        },
-        {
-          "type": "event",
-          "name": "blob_arena::game::contract::game_actions::Event",
-          "kind": "enum",
-          "variants": [
-            {
-              "name": "UpgradeableEvent",
-              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
-              "kind": "nested"
-            },
-            {
-              "name": "WorldProviderEvent",
-              "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
-              "kind": "nested"
-            }
-          ]
-        }
-      ],
-      "init_calldata": [],
-      "tag": "blob_arena-game_actions",
-      "selector": "0x2f539fbc932bf2bb54a1d8f677aae5b2e275ba1e3c3e9ec66052d62636c39f8",
-      "systems": [
-        "start",
-        "commit",
-        "reveal",
-        "run",
-        "kick_player",
-        "forfeit",
-        "create",
-        "upgrade"
-      ]
-    },
-    {
-      "address": "0x94a7b341e5da82fb84043810d7aaa3b0939efba6469c9594ddf499ad73876f",
-      "class_hash": "0x2dbfd263a2a62cf16f8207eb5bce316a6eb8c8a610dce977d9abd96d4f7127b",
+      "address": "0x771a2807aa479dacd207c1f12018d0fa6e92ef1eb994169ff4f8904a8845e3f",
+      "class_hash": "0x45b3a3da7c3dd3bb87bf34b2580cb3b67f6e7ccf2422a5e4dd9de058f5f6ce8",
       "abi": [
         {
           "type": "impl",
@@ -3877,10 +4067,6 @@
               "type": "function",
               "name": "send_invite",
               "inputs": [
-                {
-                  "name": "owner",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                },
                 {
                   "name": "initiator",
                   "type": "core::starknet::contract_address::ContractAddress"
@@ -4125,8 +4311,838 @@
       ]
     },
     {
-      "address": "0x62ca1192fe1558bddcbda1956fb8403c35a4d8eebf0f290b0358e9b21f9816d",
-      "class_hash": "0x327b526c87a83d8b21c53e44ad3b6f22e80a5f7c24f27787351659ccd177828",
+      "address": "0x6040ee8b2aee6cbcc482b5cb712d1c206f8ad070e98d7e07a70d4e4a6b5e261",
+      "class_hash": "0x6fd459ffb09512cd4ba91c5d07fa3a4c5704f5dc8f9a360e8e0e1fdfbb3037e",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "pvp_actions__ContractImpl",
+          "interface_name": "dojo::contract::interface::IContract"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::interface::IContract",
+          "items": []
+        },
+        {
+          "type": "impl",
+          "name": "pvp_actions__DeployedContractImpl",
+          "interface_name": "dojo::meta::interface::IDeployedResource"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::meta::interface::IDeployedResource",
+          "items": [
+            {
+              "type": "function",
+              "name": "dojo_name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IPvpImpl",
+          "interface_name": "blob_arena::pvp::contract::IPvp"
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::combat::components::Phase",
+          "variants": [
+            {
+              "name": "None",
+              "type": "()"
+            },
+            {
+              "name": "Created",
+              "type": "()"
+            },
+            {
+              "name": "Commit",
+              "type": "()"
+            },
+            {
+              "name": "Reveal",
+              "type": "()"
+            },
+            {
+              "name": "Ended",
+              "type": "core::felt252"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::stats::TStats::<core::integer::u8>",
+          "members": [
+            {
+              "name": "strength",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "vitality",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "dexterity",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "luck",
+              "type": "core::integer::u8"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::integer::u256",
+          "members": [
+            {
+              "name": "low",
+              "type": "core::integer::u128"
+            },
+            {
+              "name": "high",
+              "type": "core::integer::u128"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::erc721::ERC721Token",
+          "members": [
+            {
+              "name": "collection_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "token_id",
+              "type": "core::integer::u256"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "blob_arena::pvp::contract::IPvp",
+          "items": [
+            {
+              "type": "function",
+              "name": "start",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "commit",
+              "inputs": [
+                {
+                  "name": "combatant_id",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "hash",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "reveal",
+              "inputs": [
+                {
+                  "name": "combatant_id",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "attack",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "salt",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "run",
+              "inputs": [
+                {
+                  "name": "combat_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "kick_player",
+              "inputs": [
+                {
+                  "name": "combat_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "forfeit",
+              "inputs": [
+                {
+                  "name": "combatant_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_winning_player",
+              "inputs": [
+                {
+                  "name": "combat_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "combat_phase",
+              "inputs": [
+                {
+                  "name": "combat_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "blob_arena::combat::components::Phase"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "combat_round",
+              "inputs": [
+                {
+                  "name": "combat_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "combatants",
+              "inputs": [
+                {
+                  "name": "combat_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "[core::felt252; 2]"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "combatant_combat_id",
+              "inputs": [
+                {
+                  "name": "combatant_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "combatant_player",
+              "inputs": [
+                {
+                  "name": "combatant_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "combatant_health",
+              "inputs": [
+                {
+                  "name": "combatant_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u8"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "combatant_stats",
+              "inputs": [
+                {
+                  "name": "combatant_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "blob_arena::stats::TStats::<core::integer::u8>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "combatant_stun_chance",
+              "inputs": [
+                {
+                  "name": "combatant_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u8"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "combatant_token",
+              "inputs": [
+                {
+                  "name": "combatant_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "blob_arena::erc721::ERC721Token"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IPvpAdminImpl",
+          "interface_name": "blob_arena::pvp::contract::IPvpAdmin"
+        },
+        {
+          "type": "interface",
+          "name": "blob_arena::pvp::contract::IPvpAdmin",
+          "items": [
+            {
+              "type": "function",
+              "name": "create",
+              "inputs": [
+                {
+                  "name": "initiator",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "time_limit",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "player_a",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "collection_address_a",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "token_id_a",
+                  "type": "core::integer::u256"
+                },
+                {
+                  "name": "attacks_a",
+                  "type": "core::array::Array::<(core::felt252, core::felt252)>"
+                },
+                {
+                  "name": "player_b",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "collection_address_b",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "token_id_b",
+                  "type": "core::integer::u256"
+                },
+                {
+                  "name": "attacks_b",
+                  "type": "core::array::Array::<(core::felt252, core::felt252)>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "dojo_init",
+          "inputs": [],
+          "outputs": [],
+          "state_mutability": "view"
+        },
+        {
+          "type": "impl",
+          "name": "WorldProviderImpl",
+          "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
+        },
+        {
+          "type": "struct",
+          "name": "dojo::world::iworld::IWorldDispatcher",
+          "members": [
+            {
+              "name": "contract_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::world_provider::IWorldProvider",
+          "items": [
+            {
+              "type": "function",
+              "name": "world_dispatcher",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::world::iworld::IWorldDispatcher"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "UpgradeableImpl",
+          "interface_name": "dojo::contract::components::upgradeable::IUpgradeable"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::upgradeable::IUpgradeable",
+          "items": [
+            {
+              "type": "function",
+              "name": "upgrade",
+              "inputs": [
+                {
+                  "name": "new_class_hash",
+                  "type": "core::starknet::class_hash::ClassHash"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": []
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "class_hash",
+              "type": "core::starknet::class_hash::ClassHash",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "Upgraded",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+          "kind": "enum",
+          "variants": []
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::attacks::components::Target",
+          "variants": [
+            {
+              "name": "Player",
+              "type": "()"
+            },
+            {
+              "name": "Opponent",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::results::DamageResult",
+          "members": [
+            {
+              "name": "damage",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "critical",
+              "type": "core::bool"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::stats::TStats::<core::integer::i8>",
+          "members": [
+            {
+              "name": "strength",
+              "type": "core::integer::i8"
+            },
+            {
+              "name": "vitality",
+              "type": "core::integer::i8"
+            },
+            {
+              "name": "dexterity",
+              "type": "core::integer::i8"
+            },
+            {
+              "name": "luck",
+              "type": "core::integer::i8"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::stats::StatTypes",
+          "variants": [
+            {
+              "name": "Strength",
+              "type": "()"
+            },
+            {
+              "name": "Vitality",
+              "type": "()"
+            },
+            {
+              "name": "Dexterity",
+              "type": "()"
+            },
+            {
+              "name": "Luck",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::components::Stat",
+          "members": [
+            {
+              "name": "stat",
+              "type": "blob_arena::stats::StatTypes"
+            },
+            {
+              "name": "amount",
+              "type": "core::integer::i8"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::attacks::results::AffectResult",
+          "variants": [
+            {
+              "name": "Health",
+              "type": "core::integer::i32"
+            },
+            {
+              "name": "Damage",
+              "type": "blob_arena::attacks::results::DamageResult"
+            },
+            {
+              "name": "Stats",
+              "type": "blob_arena::stats::TStats::<core::integer::i8>"
+            },
+            {
+              "name": "Stat",
+              "type": "blob_arena::attacks::components::Stat"
+            },
+            {
+              "name": "Stun",
+              "type": "core::integer::u8"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::results::EffectResult",
+          "members": [
+            {
+              "name": "target",
+              "type": "blob_arena::attacks::components::Target"
+            },
+            {
+              "name": "affect",
+              "type": "blob_arena::attacks::results::AffectResult"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::attacks::results::AttackOutcomes",
+          "variants": [
+            {
+              "name": "Failed",
+              "type": "()"
+            },
+            {
+              "name": "Stunned",
+              "type": "()"
+            },
+            {
+              "name": "Miss",
+              "type": "core::array::Array::<blob_arena::attacks::results::EffectResult>"
+            },
+            {
+              "name": "Hit",
+              "type": "core::array::Array::<blob_arena::attacks::results::EffectResult>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::results::AttackResult",
+          "members": [
+            {
+              "name": "combatant_id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attack",
+              "type": "core::felt252"
+            },
+            {
+              "name": "target",
+              "type": "core::felt252"
+            },
+            {
+              "name": "result",
+              "type": "blob_arena::attacks::results::AttackOutcomes"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<blob_arena::attacks::results::AttackResult>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<blob_arena::attacks::results::AttackResult>"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "blob_arena::attacks::results::RoundResult",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "combat_id",
+              "type": "core::felt252",
+              "kind": "key"
+            },
+            {
+              "name": "round",
+              "type": "core::integer::u32",
+              "kind": "key"
+            },
+            {
+              "name": "attacks",
+              "type": "core::array::Span::<blob_arena::attacks::results::AttackResult>",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "blob_arena::combatants::components::CombatantState",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "id",
+              "type": "core::felt252",
+              "kind": "key"
+            },
+            {
+              "name": "health",
+              "type": "core::integer::u8",
+              "kind": "data"
+            },
+            {
+              "name": "stun_chance",
+              "type": "core::integer::u8",
+              "kind": "data"
+            },
+            {
+              "name": "stats",
+              "type": "blob_arena::stats::TStats::<core::integer::u8>",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "blob_arena::pvp::contract::pvp_actions::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "UpgradeableEvent",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+              "kind": "nested"
+            },
+            {
+              "name": "WorldProviderEvent",
+              "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+              "kind": "nested"
+            },
+            {
+              "name": "RoundResult",
+              "type": "blob_arena::attacks::results::RoundResult",
+              "kind": "nested"
+            },
+            {
+              "name": "CombatantState",
+              "type": "blob_arena::combatants::components::CombatantState",
+              "kind": "nested"
+            }
+          ]
+        }
+      ],
+      "init_calldata": [],
+      "tag": "blob_arena-pvp_actions",
+      "selector": "0x2371c4eb16167d495de0d505da6ae7b16d03eaf39c732b9855e217024373b2d",
+      "systems": [
+        "start",
+        "commit",
+        "reveal",
+        "run",
+        "kick_player",
+        "forfeit",
+        "create",
+        "upgrade"
+      ]
+    },
+    {
+      "address": "0x2d0ba962a810559772e02cb6d6ff8692e848854dd875dc484deea03349dc9b6",
+      "class_hash": "0x576ae39b70e80f7a8e2d554b4769b80ba99fbe6209f1bf48e070ba0b9f6f897",
       "abi": [
         {
           "type": "impl",
@@ -4917,8 +5933,8 @@
       ]
     },
     {
-      "address": "0x1df100d8ded9e1f740fe40ddc94975a0b8e81b98d3c484080e7d0e08c69d798",
-      "class_hash": "0x7b1b9e72f830004a6d0117447ffd8d1b86b72d8c26104787fe82875025073fa",
+      "address": "0x11088b79a397c2fb9d2570acbf711e6972e75e3a28b6bcf36267501d96c781b",
+      "class_hash": "0x372aee7287a64b59f0582379b57446a78d94c51caf63e4d087480632f6983d3",
       "abi": [
         {
           "type": "impl",
@@ -5307,6 +6323,875 @@
         "burn",
         "upgrade"
       ]
+    },
+    {
+      "address": "0x32ee5dd3e0a6884f107d55049f985be49d57aa4d0b78b13074808e85dc95af6",
+      "class_hash": "0x39376e052c537fbd8674266cc2374de36f538573e3b83aac3c4a537e0316944",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "test_blobert_actions__ContractImpl",
+          "interface_name": "dojo::contract::interface::IContract"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::interface::IContract",
+          "items": []
+        },
+        {
+          "type": "impl",
+          "name": "test_blobert_actions__DeployedContractImpl",
+          "interface_name": "dojo::meta::interface::IDeployedResource"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::meta::interface::IDeployedResource",
+          "items": [
+            {
+              "type": "function",
+              "name": "dojo_name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "dojo_init",
+          "inputs": [],
+          "outputs": [],
+          "state_mutability": "external"
+        },
+        {
+          "type": "impl",
+          "name": "ITestBlobertImpl",
+          "interface_name": "blob_arena::collections::test_blobert::ITestBlobert"
+        },
+        {
+          "type": "struct",
+          "name": "core::integer::u256",
+          "members": [
+            {
+              "name": "low",
+              "type": "core::integer::u128"
+            },
+            {
+              "name": "high",
+              "type": "core::integer::u128"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::collections::attributes::Seed",
+          "members": [
+            {
+              "name": "background",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "armour",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "jewelry",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "mask",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "weapon",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::collections::attributes::TokenAttributes",
+          "variants": [
+            {
+              "name": "Seed",
+              "type": "blob_arena::collections::attributes::Seed"
+            },
+            {
+              "name": "Custom",
+              "type": "core::felt252"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "blob_arena::collections::test_blobert::ITestBlobert",
+          "items": [
+            {
+              "type": "function",
+              "name": "mint",
+              "inputs": [
+                {
+                  "name": "fighter",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u256"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "traits",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "blob_arena::collections::attributes::TokenAttributes"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "WorldProviderImpl",
+          "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
+        },
+        {
+          "type": "struct",
+          "name": "dojo::world::iworld::IWorldDispatcher",
+          "members": [
+            {
+              "name": "contract_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::world_provider::IWorldProvider",
+          "items": [
+            {
+              "type": "function",
+              "name": "world_dispatcher",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::world::iworld::IWorldDispatcher"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "UpgradeableImpl",
+          "interface_name": "dojo::contract::components::upgradeable::IUpgradeable"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::upgradeable::IUpgradeable",
+          "items": [
+            {
+              "type": "function",
+              "name": "upgrade",
+              "inputs": [
+                {
+                  "name": "new_class_hash",
+                  "type": "core::starknet::class_hash::ClassHash"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "ITestBlobertItems",
+          "interface_name": "blob_arena::collections::items::component::IBlobertItems"
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::collections::attributes::BlobertAttribute",
+          "variants": [
+            {
+              "name": "Background",
+              "type": "()"
+            },
+            {
+              "name": "Armour",
+              "type": "()"
+            },
+            {
+              "name": "Jewelry",
+              "type": "()"
+            },
+            {
+              "name": "Mask",
+              "type": "()"
+            },
+            {
+              "name": "Weapon",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::collections::attributes::SeedItem",
+          "members": [
+            {
+              "name": "attribute",
+              "type": "blob_arena::collections::attributes::BlobertAttribute"
+            },
+            {
+              "name": "attribute_id",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::collections::attributes::BlobertItemKey",
+          "variants": [
+            {
+              "name": "Seed",
+              "type": "blob_arena::collections::attributes::SeedItem"
+            },
+            {
+              "name": "Custom",
+              "type": "core::felt252"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::stats::TStats::<core::integer::u8>",
+          "members": [
+            {
+              "name": "strength",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "vitality",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "dexterity",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "luck",
+              "type": "core::integer::u8"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::attacks::components::Target",
+          "variants": [
+            {
+              "name": "Player",
+              "type": "()"
+            },
+            {
+              "name": "Opponent",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::core::Signed::<core::integer::u8>",
+          "members": [
+            {
+              "name": "value",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "sign",
+              "type": "core::bool"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::stats::TStats::<blob_arena::core::Signed::<core::integer::u8>>",
+          "members": [
+            {
+              "name": "strength",
+              "type": "blob_arena::core::Signed::<core::integer::u8>"
+            },
+            {
+              "name": "vitality",
+              "type": "blob_arena::core::Signed::<core::integer::u8>"
+            },
+            {
+              "name": "dexterity",
+              "type": "blob_arena::core::Signed::<core::integer::u8>"
+            },
+            {
+              "name": "luck",
+              "type": "blob_arena::core::Signed::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::stats::StatTypes",
+          "variants": [
+            {
+              "name": "Strength",
+              "type": "()"
+            },
+            {
+              "name": "Vitality",
+              "type": "()"
+            },
+            {
+              "name": "Dexterity",
+              "type": "()"
+            },
+            {
+              "name": "Luck",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::components::StatInput",
+          "members": [
+            {
+              "name": "stat",
+              "type": "blob_arena::stats::StatTypes"
+            },
+            {
+              "name": "amount",
+              "type": "blob_arena::core::Signed::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::components::Damage",
+          "members": [
+            {
+              "name": "critical",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "power",
+              "type": "core::integer::u8"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::attacks::components::AffectInput",
+          "variants": [
+            {
+              "name": "Stats",
+              "type": "blob_arena::stats::TStats::<blob_arena::core::Signed::<core::integer::u8>>"
+            },
+            {
+              "name": "Stat",
+              "type": "blob_arena::attacks::components::StatInput"
+            },
+            {
+              "name": "Damage",
+              "type": "blob_arena::attacks::components::Damage"
+            },
+            {
+              "name": "Stun",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "Health",
+              "type": "blob_arena::core::Signed::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::components::EffectInput",
+          "members": [
+            {
+              "name": "target",
+              "type": "blob_arena::attacks::components::Target"
+            },
+            {
+              "name": "affect",
+              "type": "blob_arena::attacks::components::AffectInput"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::attacks::components::AttackInput",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::byte_array::ByteArray"
+            },
+            {
+              "name": "speed",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "accuracy",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "cooldown",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "hit",
+              "type": "core::array::Array::<blob_arena::attacks::components::EffectInput>"
+            },
+            {
+              "name": "miss",
+              "type": "core::array::Array::<blob_arena::attacks::components::EffectInput>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::tags::IdTagNew::<blob_arena::attacks::components::AttackInput>",
+          "variants": [
+            {
+              "name": "Id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "Tag",
+              "type": "core::byte_array::ByteArray"
+            },
+            {
+              "name": "New",
+              "type": "blob_arena::attacks::components::AttackInput"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "blob_arena::collections::items::component::IBlobertItems",
+          "items": [
+            {
+              "type": "function",
+              "name": "set_item",
+              "inputs": [
+                {
+                  "name": "key",
+                  "type": "blob_arena::collections::attributes::BlobertItemKey"
+                },
+                {
+                  "name": "name",
+                  "type": "core::byte_array::ByteArray"
+                },
+                {
+                  "name": "stats",
+                  "type": "blob_arena::stats::TStats::<core::integer::u8>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_item_with_attacks",
+              "inputs": [
+                {
+                  "name": "key",
+                  "type": "blob_arena::collections::attributes::BlobertItemKey"
+                },
+                {
+                  "name": "name",
+                  "type": "core::byte_array::ByteArray"
+                },
+                {
+                  "name": "stats",
+                  "type": "blob_arena::stats::TStats::<core::integer::u8>"
+                },
+                {
+                  "name": "attacks",
+                  "type": "core::array::Array::<blob_arena::tags::IdTagNew::<blob_arena::attacks::components::AttackInput>>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_item_stats",
+              "inputs": [
+                {
+                  "name": "key",
+                  "type": "blob_arena::collections::attributes::BlobertItemKey"
+                },
+                {
+                  "name": "stats",
+                  "type": "blob_arena::stats::TStats::<core::integer::u8>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_item_name",
+              "inputs": [
+                {
+                  "name": "key",
+                  "type": "blob_arena::collections::attributes::BlobertItemKey"
+                },
+                {
+                  "name": "name",
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_item_attack_slot",
+              "inputs": [
+                {
+                  "name": "key",
+                  "type": "blob_arena::collections::attributes::BlobertItemKey"
+                },
+                {
+                  "name": "slot",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "attack",
+                  "type": "blob_arena::tags::IdTagNew::<blob_arena::attacks::components::AttackInput>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "fill_item_attack_slots",
+              "inputs": [
+                {
+                  "name": "key",
+                  "type": "blob_arena::collections::attributes::BlobertItemKey"
+                },
+                {
+                  "name": "attacks",
+                  "type": "core::array::Array::<blob_arena::tags::IdTagNew::<blob_arena::attacks::components::AttackInput>>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_seed_item",
+              "inputs": [
+                {
+                  "name": "attribute",
+                  "type": "blob_arena::collections::attributes::BlobertAttribute"
+                },
+                {
+                  "name": "id",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "name",
+                  "type": "core::byte_array::ByteArray"
+                },
+                {
+                  "name": "stats",
+                  "type": "blob_arena::stats::TStats::<core::integer::u8>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_seed_item_with_attacks",
+              "inputs": [
+                {
+                  "name": "attribute",
+                  "type": "blob_arena::collections::attributes::BlobertAttribute"
+                },
+                {
+                  "name": "id",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "name",
+                  "type": "core::byte_array::ByteArray"
+                },
+                {
+                  "name": "stats",
+                  "type": "blob_arena::stats::TStats::<core::integer::u8>"
+                },
+                {
+                  "name": "attacks",
+                  "type": "core::array::Array::<blob_arena::tags::IdTagNew::<blob_arena::attacks::components::AttackInput>>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_custom_item",
+              "inputs": [
+                {
+                  "name": "id",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "name",
+                  "type": "core::byte_array::ByteArray"
+                },
+                {
+                  "name": "stats",
+                  "type": "blob_arena::stats::TStats::<core::integer::u8>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_custom_item_with_attacks",
+              "inputs": [
+                {
+                  "name": "id",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "name",
+                  "type": "core::byte_array::ByteArray"
+                },
+                {
+                  "name": "stats",
+                  "type": "blob_arena::stats::TStats::<core::integer::u8>"
+                },
+                {
+                  "name": "attacks",
+                  "type": "core::array::Array::<blob_arena::tags::IdTagNew::<blob_arena::attacks::components::AttackInput>>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "ITestBlobertCollectionImpl",
+          "interface_name": "blob_arena::collections::interface::ICollection"
+        },
+        {
+          "type": "interface",
+          "name": "blob_arena::collections::interface::ICollection",
+          "items": [
+            {
+              "type": "function",
+              "name": "owner_of",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_stats",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "blob_arena::stats::TStats::<core::integer::u8>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_attack_slot",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                },
+                {
+                  "name": "item_id",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "slot",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_attack_slots",
+              "inputs": [
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                },
+                {
+                  "name": "item_slots",
+                  "type": "core::array::Array::<(core::felt252, core::felt252)>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Array::<core::felt252>"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": []
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "class_hash",
+              "type": "core::starknet::class_hash::ClassHash",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "Upgraded",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+          "kind": "enum",
+          "variants": []
+        },
+        {
+          "type": "event",
+          "name": "blob_arena::collections::test_blobert::test_blobert_actions::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "UpgradeableEvent",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+              "kind": "nested"
+            },
+            {
+              "name": "WorldProviderEvent",
+              "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+              "kind": "nested"
+            }
+          ]
+        }
+      ],
+      "init_calldata": [],
+      "tag": "testing-test_blobert_actions",
+      "selector": "0x6e5c36c87df0893e8cc1c0e01c9e0bd0d4dfdaeabfe39453a192326d84c1d52",
+      "systems": [
+        "dojo_init",
+        "mint",
+        "upgrade",
+        "set_item",
+        "set_item_with_attacks",
+        "set_item_stats",
+        "set_item_name",
+        "set_item_attack_slot",
+        "fill_item_attack_slots",
+        "set_seed_item",
+        "set_seed_item_with_attacks",
+        "set_custom_item",
+        "set_custom_item_with_attacks"
+      ]
     }
   ],
   "libraries": [],
@@ -5391,6 +7276,12 @@
     },
     {
       "members": [],
+      "class_hash": "0x1a00e505787abfd7a3cb7b655d0207c6e8bcf81841aa87a260205173cff318f",
+      "tag": "arcade-AttackUses",
+      "selector": "0x5a5977302708e680c1a3babaa6fd22d54c44f936b73f691de77f5a17932a09c"
+    },
+    {
+      "members": [],
       "class_hash": "0x236180cf3ffb36d629a8508629a234ad95169bd7537aa2ec697a068e31e629d",
       "tag": "arcade-CombatantToken",
       "selector": "0x2eccd9ce6d63f86b2dda2bd128a2f885ed60bf9c04c59ee6d9766887923b9b6"
@@ -5403,15 +7294,9 @@
     },
     {
       "members": [],
-      "class_hash": "0x3c756e06b9fa9d0a7f380fa4bd923f4e07e2b777a839d7dda96538bb4612f64",
+      "class_hash": "0x36dc061eab919ce423371f57742ceb442f5e8b38d0d1ba45f04325b591a0f22",
       "tag": "ba_permissions-Permission",
       "selector": "0x6aa131be59e940caa3e7d320c269ef4762f993a310327ccf3b3e03f6451aa44"
-    },
-    {
-      "members": [],
-      "class_hash": "0x2265657caf50b8ea2a8efc57edb8f437bc67f3765af9edcd054b29791473aa5",
-      "tag": "blob_arena-AmountTokensOwned",
-      "selector": "0x75a6369f9b3972df00942f2886270a12955895297edbd43b374d491288395a0"
     },
     {
       "members": [],
@@ -5439,7 +7324,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x18dd96a111c007f6b6b8689e7e051fbfb660b7f5115dafad3deaceb37c91fb8",
+      "class_hash": "0x23eab279de304f9d253f5f5b8d56808bff8fed9b938df758a36ca221e2442e4",
       "tag": "blob_arena-CollectionGroup",
       "selector": "0x2e2df007c9ad39598d4cb1d77c2f67b2c7f6a220e10c068ef386ab9906acce6"
     },
@@ -5493,25 +7378,13 @@
     },
     {
       "members": [],
-      "class_hash": "0x748980fd79fb08de5305ec60362549e3c7c64e1d6794495efebba711b9e6abe",
-      "tag": "blob_arena-GameInfo",
-      "selector": "0x5f4ec219efa6c572b93590c876b9c50ee0fa1a9ceaad893ba1e83e3db0d6797"
-    },
-    {
-      "members": [],
-      "class_hash": "0x4482233f7dde723a81f228b45dfd06ed3ff0b5c809cfcae39a67425ea75f7e2",
-      "tag": "blob_arena-GamesCompleted",
-      "selector": "0x304412084990209a6e0c122b0ea6505dbbe8654563547f027ee10f47303856e"
-    },
-    {
-      "members": [],
-      "class_hash": "0x3a0a20bb260df9200e61cd03d93b23a73f336778655315485e1c962b30d75ba",
+      "class_hash": "0x40bdb09abeb3c08ea5d29245bf22f728337d80fc149bbc2f87352e0f6b9db17",
       "tag": "blob_arena-Initiator",
       "selector": "0x683a7c0d50fd9b0f7a1e4a6acdb886d8259b0983f7a7f8d02c82f30ada04253"
     },
     {
       "members": [],
-      "class_hash": "0xfb4a7265983e7f84705dee592bb0a9e6c180746c65f37598fbbd353fceb905",
+      "class_hash": "0x6f9f84426f2c17eab02bf488e68537b98960ef0d9b8e4b88dec445ed65dc899",
       "tag": "blob_arena-LastTimestamp",
       "selector": "0x27e4a1db957ee136064eb6b99dabaa8759889efcd3dd2b098276008bdebfa89"
     },
@@ -5526,6 +7399,18 @@
       "class_hash": "0x3586c5543840c8f0972c200af114ff4159fad56e5855a544226b61aea8d0eef",
       "tag": "blob_arena-PlannedAttack",
       "selector": "0x76d19ab46f21f01478142f2208f1774aa7ab3d5cf2688a63934e16f3e5a22e3"
+    },
+    {
+      "members": [],
+      "class_hash": "0x734b77ac31d4298f64a8b975624f14a421b259f2befc812ab6ddb9e499c56c5",
+      "tag": "blob_arena-PvpInfo",
+      "selector": "0x5702146f2d8c0b0336a625a793a93575febf5f6f19facc86f8760c2fded3178"
+    },
+    {
+      "members": [],
+      "class_hash": "0x7833ffb5354e9e21319a90ce573aa9e2581b8f64dfbefa7f123875c199deb63",
+      "tag": "blob_arena-PvpsCompleted",
+      "selector": "0x78e8e0230907e77a7d82d83c5ea98c5ebd1979c1cebfa3c9a21bc72e088cd93"
     },
     {
       "members": [],
@@ -5547,6 +7432,12 @@
     },
     {
       "members": [],
+      "class_hash": "0x2265657caf50b8ea2a8efc57edb8f437bc67f3765af9edcd054b29791473aa5",
+      "tag": "free_blobert-AmountTokensOwned",
+      "selector": "0x728aa613816f63e174179dfabcc3adf717ee2f034b0721a0fb9ccfdc9d06ae3"
+    },
+    {
+      "members": [],
       "class_hash": "0x70c08d22f9fb5423dd5bd65a2aa0f7ac11e15e258a745413fe99537c1a1a0f2",
       "tag": "free_blobert-BlobertToken",
       "selector": "0x2f22f7118472b57415964d6940aa82f33c5ac450cd7bfe92c9bb24035a245b1"
@@ -5556,6 +7447,24 @@
       "class_hash": "0x4f333678d9e05d5aac6c42722896dc13f636dfe0d81d1700829b079894962cb",
       "tag": "free_blobert-LastMint",
       "selector": "0x69c6963abb0c078dc41b6f5859df79b6b5c9c58e137aaf77e27cb083ee6132f"
+    },
+    {
+      "members": [],
+      "class_hash": "0x662c4f77752c22b831d5daa5e3858b2c1e13bc93f08c94b5d9a88d23be1d80",
+      "tag": "testing-AttackSlot",
+      "selector": "0x506bb10d8f1f948f92bf0f2381fe183e2008aa965a5d22f160f9a1819d858ac"
+    },
+    {
+      "members": [],
+      "class_hash": "0x69b920fb3890e4e5e58fe1c813327e874a92c6ffdcc64a10301c991bf797949",
+      "tag": "testing-BlobertItem",
+      "selector": "0x4d597773a6c2f85c6ff7a07f202466cbb23cf971f4e608c7c36da9031e825c7"
+    },
+    {
+      "members": [],
+      "class_hash": "0x70c08d22f9fb5423dd5bd65a2aa0f7ac11e15e258a745413fe99537c1a1a0f2",
+      "tag": "testing-BlobertToken",
+      "selector": "0x60acfb7993cfe46bf661f87a57fe99d2e56a9182466e6191f4eb3e4b9e538cd"
     }
   ],
   "events": [
@@ -5603,7 +7512,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x2663ef12efe9864f07160af665421a2337cf71d3965eab9ac1c2228764a5dc4",
+      "class_hash": "0x23f6b4550f03f12fa81f770894368ce6955761718d31002ca286e8e2660272c",
       "tag": "blob_arena-CombatEnd",
       "selector": "0xe7cdf29adf83bbe5840856288de06ac5e57971bf4d14409651b69de892deaf"
     },
@@ -5624,6 +7533,12 @@
       "class_hash": "0x4b45282bcdc160f71e60353f65492a65a1eac408b7b5772cbd44dabff8ab919",
       "tag": "blobert-BlobertItemName",
       "selector": "0x3c65933b654646718218b7b044c12f8e25aabdd31201f6e7e040063d7b6d7b"
+    },
+    {
+      "members": [],
+      "class_hash": "0x4b45282bcdc160f71e60353f65492a65a1eac408b7b5772cbd44dabff8ab919",
+      "tag": "testing-BlobertItemName",
+      "selector": "0x3ab748acb8f7f9032c4a725c4fe3b897f58c81ee05fc2c59922903701c22fb"
     }
   ],
   "external_contracts": []
