@@ -55,7 +55,7 @@ mod amma_blobert_actions {
 
     impl AmmaBlobertCallback of cmp::SetItemCallback<ContractState> {
         fn set_item_callback(
-            ref self: ContractState, key: BlobertItemKey, name: ByteArray, stats: UStats,
+            ref self: ContractState, key: BlobertItemKey, name: @ByteArray, stats: @UStats,
         ) {
             if let BlobertItemKey::Custom(id) = key {
                 self.fighters_exists.write(id, true);

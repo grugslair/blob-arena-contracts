@@ -182,7 +182,7 @@ mod cmp {
 
     trait SetItemCallback<TContractState> {
         fn set_item_callback(
-            ref self: TContractState, key: BlobertItemKey, name: ByteArray, stats: UStats,
+            ref self: TContractState, key: BlobertItemKey, name: @ByteArray, stats: @UStats,
         ) {}
     }
 
@@ -199,7 +199,9 @@ mod cmp {
             let dispactcher = self.world_dispatcher();
             dispactcher.assert_caller_has_permission(ROLE);
             let mut storage = dispactcher.item_store();
+            let (name_s, stats_s) = (@name, @stats);
             storage.set_blobert_item(key, name, stats);
+            self.set_item_callback(key, name_s, stats_s);
         }
 
         fn set_item_with_attacks(
@@ -212,7 +214,9 @@ mod cmp {
             let dispactcher = self.world_dispatcher();
             dispactcher.assert_caller_has_permission(ROLE);
             let mut storage = dispactcher.item_store();
+            let (name_s, stats_s) = (@name, @stats);
             storage.set_blobert_item_with_attacks(key, name, stats, attacks);
+            self.set_item_callback(key, name_s, stats_s);
         }
 
         fn set_item_stats(ref self: TContractState, key: BlobertItemKey, stats: UStats) {
@@ -262,7 +266,9 @@ mod cmp {
             let dispactcher = self.world_dispatcher();
             dispactcher.assert_caller_has_permission(ROLE);
             let mut storage = dispactcher.item_store();
-            storage.set_blobert_item(to_seed_key(attribute, id), name, stats);
+            let (key, name_s, stats_s) = (to_seed_key(attribute, id), @name, @stats);
+            storage.set_blobert_item(key, name, stats);
+            self.set_item_callback(key, name_s, stats_s);
         }
 
         fn set_seed_item_with_attacks(
@@ -276,14 +282,18 @@ mod cmp {
             let dispactcher = self.world_dispatcher();
             dispactcher.assert_caller_has_permission(ROLE);
             let mut storage = dispactcher.item_store();
-            storage.set_blobert_item_with_attacks(to_seed_key(attribute, id), name, stats, attacks);
+            let (key, name_s, stats_s) = (to_seed_key(attribute, id), @name, @stats);
+            storage.set_blobert_item_with_attacks(key, name, stats, attacks);
+            self.set_item_callback(key, name_s, stats_s);
         }
 
         fn set_custom_item(ref self: TContractState, id: felt252, name: ByteArray, stats: UStats) {
             let dispactcher = self.world_dispatcher();
             dispactcher.assert_caller_has_permission(ROLE);
             let mut storage = dispactcher.item_store();
-            storage.set_blobert_item(BlobertItemKey::Custom(id), name, stats);
+            let (key, name_s, stats_s) = (BlobertItemKey::Custom(id), @name, @stats);
+            storage.set_blobert_item(key, name, stats);
+            self.set_item_callback(key, name_s, stats_s);
         }
 
         fn set_custom_item_with_attacks(
@@ -295,8 +305,10 @@ mod cmp {
         ) {
             let dispactcher = self.world_dispatcher();
             dispactcher.assert_caller_has_permission(ROLE);
+            let (key, name_s, stats_s) = (BlobertItemKey::Custom(id), @name, @stats);
             let mut storage = dispactcher.item_store();
-            storage.set_blobert_item_with_attacks(BlobertItemKey::Custom(id), name, stats, attacks);
+            storage.set_blobert_item_with_attacks(key, name, stats, attacks);
+            self.set_item_callback(key, name_s, stats_s);
         }
     }
 }

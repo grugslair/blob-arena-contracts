@@ -58,12 +58,6 @@ mappings = { blob_arena = [
 ], achievements = [
     "TrophyCreation",
     "TrophyProgression",
-], testing = [
-    "test_blobert_actions",
-    "BlobertToken",
-    "BlobertItem",
-    "AttackSlot",
-    "BlobertItemName",
 ] }
 
 [writers]
@@ -116,26 +110,22 @@ mappings = { blob_arena = [
 "blob_arena-Attack" = [
     "blobert-blobert_actions",
     "amma_blobert-amma_blobert_actions",
-    "testing-test_blobert_actions",
 ]
 "blob_arena-AttackName" = [
     "blobert-blobert_actions",
     "amma_blobert-amma_blobert_actions",
-    "testing-test_blobert_actions",
 ]
 
 "blob_arena-Tag" = [
     "blobert-blobert_actions",
     "amma_blobert-amma_blobert_actions",
     "arcade-arcade_actions",
-    "testing-test_blobert_actions",
 ]
 
 "blob_arena-CollectionGroup" = [
     "blobert-blobert_actions",
     "free_blobert-free_blobert_actions",
     "amma_blobert-amma_blobert_actions",
-    "testing-test_blobert_actions",
 ]
 
 "ba_permissions-Permission" = ["blob_arena-admin_actions"]
@@ -150,6 +140,5 @@ mappings = { blob_arena = [
 "blobert" = ["blobert-blobert_actions"]
 "free_blobert" = ["free_blobert-free_blobert_actions"]
 "amma_blobert" = ["amma_blobert-amma_blobert_actions"]
-"testing" = ["testing-test_blobert_actions"]
 
 "arcade" = ["arcade-arcade_actions"]
