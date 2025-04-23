@@ -9,12 +9,13 @@ import {
 import { makeLobby } from "./lobby.js";
 import { runPvpBattles } from "./pvp.js";
 import { bigIntToHex } from "web3-eth-accounts";
-import { mintAmmaTokenWithAttacks } from "./classic-blobert.js";
+import { mintAmmaTokensWithAttacks } from "./amma-blobert.js";
 import { getAttacks } from "./attacks.js";
 import { printRoundResults } from "./game.js";
 
 const accountClassHash =
   "0x07489e371db016fcd31b78e49ccd201b93f4eab60af28b862390e800ec9096e2";
+const ammaFighterIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 const main = async () => {
   const account_manifest = await loadAccountManifestFromCmdArgs();
@@ -31,21 +32,25 @@ const main = async () => {
   const [account1, account2] = await newAccounts(account, accountClassHash, 2);
   console.log("Accounts deployed");
 
-  const player1Tokens = [];
-  const player2Tokens = [];
+  const player1Tokens = await mintAmmaTokensWithAttacks(
+    account,
+    account1,
+    ammaContract,
+    ammaFighterIds
+  );
+  const player2Tokens = await mintAmmaTokensWithAttacks(
+    account,
+    account2,
+    ammaContract,
+    ammaFighterIds
+  );
   let allAttackIds = new Set();
-  let wins = { 0: 0 };
-  for (let i = 1; i <= 9; i++) {
-    player1Tokens.push(
-      await mintAmmaTokenWithAttacks(account, account1, ammaContract, i)
-    );
-    player2Tokens.push(
-      await mintAmmaTokenWithAttacks(account, account2, ammaContract, i)
-    );
-    player1Tokens[i].attacks.forEach(allAttackIds.add, allAttackIds);
-    player2Tokens[i].attacks.forEach(allAttackIds.add, allAttackIds);
-    wins[i] = 0;
-  }
+  player1Tokens.forEach((token) =>
+    token.attacks.forEach(allAttackIds.add, allAttackIds)
+  );
+  player2Tokens.forEach((token) =>
+    token.attacks.forEach(allAttackIds.add, allAttackIds)
+  );
   const attacks = await getAttacks(
     worldContract,
     adminContract,
@@ -53,8 +58,10 @@ const main = async () => {
   );
   let games = [];
   let combatants = {};
+  let wins = {};
   for (let i = 0; i < player1Tokens.length; i++) {
     const token1 = player1Tokens[i];
+    wins[i + 1] = 0;
     for (let j = 0; j < player2Tokens.length; j++) {
       const token2 = player2Tokens[j];
 
@@ -75,15 +82,15 @@ const main = async () => {
         lobbyContract,
         gameContract,
         ammaContract.address,
-        token1.token_id,
+        token1.id,
         attackSlots1,
-        token2.token_id,
+        token2.id,
         attackSlots2
       );
 
       const combatant1 = {
         id: combatantId1,
-        token_id: token1.token_id,
+        token_id: token1.id,
         attacks: Object.fromEntries(attacks1.map((a) => [a, 0])),
         attack_slots: attackSlots1,
         stats: await gameContract.combatant_stats(combatantId1),
@@ -92,7 +99,7 @@ const main = async () => {
       };
       const combatant2 = {
         id: combatantId2,
-        token_id: token2.token_id,
+        token_id: token2.id,
         attacks: Object.fromEntries(attacks2.map((a) => [a, 0])),
         attack_slots: attackSlots2,
         stats: await gameContract.combatant_stats(combatantId2),
@@ -111,7 +118,7 @@ const main = async () => {
       });
     }
   }
-
+  console.log("Games created");
   await runPvpBattles(
     worldContract,
     account,

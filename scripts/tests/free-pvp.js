@@ -1,8 +1,4 @@
-import {
-  loadAccountManifestFromCmdArgs,
-  newAccounts,
-  Abi,
-} from "../stark-utils.js";
+import { loadAccountManifestFromCmdArgs, newAccounts } from "../stark-utils.js";
 import { randomIndexes } from "../utils.js";
 import {
   freeBlobertContractTag,
@@ -13,7 +9,10 @@ import {
 import { makeLobby } from "./lobby.js";
 import { runPvpBattles } from "./pvp.js";
 import { bigIntToHex } from "web3-eth-accounts";
-import { mintFreeTokenWithAttacks } from "./classic-blobert.js";
+import {
+  mintFreeTokensWithAttacks,
+  mintFreeTokenWithAttacks,
+} from "./classic-blobert.js";
 import { getAttacks } from "./attacks.js";
 import { printRoundResults } from "./game.js";
 
@@ -30,32 +29,30 @@ const main = async () => {
   const gameContract = await account_manifest.getContract(pvpContractTag);
   const adminContract = await account_manifest.getContract(adminContractTag);
   const worldContract = await account_manifest.getWorldContract();
-  const abi = new Abi([
-    freeContract,
-    lobbyContract,
-    gameContract,
-    adminContract,
-    worldContract,
-  ]);
-  console.log(abi.abiTypes);
   console.log("Deploying new accounts");
   const [account1, account2] = await newAccounts(account, accountClassHash, 2);
   console.log("Accounts deployed");
 
-  const player1Tokens = [];
-  const player2Tokens = [];
+  const player1Tokens = await mintFreeTokensWithAttacks(
+    account,
+    account1,
+    freeContract,
+    5
+  );
+  const player2Tokens = await mintFreeTokensWithAttacks(
+    account,
+    account2,
+    freeContract,
+    5
+  );
   let allAttackIds = new Set();
-  for (let i = 0; i < 4; i++) {
-    player1Tokens.push(
-      await mintFreeTokenWithAttacks(account, account1, freeContract)
-    );
+  player1Tokens.forEach((token) =>
+    token.attacks.forEach(allAttackIds.add, allAttackIds)
+  );
+  player2Tokens.forEach((token) =>
+    token.attacks.forEach(allAttackIds.add, allAttackIds)
+  );
 
-    player2Tokens.push(
-      await mintFreeTokenWithAttacks(account, account2, freeContract)
-    );
-    player1Tokens[i].attacks.forEach(allAttackIds.add, allAttackIds);
-    player2Tokens[i].attacks.forEach(allAttackIds.add, allAttackIds);
-  }
   const attacks = await getAttacks(
     worldContract,
     adminContract,
