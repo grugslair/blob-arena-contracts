@@ -107,8 +107,18 @@ trait IArcade<TContractState> {
     /// - `ArcadeGame` - The game object
     fn game(self: @TContractState, game_id: felt252) -> ArcadeGame;
 
+    /// Returns the game details for a given challenge attempt
+    /// # Arguments
+    /// * `attempt_id` - The unique identifier of an attempt
+    /// # Returns
+    /// * `ArcadeGame` - The game details for the specified attempt
     fn challenge_attempt_game(self: @TContractState, attempt_id: felt252) -> ArcadeGame;
 
+    /// Returns the current game phase for a given game
+    /// # Arguments
+    /// * `game_id` - The unique identifier of a game
+    /// # Returns
+    /// * `ArcadePhase` - The current phase of the specified game
     fn game_phase(self: @TContractState, game_id: felt252) -> ArcadePhase;
 }
 
