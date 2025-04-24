@@ -2,6 +2,7 @@ use starknet::ContractAddress;
 use crate::permissions::Role;
 use crate::achievements::TrophyCreationInput;
 use crate::attacks::{Attack, AttackInput};
+use crate::stats::UStats;
 
 #[starknet::interface]
 trait IPermissions<TContractState> {
@@ -89,22 +90,67 @@ trait IAttacks<TContractState> {
     fn attack_cooldown(self: @TContractState, attack_id: felt252) -> u8;
 }
 
+#[starknet::interface]
+trait ICombatant<TContractState> {
+    /// Returns the combatant combat ID
+    /// # Arguments
+    /// * `combatant_id` - The unique identifier of the combatant to check
+    /// # Returns
+    /// * `felt252` - The combat ID of the combatant
+    fn combatant_combat_id(self: @TContractState, combatant_id: felt252) -> felt252;
+    /// Returns the combatant player address
+    /// # Arguments
+    /// * `combatant_id` - The unique identifier of the combatant to check
+    /// # Returns
+    /// * `ContractAddress` - The address of the combatant player
+    fn combatant_player(self: @TContractState, combatant_id: felt252) -> ContractAddress;
+    /// Returns the health of a specific combatant
+    /// # Arguments
+    /// * `combatant_id` - The unique identifier of the combatant to check
+    /// # Returns
+    /// * `u8` - The current health of the combatant
+    fn combatant_health(self: @TContractState, combatant_id: felt252) -> u8;
+    /// Returns the stats of a combatant
+    /// # Arguments
+    /// * `combatant_id` - The unique identifier of the combatant
+    /// # Returns
+    /// * `UStats` - The stats of the combatant
+    fn combatant_stats(self: @TContractState, combatant_id: felt252) -> UStats;
+    /// Returns the stun chance of a combatant
+    /// # Arguments
+    /// * `combatant_id` - The unique identifier of the combatant
+    /// # Returns
+    /// * `u8` - The stun chance as as value between 0 and 255
+    fn combatant_stun_chance(self: @TContractState, combatant_id: felt252) -> u8;
+}
+
 #[dojo::contract]
-mod admin_actions {
+mod game_actions {
     use dojo::world::WorldStorage;
     use starknet::{ContractAddress, get_tx_info};
     use crate::world::{WorldTrait, get_world_address};
     use crate::permissions::{Role, Permissions, Permission, PermissionStorage};
     use crate::achievements::{Achievements, TrophyCreationInput};
-    use crate::attacks::{AttackStorage, Attack, AttackInput, AttackInputTrait};
+    use crate::attacks::{
+        AttackStorage, Attack, AttackInput, AttackInputTrait, results::RoundResult,
+    };
+    use crate::combatants::{CombatantState, CombatantStorage};
+    use crate::stats::UStats;
 
-    use super::{IPermissions, IAchievements, IAttacks};
+    use super::{IPermissions, IAchievements, IAttacks, ICombatant};
 
     fn dojo_init(ref self: ContractState) {
         let mut world = self.default_storage();
 
         let admin = get_tx_info().unbox().account_contract_address;
         world.set_permission(admin, Role::Admin, true);
+    }
+
+    #[event]
+    #[derive(Drop, starknet::Event)]
+    enum Event {
+        RoundResult: RoundResult,
+        CombatantState: CombatantState,
     }
 
 
@@ -173,6 +219,29 @@ mod admin_actions {
 
         fn attack_cooldown(self: @ContractState, attack_id: felt252) -> u8 {
             self.default_storage().get_attack_cooldown(attack_id)
+        }
+    }
+
+    #[abi(embed_v0)]
+    impl ICombatantImpl of ICombatant<ContractState> {
+        fn combatant_combat_id(self: @ContractState, combatant_id: felt252) -> felt252 {
+            self.default_storage().get_combatant_combat_id(combatant_id)
+        }
+
+        fn combatant_player(self: @ContractState, combatant_id: felt252) -> ContractAddress {
+            self.default_storage().get_player(combatant_id)
+        }
+
+        fn combatant_health(self: @ContractState, combatant_id: felt252) -> u8 {
+            self.default_storage().get_combatant_health(combatant_id)
+        }
+
+        fn combatant_stats(self: @ContractState, combatant_id: felt252) -> UStats {
+            self.default_storage().get_combatant_stats(combatant_id)
+        }
+
+        fn combatant_stun_chance(self: @ContractState, combatant_id: felt252) -> u8 {
+            self.default_storage().get_combatant_stun_chance(combatant_id)
         }
     }
 }

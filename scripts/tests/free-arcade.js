@@ -1,22 +1,10 @@
-import {
-  loadAccountManifestFromCmdArgs,
-  uint256ToHex,
-  getReturns,
-  dataToUint256,
-  newAccount,
-  callOptions,
-} from "../stark-utils.js";
-import { randomIndexes } from "../utils.js";
+import { loadAccountManifestFromCmdArgs, newAccount } from "../stark-utils.js";
 import {
   freeBlobertContractTag,
-  mintEntrypoint,
-  lobbyContractTag,
-  pvpContractTag,
+  adminContractTag,
   arcadeContractTag,
 } from "../contract-defs.js";
-import { cairo, Account, hash } from "starknet";
-import { makeLobby } from "./lobby.js";
-import { runRounds } from "./pvp.js";
+
 import { bigIntToHex } from "web3-eth-accounts";
 import { mintFreeTokensWithAttacks } from "./classic-blobert.js";
 import {
@@ -24,12 +12,12 @@ import {
   runArcadeChallengeGames,
   startArcadeChallenges,
 } from "./arcade.js";
-const classicChallengeId =
-  "0x033bd13f2718e9b2a90b3b8c7847b11c9eb5ce81c95009998380ab95b343f53d";
+import { getAttacks } from "./attacks.js";
+import { DojoParser } from "../dojo.js";
+import { dojoNamespaceMap } from "./game.js";
 
 const accountClassHash =
   "0x07489e371db016fcd31b78e49ccd201b93f4eab60af28b862390e800ec9096e2";
-const toRun = 10;
 
 const main = async () => {
   const account_manifest = await loadAccountManifestFromCmdArgs();
@@ -37,23 +25,30 @@ const main = async () => {
   const freeContract = await account_manifest.getContract(
     freeBlobertContractTag
   );
-  const lobbyContract = await account_manifest.getContract(lobbyContractTag);
   const arcadeContract = await account_manifest.getContract(arcadeContractTag);
-
+  const adminContract = await account_manifest.getContract(adminContractTag);
+  const worldContract = await account_manifest.getWorldContract();
   const signer = await newAccount(caller, accountClassHash);
-
+  const classicChallengeId = await arcadeContract.challenge_id_from_tag(
+    "Classic Season 0"
+  );
   await mintPaidArcadeGames(caller, arcadeContract, signer.address, 1000);
-  let tokens = await mintFreeTokensWithAttacks(
+  const tokens = await mintFreeTokensWithAttacks(
     caller,
     signer,
     freeContract,
     10
   );
-  tokens.map((token) => {
-    let indexes = randomIndexes(token.attacks.length, 4);
-    token.attacks = indexes.map((index) => token.attacks[index]);
-    token.attack_slots = indexes.map((index) => token.attack_slots[index]);
-  });
+  console.log(tokens);
+  let attackIds = new Set();
+  console.log("Tokens minted");
+  tokens.forEach((token) => token.attacks.forEach(attackIds.add, attackIds));
+  const attacks = await getAttacks(
+    worldContract,
+    adminContract,
+    Array.from(attackIds).map(bigIntToHex)
+  );
+  const dojoParser = new DojoParser(adminContract, dojoNamespaceMap);
 
   const challenges = await startArcadeChallenges(
     caller,
@@ -62,8 +57,16 @@ const main = async () => {
     classicChallengeId,
     tokens
   );
+
   while (challenges.some((c) => c.status === "Active")) {
-    await runArcadeChallengeGames(caller, signer, arcadeContract, challenges);
+    await runArcadeChallengeGames(
+      caller,
+      signer,
+      arcadeContract,
+      dojoParser,
+      challenges,
+      attacks
+    );
   }
   //   let games = [];
   //   for (const account of accounts) {

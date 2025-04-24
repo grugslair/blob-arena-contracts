@@ -120,6 +120,8 @@ trait IArcade<TContractState> {
     /// # Returns
     /// * `ArcadePhase` - The current phase of the specified game
     fn game_phase(self: @TContractState, game_id: felt252) -> ArcadePhase;
+
+    fn challenge_id_from_tag(self: @TContractState, tag: ByteArray) -> felt252;
 }
 
 /// Interface for managing Arcade (Player vs Environment) administrative functions.
@@ -243,7 +245,7 @@ mod arcade_actions {
     use dojo::world::WorldStorage;
     use crate::arcade::{
         ArcadeTrait, ArcadeStorage, ARCADE_NAMESPACE_HASH, ArcadeStore, ArcadeOpponentInput,
-        ArcadeChallengeAttempt, ArcadeGame, ArcadePhase,
+        ArcadeChallengeAttempt, ArcadeGame, ArcadePhase, CHALLENGE_TAG_GROUP,
     };
     use crate::attacks::{AttackInput, AttackTrait};
     use crate::permissions::{Permissions, Role};
@@ -251,7 +253,7 @@ mod arcade_actions {
     use crate::combat::CombatProgress;
     use crate::stats::UStats;
     use crate::collections::TokenAttributes;
-    use crate::tags::IdTagNew;
+    use crate::tags::{IdTagNew, Tag};
     use crate::utils::get_transaction_hash;
     use crate::erc721::erc721_owner_of;
     use crate::starknet::return_value;
@@ -341,6 +343,10 @@ mod arcade_actions {
 
         fn game_phase(self: @ContractState, game_id: felt252) -> ArcadePhase {
             self.get_arcade_storage().get_arcade_game_phase(game_id)
+        }
+
+        fn challenge_id_from_tag(self: @ContractState, tag: ByteArray) -> felt252 {
+            self.get_arcade_storage().get_tag(CHALLENGE_TAG_GROUP, @tag)
         }
     }
 

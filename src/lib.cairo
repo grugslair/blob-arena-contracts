@@ -73,7 +73,7 @@ mod arcade {
     use components::{
         ArcadeGame, ArcadeOpponent, ArcadeBlobertInfo, ArcadeStorage, ArcadePhase, ArcadeStore,
         ArcadeChallengeAttempt, ArcadePhaseTrait, ArcadeAttemptEnd, ArcadeOpponentInput,
-        ARCADE_NAMESPACE_HASH, ARCADE_CHALLENGE_MAX_RESPAWNS,
+        ARCADE_NAMESPACE_HASH, ARCADE_CHALLENGE_MAX_RESPAWNS, CHALLENGE_TAG_GROUP,
     };
 }
 
@@ -84,7 +84,7 @@ mod achievements {
     use systems::Achievements;
 }
 
-mod admin {
+mod game {
     mod contract;
 }
 

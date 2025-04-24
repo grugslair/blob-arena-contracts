@@ -1,3 +1,13 @@
+import { hash, num } from "starknet";
+import { namespaceNameToHash } from "../dojo.js";
+
+const roundResultHash = namespaceNameToHash("blob_arena-RoundResult");
+const combatantStateHash = namespaceNameToHash("blob_arena-CombatantState");
+export const dojoNamespaceMap = {
+  [roundResultHash]: num.toHex(hash.starknetKeccak("RoundResult")),
+  [combatantStateHash]: num.toHex(hash.starknetKeccak("CombatantState")),
+};
+
 export const printRoundResults = (game) => {
   const rounds = game.results;
   let combatants = {

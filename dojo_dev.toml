@@ -128,9 +128,9 @@ mappings = { blob_arena = [
     "amma_blobert-amma_blobert_actions",
 ]
 
-"ba_permissions-Permission" = ["blob_arena-admin_actions"]
+"ba_permissions-Permission" = ["blob_arena-game_actions"]
 
-"achievements-TrophyCreation" = ["blob_arena-admin_actions"]
+"achievements-TrophyCreation" = ["blob_arena-game_actions"]
 "achievements-TrophyProgression" = [
     "blob_arena-lobby_actions",
     "blob_arena-pvp_actions",

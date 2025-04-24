@@ -6,15 +6,13 @@ import {
   pvpContractTag,
   adminContractTag,
 } from "../contract-defs.js";
-import { makeLobby } from "./lobby.js";
+import { makeLobbies } from "./lobby.js";
 import { runPvpBattles } from "./pvp.js";
 import { bigIntToHex } from "web3-eth-accounts";
-import {
-  mintFreeTokensWithAttacks,
-  mintFreeTokenWithAttacks,
-} from "./classic-blobert.js";
+import { mintFreeTokensWithAttacks } from "./classic-blobert.js";
 import { getAttacks } from "./attacks.js";
-import { printRoundResults } from "./game.js";
+import { dojoNamespaceMap, printRoundResults } from "./game.js";
+import { DojoParser } from "../dojo.js";
 
 const accountClassHash =
   "0x07489e371db016fcd31b78e49ccd201b93f4eab60af28b862390e800ec9096e2";
@@ -46,82 +44,67 @@ const main = async () => {
     5
   );
   let allAttackIds = new Set();
-  player1Tokens.forEach((token) =>
-    token.attacks.forEach(allAttackIds.add, allAttackIds)
-  );
-  player2Tokens.forEach((token) =>
-    token.attacks.forEach(allAttackIds.add, allAttackIds)
-  );
-
+  player1Tokens.map((t) => t.attacks.map((a) => allAttackIds.add(a.id)));
+  player2Tokens.map((t) => t.attacks.map((a) => allAttackIds.add(a.id)));
+  const dojoParser = new DojoParser(adminContract, dojoNamespaceMap);
   const attacks = await getAttacks(
     worldContract,
     adminContract,
     Array.from(allAttackIds).map(bigIntToHex)
   );
-  let games = [];
   let combatants = {};
+  let wins = { 0: 0 };
   let n = 0;
+  let games = [];
   for (let i = 0; i < player1Tokens.length; i++) {
     const token1 = player1Tokens[i];
+    wins[i + 1] = 0;
     for (let j = 0; j < player2Tokens.length; j++) {
       const token2 = player2Tokens[j];
-
-      const attackIndexes1 = randomIndexes(token1.attack_slots.length, 4);
-      const attackIndexes2 = randomIndexes(token2.attack_slots.length, 4);
-      const attacks1 = attackIndexes1.map((index) => token1.attacks[index]);
-      const attacks2 = attackIndexes2.map((index) => token2.attacks[index]);
-      const attackSlots1 = attackIndexes1.map(
-        (index) => token1.attack_slots[index]
-      );
-      const attackSlots2 = attackIndexes2.map(
-        (index) => token2.attack_slots[index]
-      );
-      const [gameId, combatantId1, combatantId2] = await makeLobby(
-        account,
-        account1,
-        account2,
-        lobbyContract,
-        gameContract,
-        freeContract.address,
-        token1.id,
-        attackSlots1,
-        token2.id,
-        attackSlots2
-      );
-
-      const combatant1 = {
-        id: combatantId1,
-        token_id: token1.id,
-        attacks: Object.fromEntries(attacks1.map((a) => [a, 0])),
-        attack_slots: attackSlots1,
-        stats: await gameContract.combatant_stats(combatantId1),
-        health: await gameContract.combatant_health(combatantId1),
-        stun_chance: BigInt(0),
-      };
-      const combatant2 = {
-        id: combatantId2,
-        token_id: token2.id,
-        attacks: Object.fromEntries(attacks2.map((a) => [a, 0])),
-        attack_slots: attackSlots2,
-        stats: await gameContract.combatant_stats(combatantId2),
-        health: await gameContract.combatant_health(combatantId2),
-        stun_chance: BigInt(0),
-      };
-      combatants[combatantId1] = combatant1;
-      combatants[combatantId2] = combatant2;
+      const indexes1 = randomIndexes(token1.attacks.length, 4);
+      const indexes2 = randomIndexes(token2.attacks.length, 4);
       games.push({
-        n: n++,
-        combat_id: BigInt(gameId),
-        combatant1,
-        combatant2,
+        n: ++n,
+        accounts: [account1, account2],
         round: 1,
         winner: null,
         rounds: [],
+        combatant1: {
+          fighter: i + 1,
+          token: token1,
+          token_id: token1.id,
+          attacks: Object.fromEntries(
+            indexes1.map((index) => [token1.attacks[index].id, 0])
+          ),
+          attack_slots: indexes1.map((index) => token1.attacks[index].slot),
+          stats: token1.stats,
+          health: token1.stats.vitality + BigInt(100),
+          stun_chance: BigInt(0),
+        },
+        combatant2: {
+          fighter: j + 1,
+          token: token2,
+          token_id: token2.id,
+          attacks: Object.fromEntries(
+            indexes2.map((index) => [token2.attacks[index].id, 0])
+          ),
+          attack_slots: indexes2.map((index) => token2.attacks[index].slot),
+          stats: token2.stats,
+          health: token2.stats.vitality + BigInt(100),
+          stun_chance: BigInt(0),
+        },
       });
     }
   }
+  await makeLobbies(lobbyContract, gameContract, account, games);
+  games.forEach(({ combatant1, combatant2 }) => {
+    combatants[combatant1.id] = combatant1;
+    combatants[combatant2.id] = combatant2;
+  });
+
+  console.log("Games created");
   await runPvpBattles(
-    worldContract,
+    dojoParser,
     account,
     account1,
     account2,
@@ -129,6 +112,7 @@ const main = async () => {
     games,
     attacks
   );
+
   for (const game of games) {
     printRoundResults(game);
   }

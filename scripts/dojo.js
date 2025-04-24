@@ -1,5 +1,5 @@
 import { hash, num, events, CallData } from "starknet";
-import { poseidonHashString } from "./stark-utils.js";
+import { parseAbisTypes, poseidonHashString } from "./stark-utils.js";
 
 export const eventEmittedHash = num.toHex(hash.starknetKeccak("EventEmitted"));
 export const storeSetRecordHash = num.toHex(
@@ -7,7 +7,10 @@ export const storeSetRecordHash = num.toHex(
 );
 
 export class DojoParser {
-  constructor(abi, namespaceMappings) {
+  constructor(abis, namespaceMappings) {
+    const abi = Object.values(parseAbisTypes(abis)).concat([
+      { type: "interface" },
+    ]);
     this.abiEvents = events.getAbiEvents(abi);
     this.abiStructs = CallData.getAbiStruct(abi);
     this.abiEnums = CallData.getAbiEnum(abi);

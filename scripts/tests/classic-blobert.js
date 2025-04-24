@@ -49,27 +49,32 @@ export const getFreeAttacks = async (contract, tokenId) => {
   }
 
   const maybeAttacks = await contract.get_attack_slots(tokenId, allAttackSlots);
-  let attackSlots = [];
   let attacks = [];
   for (let i = 0; i < maybeAttacks.length; i++) {
     if (maybeAttacks[i]) {
-      attacks.push(maybeAttacks[i]);
-      attackSlots.push(allAttackSlots[i]);
+      attacks.push({
+        id: maybeAttacks[i],
+        slot: allAttackSlots[i],
+      });
     }
   }
 
-  return [attacks, attackSlots];
+  return attacks;
 };
 
 export const mintFreeTokenWithAttacks = async (caller, signer, contract) => {
   const tokenId = await mintFreeToken(caller, signer, contract);
   console.log(`Token Id: ${uint256ToHex(tokenId)}`);
-  const [attacks, attackSlots] = await getFreeAttacks(contract, tokenId);
+  const [attacks, stats] = await Promise.all([
+    getFreeAttacks(contract, tokenId),
+    contract.get_stats(tokenId),
+  ]);
+
   return {
     collection_address: contract.address,
     id: tokenId,
     attacks,
-    attack_slots: attackSlots,
+    stats,
   };
 };
 
@@ -80,15 +85,18 @@ export const mintFreeTokensWithAttacks = async (
   number
 ) => {
   const tokenIds = await mintFreeTokens(caller, signer, contract, number);
-  const tokens = tokenIds.map(async (tokenId) => {
-    const [attacks, attackSlots] = await getFreeAttacks(contract, tokenId);
-    return {
+  const [attacks, stats] = await Promise.all([
+    Promise.all(tokenIds.map((tokenId) => getFreeAttacks(contract, tokenId))),
+    Promise.all(tokenIds.map((tokenId) => contract.get_stats(tokenId))),
+  ]);
+  let tokens = [];
+  for (let i = 0; i < tokenIds.length; i++) {
+    tokens.push({
       collection_address: contract.address,
-      id: tokenId,
-      attacks,
-      attack_slots: attackSlots,
-    };
-  });
-
-  return Promise.all(tokens);
+      id: tokenIds[i],
+      attacks: attacks[i],
+      stats: stats[i],
+    });
+  }
+  return tokens;
 };

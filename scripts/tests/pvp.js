@@ -9,13 +9,6 @@ import {
 } from "../dojo.js";
 const { toHex } = num;
 
-const roundResultHash = namespaceNameToHash("blob_arena-RoundResult");
-const combatantStateHash = namespaceNameToHash("blob_arena-CombatantState");
-const dojoNamespaceMap = {
-  [roundResultHash]: num.toHex(hash.starknetKeccak("RoundResult")),
-  [combatantStateHash]: num.toHex(hash.starknetKeccak("CombatantState")),
-};
-
 const roundResultPath = "blob_arena::attacks::results::RoundResult";
 const combatantStatePath = "blob_arena::combatants::components::CombatantState";
 const commitAttackCall = (contract, combatantId, commitment) => {
@@ -220,7 +213,7 @@ export const runRounds = async (
 };
 
 export const runPvpBattles = async (
-  world,
+  dojoParser,
   caller,
   account1,
   account2,
@@ -230,7 +223,6 @@ export const runPvpBattles = async (
 ) => {
   const maxRunningGames = 9;
   let eventCalls = [];
-  const dojoParser = new DojoParser(contract.abi, dojoNamespaceMap);
   while (games.filter((game) => game.winner === null).length) {
     const runningGames = games
       .filter((game) => game.winner === null)
