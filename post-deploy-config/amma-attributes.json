@@ -323,7 +323,7 @@
             "affect": {
               "Damage": {
                 "power": 30,
-                "critical": 0
+                "critical": 10
               }
             }
           },
@@ -345,16 +345,16 @@
         "name": "Swag",
         "speed": 65,
         "accuracy": 90,
-        "cooldown": 3,
+        "cooldown": 10,
         "hit": [
           {
             "target": "Player",
             "affect": {
               "Stats": {
-                "strength": 20,
+                "strength": 30,
                 "vitality": 0,
-                "dexterity": 20,
-                "luck": 20
+                "dexterity": 30,
+                "luck": 30
               }
             }
           }
@@ -430,9 +430,15 @@
             "target": "Opponent",
             "affect": {
               "Damage": {
-                "power": 50,
+                "power": 60,
                 "critical": 0
               }
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
+              "Stun": 30
             }
           },
           {
@@ -482,8 +488,8 @@
             "target": "Opponent",
             "affect": {
               "Damage": {
-                "power": 40,
-                "critical": 0
+                "power": 60,
+                "critical": 10
               }
             }
           }
@@ -953,7 +959,7 @@
         {
             "name": "One Shot",
             "speed": 40,
-            "accuracy": 50,
+            "accuracy": 60,
             "cooldown": 10,
             "hit": [
                 {
@@ -961,7 +967,7 @@
                     "affect": {
                         "Damage": {
                             "power": 100,
-                            "critical": 0
+                            "critical": 10
                         }
                     }
                 }
