@@ -59,7 +59,8 @@ export class ChallengeAttempt {
     this.respawns = 0;
     this.stage = 0;
     this.status = "Active";
-    this.attacksUsed = attacksUsed;
+    this.attacksUsed = attacksUsed.map((attack) => attack.id);
+    this.attacksSlotsUsed = attacksUsed.map((attack) => attack.slot);
     this.token = token;
     this.games = {};
     this.attemptId = null;

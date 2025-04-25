@@ -8,6 +8,7 @@ import {
 import { bigIntToHex } from "web3-eth-accounts";
 import { mintFreeTokensWithAttacks } from "./classic-blobert.js";
 import {
+  ChallengeAttempt,
   mintPaidArcadeGames,
   runArcadeChallengeGames,
   startArcadeChallenges,
@@ -15,6 +16,7 @@ import {
 import { getAttacks } from "./attacks.js";
 import { DojoParser } from "../dojo.js";
 import { dojoNamespaceMap } from "./game.js";
+import { randomIndexes } from "../utils.js";
 
 const accountClassHash =
   "0x07489e371db016fcd31b78e49ccd201b93f4eab60af28b862390e800ec9096e2";
@@ -32,13 +34,25 @@ const main = async () => {
   const classicChallengeId = await arcadeContract.challenge_id_from_tag(
     "Classic Season 0"
   );
+  [];
   await mintPaidArcadeGames(caller, arcadeContract, signer.address, 1000);
-  const tokens = await mintFreeTokensWithAttacks(
+  const challenges = await mintFreeTokensWithAttacks(
     caller,
     signer,
     freeContract,
     10
-  );
+  ).map((token) => {
+    const attacks = randomIndexes(token.attacks.length, 3).map(
+      (i) => token.attacks[i]
+    );
+    return new ChallengeAttempt(
+      arcadeContract,
+      classicChallengeId,
+      token,
+      attacks
+    );
+  });
+
   console.log(tokens);
   let attackIds = new Set();
   console.log("Tokens minted");
@@ -50,13 +64,13 @@ const main = async () => {
   );
   const dojoParser = new DojoParser(adminContract, dojoNamespaceMap);
 
-  const challenges = await startArcadeChallenges(
-    caller,
-    signer,
-    arcadeContract,
-    classicChallengeId,
-    tokens
-  );
+  // const challenges = await startArcadeChallenges(
+  //   caller,
+  //   signer,
+  //   arcadeContract,
+  //   classicChallengeId,
+  //   tokens
+  // );
 
   while (challenges.some((c) => c.status === "Active")) {
     await runArcadeChallengeGames(
