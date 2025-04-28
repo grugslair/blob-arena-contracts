@@ -5,10 +5,10 @@
     "points": 20,
     "start": 0,
     "end": 0,
-    "group": "AMMA Arcade Completion",
+    "group": "Complete AMMA Arcade",
     "icon": "fa-shield",
     "title": "AMMA Academy",
-    "description": "Won 1 Arcade Challenge",
+    "description": "Every journey begins with a single step",
     "tasks": [
       {
         "id": "AmmaArcadeCompletion",
@@ -24,10 +24,10 @@
     "points": 50,
     "start": 0,
     "end": 0,
-    "group": "AMMA Arcade Completion",
+    "group": "Complete AMMA Arcade",
     "icon": "fa-shield-halved",
     "title": "AMMA Recruit",
-    "description": "Won 5 Arcade Challenges",
+    "description": "Persistence makes the difference",
     "tasks": [
       {
         "id": "AmmaArcadeCompletion",
@@ -43,10 +43,10 @@
     "points": 100,
     "start": 0,
     "end": 0,
-    "group": "AMMA Arcade Completion",
+    "group": "Complete AMMA Arcade",
     "icon": "fa-shield-quartered",
-    "title": "Arcade Contender",
-    "description": "Won 20 Arcade Challenges",
+    "title": "AMMA Contender",
+    "description": "Endurance defines champions",
     "tasks": [
       {
         "id": "AmmaArcadeCompletion",
@@ -62,10 +62,10 @@
     "points": 200,
     "start": 0,
     "end": 0,
-    "group": "AMMA Arcade Completion",
+    "group": "Complete AMMA Arcade",
     "icon": "fa-medal",
     "title": "AMMA Champion",
-    "description": "Won 50 Arcade Challenges",
+    "description": "Victory belongs to the relentless",
     "tasks": [
       {
         "id": "AmmaArcadeCompletion",
@@ -81,10 +81,10 @@
     "points": 20,
     "start": 0,
     "end": 0,
-    "group": "Classic Arcade Completion",
+    "group": "Complete Classic Arcade",
     "icon": "fa-chess-pawn",
     "title": "Arcade Squire",
-    "description": "Won 1 Arcade Challenge",
+    "description": "Every pawn's journey begins",
     "tasks": [
       {
         "id": "ClassicArcadeCompletion",
@@ -100,10 +100,10 @@
     "points": 50,
     "start": 0,
     "end": 0,
-    "group": "Classic Arcade Completion",
+    "group": "Complete Classic Arcade",
     "icon": "fa-chess-knight",
     "title": "Arcade Knight",
-    "description": "Won 5 Arcade Challenges",
+    "description": "Knights rise through battle",
     "tasks": [
       {
         "id": "ClassicArcadeCompletion",
@@ -119,10 +119,10 @@
     "points": 100,
     "start": 0,
     "end": 0,
-    "group": "Classic Arcade Completion",
+    "group": "Complete Classic Arcade",
     "icon": "fa-chess-queen",
-    "title": "Arcade Warlord",
-    "description": "Won 20 Arcade Challenges",
+    "title": "Arcade Queen",
+    "description": "Queens dominate the battlefield",
     "tasks": [
       {
         "id": "ClassicArcadeCompletion",
@@ -138,10 +138,10 @@
     "points": 200,
     "start": 0,
     "end": 0,
-    "group": "Classic Arcade Completion",
+    "group": "Complete Classic Arcade",
     "icon": "fa-chess-king",
-    "title": "Arcade Master",
-    "description": "Won 50 Arcade Challenges",
+    "title": "Arcade King",
+    "description": "Kings reign supreme",
     "tasks": [
       {
         "id": "ClassicArcadeCompletion",
@@ -160,7 +160,7 @@
     "group": "Arcade Total Damage",
     "icon": "fa-sparkle",
     "title": "Damage Dealer I",
-    "description": "Dealt 1,000 total damage in Arcade Battles",
+    "description": "Every hit leaves a mark",
     "tasks": [
       {
         "id": "ArcadeTotalDamage",
@@ -179,7 +179,7 @@
     "group": "Arcade Total Damage",
     "icon": "fa-sparkles",
     "title": "Damage Dealer II",
-    "description": "Dealt 5,000 total damage in Arcade Battles",
+    "description": "Power grows with every strike",
     "tasks": [
       {
         "id": "ArcadeTotalDamage",
@@ -198,7 +198,7 @@
     "group": "Arcade Total Damage",
     "icon": "fa-fire",
     "title": "Damage Dealer III",
-    "description": "Dealt 20,000 total damage in Arcade Battles",
+    "description": "Pain is a weapon",
     "tasks": [
       {
         "id": "ArcadeTotalDamage",
@@ -217,7 +217,7 @@
     "group": "Arcade Total Damage",
     "icon": "fa-explosion",
     "title": "Damage Dealer IV",
-    "description": "Dealt 50,000 total damage in Arcade Battles",
+    "description": "Overwhelm through force",
     "tasks": [
       {
         "id": "ArcadeTotalDamage",
@@ -233,10 +233,10 @@
     "points": 10,
     "start": 0,
     "end": 0,
-    "group": "PvP Unique Moves",
+    "group": "Master Moves in PvP",
     "icon": "fa-book-open-cover",
     "title": "Tactician I",
-    "description": "Used 10 unique moves in PvP Mode",
+    "description": "Creativity conquers opponents",
     "tasks": [
       {
         "id": "PvpUniqueMoves",
@@ -252,10 +252,10 @@
     "points": 20,
     "start": 0,
     "end": 0,
-    "group": "PvP Unique Moves",
+    "group": "Master Moves in PvP",
     "icon": "fa-book-open-cover",
     "title": "Tactician II",
-    "description": "Used 50 unique moves in PvP Mode",
+    "description": "Adaptability wins battles",
     "tasks": [
       {
         "id": "PvpUniqueMoves",
@@ -271,10 +271,10 @@
     "points": 30,
     "start": 0,
     "end": 0,
-    "group": "PvP Unique Moves",
+    "group": "Master Moves in PvP",
     "icon": "fa-book-open-cover",
     "title": "Tactician III",
-    "description": "Used 100 unique moves in PvP Mode",
+    "description": "Versatility is strength",
     "tasks": [
       {
         "id": "PvpUniqueMoves",
@@ -290,10 +290,10 @@
     "points": 40,
     "start": 0,
     "end": 0,
-    "group": "PvP Unique Moves",
+    "group": "Master Moves in PvP",
     "icon": "fa-book-open-cover",
     "title": "Tactician IV",
-    "description": "Used 200 unique moves in PvP Mode",
+    "description": "Embrace every strategy",
     "tasks": [
       {
         "id": "PvpUniqueMoves",
@@ -309,10 +309,10 @@
     "points": 10,
     "start": 0,
     "end": 0,
-    "group": "Arcade Unique Moves",
+    "group": "Master Moves in Arcade",
     "icon": "fa-book-sparkles",
     "title": "Scholar I",
-    "description": "Used 10 unique moves in Arcade Mode",
+    "description": "Curiosity fuels progress",
     "tasks": [
       {
         "id": "ArcadeUniqueMoves",
@@ -328,10 +328,10 @@
     "points": 20,
     "start": 0,
     "end": 0,
-    "group": "Arcade Unique Moves",
+    "group": "Master Moves in Arcade",
     "icon": "fa-book-sparkles",
     "title": "Scholar II",
-    "description": "Used 50 unique moves in Arcade Mode",
+    "description": "Explore every possibility",
     "tasks": [
       {
         "id": "ArcadeUniqueMoves",
@@ -347,10 +347,10 @@
     "points": 30,
     "start": 0,
     "end": 0,
-    "group": "Arcade Unique Moves",
+    "group": "Master Moves in Arcade",
     "icon": "fa-book-sparkles",
     "title": "Scholar III",
-    "description": "Used 100 unique moves in Arcade Mode",
+    "description": "Knowledge is power",
     "tasks": [
       {
         "id": "ArcadeUniqueMoves",
@@ -366,10 +366,10 @@
     "points": 40,
     "start": 0,
     "end": 0,
-    "group": "Arcade Unique Moves",
+    "group": "Master Moves in Arcade",
     "icon": "fa-book-sparkles",
     "title": "Scholar IV",
-    "description": "Used 200 unique moves in Arcade Mode",
+    "description": "True mastery knows no limits",
     "tasks": [
       {
         "id": "ArcadeUniqueMoves",
@@ -385,10 +385,10 @@
     "points": 10,
     "start": 0,
     "end": 0,
-    "group": "Critical Hits",
+    "group": "Land Critical Hits",
     "icon": "fa-bullseye",
     "title": "Deadeye I",
-    "description": "Landed 20 critical hits across all Bloberts",
+    "description": "Strike true, strike deep",
     "tasks": [
       {
         "id": "CriticalHits",
@@ -404,10 +404,10 @@
     "points": 20,
     "start": 0,
     "end": 0,
-    "group": "Critical Hits",
+    "group": "Land Critical Hits",
     "icon": "fa-crosshairs",
     "title": "Deadeye II",
-    "description": "Landed 50 critical hits across all Bloberts",
+    "description": "Precision is deadly",
     "tasks": [
       {
         "id": "CriticalHits",
@@ -423,10 +423,10 @@
     "points": 30,
     "start": 0,
     "end": 0,
-    "group": "Critical Hits",
+    "group": "Land Critical Hits",
     "icon": "fa-burst",
     "title": "Deadeye III",
-    "description": "Landed 200 critical hits across all Bloberts",
+    "description": "Dominate with sharp focus",
     "tasks": [
       {
         "id": "CriticalHits",
@@ -442,10 +442,10 @@
     "points": 40,
     "start": 0,
     "end": 0,
-    "group": "Critical Hits",
+    "group": "Land Critical Hits",
     "icon": "fa-skull-crossbones",
     "title": "Deadeye IV",
-    "description": "Landed 500 critical hits across all Bloberts",
+    "description": "Unleash unstoppable force",
     "tasks": [
       {
         "id": "CriticalHits",
@@ -461,10 +461,10 @@
     "points": 10,
     "start": 0,
     "end": 0,
-    "group": "PvP Opponents",
+    "group": "Face PvP Opponents",
     "icon": "fa-user",
     "title": "Contender I",
-    "description": "Faced 5 players in PvP battles",
+    "description": "Every rival is a lesson",
     "tasks": [
       {
         "id": "PvpUniqueOpponents",
@@ -480,10 +480,10 @@
     "points": 20,
     "start": 0,
     "end": 0,
-    "group": "PvP Opponents",
+    "group": "Face PvP Opponents",
     "icon": "fa-user-group",
     "title": "Contender II",
-    "description": "Faced 20 players in PvP battles",
+    "description": "The battlefield sharpens skill",
     "tasks": [
       {
         "id": "PvpUniqueOpponents",
@@ -499,10 +499,10 @@
     "points": 30,
     "start": 0,
     "end": 0,
-    "group": "PvP Opponents",
+    "group": "Face PvP Opponents",
     "icon": "fa-users",
     "title": "Contender III",
-    "description": "Faced 50 players in PvP battles",
+    "description": "Champions welcome challenges",
     "tasks": [
       {
         "id": "PvpUniqueOpponents",
@@ -518,10 +518,10 @@
     "points": 40,
     "start": 0,
     "end": 0,
-    "group": "PvP Opponents",
+    "group": "Face PvP Opponents",
     "icon": "fa-people-group",
     "title": "Contender IV",
-    "description": "Faced 200 players in PvP battles",
+    "description": "Fear no enemy",
     "tasks": [
       {
         "id": "PvpUniqueOpponents",
@@ -537,10 +537,10 @@
     "points": 10,
     "start": 0,
     "end": 0,
-    "group": "PvP Battle Victories",
+    "group": "Win PvP Battles",
     "icon": "fa-wand",
     "title": "Duelist I",
-    "description": "Won 5 PvP Battles",
+    "description": "Courage wins the first fight",
     "tasks": [
       {
         "id": "PvpBattleVictories",
@@ -556,10 +556,10 @@
     "points": 20,
     "start": 0,
     "end": 0,
-    "group": "PvP Battle Victories",
+    "group": "Win PvP Battles",
     "icon": "fa-sword",
     "title": "Duelist II",
-    "description": "Won 20 PvP Battles",
+    "description": "Strength crowns the champion",
     "tasks": [
       {
         "id": "PvpBattleVictories",
@@ -575,10 +575,10 @@
     "points": 30,
     "start": 0,
     "end": 0,
-    "group": "PvP Battle Victories",
+    "group": "Win PvP Battles",
     "icon": "fa-axe-battle",
     "title": "Duelist III",
-    "description": "Won 50 PvP Battles",
+    "description": "Skill brings the victories",
     "tasks": [
       {
         "id": "PvpBattleVictories",
@@ -594,10 +594,10 @@
     "points": 40,
     "start": 0,
     "end": 0,
-    "group": "PvP Battle Victories",
+    "group": "Win PvP Battles",
     "icon": "fa-swords",
     "title": "Duelist IV",
-    "description": "Won 200 PvP Battles",
+    "description": "Legends are forged in battle",
     "tasks": [
       {
         "id": "PvpBattleVictories",
@@ -613,10 +613,10 @@
     "points": 50,
     "start": 0,
     "end": 0,
-    "group": "Arcade Completion No Respawn",
+    "group": "Arcade No Respawn Challenge",
     "icon": "fa-shield-cross",
     "title": "Iron Soul",
-    "description": "Completed an Arcade challenge without a respawn",
+    "description": "No second chances, only glory",
     "tasks": [
       {
         "id": "ArcadeCompletionNoRespawn",
