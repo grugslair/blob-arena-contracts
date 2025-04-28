@@ -6,7 +6,7 @@
     "start": 0,
     "end": 0,
     "group": "AMMA Arcade Completion",
-    "icon": "shield",
+    "icon": "fa-shield",
     "title": "AMMA Academy",
     "description": "Won 1 Arcade Challenge",
     "tasks": [
@@ -25,7 +25,7 @@
     "start": 0,
     "end": 0,
     "group": "AMMA Arcade Completion",
-    "icon": "shield-halved",
+    "icon": "fa-shield-halved",
     "title": "AMMA Recruit",
     "description": "Won 5 Arcade Challenges",
     "tasks": [
@@ -44,7 +44,7 @@
     "start": 0,
     "end": 0,
     "group": "AMMA Arcade Completion",
-    "icon": "shield-quartered",
+    "icon": "fa-shield-quartered",
     "title": "Arcade Contender",
     "description": "Won 20 Arcade Challenges",
     "tasks": [
@@ -63,7 +63,7 @@
     "start": 0,
     "end": 0,
     "group": "AMMA Arcade Completion",
-    "icon": "medal",
+    "icon": "fa-medal",
     "title": "AMMA Champion",
     "description": "Won 50 Arcade Challenges",
     "tasks": [
@@ -82,7 +82,7 @@
     "start": 0,
     "end": 0,
     "group": "Classic Arcade Completion",
-    "icon": "chess-pawn",
+    "icon": "fa-chess-pawn",
     "title": "Arcade Squire",
     "description": "Won 1 Arcade Challenge",
     "tasks": [
@@ -101,7 +101,7 @@
     "start": 0,
     "end": 0,
     "group": "Classic Arcade Completion",
-    "icon": "chess-knight",
+    "icon": "fa-chess-knight",
     "title": "Arcade Knight",
     "description": "Won 5 Arcade Challenges",
     "tasks": [
@@ -120,7 +120,7 @@
     "start": 0,
     "end": 0,
     "group": "Classic Arcade Completion",
-    "icon": "chess-queen",
+    "icon": "fa-chess-queen",
     "title": "Arcade Warlord",
     "description": "Won 20 Arcade Challenges",
     "tasks": [
@@ -139,7 +139,7 @@
     "start": 0,
     "end": 0,
     "group": "Classic Arcade Completion",
-    "icon": "chess-king",
+    "icon": "fa-chess-king",
     "title": "Arcade Master",
     "description": "Won 50 Arcade Challenges",
     "tasks": [
@@ -158,7 +158,7 @@
     "start": 0,
     "end": 0,
     "group": "Arcade Total Damage",
-    "icon": "sparkle",
+    "icon": "fa-sparkle",
     "title": "Damage Dealer I",
     "description": "Dealt 1,000 total damage in Arcade Battles",
     "tasks": [
@@ -177,7 +177,7 @@
     "start": 0,
     "end": 0,
     "group": "Arcade Total Damage",
-    "icon": "sparkles",
+    "icon": "fa-sparkles",
     "title": "Damage Dealer II",
     "description": "Dealt 5,000 total damage in Arcade Battles",
     "tasks": [
@@ -196,7 +196,7 @@
     "start": 0,
     "end": 0,
     "group": "Arcade Total Damage",
-    "icon": "fire",
+    "icon": "fa-fire",
     "title": "Damage Dealer III",
     "description": "Dealt 20,000 total damage in Arcade Battles",
     "tasks": [
@@ -215,7 +215,7 @@
     "start": 0,
     "end": 0,
     "group": "Arcade Total Damage",
-    "icon": "explosion",
+    "icon": "fa-explosion",
     "title": "Damage Dealer IV",
     "description": "Dealt 50,000 total damage in Arcade Battles",
     "tasks": [
@@ -234,7 +234,7 @@
     "start": 0,
     "end": 0,
     "group": "PvP Unique Moves",
-    "icon": "book-open-cover",
+    "icon": "fa-book-open-cover",
     "title": "Tactician I",
     "description": "Used 10 unique moves in PvP Mode",
     "tasks": [
@@ -253,7 +253,7 @@
     "start": 0,
     "end": 0,
     "group": "PvP Unique Moves",
-    "icon": "book-open-cover",
+    "icon": "fa-book-open-cover",
     "title": "Tactician II",
     "description": "Used 50 unique moves in PvP Mode",
     "tasks": [
@@ -272,7 +272,7 @@
     "start": 0,
     "end": 0,
     "group": "PvP Unique Moves",
-    "icon": "book-open-cover",
+    "icon": "fa-book-open-cover",
     "title": "Tactician III",
     "description": "Used 100 unique moves in PvP Mode",
     "tasks": [
@@ -291,7 +291,7 @@
     "start": 0,
     "end": 0,
     "group": "PvP Unique Moves",
-    "icon": "book-open-cover",
+    "icon": "fa-book-open-cover",
     "title": "Tactician IV",
     "description": "Used 200 unique moves in PvP Mode",
     "tasks": [
@@ -310,7 +310,7 @@
     "start": 0,
     "end": 0,
     "group": "Arcade Unique Moves",
-    "icon": "book-sparkles",
+    "icon": "fa-book-sparkles",
     "title": "Scholar I",
     "description": "Used 10 unique moves in Arcade Mode",
     "tasks": [
@@ -329,7 +329,7 @@
     "start": 0,
     "end": 0,
     "group": "Arcade Unique Moves",
-    "icon": "book-sparkles",
+    "icon": "fa-book-sparkles",
     "title": "Scholar II",
     "description": "Used 50 unique moves in Arcade Mode",
     "tasks": [
@@ -348,7 +348,7 @@
     "start": 0,
     "end": 0,
     "group": "Arcade Unique Moves",
-    "icon": "book-sparkles",
+    "icon": "fa-book-sparkles",
     "title": "Scholar III",
     "description": "Used 100 unique moves in Arcade Mode",
     "tasks": [
@@ -367,7 +367,7 @@
     "start": 0,
     "end": 0,
     "group": "Arcade Unique Moves",
-    "icon": "book-sparkles",
+    "icon": "fa-book-sparkles",
     "title": "Scholar IV",
     "description": "Used 200 unique moves in Arcade Mode",
     "tasks": [
@@ -386,7 +386,7 @@
     "start": 0,
     "end": 0,
     "group": "Critical Hits",
-    "icon": "bullseye",
+    "icon": "fa-bullseye",
     "title": "Deadeye I",
     "description": "Landed 20 critical hits across all Bloberts",
     "tasks": [
@@ -405,7 +405,7 @@
     "start": 0,
     "end": 0,
     "group": "Critical Hits",
-    "icon": "crosshairs",
+    "icon": "fa-crosshairs",
     "title": "Deadeye II",
     "description": "Landed 50 critical hits across all Bloberts",
     "tasks": [
@@ -424,7 +424,7 @@
     "start": 0,
     "end": 0,
     "group": "Critical Hits",
-    "icon": "burst",
+    "icon": "fa-burst",
     "title": "Deadeye III",
     "description": "Landed 200 critical hits across all Bloberts",
     "tasks": [
@@ -443,7 +443,7 @@
     "start": 0,
     "end": 0,
     "group": "Critical Hits",
-    "icon": "skull-crossbones",
+    "icon": "fa-skull-crossbones",
     "title": "Deadeye IV",
     "description": "Landed 500 critical hits across all Bloberts",
     "tasks": [
@@ -462,7 +462,7 @@
     "start": 0,
     "end": 0,
     "group": "PvP Opponents",
-    "icon": "user",
+    "icon": "fa-user",
     "title": "Contender I",
     "description": "Faced 5 players in PvP battles",
     "tasks": [
@@ -481,7 +481,7 @@
     "start": 0,
     "end": 0,
     "group": "PvP Opponents",
-    "icon": "user-group",
+    "icon": "fa-user-group",
     "title": "Contender II",
     "description": "Faced 20 players in PvP battles",
     "tasks": [
@@ -500,7 +500,7 @@
     "start": 0,
     "end": 0,
     "group": "PvP Opponents",
-    "icon": "users",
+    "icon": "fa-users",
     "title": "Contender III",
     "description": "Faced 50 players in PvP battles",
     "tasks": [
@@ -519,7 +519,7 @@
     "start": 0,
     "end": 0,
     "group": "PvP Opponents",
-    "icon": "people-group",
+    "icon": "fa-people-group",
     "title": "Contender IV",
     "description": "Faced 200 players in PvP battles",
     "tasks": [
@@ -538,7 +538,7 @@
     "start": 0,
     "end": 0,
     "group": "PvP Battle Victories",
-    "icon": "wand",
+    "icon": "fa-wand",
     "title": "Duelist I",
     "description": "Won 5 PvP Battles",
     "tasks": [
@@ -557,7 +557,7 @@
     "start": 0,
     "end": 0,
     "group": "PvP Battle Victories",
-    "icon": "sword",
+    "icon": "fa-sword",
     "title": "Duelist II",
     "description": "Won 20 PvP Battles",
     "tasks": [
@@ -576,7 +576,7 @@
     "start": 0,
     "end": 0,
     "group": "PvP Battle Victories",
-    "icon": "axe-battle",
+    "icon": "fa-axe-battle",
     "title": "Duelist III",
     "description": "Won 50 PvP Battles",
     "tasks": [
@@ -595,7 +595,7 @@
     "start": 0,
     "end": 0,
     "group": "PvP Battle Victories",
-    "icon": "swords",
+    "icon": "fa-swords",
     "title": "Duelist IV",
     "description": "Won 200 PvP Battles",
     "tasks": [
@@ -614,7 +614,7 @@
     "start": 0,
     "end": 0,
     "group": "Arcade Completion No Respawn",
-    "icon": "shield-cross",
+    "icon": "fa-shield-cross",
     "title": "Iron Soul",
     "description": "Completed an Arcade challenge without a respawn",
     "tasks": [
