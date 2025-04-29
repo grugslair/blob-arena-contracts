@@ -7,14 +7,8 @@ import {
   storeSetRecordHash,
   DojoParser,
 } from "../dojo.js";
+import { getRoundResults } from "./game.js";
 const { toHex } = num;
-
-const roundResultHash = namespaceNameToHash("blob_arena-RoundResult");
-const combatantStateHash = namespaceNameToHash("blob_arena-CombatantState");
-const dojoNamespaceMap = {
-  [roundResultHash]: num.toHex(hash.starknetKeccak("RoundResult")),
-  [combatantStateHash]: num.toHex(hash.starknetKeccak("CombatantState")),
-};
 
 const roundResultPath = "blob_arena::attacks::results::RoundResult";
 const combatantStatePath = "blob_arena::combatants::components::CombatantState";
@@ -130,19 +124,9 @@ export const combatRoundsCalls = (
 
   for (const game of games) {
     const combatId = game.combat_id;
-    const combatant1 = game.combatant1;
-    const combatant2 = game.combatant2;
-    const attack1Id = randomUseableAttack(
-      attacks,
-      combatant1.attacks,
-      game.round
-    );
-
-    const attack2Id = randomUseableAttack(
-      attacks,
-      combatant2.attacks,
-      game.round
-    );
+    const [combatant1, combatant2] = game.combatants;
+    const attack1Id = randomUseableAttack(combatant1.attacks, game.round);
+    const attack2Id = randomUseableAttack(combatant2.attacks, game.round);
     combatant1.attacks[attack1Id] = BigInt(game.round);
     combatant2.attacks[attack2Id] = BigInt(game.round);
     calls.push(
@@ -220,7 +204,7 @@ export const runRounds = async (
 };
 
 export const runPvpBattles = async (
-  world,
+  dojoParser,
   caller,
   account1,
   account2,
@@ -229,8 +213,7 @@ export const runPvpBattles = async (
   attacks
 ) => {
   const maxRunningGames = 9;
-  let eventCalls = [];
-  const dojoParser = new DojoParser(contract.abi, dojoNamespaceMap);
+  let rounds = [];
   while (games.filter((game) => game.winner === null).length) {
     const runningGames = games
       .filter((game) => game.winner === null)
@@ -253,59 +236,14 @@ export const runPvpBattles = async (
     for (const game of runningGames) {
       game.round++;
     }
-    eventCalls.push(
-      caller
-        .waitForTransaction(transaction_hash)
-        .then(({ events }) => dojoParser.parseEvents(events))
-    );
+    rounds.push(getRoundResults(caller, dojoParser, transaction_hash));
   }
-  let combatants = {};
-  let results = {};
-  games.map(({ combat_id, combatant1, combatant2 }) => {
-    combatants[combatant1.id] = [combat_id, 1];
-    combatants[combatant2.id] = [combat_id, 2];
-    results[combat_id] = [];
-  });
-  const rounds = await Promise.all(eventCalls);
-  for (const round of rounds) {
-    let roundEvents = {};
-    for (const event of round) {
-      if (roundResultPath in event) {
-        const { combat_id, attacks: _attacks } = event[roundResultPath];
-        if (!(combat_id in roundEvents)) {
-          roundEvents[combat_id] = { 1: {}, 2: {} };
-        }
-        for (let i = 0; i < _attacks.length; i++) {
-          const { combatant_id, attack, result } = _attacks[i];
-          const [gameId, index] = combatants[combatant_id];
-
-          Object.assign(roundEvents[combat_id][index.toString()], {
-            order: i,
-            attack: attacks[attack],
-            result,
-          });
-        }
-      } else if (combatantStatePath in event) {
-        const { id, health, stun_chance, stats } = event[combatantStatePath];
-        const [combat_id, index] = combatants[id];
-        if (!(combat_id in roundEvents)) {
-          roundEvents[combat_id] = { 1: {}, 2: {} };
-        }
-        Object.assign(roundEvents[combat_id][index.toString()], {
-          id,
-          health,
-          stun_chance,
-          stats,
-          index,
-        });
-      }
-    }
-
-    for (const [combat_id, result] of Object.entries(roundEvents)) {
-      results[combat_id].push([result["1"], result["2"]]);
-    }
-  }
-  for (const game of games) {
-    game.results = results[game.combat_id];
+  let gamesDict = Object.fromEntries(
+    games.map((game) => [game.combat_id, game])
+  );
+  for (const { combat_id, attacks, states } of (
+    await Promise.all(rounds)
+  ).flat()) {
+    gamesDict[combat_id].rounds.push({ attacks, states });
   }
 };

@@ -47,10 +47,15 @@ export const mintAmmaTokens = async (caller, signer, contract, fighterIds) => {
 };
 
 const getAmmaAttacks = async (contract, tokenId) => {
-  return [
-    await contract.get_attack_slots(tokenId, ammaAttackSlots),
-    ammaAttackSlots,
-  ];
+  const attackIds = await contract.get_attack_slots(tokenId, ammaAttackSlots);
+  let attacks = [];
+  for (let i = 0; i < ammaAttackSlots.length; i++) {
+    attacks.push({
+      id: attackIds[i],
+      slot: ammaAttackSlots[i],
+    });
+  }
+  return attacks;
 };
 
 export const mintAmmaTokenWithAttacks = async (
@@ -63,7 +68,6 @@ export const mintAmmaTokenWithAttacks = async (
   return {
     token_id: tokenId,
     attacks: await getAmmaAttacks(contract, tokenId),
-    attack_slots: ammaAttackSlots,
   };
 };
 
@@ -74,15 +78,18 @@ export const mintAmmaTokensWithAttacks = async (
   fighterIds
 ) => {
   const tokenIds = await mintAmmaTokens(caller, signer, contract, fighterIds);
-  const tokens = tokenIds.map(async (tokenId) => {
-    const [attacks, attackSlots] = await getAmmaAttacks(contract, tokenId);
-    return {
+  const [attacks, stats] = await Promise.all([
+    Promise.all(tokenIds.map((tokenId) => getAmmaAttacks(contract, tokenId))),
+    Promise.all(tokenIds.map((tokenId) => contract.get_stats(tokenId))),
+  ]);
+  let tokens = [];
+  for (let i = 0; i < tokenIds.length; i++) {
+    tokens.push({
       collection_address: contract.address,
-      id: tokenId,
-      attacks,
-      attack_slots: attackSlots,
-    };
-  });
-
-  return Promise.all(tokens);
+      id: tokenIds[i],
+      attacks: attacks[i],
+      stats: stats[i],
+    });
+  }
+  return tokens;
 };

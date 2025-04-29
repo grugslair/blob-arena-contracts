@@ -103,36 +103,6 @@ trait IPvp<TContractState> {
     /// # Returns
     /// * `[felt252; 2]` - An array containing the IDs of the two combatants
     fn combatants(self: @TContractState, combat_id: felt252) -> [felt252; 2];
-    /// Returns the combatant combat ID
-    /// # Arguments
-    /// * `combatant_id` - The unique identifier of the combatant to check
-    /// # Returns
-    /// * `felt252` - The combat ID of the combatant
-    fn combatant_combat_id(self: @TContractState, combatant_id: felt252) -> felt252;
-    /// Returns the combatant player address
-    /// # Arguments
-    /// * `combatant_id` - The unique identifier of the combatant to check
-    /// # Returns
-    /// * `ContractAddress` - The address of the combatant player
-    fn combatant_player(self: @TContractState, combatant_id: felt252) -> ContractAddress;
-    /// Returns the health of a specific combatant
-    /// # Arguments
-    /// * `combatant_id` - The unique identifier of the combatant to check
-    /// # Returns
-    /// * `u8` - The current health of the combatant
-    fn combatant_health(self: @TContractState, combatant_id: felt252) -> u8;
-    /// Returns the stats of a combatant
-    /// # Arguments
-    /// * `combatant_id` - The unique identifier of the combatant
-    /// # Returns
-    /// * `UStats` - The stats of the combatant
-    fn combatant_stats(self: @TContractState, combatant_id: felt252) -> UStats;
-    /// Returns the stun chance of a combatant
-    /// # Arguments
-    /// * `combatant_id` - The unique identifier of the combatant
-    /// # Returns
-    /// * `u8` - The stun chance as as value between 0 and 255
-    fn combatant_stun_chance(self: @TContractState, combatant_id: felt252) -> u8;
     /// Returns the ERC721 token associated with a combatant
     /// # Arguments
     /// * `combatant_id` - The unique identifier of the combatant
@@ -201,13 +171,6 @@ mod pvp_actions {
     use crate::erc721::ERC721Token;
 
     use super::{IPvp, IPvpAdmin};
-
-    #[event]
-    #[derive(Drop, starknet::Event)]
-    enum Event {
-        RoundResult: RoundResult,
-        CombatantState: CombatantState,
-    }
 
     #[abi(embed_v0)]
     impl IPvpImpl of IPvp<ContractState> {
@@ -319,26 +282,6 @@ mod pvp_actions {
         fn combatants(self: @ContractState, combat_id: felt252) -> [felt252; 2] {
             let (combatant_1, combatant_2) = self.default_storage().get_pvp_combatants(combat_id);
             [combatant_1, combatant_2]
-        }
-
-        fn combatant_combat_id(self: @ContractState, combatant_id: felt252) -> felt252 {
-            self.default_storage().get_combatant_combat_id(combatant_id)
-        }
-
-        fn combatant_health(self: @ContractState, combatant_id: felt252) -> u8 {
-            self.default_storage().get_combatant_health(combatant_id)
-        }
-
-        fn combatant_player(self: @ContractState, combatant_id: felt252) -> ContractAddress {
-            self.default_storage().get_player(combatant_id)
-        }
-
-        fn combatant_stats(self: @ContractState, combatant_id: felt252) -> UStats {
-            self.default_storage().get_combatant_stats(combatant_id)
-        }
-
-        fn combatant_stun_chance(self: @ContractState, combatant_id: felt252) -> u8 {
-            self.default_storage().get_combatant_stun_chance(combatant_id)
         }
 
         fn combatant_token(self: @ContractState, combatant_id: felt252) -> ERC721Token {

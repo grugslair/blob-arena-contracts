@@ -397,6 +397,10 @@ impl ArcadeStorageImpl of ArcadeStorage {
                 Model::<ArcadeGame>::ptr_from_keys(id), selector!("phase"), end_phase(win),
             );
     }
+
+    fn get_arcade_opponent(self: @WorldStorage, opponent_token: felt252) -> ArcadeOpponent {
+        self.read_model(opponent_token)
+    }
     fn get_arcade_opponent_attacks(self: @WorldStorage, opponent_token: felt252) -> Array<felt252> {
         self
             .read_member(

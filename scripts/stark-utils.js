@@ -391,13 +391,11 @@ export const parseAbisTypes = (abis) => {
   };
   return abiTypes;
 };
+
 export class Abi {
   constructor(abis) {
-    abis = Array.isArray(abis) ? abis : [abis];
     this.abiTypes = parseAbisTypes(abis);
-    const abiAsArray = Object.values(this.abiTypes).concat([
-      { type: "interface" },
-    ]);
+    const abiAsArray = Object.values(this.abiTypes);
     this.abiEvents = cairoEvents.getAbiEvents(abiAsArray);
     this.abiStructs = CallData.getAbiStruct(abiAsArray);
     this.abiEnums = CallData.getAbiEnum(abiAsArray);

@@ -4,7 +4,7 @@ use crate::arcade::ArcadeOpponentInput;
 use crate::collections::{TokenAttributes, BlobertItemKey};
 use crate::tags::IdTagNew;
 use crate::attacks::components::AttackInput;
-use super::{ArcadeGame, ArcadeChallengeAttempt, ArcadePhase};
+use super::{ArcadeGame, ArcadeChallengeAttempt, ArcadePhase, ArcadeOpponent};
 
 #[starknet::interface]
 trait IArcade<TContractState> {
@@ -120,6 +120,32 @@ trait IArcade<TContractState> {
     /// # Returns
     /// * `ArcadePhase` - The current phase of the specified game
     fn game_phase(self: @TContractState, game_id: felt252) -> ArcadePhase;
+
+    /// Retrieves the challenge ID associated with a specific tag
+    /// # Arguments
+    /// * `tag` - The tag to look up
+    /// # Returns
+    /// * `felt252` - The challenge ID associated with the tag
+    fn challenge_id_from_tag(self: @TContractState, tag: ByteArray) -> felt252;
+
+    /// Retrieves the opponent token associated with a specific ID
+    /// # Arguments
+    /// * `opponent_id` - The ID of the opponent
+    /// # Returns
+    /// * `ArcadeOpponent` - The opponent token associated with the ID
+    fn opponent_token(self: @TContractState, opponent_id: felt252) -> ArcadeOpponent;
+    /// Retrieves the stats of a specific opponent
+    /// # Arguments
+    /// * `opponent_id` - The ID of the opponent
+    /// # Returns
+    /// * `UStats` - The stats of the opponent
+    fn opponent_stats(self: @TContractState, opponent_id: felt252) -> UStats;
+    /// Retrieves the attacks of a specific opponent
+    /// # Arguments
+    /// * `opponent_id` - The ID of the opponent
+    /// # Returns
+    /// * `Array<felt252>` - The attacks of the opponent
+    fn opponent_attacks(self: @TContractState, opponent_id: felt252) -> Array<felt252>;
 }
 
 /// Interface for managing Arcade (Player vs Environment) administrative functions.
@@ -243,7 +269,7 @@ mod arcade_actions {
     use dojo::world::WorldStorage;
     use crate::arcade::{
         ArcadeTrait, ArcadeStorage, ARCADE_NAMESPACE_HASH, ArcadeStore, ArcadeOpponentInput,
-        ArcadeChallengeAttempt, ArcadeGame, ArcadePhase,
+        ArcadeChallengeAttempt, ArcadeGame, ArcadePhase, CHALLENGE_TAG_GROUP, ArcadeOpponent,
     };
     use crate::attacks::{AttackInput, AttackTrait};
     use crate::permissions::{Permissions, Role};
@@ -251,7 +277,7 @@ mod arcade_actions {
     use crate::combat::CombatProgress;
     use crate::stats::UStats;
     use crate::collections::TokenAttributes;
-    use crate::tags::IdTagNew;
+    use crate::tags::{IdTagNew, Tag};
     use crate::utils::get_transaction_hash;
     use crate::erc721::erc721_owner_of;
     use crate::starknet::return_value;
@@ -341,6 +367,20 @@ mod arcade_actions {
 
         fn game_phase(self: @ContractState, game_id: felt252) -> ArcadePhase {
             self.get_arcade_storage().get_arcade_game_phase(game_id)
+        }
+
+        fn challenge_id_from_tag(self: @ContractState, tag: ByteArray) -> felt252 {
+            self.get_arcade_storage().get_tag(CHALLENGE_TAG_GROUP, @tag)
+        }
+        fn opponent_stats(self: @ContractState, opponent_id: felt252) -> UStats {
+            self.get_arcade_storage().get_arcade_opponent_stats(opponent_id)
+        }
+        fn opponent_attacks(self: @ContractState, opponent_id: felt252) -> Array<felt252> {
+            self.get_arcade_storage().get_arcade_opponent_attacks(opponent_id)
+        }
+
+        fn opponent_token(self: @ContractState, opponent_id: felt252) -> ArcadeOpponent {
+            self.get_arcade_storage().get_arcade_opponent(opponent_id)
         }
     }
 
