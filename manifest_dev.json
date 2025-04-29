@@ -2181,7 +2181,7 @@
       ]
     },
     {
-      "address": "0x77c2f32facb53bb620077ad248220274e89e3a999fad130d34aeae5671b2ee7",
+      "address": "0x26c2004a96816739831f6e168452f3dcb2a88da3d0e59de92c8e5a8cc09f74e",
       "class_hash": "0x24aaf82602e49da01e58485d635240947152e869805ed453914e9cd2d44385b",
       "abi": [
         {
@@ -3148,7 +3148,7 @@
     },
     {
       "address": "0x7f42255a9330e4285c899caf1a588a222680bfe562553ad564d067a3163a51",
-      "class_hash": "0x7740e231b7bc6a35ea6e31c9f4213c5f18ce21d9ee50f128c0c7b3faf239cae",
+      "class_hash": "0x74c78bfa573fa81e3f3cd385ae3c55a45f66233d9188c7957a9e8402a6da44f",
       "abi": [
         {
           "type": "impl",
@@ -3910,9 +3910,47 @@
           ]
         },
         {
+          "type": "struct",
+          "name": "blob_arena::combatants::components::CombatantState",
+          "members": [
+            {
+              "name": "id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "health",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "stun_chance",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "stats",
+              "type": "blob_arena::stats::TStats::<core::integer::u8>"
+            }
+          ]
+        },
+        {
           "type": "interface",
           "name": "blob_arena::game::contract::ICombatant",
           "items": [
+            {
+              "type": "function",
+              "name": "combatant_state",
+              "inputs": [
+                {
+                  "name": "combatant_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "blob_arena::combatants::components::CombatantState"
+                }
+              ],
+              "state_mutability": "view"
+            },
             {
               "type": "function",
               "name": "combatant_combat_id",
@@ -4607,7 +4645,7 @@
       ]
     },
     {
-      "address": "0x703d3e0cd66accedd441cf3cb2cc813bd794168225ff9eb897a69c276aa9893",
+      "address": "0x425626b889632ac66ab7a2cd587e97e58d6ee11e0260676fadd7810aa4d11cb",
       "class_hash": "0x1b549f3587348ae48154f944cc95e22d041369eebbf6938342875a7a7d5cd89",
       "abi": [
         {

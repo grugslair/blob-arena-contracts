@@ -14,19 +14,20 @@ export const attackIdFromInput = (contractAbi, input) => {
   return hash.computePoseidonHashOnElements(attackInput);
 };
 
-export const getUseableAttacks = (allAttacks, attacks, round) => {
-  return Object.entries(attacks)
-    .filter(
-      ([key, value]) =>
-        allAttacks[key].cooldown === 0 ||
-        value === 0 ||
-        allAttacks[key].cooldown + value < round
-    )
-    .map(([key, _]) => BigInt(key));
+export const getUseableAttacks = (attacks, round) => {
+  return attacks.filter(
+    ({ cooldown, lastUsed }) =>
+      cooldown === 0 || lastUsed === 0 || cooldown + lastUsed < round
+  );
 };
 
-export const randomUseableAttack = (allAttacks, attacks, round) => {
-  return randomElement(getUseableAttacks(allAttacks, attacks, round));
+export const randomUseableAttack = (attacks, round) => {
+  const attack = randomElement(getUseableAttacks(attacks, round));
+  if (!attack) {
+    return BigInt(0);
+  }
+  attack.lastUsed = BigInt(round);
+  return BigInt(attack.id);
 };
 
 export const getAttacks = async (world, contract, attackIds) => {
@@ -57,4 +58,14 @@ export const getAttacks = async (world, contract, attackIds) => {
     }
   }
   return attacks;
+};
+
+export const makeAttack = (attack, attacks) => {
+  const { id, slot } = attack;
+  return {
+    id,
+    slot,
+    ...attacks[id],
+    lastUsed: 0,
+  };
 };

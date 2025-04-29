@@ -3,6 +3,7 @@ use crate::permissions::Role;
 use crate::achievements::TrophyCreationInput;
 use crate::attacks::{Attack, AttackInput};
 use crate::stats::UStats;
+use crate::combatants::CombatantState;
 
 #[starknet::interface]
 trait IPermissions<TContractState> {
@@ -92,6 +93,12 @@ trait IAttacks<TContractState> {
 
 #[starknet::interface]
 trait ICombatant<TContractState> {
+    /// Returns the combatant state
+    /// # Arguments
+    /// * `combatant_id` - The unique identifier of the combatant to check
+    /// # Returns
+    /// * `CombatantState` - The state of the combatant
+    fn combatant_state(self: @TContractState, combatant_id: felt252) -> CombatantState;
     /// Returns the combatant combat ID
     /// # Arguments
     /// * `combatant_id` - The unique identifier of the combatant to check
@@ -224,6 +231,9 @@ mod game_actions {
 
     #[abi(embed_v0)]
     impl ICombatantImpl of ICombatant<ContractState> {
+        fn combatant_state(self: @ContractState, combatant_id: felt252) -> CombatantState {
+            self.default_storage().get_combatant_state(combatant_id)
+        }
         fn combatant_combat_id(self: @ContractState, combatant_id: felt252) -> felt252 {
             self.default_storage().get_combatant_combat_id(combatant_id)
         }

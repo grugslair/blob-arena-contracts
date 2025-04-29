@@ -1,278 +1,174 @@
 import { callOptions, getReturns } from "../stark-utils.js";
-import { randomIndexes } from "../utils.js";
 import { randomUseableAttack } from "./attacks.js";
 
-export const runArcadeGameCall = (
-  caller,
-  signer,
-  contract,
-  challenge,
-  attacks
-) => {
-  return signer.getOutsideTransaction(
-    callOptions(caller.address),
-    contract.populate("attack", {
-      game_id: challenge.game.id,
-      attack_id: randomUseableAttack(
-        attacks,
-        challenge.game.combatant.attacks,
-        challenge.game.round
-      ),
-    })
-  );
-};
-export const nextChallengeRoundCall = (caller, signer, contract, challenge) => {
-  return signer.getOutsideTransaction(
-    callOptions(caller.address),
-    contract.populate("next_challenge_round", {
-      attempt_id: challenge.attempt_id,
-    })
-  );
-};
-export const endChallengeCall = (caller, signer, contract, challenge) => {
-  return signer.getOutsideTransaction(
-    callOptions(caller.address),
-    contract.populate("end_challenge", {
-      attempt_id: challenge.attempt_id,
-    })
-  );
-};
-
-export const respawnArcadeChallengeCall = (
-  caller,
-  signer,
-  contract,
-  challenge
-) => {
-  return signer.getOutsideTransaction(
-    callOptions(caller.address),
-    contract.populate("respawn_challenge", {
-      attempt_id: challenge.attempt_id,
-    })
-  );
-};
-
 export class ChallengeAttempt {
-  constructor(contract, challengeId, token, attacksUsed) {
+  constructor(signer, contract, gameContract, challengeId, token, attacks) {
     this.challengeId = challengeId;
     this.contract = contract;
+    this.gameContract = gameContract;
+    this.signer = signer;
     this.respawns = 0;
     this.stage = 0;
     this.status = "Active";
-    this.attacksUsed = attacksUsed.map((attack) => attack.id);
-    this.attacksSlotsUsed = attacksUsed.map((attack) => attack.slot);
+    this.attacks = attacks;
+    this.attacksUsed = attacks.map((attack) => attack.id);
+    this.attacksSlotsUsed = attacks.map((attack) => attack.slot);
     this.token = token;
     this.games = {};
     this.attemptId = null;
     this.playerStats = null;
   }
   startCall(caller) {
-    return signer.getOutsideTransaction(
+    return this.signer.getOutsideTransaction(
       callOptions(caller.address),
-      contract.populate("start_challenge", {
+      this.contract.populate("start_challenge", {
         challenge_id: this.challengeId,
         collection_address: this.token.collection_address,
         token_id: this.token.id,
-        attacks: this.attacksUsed,
+        attacks: this.attacksSlotsUsed,
       })
     );
   }
-
-  nextStageCall(caller) {
-    return signer.getOutsideTransaction(
+  async start(attemptId, gameId) {
+    this.attemptId = attemptId;
+    await this.nextStage(gameId);
+  }
+  attackCall = (caller) => {
+    const round = this.currentGame.round;
+    this.currentGame.round += 1;
+    return this.signer.getOutsideTransaction(
       callOptions(caller.address),
-      contract.populate("next_challenge_round", {
-        attempt_id: challenge.attempt_id,
+      this.contract.populate("attack", {
+        game_id: this.currentGame.id,
+        attack_id: randomUseableAttack(this.attacks, round),
+      })
+    );
+  };
+  nextStageCall(caller) {
+    return this.signer.getOutsideTransaction(
+      callOptions(caller.address),
+      this.contract.populate("next_challenge_round", {
+        attempt_id: this.attemptId,
       })
     );
   }
 
   respawnCall(caller) {
-    return signer.getOutsideTransaction(
+    return this.signer.getOutsideTransaction(
       callOptions(caller.address),
-      contract.populate("respawn_challenge", {
-        attempt_id: challenge.attempt_id,
+      this.contract.populate("respawn_challenge", {
+        attempt_id: this.attemptId,
       })
     );
   }
 
-  nextStage(game) {
-    this.setCurrentGame(game);
+  async nextStage(gameId) {
+    await this.setCurrentGame(gameId);
     this.stage += 1;
     this.games[this.stage] = [this.currentGame];
   }
 
-  respawn(game) {
-    this.setCurrentGame(game);
+  async respawn(gameId) {
+    await this.setCurrentGame(gameId);
     this.respawns += 1;
     this.games[this.stage].push(this.currentGame);
   }
 
-  setCurrentGame(game) {
+  async setCurrentGame(gameId) {
+    const game = await this.contract.game(gameId);
+    const [player, opponent] = await Promise.all([
+      this.gameContract.combatant_state(game.combatant_id),
+      this.gameContract.combatant_state(game.opponent_id),
+    ]);
     this.currentGame = {
       id: game.id,
-      combatants: {
-        [game.combatant_id]: {
-          id: game.combatant_id,
-          attacks: Object.fromEntries(this.attacksUsed.map((a) => [a, 0])),
-        },
-        [game.opponent_id]: {},
-      },
+      combatants: [player, opponent],
       round: 1,
-      results: [],
+      rounds: [],
       phase: "Active",
     };
   }
 
   endChallengeCall(caller) {
-    return signer.getOutsideTransaction(
+    return this.signer.getOutsideTransaction(
       callOptions(caller.address),
-      contract.populate("end_challenge", {
-        attempt_id: challenge.attempt_id,
+      this.contract.populate("end_challenge", {
+        attempt_id: this.attemptId,
       })
     );
   }
+
+  async updateGamePhase() {
+    this.currentGame.phase = (
+      await this.contract.game_phase(this.currentGame.id)
+    ).activeVariant();
+  }
 }
 
-export const runArcadeChallengeGames = async (
-  caller,
-  signer,
-  contract,
-  dojoParser,
-  challenges,
-  attacks
-) => {
-  let calls = [];
-  let activeChallenges = [];
-  let eventCalls = [];
-  for (let i = 0; i < challenges.length; i++) {
-    const challenge = challenges[i];
-    if (challenge.status === "Active") {
-      activeChallenges.push(challenge);
-      calls.push(
-        runArcadeGameCall(caller, signer, contract, challenge, attacks)
-      );
-      challenge.game.round++;
-    }
-  }
+export const runArcadeChallengeGames = async (caller, challenges) => {
+  const activeChallenges = challenges.filter(
+    (challenge) => challenge.status === "Active"
+  );
+  const attackCalls = activeChallenges.map((challenge) => {
+    return challenge.attackCall(caller);
+  });
   const { transaction_hash: roundsTxHash } = await caller.executeFromOutside(
-    await Promise.all(calls),
-    {
-      version: 3,
-    }
+    await Promise.all(attackCalls),
+    { version: 3 }
   );
 
-  const game_phases = await Promise.all(
-    activeChallenges.map((c) => contract.game_phase(c.game.id))
-  );
-  calls = [];
-  let newGameChallenges = [];
-  for (let i = 0; i < activeChallenges.length; i++) {
-    const challenge = activeChallenges[i];
-    const game_phase = game_phases[i].activeVariant();
-    challenge.game.status = game_phase;
-    if (game_phase === "PlayerWon") {
-      if (challenge.stage < 10) {
-        newGameChallenges.push(challenge);
-        calls.push(nextChallengeRoundCall(caller, signer, contract, challenge));
-        challenge.stage = challenge.stage + 1;
-      } else {
-        endChallengeCall(caller, signer, contract, challenge);
-        challenge.games.push(challenge.game);
-        challenge.status = "PlayerWon";
-      }
-    } else if (game_phase === "PlayerLost") {
-      if (challenge.respawns < 3) {
-        newGameChallenges.push(challenge);
-        calls.push(
-          respawnArcadeChallengeCall(caller, signer, contract, challenge)
-        );
-        challenge.respawns++;
-      } else {
-        endChallengeCall(caller, signer, contract, challenge);
-        challenge.games.push(challenge.game);
-        challenge.status = "PlayerLost";
-      }
+  await Promise.all(activeChallenges.map((c) => c.updateGamePhase()));
+
+  let nextCalls = [];
+  let wonGameChallenges = [];
+  for (const challenge of activeChallenges.filter(
+    (c) => c.currentGame.phase === "PlayerWon"
+  )) {
+    if (challenge.stage < 10) {
+      nextCalls.push(challenge.nextStageCall(caller));
+      wonGameChallenges.push(challenge);
+    } else {
+      nextCalls.push(challenge.endChallengeCall(caller));
+      challenge.status = "PlayerWon";
+    }
+  }
+  let lostGameChallenges = [];
+  for (const challenge of activeChallenges.filter(
+    (c) => c.currentGame.phase === "PlayerLost"
+  )) {
+    if (challenge.respawns < 3) {
+      nextCalls.push(challenge.respawnCall(caller));
+      lostGameChallenges.push(challenge);
+    } else {
+      nextCalls.push(challenge.endChallengeCall(caller));
+      challenge.status = "PlayerLost";
     }
   }
   const { transaction_hash: newGamesTxHash } = await caller.executeFromOutside(
-    await Promise.all(calls),
-    {
-      version: 3,
-    }
+    await Promise.all(nextCalls),
+    { version: 3 }
   );
-
   const newGameIds = (await getReturns(caller, newGamesTxHash)).map(
     (x) => x.data[0]
   );
-  const newGames = await Promise.all(
-    newGameIds.map((gameId) => contract.game(gameId))
+
+  const newGames = Promise.all(
+    newGameIds
+      .splice(0, wonGameChallenges.length)
+      .map((gameId, i) => wonGameChallenges[i].nextStage(gameId))
   );
-  for (let i = 0; i < newGameChallenges.length; i++) {
-    const challenge = newGameChallenges[i];
-    const newGame = newGames[i];
-    challenge.games.push(challenge.game);
-    challenge.game = {
-      id: newGameIds[i],
-      combatant: {
-        id: newGame.combatant_id,
-        attacks: challenge.game.combatant.attacks,
-      },
-      round: 1,
-      results: [],
-      phase: "Active",
-    };
-  }
+  const respawnedGames = Promise.all(
+    newGameIds.map((gameId, i) => lostGameChallenges[i].respawn(gameId))
+  );
+  await Promise.all([newGames, respawnedGames]);
   console.log("------------------------------------------------------------");
-  console.log(challenges);
-  return newGameChallenges;
+  return roundsTxHash;
 };
 
-export const startArcadeChallengeCall = (
-  caller,
-  signer,
-  contract,
-  ChallengeId,
-  collectionAddress,
-  tokenId,
-  attacks
-) => {
-  return signer.getOutsideTransaction(
-    callOptions(caller.address),
-    contract.populate("start_challenge", {
-      challenge_id: ChallengeId,
-      collection_address: collectionAddress,
-      token_id: tokenId,
-      attacks,
-    })
-  );
-};
-
-export const startArcadeChallenges = async (
-  caller,
-  signer,
-  contract,
-  challengeId,
-  tokens
-) => {
+export const startArcadeChallenges = async (caller, challenges) => {
   let calls = [];
-  let attacksUsed = [];
-  for (const token of tokens) {
-    let indexes = randomIndexes(token.attacks.length, 4);
-    attacksUsed.push(
-      Object.fromEntries(indexes.map((index) => [token.attacks[index], 0]))
-    );
-    calls.push(
-      startArcadeChallengeCall(
-        caller,
-        signer,
-        contract,
-        challengeId,
-        token.collection_address,
-        token.id,
-        indexes.map((index) => token.attack_slots[index])
-      )
-    );
+  for (const challenge of challenges) {
+    calls.push(challenge.startCall(caller));
   }
   const { transaction_hash } = await caller.executeFromOutside(
     await Promise.all(calls),
@@ -280,36 +176,13 @@ export const startArcadeChallenges = async (
       version: 3,
     }
   );
-
-  const returns = await getReturns(caller, transaction_hash);
-  const games = await Promise.all(
-    returns.map(({ data: [_, game_id] }) => contract.game(game_id))
+  await Promise.all(
+    (
+      await getReturns(caller, transaction_hash)
+    ).map(({ data: [attempt_id, game_id] }, i) => {
+      return challenges[i].start(attempt_id, game_id);
+    })
   );
-  let attempts = [];
-  for (let i = 0; i < tokens.length; i++) {
-    const game = games[i];
-    const [attempt_id, game_id] = returns[i].data;
-    attempts.push({
-      token: tokens[i],
-      challenge_id: challengeId,
-      attempt_id,
-      respawns: 0,
-      stage: 1,
-      status: "Active",
-      game: {
-        id: game_id,
-        combatant: {
-          id: game.combatant_id,
-          attacks: attacksUsed[i],
-        },
-        results: [],
-        round: 1,
-        status: "Active",
-      },
-      games: [],
-    });
-  }
-  return attempts;
 };
 
 export const mintPaidArcadeGames = async (

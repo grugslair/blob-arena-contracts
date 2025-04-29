@@ -13,9 +13,9 @@ import {
   runArcadeChallengeGames,
   startArcadeChallenges,
 } from "./arcade.js";
-import { getAttacks } from "./attacks.js";
+import { getAttacks, makeAttack } from "./attacks.js";
 import { DojoParser } from "../dojo.js";
-import { dojoNamespaceMap } from "./game.js";
+import { dojoNamespaceMap, getRoundResults } from "./game.js";
 import { randomIndexes } from "../utils.js";
 
 const accountClassHash =
@@ -28,7 +28,7 @@ const main = async () => {
     freeBlobertContractTag
   );
   const arcadeContract = await account_manifest.getContract(arcadeContractTag);
-  const adminContract = await account_manifest.getContract(adminContractTag);
+  const gameContract = await account_manifest.getContract(adminContractTag);
   const worldContract = await account_manifest.getWorldContract();
   const signer = await newAccount(caller, accountClassHash);
   const classicChallengeId = await arcadeContract.challenge_id_from_tag(
@@ -36,60 +36,59 @@ const main = async () => {
   );
   [];
   await mintPaidArcadeGames(caller, arcadeContract, signer.address, 1000);
-  const challenges = await mintFreeTokensWithAttacks(
+  const tokens = await mintFreeTokensWithAttacks(
     caller,
     signer,
     freeContract,
     10
-  ).map((token) => {
-    const attacks = randomIndexes(token.attacks.length, 3).map(
-      (i) => token.attacks[i]
-    );
-    return new ChallengeAttempt(
-      arcadeContract,
-      classicChallengeId,
-      token,
-      attacks
-    );
-  });
-
-  console.log(tokens);
+  );
   let attackIds = new Set();
-  console.log("Tokens minted");
-  tokens.forEach((token) => token.attacks.forEach(attackIds.add, attackIds));
+  tokens.forEach((token) =>
+    token.attacks.forEach((attack) => attackIds.add(attack.id))
+  );
   const attacks = await getAttacks(
     worldContract,
-    adminContract,
+    gameContract,
     Array.from(attackIds).map(bigIntToHex)
   );
-  const dojoParser = new DojoParser(adminContract, dojoNamespaceMap);
-
-  // const challenges = await startArcadeChallenges(
-  //   caller,
-  //   signer,
-  //   arcadeContract,
-  //   classicChallengeId,
-  //   tokens
-  // );
-
-  while (challenges.some((c) => c.status === "Active")) {
-    await runArcadeChallengeGames(
-      caller,
+  const challenges = tokens.map((token) => {
+    const attacksUsed = randomIndexes(token.attacks.length, 4).map((i) =>
+      makeAttack(token.attacks[i], attacks)
+    );
+    return new ChallengeAttempt(
       signer,
       arcadeContract,
-      dojoParser,
-      challenges,
-      attacks
+      gameContract,
+      classicChallengeId,
+      token,
+      attacksUsed
     );
+  });
+  await startArcadeChallenges(caller, challenges);
+  const dojoParser = new DojoParser(gameContract, dojoNamespaceMap);
+  let rounds = [];
+  while (challenges.some((c) => c.status === "Active")) {
+    const transaction_hash = await runArcadeChallengeGames(caller, challenges);
+    for (const challenge of challenges) {
+      console.log(
+        `${challenge.status} Stage: ${challenge.stage} Round: ${challenge.currentGame.round} Respawns: ${challenge.respawns}`
+      );
+    }
+    rounds.push(getRoundResults(caller, dojoParser, transaction_hash));
   }
-  //   let games = [];
-  //   for (const account of accounts) {
-  //     const game = {
-  //         account: account,
-  //         token: await mintFreeTokenWithAttacks(caller, account, freeContract),
-  //         challenge_id:
-  //     }
-  //   }
+  const games = Object.fromEntries(
+    challenges
+      .flatMap((c) => Object.values(c.games).flat())
+      .map((g) => [g.id, g])
+  );
+  for (const { combat_id, attacks, states } of (
+    await Promise.all(rounds)
+  ).flat()) {
+    games[combat_id].rounds.push({ attacks, states });
+  }
+  // for (const game of Object.values(games)) {
+  //   console.log(game);
+  // }
 };
 
 if (process.argv[1] === import.meta.filename) {

@@ -147,7 +147,7 @@ export const makeLobbies = async (
 ) => {
   let calls = [];
   for (const {
-    combatant1,
+    combatants: [combatant, _],
     accounts: [account1, account2],
   } of games) {
     calls.push(
@@ -156,9 +156,9 @@ export const makeLobbies = async (
         account1,
         lobbyContract,
         account2.address,
-        combatant1.token.collection_address,
-        combatant1.token.id,
-        combatant1.attack_slots
+        combatant.token.collection_address,
+        combatant.token.id,
+        combatant.attacks.map((attack) => attack.slot)
       )
     );
   }
@@ -180,7 +180,7 @@ export const makeLobbies = async (
   calls = [];
   for (const {
     combat_id,
-    combatant2,
+    combatants: [_, combatant],
     accounts: [account1, account2],
   } of games) {
     calls.push(
@@ -189,8 +189,8 @@ export const makeLobbies = async (
         account2,
         lobbyContract,
         combat_id,
-        combatant2.token.id,
-        combatant2.attack_slots
+        combatant.token.id,
+        combatant.attacks.map((attack) => attack.slot)
       )
     );
     calls.push(
@@ -210,8 +210,7 @@ export const makeLobbies = async (
     );
   }
   for (let i = 0; i < games.length; i++) {
-    const [combatant1, combatant2] = combatants[i];
-    games[i].combatant1.id = combatant1;
-    games[i].combatant2.id = combatant2;
+    games[i].combatants[0].id = combatants[i][0];
+    games[i].combatants[1].id = combatants[i][1];
   }
 };

@@ -10,7 +10,7 @@ import { makeLobbies } from "./lobby.js";
 import { runPvpBattles } from "./pvp.js";
 import { bigIntToHex } from "web3-eth-accounts";
 import { mintFreeTokensWithAttacks } from "./classic-blobert.js";
-import { getAttacks } from "./attacks.js";
+import { getAttacks, makeAttack } from "./attacks.js";
 import { dojoNamespaceMap, printRoundResults } from "./game.js";
 import { DojoParser } from "../dojo.js";
 
@@ -52,7 +52,6 @@ const main = async () => {
     adminContract,
     Array.from(allAttackIds).map(bigIntToHex)
   );
-  let combatants = {};
   let wins = { 0: 0 };
   let n = 0;
   let games = [];
@@ -69,38 +68,32 @@ const main = async () => {
         round: 1,
         winner: null,
         rounds: [],
-        combatant1: {
-          fighter: i + 1,
-          token: token1,
-          token_id: token1.id,
-          attacks: Object.fromEntries(
-            indexes1.map((index) => [token1.attacks[index].id, 0])
-          ),
-          attack_slots: indexes1.map((index) => token1.attacks[index].slot),
-          stats: token1.stats,
-          health: token1.stats.vitality + BigInt(100),
-          stun_chance: BigInt(0),
-        },
-        combatant2: {
-          fighter: j + 1,
-          token: token2,
-          token_id: token2.id,
-          attacks: Object.fromEntries(
-            indexes2.map((index) => [token2.attacks[index].id, 0])
-          ),
-          attack_slots: indexes2.map((index) => token2.attacks[index].slot),
-          stats: token2.stats,
-          health: token2.stats.vitality + BigInt(100),
-          stun_chance: BigInt(0),
-        },
+        combatants: [
+          {
+            token: token1,
+            token_id: token1.id,
+            attacks: indexes1.map((index) =>
+              makeAttack(token1.attacks[index], attacks)
+            ),
+            stats: token1.stats,
+            health: token1.stats.vitality + BigInt(100),
+            stun_chance: BigInt(0),
+          },
+          {
+            token: token2,
+            token_id: token2.id,
+            attacks: indexes2.map((index) =>
+              makeAttack(token2.attacks[index], attacks)
+            ),
+            stats: token2.stats,
+            health: token2.stats.vitality + BigInt(100),
+            stun_chance: BigInt(0),
+          },
+        ],
       });
     }
   }
   await makeLobbies(lobbyContract, gameContract, account, games);
-  games.forEach(({ combatant1, combatant2 }) => {
-    combatants[combatant1.id] = combatant1;
-    combatants[combatant2.id] = combatant2;
-  });
 
   console.log("Games created");
   await runPvpBattles(

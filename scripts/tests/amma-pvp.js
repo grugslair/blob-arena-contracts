@@ -10,13 +10,14 @@ import { makeLobbies, makeLobby } from "./lobby.js";
 import { runPvpBattles } from "./pvp.js";
 import { bigIntToHex } from "web3-eth-accounts";
 import { mintAmmaTokensWithAttacks } from "./amma-blobert.js";
-import { getAttacks } from "./attacks.js";
+import { getAttacks, makeAttack } from "./attacks.js";
 import { dojoNamespaceMap, printRoundResults } from "./game.js";
 import { DojoParser } from "../dojo.js";
 
 const accountClassHash =
   "0x07489e371db016fcd31b78e49ccd201b93f4eab60af28b862390e800ec9096e2";
-const ammaFighterIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+// const ammaFighterIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+const ammaFighterIds = [1, 2, 3, 4, 5];
 
 const main = async () => {
   const account_manifest = await loadAccountManifestFromCmdArgs();
@@ -74,10 +75,9 @@ const main = async () => {
           fighter: i + 1,
           token: token1,
           token_id: token1.id,
-          attacks: Object.fromEntries(
-            indexes1.map((index) => [token1.attacks[index].id, 0])
+          attacks: indexes1.map((index) =>
+            makeAttack(token1.attacks[index], attacks)
           ),
-          attack_slots: indexes1.map((index) => token1.attacks[index].slot),
           stats: token1.stats,
           health: token1.stats.vitality + BigInt(100),
           stun_chance: BigInt(0),
@@ -86,10 +86,9 @@ const main = async () => {
           fighter: j + 1,
           token: token2,
           token_id: token2.id,
-          attacks: Object.fromEntries(
-            indexes2.map((index) => [token2.attacks[index].id, 0])
+          attacks: indexes2.map((index) =>
+            makeAttack(token2.attacks[index], attacks)
           ),
-          attack_slots: indexes2.map((index) => token2.attacks[index].slot),
           stats: token2.stats,
           health: token2.stats.vitality + BigInt(100),
           stun_chance: BigInt(0),
