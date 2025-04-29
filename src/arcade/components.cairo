@@ -16,6 +16,8 @@ const OPPONENT_TAG_GROUP: felt252 = 'arcade-opponent';
 const CHALLENGE_TAG_GROUP: felt252 = 'arcade-challenge';
 const ARCADE_CHALLENGE_TIME_LIMIT: u64 = 60 * 60 * 2; // 2 hours
 const ARCADE_CHALLENGE_MAX_RESPAWNS: u32 = 3;
+const ARCADE_CHALLENGE_GAME_ENERGY_COST: u64 = 60 * 60 * 12; // 12 hours
+const ARCADE_CHALLENGE_MAX_ENERGY: u64 = 60 * 60 * 24; // 24 hours
 
 #[derive(Drop, Copy, Introspect, PartialEq, Serde)]
 enum ArcadePhase {
@@ -325,8 +327,8 @@ struct ArcadeAttemptGetGame {
 struct ArcadeFreeGames {
     #[key]
     player: ContractAddress,
-    games: u32,
-    last_claim: u64,
+    energy: u64,
+    timestamp: u64,
 }
 
 #[dojo::model]
@@ -498,6 +500,7 @@ impl ArcadeStorageImpl of ArcadeStorage {
         token_id: u256,
         stats: UStats,
         attacks: Array<felt252>,
+        timestamp: u64,
     ) -> ArcadeChallengeAttempt {
         let model = ArcadeChallengeAttempt {
             id,
@@ -510,7 +513,7 @@ impl ArcadeStorageImpl of ArcadeStorage {
             stage: 0,
             respawns: 0,
             phase: ArcadePhase::Active,
-            expiry: get_block_timestamp() + ARCADE_CHALLENGE_TIME_LIMIT,
+            expiry: timestamp + ARCADE_CHALLENGE_TIME_LIMIT,
         };
         self.write_model(@model);
         model
@@ -580,30 +583,16 @@ impl ArcadeStorageImpl of ArcadeStorage {
                 end_phase(won),
             );
     }
-
-    fn set_free_games_model(ref self: WorldStorage, model: ArcadeFreeGames) {
-        self.write_model(@model);
-    }
     fn set_free_games(
-        ref self: WorldStorage, player: ContractAddress, games: u32, last_claim: u64,
+        ref self: WorldStorage, player: ContractAddress, energy: u64, timestamp: u64,
     ) {
-        self.write_model(@ArcadeFreeGames { player, games, last_claim: get_block_timestamp() });
+        self.write_model(@ArcadeFreeGames { player, energy, timestamp });
     }
 
     fn get_free_games(self: @WorldStorage, player: ContractAddress) -> ArcadeFreeGames {
         self.read_model(player)
     }
 
-    fn get_number_of_free_games(self: @WorldStorage, player: ContractAddress) -> u32 {
-        self.read_member(Model::<ArcadeFreeGames>::ptr_from_keys(player), selector!("games"))
-    }
-
-    fn set_number_of_free_games(ref self: WorldStorage, player: ContractAddress, games: u32) {
-        self
-            .write_member(
-                Model::<ArcadeFreeGames>::ptr_from_keys(player), selector!("games"), games,
-            );
-    }
 
     fn set_number_of_paid_games(ref self: WorldStorage, player: ContractAddress, games: u32) {
         self.write_model(@ArcadePaidGames { player, games });

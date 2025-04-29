@@ -84,12 +84,6 @@ trait IArcade<TContractState> {
     /// - ArcadeStageGame
     fn end_challenge(ref self: TContractState, attempt_id: felt252);
 
-    /// Claims a free game attempt.
-    ///
-    /// Models:
-    /// - ArcadeFreeGames
-    fn claim_free_game(ref self: TContractState);
-
     /// Gets the challenge attemt
     ///
     /// # Arguments
@@ -243,15 +237,6 @@ trait IArcadeAdmin<TContractState> {
         ref self: TContractState, ids: Array<felt252>, collection: ContractAddress, available: bool,
     );
 
-    /// Mints free game passes for a player
-    /// # Arguments
-    /// * `player` - Address of player receiving games
-    /// * `amount` - Number of free games to mint
-    ///
-    /// Models
-    /// - ArcadeFreeGames
-    fn mint_free_games(ref self: TContractState, player: ContractAddress, amount: u32);
-
     /// Mints paid game passes for a player
     /// # Arguments
     /// * `player` - Address of player receiving games
@@ -265,7 +250,7 @@ trait IArcadeAdmin<TContractState> {
 
 #[dojo::contract]
 mod arcade_actions {
-    use starknet::{ContractAddress, get_caller_address};
+    use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
     use dojo::world::WorldStorage;
     use crate::arcade::{
         ArcadeTrait, ArcadeStorage, ARCADE_NAMESPACE_HASH, ArcadeStore, ArcadeOpponentInput,
@@ -322,7 +307,6 @@ mod arcade_actions {
                     .is_zero(),
                 'Already in challenge',
             );
-            store.arcade.use_game(caller);
 
             return_value(
                 store
@@ -346,11 +330,6 @@ mod arcade_actions {
             assert(attempt.player == get_caller_address(), 'Not player');
 
             store.end_arcade_challenge_attempt(attempt_id, attempt);
-        }
-
-        fn claim_free_game(ref self: ContractState) {
-            let mut store = self.get_arcade_storage();
-            store.mint_free_game(get_caller_address());
         }
 
         fn challenge_attempt(self: @ContractState, attempt_id: felt252) -> ArcadeChallengeAttempt {
@@ -439,17 +418,6 @@ mod arcade_actions {
             let mut store = self.storage(ARCADE_NAMESPACE_HASH);
             store.assert_caller_has_permission(Role::ArcadeSetter);
             store.set_multiple_collection_allowed(ids, collection, available);
-        }
-        fn mint_free_games(ref self: ContractState, player: ContractAddress, amount: u32) {
-            let mut store = self.storage(ARCADE_NAMESPACE_HASH);
-            store.assert_caller_has_permission(Role::ArcadeFreeMinter);
-            let mut model = store.get_free_games(player);
-            model.games += amount;
-            if model.last_claim.is_non_zero() {
-                store.set_number_of_free_games(player, model.games);
-            } else {
-                store.set_free_games_model(model)
-            }
         }
         fn mint_paid_games(ref self: ContractState, player: ContractAddress, amount: u32) {
             let mut store = self.storage(ARCADE_NAMESPACE_HASH);

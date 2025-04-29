@@ -11,7 +11,8 @@ use crate::arcade::{
     ArcadeStore, ArcadeChallengeAttempt, ArcadePhaseTrait, ArcadeAttemptEnd,
     components::{
         OPPONENT_TAG_GROUP, CHALLENGE_TAG_GROUP, ARCADE_CHALLENGE_MAX_RESPAWNS,
-        ArcadeAttemptRespawn, ArcadeAttemptGetGame,
+        ArcadeAttemptRespawn, ArcadeAttemptGetGame, ARCADE_CHALLENGE_GAME_ENERGY_COST,
+        ARCADE_CHALLENGE_MAX_ENERGY,
     },
 };
 use crate::pvp::{GameStorage, GameTrait};
@@ -341,11 +342,14 @@ impl ArcadeImpl of ArcadeTrait {
     ) -> (felt252, felt252) {
         self.arcade.assert_collection_allowed(challenge_id, collection);
         let id = uuid();
+        let timestamp = get_block_timestamp();
+        self.arcade.use_game(player, timestamp);
+
         let (stats, attacks) = self.ba.get_token_stats_and_attacks(collection, token_id, attacks);
         let attempt = self
             .arcade
             .new_arcade_challenge_attempt(
-                id, challenge_id, player, collection, token_id, stats, attacks,
+                id, challenge_id, player, collection, token_id, stats, attacks, timestamp,
             );
         self.arcade.set_arcade_current_challenge_attempt(player, collection, token_id, id);
         let game_id = self
@@ -416,13 +420,14 @@ impl ArcadeImpl of ArcadeTrait {
         let mut attempt = self.arcade.get_arcade_challenge_attempt_respawn(attempt_id);
         let game_id = self.arcade.get_arcade_stage_game_id(attempt_id, attempt.stage);
         let phase = self.arcade.get_arcade_game_phase(game_id);
+        let timestamp = get_block_timestamp();
 
         attempt.phase.assert_active();
         assert(attempt.player == get_caller_address(), 'Not player');
-        assert(get_block_timestamp() <= attempt.expiry, 'Challenge expired');
+        assert(timestamp <= attempt.expiry, 'Challenge expired');
         assert(phase == ArcadePhase::PlayerLost, 'Player not lost round');
         assert(attempt.respawns < ARCADE_CHALLENGE_MAX_RESPAWNS, 'Max respawns');
-        self.arcade.use_game(attempt.player);
+        self.arcade.use_game(attempt.player, timestamp);
 
         attempt.respawns += 1;
 
@@ -490,13 +495,19 @@ impl ArcadeImpl of ArcadeTrait {
         }
     }
 
-    fn use_free_game(ref self: WorldStorage, player: ContractAddress) -> bool {
-        let games = self.get_number_of_free_games(player);
-        let available = games > 0;
-        if available {
-            self.set_number_of_free_games(player, games - 1);
-        };
-        available
+    fn use_free_game(ref self: WorldStorage, player: ContractAddress, timestamp: u64) -> bool {
+        let model = self.get_free_games(player);
+        let mut energy = model.energy + timestamp - model.timestamp;
+
+        if energy >= ARCADE_CHALLENGE_GAME_ENERGY_COST {
+            if energy > ARCADE_CHALLENGE_MAX_ENERGY {
+                energy = ARCADE_CHALLENGE_MAX_ENERGY;
+            };
+            self.set_free_games(player, energy - ARCADE_CHALLENGE_GAME_ENERGY_COST, timestamp);
+            true
+        } else {
+            false
+        }
     }
 
     fn use_paid_game(ref self: WorldStorage, player: ContractAddress) {
@@ -505,16 +516,8 @@ impl ArcadeImpl of ArcadeTrait {
         self.set_number_of_paid_games(player, games - 1);
     }
 
-    fn mint_free_game(ref self: WorldStorage, player: ContractAddress) {
-        let model = self.get_free_games(player);
-        assert(model.games < 2, 'No free games');
-        let timestamp = get_block_timestamp();
-        assert(model.last_claim + SECONDS_12_HOURS <= timestamp, 'Not enough time passed');
-        self.set_free_games(player, model.games + 1, timestamp);
-    }
-
-    fn use_game(ref self: WorldStorage, player: ContractAddress) {
-        if !self.use_free_game(player) {
+    fn use_game(ref self: WorldStorage, player: ContractAddress, timestamp: u64) {
+        if !self.use_free_game(player, timestamp) {
             self.use_paid_game(player);
         };
     }

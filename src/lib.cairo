@@ -74,6 +74,7 @@ mod arcade {
         ArcadeGame, ArcadeOpponent, ArcadeBlobertInfo, ArcadeStorage, ArcadePhase, ArcadeStore,
         ArcadeChallengeAttempt, ArcadePhaseTrait, ArcadeAttemptEnd, ArcadeOpponentInput,
         ARCADE_NAMESPACE_HASH, ARCADE_CHALLENGE_MAX_RESPAWNS, CHALLENGE_TAG_GROUP,
+        ARCADE_CHALLENGE_GAME_ENERGY_COST, ARCADE_CHALLENGE_MAX_ENERGY,
     };
 }
 
