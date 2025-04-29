@@ -133,7 +133,6 @@ export const printAttackResults = (game) => {
   const allAttacks = Object.fromEntries(
     stateA.attacks.concat(stateB.attacks).map((a) => [a.id, a])
   );
-
   const combatantAId = stateA.id;
   const combatantBId = stateB.id;
 

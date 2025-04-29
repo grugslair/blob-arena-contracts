@@ -13,9 +13,13 @@ import {
   runArcadeChallengeGames,
   startArcadeChallenges,
 } from "./arcade.js";
-import { getAttacks, makeAttack } from "./attacks.js";
+import { Attacks, getAttacks, makeAttack } from "./attacks.js";
 import { DojoParser } from "../dojo.js";
-import { dojoNamespaceMap, getRoundResults } from "./game.js";
+import {
+  dojoNamespaceMap,
+  getRoundResults,
+  printAttackResults,
+} from "./game.js";
 import { randomIndexes } from "../utils.js";
 
 const accountClassHash =
@@ -46,14 +50,13 @@ const main = async () => {
   tokens.forEach((token) =>
     token.attacks.forEach((attack) => attackIds.add(attack.id))
   );
-  const attacks = await getAttacks(
-    worldContract,
-    gameContract,
-    Array.from(attackIds).map(bigIntToHex)
-  );
+  const allAttacks = new Attacks(worldContract, gameContract);
+  await allAttacks.init();
+  await allAttacks.getAttacks(Array.from(attackIds).map(bigIntToHex));
+
   const challenges = tokens.map((token) => {
     const attacksUsed = randomIndexes(token.attacks.length, 4).map((i) =>
-      makeAttack(token.attacks[i], attacks)
+      makeAttack(token.attacks[i], allAttacks.attacks)
     );
     return new ChallengeAttempt(
       signer,
@@ -61,7 +64,8 @@ const main = async () => {
       gameContract,
       classicChallengeId,
       token,
-      attacksUsed
+      attacksUsed,
+      allAttacks
     );
   });
   await startArcadeChallenges(caller, challenges);
@@ -71,7 +75,11 @@ const main = async () => {
     const transaction_hash = await runArcadeChallengeGames(caller, challenges);
     for (const challenge of challenges) {
       console.log(
-        `${challenge.status} Stage: ${challenge.stage} Round: ${challenge.currentGame.round} Respawns: ${challenge.respawns}`
+        `${challenge.status} Stage: ${challenge.stage} Round: ${
+          challenge.currentGame.round
+        } Respawns: ${challenge.respawns} attack: ${
+          allAttacks.attacks[challenge.lastAttack].name
+        }`
       );
     }
     rounds.push(getRoundResults(caller, dojoParser, transaction_hash));
@@ -85,6 +93,17 @@ const main = async () => {
     await Promise.all(rounds)
   ).flat()) {
     games[combat_id].rounds.push({ attacks, states });
+  }
+  for (const [ci, challenge] of challenges.entries()) {
+    console.log(`Challenge ${ci + 1}`);
+    for (const [stage, games] of Object.entries(challenge.games)) {
+      console.log(`Stage ${stage}`);
+      for (const game of Object.values(games)) {
+        console.log(`Game ${game.id}`);
+        printAttackResults(game);
+        console.log(`${game.phase}\n`);
+      }
+    }
   }
   // for (const game of Object.values(games)) {
   //   console.log(game);

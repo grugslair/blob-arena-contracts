@@ -1,8 +1,16 @@
 import { callOptions, getReturns } from "../stark-utils.js";
-import { randomUseableAttack } from "./attacks.js";
+import { randomUseableAttack, resetAttack } from "./attacks.js";
 
 export class ChallengeAttempt {
-  constructor(signer, contract, gameContract, challengeId, token, attacks) {
+  constructor(
+    signer,
+    contract,
+    gameContract,
+    challengeId,
+    token,
+    attacks,
+    allAttacks
+  ) {
     this.challengeId = challengeId;
     this.contract = contract;
     this.gameContract = gameContract;
@@ -11,12 +19,12 @@ export class ChallengeAttempt {
     this.stage = 0;
     this.status = "Active";
     this.attacks = attacks;
-    this.attacksUsed = attacks.map((attack) => attack.id);
-    this.attacksSlotsUsed = attacks.map((attack) => attack.slot);
     this.token = token;
     this.games = {};
     this.attemptId = null;
     this.playerStats = null;
+    this.allAttacks = allAttacks;
+    this.lastAttack = null;
   }
   startCall(caller) {
     return this.signer.getOutsideTransaction(
@@ -25,7 +33,7 @@ export class ChallengeAttempt {
         challenge_id: this.challengeId,
         collection_address: this.token.collection_address,
         token_id: this.token.id,
-        attacks: this.attacksSlotsUsed,
+        attacks: this.attacks.map((attack) => attack.slot),
       })
     );
   }
@@ -34,13 +42,13 @@ export class ChallengeAttempt {
     await this.nextStage(gameId);
   }
   attackCall = (caller) => {
-    const round = this.currentGame.round;
-    this.currentGame.round += 1;
+    this.currentGame.round += BigInt(1);
+    this.lastAttack = randomUseableAttack(this.attacks, this.currentGame.round);
     return this.signer.getOutsideTransaction(
       callOptions(caller.address),
       this.contract.populate("attack", {
         game_id: this.currentGame.id,
-        attack_id: randomUseableAttack(this.attacks, round),
+        attack_id: this.lastAttack,
       })
     );
   };
@@ -76,14 +84,22 @@ export class ChallengeAttempt {
 
   async setCurrentGame(gameId) {
     const game = await this.contract.game(gameId);
-    const [player, opponent] = await Promise.all([
+    const [player, opponentState, opponentToken] = await Promise.all([
       this.gameContract.combatant_state(game.combatant_id),
       this.gameContract.combatant_state(game.opponent_id),
+      this.contract.opponent_token(game.opponent_token),
     ]);
+    this.attacks.forEach(resetAttack);
     this.currentGame = {
       id: game.id,
-      combatants: [player, opponent],
-      round: 1,
+      combatants: [
+        { ...player, attacks: this.attacks },
+        {
+          ...opponentState,
+          attacks: await this.allAttacks.getAttacks(opponentToken.attacks),
+        },
+      ],
+      round: BigInt(0),
       rounds: [],
       phase: "Active",
     };

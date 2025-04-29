@@ -2182,7 +2182,7 @@
     },
     {
       "address": "0x26c2004a96816739831f6e168452f3dcb2a88da3d0e59de92c8e5a8cc09f74e",
-      "class_hash": "0x24aaf82602e49da01e58485d635240947152e869805ed453914e9cd2d44385b",
+      "class_hash": "0x7a8be846606dc3775818adbe1242d30750fc0f10ac7b9908d9ace32669ab3de",
       "abi": [
         {
           "type": "impl",
@@ -2382,6 +2382,24 @@
           ]
         },
         {
+          "type": "struct",
+          "name": "blob_arena::arcade::components::ArcadeOpponent",
+          "members": [
+            {
+              "name": "id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "stats",
+              "type": "blob_arena::stats::TStats::<core::integer::u8>"
+            },
+            {
+              "name": "attacks",
+              "type": "core::array::Array::<core::felt252>"
+            }
+          ]
+        },
+        {
           "type": "interface",
           "name": "blob_arena::arcade::contract::IArcade",
           "items": [
@@ -2556,6 +2574,54 @@
               "outputs": [
                 {
                   "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "opponent_token",
+              "inputs": [
+                {
+                  "name": "opponent_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "blob_arena::arcade::components::ArcadeOpponent"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "opponent_stats",
+              "inputs": [
+                {
+                  "name": "opponent_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "blob_arena::stats::TStats::<core::integer::u8>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "opponent_attacks",
+              "inputs": [
+                {
+                  "name": "opponent_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Array::<core::felt252>"
                 }
               ],
               "state_mutability": "view"
@@ -3147,7 +3213,7 @@
       ]
     },
     {
-      "address": "0x7f42255a9330e4285c899caf1a588a222680bfe562553ad564d067a3163a51",
+      "address": "0x3c3c0fdee5794dd20f0f4a7a5d89add2311921ef800c629194fdd48cf761181",
       "class_hash": "0x74c78bfa573fa81e3f3cd385ae3c55a45f66233d9188c7957a9e8402a6da44f",
       "abi": [
         {
