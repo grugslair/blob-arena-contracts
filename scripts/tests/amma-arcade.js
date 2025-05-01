@@ -3,6 +3,7 @@ import {
   freeBlobertContractTag,
   adminContractTag,
   arcadeContractTag,
+  ammaBlobertContractTag,
 } from "../contract-defs.js";
 
 import { bigIntToHex } from "web3-eth-accounts";
@@ -21,6 +22,7 @@ import {
   printAttackResults,
 } from "./game.js";
 import { randomIndexes } from "../utils.js";
+import { ammaFighterIds, mintAmmaTokensWithAttacks } from "./amma-blobert.js";
 
 const accountClassHash =
   "0x07489e371db016fcd31b78e49ccd201b93f4eab60af28b862390e800ec9096e2";
@@ -28,23 +30,23 @@ const accountClassHash =
 const main = async () => {
   const account_manifest = await loadAccountManifestFromCmdArgs();
   const caller = account_manifest.account;
-  const freeContract = await account_manifest.getContract(
-    freeBlobertContractTag
+  const ammaContract = await account_manifest.getContract(
+    ammaBlobertContractTag
   );
   const arcadeContract = await account_manifest.getContract(arcadeContractTag);
   const gameContract = await account_manifest.getContract(adminContractTag);
   const worldContract = await account_manifest.getWorldContract();
   const signer = await newAccount(caller, accountClassHash);
   const classicChallengeId = await arcadeContract.challenge_id_from_tag(
-    "Classic Season 0"
+    "AMMA Season 0"
   );
   [];
   await mintPaidArcadeGames(caller, arcadeContract, signer.address, 1000);
-  const tokens = await mintFreeTokensWithAttacks(
+  const tokens = await mintAmmaTokensWithAttacks(
     caller,
     signer,
-    freeContract,
-    10
+    ammaContract,
+    ammaFighterIds
   );
   let attackIds = new Set();
   tokens.forEach((token) =>
