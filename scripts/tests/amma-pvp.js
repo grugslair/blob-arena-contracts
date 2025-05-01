@@ -6,18 +6,16 @@ import {
   pvpContractTag,
   adminContractTag,
 } from "../contract-defs.js";
-import { makeLobbies, makeLobby } from "./lobby.js";
+import { makeLobbies } from "./lobby.js";
 import { runPvpBattles } from "./pvp.js";
 import { bigIntToHex } from "web3-eth-accounts";
-import { mintAmmaTokensWithAttacks } from "./amma-blobert.js";
+import { mintAmmaTokensWithAttacks, ammaFighterIds } from "./amma-blobert.js";
 import { getAttacks, makeAttack } from "./attacks.js";
 import { dojoNamespaceMap, printRoundResults } from "./game.js";
 import { DojoParser } from "../dojo.js";
 
 const accountClassHash =
   "0x07489e371db016fcd31b78e49ccd201b93f4eab60af28b862390e800ec9096e2";
-// const ammaFighterIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-const ammaFighterIds = [1, 2, 3, 4, 5];
 
 const main = async () => {
   const account_manifest = await loadAccountManifestFromCmdArgs();

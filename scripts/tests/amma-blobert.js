@@ -2,6 +2,10 @@ import { getReturns, dataToUint256, callOptions } from "../stark-utils.js";
 import { mintEntrypoint } from "../contract-defs.js";
 import { cairo } from "starknet";
 
+export const ammaFighterIds = [
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+];
+
 export const ammaAttackSlots = [
   cairo.tuple(0, 0),
   cairo.tuple(0, 1),
