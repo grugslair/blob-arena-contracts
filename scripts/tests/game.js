@@ -127,7 +127,7 @@ export const getRoundResults = async (
   return games;
 };
 
-export const printAttackResults = (game) => {
+export const printAttackResults = (game, names) => {
   let stateA = game.combatants[0];
   let stateB = game.combatants[1];
   const allAttacks = Object.fromEntries(
@@ -135,10 +135,9 @@ export const printAttackResults = (game) => {
   );
   const combatantAId = stateA.id;
   const combatantBId = stateB.id;
-
   const combatantNames = {
-    [combatantAId]: "Combatant A",
-    [combatantBId]: "Combatant B",
+    [combatantAId]: names ? names[0] : "Combatant A",
+    [combatantBId]: names ? names[1] : "Combatant B",
   };
   const combatantAName = combatantNames[combatantAId];
   const combatantBName = combatantNames[combatantBId];
