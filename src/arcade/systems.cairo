@@ -454,7 +454,7 @@ impl ArcadeImpl of ArcadeTrait {
         let game_id = self.get_arcade_stage_game_id(attempt_id, attempt.stage);
         let won = match self.get_arcade_game_phase(game_id) {
             ArcadePhase::PlayerWon => {
-                self.get_arcade_stage_game_id(attempt.challenge, attempt.stage + 1).is_zero()
+                self.get_arcade_stage_opponent(attempt.challenge, attempt.stage + 1).is_zero()
             },
             ArcadePhase::PlayerLost => false,
             ArcadePhase::Active => {
