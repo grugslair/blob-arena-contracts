@@ -82,7 +82,10 @@ mod arcade_amma {
     mod components;
     mod systems;
     mod contract;
-    use components::{AmmaArcadeStorage, AMMA_ARCADE_NAMESPACE_HASH, AMMA_ARCADE_GENERATED_STAGES};
+    use components::{
+        AmmaArcadeStorage, AMMA_ARCADE_NAMESPACE_HASH, AMMA_ARCADE_GENERATED_STAGES,
+        AmmaArcadeChallengeAttempt,
+    };
     use systems::AmmaArcadeTrait;
 }
 

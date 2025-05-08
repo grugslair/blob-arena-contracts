@@ -5,8 +5,8 @@ use dojo::meta::Introspect;
 
 use crate::stats::UStats;
 use crate::iter::Iteration;
-use crate::arcade::ArcadePhase;
-use crate::arcade::components::ARCADE_CHALLENGE_TIME_LIMIT;
+use crate::arcade::{ArcadePhase, ArcadeGame};
+use crate::arcade::components::{ARCADE_CHALLENGE_TIME_LIMIT, end_phase, ArcadeAttemptGetGame};
 
 const AMMA_ARCADE_NAMESPACE_HASH: felt252 = bytearray_hash!("arcade-amma");
 const AMMA_ARCADE_GENERATED_STAGES: u32 = 9;
@@ -94,6 +94,13 @@ struct AmmaArcadeAttemptEnd {
     stage: u32,
     phase: ArcadePhase,
     respawns: u32,
+}
+
+#[derive(Drop, Serde, Introspect)]
+struct AmmaArcadeAttemptUnlockToken {
+    player: ContractAddress,
+    token_id: u256,
+    phase: ArcadePhase,
 }
 
 
@@ -185,5 +192,44 @@ impl AmmaArcadeStorageImpl of AmmaArcadeStorage {
         self: @WorldStorage, id: felt252,
     ) -> PlayerStage {
         self.get_amma_arcade_challenge_attempt_schema(id)
+    }
+
+    fn set_amma_arcade_challenge_attempt_ended(ref self: WorldStorage, id: felt252, won: bool) {
+        self
+            .write_member(
+                Model::<AmmaArcadeChallengeAttempt>::ptr_from_keys(id),
+                selector!("phase"),
+                end_phase(won),
+            );
+    }
+
+    fn set_amma_arcade_challenge_respawns(ref self: WorldStorage, id: felt252, respawns: u32) {
+        self
+            .write_member(
+                Model::<AmmaArcadeChallengeAttempt>::ptr_from_keys(id),
+                selector!("respawns"),
+                respawns,
+            );
+    }
+
+    fn set_amma_arcade_challenge_stage(ref self: WorldStorage, attempt_id: felt252, stage: u32) {
+        self
+            .write_member(
+                Model::<AmmaArcadeChallengeAttempt>::ptr_from_keys(attempt_id),
+                selector!("stage"),
+                stage,
+            );
+    }
+
+    fn get_amma_arcade_challenge_attempt_stage(self: @WorldStorage, attempt_id: felt252) -> u32 {
+        self
+            .read_member(
+                Model::<AmmaArcadeChallengeAttempt>::ptr_from_keys(attempt_id), selector!("stage"),
+            )
+    }
+
+    fn get_amma_arcade_attempt_game(self: @WorldStorage, attempt_id: felt252) -> ArcadeGame {
+        let stage = self.get_amma_arcade_challenge_attempt_stage(attempt_id);
+        self.get_arcade_game(self.get_arcade_stage_game_id(attempt_id, stage))
     }
 }

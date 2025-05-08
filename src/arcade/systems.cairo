@@ -14,6 +14,7 @@ use crate::arcade::{
         ArcadeAttemptRespawn, ArcadeAttemptGetGame, ARCADE_CHALLENGE_GAME_ENERGY_COST,
         ARCADE_CHALLENGE_MAX_ENERGY,
     },
+    ARCADE_NAMESPACE_HASH,
 };
 use crate::pvp::{GameStorage, GameTrait};
 use crate::combatants::{CombatantStorage, CombatantTrait, CombatantState, CombatantSetup};
@@ -517,8 +518,9 @@ impl ArcadeImpl of ArcadeTrait {
     }
 
     fn use_game(ref self: WorldStorage, player: ContractAddress, timestamp: u64) {
-        if !self.use_free_game(player, timestamp) {
-            self.use_paid_game(player);
+        let mut store = self.storage(ARCADE_NAMESPACE_HASH);
+        if !store.use_free_game(player, timestamp) {
+            store.use_paid_game(player);
         };
     }
 

@@ -3,9 +3,8 @@ use crate::stats::UStats;
 use crate::tags::IdTagNew;
 use crate::collections::{TokenAttributes, BlobertItemKey};
 use crate::attacks::components::AttackInput;
-use crate::arcade::{
-    ArcadeGame, ArcadeChallengeAttempt, ArcadePhase, ArcadeOpponent, ArcadeOpponentInput,
-};
+use crate::arcade::{ArcadeGame, ArcadePhase, ArcadeOpponent, ArcadeOpponentInput};
+use crate::arcade_amma::AmmaArcadeChallengeAttempt;
 
 #[starknet::interface]
 trait IAmmaArcade<TContractState> {
@@ -96,7 +95,7 @@ trait IAmmaArcade<TContractState> {
     ///
     /// Returns:
     /// - `ArcadeChallengeAttempt` - The challenge attempt object
-    fn challenge_attempt(self: @TContractState, attempt_id: felt252) -> ArcadeChallengeAttempt;
+    fn challenge_attempt(self: @TContractState, attempt_id: felt252) -> AmmaArcadeChallengeAttempt;
 
     /// Gets a arcade game
     /// # Arguments
@@ -228,7 +227,7 @@ mod arcade_amma_actions {
     };
     use crate::arcade_amma::{
         AmmaArcadeStorage, AmmaArcadeTrait, AMMA_ARCADE_NAMESPACE_HASH,
-        AMMA_ARCADE_GENERATED_STAGES,
+        AMMA_ARCADE_GENERATED_STAGES, AmmaArcadeChallengeAttempt,
     };
     use crate::attacks::{AttackInput, AttackTrait};
     use crate::permissions::{Permissions, Role};
@@ -303,34 +302,36 @@ mod arcade_amma_actions {
         }
         fn next_challenge_round(ref self: ContractState, attempt_id: felt252) -> felt252 {
             let mut store = self.get_storage();
-            return_value(store.next_arcade_challenge_round(attempt_id))
+            return_value(store.next_amma_arcade_challenge_round(attempt_id))
         }
         fn respawn_challenge(ref self: ContractState, attempt_id: felt252) -> felt252 {
             let mut store = self.get_storage();
-            return_value(store.respawn_arcade_challenge_attempt(attempt_id))
+            return_value(store.respawn_amma_arcade_challenge_attempt(attempt_id))
         }
         fn end_challenge(ref self: ContractState, attempt_id: felt252) {
             let mut store = self.get_arcade_storage();
-            let attempt = store.get_arcade_challenge_attempt_end_schema(attempt_id);
 
-            assert(attempt.player == get_caller_address(), 'Not player');
-
-            store.end_arcade_challenge_attempt(attempt_id, attempt);
+            store.end_amma_arcade_challenge_attempt(self.collection_address.read(), attempt_id);
         }
         fn generate_boss(ref self: ContractState, attempt_id: felt252) {
             let mut store = self.get_arcade_storage();
             let player_stage = store.get_amma_arcade_challenge_attempt_player_stage(attempt_id);
-            assert(store.get_amma_round_opponent(attempt_id, 10).is_zero(), 'Already generated');
+            assert(
+                store.get_amma_round_opponent(attempt_id, AMMA_ARCADE_GENERATED_STAGES).is_zero(),
+                'Already generated',
+            );
             assert(get_caller_address() == player_stage.player, 'Not player');
-            assert(player_stage.stage == AMMA_ARCADE_GENERATED_STAGES, 'Not last stage');
+            assert(player_stage.stage == AMMA_ARCADE_GENERATED_STAGES - 1, 'Not last stage');
             let mut randomness = felt252_to_u128(get_transaction_hash());
             let fighters: u128 = self.fighters.read().into();
             let fighter = 1 + randomness.get_value(fighters.try_into().unwrap());
-            store.set_amma_round_opponent(attempt_id, 10, fighter.try_into().unwrap());
+            store.set_amma_round_opponent(attempt_id, 9, fighter.try_into().unwrap());
         }
 
-        fn challenge_attempt(self: @ContractState, attempt_id: felt252) -> ArcadeChallengeAttempt {
-            self.get_arcade_storage().get_arcade_challenge_attempt(attempt_id)
+        fn challenge_attempt(
+            self: @ContractState, attempt_id: felt252,
+        ) -> AmmaArcadeChallengeAttempt {
+            self.get_arcade_storage().get_amma_arcade_challenge_attempt(attempt_id)
         }
 
         fn game(self: @ContractState, game_id: felt252) -> ArcadeGame {

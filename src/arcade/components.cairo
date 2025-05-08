@@ -11,6 +11,7 @@ use crate::stats::UStats;
 use crate::tags::IdTagNew;
 use crate::collections::TokenAttributes;
 use crate::constants::{SECONDS_12_HOURS, SECONDS_24_HOURS, SECONDS_2_HOURS};
+use crate::world::WorldTrait;
 
 const ARCADE_NAMESPACE_HASH: felt252 = bytearray_hash!("arcade");
 const OPPONENT_TAG_GROUP: felt252 = 'arcade-opponent';
@@ -633,6 +634,7 @@ impl ArcadeStorageImpl of ArcadeStorage {
         token_id: u256,
         attempt_id: felt252,
     ) {
+        let store = self.storage(ARCADE_NAMESPACE_HASH);
         self
             .write_model(
                 @ArcadeCurrentChallengeAttempt { collection, token_id, player, attempt_id },
