@@ -10,14 +10,15 @@ use crate::attacks::AttackInput;
 use crate::stats::UStats;
 use crate::tags::IdTagNew;
 use crate::collections::TokenAttributes;
+use crate::constants::{SECONDS_12_HOURS, SECONDS_24_HOURS, SECONDS_2_HOURS};
 
 const ARCADE_NAMESPACE_HASH: felt252 = bytearray_hash!("arcade");
 const OPPONENT_TAG_GROUP: felt252 = 'arcade-opponent';
 const CHALLENGE_TAG_GROUP: felt252 = 'arcade-challenge';
-const ARCADE_CHALLENGE_TIME_LIMIT: u64 = 60 * 60 * 2; // 2 hours
-const ARCADE_CHALLENGE_MAX_RESPAWNS: u32 = 3;
-const ARCADE_CHALLENGE_GAME_ENERGY_COST: u64 = 60 * 60 * 12; // 12 hours
-const ARCADE_CHALLENGE_MAX_ENERGY: u64 = 60 * 60 * 24; // 24 hours
+const ARCADE_CHALLENGE_TIME_LIMIT: u64 = SECONDS_2_HOURS; // 2 hours
+const ARCADE_CHALLENGE_MAX_RESPAWNS: u32 = 2;
+const ARCADE_CHALLENGE_GAME_ENERGY_COST: u64 = SECONDS_12_HOURS;
+const ARCADE_CHALLENGE_MAX_ENERGY: u64 = SECONDS_24_HOURS;
 
 #[derive(Drop, Copy, Introspect, PartialEq, Serde)]
 enum ArcadePhase {

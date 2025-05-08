@@ -1,12 +1,12 @@
 use core::{
     num::traits::Bounded, hash::{HashStateTrait, HashStateExTrait, Hash},
     poseidon::{PoseidonTrait, HashState, poseidon_hash_span},
-    fmt::{Display, Formatter, Error, Debug}, integer::u128_safe_divmod
+    fmt::{Display, Formatter, Error, Debug}, integer::u128_safe_divmod,
 };
 use starknet::{
     ContractAddress, get_contract_address, get_caller_address, get_tx_info, get_block_timestamp,
     StorageAddress, StorageBaseAddress, syscalls::{storage_read_syscall, storage_write_syscall},
-    storage_address_from_base
+    storage_address_from_base,
 };
 use blob_arena::core::Felt252BitAnd;
 
@@ -36,7 +36,7 @@ trait SeedProbability {
 
 impl SeedProbabilityImpl of SeedProbability {
     fn get_outcome<T, +Into<T, u128>>(
-        ref self: u128, scale: NonZero<u128>, probability: T
+        ref self: u128, scale: NonZero<u128>, probability: T,
     ) -> bool {
         let (seed, value) = u128_safe_divmod(self, scale);
         self = seed;

@@ -69,13 +69,21 @@ mod arcade {
     mod components;
     mod systems;
     mod contract;
-    use systems::ArcadeTrait;
+    use systems::{ArcadeTrait, calc_restored_health};
     use components::{
         ArcadeGame, ArcadeOpponent, ArcadeBlobertInfo, ArcadeStorage, ArcadePhase, ArcadeStore,
         ArcadeChallengeAttempt, ArcadePhaseTrait, ArcadeAttemptEnd, ArcadeOpponentInput,
         ARCADE_NAMESPACE_HASH, ARCADE_CHALLENGE_MAX_RESPAWNS, CHALLENGE_TAG_GROUP,
         ARCADE_CHALLENGE_GAME_ENERGY_COST, ARCADE_CHALLENGE_MAX_ENERGY,
     };
+}
+
+mod arcade_amma {
+    mod components;
+    mod systems;
+    mod contract;
+    use components::{AmmaArcadeStorage, AMMA_ARCADE_NAMESPACE_HASH, AMMA_ARCADE_GENERATED_STAGES};
+    use systems::AmmaArcadeTrait;
 }
 
 mod achievements {
