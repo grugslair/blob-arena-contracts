@@ -3,7 +3,12 @@ mod attributes;
 mod collection;
 mod store;
 mod world_blobert;
-mod amma_blobert;
+mod amma_blobert {
+    mod contract;
+    mod components;
+    mod systems;
+    use components::{AmmaBlobertStorage, AMMA_BLOBERT_NAMESPACE_HASH};
+}
 mod group;
 use group::{CollectionGroupStorage, CollectionGroup};
 mod blobert {

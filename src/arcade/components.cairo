@@ -11,7 +11,7 @@ use crate::stats::UStats;
 use crate::tags::IdTagNew;
 use crate::collections::TokenAttributes;
 use crate::constants::{SECONDS_12_HOURS, SECONDS_24_HOURS, SECONDS_2_HOURS};
-use crate::world::WorldTrait;
+use crate::world::{WorldTrait, NsModelStorage};
 
 const ARCADE_NAMESPACE_HASH: felt252 = bytearray_hash!("arcade");
 const OPPONENT_TAG_GROUP: felt252 = 'arcade-opponent';
@@ -619,7 +619,8 @@ impl ArcadeStorageImpl of ArcadeStorage {
         self: @WorldStorage, player: ContractAddress, collection: ContractAddress, token_id: u256,
     ) -> felt252 {
         self
-            .read_member(
+            .read_ns_member(
+                ARCADE_NAMESPACE_HASH,
                 Model::<
                     ArcadeCurrentChallengeAttempt,
                 >::ptr_from_keys((player, collection, token_id)),
@@ -634,9 +635,9 @@ impl ArcadeStorageImpl of ArcadeStorage {
         token_id: u256,
         attempt_id: felt252,
     ) {
-        let store = self.storage(ARCADE_NAMESPACE_HASH);
         self
-            .write_model(
+            .write_ns_model(
+                ARCADE_NAMESPACE_HASH,
                 @ArcadeCurrentChallengeAttempt { collection, token_id, player, attempt_id },
             );
     }

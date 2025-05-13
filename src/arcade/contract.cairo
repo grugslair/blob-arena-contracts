@@ -288,7 +288,8 @@ mod arcade_actions {
             let game = store.arcade.get_arcade_game(game_id);
             assert(game.player == get_caller_address(), 'Not player');
             let randomness = get_transaction_hash(); //TODO: Use real randomness
-            store.run_arcade_round(game, attack_id, randomness);
+            let opponent_attacks = store.arcade.get_arcade_opponent_attacks(game.opponent_token);
+            store.run_arcade_round(game, attack_id, opponent_attacks, randomness);
         }
         fn start_challenge(
             ref self: ContractState,

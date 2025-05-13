@@ -142,78 +142,14 @@ trait IAmmaArcade<TContractState> {
 /// Interface for managing Arcade (Player vs Environment) administrative functions.
 #[starknet::interface]
 trait IAmmaArcadeAdmin<TContractState> {
-    /// Creates a new opponent with specified attributes and allowed collections
-    /// # Arguments
-    /// * `name` - Name of the opponent
-    /// * `collection` - Contract address of opponent's collection
-    /// * `attributes` - Token attributes for the opponent (for off chain generation)
-    /// * `stats` - Base stats for the opponent
-    /// * `attacks` - Array of attacks available to the opponent
-    /// * `collections_allowed` - Array of collection addresses that can challenge this opponent
-    ///
-    /// Models:
-    /// - Tag
-    /// - Attack
-    /// - ArcadeOpponent
-    /// - ArcadeCollectionAllowed
-    ///
-    /// Events:
-    /// - AttackName
-    /// - ArcadeBlobertInfo
-    fn new_opponent(
-        ref self: TContractState,
-        name: ByteArray,
-        collection: ContractAddress,
-        attributes: TokenAttributes,
-        stats: UStats,
-        attacks: Array<IdTagNew<AttackInput>>,
-    ) -> felt252;
-
     /// Sets availability of a single collection for a specific ID
     /// # Arguments
-    /// * `id` - Target ID to modify
     /// * `collection` - Collection address to set
-    /// * `available` - Whether collection should be available
     ///
     /// Models:
     /// - ArcadeCollectionAllowed
     ///
-    fn set_collection(
-        ref self: TContractState, id: felt252, collection: ContractAddress, available: bool,
-    );
-
-    /// Sets availability of multiple collections for a specific ID
-    /// # Arguments
-    /// * `id` - Target ID to modify
-    /// * `collections` - Array of collection addresses
-    /// * `available` - Whether collections should be available
-    ///
-    /// Models:
-    /// - ArcadeCollectionAllowed
-    fn set_collections(
-        ref self: TContractState, id: felt252, collections: Array<ContractAddress>, available: bool,
-    );
-
-    /// Sets availability of a collection for multiple IDs
-    /// # Arguments
-    /// * `ids` - Array of IDs to modify
-    /// * `collection` - Collection address to set
-    /// * `available` - Whether collection should be available
-    ///
-    /// Models:
-    /// - ArcadeCollectionAllowed
-    fn set_ids_collection(
-        ref self: TContractState, ids: Array<felt252>, collection: ContractAddress, available: bool,
-    );
-
-    /// Mints paid game passes for a player
-    /// # Arguments
-    /// * `player` - Address of player receiving games
-    /// * `amount` - Number of paid games to mint
-    ///
-    /// Models:
-    /// - ArcadePaidGames
-    fn mint_paid_games(ref self: TContractState, player: ContractAddress, amount: u32);
+    fn set_collection_address(ref self: TContractState, collection_address: ContractAddress);
 }
 
 
@@ -221,6 +157,7 @@ trait IAmmaArcadeAdmin<TContractState> {
 mod arcade_amma_actions {
     use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
     use dojo::world::WorldStorage;
+    use crate::collections::amma_blobert::AmmaBlobertStorage;
     use crate::arcade::{
         ArcadeTrait, ArcadeStorage, ArcadeStore, ArcadeOpponentInput, ArcadeChallengeAttempt,
         ArcadeGame, ArcadePhase, CHALLENGE_TAG_GROUP, ArcadeOpponent,
@@ -270,7 +207,9 @@ mod arcade_amma_actions {
             let game = store.arcade.get_arcade_game(game_id);
             assert(game.player == get_caller_address(), 'Not player');
             let randomness = get_transaction_hash(); //TODO: Use real randomness
-            store.run_arcade_round(game, attack_id, randomness);
+            let opponent_attacks = store.arcade.get_amma_fighter_attacks(game.opponent_token);
+
+            store.run_arcade_round(game, attack_id, opponent_attacks, randomness);
         }
         fn start_challenge(
             ref self: ContractState, token_id: u256, attacks: Array<(felt252, felt252)>,
@@ -360,51 +299,9 @@ mod arcade_amma_actions {
 
     #[abi(embed_v0)]
     impl IAmmaArcadeAdminImpl of IAmmaArcadeAdmin<ContractState> {
-        fn new_opponent(
-            ref self: ContractState,
-            name: ByteArray,
-            collection: ContractAddress,
-            attributes: TokenAttributes,
-            stats: UStats,
-            attacks: Array<IdTagNew<AttackInput>>,
-        ) -> felt252 {
-            let mut store = self.get_arcade_storage();
-            store.assert_caller_has_permission(Role::ArcadeSetter);
-            let attack_ids = store.create_or_get_attacks_external(attacks);
-            return_value(store.setup_new_opponent(name, collection, attributes, stats, attack_ids))
-        }
-        fn set_collection(
-            ref self: ContractState, id: felt252, collection: ContractAddress, available: bool,
-        ) {
-            let mut store = self.get_arcade_storage();
-            store.assert_caller_has_permission(Role::ArcadeSetter);
-            store.set_collection_allowed(id, collection, available);
-        }
-        fn set_collections(
-            ref self: ContractState,
-            id: felt252,
-            collections: Array<ContractAddress>,
-            available: bool,
-        ) {
-            let mut store = self.get_arcade_storage();
-            store.assert_caller_has_permission(Role::ArcadeSetter);
-            store.set_collections_allowed(id, collections, available);
-        }
-        fn set_ids_collection(
-            ref self: ContractState,
-            ids: Array<felt252>,
-            collection: ContractAddress,
-            available: bool,
-        ) {
-            let mut store = self.get_arcade_storage();
-            store.assert_caller_has_permission(Role::ArcadeSetter);
-            store.set_multiple_collection_allowed(ids, collection, available);
-        }
-        fn mint_paid_games(ref self: ContractState, player: ContractAddress, amount: u32) {
-            let mut store = self.get_arcade_storage();
-            store.assert_caller_has_permission(Role::ArcadePaidMinter);
-            let games = store.get_number_of_paid_games(player);
-            store.set_number_of_paid_games(player, games + amount);
+        fn set_collection_address(ref self: ContractState, collection_address: ContractAddress) {
+            self.assert_caller_has_permission(Role::ArcadeSetter);
+            self.collection_address.write(collection_address);
         }
     }
 }

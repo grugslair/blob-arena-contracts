@@ -15,6 +15,7 @@ use crate::combatants::{CombatantTrait, CombatantStorage};
 use crate::stats::{UStats, StatsTrait};
 use crate::world::uuid;
 use crate::achievements::{Achievements, TaskId};
+use crate::collections::amma_blobert::AmmaBlobertStorage;
 
 const HEALTH_RESTORE_PERCENTAGE: u8 = 40;
 
@@ -84,7 +85,7 @@ impl AmmaArcadeImpl of AmmaArcadeTrait {
 
     fn get_amma_stage_stats(self: @WorldStorage, stage: u32, fighter: u32) -> UStats {
         (5_u8 * stage.try_into().unwrap() + 10_u8).into()
-            + self.get_amma_arcade_opponent_gen_stats(fighter.into())
+            + self.get_amma_fighter_generated_stats(fighter.into())
     }
 
     fn create_amma_arcade_challenge_attempt_round(
@@ -121,7 +122,7 @@ impl AmmaArcadeImpl of AmmaArcadeTrait {
         let opponent_stats = if stage < AMMA_ARCADE_GENERATED_STAGES {
             self.arcade.get_amma_stage_stats(stage, opponent_token)
         } else {
-            self.arcade.get_arcade_opponent_stats(opponent_token.into())
+            self.arcade.get_amma_fighter_stats(opponent_token.into())
         };
         self.ba.create_combatant_state(opponent_id, opponent_stats);
         self.ba.set_combatant_stats_health_and_attacks(combatant_id, stats, health, attacks);

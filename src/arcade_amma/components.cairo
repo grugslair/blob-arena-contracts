@@ -5,8 +5,9 @@ use dojo::meta::Introspect;
 
 use crate::stats::UStats;
 use crate::iter::Iteration;
-use crate::arcade::{ArcadePhase, ArcadeGame};
+use crate::arcade::{ArcadePhase, ArcadeGame, ArcadeStorage};
 use crate::arcade::components::{ARCADE_CHALLENGE_TIME_LIMIT, end_phase, ArcadeAttemptGetGame};
+use crate::world::WorldTrait;
 
 const AMMA_ARCADE_NAMESPACE_HASH: felt252 = bytearray_hash!("arcade-amma");
 const AMMA_ARCADE_GENERATED_STAGES: u32 = 9;
@@ -192,6 +193,12 @@ impl AmmaArcadeStorageImpl of AmmaArcadeStorage {
         self: @WorldStorage, id: felt252,
     ) -> PlayerStage {
         self.get_amma_arcade_challenge_attempt_schema(id)
+    }
+
+    fn get_amma_arcade_challenge_attempt_unlock_token(
+        self: @WorldStorage, id: felt252,
+    ) -> AmmaArcadeAttemptUnlockToken {
+        self.storage(AMMA_ARCADE_NAMESPACE_HASH).get_amma_arcade_challenge_attempt_schema(id)
     }
 
     fn set_amma_arcade_challenge_attempt_ended(ref self: WorldStorage, id: felt252, won: bool) {

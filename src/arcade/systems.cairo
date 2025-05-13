@@ -258,12 +258,15 @@ impl ArcadeImpl of ArcadeTrait {
     }
 
     fn run_arcade_round(
-        ref self: ArcadeStore, game: ArcadeGame, player_attack: felt252, randomness: felt252,
+        ref self: ArcadeStore,
+        game: ArcadeGame,
+        player_attack: felt252,
+        opponent_attacks: Array<felt252>,
+        randomness: felt252,
     ) {
         assert(game.phase == ArcadePhase::Active, 'Not active');
         let hash = make_hash_state(randomness);
         let combatants = [game.combatant_id, game.opponent_id];
-        let opponent_attacks = self.arcade.get_arcade_opponent_attacks(game.opponent_token);
         let attacks = [
             player_attack, self.ba.get_opponent_attack(@game, opponent_attacks, randomness),
         ];
