@@ -4,6 +4,9 @@ use dojo::model::{ModelStorage, Model};
 use dojo::world::WorldStorage;
 use crate::world::{WorldTrait, NsModelStorage};
 use crate::stats::UStats;
+use super::super::items::{BlobertItemStorage};
+use super::super::{BlobertItemKey, TokenAttributes};
+use super::super::world_blobert::WorldBlobertStorage;
 const AMMA_BLOBERT_NAMESPACE_HASH: felt252 = bytearray_hash!("amma_blobert");
 
 #[dojo::model]
@@ -29,7 +32,7 @@ struct AmmaFighter {
     id: u32,
     stats: UStats,
     generated_stats: UStats,
-    attacks: Array<felt252>,
+    attacks: u32,
 }
 
 #[dojo::event]
@@ -77,11 +80,7 @@ impl AmmaBlobertStorageImpl of AmmaBlobertStorage {
     }
 
     fn set_amma_fighter(
-        ref self: WorldStorage,
-        fighter: u32,
-        name: ByteArray,
-        stats: UStats,
-        attacks: Array<felt252>,
+        ref self: WorldStorage, fighter: u32, name: ByteArray, stats: UStats, attacks: u32,
     ) {
         self.emit_event(@AmmaFighterName { fighter, name });
         self.write_model(@AmmaFighter { id: fighter, stats, generated_stats: stats, attacks })
@@ -97,7 +96,7 @@ impl AmmaBlobertStorageImpl of AmmaBlobertStorage {
                 Model::<AmmaFighter>::ptr_from_keys(fighter), selector!("generated_stats"), stats,
             )
     }
-    fn set_amma_fighter_attacks(ref self: WorldStorage, fighter: u32, attacks: Array<felt252>) {
+    fn set_amma_fighter_attacks(ref self: WorldStorage, fighter: u32, attacks: u32) {
         self
             .write_member(
                 Model::<AmmaFighter>::ptr_from_keys(fighter), selector!("attacks"), attacks,
@@ -118,13 +117,28 @@ impl AmmaBlobertStorageImpl of AmmaBlobertStorage {
 
     fn get_amma_fighter_generated_stats(self: @WorldStorage, fighter: felt252) -> UStats {
         self
-            .storage(AMMA_BLOBERT_NAMESPACE_HASH)
-            .read_member(Model::<AmmaFighter>::ptr_from_keys(fighter), selector!("generated_stats"))
+            .read_ns_member(
+                AMMA_BLOBERT_NAMESPACE_HASH,
+                Model::<AmmaFighter>::ptr_from_keys(fighter),
+                selector!("generated_stats"),
+            )
     }
-
+    fn get_amma_fighter_attacks_amount(self: @WorldStorage, fighter: felt252) -> u32 {
+        self.read_member(Model::<AmmaFighter>::ptr_from_keys(fighter), selector!("attacks"))
+    }
     fn get_amma_fighter_attacks(self: @WorldStorage, fighter: felt252) -> Array<felt252> {
-        self
-            .storage(AMMA_BLOBERT_NAMESPACE_HASH)
-            .read_member(Model::<AmmaFighter>::ptr_from_keys(fighter), selector!("attacks"))
+        let storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
+        let amount = storage.get_amma_fighter_attacks_amount(fighter);
+        let mut attack_slots: Array<(BlobertItemKey, felt252)> = Default::default();
+        for i in 0..amount {
+            attack_slots.append((BlobertItemKey::Custom(fighter), i.into()));
+        };
+        storage.get_blobert_attack_slots(attack_slots.span())
+    }
+    fn get_amma_token_fighter(self: @WorldStorage, token_id: u256) -> u32 {
+        match self.get_blobert_token_attributes(token_id) {
+            TokenAttributes::Custom(fighter) => { fighter.try_into().unwrap() },
+            TokenAttributes::Seed => { panic!("Amma cannot use a seed") },
+        }
     }
 }

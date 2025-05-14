@@ -70,10 +70,10 @@ mod amma_blobert_actions {
     use crate::tags::IdTagNew;
     use crate::hash::hash_value;
     use crate::arcade_amma::{AmmaArcadeStorage};
-    use super::super::{AmmaBlobertStorage, AMMA_BLOBERT_NAMESPACE_HASH};
+    use super::super::{AmmaBlobertStorage, AmmaBlobertTrait, AMMA_BLOBERT_NAMESPACE_HASH};
     use collections::world_blobert::{WorldBlobertStore, WorldBlobertStorage};
     use collections::items::cmp;
-    use collections::collection;
+    use collections::ICollection;
     use collections::{
         IBlobertCollectionImpl, TokenAttributes, CollectionGroupStorage, CollectionGroup,
         BlobertItemKey,
@@ -97,8 +97,29 @@ mod amma_blobert_actions {
         WorldBlobertStore<AMMA_BLOBERT_NAMESPACE_HASH, AMMA_BLOBERT_NAMESPACE_HASH>;
 
     #[abi(embed_v0)]
-    impl IAmmaBlobertCollectionImpl =
-        collection::IBlobertCollectionImpl<ContractState, AmmaBlobertStoreImpl>;
+    impl IAmmaBlobertCollectionImpl of ICollection<ContractState> {
+        fn owner_of(self: @ContractState, token_id: u256) -> ContractAddress {
+            self.storage(AMMA_BLOBERT_NAMESPACE_HASH).get_blobert_token_owner(token_id)
+        }
+        fn get_stats(self: @ContractState, token_id: u256) -> UStats {
+            self.storage(AMMA_BLOBERT_NAMESPACE_HASH).get_amma_token_stats(token_id)
+        }
+        fn get_attack_slot(
+            self: @ContractState, token_id: u256, item_id: felt252, slot: felt252,
+        ) -> felt252 {
+            self
+                .storage(AMMA_BLOBERT_NAMESPACE_HASH)
+                .get_amma_token_attack_slot(token_id, item_id, slot)
+        }
+        fn get_attack_slots(
+            self: @ContractState, token_id: u256, item_slots: Array<(felt252, felt252)>,
+        ) -> Array<felt252> {
+            self
+                .storage(AMMA_BLOBERT_NAMESPACE_HASH)
+                .get_amma_token_attack_slots(token_id, item_slots)
+        }
+    }
+
 
     #[abi(embed_v0)]
     impl IAmmaBlobertImpl of IAmmaBlobert<ContractState> {
@@ -145,7 +166,8 @@ mod amma_blobert_actions {
             let fighter = self.fighters.read() + 1;
             let attack_ids = storage.create_or_get_attacks_external(attacks);
             self.fighters.write(fighter);
-            storage.set_amma_fighter(fighter, name, stats, attack_ids);
+            storage.fill_amma_fighter_attack_slots(fighter, attack_ids);
+            storage.set_amma_fighter(fighter, name, stats, attack_ids.len());
             return_value(fighter)
         }
         fn update_fighter(
@@ -159,7 +181,8 @@ mod amma_blobert_actions {
             let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
             storage.assert_caller_has_permission(Role::AmmaBlobertAdmin);
             let attack_ids = storage.create_or_get_attacks_external(attacks);
-            storage.set_amma_fighter(fighter, name, stats, attack_ids);
+            storage.fill_amma_fighter_attack_slots(fighter, attack_ids);
+            storage.set_amma_fighter(fighter, name, stats, attack_ids.len());
         }
         fn update_fighter_stats(ref self: ContractState, fighter: u32, stats: UStats) {
             let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
@@ -177,7 +200,8 @@ mod amma_blobert_actions {
             let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
             storage.assert_caller_has_permission(Role::AmmaBlobertAdmin);
             let attack_ids = storage.create_or_get_attacks_external(attacks);
-            storage.set_amma_fighter_attacks(fighter, attack_ids);
+            storage.fill_amma_fighter_attack_slots(fighter, attack_ids);
+            storage.set_amma_fighter_attacks(fighter, attack_ids.len());
         }
         fn update_fighter_name(ref self: ContractState, fighter: u32, name: ByteArray) {
             let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);

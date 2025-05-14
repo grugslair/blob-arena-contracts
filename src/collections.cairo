@@ -7,6 +7,7 @@ mod amma_blobert {
     mod contract;
     mod components;
     mod systems;
+    use systems::AmmaBlobertTrait;
     use components::{AmmaBlobertStorage, AMMA_BLOBERT_NAMESPACE_HASH};
 }
 mod group;
