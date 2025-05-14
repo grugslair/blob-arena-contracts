@@ -14,14 +14,6 @@ const AMMA_ARCADE_GENERATED_STAGES: u32 = 9;
 
 #[dojo::model]
 #[derive(Serde, Drop)]
-struct AmmaArcadeOpponentGenStats {
-    #[key]
-    id: u32,
-    stats: UStats,
-}
-
-#[dojo::model]
-#[derive(Serde, Drop)]
 struct AmmaArcadeStageOpponent {
     #[key]
     attempt_id: felt252,
@@ -129,13 +121,6 @@ impl AmmaArcadeStorageImpl of AmmaArcadeStorage {
             .read_member(
                 Model::<AmmaArcadeStageOpponent>::ptr_from_keys((attempt_id, stage)),
                 selector!("opponent"),
-            )
-    }
-
-    fn get_amma_arcade_opponent_gen_stats(self: @WorldStorage, fighter: felt252) -> UStats {
-        self
-            .read_member(
-                Model::<AmmaArcadeOpponentGenStats>::ptr_from_keys(fighter), selector!("stats"),
             )
     }
 
