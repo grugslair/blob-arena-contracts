@@ -49,15 +49,15 @@
       ]
     },
     {
-      "name": "Balloon Bruiser",
+      "name": "Realm Lord",
       "collection": "blobert",
       "attributes": {
         "Seed": {
-          "background": 2,
-          "armour": 2,
-          "jewelry": 2,
-          "mask": 2,
-          "weapon": 2
+          "background": 9,
+          "armour": 10,
+          "jewelry": 6,
+          "mask": 20,
+          "weapon": 31
         }
       },
       "stats": {

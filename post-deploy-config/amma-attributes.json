@@ -925,9 +925,9 @@
                     "affect": {
                         "Stats": {
                             "strength": 30,
-                            "vitality": 30,
+                            "vitality": 0,
                             "dexterity": 0,
-                            "luck": 0
+                            "luck": 30
                         }
                     }
                 }
