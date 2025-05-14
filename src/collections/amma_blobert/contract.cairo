@@ -166,8 +166,8 @@ mod amma_blobert_actions {
             let fighter = self.fighters.read() + 1;
             let attack_ids = storage.create_or_get_attacks_external(attacks);
             self.fighters.write(fighter);
-            storage.fill_amma_fighter_attack_slots(fighter, attack_ids);
             storage.set_amma_fighter(fighter, name, stats, attack_ids.len());
+            storage.fill_amma_fighter_attack_slots(fighter, attack_ids);
             return_value(fighter)
         }
         fn update_fighter(
@@ -181,8 +181,8 @@ mod amma_blobert_actions {
             let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
             storage.assert_caller_has_permission(Role::AmmaBlobertAdmin);
             let attack_ids = storage.create_or_get_attacks_external(attacks);
-            storage.fill_amma_fighter_attack_slots(fighter, attack_ids);
             storage.set_amma_fighter(fighter, name, stats, attack_ids.len());
+            storage.fill_amma_fighter_attack_slots(fighter, attack_ids);
         }
         fn update_fighter_stats(ref self: ContractState, fighter: u32, stats: UStats) {
             let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
@@ -200,8 +200,8 @@ mod amma_blobert_actions {
             let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
             storage.assert_caller_has_permission(Role::AmmaBlobertAdmin);
             let attack_ids = storage.create_or_get_attacks_external(attacks);
-            storage.fill_amma_fighter_attack_slots(fighter, attack_ids);
             storage.set_amma_fighter_attacks(fighter, attack_ids.len());
+            storage.fill_amma_fighter_attack_slots(fighter, attack_ids);
         }
         fn update_fighter_name(ref self: ContractState, fighter: u32, name: ByteArray) {
             let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
