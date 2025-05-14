@@ -7,6 +7,12 @@
       "dexterity": 46,
       "luck": 45
     },
+    "generated_stats": {
+      "strength": 3,
+      "vitality": 1,
+      "dexterity": 2,
+      "luck": 4
+    },
     "attacks": [
       {
         "name": "Sword Slash",
@@ -119,6 +125,12 @@
       "dexterity": 42,
       "luck": 50
     },
+      "generated_stats": {
+        "strength": 3,
+        "vitality": 1,
+        "dexterity": 2,
+        "luck": 5
+    },
     "attacks": [
       {
         "tag": "Sword Slash"
@@ -209,6 +221,12 @@
       "vitality": 49,
       "dexterity": 56,
       "luck": 47
+    },
+      "generated_stats": {
+        "strength": 4,
+        "vitality": 3,
+        "dexterity": 1,
+        "luck": 1
     },
     "attacks": [
       {
@@ -308,6 +326,12 @@
       "dexterity": 44,
       "luck": 49
     },
+     "generated_stats": {
+        "strength": 3,
+        "vitality": 4,
+        "dexterity": 1,
+        "luck": 5
+    },
     "attacks": [
       {
         "tag": "Sword Slash"
@@ -395,6 +419,12 @@
       "dexterity": 33,
       "luck": 53
     },
+     "generated_stats": {
+        "strength": 4,
+        "vitality": 3,
+        "dexterity": 2,
+        "luck": 2
+    },
     "attacks": [
       {
         "name": "Axe Attack",
@@ -471,6 +501,12 @@
       "dexterity": 63,
       "luck": 42
     },
+     "generated_stats": {
+        "strength": 1,
+        "vitality": 3,
+        "dexterity": 5,
+        "luck": 2
+    },
     "attacks": [
       {
         "tag": "Sword Slash"
@@ -520,6 +556,12 @@
       "vitality": 66,
       "dexterity": 58,
       "luck": 68
+    },
+     "generated_stats": {
+        "strength": 3,
+        "vitality": 1,
+        "dexterity": 1,
+        "luck": 3
     },
     "attacks": [
       {
@@ -600,6 +642,12 @@
       "vitality": 58,
       "dexterity": 43,
       "luck": 48
+    },
+     "generated_stats": {
+        "strength": 4,
+        "vitality": 1,
+        "dexterity": 2,
+        "luck": 2
     },
     "attacks": [
       {
@@ -697,6 +745,12 @@
       "vitality": 42,
       "dexterity": 59,
       "luck": 47
+    },
+     "generated_stats": {
+        "strength": 3,
+        "vitality": 3,
+        "dexterity": 1,
+        "luck": 5
     },
     "attacks": [
       {
@@ -823,6 +877,12 @@
         "dexterity": 66,
         "luck": 48
     },
+     "generated_stats": {
+        "strength": 3,
+        "vitality": 2,
+        "dexterity": 5,
+        "luck": 4
+    },
     "attacks": [
         {
             "name": "Quick Slash",
@@ -910,6 +970,12 @@
         "dexterity": 43,
         "luck": 38
     },
+     "generated_stats": {
+        "strength": 2,
+        "vitality": 4,
+        "dexterity": 1,
+        "luck": 5
+    },
     "attacks": [
         {
             "tag": "Axe Attack"
@@ -984,6 +1050,12 @@
         "dexterity": 53,
         "luck": 58
     },
+     "generated_stats": {
+        "strength": 3,
+        "vitality": 1,
+        "dexterity": 4,
+        "luck": 3
+    },
     "attacks": [
         {
             "tag": "Quick Slash"
@@ -1055,6 +1127,12 @@
         "vitality": 46,
         "dexterity": 61,
         "luck": 63
+    },
+     "generated_stats": {
+        "strength": 1,
+        "vitality": 2,
+        "dexterity": 4,
+        "luck": 3
     },
     "attacks": [
         {
@@ -1153,6 +1231,12 @@
         "dexterity": 40,
         "luck": 35
     },
+     "generated_stats": {
+        "strength": 2,
+        "vitality": 5,
+        "dexterity": 2,
+        "luck": 3
+    },
     "attacks": [
         {
             "tag": "Sword Slash"
@@ -1230,6 +1314,12 @@
             "dexterity": 45,
             "luck": 42
         },
+        "generated_stats": {
+            "strength": 2,
+            "vitality": 4,
+            "dexterity": 1,
+            "luck": 4
+    },
         "attacks": [
             {
                 "tag": "Axe Attack"
