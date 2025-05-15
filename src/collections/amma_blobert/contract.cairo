@@ -84,7 +84,7 @@ mod amma_blobert_actions {
         BlobertItemKey,
     };
     use super::{IAmmaBlobert, IAmmaBlobertFighters};
-    const STARTER_TOKENS: [felt252; 2] = [1, 2];
+    const STARTER_TOKENS: [felt252; 2] = [4, 5];
 
     #[storage]
     struct Storage {
