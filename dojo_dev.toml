@@ -62,7 +62,6 @@ mappings = { blob_arena = [
     "ArcadeGame",
     "ArcadeStageGame",
     "ArcadeChallengeRespawn",
-    "ArcadeCurrentChallengeAttempt",
     "AttackUses",
 ], ba_permissions = [
     "Permission",
@@ -94,25 +93,33 @@ default = "blob_arena"
     "blob_arena-pvp_actions",
     "blob_arena-lobby_actions",
     "arcade-arcade_actions",
+    "arcade_amma-arcade_amma_actions",
 ]
 
 "blob_arena-AttackAvailable" = [
     "blob_arena-lobby_actions",
     "blob_arena-pvp_actions",
     "arcade-arcade_actions",
+    "arcade_amma-arcade_amma_actions",
 ]
 
 "blob_arena-CombatState" = [
     "blob_arena-pvp_actions",
     "blob_arena-lobby_actions",
     "arcade-arcade_actions",
+    "arcade_amma-arcade_amma_actions",
 ]
 
 "blob_arena-AttackLastUsed" = [
     "blob_arena-pvp_actions",
     "arcade-arcade_actions",
+    "arcade_amma-arcade_amma_actions",
 ]
-"blob_arena-RoundResult" = ["blob_arena-pvp_actions", "arcade-arcade_actions"]
+"blob_arena-RoundResult" = [
+    "blob_arena-pvp_actions",
+    "arcade-arcade_actions",
+    "arcade_amma-arcade_amma_actions",
+]
 
 "blob_arena-Commitment" = ["blob_arena-pvp_actions"]
 "blob_arena-LastTimestamp" = ["blob_arena-pvp_actions"]
@@ -139,6 +146,10 @@ default = "blob_arena"
     "free_blobert-free_blobert_actions",
     "amma_blobert-amma_blobert_actions",
 ]
+
+"arcade-ArcadeFreeGames" = ["arcade_amma-arcade_amma_actions"]
+"arcade-ArcadePaidGames" = ["arcade_amma-arcade_amma_actions"]
+"arcade-ArcadeCurrentChallengeAttempt" = ["arcade_amma-arcade_amma_actions"]
 
 "ba_permissions-Permission" = ["blob_arena-game_actions"]
 

@@ -1,7 +1,12 @@
-import { loadAccountManifestFromCmdArgs, newAccount } from "../stark-utils.js";
+import {
+  loadAccountManifestFromCmdArgs,
+  newAccount,
+  callOptions,
+} from "../stark-utils.js";
 import {
   freeBlobertContractTag,
   adminContractTag,
+  arcadeAmmaContractTag,
   arcadeContractTag,
   ammaBlobertContractTag,
 } from "../contract-defs.js";
@@ -13,6 +18,7 @@ import {
   mintPaidArcadeGames,
   runArcadeChallengeGames,
   startArcadeChallenges,
+  runArcadeChallengeNextRounds,
 } from "./arcade.js";
 import { Attacks, getAttacks, makeAttack } from "./attacks.js";
 import { DojoParser } from "../dojo.js";
@@ -27,27 +33,43 @@ import { ammaFighterIds, mintAmmaTokensWithAttacks } from "./amma-blobert.js";
 const accountClassHash =
   "0x07489e371db016fcd31b78e49ccd201b93f4eab60af28b862390e800ec9096e2";
 
+const generateBoss = async (caller, challenge) => {
+  console.log("Generating boss");
+  const calls = [
+    challenge.signer.getOutsideTransaction(
+      callOptions(caller.address),
+      challenge.contract.populate("generate_boss", {
+        attempt_id: challenge.attemptId,
+      })
+    ),
+  ];
+  const { transaction_hash } = await caller.executeFromOutside(
+    await Promise.all(calls),
+    {
+      version: 3,
+    }
+  );
+  challenge.bossGenerated = true;
+};
+
 const main = async () => {
   const account_manifest = await loadAccountManifestFromCmdArgs();
   const caller = account_manifest.account;
   const ammaContract = await account_manifest.getContract(
     ammaBlobertContractTag
   );
-  const arcadeContract = await account_manifest.getContract(arcadeContractTag);
+  const arcadeContract = await account_manifest.getContract(
+    arcadeAmmaContractTag
+  );
+  const arcadeAdminContract = await account_manifest.getContract(
+    arcadeContractTag
+  );
   const gameContract = await account_manifest.getContract(adminContractTag);
   const worldContract = await account_manifest.getWorldContract();
   const signer = await newAccount(caller, accountClassHash);
-  const classicChallengeId = await arcadeContract.challenge_id_from_tag(
-    "AMMA Season 0"
-  );
-  [];
-  await mintPaidArcadeGames(caller, arcadeContract, signer.address, 1000);
-  const tokens = await mintAmmaTokensWithAttacks(
-    caller,
-    signer,
-    ammaContract,
-    ammaFighterIds
-  );
+  const classicChallengeId = BigInt(0);
+  await mintPaidArcadeGames(caller, arcadeAdminContract, signer.address, 1000);
+  const tokens = await mintAmmaTokensWithAttacks(caller, signer, ammaContract);
   let attackIds = new Set();
   tokens.forEach((token) =>
     token.attacks.forEach((attack) => attackIds.add(attack.id))
@@ -77,15 +99,24 @@ const main = async () => {
     const transaction_hash = await runArcadeChallengeGames(caller, challenges);
     for (const challenge of challenges) {
       console.log(
-        `${challenge.status} Stage: ${challenge.stage} Round: ${
-          challenge.currentGame.round
-        } Respawns: ${challenge.respawns} attack: ${
-          allAttacks.attacks[challenge.lastAttack].name
-        }`
+        `${challenge.status} Stage: ${challenge.stage} Opponent: ${
+          challenge.currentGame.opponentToken
+        } Round: ${challenge.currentGame.round} Respawns: ${
+          challenge.respawns
+        } attack: ${allAttacks.attacks[challenge.lastAttack].name}`
       );
+      if (
+        challenge.stage === 9 &&
+        challenge.currentGame.phase == "PlayerWon" &&
+        !challenge.bossGenerated
+      ) {
+        await generateBoss(caller, challenge);
+      }
     }
+    await runArcadeChallengeNextRounds(caller, challenges);
     rounds.push(getRoundResults(caller, dojoParser, transaction_hash));
   }
+  console.log("Challenges finished");
   const games = Object.fromEntries(
     challenges
       .flatMap((c) => Object.values(c.games).flat())

@@ -102,6 +102,7 @@ export class ChallengeAttempt {
       round: BigInt(0),
       rounds: [],
       phase: "Active",
+      opponentToken: game.opponent_token,
     };
   }
 
@@ -121,20 +122,10 @@ export class ChallengeAttempt {
   }
 }
 
-export const runArcadeChallengeGames = async (caller, challenges) => {
+export const runArcadeChallengeNextRounds = async (caller, challenges) => {
   const activeChallenges = challenges.filter(
     (challenge) => challenge.status === "Active"
   );
-  const attackCalls = activeChallenges.map((challenge) => {
-    return challenge.attackCall(caller);
-  });
-  const { transaction_hash: roundsTxHash } = await caller.executeFromOutside(
-    await Promise.all(attackCalls),
-    { version: 3 }
-  );
-
-  await Promise.all(activeChallenges.map((c) => c.updateGamePhase()));
-
   let nextCalls = [];
   let wonGameChallenges = [];
   for (const challenge of activeChallenges.filter(
@@ -152,7 +143,7 @@ export const runArcadeChallengeGames = async (caller, challenges) => {
   for (const challenge of activeChallenges.filter(
     (c) => c.currentGame.phase === "PlayerLost"
   )) {
-    if (challenge.respawns < 3) {
+    if (challenge.respawns < 2) {
       nextCalls.push(challenge.respawnCall(caller));
       lostGameChallenges.push(challenge);
     } else {
@@ -178,6 +169,21 @@ export const runArcadeChallengeGames = async (caller, challenges) => {
   );
   await Promise.all([newGames, respawnedGames]);
   console.log("------------------------------------------------------------");
+};
+
+export const runArcadeChallengeGames = async (caller, challenges) => {
+  const activeChallenges = challenges.filter(
+    (challenge) => challenge.status === "Active"
+  );
+  const attackCalls = activeChallenges.map((challenge) => {
+    return challenge.attackCall(caller);
+  });
+  const { transaction_hash: roundsTxHash } = await caller.executeFromOutside(
+    await Promise.all(attackCalls),
+    { version: 3 }
+  );
+
+  await Promise.all(activeChallenges.map((c) => c.updateGamePhase()));
   return roundsTxHash;
 };
 

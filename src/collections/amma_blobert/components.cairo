@@ -80,10 +80,15 @@ impl AmmaBlobertStorageImpl of AmmaBlobertStorage {
     }
 
     fn set_amma_fighter(
-        ref self: WorldStorage, fighter: u32, name: ByteArray, stats: UStats, attacks: u32,
+        ref self: WorldStorage,
+        fighter: u32,
+        name: ByteArray,
+        stats: UStats,
+        generated_stats: UStats,
+        attacks: u32,
     ) {
         self.emit_event(@AmmaFighterName { fighter, name });
-        self.write_model(@AmmaFighter { id: fighter, stats, generated_stats: stats, attacks })
+        self.write_model(@AmmaFighter { id: fighter, stats, generated_stats, attacks })
     }
 
     fn set_amma_fighter_stats(ref self: WorldStorage, fighter: u32, stats: UStats) {

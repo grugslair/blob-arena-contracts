@@ -7,10 +7,12 @@ import { CairoCustomEnum } from "starknet";
 import {
   arcadeOpponentEntrypoint,
   arcadeChallengeEntrypoint,
+  setCollectionAddressEntrypoint,
   arcadeContractTag,
   blobertContractTag,
   freeBlobertContractTag,
   ammaBlobertContractTag,
+  arcadeAmmaContractTag,
 } from "./contract-defs.js";
 
 import { makeAttacksStruct } from "./update-attributes.js";
@@ -106,6 +108,21 @@ export const makeArcadeChallengeCalls = async (account_manifest, data) => {
   return calls;
 };
 
+export const setAmmaCollectionAddress = async (account_manifest) => {
+  const collectionAddress = account_manifest.getContractAddress(
+    ammaBlobertContractTag
+  );
+  const contract = await account_manifest.getContract(arcadeAmmaContractTag);
+  return [
+    [
+      contract.populate(setCollectionAddressEntrypoint, {
+        collection_address: collectionAddress,
+      }),
+      { description: `set amma collection address` },
+    ],
+  ];
+};
+
 const main = async () => {
   const account_manifest = await loadAccountManifestFromCmdArgs();
   let arcade_data = loadJson("../post-deploy-config/arcade.json");
@@ -118,6 +135,7 @@ const main = async () => {
       account_manifest,
       arcade_data.challenges
     )),
+    ...(await setAmmaCollectionAddress(account_manifest)),
   ];
   const [calls, descriptions] = splitCallDescriptions(calls_metas);
   console.log(descriptions);

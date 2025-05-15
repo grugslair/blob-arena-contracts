@@ -20,6 +20,7 @@ enum BlobertItemKey {
     Custom: felt252,
 }
 
+
 #[derive(Copy, Drop, Serde, PartialEq, Introspect)]
 enum TokenAttributes {
     // regular tokens are identified by seed

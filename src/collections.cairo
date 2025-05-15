@@ -7,6 +7,7 @@ mod amma_blobert {
     mod contract;
     mod components;
     mod systems;
+    use contract::get_amount_of_fighters;
     use systems::AmmaBlobertTrait;
     use components::{AmmaBlobertStorage, AMMA_BLOBERT_NAMESPACE_HASH};
 }

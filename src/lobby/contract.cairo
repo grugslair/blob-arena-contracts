@@ -101,7 +101,6 @@ mod lobby_actions {
     use crate::combat::{CombatTrait, CombatStorage};
     use crate::pvp::GameStorage;
     use crate::combatants::{CombatantTrait, CombatantStorage};
-    use crate::utils::get_transaction_hash;
     use crate::world::{uuid, default_namespace};
     use crate::starknet::return_value;
     use crate::erc721::erc721_owner_of;

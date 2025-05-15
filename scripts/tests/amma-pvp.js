@@ -69,34 +69,35 @@ const main = async () => {
         round: 1,
         winner: null,
         rounds: [],
-        combatant1: {
-          fighter: i + 1,
-          token: token1,
-          token_id: token1.id,
-          attacks: indexes1.map((index) =>
-            makeAttack(token1.attacks[index], attacks)
-          ),
-          stats: token1.stats,
-          health: token1.stats.vitality + BigInt(100),
-          stun_chance: BigInt(0),
-        },
-        combatant2: {
-          fighter: j + 1,
-          token: token2,
-          token_id: token2.id,
-          attacks: indexes2.map((index) =>
-            makeAttack(token2.attacks[index], attacks)
-          ),
-          stats: token2.stats,
-          health: token2.stats.vitality + BigInt(100),
-          stun_chance: BigInt(0),
-        },
+        combatants: [
+          {
+            fighter: i + 1,
+            token: token1,
+            token_id: token1.id,
+            attacks: indexes1.map((index) =>
+              makeAttack(token1.attacks[index], attacks)
+            ),
+            stats: token1.stats,
+            health: token1.stats.vitality + BigInt(100),
+            stun_chance: BigInt(0),
+          },
+          {
+            fighter: j + 1,
+            token: token2,
+            token_id: token2.id,
+            attacks: indexes2.map((index) =>
+              makeAttack(token2.attacks[index], attacks)
+            ),
+            stats: token2.stats,
+            health: token2.stats.vitality + BigInt(100),
+            stun_chance: BigInt(0),
+          },
+        ],
       });
     }
   }
-
   await makeLobbies(lobbyContract, gameContract, account, games);
-  games.forEach(({ combatant1, combatant2 }) => {
+  games.forEach(({ combatants: [combatant1, combatant2] }) => {
     combatants[combatant1.id] = combatant1;
     combatants[combatant2.id] = combatant2;
   });
@@ -114,10 +115,10 @@ const main = async () => {
   for (const game of games) {
     printRoundResults(game);
     let winningFighter = 0;
-    if (game.winner === game.combatant1.id) {
-      winningFighter = game.combatant1.fighter;
-    } else if (game.winner === game.combatant2.id) {
-      winningFighter = game.combatant2.fighter;
+    if (game.winner === game.combatants[0].id) {
+      winningFighter = game.combatants[0].fighter;
+    } else if (game.winner === game.combatants[1].id) {
+      winningFighter = game.combatants[1].fighter;
     }
     wins[winningFighter]++;
   }

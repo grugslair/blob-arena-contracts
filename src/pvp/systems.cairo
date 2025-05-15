@@ -11,7 +11,6 @@ use crate::combat::{
     CombatTrait, Phase, CombatState, CombatStorage, CombatProgress, components::PhaseTrait,
 };
 use crate::commitments::Commitment;
-use crate::utils::get_transaction_hash;
 use crate::combatants::{CombatantTrait, CombatantInfo, CombatantStorage, CombatantState};
 use crate::hash::{in_order, array_to_hash_state};
 use crate::attacks::{

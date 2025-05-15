@@ -12,6 +12,8 @@ import {
   customEntrypoint,
   blobertContractTag,
   ammaBlobertContractTag,
+  setFighterEntrypoint,
+  setAmountOfFightersEntrypoint,
 } from "./contract-defs.js";
 import { pascalCase } from "pascal-case";
 
@@ -66,6 +68,16 @@ const makeCustomItemCallData = (n, item) => {
     name: item.name,
     stats: item.stats,
     attacks: makeAttacksStruct(item.attacks),
+  };
+};
+
+const makeAmmaFighterCallData = (n, fighter) => {
+  return {
+    fighter: Number(n),
+    name: fighter.name,
+    stats: fighter.stats,
+    generated_stats: fighter.generated_stats,
+    attacks: makeAttacksStruct(fighter.attacks),
   };
 };
 
@@ -168,17 +180,23 @@ export const makeClassicBlobertCustomCalls = async (account_manifest) => {
   return calls;
 };
 
-export const makeAmmaBlobertCustomCalls = async (account_manifest) => {
+export const makeAmmaBlobertCalls = async (account_manifest) => {
   const amma_data = loadJson("../post-deploy-config/amma-attributes.json");
   let contract = await account_manifest.getContract(ammaBlobertContractTag);
 
   let calls = [];
   for (const [n, item] of Object.entries(amma_data)) {
     calls.push([
-      contract.populate(customEntrypoint, makeCustomItemCallData(n, item)),
+      contract.populate(setFighterEntrypoint, makeAmmaFighterCallData(n, item)),
       { description: `amma: ${n} ${item.name}` },
     ]);
   }
+  calls.push([
+    contract.populate(setAmountOfFightersEntrypoint, {
+      amount: Object.keys(amma_data).length,
+    }),
+    { description: `amma: set_amount_of_fighters` },
+  ]);
   return calls;
 };
 
@@ -188,7 +206,7 @@ const main = async () => {
   const calls_metas = [
     ...(await makeClassicBlobertSeedCalls(account_manifest)),
     ...(await makeClassicBlobertCustomCalls(account_manifest)),
-    ...(await makeAmmaBlobertCustomCalls(account_manifest)),
+    ...(await makeAmmaBlobertCalls(account_manifest)),
   ];
   for (const calls_metas_batch of batchCalls(calls_metas, 70)) {
     const [calls, descriptions] = splitCallDescriptions(calls_metas_batch);

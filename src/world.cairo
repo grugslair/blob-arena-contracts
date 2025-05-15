@@ -17,7 +17,7 @@ use dojo::contract::components::world_provider::world_provider_cpt::{
     WorldProvider, HasComponent as WorldComponent,
 };
 
-use blob_arena::{utils::{storage_read, storage_write}, hash::hash_value};
+use blob_arena::{utils::{storage_read, storage_write, get_transaction_hash}, hash::hash_value};
 const DEFAULT_NAMESPACE_HASH: felt252 = bytearray_hash!("blob_arena");
 
 fn uuid() -> felt252 {
@@ -32,6 +32,10 @@ fn incrementor(key: felt252) -> felt252 {
     let value = storage_read(storage_address) + 1;
     storage_write(storage_address, value);
     value
+}
+
+fn pseudo_randomness() -> felt252 {
+    poseidon_hash_span([incrementor(selector!("randomness")), get_transaction_hash()].span())
 }
 
 const WORLD_STORAGE_LOCATION: felt252 =

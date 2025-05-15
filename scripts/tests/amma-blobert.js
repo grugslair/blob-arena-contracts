@@ -1,5 +1,10 @@
-import { getReturns, dataToUint256, callOptions } from "../stark-utils.js";
-import { mintEntrypoint } from "../contract-defs.js";
+import {
+  getReturns,
+  getReturn,
+  dataToUint256,
+  callOptions,
+} from "../stark-utils.js";
+import { ammaMintFreeEntrypoint, mintEntrypoint } from "../contract-defs.js";
 import { cairo } from "starknet";
 
 export const ammaFighterIds = [
@@ -27,18 +32,13 @@ export const mintAmmaToken = async (caller, account, contract, fighterId) => {
   return dataToUint256((await getReturns(caller, transaction_hash))[0].data);
 };
 
-export const mintAmmaTokens = async (caller, signer, contract, fighterIds) => {
-  let calls = [];
-  for (const fighterId of fighterIds) {
-    calls.push(
-      signer.getOutsideTransaction(
-        callOptions(caller.address),
-        contract.populate(mintEntrypoint, {
-          fighter: fighterId,
-        })
-      )
-    );
-  }
+export const mintAmmaTokens = async (caller, signer, contract) => {
+  let calls = [
+    signer.getOutsideTransaction(
+      callOptions(caller.address),
+      contract.populate(ammaMintFreeEntrypoint, {})
+    ),
+  ];
 
   const { transaction_hash } = await caller.executeFromOutside(
     await Promise.all(calls),
@@ -46,8 +46,11 @@ export const mintAmmaTokens = async (caller, signer, contract, fighterIds) => {
       version: 3,
     }
   );
-  const returns = await getReturns(caller, transaction_hash);
-  return returns.map((r) => dataToUint256(r.data));
+  const returns = await getReturn(caller, transaction_hash);
+  return [
+    dataToUint256(returns.slice(1, 3)),
+    dataToUint256(returns.slice(3, 5)),
+  ];
 };
 
 const getAmmaAttacks = async (contract, tokenId) => {
@@ -75,13 +78,8 @@ export const mintAmmaTokenWithAttacks = async (
   };
 };
 
-export const mintAmmaTokensWithAttacks = async (
-  caller,
-  signer,
-  contract,
-  fighterIds
-) => {
-  const tokenIds = await mintAmmaTokens(caller, signer, contract, fighterIds);
+export const mintAmmaTokensWithAttacks = async (caller, signer, contract) => {
+  const tokenIds = await mintAmmaTokens(caller, signer, contract);
   const [attacks, stats] = await Promise.all([
     Promise.all(tokenIds.map((tokenId) => getAmmaAttacks(contract, tokenId))),
     Promise.all(tokenIds.map((tokenId) => contract.get_stats(tokenId))),

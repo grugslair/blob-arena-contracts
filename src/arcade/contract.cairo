@@ -258,12 +258,11 @@ mod arcade_actions {
     };
     use crate::attacks::{AttackInput, AttackTrait};
     use crate::permissions::{Permissions, Role};
-    use crate::world::WorldTrait;
+    use crate::world::{WorldTrait, pseudo_randomness};
     use crate::combat::CombatProgress;
     use crate::stats::UStats;
     use crate::collections::TokenAttributes;
     use crate::tags::{IdTagNew, Tag};
-    use crate::utils::get_transaction_hash;
     use crate::erc721::erc721_owner_of;
     use crate::starknet::return_value;
 
@@ -287,7 +286,7 @@ mod arcade_actions {
             let mut store = self.get_storage();
             let game = store.arcade.get_arcade_game(game_id);
             assert(game.player == get_caller_address(), 'Not player');
-            let randomness = get_transaction_hash(); //TODO: Use real randomness
+            let randomness = pseudo_randomness(); //TODO: Use real randomness
             let opponent_attacks = store.arcade.get_arcade_opponent_attacks(game.opponent_token);
             store.run_arcade_round(game, attack_id, opponent_attacks, randomness);
         }

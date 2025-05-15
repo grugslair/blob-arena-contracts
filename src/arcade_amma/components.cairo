@@ -9,7 +9,7 @@ use crate::arcade::{ArcadePhase, ArcadeGame, ArcadeStorage};
 use crate::arcade::components::{ARCADE_CHALLENGE_TIME_LIMIT, end_phase, ArcadeAttemptGetGame};
 use crate::world::WorldTrait;
 
-const AMMA_ARCADE_NAMESPACE_HASH: felt252 = bytearray_hash!("arcade-amma");
+const AMMA_ARCADE_NAMESPACE_HASH: felt252 = bytearray_hash!("arcade_amma");
 const AMMA_ARCADE_GENERATED_STAGES: u32 = 9;
 
 #[dojo::model]

@@ -155,9 +155,10 @@ trait IAmmaArcadeAdmin<TContractState> {
 
 #[dojo::contract]
 mod arcade_amma_actions {
+    use core::poseidon::poseidon_hash_span;
     use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
     use dojo::world::WorldStorage;
-    use crate::collections::amma_blobert::AmmaBlobertStorage;
+    use crate::collections::amma_blobert::{AmmaBlobertStorage, get_amount_of_fighters};
     use crate::arcade::{
         ArcadeTrait, ArcadeStorage, ArcadeStore, ArcadeOpponentInput, ArcadeChallengeAttempt,
         ArcadeGame, ArcadePhase, CHALLENGE_TAG_GROUP, ArcadeOpponent,
@@ -168,12 +169,12 @@ mod arcade_amma_actions {
     };
     use crate::attacks::{AttackInput, AttackTrait};
     use crate::permissions::{Permissions, Role};
-    use crate::world::WorldTrait;
+    use crate::world::{WorldTrait, pseudo_randomness};
     use crate::combat::CombatProgress;
     use crate::stats::UStats;
     use crate::collections::TokenAttributes;
     use crate::tags::{IdTagNew, Tag};
-    use crate::utils::{get_transaction_hash, SeedProbability};
+    use crate::utils::SeedProbability;
     use crate::erc721::erc721_owner_of;
     use crate::starknet::return_value;
     use crate::hash::felt252_to_u128;
@@ -206,7 +207,7 @@ mod arcade_amma_actions {
             let mut store = self.get_storage();
             let game = store.arcade.get_arcade_game(game_id);
             assert(game.player == get_caller_address(), 'Not player');
-            let randomness = get_transaction_hash(); //TODO: Use real randomness
+            let randomness = pseudo_randomness(); //TODO: Use real randomness
             let opponent_attacks = store.arcade.get_amma_fighter_attacks(game.opponent_token);
 
             store.run_arcade_round(game, attack_id, opponent_attacks, randomness);
@@ -217,7 +218,7 @@ mod arcade_amma_actions {
             let mut store = self.get_storage();
             let caller = get_caller_address();
             let collection_address = self.collection_address.read();
-            let randomness = get_transaction_hash();
+            let randomness = pseudo_randomness();
             assert(erc721_owner_of(collection_address, token_id) == caller, 'Not owner');
             assert(
                 store
@@ -230,12 +231,7 @@ mod arcade_amma_actions {
             return_value(
                 store
                     .new_amma_arcade_challenge_attempt(
-                        randomness,
-                        caller,
-                        collection_address,
-                        token_id,
-                        attacks,
-                        self.fighters.read(),
+                        randomness, caller, collection_address, token_id, attacks,
                     ),
             )
         }
@@ -259,10 +255,10 @@ mod arcade_amma_actions {
                 store.get_amma_round_opponent(attempt_id, AMMA_ARCADE_GENERATED_STAGES).is_zero(),
                 'Already generated',
             );
+            let fighters: u128 = get_amount_of_fighters(self.collection_address.read()).into();
             assert(get_caller_address() == player_stage.player, 'Not player');
             assert(player_stage.stage == AMMA_ARCADE_GENERATED_STAGES - 1, 'Not last stage');
-            let mut randomness = felt252_to_u128(get_transaction_hash());
-            let fighters: u128 = self.fighters.read().into();
+            let mut randomness = felt252_to_u128(pseudo_randomness());
             let fighter = 1 + randomness.get_value(fighters.try_into().unwrap());
             store.set_amma_round_opponent(attempt_id, 9, fighter.try_into().unwrap());
         }

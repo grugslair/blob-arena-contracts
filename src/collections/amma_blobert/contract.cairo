@@ -21,7 +21,7 @@ use crate::stats::UStats;
 
 #[starknet::interface]
 trait IAmmaBlobert<TContractState> {
-    fn mint_free(ref self: TContractState, fighter: u32) -> Array<u256>;
+    fn mint_free(ref self: TContractState) -> Array<u256>;
     fn mint_arcade_unlock(ref self: TContractState, attempt_id: felt252) -> u256;
     // fn get_fighter_attacks(self: @TContractState, fighter: felt252);
 }
@@ -32,26 +32,31 @@ trait IAmmaBlobertFighters<TContractState> {
         ref self: TContractState,
         name: ByteArray,
         stats: UStats,
-        gen_stats: UStats,
+        generated_stats: UStats,
         attacks: Array<IdTagNew<AttackInput>>,
     ) -> u32;
-    fn update_fighter(
+    fn set_fighter(
         ref self: TContractState,
         fighter: u32,
         name: ByteArray,
         stats: UStats,
-        gen_stats: UStats,
+        generated_stats: UStats,
         attacks: Array<IdTagNew<AttackInput>>,
     );
-    fn update_fighter_stats(ref self: TContractState, fighter: u32, stats: UStats);
-    fn update_fighter_gen_stats(ref self: TContractState, fighter: u32, stats: UStats);
-    fn update_fighter_attacks(
+    fn set_fighter_stats(ref self: TContractState, fighter: u32, stats: UStats);
+    fn set_fighter_generated_stats(ref self: TContractState, fighter: u32, stats: UStats);
+    fn set_fighter_attacks(
         ref self: TContractState, fighter: u32, attacks: Array<IdTagNew<AttackInput>>,
     );
-    fn update_fighter_name(ref self: TContractState, fighter: u32, name: ByteArray);
-    fn number_of_fighters(ref self: TContractState) -> u32;
+    fn set_fighter_name(ref self: TContractState, fighter: u32, name: ByteArray);
+    fn amount_of_fighters(self: @TContractState) -> u32;
+    fn set_amount_of_fighters(ref self: TContractState, amount: u32);
 }
 
+
+fn get_amount_of_fighters(contract_address: ContractAddress) -> u32 {
+    IAmmaBlobertFightersDispatcher { contract_address }.amount_of_fighters()
+}
 
 #[dojo::contract]
 mod amma_blobert_actions {
@@ -79,7 +84,7 @@ mod amma_blobert_actions {
         BlobertItemKey,
     };
     use super::{IAmmaBlobert, IAmmaBlobertFighters};
-    const STARTER_TOKENS: [felt252; 2] = [0, 1];
+    const STARTER_TOKENS: [felt252; 2] = [1, 2];
 
     #[storage]
     struct Storage {
@@ -123,7 +128,7 @@ mod amma_blobert_actions {
 
     #[abi(embed_v0)]
     impl IAmmaBlobertImpl of IAmmaBlobert<ContractState> {
-        fn mint_free(ref self: ContractState, fighter: u32) -> Array<u256> {
+        fn mint_free(ref self: ContractState) -> Array<u256> {
             let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
             let owner = get_caller_address();
             storage.assert_and_set_first_token_minted(owner);
@@ -158,7 +163,7 @@ mod amma_blobert_actions {
             ref self: ContractState,
             name: ByteArray,
             stats: UStats,
-            gen_stats: UStats,
+            generated_stats: UStats,
             attacks: Array<IdTagNew<AttackInput>>,
         ) -> u32 {
             let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
@@ -166,35 +171,35 @@ mod amma_blobert_actions {
             let fighter = self.fighters.read() + 1;
             let attack_ids = storage.create_or_get_attacks_external(attacks);
             self.fighters.write(fighter);
-            storage.set_amma_fighter(fighter, name, stats, attack_ids.len());
+            storage.set_amma_fighter(fighter, name, stats, generated_stats, attack_ids.len());
             storage.fill_amma_fighter_attack_slots(fighter, attack_ids);
             return_value(fighter)
         }
-        fn update_fighter(
+        fn set_fighter(
             ref self: ContractState,
             fighter: u32,
             name: ByteArray,
             stats: UStats,
-            gen_stats: UStats,
+            generated_stats: UStats,
             attacks: Array<IdTagNew<AttackInput>>,
         ) {
             let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
             storage.assert_caller_has_permission(Role::AmmaBlobertAdmin);
             let attack_ids = storage.create_or_get_attacks_external(attacks);
-            storage.set_amma_fighter(fighter, name, stats, attack_ids.len());
+            storage.set_amma_fighter(fighter, name, stats, generated_stats, attack_ids.len());
             storage.fill_amma_fighter_attack_slots(fighter, attack_ids);
         }
-        fn update_fighter_stats(ref self: ContractState, fighter: u32, stats: UStats) {
+        fn set_fighter_stats(ref self: ContractState, fighter: u32, stats: UStats) {
             let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
             storage.assert_caller_has_permission(Role::AmmaBlobertAdmin);
             storage.set_amma_fighter_stats(fighter, stats);
         }
-        fn update_fighter_gen_stats(ref self: ContractState, fighter: u32, stats: UStats) {
+        fn set_fighter_generated_stats(ref self: ContractState, fighter: u32, stats: UStats) {
             let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
             storage.assert_caller_has_permission(Role::AmmaBlobertAdmin);
             storage.set_amma_fighter_generated_stats(fighter, stats);
         }
-        fn update_fighter_attacks(
+        fn set_fighter_attacks(
             ref self: ContractState, fighter: u32, attacks: Array<IdTagNew<AttackInput>>,
         ) {
             let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
@@ -203,15 +208,20 @@ mod amma_blobert_actions {
             storage.set_amma_fighter_attacks(fighter, attack_ids.len());
             storage.fill_amma_fighter_attack_slots(fighter, attack_ids);
         }
-        fn update_fighter_name(ref self: ContractState, fighter: u32, name: ByteArray) {
+        fn set_fighter_name(ref self: ContractState, fighter: u32, name: ByteArray) {
             let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
             storage.assert_caller_has_permission(Role::AmmaBlobertAdmin);
             storage.set_amma_fighter_name(fighter, name);
         }
 
-
-        fn number_of_fighters(ref self: ContractState) -> u32 {
+        fn amount_of_fighters(self: @ContractState) -> u32 {
             self.fighters.read()
+        }
+
+        fn set_amount_of_fighters(ref self: ContractState, amount: u32) {
+            let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
+            storage.assert_caller_has_permission(Role::AmmaBlobertAdmin);
+            self.fighters.write(amount);
         }
     }
 }

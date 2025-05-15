@@ -146,6 +146,7 @@ export const makeLobbies = async (
   games
 ) => {
   let calls = [];
+
   for (const {
     combatants: [combatant, _],
     accounts: [account1, account2],
