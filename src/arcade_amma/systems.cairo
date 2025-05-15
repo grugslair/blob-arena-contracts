@@ -218,9 +218,5 @@ impl AmmaArcadeImpl of AmmaArcadeTrait {
             }
         }
     }
-
-    fn get_amma_opponent_stats(self: @WorldStorage, opponent_id: felt252) -> UStats {
-        self.get
-    }
 }
 
