@@ -12,6 +12,12 @@ use crate::world::WorldTrait;
 const AMMA_ARCADE_NAMESPACE_HASH: felt252 = bytearray_hash!("arcade_amma");
 const AMMA_ARCADE_GENERATED_STAGES: u32 = 9;
 
+/// Represents an opponent in a specific stage of the AMMA Arcade game
+///
+/// # Arguments
+/// * `attempt_id` - Unique identifier for an attempt at the AMMA Arcade
+/// * `stage` - The stage number within the arcade
+/// * `opponent` - The opponent ID to face in this stage
 #[dojo::model]
 #[derive(Serde, Drop)]
 struct AmmaArcadeStageOpponent {
@@ -34,9 +40,7 @@ struct PlayerStage {
 ///
 /// # Fields
 /// * `id` - Unique identifier for this challenge attempt
-/// * `challenge` - The identifier of the Arcade challenge being attempted
 /// * `player` - The player's contract address
-/// * `collection` - The contract address of the NFT collection
 /// * `token_id` - The token ID of the NFT being used
 /// * `stats` - The current stats of the player during this attempt
 /// * `attacks` - Array of attack moves performed by the player

@@ -9,6 +9,12 @@ use super::super::{BlobertItemKey, TokenAttributes};
 use super::super::world_blobert::WorldBlobertStorage;
 const AMMA_BLOBERT_NAMESPACE_HASH: felt252 = bytearray_hash!("amma_blobert");
 
+/// Tracks if a player has minted their first token in the Amma Blobert collection.
+///
+/// # Fields
+/// * `player` - The contract address of the player.
+/// * `minted` - A boolean indicating whether the player has minted their first token (true) or not
+/// (false).
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct FirstTokenMinted {
@@ -17,6 +23,12 @@ struct FirstTokenMinted {
     minted: bool,
 }
 
+/// Tracks if a specific arcade attempt has resulted in a token mint.
+///
+/// # Fields
+/// * `attempt_id` - The unique identifier of the arcade challenge attempt.
+/// * `minted` - A boolean indicating whether this attempt has resulted in a token mint (true) or
+/// not (false).
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct ArcadeAttemptMinted {
@@ -25,6 +37,14 @@ struct ArcadeAttemptMinted {
     minted: bool,
 }
 
+/// Represents a fighter character within the Amma Blobert collection.
+///
+/// # Fields
+/// * `id` - The unique identifier for the Amma Fighter.
+/// * `stats` - The base statistics of the fighter.
+/// * `generated_stats` - The dynamically generated statistics for an instance of this fighter
+/// (e.g., in an arcade).
+/// * `attacks` - The number of attacks or attack slots available to this fighter.
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct AmmaFighter {
@@ -35,6 +55,11 @@ struct AmmaFighter {
     attacks: u32,
 }
 
+/// Event emitted when the name of an Amma Fighter is set or updated.
+///
+/// # Fields
+/// * `fighter` - The unique identifier of the Amma Fighter whose name is being set.
+/// * `name` - The new name assigned to the fighter.
 #[dojo::event]
 #[derive(Serde, Drop)]
 struct AmmaFighterName {

@@ -36,8 +36,9 @@ trait IAmmaArcade<TContractState> {
     /// - CombatantToken
     /// - CombatantState
     /// - ArcadeGame
-    /// - ArcadeChallengeAttempt
+    /// - AmmaArcadeChallengeAttempt
     /// - ArcadeStageGame
+    /// - AmmaArcadeStageOpponent
     fn start_challenge(
         ref self: TContractState, token_id: u256, attacks: Array<(felt252, felt252)>,
     ) -> (felt252, felt252);
@@ -50,7 +51,7 @@ trait IAmmaArcade<TContractState> {
     /// - AttackAvailable
     /// - CombatantState
     /// - ArcadeGame
-    /// - ArcadeChallengeAttempt
+    /// - AmmaArcadeChallengeAttempt
     /// - ArcadeStageGame
     fn next_challenge_round(ref self: TContractState, attempt_id: felt252) -> felt252;
 
@@ -64,7 +65,7 @@ trait IAmmaArcade<TContractState> {
     /// - AttackAvailable
     /// - CombatantState
     /// - ArcadeGame
-    /// - ArcadeChallengeAttempt
+    /// - AmmaArcadeChallengeAttempt
     /// - ArcadeStageGame
     ///
     /// Events:
@@ -76,8 +77,8 @@ trait IAmmaArcade<TContractState> {
     /// * `attempt_id` - The unique identifier of the challenge attempt to end
     ///
     /// Models:
-    /// - ArcadeChallengeAttempt
-    /// - ArcadeStageGame
+    /// - AmmaArcadeChallengeAttempt
+    /// - ArcadeGame
     fn end_challenge(ref self: TContractState, attempt_id: felt252);
 
     /// Generates a boss for the current challenge attempt.
@@ -85,7 +86,7 @@ trait IAmmaArcade<TContractState> {
     /// * `attempt_id` - The unique identifier of the challenge attempt
     ///
     /// Models:
-    /// - AmmaArcadeOpponent
+    /// - AmmaArcadeStageOpponent
     fn generate_boss(ref self: TContractState, attempt_id: felt252);
 
     /// Gets the challenge attemt

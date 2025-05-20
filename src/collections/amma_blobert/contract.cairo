@@ -20,7 +20,21 @@ trait IAmmaBlobert<TContractState> {
 }
 
 #[starknet::interface]
-trait IAmmaBlobertFighters<TContractState> {
+trait IAmmaBlobertFighters {
+    /// Creates a new fighter with the given attributes
+    /// # Arguments
+    /// * `name` - Name of the fighter
+    /// * `stats` - Base statistics of the fighter
+    /// * `generated_stats` - stats of the fighter used when generating
+    /// * `attacks` - Array of attacks available to the fighter either a tag, attack input or attack
+    /// id # Returns
+    /// * `u32` - ID of the newly created fighter
+    ///
+    /// Models:
+    /// * AmmaFighter
+    ///
+    /// Events:
+    /// * AmmaFighterName
     fn new_fighter(
         ref self: TContractState,
         name: ByteArray,
@@ -28,6 +42,21 @@ trait IAmmaBlobertFighters<TContractState> {
         generated_stats: UStats,
         attacks: Array<IdTagNew<AttackInput>>,
     ) -> u32;
+
+    /// Updates an existing fighter's attributes
+    /// # Arguments
+    /// * `fighter` - ID of the fighter to update
+    /// * `name` - New name for the fighter
+    /// * `stats` - New base statistics for the fighter
+    /// * `generated_stats` - New generated statistics for the fighter
+    /// * `attacks` - Array of attacks available to the fighter either a tag, attack input or attack
+    /// id
+    ///
+    /// Models:
+    /// * AmmaFighter
+    ///
+    /// Events:
+    /// * AmmaFighterName
     fn set_fighter(
         ref self: TContractState,
         fighter: u32,
@@ -36,13 +65,53 @@ trait IAmmaBlobertFighters<TContractState> {
         generated_stats: UStats,
         attacks: Array<IdTagNew<AttackInput>>,
     );
+
+    /// Updates a fighter's base statistics
+    /// # Arguments
+    /// * `fighter` - ID of the fighter to update
+    /// * `stats` - New statistics to set
+    ///
+    /// Models:
+    /// * AmmaFighter
     fn set_fighter_stats(ref self: TContractState, fighter: u32, stats: UStats);
+
+    /// Updates a fighter's generated statistics
+    /// # Arguments
+    /// * `fighter` - ID of the fighter to update
+    /// * `stats` - New generated statistics to set
+    ///
+    /// Models:
+    /// * AmmaFighter
     fn set_fighter_generated_stats(ref self: TContractState, fighter: u32, stats: UStats);
+
+    /// Updates a fighter's available attacks
+    /// # Arguments
+    /// * `fighter` - ID of the fighter to update
+    /// * `attacks` - New array of attacks to set
+    ///
+    /// Models:
+    /// * AmmaFighter
     fn set_fighter_attacks(
         ref self: TContractState, fighter: u32, attacks: Array<IdTagNew<AttackInput>>,
     );
+
+    /// Updates a fighter's name
+    /// # Arguments
+    /// * `fighter` - ID of the fighter to update
+    /// * `name` - New name to set
+    ///
+    /// Events:
+    /// * AmmaFighterName
     fn set_fighter_name(ref self: TContractState, fighter: u32, name: ByteArray);
+
+    /// Gets the total number of fighters
+    /// # Returns
+    /// * `u32` - Total number of fighters
     fn amount_of_fighters(self: @TContractState) -> u32;
+
+    /// Sets the total number of fighters
+    /// # Arguments
+    /// * `amount` - New total number of fighters to set
     fn set_amount_of_fighters(ref self: TContractState, amount: u32);
 }
 
