@@ -4,26 +4,19 @@ use crate::tags::IdTagNew;
 use crate::attacks::AttackInput;
 use crate::stats::UStats;
 
-/// Contract interface for AMMA Blobert NFT collection
-///
-/// # Interface Functions
-///
-/// * `mint` - Mints a new Blobert NFT based on a fighter type
-///   * `fighter` - The id of the amma fighter to mint
-///   * Returns the minted token ID
-/// Models:
-/// - BlobertToken
-///
-///
-/// * `traits` - Gets the attributes/traits for a specific token
-///   * `token_id` - ID of the token to query
-///   * Returns TokenAttributes struct containing the token's traits
 
 #[starknet::interface]
 trait IAmmaBlobert<TContractState> {
+    /// Mints a free Blobert token
+    /// # Returns
+    /// * `Array<u256>` - An array containing the token id(s) of the minted Blobert(s)
     fn mint_free(ref self: TContractState) -> Array<u256>;
+    /// Mints a Blobert token using an arcade unlock attempt
+    /// # Arguments
+    /// * `attempt_id` - The unique identifier for the arcade attempt that was won
+    /// # Returns
+    /// * `u256` - The token id of the minted Blobert
     fn mint_arcade_unlock(ref self: TContractState, attempt_id: felt252) -> u256;
-    // fn get_fighter_attacks(self: @TContractState, fighter: felt252);
 }
 
 #[starknet::interface]
@@ -75,6 +68,7 @@ mod amma_blobert_actions {
     use crate::tags::IdTagNew;
     use crate::hash::hash_value;
     use crate::arcade_amma::{AmmaArcadeStorage};
+    use crate::arcade::ArcadePhase;
     use super::super::{AmmaBlobertStorage, AmmaBlobertTrait, AMMA_BLOBERT_NAMESPACE_HASH};
     use collections::world_blobert::{WorldBlobertStore, WorldBlobertStorage};
     use collections::items::cmp;
@@ -147,6 +141,7 @@ mod amma_blobert_actions {
             let attempt = storage.get_amma_arcade_challenge_attempt_unlock_token(attempt_id);
             let token_id = poseidon_hash_span([attempt_id, 'token-unlock'].span());
             assert(attempt.player == owner, 'Not the players attempt');
+            assert(attempt.phase == ArcadePhase::PlayerWon, 'Not a winner');
             storage.assert_and_set_arcade_attempt_minted(attempt_id);
             storage
                 .set_blobert_token(
