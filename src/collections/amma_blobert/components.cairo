@@ -27,8 +27,7 @@ struct FirstTokenMinted {
 ///
 /// # Fields
 /// * `attempt_id` - The unique identifier of the arcade challenge attempt.
-/// * `minted` - A boolean indicating whether this attempt has resulted in a token mint (true) or
-/// not (false).
+/// * `minted` - If they have already minted a token from this attempt.
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct ArcadeAttemptMinted {
