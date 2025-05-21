@@ -17,7 +17,10 @@ dependencies = [
  "cubit",
  "dojo",
  "dojo_cairo_test",
+ "openzeppelin_access",
+ "openzeppelin_introspection",
  "openzeppelin_token",
+ "openzeppelin_upgrades",
 ]
 
 [[package]]
@@ -79,6 +82,11 @@ dependencies = [
  "openzeppelin_introspection",
  "openzeppelin_utils",
 ]
+
+[[package]]
+name = "openzeppelin_upgrades"
+version = "1.0.0"
+source = "git+https://github.com/OpenZeppelin/cairo-contracts?tag=v1.0.0#755ce1adbf8d89ed23fbb8daa328fcbeab7c6424"
 
 [[package]]
 name = "openzeppelin_utils"
