@@ -1,87 +1,14 @@
 use starknet::ContractAddress;
 
-#[starknet::interface]
-trait ERC721AmmaBlobert<TState> {
-    // IERC721
-    fn balance_of(self: @TState, account: ContractAddress) -> u256;
-    fn owner_of(self: @TState, token_id: u256) -> ContractAddress;
-    fn safe_transfer_from(
-        ref self: TState,
-        from: ContractAddress,
-        to: ContractAddress,
-        token_id: u256,
-        data: Span<felt252>,
-    );
-    fn transfer_from(ref self: TState, from: ContractAddress, to: ContractAddress, token_id: u256);
-    fn approve(ref self: TState, to: ContractAddress, token_id: u256);
-    fn set_approval_for_all(ref self: TState, operator: ContractAddress, approved: bool);
-    fn get_approved(self: @TState, token_id: u256) -> ContractAddress;
-    fn is_approved_for_all(
-        self: @TState, owner: ContractAddress, operator: ContractAddress,
-    ) -> bool;
-
-    // ISRC5
-    fn supports_interface(self: @TState, interface_id: felt252) -> bool;
-
-    // IERC721Metadata
-    fn name(self: @TState) -> ByteArray;
-    fn symbol(self: @TState) -> ByteArray;
-    fn token_uri(self: @TState, token_id: u256) -> ByteArray;
-
-    // IERC721CamelOnly
-    fn balanceOf(
-        self: @TState, account: ContractAddress,
-    ) -> u256 {
-        Self::balance_of(self, account)
-    }
-    fn ownerOf(self: @TState, tokenId: u256) -> ContractAddress {
-        Self::owner_of(self, tokenId)
-    }
-    fn safeTransferFrom(
-        ref self: TState,
-        from: ContractAddress,
-        to: ContractAddress,
-        tokenId: u256,
-        data: Span<felt252>,
-    ) {
-        Self::safe_transfer_from(ref self, from, to, tokenId, data);
-    }
-    fn transferFrom(
-        ref self: TState, from: ContractAddress, to: ContractAddress, tokenId: u256,
-    ) {
-        Self::transfer_from(ref self, from, to, tokenId);
-    }
-    fn setApprovalForAll(
-        ref self: TState, operator: ContractAddress, approved: bool,
-    ) {
-        Self::set_approval_for_all(ref self, operator, approved);
-    }
-    fn getApproved(
-        self: @TState, tokenId: u256,
-    ) -> ContractAddress {
-        Self::get_approved(self, tokenId)
-    }
-    fn isApprovedForAll(
-        self: @TState, owner: ContractAddress, operator: ContractAddress,
-    ) -> bool {
-        Self::is_approved_for_all(self, owner, operator)
-    }
-
-    // IERC721MetadataCamelOnly
-    fn tokenURI(self: @TState, tokenId: u256) -> ByteArray {
-        Self::token_uri(self, tokenId)
-    }
-}
-
 
 #[starknet::contract]
 mod AmmaBlobert {
     use openzeppelin_access::ownable::OwnableComponent;
     use openzeppelin_introspection::src5::SRC5Component;
-    use openzeppelin_token::erc721::{ERC721Component, ERC721HooksEmptyImpl};
+    use openzeppelin_token::erc721::{ERC721Component, ERC721HooksEmptyImpl, interface};
     use openzeppelin_upgrades::interface::IUpgradeable;
     use openzeppelin_upgrades::UpgradeableComponent;
-    use starknet::{ClassHash, ContractAddress};
+    use starknet::{ClassHash, ContractAddress, get_caller_address};
     use starknet::storage::Map;
 
     component!(path: ERC721Component, storage: erc721, event: ERC721Event);
@@ -89,16 +16,15 @@ mod AmmaBlobert {
     component!(path: OwnableComponent, storage: ownable, event: OwnableEvent);
     component!(path: UpgradeableComponent, storage: upgradeable, event: UpgradeableEvent);
 
-    // External
-    #[abi(embed_v0)]
-    impl ERC721MixinImpl = ERC721Component::ERC721MixinImpl<ContractState>;
     #[abi(embed_v0)]
     impl OwnableMixinImpl = OwnableComponent::OwnableMixinImpl<ContractState>;
 
     // Internal
+    impl ERC721Impl = ERC721Component::ERC721Impl<ContractState>;
     impl ERC721InternalImpl = ERC721Component::InternalImpl<ContractState>;
     impl OwnableInternalImpl = OwnableComponent::InternalImpl<ContractState>;
     impl UpgradeableInternalImpl = UpgradeableComponent::InternalImpl<ContractState>;
+    impl SRC5InternalImpl = SRC5Component::InternalImpl<ContractState>;
 
     #[storage]
     struct Storage {
@@ -130,8 +56,113 @@ mod AmmaBlobert {
     fn constructor(
         ref self: ContractState, beacon_address: ContractAddress, owner: ContractAddress,
     ) {
-        self.erc721.initializer("MyToken", "MTK", "");
+        self.erc721.initializer_no_metadata();
         self.ownable.initializer(owner);
+        self.src5.register_interface(interface::IERC721_METADATA_ID);
+    }
+
+    #[abi(embed_v0)]
+    impl ERC721Metadata of interface::IERC721Metadata<ContractState> {
+        fn name(self: @ContractState) -> ByteArray {
+            "Amma Blobert"
+        }
+
+        fn symbol(self: @ContractState) -> ByteArray {
+            "AMMA"
+        }
+
+        fn token_uri(self: @ContractState, token_id: u256) -> ByteArray {
+            self.erc721._require_owned(token_id);
+            format!("http://example.com/{}", token_id)
+        }
+    }
+
+    #[abi(embed_v0)]
+    impl ERC721 of interface::IERC721<ContractState> {
+        fn balance_of(self: @ContractState, account: ContractAddress) -> u256 {
+            ERC721Impl::balance_of(self, account)
+        }
+
+        fn owner_of(self: @ContractState, token_id: u256) -> ContractAddress {
+            ERC721Impl::owner_of(self, token_id)
+        }
+
+        fn safe_transfer_from(
+            ref self: ContractState,
+            from: ContractAddress,
+            to: ContractAddress,
+            token_id: u256,
+            data: Span<felt252>,
+        ) {
+            panic!("Not currently transferable")
+        }
+
+        fn transfer_from(
+            ref self: ContractState, from: ContractAddress, to: ContractAddress, token_id: u256,
+        ) {
+            panic!("Not currently transferable")
+        }
+
+        fn approve(ref self: ContractState, to: ContractAddress, token_id: u256) {
+            panic!("Not currently transferable")
+        }
+
+        fn set_approval_for_all(
+            ref self: ContractState, operator: ContractAddress, approved: bool,
+        ) {
+            panic!("Not currently transferable")
+        }
+
+        fn get_approved(self: @ContractState, token_id: u256) -> ContractAddress {
+            ERC721Impl::get_approved(self, token_id)
+        }
+
+        fn is_approved_for_all(
+            self: @ContractState, owner: ContractAddress, operator: ContractAddress,
+        ) -> bool {
+            ERC721Impl::is_approved_for_all(self, owner, operator)
+        }
+    }
+
+    #[abi(embed_v0)]
+    impl ERC721CamelOnly of interface::IERC721CamelOnly<ContractState> {
+        fn balanceOf(self: @ContractState, account: ContractAddress) -> u256 {
+            ERC721::balance_of(self, account)
+        }
+
+        fn ownerOf(self: @ContractState, tokenId: u256) -> ContractAddress {
+            ERC721::owner_of(self, tokenId)
+        }
+
+        fn safeTransferFrom(
+            ref self: ContractState,
+            from: ContractAddress,
+            to: ContractAddress,
+            tokenId: u256,
+            data: Span<felt252>,
+        ) {
+            ERC721::safe_transfer_from(ref self, from, to, tokenId, data)
+        }
+
+        fn transferFrom(
+            ref self: ContractState, from: ContractAddress, to: ContractAddress, tokenId: u256,
+        ) {
+            ERC721::transfer_from(ref self, from, to, tokenId)
+        }
+
+        fn setApprovalForAll(ref self: ContractState, operator: ContractAddress, approved: bool) {
+            ERC721::set_approval_for_all(ref self, operator, approved)
+        }
+
+        fn getApproved(self: @ContractState, tokenId: u256) -> ContractAddress {
+            ERC721::get_approved(self, tokenId)
+        }
+
+        fn isApprovedForAll(
+            self: @ContractState, owner: ContractAddress, operator: ContractAddress,
+        ) -> bool {
+            ERC721::is_approved_for_all(self, owner, operator)
+        }
     }
 
     #[abi(embed_v0)]

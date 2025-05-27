@@ -1,1 +1,2 @@
 
+fn fighter_attacks
