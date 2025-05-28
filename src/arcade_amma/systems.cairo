@@ -48,8 +48,8 @@ fn get_stage_stats(stage: u32, fighter_stats: UStats) -> UStats {
 
 #[generate_trait]
 impl AmmaArcadeImpl of AmmaArcadeTrait {
-    fn new_amma_arcade_challenge_attempt(
-        ref self: ArcadeStore,
+    fn create_amma_arcade_challenge_attempt(
+        ref self: WorldStorage,
         seed: felt252,
         player: ContractAddress,
         collection: ContractAddress,
@@ -57,17 +57,16 @@ impl AmmaArcadeImpl of AmmaArcadeTrait {
         attacks: Array<(felt252, felt252)>,
     ) -> (felt252, felt252) {
         let timestamp = get_block_timestamp();
-        self.arcade.use_game(player, timestamp);
+        self.use_game(player, timestamp);
 
-        let (stats, attacks) = self.ba.get_token_stats_and_attacks(collection, token_id, attacks);
+        let (stats, attacks) = self.get_token_stats_and_attacks(collection, token_id, attacks);
         let attempt = self
-            .arcade
             .new_amma_arcade_challenge_attempt(seed, player, token_id, stats, attacks, timestamp);
-        self.arcade.set_arcade_current_challenge_attempt(player, collection, token_id, seed);
+        self.set_arcade_current_challenge_attempt(player, collection, token_id, seed);
         let total_fighters = get_amount_of_fighters(collection);
         let fighters = random_selection(seed, total_fighters, AMMA_ARCADE_GENERATED_STAGES);
         let r0_fighter = *fighters[0];
-        self.arcade.set_amma_round_opponents(attempt.id, fighters);
+        self.set_amma_round_opponents(attempt.id, fighters);
         let game = self
             .setup_amma_arcade_opponent_in_combat(
                 attempt.player,
@@ -78,7 +77,7 @@ impl AmmaArcadeImpl of AmmaArcadeTrait {
                 0,
             );
 
-        self.arcade.set_arcade_stage_game(seed, 0, game.id);
+        self.set_arcade_stage_game(seed, 0, game.id);
         (seed, game.id)
     }
 
@@ -88,7 +87,7 @@ impl AmmaArcadeImpl of AmmaArcadeTrait {
     }
 
     fn create_amma_arcade_challenge_attempt_round(
-        ref self: ArcadeStore,
+        ref self: WorldStorage,
         id: felt252,
         player: ContractAddress,
         stats: UStats,
@@ -96,17 +95,17 @@ impl AmmaArcadeImpl of AmmaArcadeTrait {
         stage: u32,
         health: u8,
     ) -> felt252 {
-        let opponent = self.arcade.get_amma_round_opponent(id, stage);
+        let opponent = self.get_amma_round_opponent(id, stage);
         let game = self
             .setup_amma_arcade_opponent_in_combat(
                 player, stats, health, attacks.span(), opponent, stage,
             );
-        self.arcade.set_arcade_stage_game(id, stage, game.id);
+        self.set_arcade_stage_game(id, stage, game.id);
         game.id
     }
 
     fn setup_amma_arcade_opponent_in_combat(
-        ref self: ArcadeStore,
+        ref self: WorldStorage,
         player: ContractAddress,
         stats: UStats,
         health: u8,
@@ -119,40 +118,38 @@ impl AmmaArcadeImpl of AmmaArcadeTrait {
         let combatant_id = hash_value(@[game_id, 'combatant']);
         assert(opponent_token > 0, 'Invalid opponent');
         let opponent_stats = if stage < AMMA_ARCADE_GENERATED_STAGES {
-            self.arcade.get_amma_stage_stats(stage, opponent_token)
+            self.get_amma_stage_stats(stage, opponent_token)
         } else {
-            self.arcade.get_amma_fighter_stats(opponent_token.into())
+            self.get_amma_fighter_stats(opponent_token.into())
         };
-        self.ba.create_combatant_state(opponent_id, opponent_stats);
-        self.ba.set_combatant_stats_health_and_attacks(combatant_id, stats, health, attacks);
+        self.create_combatant_state(opponent_id, opponent_stats);
+        self.set_combatant_stats_health_and_attacks(combatant_id, stats, health, attacks);
         self
-            .arcade
             .new_arcade_game_model(
                 game_id, combatant_id, player, opponent_token.into(), opponent_id,
             )
     }
 
-    fn next_amma_arcade_challenge_round(ref self: ArcadeStore, attempt_id: felt252) -> felt252 {
-        let mut attempt = self.arcade.get_amma_arcade_challenge_attempt_next_stage(attempt_id);
+    fn next_amma_arcade_challenge_round(ref self: WorldStorage, attempt_id: felt252) -> felt252 {
+        let mut attempt = self.get_amma_arcade_challenge_attempt_next_stage(attempt_id);
         assert(attempt.player == get_caller_address(), 'Not player');
         attempt.phase.assert_active();
         let (combatant_id, phase) = self
-            .arcade
             .get_arcade_game_combatant_phase(
-                self.arcade.get_arcade_stage_game_id(attempt_id, attempt.stage),
+                self.get_arcade_stage_game_id(attempt_id, attempt.stage),
             );
         assert(phase == ArcadePhase::PlayerWon, 'Player not won last round');
         assert(get_block_timestamp() <= attempt.expiry, 'Challenge expired');
         assert(attempt.stage <= AMMA_ARCADE_GENERATED_STAGES, 'No more stages');
         let health = calc_restored_health(
-            self.ba.get_combatant_health(combatant_id),
+            self.get_combatant_health(combatant_id),
             attempt.stats.vitality,
             HEALTH_RESTORE_PERCENTAGE,
         );
 
         attempt.stage += 1;
 
-        self.arcade.set_amma_arcade_challenge_stage(attempt_id, attempt.stage);
+        self.set_amma_arcade_challenge_stage(attempt_id, attempt.stage);
 
         self
             .create_amma_arcade_challenge_attempt_round(
@@ -161,11 +158,11 @@ impl AmmaArcadeImpl of AmmaArcadeTrait {
     }
 
     fn respawn_amma_arcade_challenge_attempt(
-        ref self: ArcadeStore, attempt_id: felt252,
+        ref self: WorldStorage, attempt_id: felt252,
     ) -> felt252 {
-        let mut attempt = self.arcade.get_amma_arcade_challenge_attempt_respawn(attempt_id);
-        let game_id = self.arcade.get_arcade_stage_game_id(attempt_id, attempt.stage);
-        let phase = self.arcade.get_arcade_game_phase(game_id);
+        let mut attempt = self.get_amma_arcade_challenge_attempt_respawn(attempt_id);
+        let game_id = self.get_arcade_stage_game_id(attempt_id, attempt.stage);
+        let phase = self.get_arcade_game_phase(game_id);
         let timestamp = get_block_timestamp();
 
         attempt.phase.assert_active();
@@ -173,12 +170,12 @@ impl AmmaArcadeImpl of AmmaArcadeTrait {
         assert(timestamp <= attempt.expiry, 'Challenge expired');
         assert(phase == ArcadePhase::PlayerLost, 'Player not lost round');
         assert(attempt.respawns < ARCADE_CHALLENGE_MAX_RESPAWNS, 'Max respawns');
-        self.arcade.use_game(attempt.player, timestamp);
+        self.use_game(attempt.player, timestamp);
 
         attempt.respawns += 1;
 
-        self.arcade.set_amma_arcade_challenge_respawns(attempt_id, attempt.respawns);
-        self.arcade.emit_arcade_respawn(attempt_id, attempt.respawns, attempt.stage, game_id);
+        self.set_amma_arcade_challenge_respawns(attempt_id, attempt.respawns);
+        self.emit_arcade_respawn(attempt_id, attempt.respawns, attempt.stage, game_id);
         let health = attempt.stats.get_max_health();
         self
             .create_amma_arcade_challenge_attempt_round(

@@ -20,7 +20,7 @@ trait IAmmaBlobert<TContractState> {
 }
 
 #[starknet::interface]
-trait IAmmaBlobertFighters {
+trait IAmmaBlobertFighters<TContractState> {
     /// Creates a new fighter with the given attributes
     /// # Arguments
     /// * `name` - Name of the fighter

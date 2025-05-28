@@ -14,10 +14,13 @@ private_key = "0x1c9053c053edf324aec366a34c6901b1095b07af69495bffec7d7fe21effb1b
 
 [namespace]
 mappings = { blob_arena = [
-    "CombatantToken",
     "Tag",
-    "AttackUses",
-    "PvpsCompleted",
+    "ArcadeFreeGames",
+    "ArcadePaidGames",
+    "ArcadeCurrentChallengeAttempt",
+], attacks = [
+    "Attack",
+    "AttackName",
 ], blobert = [
     "blobert_actions",
     "BlobertItem",
@@ -36,33 +39,73 @@ mappings = { blob_arena = [
     "ArcadeAttemptMinted",
     "AmmaFighter",
     "AmmaFighterName",
-], arcade = [
-    "arcade_actions",
-    "Tag",
+], pvp = [
+    "pvp_actions",
+
     "CombatantToken",
+    "CombatantState",
+    "AttackAvailable",
+    "CombatState",
+    "AttackLastUsed",
+    "RoundResult",
+
+
+    "Commitment",
+    "LastTimestamp",
+    "PlannedAttack",
+    "CombatEnd",
+
+    "AttackUses",
+    "PvpsCompleted",
+], arcade = [
+
+], arcade_classic = [
+    "arcade_actions",
+
+    "Tag",
+
+    "CombatantToken",
+    "CombatantState",
+    "AttackAvailable",
+    "CombatState",
+    "AttackLastUsed",
+    "RoundResult",
+
+    "ArcadeGame",
+    "ArcadeChallengeRespawn",
+
     "ArcadeOpponent",
     "ArcadeCollectionAllowed",
     "ArcadeBlobertInfo",
     "ArcadeChallenge",
     "ArcadeChallengeName",
     "ArcadeStageOpponent",
-    "ArcadeGame",
-    "ArcadeFreeGames",
-    "ArcadePaidGames",
-    "ArcadeChallengeAttempt",
     "ArcadeStageGame",
-    "ArcadeChallengeRespawn",
-    "ArcadeCurrentChallengeAttempt",
+    "ArcadeChallengeAttempt",
+
+
     "AttackUses",
 ], arcade_amma = [
     "arcade_amma_actions",
-    "AmmaArcadeStageOpponent",
-    "AmmaArcadeChallengeAttempt",
+
     "CombatantToken",
+    "CombatantState",
+    "AttackAvailable",
+    "CombatState",
+    "AttackLastUsed",
+    "RoundResult",
+
     "ArcadeGame",
     "ArcadeStageGame",
+
+    "AmmaArcadeStageOpponent",
+
+    "ArcadeStageGame",
     "ArcadeChallengeRespawn",
+    "AmmaArcadeChallengeAttempt",
+
     "AttackUses",
+
 ], ba_permissions = [
     "Permission",
 ], achievements = [
@@ -71,6 +114,7 @@ mappings = { blob_arena = [
 ] }
 
 default = "blob_arena"
+
 [writers]
 "blob_arena-Lobby" = ["blob_arena-lobby_actions"]
 "blob_arena-LobbyCreated" = ["blob_arena-lobby_actions"]
@@ -126,11 +170,11 @@ default = "blob_arena"
 "blob_arena-PlannedAttack" = ["blob_arena-pvp_actions"]
 "blob_arena-CombatEnd" = ["blob_arena-pvp_actions"]
 
-"blob_arena-Attack" = [
+"attack-Attack" = [
     "blobert-blobert_actions",
     "amma_blobert-amma_blobert_actions",
 ]
-"blob_arena-AttackName" = [
+"attack-AttackName" = [
     "blobert-blobert_actions",
     "amma_blobert-amma_blobert_actions",
 ]

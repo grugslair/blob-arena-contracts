@@ -190,14 +190,7 @@ mod arcade_amma_actions {
     use super::{IAmmaArcade, IAmmaArcadeAdmin};
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
-        fn get_storage(self: @ContractState) -> ArcadeStore {
-            let dispatcher = self.world_dispatcher();
-            ArcadeStore {
-                ba: dispatcher.default_storage(),
-                arcade: dispatcher.storage(AMMA_ARCADE_NAMESPACE_HASH),
-            }
-        }
-        fn get_arcade_storage(self: @ContractState) -> WorldStorage {
+        fn get_storage(self: @ContractState) -> WorldStorage {
             self.storage(AMMA_ARCADE_NAMESPACE_HASH)
         }
     }
@@ -206,10 +199,10 @@ mod arcade_amma_actions {
     impl IAmmaArcadeImpl of IAmmaArcade<ContractState> {
         fn attack(ref self: ContractState, game_id: felt252, attack_id: felt252) {
             let mut store = self.get_storage();
-            let game = store.arcade.get_arcade_game(game_id);
+            let game = store.get_arcade_game(game_id);
             assert(game.player == get_caller_address(), 'Not player');
             let randomness = pseudo_randomness(); //TODO: Use real randomness
-            let opponent_attacks = store.arcade.get_amma_fighter_attacks(game.opponent_token);
+            let opponent_attacks = store.get_amma_fighter_attacks(game.opponent_token);
 
             store.run_arcade_round(game, attack_id, opponent_attacks, randomness);
         }
@@ -223,7 +216,6 @@ mod arcade_amma_actions {
             assert(erc721_owner_of(collection_address, token_id) == caller, 'Not owner');
             assert(
                 store
-                    .arcade
                     .get_arcade_current_challenge_attempt(caller, collection_address, token_id)
                     .is_zero(),
                 'Already in challenge',
@@ -231,7 +223,7 @@ mod arcade_amma_actions {
 
             return_value(
                 store
-                    .new_amma_arcade_challenge_attempt(
+                    .create_amma_arcade_challenge_attempt(
                         randomness, caller, collection_address, token_id, attacks,
                     ),
             )
@@ -245,12 +237,12 @@ mod arcade_amma_actions {
             return_value(store.respawn_amma_arcade_challenge_attempt(attempt_id))
         }
         fn end_challenge(ref self: ContractState, attempt_id: felt252) {
-            let mut store = self.get_arcade_storage();
+            let mut store = self.get_storage();
 
             store.end_amma_arcade_challenge_attempt(self.collection_address.read(), attempt_id);
         }
         fn generate_boss(ref self: ContractState, attempt_id: felt252) {
-            let mut store = self.get_arcade_storage();
+            let mut store = self.get_storage();
             let player_stage = store.get_amma_arcade_challenge_attempt_player_stage(attempt_id);
             assert(
                 store.get_amma_round_opponent(attempt_id, AMMA_ARCADE_GENERATED_STAGES).is_zero(),
@@ -267,29 +259,29 @@ mod arcade_amma_actions {
         fn challenge_attempt(
             self: @ContractState, attempt_id: felt252,
         ) -> AmmaArcadeChallengeAttempt {
-            self.get_arcade_storage().get_amma_arcade_challenge_attempt(attempt_id)
+            self.get_storage().get_amma_arcade_challenge_attempt(attempt_id)
         }
 
         fn game(self: @ContractState, game_id: felt252) -> ArcadeGame {
-            self.get_arcade_storage().get_arcade_game(game_id)
+            self.get_storage().get_arcade_game(game_id)
         }
 
         fn challenge_attempt_game(self: @ContractState, attempt_id: felt252) -> ArcadeGame {
-            self.get_arcade_storage().get_arcade_attempt_game(attempt_id)
+            self.get_storage().get_arcade_attempt_game(attempt_id)
         }
 
         fn game_phase(self: @ContractState, game_id: felt252) -> ArcadePhase {
-            self.get_arcade_storage().get_arcade_game_phase(game_id)
+            self.get_storage().get_arcade_game_phase(game_id)
         }
         fn opponent_stats(self: @ContractState, opponent_id: felt252) -> UStats {
-            self.get_arcade_storage().get_arcade_opponent_stats(opponent_id)
+            self.get_storage().get_arcade_opponent_stats(opponent_id)
         }
         fn opponent_attacks(self: @ContractState, opponent_id: felt252) -> Array<felt252> {
-            self.get_arcade_storage().get_arcade_opponent_attacks(opponent_id)
+            self.get_storage().get_arcade_opponent_attacks(opponent_id)
         }
 
         fn opponent_token(self: @ContractState, opponent_id: felt252) -> ArcadeOpponent {
-            self.get_arcade_storage().get_arcade_opponent(opponent_id)
+            self.get_storage().get_arcade_opponent(opponent_id)
         }
     }
 
