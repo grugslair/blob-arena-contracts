@@ -96,7 +96,6 @@ struct AmmaArcadeAttemptEnd {
 #[derive(Drop, Serde, Introspect)]
 struct AmmaArcadeAttemptUnlockToken {
     player: ContractAddress,
-    token_id: u256,
     phase: ArcadePhase,
 }
 
@@ -227,5 +226,11 @@ impl AmmaArcadeStorageImpl of AmmaArcadeStorage {
     fn get_amma_arcade_attempt_game(self: @WorldStorage, attempt_id: felt252) -> ArcadeGame {
         let stage = self.get_amma_arcade_challenge_attempt_stage(attempt_id);
         self.get_arcade_game(self.get_arcade_stage_game_id(attempt_id, stage))
+    }
+
+    fn get_amma_arcade_attempt_boss_fighter(self: @WorldStorage, attempt_id: felt252) -> u32 {
+        self
+            .storage(AMMA_ARCADE_NAMESPACE_HASH)
+            .get_amma_round_opponent(attempt_id, AMMA_ARCADE_GENERATED_STAGES)
     }
 }

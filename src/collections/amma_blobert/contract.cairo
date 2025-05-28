@@ -20,7 +20,7 @@ trait IAmmaBlobert<TContractState> {
 }
 
 #[starknet::interface]
-trait IAmmaBlobertFighters {
+trait IAmmaBlobertFighters<TContractState> {
     /// Creates a new fighter with the given attributes
     /// # Arguments
     /// * `name` - Name of the fighter
@@ -211,13 +211,10 @@ mod amma_blobert_actions {
             let token_id = poseidon_hash_span([attempt_id, 'token-unlock'].span());
             assert(attempt.player == owner, 'Not the players attempt');
             assert(attempt.phase == ArcadePhase::PlayerWon, 'Not a winner');
+            let fighter = storage.get_amma_arcade_attempt_boss_fighter(attempt_id);
             storage.assert_and_set_arcade_attempt_minted(attempt_id);
             storage
-                .set_blobert_token(
-                    token_id.into(),
-                    owner,
-                    TokenAttributes::Custom(attempt.token_id.try_into().unwrap()),
-                );
+                .set_blobert_token(token_id.into(), owner, TokenAttributes::Custom(fighter.into()));
             return_value(token_id.into())
         }
     }
