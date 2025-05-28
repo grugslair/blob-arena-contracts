@@ -49,7 +49,6 @@ mappings = { blob_arena = [
     "AttackLastUsed",
     "RoundResult",
 
-
     "Commitment",
     "LastTimestamp",
     "PlannedAttack",
@@ -57,10 +56,8 @@ mappings = { blob_arena = [
 
     "AttackUses",
     "PvpsCompleted",
-], arcade = [
-
 ], arcade_classic = [
-    "arcade_actions",
+    "arcade_classic_actions",
 
     "Tag",
 
@@ -72,6 +69,7 @@ mappings = { blob_arena = [
     "RoundResult",
 
     "ArcadeGame",
+    "ArcadeStageGame",
     "ArcadeChallengeRespawn",
 
     "ArcadeOpponent",
@@ -80,9 +78,9 @@ mappings = { blob_arena = [
     "ArcadeChallenge",
     "ArcadeChallengeName",
     "ArcadeStageOpponent",
+
     "ArcadeStageGame",
     "ArcadeChallengeAttempt",
-
 
     "AttackUses",
 ], arcade_amma = [
@@ -97,15 +95,14 @@ mappings = { blob_arena = [
 
     "ArcadeGame",
     "ArcadeStageGame",
+    "ArcadeChallengeRespawn",
 
     "AmmaArcadeStageOpponent",
-
-    "ArcadeStageGame",
-    "ArcadeChallengeRespawn",
     "AmmaArcadeChallengeAttempt",
 
-    "AttackUses",
+    "ArcadeChallengeRespawn",
 
+    "AttackUses",
 ], ba_permissions = [
     "Permission",
 ], achievements = [
