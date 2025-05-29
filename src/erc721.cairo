@@ -18,6 +18,13 @@ struct ERC721Token {
     token_id: u256,
 }
 
+fn erc721_token_key(collection_address: ContractAddress, token_id: u256) -> felt252 {
+    poseidon_hash_span(
+        [collection_address.into(), token_id.high.into(), token_id.low.into()].span(),
+    )
+}
+
+
 mod model {
     use starknet::ContractAddress;
 
