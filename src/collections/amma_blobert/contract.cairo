@@ -17,10 +17,12 @@ mod AmmaBlobert {
     component!(path: UpgradeableComponent, storage: upgradeable, event: UpgradeableEvent);
 
     #[abi(embed_v0)]
-    impl OwnableMixinImpl = OwnableComponent::OwnableMixinImpl<ContractState>;
+    impl OwnableMixinImpl =
+        OwnableComponent::OwnableTwoStepMixinImpl<ContractState>;
 
-    // Internal
+
     impl ERC721Impl = ERC721Component::ERC721Impl<ContractState>;
+    // Internal
     impl ERC721InternalImpl = ERC721Component::InternalImpl<ContractState>;
     impl OwnableInternalImpl = OwnableComponent::InternalImpl<ContractState>;
     impl UpgradeableInternalImpl = UpgradeableComponent::InternalImpl<ContractState>;
@@ -53,9 +55,7 @@ mod AmmaBlobert {
     }
 
     #[constructor]
-    fn constructor(
-        ref self: ContractState, beacon_address: ContractAddress, owner: ContractAddress,
-    ) {
+    fn constructor(ref self: ContractState, beacon: ContractAddress, owner: ContractAddress) {
         self.erc721.initializer_no_metadata();
         self.ownable.initializer(owner);
         self.src5.register_interface(interface::IERC721_METADATA_ID);

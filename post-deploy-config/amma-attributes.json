@@ -78,10 +78,10 @@
             }
           },
           {
-            "target": "Player",
+            "target": "Opponent",
             "affect": {
               "Stats": {
-                "strength": 10,
+                "strength": -20,
                 "vitality": 0,
                 "dexterity": 0,
                 "luck": 0
@@ -125,11 +125,11 @@
       "dexterity": 42,
       "luck": 50
     },
-      "generated_stats": {
-        "strength": 3,
-        "vitality": 1,
-        "dexterity": 2,
-        "luck": 5
+    "generated_stats": {
+      "strength": 3,
+      "vitality": 1,
+      "dexterity": 2,
+      "luck": 5
     },
     "attacks": [
       {
@@ -162,22 +162,16 @@
       {
         "name": "Grind",
         "speed": 45,
-        "accuracy": 70,
+        "accuracy": 80,
         "cooldown": 3,
         "hit": [
           {
             "target": "Opponent",
             "affect": {
               "Damage": {
-                "power": 40,
+                "power": 55,
                 "critical": 0
               }
-            }
-          },
-          {
-            "target": "Opponent",
-            "affect": {
-              "Stun": 0
             }
           },
           {
@@ -222,11 +216,11 @@
       "dexterity": 56,
       "luck": 47
     },
-      "generated_stats": {
-        "strength": 4,
-        "vitality": 3,
-        "dexterity": 1,
-        "luck": 1
+    "generated_stats": {
+      "strength": 4,
+      "vitality": 3,
+      "dexterity": 1,
+      "luck": 1
     },
     "attacks": [
       {
@@ -235,7 +229,7 @@
       {
         "name": "Shield Block",
         "speed": 60,
-        "accuracy": 90,
+        "accuracy": 100,
         "cooldown": 3,
         "hit": [
           {
@@ -259,7 +253,7 @@
             "target": "Opponent",
             "affect": {
               "Stats": {
-                "strength": -15,
+                "strength": -20,
                 "vitality": 0,
                 "dexterity": 0,
                 "luck": 0
@@ -288,7 +282,7 @@
             "target": "Player",
             "affect": {
               "Stats": {
-                "strength": 10,
+                "strength": 20,
                 "vitality": 0,
                 "dexterity": 0,
                 "luck": 0
@@ -321,10 +315,10 @@
   "4": {
     "name": "AMMA 4",
     "stats": {
-      "strength": 46,
-      "vitality": 51,
-      "dexterity": 44,
-      "luck": 49
+      "strength": 56,
+      "vitality": 61,
+      "dexterity": 49,
+      "luck": 59
     },
      "generated_stats": {
         "strength": 3,
@@ -368,7 +362,7 @@
       {
         "name": "Swag",
         "speed": 65,
-        "accuracy": 90,
+        "accuracy": 100,
         "cooldown": 10,
         "hit": [
           {
@@ -414,9 +408,9 @@
   "5": {
     "name": "AMMA 5",
     "stats": {
-      "strength": 44,
+      "strength": 54,
       "vitality": 62,
-      "dexterity": 33,
+      "dexterity": 43,
       "luck": 53
     },
      "generated_stats": {
@@ -501,11 +495,11 @@
       "dexterity": 63,
       "luck": 42
     },
-     "generated_stats": {
-        "strength": 1,
-        "vitality": 3,
-        "dexterity": 5,
-        "luck": 2
+    "generated_stats": {
+      "strength": 1,
+      "vitality": 3,
+      "dexterity": 5,
+      "luck": 2
     },
     "attacks": [
       {
@@ -557,11 +551,11 @@
       "dexterity": 58,
       "luck": 68
     },
-     "generated_stats": {
-        "strength": 3,
-        "vitality": 1,
-        "dexterity": 1,
-        "luck": 3
+    "generated_stats": {
+      "strength": 3,
+      "vitality": 1,
+      "dexterity": 1,
+      "luck": 3
     },
     "attacks": [
       {
@@ -643,11 +637,11 @@
       "dexterity": 43,
       "luck": 48
     },
-     "generated_stats": {
-        "strength": 4,
-        "vitality": 1,
-        "dexterity": 2,
-        "luck": 2
+    "generated_stats": {
+      "strength": 4,
+      "vitality": 1,
+      "dexterity": 2,
+      "luck": 2
     },
     "attacks": [
       {
@@ -696,7 +690,7 @@
             "target": "Opponent",
             "affect": {
               "Damage": {
-                "power": 70,
+                "power": 60,
                 "critical": 10
               }
             }
@@ -746,11 +740,11 @@
       "dexterity": 59,
       "luck": 47
     },
-     "generated_stats": {
-        "strength": 3,
-        "vitality": 3,
-        "dexterity": 1,
-        "luck": 5
+    "generated_stats": {
+      "strength": 3,
+      "vitality": 3,
+      "dexterity": 1,
+      "luck": 5
     },
     "attacks": [
       {
@@ -877,7 +871,7 @@
         "dexterity": 66,
         "luck": 48
     },
-     "generated_stats": {
+    "generated_stats": {
         "strength": 3,
         "vitality": 2,
         "dexterity": 5,
@@ -970,12 +964,12 @@
         "dexterity": 43,
         "luck": 38
     },
-     "generated_stats": {
+    "generated_stats": {
         "strength": 2,
         "vitality": 4,
         "dexterity": 1,
         "luck": 5
-    },
+  },
     "attacks": [
         {
             "tag": "Axe Attack"
@@ -1050,11 +1044,11 @@
         "dexterity": 53,
         "luck": 58
     },
-     "generated_stats": {
-        "strength": 3,
-        "vitality": 1,
-        "dexterity": 4,
-        "luck": 3
+    "generated_stats": {
+      "strength": 3,
+      "vitality": 1,
+      "dexterity": 4,
+      "luck": 3
     },
     "attacks": [
         {
@@ -1128,11 +1122,11 @@
         "dexterity": 61,
         "luck": 63
     },
-     "generated_stats": {
-        "strength": 1,
-        "vitality": 2,
-        "dexterity": 4,
-        "luck": 3
+    "generated_stats": {
+      "strength": 1,
+      "vitality": 2,
+      "dexterity": 4,
+      "luck": 3
     },
     "attacks": [
         {
@@ -1231,11 +1225,11 @@
         "dexterity": 40,
         "luck": 35
     },
-     "generated_stats": {
-        "strength": 2,
-        "vitality": 5,
-        "dexterity": 2,
-        "luck": 3
+    "generated_stats": {
+      "strength": 2,
+      "vitality": 5,
+      "dexterity": 2,
+      "luck": 3
     },
     "attacks": [
         {
@@ -1307,73 +1301,302 @@
     ]
   },
   "15": {
-        "name": "AMMA 15",
-        "stats": {
-            "strength": 60,
-            "vitality": 63,
-            "dexterity": 45,
-            "luck": 42
-        },
-        "generated_stats": {
-            "strength": 2,
-            "vitality": 4,
-            "dexterity": 1,
-            "luck": 4
+    "name": "AMMA 15",
+    "stats": {
+        "strength": 60,
+        "vitality": 63,
+        "dexterity": 45,
+        "luck": 42
     },
-        "attacks": [
-            {
-                "tag": "Axe Attack"
-            },
-            {
-                "tag": "Hammer Fist"
-            },
-            {
-                "name": "Axe Thrust",
-                "speed": 50,
-                "accuracy": 70,
-                "cooldown": 2,
-                "hit": [
-                    {
-                        "target": "Opponent",
-                        "affect": {
-                            "Damage": {
-                                "power": 60,
-                                "critical": 10
-                            }
-                        }
-                    },
-                    {
-                      "target": "Player",
-                      "affect": {
-                          "Stats": {
-                              "dexterity": 0,
-                              "strength": 0,
-                              "vitality": 0,
-                              "luck": 30
-                          }
-                      }
-                  }
-                ],
-                "miss": []
-            },
-            {
-                "name": "Spartan Spear",
-                "speed": 70,
-                "accuracy": 80,
-                "cooldown": 3,
-                "hit": [
-                    {
-                        "target": "Opponent",
-                        "affect": {
-                            "Damage": {
-                                "power": 70,
-                                "critical": 20
-                            }
+    "generated_stats": {
+        "strength": 2,
+        "vitality": 4,
+        "dexterity": 1,
+        "luck": 4
+    },
+    "attacks": [
+        {
+            "tag": "Axe Attack"
+        },
+        {
+            "tag": "Hammer Fist"
+        },
+        {
+            "name": "Axe Thrust",
+            "speed": 50,
+            "accuracy": 70,
+            "cooldown": 2,
+            "hit": [
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Damage": {
+                            "power": 60,
+                            "critical": 10
                         }
                     }
-                ],
-                "miss": []
-            }
-        ]
-    }
+                },
+                {
+                  "target": "Player",
+                  "affect": {
+                      "Stats": {
+                          "dexterity": 0,
+                          "strength": 0,
+                          "vitality": 0,
+                          "luck": 30
+                      }
+                  }
+              }
+            ],
+            "miss": []
+        },
+        {
+            "name": "Spartan Spear",
+            "speed": 70,
+            "accuracy": 80,
+            "cooldown": 3,
+            "hit": [
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Damage": {
+                            "power": 70,
+                            "critical": 20
+                        }
+                    }
+                }
+            ],
+            "miss": []
+        }
+    ]
+  },
+  "16": {
+    "name": "AMMA 16",
+    "stats": {
+        "strength": 66,
+        "vitality": 50,
+        "dexterity": 46,
+        "luck": 50
+    },
+    "generated_stats": {
+        "strength": 4,
+        "vitality": 2,
+        "dexterity": 4,
+        "luck": 2
+    },    
+    "attacks": [
+        {
+          "name": "Sword Attack",
+          "speed": 75,
+          "accuracy": 90,
+          "cooldown": 0,
+          "hit": [
+              {
+                  "target": "Opponent",
+                  "affect": {
+                      "Damage": {
+                          "power": 40,
+                          "critical": 10
+                      }
+                  }
+              }
+          ],
+          "miss": []
+        },
+        {
+          "tag": "Shield Check"
+        },
+        {
+            "name": "Karate Kick",
+            "speed": 55,
+            "accuracy": 75,
+            "cooldown": 2,
+            "hit": [
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Damage": {
+                            "power": 50,
+                            "critical": 0
+                        }
+                    }
+                },
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Stun": 25
+                    }
+                }
+            ],
+            "miss": []
+        },
+        {
+            "name": "Throwing Hands",
+            "speed": 60,
+            "accuracy": 85,
+            "cooldown": 3,
+            "hit": [
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Damage": {
+                            "power": 60,
+                            "critical": 20
+                        }
+                    }
+                }
+            ],
+            "miss": []
+        }
+    ]
+  },
+  "17": {
+    "name": "AMMA 17",
+    "stats": {
+        "strength": 42,
+        "vitality": 57,
+        "dexterity": 47,
+        "luck": 58
+    },
+    "generated_stats": {
+        "strength": 1,
+        "vitality": 4,
+        "dexterity": 2,
+        "luck": 4
+    },
+    "attacks": [
+        {
+            "tag": "Sword Attack"
+        },
+        {
+            "tag": "Shield Check"
+        },
+        {
+            "name": "Meteor Shield",
+            "speed": 70,
+            "accuracy": 95,
+            "cooldown": 3,
+            "hit": [
+              {
+                "target": "Player",
+                "affect": {
+                  "Stats": {
+                    "strength": 20,
+                    "vitality": 20,
+                    "dexterity": 0,
+                    "luck": 0
+                  }
+                }
+              },
+              {
+                "target": "Player",
+                "affect": {
+                  "Health": 20
+                }
+              },
+              {
+                "target": "Opponent",
+                "affect": {
+                  "Stats": {
+                    "strength": -20,
+                    "vitality": 0,
+                    "dexterity": -20,
+                    "luck": 0
+                  }
+                }
+              }
+            ],
+            "miss": []
+        },
+        {
+            "name": "Hip Throw",
+            "speed": 50,
+            "accuracy": 90,
+            "cooldown": 3,
+            "hit": [
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Damage": {
+                            "power": 60,
+                            "critical": 0
+                        }
+                    }
+                },
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Stun": 50
+                    }
+                }
+            ],
+            "miss": []
+        }
+    ]
+  },
+  "18": {
+    "name": "AMMA 18",
+    "stats": {
+        "strength": 46,
+        "vitality": 43,
+        "dexterity": 47,
+        "luck": 60
+    },
+    "generated_stats": {
+      "strength": 1,
+      "vitality": 1,
+      "dexterity": 1,
+      "luck": 5
+    },
+    "attacks": [
+        {
+            "tag": "Sword Attack"
+        },
+        {
+            "tag": "Shield Punch"
+        },
+        {
+            "name": "Jumping Punch",
+            "speed": 70,
+            "accuracy": 75,
+            "cooldown": 3,
+            "hit": [
+              {
+                "target": "Opponent",
+                "affect": {
+                  "Damage": {
+                    "power": 60,
+                    "critical": 0
+                  }
+                }
+              },
+              {
+                "target": "Opponent",
+                "affect": {
+                  "Stun": 40
+                }
+              }
+            ],
+            "miss": []
+        },
+        {
+            "name": "Flying Hussar",
+            "speed": 40,
+            "accuracy": 70,
+            "cooldown": 3,
+            "hit": [
+                {
+                    "target": "Opponent",
+                    "affect": {
+                        "Damage": {
+                            "power": 80,
+                            "critical": 10
+                        }
+                    }
+                }
+            ],
+            "miss": []
+        }
+    ]
+  }
 }
