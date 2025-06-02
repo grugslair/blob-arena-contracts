@@ -20,6 +20,7 @@ impl ParentRolesImpl of ParentRoles {
             Role::ArcadeSetter => array![Role::Manager, Role::Admin],
             Role::AchievementSetter => array![Role::Manager, Role::Admin],
             Role::Tester => array![],
+            Role::CollectionMinter => array![Role::Manager, Role::Admin],
         }
     }
 }

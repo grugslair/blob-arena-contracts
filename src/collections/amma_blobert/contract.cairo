@@ -113,6 +113,14 @@ trait IAmmaBlobertFighters<TContractState> {
     /// # Arguments
     /// * `amount` - New total number of fighters to set
     fn set_amount_of_fighters(ref self: TContractState, amount: u32);
+
+    /// Mints a Blobert token without unlock
+    /// # Arguments
+    /// * `player` - Contract address of the player to mint the token for
+    /// * `fighter` - ID of the fighter to mint
+    /// # Returns
+    /// * `u256` - The token ID of the minted Blobert
+    fn admin_mint(ref self: TContractState, player: ContractAddress, fighter: u32) -> u256;
 }
 
 
@@ -283,6 +291,14 @@ mod amma_blobert_actions {
             let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
             storage.assert_caller_has_permission(Role::AmmaBlobertAdmin);
             self.fighters.write(amount);
+        }
+
+        fn admin_mint(ref self: ContractState, player: ContractAddress, fighter: u32) -> u256 {
+            let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
+            storage.assert_caller_has_permission(Role::CollectionMinter);
+            let token_id = uuid().into();
+            storage.set_blobert_token(token_id, player, TokenAttributes::Custom(fighter.into()));
+            return_value(token_id)
         }
     }
 }
