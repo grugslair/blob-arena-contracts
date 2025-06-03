@@ -95,7 +95,7 @@
         "name": "Osoto Gari",
         "speed": 45,
         "accuracy": 80,
-        "cooldown": 10,
+        "cooldown": 5,
         "hit": [
           {
             "target": "Opponent",
@@ -192,7 +192,7 @@
         "name": "White Company",
         "speed": 40,
         "accuracy": 90,
-        "cooldown": 10,
+        "cooldown": 5,
         "hit": [
           {
             "target": "Opponent",
@@ -296,7 +296,7 @@
         "name": "Spin Attack",
         "speed": 50,
         "accuracy": 90,
-        "cooldown": 10,
+        "cooldown": 5,
         "hit": [
           {
             "target": "Opponent",
@@ -340,7 +340,7 @@
             "target": "Opponent",
             "affect": {
               "Damage": {
-                "power": 30,
+                "power": 40,
                 "critical": 10
               }
             }
@@ -348,10 +348,10 @@
           {
             "target": "Opponent",
             "affect": {
-              "Stats": {
+              "Stats": { 
                 "strength": 0,
                 "vitality": 0,
-                "dexterity": -10,
+                "dexterity": -20,
                 "luck": -10
               }
             }
@@ -363,7 +363,7 @@
         "name": "Swag",
         "speed": 65,
         "accuracy": 100,
-        "cooldown": 10,
+        "cooldown": 5,
         "hit": [
           {
             "target": "Player",
@@ -530,7 +530,7 @@
         "name": "Comeback Kid",
         "speed": 50,
         "accuracy": 100,
-        "cooldown": 10,
+        "cooldown": 5,
         "hit": [
           {
             "target": "Player",
@@ -564,7 +564,7 @@
       {
         "name": "Weapon Master",
         "speed": 40,
-        "accuracy": 80,
+        "accuracy": 90,
         "cooldown": 1,
         "hit": [
           {
@@ -572,7 +572,7 @@
             "affect": {
               "Damage": {
                 "power": 40,
-                "critical": 30
+                "critical": 20
               }
             }
           }
@@ -582,7 +582,7 @@
       {
         "name": "Superman Shield Punch",
         "speed": 60,
-        "accuracy": 75,
+        "accuracy": 80,
         "cooldown": 3,
         "hit": [
           {
@@ -597,7 +597,7 @@
           {
             "target": "Opponent",
             "affect": {
-              "Stun": 30
+              "Stun": 20
             }
           }
         ],
@@ -606,8 +606,8 @@
       {
         "name": "People's Elbow",
         "speed": 30,
-        "accuracy": 70,
-        "cooldown": 10,
+        "accuracy": 75,
+        "cooldown": 5,
         "hit": [
           {
             "target": "Opponent",
@@ -621,7 +621,7 @@
           {
             "target": "Opponent",
             "affect": {
-              "Stun": 50
+              "Stun": 40
             }
           }
         ],
@@ -708,7 +708,7 @@
         "name": "Knight of Wakanda",
         "speed": 80,
         "accuracy": 100,
-        "cooldown": 10,
+        "cooldown": 5,
         "hit": [
           {
             "target": "Player",
@@ -830,7 +830,7 @@
         "name": "Steal Weapon",
         "speed": 80,
         "accuracy": 65,
-        "cooldown": 10,
+        "cooldown": 5,
         "hit": [
           {
             "target": "Opponent",
@@ -903,7 +903,7 @@
             "name": "Steel Sonata",
             "speed": 70,
             "accuracy": 80,
-            "cooldown": 10,
+            "cooldown": 5,
             "hit": [
                 {
                     "target": "Opponent",
@@ -946,7 +946,7 @@
                       "Stats": {
                           "strength": 0,
                           "vitality": 0,
-                          "dexterity": 30,
+                          "dexterity": 20,
                           "luck": 0
                       }
                   }
@@ -1020,7 +1020,7 @@
             "name": "One Shot",
             "speed": 40,
             "accuracy": 60,
-            "cooldown": 10,
+            "cooldown": 5,
             "hit": [
                 {
                     "target": "Opponent",
@@ -1245,7 +1245,7 @@
                     "target": "Opponent",
                     "affect": {
                         "Damage": {
-                            "power": 50,
+                            "power": 45,
                             "critical": 0
                         }
                     }
@@ -1408,8 +1408,8 @@
         },
         {
             "name": "Karate Kick",
-            "speed": 55,
-            "accuracy": 75,
+            "speed": 75,
+            "accuracy": 80,
             "cooldown": 2,
             "hit": [
                 {
@@ -1417,14 +1417,14 @@
                     "affect": {
                         "Damage": {
                             "power": 50,
-                            "critical": 0
+                            "critical": 20
                         }
                     }
                 },
                 {
                     "target": "Opponent",
                     "affect": {
-                        "Stun": 25
+                        "Stun": 0
                     }
                 }
             ],
