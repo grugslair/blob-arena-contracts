@@ -691,7 +691,7 @@
             "affect": {
               "Damage": {
                 "power": 60,
-                "critical": 10
+                "critical": 0
               }
             }
           },
