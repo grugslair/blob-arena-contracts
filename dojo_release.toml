@@ -1,6 +1,6 @@
 [world]
-name = "blob_arena-0.13"
-seed = "blob-arena-0.13"
+name = "blob_arena-0.14"
+seed = "blob-arena-0.14"
 
 
 [env]
@@ -14,10 +14,11 @@ keystore_path = "/home/ben/sn-accounts/0x049848982e9b089a1f4eb5e1cd12ab58be55feb
 ]
 
 [namespace]
-default = "blob_arena"
 mappings = { blob_arena = [
     "CombatantToken",
     "Tag",
+    "AttackUses",
+    "PvpsCompleted",
 ], blobert = [
     "blobert_actions",
     "BlobertItem",
@@ -27,12 +28,15 @@ mappings = { blob_arena = [
     "free_blobert_actions",
     "LastMint",
     "BlobertToken",
+    "AmountTokensOwned",
 ], amma_blobert = [
     "amma_blobert_actions",
     "BlobertToken",
-    "BlobertItem",
     "AttackSlot",
-    "BlobertItemName",
+    "FirstTokenMinted",
+    "ArcadeAttemptMinted",
+    "AmmaFighter",
+    "AmmaFighterName",
 ], arcade = [
     "arcade_actions",
     "Tag",
@@ -50,6 +54,16 @@ mappings = { blob_arena = [
     "ArcadeStageGame",
     "ArcadeChallengeRespawn",
     "ArcadeCurrentChallengeAttempt",
+    "AttackUses",
+], arcade_amma = [
+    "arcade_amma_actions",
+    "AmmaArcadeStageOpponent",
+    "AmmaArcadeChallengeAttempt",
+    "CombatantToken",
+    "ArcadeGame",
+    "ArcadeStageGame",
+    "ArcadeChallengeRespawn",
+    "AttackUses",
 ], ba_permissions = [
     "Permission",
 ], achievements = [
@@ -57,6 +71,7 @@ mappings = { blob_arena = [
     "TrophyProgression",
 ] }
 
+default = "blob_arena"
 [writers]
 "blob_arena-Lobby" = ["blob_arena-lobby_actions"]
 "blob_arena-LobbyCreated" = ["blob_arena-lobby_actions"]
@@ -72,30 +87,40 @@ mappings = { blob_arena = [
     "blob_arena-pvp_actions",
 ]
 
+"blob_arena-AttackUses" = ["blob_arena-pvp_actions"]
+"blob_arena-PvpsCompleted" = ["blob_arena-pvp_actions"]
 
 "blob_arena-CombatantState" = [
     "blob_arena-pvp_actions",
     "blob_arena-lobby_actions",
     "arcade-arcade_actions",
+    "arcade_amma-arcade_amma_actions",
 ]
 
 "blob_arena-AttackAvailable" = [
     "blob_arena-lobby_actions",
     "blob_arena-pvp_actions",
     "arcade-arcade_actions",
+    "arcade_amma-arcade_amma_actions",
 ]
 
 "blob_arena-CombatState" = [
     "blob_arena-pvp_actions",
     "blob_arena-lobby_actions",
     "arcade-arcade_actions",
+    "arcade_amma-arcade_amma_actions",
 ]
 
 "blob_arena-AttackLastUsed" = [
     "blob_arena-pvp_actions",
     "arcade-arcade_actions",
+    "arcade_amma-arcade_amma_actions",
 ]
-"blob_arena-RoundResult" = ["blob_arena-pvp_actions", "arcade-arcade_actions"]
+"blob_arena-RoundResult" = [
+    "blob_arena-pvp_actions",
+    "arcade-arcade_actions",
+    "arcade_amma-arcade_amma_actions",
+]
 
 "blob_arena-Commitment" = ["blob_arena-pvp_actions"]
 "blob_arena-LastTimestamp" = ["blob_arena-pvp_actions"]
@@ -123,13 +148,18 @@ mappings = { blob_arena = [
     "amma_blobert-amma_blobert_actions",
 ]
 
-"ba_permissions-Permission" = ["blob_arena-admin_actions"]
+"arcade-ArcadeFreeGames" = ["arcade_amma-arcade_amma_actions"]
+"arcade-ArcadePaidGames" = ["arcade_amma-arcade_amma_actions"]
+"arcade-ArcadeCurrentChallengeAttempt" = ["arcade_amma-arcade_amma_actions"]
 
-"achievements-TrophyCreation" = ["blob_arena-admin_actions"]
+"ba_permissions-Permission" = ["blob_arena-game_actions"]
+
+"achievements-TrophyCreation" = ["blob_arena-game_actions"]
 "achievements-TrophyProgression" = [
     "blob_arena-lobby_actions",
     "blob_arena-pvp_actions",
     "arcade-arcade_actions",
+    "arcade_amma-arcade_amma_actions",
 ]
 
 "blobert" = ["blobert-blobert_actions"]
@@ -137,3 +167,4 @@ mappings = { blob_arena = [
 "amma_blobert" = ["amma_blobert-amma_blobert_actions"]
 
 "arcade" = ["arcade-arcade_actions"]
+"arcade_amma" = ["arcade_amma-arcade_amma_actions"]
