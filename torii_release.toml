@@ -1,0 +1,13 @@
+# The World address to index.
+world_address = "0x2d26295d6c541d64740e1ae56abc079b82b22c35ab83985ef8bd15dc0f9edfb"
+
+# Default RPC URL configuration
+rpc = "https://api.cartridge.gg/rpc/starknet"
+
+# Database configuration
+# Optional: If not specified, uses in-memory database
+db_dir = "torii/release"
+
+
+[sql]
+historical = ["achievements-TrophyProgression"]
