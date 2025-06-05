@@ -17,8 +17,8 @@ const ARCADE_NAMESPACE_HASH: felt252 = bytearray_hash!("arcade");
 const OPPONENT_TAG_GROUP: felt252 = 'arcade-opponent';
 const CHALLENGE_TAG_GROUP: felt252 = 'arcade-challenge';
 const ARCADE_CHALLENGE_TIME_LIMIT: u64 = SECONDS_2_HOURS; // 2 hours
-const ARCADE_CHALLENGE_MAX_RESPAWNS: u32 = 2;
-const ARCADE_CHALLENGE_GAME_ENERGY_COST: u64 = SECONDS_8_HOURS;
+const ARCADE_CHALLENGE_MAX_RESPAWNS: u32 = 99;
+const ARCADE_CHALLENGE_GAME_ENERGY_COST: u64 = 60 * 3; // 3 minutes
 const ARCADE_CHALLENGE_MAX_ENERGY: u64 = SECONDS_24_HOURS;
 
 #[derive(Drop, Copy, Introspect, PartialEq, Serde)]
