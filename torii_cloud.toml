@@ -2,7 +2,7 @@
 world_address = "0x1f4cbda175e5f687c386e096ea14afd6ef24b830578ae36b3e93a3b65e3198c"
 
 # Default RPC URL configuration
-rpc = "https://dev.grugslair.com/ba-katana/"
+rpc = "https://dev.grugslair.com/ba/katana/"
 
 # Database configuration
 # Optional: If not specified, uses in-memory database
