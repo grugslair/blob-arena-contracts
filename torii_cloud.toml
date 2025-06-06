@@ -1,8 +1,8 @@
 # The World address to index.
-world_address = "0x7b13c367beb0ae350a651658fddd0c977a209144a708224fc041f026cea1b7"
+world_address = "0x1f4cbda175e5f687c386e096ea14afd6ef24b830578ae36b3e93a3b65e3198c"
 
 # Default RPC URL configuration
-rpc = "https://dev.grugslair.com/ba-katana/"
+rpc = "https://dev.grugslair.com/ba/katana/"
 
 # Database configuration
 # Optional: If not specified, uses in-memory database
