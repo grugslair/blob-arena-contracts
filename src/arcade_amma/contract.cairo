@@ -260,7 +260,7 @@ mod arcade_amma_actions {
             assert(get_caller_address() == player_stage.player, 'Not player');
             assert(player_stage.stage == AMMA_ARCADE_GENERATED_STAGES - 1, 'Not last stage');
             let mut randomness = felt252_to_u128(pseudo_randomness());
-            let fighter = 1 + randomness.get_value(fighters.try_into().unwrap());
+            let fighter = randomness.get_value(fighters.try_into().unwrap());
             store.set_amma_round_opponent(attempt_id, 9, fighter.try_into().unwrap());
         }
 
