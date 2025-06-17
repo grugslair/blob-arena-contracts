@@ -2053,7 +2053,7 @@
     },
     {
       "address": "0x674562426ddac305e5c53ed51004b7fce77bde3dc9a1ce562e1f6093e4f33c6",
-      "class_hash": "0x21b736e65c20ad463236141412b5926ecac21b0c00cddad01df2b5a522dd13e",
+      "class_hash": "0x3ec1776b5d10161e7d58f2ba6ae1950b8d05cbd396a4651a2981850220dc582",
       "abi": [
         {
           "type": "impl",
@@ -2486,6 +2486,50 @@
               "outputs": [
                 {
                   "type": "core::array::Array::<core::felt252>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "current_challenge_attempt_id",
+              "inputs": [
+                {
+                  "name": "player",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "collection_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "callers_current_challenge_attempt_id",
+              "inputs": [
+                {
+                  "name": "collection_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::felt252"
                 }
               ],
               "state_mutability": "view"
