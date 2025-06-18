@@ -140,6 +140,28 @@ trait IArcade<TContractState> {
     /// # Returns
     /// * `Array<felt252>` - The attacks of the opponent
     fn opponent_attacks(self: @TContractState, opponent_id: felt252) -> Array<felt252>;
+    /// Retrieves the current challenge attempt ID for a player
+    /// # Arguments
+    /// * `player` - The contract address of the player
+    /// * `collection_address` - The contract address of the NFT collection
+    /// * `token_id` - The token ID of the NFT being used
+    /// # Returns
+    /// * `felt252` - The current challenge attempt ID for the player
+    fn current_challenge_attempt_id(
+        self: @TContractState,
+        player: ContractAddress,
+        collection_address: ContractAddress,
+        token_id: u256,
+    ) -> felt252;
+    /// Retrieves the current challenge attempt ID for a caller
+    /// # Arguments
+    /// * `collection_address` - The contract address of the NFT collection
+    /// * `token_id` - The token ID of the NFT being used
+    /// # Returns
+    /// * `felt252` - The current challenge attempt ID for the caller
+    fn callers_current_challenge_attempt_id(
+        self: @TContractState, collection_address: ContractAddress, token_id: u256,
+    ) -> felt252;
 }
 
 /// Interface for managing Arcade (Player vs Environment) administrative functions.
@@ -360,6 +382,27 @@ mod arcade_actions {
 
         fn opponent_token(self: @ContractState, opponent_id: felt252) -> ArcadeOpponent {
             self.get_arcade_storage().get_arcade_opponent(opponent_id)
+        }
+
+        fn current_challenge_attempt_id(
+            self: @ContractState,
+            player: ContractAddress,
+            collection_address: ContractAddress,
+            token_id: u256,
+        ) -> felt252 {
+            self
+                .get_arcade_storage()
+                .get_arcade_current_challenge_attempt(player, collection_address, token_id)
+        }
+
+        fn callers_current_challenge_attempt_id(
+            self: @ContractState, collection_address: ContractAddress, token_id: u256,
+        ) -> felt252 {
+            self
+                .get_arcade_storage()
+                .get_arcade_current_challenge_attempt(
+                    get_caller_address(), collection_address, token_id,
+                )
         }
     }
 
