@@ -126,16 +126,16 @@ fn get_amount_of_fighters(contract_address: ContractAddress) -> u32 {
 
 #[starknet::contract]
 mod AmmaBlobert {
+    use core::poseidon::poseidon_hash_span;
     use openzeppelin_access::ownable::OwnableComponent;
     use openzeppelin_introspection::src5::SRC5Component;
     use openzeppelin_token::erc721::{ERC721Component, ERC721HooksEmptyImpl, interface};
-    use openzeppelin_upgrades::interface::IUpgradeable;
     use openzeppelin_upgrades::UpgradeableComponent;
-    use starknet::{ClassHash, ContractAddress, get_caller_address};
-    use core::poseidon::poseidon_hash_span;
-    use starknet::{ContractAddress, get_caller_address, get_contract_address};
+    use openzeppelin_upgrades::interface::IUpgradeable;
     use starknet::storage::Map;
-    use crate::{erc721, erc721::ERC721Internal};
+    use starknet::{ClassHash, ContractAddress, get_caller_address, get_contract_address};
+    use crate::erc721;
+    use crate::erc721::ERC721Internal;
     component!(path: ERC721Component, storage: erc721, event: ERC721Event);
     component!(path: SRC5Component, storage: src5, event: SRC5Event);
     component!(path: OwnableComponent, storage: ownable, event: OwnableEvent);
@@ -168,6 +168,7 @@ mod AmmaBlobert {
         ownable: OwnableComponent::Storage,
         #[substorage(v0)]
         upgradeable: UpgradeableComponent::Storage,
+        fighters: Map<felt252, bool>,
         token_fighters: Map<u256, felt252>,
     }
 

@@ -8,7 +8,7 @@ experimental-features = ["associated_item_constraints"]
 sierra-replace-ids = true
 
 [dependencies]
-dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.5.0" }
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.6.0-alpha.0" }
 cubit = { git = "https://github.com/bengineer42/cubit", tag = "cairo--2.8.0" }
 openzeppelin_token = { git = "https://github.com/OpenZeppelin/cairo-contracts", tag = "v1.0.0" }
 openzeppelin_access = { git = "https://github.com/OpenZeppelin/cairo-contracts", tag = "v1.0.0" }
