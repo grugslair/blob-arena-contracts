@@ -194,7 +194,7 @@ impl AmmaArcadeImpl of AmmaArcadeTrait {
         attempt.phase.assert_active();
         let game_id = self.get_arcade_stage_game_id(attempt_id, attempt.stage);
         let won = match self.get_arcade_game_phase(game_id) {
-            ArcadePhase::PlayerWon => { AMMA_ARCADE_GENERATED_STAGES >= attempt.stage },
+            ArcadePhase::PlayerWon => { AMMA_ARCADE_GENERATED_STAGES <= attempt.stage },
             ArcadePhase::PlayerLost => false,
             ArcadePhase::Active => {
                 self.set_arcade_ended(game_id, false);

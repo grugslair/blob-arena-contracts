@@ -1,8 +1,8 @@
 {
   "world": {
     "class_hash": "0x4c60dc46a8ca8bb47675b7b914053cef769afbf0e340523187336b72bd71d1f",
-    "address": "0x46893d455bb605381ad820ab61e739badaca9c524c3ec47fe7edec71f2d26d8",
-    "seed": "blob-arena-rc-0.14-1",
+    "address": "0x2d26295d6c541d64740e1ae56abc079b82b22c35ab83985ef8bd15dc0f9edfb",
+    "seed": "blob-arena-0.14",
     "name": "blob_arena-0.14",
     "entrypoints": [
       "uuid",
@@ -1328,8 +1328,8 @@
   },
   "contracts": [
     {
-      "address": "0x4ca06d88661dff36adc0d5bcb441c1327ef918dc38d062c97cd1c107101c263",
-      "class_hash": "0x28db504091791ef71656159c2f0e324fcf726cfe8a376d7dd185138b5f9cb47",
+      "address": "0x325921b454d1831ba13ee61dd3148cbd4b7dfeec2449ab60ce2d8bb09b7218e",
+      "class_hash": "0x2886f37293bb42d9ca86d47c07136e8f8cd88cb4523f42cd86c4895c916e1bf",
       "abi": [
         {
           "type": "impl",
@@ -1902,6 +1902,26 @@
               ],
               "outputs": [],
               "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "admin_mint",
+              "inputs": [
+                {
+                  "name": "player",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "fighter",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u256"
+                }
+              ],
+              "state_mutability": "external"
             }
           ]
         },
@@ -2027,12 +2047,13 @@
         "set_fighter_attacks",
         "set_fighter_name",
         "set_amount_of_fighters",
+        "admin_mint",
         "upgrade"
       ]
     },
     {
-      "address": "0x79bf5de8f75a76f560c20ccbfc0d53d4f9d328baf24e40ef64fb1351da22651",
-      "class_hash": "0x653fe1c338ca377ff8c48da072fb935d7e2813a7927fe1b07b5154104b64866",
+      "address": "0x674562426ddac305e5c53ed51004b7fce77bde3dc9a1ce562e1f6093e4f33c6",
+      "class_hash": "0x3ec1776b5d10161e7d58f2ba6ae1950b8d05cbd396a4651a2981850220dc582",
       "abi": [
         {
           "type": "impl",
@@ -2465,6 +2486,50 @@
               "outputs": [
                 {
                   "type": "core::array::Array::<core::felt252>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "current_challenge_attempt_id",
+              "inputs": [
+                {
+                  "name": "player",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "collection_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "callers_current_challenge_attempt_id",
+              "inputs": [
+                {
+                  "name": "collection_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::felt252"
                 }
               ],
               "state_mutability": "view"
@@ -3038,8 +3103,8 @@
       ]
     },
     {
-      "address": "0x4b7d76252216d332172aa83f6f5e5ad2ebb53e48b173f4a830e06ca18a32819",
-      "class_hash": "0x70841fe242ee2de7eab3f47c177de30822ce4f5e609fe34ce1110c46bf0af12",
+      "address": "0x23fcd0927479d5d1c2b1ff8bde1c6689616669c9bee66f5153b26dc3a33b282",
+      "class_hash": "0x3681e48229c3209f4f21f61351267f38cbac7a53cd66f718eba3ac938175526",
       "abi": [
         {
           "type": "impl",
@@ -3611,8 +3676,8 @@
       ]
     },
     {
-      "address": "0x78178da52cb1f9fd6458f197186fa16f1872a91f56f05ab6b11068d4855c7ee",
-      "class_hash": "0x2397cf66e244500d18cb7abfb49a8a9c94134aa1d884577ef8d823ca0663c2f",
+      "address": "0xd8a5b999fd610c1b7133e17a656206be7f7f722429e0dd5caf4eb68fe3aeda",
+      "class_hash": "0x185574906c1fda8d6c97b0fff3398bc172f8b6874445ec33d7518c978642c03",
       "abi": [
         {
           "type": "impl",
@@ -3722,6 +3787,10 @@
             },
             {
               "name": "Tester",
+              "type": "()"
+            },
+            {
+              "name": "CollectionMinter",
               "type": "()"
             }
           ]
@@ -4785,7 +4854,7 @@
       ]
     },
     {
-      "address": "0x454e2fb314128ff16dc84f56c0b5ed65d7fc4f650dc81031f57ceb33ea84a8",
+      "address": "0x1bf9ad4efcfc9cdeefd3914960cd1e6ed9fd9e7d6c7a86243563b406ba462a1",
       "class_hash": "0x231459a8346e8da505ea328404f32186d14c2ecf122532694b44f51f24706f8",
       "abi": [
         {
@@ -5109,8 +5178,8 @@
       ]
     },
     {
-      "address": "0x45a71769d7b79221309e44aa3f31291e5674add28a69e9d5d76e8efcda596d8",
-      "class_hash": "0x3e68d410b22ec764cd66c36d34949e19a51270da50520be310597c46a1cbfd6",
+      "address": "0x4a242618b91bbb259d264fca06637947fda4caae1c9925b9f65188c1a7d7006",
+      "class_hash": "0x52cc1620db83c8efdb160f8b09035dd7d8c056299baad8587b8deb1f2958dba",
       "abi": [
         {
           "type": "impl",
@@ -5584,8 +5653,8 @@
       ]
     },
     {
-      "address": "0x120f9d297f980a6b39abdf9fc14016b3b41f42bf62a53a5f2821acfeaee4ca2",
-      "class_hash": "0x650983d0365349ea7344171c4ac9ee5d8c6e231dd36f68c8a45b5e947a49e03",
+      "address": "0x1e504ea3737de2a383b4cc42a13485f5fb1ecd20aea9bd4b10dbd7bff15fc3a",
+      "class_hash": "0x4ac337fb651fb83449344100e0d58df02dad00f018e8e8d4b9a79ce5b876ccd",
       "abi": [
         {
           "type": "impl",
@@ -6376,8 +6445,8 @@
       ]
     },
     {
-      "address": "0x5a9e13fa4fa14d9af3a9cad4242ee9c324eab24ae59294a525844d5957a4da5",
-      "class_hash": "0x9d04e9f11ae8763feb7b828bd3fbe0e1654957278258855d6239769dd7f509",
+      "address": "0x3d849c6271bdf30998bdba5e69100ff94f7d580d14c055fd771f58545552644",
+      "class_hash": "0x3381971ef8a027aa4f5b434364997f17a94258db2d6c26d292a685c47f864b5",
       "abi": [
         {
           "type": "impl",
@@ -6537,6 +6606,73 @@
                 }
               ],
               "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IFreeBlobertAdminImpl",
+          "interface_name": "blob_arena::collections::free_blobert::contract::IFreeBlobertAdmin"
+        },
+        {
+          "type": "interface",
+          "name": "blob_arena::collections::free_blobert::contract::IFreeBlobertAdmin",
+          "items": [
+            {
+              "type": "function",
+              "name": "admin_mint",
+              "inputs": [
+                {
+                  "name": "player",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "attributes",
+                  "type": "blob_arena::collections::attributes::TokenAttributes"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u256"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "admin_mint_seed",
+              "inputs": [
+                {
+                  "name": "player",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "background",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "armour",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "jewelry",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "mask",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "weapon",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u256"
+                }
+              ],
+              "state_mutability": "external"
             }
           ]
         },
@@ -6764,6 +6900,8 @@
         "dojo_init",
         "mint",
         "burn",
+        "admin_mint",
+        "admin_mint_seed",
         "upgrade"
       ]
     }
@@ -6916,7 +7054,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x30b5b07c7e3f61fd8fda5473fdb46297304fa55e2fb4c3630c8b65a4c8adaff",
+      "class_hash": "0x5b4fc7f45d58a41c12ba79ada058b3347d2e9a5c67faf308bf9b99c809c05b2",
       "tag": "ba_permissions-Permission",
       "selector": "0x6aa131be59e940caa3e7d320c269ef4762f993a310327ccf3b3e03f6451aa44"
     },

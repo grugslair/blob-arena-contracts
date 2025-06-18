@@ -29,23 +29,17 @@
     ]
   },
   "release": {
-    "Admin": [],
     "Manager": [
       "0x0566295fc2c33edf6c4eb2e5c5fe0b58a062584ced06968e602eba0c0d3dc15f",
       "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc",
       "0x02e1bbc7ab6d4928ba0f741572b5ea2b44f65031ea2ac23685843bfc11b7d3b7",
       "0x07672e5774a79d2718075182a2e3c51c86d2b559b524f5ef05de99ae4b62676d",
       "0x050d9aaeb185e3075241dd22e021f97b29475f9522739aace5d82f23a28852f7",
-      "0x077714ce5e56b1b9a369541b386a74a321a96893a8c59b009ed2ee3d598db713"
+      "0x077714ce5e56b1b9a369541b386a74a321a96893a8c59b009ed2ee3d598db713",
+      "0x048401fadd150099551f652572b69d6530c7407051de0dbd8c371c0af3177245"
     ],
-    "AmmaAdmin": [],
-    "ClassicBlobertAdmin": [],
-    "PvpCreator": [],
     "ArcadeMinter": [
       "0x03474353878b236171e4c08e52465d9F2cf6C3BaBf726cC292ff1566E68612C3"
-    ],
-    "ArcadeFreeMinter": [],
-    "ArcadePaidMinter": [],
-    "ArcadeSetter": []
+    ]
   }
 }
