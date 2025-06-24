@@ -1,6 +1,6 @@
 import { hash, byteArray, CallData } from "starknet";
 
-const nRandomElements = (array, n) => {
+export const nRandomElements = (array, n) => {
   if (n > array.length) {
     throw new Error("n is larger than the array length");
   }
