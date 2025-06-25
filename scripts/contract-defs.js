@@ -20,3 +20,7 @@ export const getAttackSlotsEntrypoint = "get_attack_slots";
 export const setAmountOfFightersEntrypoint = "set_amount_of_fighters";
 export const setFighterEntrypoint = "set_fighter";
 export const setCollectionAddressEntrypoint = "set_collection_address";
+export const setPragmaContractAddressEntrypoint = "set_pragma_contract_address";
+export const setPricePairEntrypoint = "set_price_pair";
+export const setTokenMicroUsdPriceEntrypoint = "set_token_micro_usd_price";
+export const setWalletAddressEntrypoint = "set_wallet_address";
