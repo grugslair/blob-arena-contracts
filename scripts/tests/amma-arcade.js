@@ -50,6 +50,7 @@ const generateBoss = async (caller, challenge) => {
       version: 3,
     }
   );
+  caller.waitForTransaction(transaction_hash);
   challenge.bossGenerated = true;
 };
 

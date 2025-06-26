@@ -182,6 +182,7 @@ export const runArcadeChallengeGames = async (caller, challenges) => {
     await Promise.all(attackCalls),
     { version: 3 }
   );
+  await caller.waitForTransaction(roundsTxHash);
 
   await Promise.all(activeChallenges.map((c) => c.updateGamePhase()));
   return roundsTxHash;
@@ -213,20 +214,9 @@ export const mintPaidArcadeGames = async (
   player,
   amount
 ) => {
-  await account.execute(
+  const { transaction_hash } = await account.execute(
     contract.populate("mint_paid_games", { player, amount }),
     { version: 3 }
   );
-};
-
-export const mintFreeArcadeGames = async (
-  account,
-  contract,
-  player,
-  amount
-) => {
-  await account.execute(
-    contract.populate("mint_free_games", { player, amount }),
-    { version: 3 }
-  );
+  await account.waitForTransaction(transaction_hash);
 };
