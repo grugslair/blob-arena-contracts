@@ -24,7 +24,7 @@ export const parseAchievement = (id, data) => {
 };
 
 export const makeAchievementsCalls = async (account_manifest) => {
-  const achievements_data = loadJson("../post-deploy-config/achievements.json");
+  const achievements_data = loadJson("./post-deploy-config/achievements.json");
   const contract = await account_manifest.getContract(adminContractTag);
   let achievements = Object.entries(achievements_data).map(([id, data]) =>
     parseAchievement(id, data)

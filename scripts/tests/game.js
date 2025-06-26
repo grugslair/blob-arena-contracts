@@ -1,5 +1,6 @@
 import { hash, num } from "starknet";
 import { DojoParser, namespaceNameToHash } from "../dojo.js";
+import { declareContract } from "../stark-utils.js";
 
 const roundResultHash = namespaceNameToHash("blob_arena-RoundResult");
 const combatantStateHash = namespaceNameToHash("blob_arena-CombatantState");
@@ -9,6 +10,16 @@ const combatantStatePath = "blob_arena::combatants::components::CombatantState";
 export const dojoNamespaceMap = {
   [roundResultHash]: num.toHex(hash.starknetKeccak("RoundResult")),
   [combatantStateHash]: num.toHex(hash.starknetKeccak("CombatantState")),
+};
+
+export const declareAccountContract = async (account_manifest) => {
+  const contractPath = `./target/${account_manifest.profile}/blob_arena_oz_account.contract_class.json`;
+  const casmPath = `./target/${account_manifest.profile}/blob_arena_oz_account.compiled_contract_class.json`;
+  return await declareContract(
+    account_manifest.account,
+    contractPath,
+    casmPath
+  );
 };
 
 export const printRoundResults = (game) => {
