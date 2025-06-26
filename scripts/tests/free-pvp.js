@@ -11,11 +11,12 @@ import { runPvpBattles } from "./pvp.js";
 import { bigIntToHex } from "web3-eth-accounts";
 import { mintFreeTokensWithAttacks } from "./classic-blobert.js";
 import { getAttacks, makeAttack } from "./attacks.js";
-import { dojoNamespaceMap, printRoundResults } from "./game.js";
+import {
+  dojoNamespaceMap,
+  printRoundResults,
+  declareAccountContract,
+} from "./game.js";
 import { DojoParser } from "../dojo.js";
-
-const accountClassHash =
-  "0x07489e371db016fcd31b78e49ccd201b93f4eab60af28b862390e800ec9096e2";
 
 const main = async () => {
   const account_manifest = await loadAccountManifestFromCmdArgs();
@@ -28,6 +29,8 @@ const main = async () => {
   const adminContract = await account_manifest.getContract(adminContractTag);
   const worldContract = await account_manifest.getWorldContract();
   console.log("Deploying new accounts");
+  const accountClassHash = await declareAccountContract(account_manifest);
+
   const [account1, account2] = await newAccounts(account, accountClassHash, 2);
   console.log("Accounts deployed");
 
