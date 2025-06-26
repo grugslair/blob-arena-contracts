@@ -183,8 +183,14 @@ trait IArcade<TContractState> {
     /// Purchases game tokens for the caller
     /// # Arguments
     /// * `erc20_address` - The contract address of the ERC20 token used for payments
+    /// * `receiver` - The contract address of the receiver 0x0 for the caller
     /// * `amount` - The number of game tokens to purchase
-    fn purchase_game_tokens(ref self: TContractState, erc20_address: ContractAddress, amount: u32);
+    fn purchase_game_tokens(
+        ref self: TContractState,
+        erc20_address: ContractAddress,
+        receiver: ContractAddress,
+        amount: u32,
+    );
 }
 
 /// Interface for managing Arcade (Player vs Environment) administrative functions.
@@ -476,14 +482,20 @@ mod arcade_actions {
         }
 
         fn purchase_game_tokens(
-            ref self: ContractState, erc20_address: ContractAddress, amount: u32,
+            ref self: ContractState,
+            erc20_address: ContractAddress,
+            mut receiver: ContractAddress,
+            amount: u32,
         ) {
-            let price = self.get_tokens_price(erc20_address, amount);
             let caller = get_caller_address();
+            if receiver.is_zero() {
+                receiver = caller;
+            }
+            let price = self.get_tokens_price(erc20_address, amount);
             ERC20ABIDispatcher { contract_address: erc20_address }
                 .transfer_from(caller, self.wallet_address.read(), price);
             let mut store = self.get_arcade_storage();
-            store.increase_paid_games(caller, amount);
+            store.increase_paid_games(receiver, amount);
         }
     }
 
