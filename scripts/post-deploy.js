@@ -19,7 +19,7 @@ import { makeAchievementsCalls } from "./update-achievements.js";
 
 const main = async () => {
   const account_manifest = await loadAccountManifestFromCmdArgs();
-  let arcade_data = loadJson("../post-deploy-config/arcade.json");
+  let arcade_data = loadJson("./post-deploy-config/arcade.json");
 
   const calls_metas = [
     ...(await makeRoleCalls(account_manifest)),

@@ -99,7 +99,7 @@ mod achievements {
 mod game {
     mod contract;
 }
-
+mod account;
 pub use world::{default_namespace, DefaultStorage};
 #[cfg(test)]
 mod tests {

@@ -19,11 +19,9 @@ import {
   dojoNamespaceMap,
   getRoundResults,
   printAttackResults,
+  declareAccountContract,
 } from "./game.js";
 import { randomIndexes } from "../utils.js";
-
-const accountClassHash =
-  "0x07489e371db016fcd31b78e49ccd201b93f4eab60af28b862390e800ec9096e2";
 
 const main = async () => {
   const account_manifest = await loadAccountManifestFromCmdArgs();
@@ -34,6 +32,7 @@ const main = async () => {
   const arcadeContract = await account_manifest.getContract(arcadeContractTag);
   const gameContract = await account_manifest.getContract(adminContractTag);
   const worldContract = await account_manifest.getWorldContract();
+  const accountClassHash = await declareAccountContract(account_manifest);
   const signer = await newAccount(caller, accountClassHash);
   const classicChallengeId = await arcadeContract.challenge_id_from_tag(
     "Classic Season 0"

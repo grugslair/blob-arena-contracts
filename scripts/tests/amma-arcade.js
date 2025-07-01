@@ -26,6 +26,7 @@ import {
   dojoNamespaceMap,
   getRoundResults,
   printAttackResults,
+  declareAccountContract,
 } from "./game.js";
 import { randomIndexes } from "../utils.js";
 import { ammaFighterIds, mintAmmaTokensWithAttacks } from "./amma-blobert.js";
@@ -66,6 +67,7 @@ const main = async () => {
   );
   const gameContract = await account_manifest.getContract(adminContractTag);
   const worldContract = await account_manifest.getWorldContract();
+  const accountClassHash = await declareAccountContract(account_manifest);
   const signer = await newAccount(caller, accountClassHash);
   const classicChallengeId = BigInt(0);
   await mintPaidArcadeGames(caller, arcadeAdminContract, signer.address, 1000);
