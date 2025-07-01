@@ -2053,7 +2053,7 @@
     },
     {
       "address": "0x674562426ddac305e5c53ed51004b7fce77bde3dc9a1ce562e1f6093e4f33c6",
-      "class_hash": "0x6a752bec7540e83c41e648325c90d76366554a8fa5aab14bf0ed1f24dc32ba3",
+      "class_hash": "0x1a86a97a7d334bc24e14f4b168991a381cfc8de337340167fcfa53ab5063925",
       "abi": [
         {
           "type": "impl",
@@ -2576,6 +2576,10 @@
               "inputs": [
                 {
                   "name": "erc20_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "receiver",
                   "type": "core::starknet::contract_address::ContractAddress"
                 },
                 {
