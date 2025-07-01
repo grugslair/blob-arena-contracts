@@ -527,6 +527,14 @@ impl ArcadeImpl of ArcadeTrait {
         };
     }
 
+    fn increase_number_of_paid_games<S, +WorldTrait<S>, +Drop<S>>(
+        ref self: S, player: ContractAddress, amount: u32,
+    ) {
+        let mut store = self.storage(ARCADE_NAMESPACE_HASH);
+        let games = store.get_number_of_paid_games(player);
+        store.set_number_of_paid_games(player, games + amount);
+    }
+
     fn get_arcade_attempt_game(self: @WorldStorage, attempt_id: felt252) -> ArcadeGame {
         let ArcadeAttemptGetGame { challenge, stage } = self.get_arcade_challenge_stage(attempt_id);
         self.get_arcade_game(self.get_arcade_stage_game_id(challenge, stage))

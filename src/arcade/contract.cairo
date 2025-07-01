@@ -162,6 +162,8 @@ trait IArcade<TContractState> {
     fn callers_current_challenge_attempt_id(
         self: @TContractState, collection_address: ContractAddress, token_id: u256,
     ) -> felt252;
+
+    fn unlock_game_tokens(ref self: TContractState, password: ByteArray);
 }
 
 /// Interface for managing Arcade (Player vs Environment) administrative functions.
@@ -267,12 +269,16 @@ trait IArcadeAdmin<TContractState> {
     /// Models:
     /// - ArcadePaidGames
     fn mint_paid_games(ref self: TContractState, player: ContractAddress, amount: u32);
+
+    fn set_unlockable_games(ref self: TContractState, code: felt252, amount: u32);
 }
 
 
 #[dojo::contract]
 mod arcade_actions {
+    use core::poseidon::poseidon_hash_span;
     use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
+    use starknet::storage::Map;
     use dojo::world::WorldStorage;
     use crate::arcade::{
         ArcadeTrait, ArcadeStorage, ARCADE_NAMESPACE_HASH, ArcadeStore, ArcadeOpponentInput,
@@ -287,6 +293,12 @@ mod arcade_actions {
     use crate::tags::{IdTagNew, Tag};
     use crate::erc721::erc721_owner_of;
     use crate::starknet::return_value;
+
+
+    #[storage]
+    struct Storage {
+        unlockable_tokens: Map<felt252, u32>,
+    }
 
     use super::{IArcade, IArcadeAdmin};
     #[generate_trait]
@@ -404,6 +416,17 @@ mod arcade_actions {
                     get_caller_address(), collection_address, token_id,
                 )
         }
+
+        fn unlock_game_tokens(ref self: ContractState, password: ByteArray) {
+            let mut serialised = array!['salt from mediterranean'];
+            password.serialize(ref serialised);
+            let hash = poseidon_hash_span(serialised.span());
+            let caller = get_caller_address();
+            let games = self.unlockable_tokens.read(hash);
+            assert(games.is_non_zero(), 'Code not available');
+            self.unlockable_tokens.write(hash, 0);
+            self.increase_number_of_paid_games(caller, games);
+        }
     }
 
 
@@ -467,6 +490,11 @@ mod arcade_actions {
             store.assert_caller_has_permission(Role::ArcadePaidMinter);
             let games = store.get_number_of_paid_games(player);
             store.set_number_of_paid_games(player, games + amount);
+        }
+
+        fn set_unlockable_games(ref self: ContractState, code: felt252, amount: u32) {
+            self.assert_caller_has_permission(Role::ArcadePaidMinter);
+            self.unlockable_tokens.write(code, amount);
         }
     }
 }
