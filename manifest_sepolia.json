@@ -2053,7 +2053,7 @@
     },
     {
       "address": "0x674562426ddac305e5c53ed51004b7fce77bde3dc9a1ce562e1f6093e4f33c6",
-      "class_hash": "0x1a86a97a7d334bc24e14f4b168991a381cfc8de337340167fcfa53ab5063925",
+      "class_hash": "0x5f7f3a25ec80f6840b55b3a9fb03067baaa9fe6fa1369aa38b2325f6dd42ea3",
       "abi": [
         {
           "type": "impl",
@@ -2533,6 +2533,18 @@
                 }
               ],
               "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "unlock_game_tokens",
+              "inputs": [
+                {
+                  "name": "password",
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
             },
             {
               "type": "function",
@@ -3025,6 +3037,22 @@
             },
             {
               "type": "function",
+              "name": "set_unlockable_games",
+              "inputs": [
+                {
+                  "name": "code",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
               "name": "set_pragma_contract_address",
               "inputs": [
                 {
@@ -3201,6 +3229,7 @@
         "next_challenge_round",
         "respawn_challenge",
         "end_challenge",
+        "unlock_game_tokens",
         "purchase_game_tokens",
         "new_opponent",
         "new_challenge",
@@ -3208,6 +3237,7 @@
         "set_collections",
         "set_ids_collection",
         "mint_paid_games",
+        "set_unlockable_games",
         "set_pragma_contract_address",
         "set_price_pair",
         "set_token_micro_usd_price",

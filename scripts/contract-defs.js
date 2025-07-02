@@ -24,3 +24,4 @@ export const setPragmaContractAddressEntrypoint = "set_pragma_contract_address";
 export const setPricePairEntrypoint = "set_price_pair";
 export const setTokenMicroUsdPriceEntrypoint = "set_token_micro_usd_price";
 export const setWalletAddressEntrypoint = "set_wallet_address";
+export const setUnlockableGamesEntrypoint = "set_unlockable_games";
