@@ -520,6 +520,10 @@ impl ArcadeImpl of ArcadeTrait {
         self.set_number_of_paid_games(player, games - 1);
     }
 
+    fn increase_paid_games(ref self: WorldStorage, player: ContractAddress, amount: u32) {
+        self.set_number_of_paid_games(player, self.get_number_of_paid_games(player) + amount);
+    }
+
     fn use_game(ref self: WorldStorage, player: ContractAddress, timestamp: u64) {
         let mut store = self.storage(ARCADE_NAMESPACE_HASH);
         if !store.use_free_game(player, timestamp) {

@@ -2053,7 +2053,7 @@
     },
     {
       "address": "0x674562426ddac305e5c53ed51004b7fce77bde3dc9a1ce562e1f6093e4f33c6",
-      "class_hash": "0x3ec1776b5d10161e7d58f2ba6ae1950b8d05cbd396a4651a2981850220dc582",
+      "class_hash": "0x1a86a97a7d334bc24e14f4b168991a381cfc8de337340167fcfa53ab5063925",
       "abi": [
         {
           "type": "impl",
@@ -2533,6 +2533,62 @@
                 }
               ],
               "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_game_token_micro_usd_price",
+              "inputs": [
+                {
+                  "name": "amount",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u128"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_game_tokens_price",
+              "inputs": [
+                {
+                  "name": "erc20_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u256"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "purchase_game_tokens",
+              "inputs": [
+                {
+                  "name": "erc20_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "receiver",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
             }
           ]
         },
@@ -2966,6 +3022,58 @@
               ],
               "outputs": [],
               "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_pragma_contract_address",
+              "inputs": [
+                {
+                  "name": "contract_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_price_pair",
+              "inputs": [
+                {
+                  "name": "erc20_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "price_pair",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_token_micro_usd_price",
+              "inputs": [
+                {
+                  "name": "price",
+                  "type": "core::integer::u128"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_wallet_address",
+              "inputs": [
+                {
+                  "name": "wallet_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
             }
           ]
         },
@@ -3093,12 +3201,17 @@
         "next_challenge_round",
         "respawn_challenge",
         "end_challenge",
+        "purchase_game_tokens",
         "new_opponent",
         "new_challenge",
         "set_collection",
         "set_collections",
         "set_ids_collection",
         "mint_paid_games",
+        "set_pragma_contract_address",
+        "set_price_pair",
+        "set_token_micro_usd_price",
+        "set_wallet_address",
         "upgrade"
       ]
     },
