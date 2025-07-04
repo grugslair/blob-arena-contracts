@@ -1431,6 +1431,23 @@
               "affect": {
                 "Stun": 10
               }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Stats": {
+                  "strength": 0,
+                  "vitality": 20,
+                  "dexterity": 0,
+                  "luck": 0
+                }
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 20
+              }
             }
           ],
           "miss": []
@@ -1579,6 +1596,17 @@
               "affect": {
                 "Stun": 15
               }
+            },
+            {
+              "target": "Opponent",
+              "affect": {
+                "Stats": {
+                  "strength": -20,
+                  "vitality": 0,
+                  "dexterity": 0,
+                  "luck": 0
+                }
+              }
             }
           ],
           "miss": []
@@ -1634,6 +1662,17 @@
               "target": "Opponent",
               "affect": {
                 "Stun": 20
+              }
+            },
+            {
+              "target": "Opponent",
+              "affect": {
+                "Stats": {
+                  "strength": 0,
+                  "vitality": 0,
+                  "dexterity": -30,
+                  "luck": 0
+                }
               }
             }
           ],
@@ -1746,6 +1785,17 @@
               "target": "Opponent",
               "affect": {
                 "Stun": 10
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Stats": {
+                  "strength": 0,
+                  "vitality": 0,
+                  "dexterity": 0,
+                  "luck": 30
+                }
               }
             }
           ],
@@ -2015,6 +2065,23 @@
               "affect": {
                 "Stun": 20
               }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Stats": {
+                  "strength": 0,
+                  "vitality": 20,
+                  "dexterity": 0,
+                  "luck": 0
+                }
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 20
+              }
             }
           ],
           "miss": []
@@ -2182,6 +2249,17 @@
               "target": "Opponent",
               "affect": {
                 "Stun": 10
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Stats": {
+                  "strength": 20,
+                  "vitality": 0,
+                  "dexterity": 0,
+                  "luck": 20
+                }
               }
             }
           ],
@@ -2457,6 +2535,17 @@
               "affect": {
                 "Stun": 20
               }
+            },
+            {
+              "target": "Opponent",
+              "affect": {
+                "Stats": {
+                  "strength": 0,
+                  "vitality": 0,
+                  "dexterity": -30,
+                  "luck": 0
+                }
+              }
             }
           ],
           "miss": []
@@ -2666,6 +2755,17 @@
               "target": "Opponent",
               "affect": {
                 "Stun": 10
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Stats": {
+                  "strength": 20,
+                  "vitality": 0,
+                  "dexterity": 0,
+                  "luck": 20
+                }
               }
             }
           ],
@@ -2892,6 +2992,17 @@
               "affect": {
                 "Stun": 5
               }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Stats": {
+                  "strength": 0,
+                  "vitality": 0,
+                  "dexterity": 30,
+                  "luck": 0
+                }
+              }
             }
           ],
           "miss": []
@@ -3036,7 +3147,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 60,
+                  "power": 70,
                   "critical": 10
                 }
               }
@@ -3432,6 +3543,18 @@
                 "Stun": 15
               }
             }
+            ,
+          {
+            "target": "Opponent",
+            "affect": {
+              "Stats": {
+                "strength": 0,
+                "vitality": 0,
+                "dexterity": -20,
+                "luck": 0
+              }
+            }
+          }
           ],
           "miss": []
         }
@@ -3995,6 +4118,23 @@
               "target": "Opponent",
               "affect": {
                 "Stun": 10
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Stats": {
+                  "strength": 0,
+                  "vitality": 20,
+                  "dexterity": 0,
+                  "luck": 0
+                }
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 20
               }
             }
           ],
