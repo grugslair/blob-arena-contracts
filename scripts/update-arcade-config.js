@@ -67,7 +67,7 @@ export const makeArcadeConfigCalls = async (account_manifest) => {
 
 const main = async () => {
   const account_manifest = await loadAccountManifestFromCmdArgs();
-  const calls_metas = await makeRoleCalls(account_manifest);
+  const calls_metas = await makeArcadeConfigCalls(account_manifest);
   const [calls, descriptions] = splitCallDescriptions(calls_metas);
   console.log(descriptions);
   account_manifest.execute(calls).then((res) => {
