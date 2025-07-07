@@ -8,8 +8,9 @@ use crate::hash::{felt252_to_u128, hash_value};
 use crate::utils::SeedProbability;
 use crate::arcade::{
     ArcadeStore, ArcadeStorage, ArcadeTrait, ArcadeGame, ArcadePhaseTrait, ArcadePhase,
-    calc_restored_health, ARCADE_CHALLENGE_MAX_RESPAWNS,
+    calc_restored_health,
 };
+use crate::arcade::components::{get_arcade_max_respawns};
 use crate::arcade_amma::{AmmaArcadeStorage, AMMA_ARCADE_GENERATED_STAGES};
 use crate::combatants::{CombatantTrait, CombatantStorage};
 use crate::stats::{UStats, StatsTrait};
@@ -172,7 +173,7 @@ impl AmmaArcadeImpl of AmmaArcadeTrait {
         assert(attempt.player == get_caller_address(), 'Not player');
         assert(timestamp <= attempt.expiry, 'Challenge expired');
         assert(phase == ArcadePhase::PlayerLost, 'Player not lost round');
-        assert(attempt.respawns < ARCADE_CHALLENGE_MAX_RESPAWNS, 'Max respawns');
+        assert(attempt.respawns < get_arcade_max_respawns(), 'Max respawns');
         self.arcade.use_game(attempt.player, timestamp);
 
         attempt.respawns += 1;

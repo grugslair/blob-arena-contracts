@@ -195,6 +195,14 @@ trait IArcade<TContractState> {
         receiver: ContractAddress,
         amount: u32,
     );
+
+    /// Retrieves the current challenge attempt for a player
+    fn max_respawns(self: @TContractState) -> u32;
+
+    /// Retrieves the time limit for a challenge attempt
+    fn time_limit(self: @TContractState) -> u64;
+    /// Retrieves the game energy cost for a challenge attempt
+    fn game_energy_cost(self: @TContractState) -> u64;
 }
 
 /// Interface for managing Arcade (Player vs Environment) administrative functions.
@@ -325,6 +333,20 @@ trait IArcadeAdmin<TContractState> {
     /// # Arguments
     /// * `wallet_address` - The contract address of the wallet to receive payments
     fn set_wallet_address(ref self: TContractState, wallet_address: ContractAddress);
+
+    /// Sets the maximum number of respawns allowed in a challenge
+    /// # Arguments
+    /// * `max_respawns` - The maximum number of respawns allowed
+    fn set_max_respawns(ref self: TContractState, max_respawns: u32);
+
+    /// Sets the game energy cost for each challenge attempt
+    /// # Arguments
+    /// * `game_energy_cost` - The energy cost for each game attempt
+    fn set_game_energy_cost(ref self: TContractState, game_energy_cost: u64);
+    /// Sets the time limit for each challenge attempt
+    /// # Arguments
+    /// * `time_limit` - The time limit in seconds for each challenge attempt
+    fn set_time_limit(ref self: TContractState, time_limit: u64);
 }
 
 
@@ -338,6 +360,10 @@ mod arcade_actions {
     use crate::arcade::{
         ArcadeTrait, ArcadeStorage, ARCADE_NAMESPACE_HASH, ArcadeStore, ArcadeOpponentInput,
         ArcadeChallengeAttempt, ArcadeGame, ArcadePhase, CHALLENGE_TAG_GROUP, ArcadeOpponent,
+    };
+    use crate::arcade::components::{
+        set_arcade_max_respawns, set_arcade_time_limit, set_arcade_energy_cost,
+        get_arcade_max_respawns, get_arcade_time_limit, get_arcade_energy_cost,
     };
     use pragma_lib::abi::{
         IPragmaABIDispatcher, IPragmaABIDispatcherTrait, PragmaPricesResponse, DataType,
@@ -360,6 +386,9 @@ mod arcade_actions {
         token_micro_usd_price: u128,
         wallet_address: ContractAddress,
         unlockable_tokens: Map<felt252, u32>,
+        max_respawns: u32,
+        time_limit: u64,
+        game_energy_cost: u64,
     }
 
     use super::{IArcade, IArcadeAdmin};
@@ -518,6 +547,18 @@ mod arcade_actions {
             let mut store = self.get_arcade_storage();
             store.increase_paid_games(receiver, amount);
         }
+
+        fn max_respawns(self: @ContractState) -> u32 {
+            get_arcade_max_respawns()
+        }
+
+        fn time_limit(self: @ContractState) -> u64 {
+            get_arcade_time_limit()
+        }
+
+        fn game_energy_cost(self: @ContractState) -> u64 {
+            get_arcade_energy_cost()
+        }
     }
 
 
@@ -607,6 +648,21 @@ mod arcade_actions {
         fn set_unlockable_games(ref self: ContractState, code: felt252, amount: u32) {
             self.assert_caller_has_permission(Role::ArcadePaidMinter);
             self.unlockable_tokens.write(code, amount);
+        }
+
+        fn set_max_respawns(ref self: ContractState, max_respawns: u32) {
+            self.assert_caller_has_permission(Role::Manager);
+            set_arcade_max_respawns(max_respawns);
+        }
+
+        fn set_game_energy_cost(ref self: ContractState, game_energy_cost: u64) {
+            self.assert_caller_has_permission(Role::Manager);
+            set_arcade_energy_cost(game_energy_cost);
+        }
+
+        fn set_time_limit(ref self: ContractState, time_limit: u64) {
+            self.assert_caller_has_permission(Role::Manager);
+            set_arcade_time_limit(time_limit);
         }
     }
 

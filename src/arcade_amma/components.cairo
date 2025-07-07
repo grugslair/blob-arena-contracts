@@ -6,7 +6,7 @@ use dojo::meta::Introspect;
 use crate::stats::UStats;
 use crate::iter::Iteration;
 use crate::arcade::{ArcadePhase, ArcadeGame, ArcadeStorage};
-use crate::arcade::components::{ARCADE_CHALLENGE_TIME_LIMIT, end_phase, ArcadeAttemptGetGame};
+use crate::arcade::components::{end_phase, ArcadeAttemptGetGame, get_arcade_time_limit};
 use crate::world::WorldTrait;
 
 const AMMA_ARCADE_NAMESPACE_HASH: felt252 = bytearray_hash!("arcade_amma");
@@ -145,7 +145,7 @@ impl AmmaArcadeStorageImpl of AmmaArcadeStorage {
             stage: 0,
             respawns: 0,
             phase: ArcadePhase::Active,
-            expiry: timestamp + ARCADE_CHALLENGE_TIME_LIMIT,
+            expiry: timestamp + get_arcade_time_limit(),
         };
         self.write_model(@model);
         model
