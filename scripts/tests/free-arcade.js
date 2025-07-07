@@ -12,6 +12,7 @@ import {
   mintPaidArcadeGames,
   runArcadeChallengeGames,
   startArcadeChallenges,
+  runArcadeChallengeNextRounds,
 } from "./arcade.js";
 import { Attacks, getAttacks, makeAttack } from "./attacks.js";
 import { DojoParser } from "../dojo.js";
@@ -81,6 +82,7 @@ const main = async () => {
         }`
       );
     }
+    await runArcadeChallengeNextRounds(caller, challenges);
     rounds.push(getRoundResults(caller, dojoParser, transaction_hash));
   }
   const games = Object.fromEntries(
@@ -98,7 +100,7 @@ const main = async () => {
     for (const [stage, games] of Object.entries(challenge.games)) {
       console.log(`Stage ${stage}`);
       for (const game of Object.values(games)) {
-        printAttackResults(game, ["Player", "Opponent"]);
+        printAttackResults(game, allAttacks, ["Player", "Opponent"]);
         console.log(`${game.phase}\n`);
       }
     }

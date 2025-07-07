@@ -1,7 +1,38 @@
 {
-  "sepolia": {},
+  "dev": {
+    "classic": {
+      "max_respawns": 2,
+      "game_energy_cost": 28800,
+      "time_limit": 7200
+    },
+    "amma": {
+      "max_respawns": 2,
+      "game_energy_cost": 28800,
+      "time_limit": 7200
+    }
+  },
+  "sepolia": {
+    "classic": {
+      "max_respawns": 2,
+      "game_energy_cost": 28800,
+      "time_limit": 7200
+    },
+    "amma": {
+      "max_respawns": 2,
+      "game_energy_cost": 28800,
+      "time_limit": 7200
+    }
+  },
   "release": {
-    "classic": {},
-    "amma": {}
+    "classic": {
+      "max_respawns": 2,
+      "game_energy_cost": 28800,
+      "time_limit": 7200
+    },
+    "amma": {
+      "max_respawns": 2,
+      "game_energy_cost": 28800,
+      "time_limit": 7200
+    }
   }
 }

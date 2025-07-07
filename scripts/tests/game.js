@@ -138,12 +138,9 @@ export const getRoundResults = async (
   return games;
 };
 
-export const printAttackResults = (game, names) => {
+export const printAttackResults = (game, allAttacks, names) => {
   let stateA = game.combatants[0];
   let stateB = game.combatants[1];
-  const allAttacks = Object.fromEntries(
-    stateA.attacks.concat(stateB.attacks).map((a) => [a.id, a])
-  );
   const combatantAId = stateA.id;
   const combatantBId = stateB.id;
   const combatantNames = {
@@ -152,20 +149,20 @@ export const printAttackResults = (game, names) => {
   };
   const combatantAName = combatantNames[combatantAId];
   const combatantBName = combatantNames[combatantBId];
-  for (const [n, { attacks, states }] of game.rounds.entries()) {
+  for (const [n, { attacks: attackResults, states }] of game.rounds.entries()) {
     console.log(`Round ${n + 1}: `);
-    const [attackResult1, attackResult2] = attacks;
+    const [attackResult1, attackResult2] = attackResults;
     const combatantA = states[combatantAId];
     const combatantB = states[combatantBId];
     console.log(
       `${combatantNames[attackResult1.combatant_id]}: ${
-        allAttacks[attackResult1.attack].name
+        allAttacks.attacks[attackResult1.attack].name
       } ${attackResult1.result.activeVariant()}`
     );
     if (attackResult2) {
       console.log(
         `${combatantNames[attackResult2.combatant_id]}: ${
-          allAttacks[attackResult2.attack].name
+          allAttacks.attacks[attackResult2.attack].name
         } ${attackResult2.result.activeVariant()}`
       );
     }

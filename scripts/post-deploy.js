@@ -9,17 +9,20 @@ import {
   makeClassicBlobertCustomCalls,
   makeAmmaBlobertCalls,
 } from "./update-attributes.js";
+import { makeArcadeConfigCalls } from "./update-arcade-config.js";
+import { makeArcadeTokenCalls } from "./update-arcade-token.js";
 import {
   makeArcadeOpponentsCalls,
   makeArcadeChallengeCalls,
   setAmmaCollectionAddress,
-} from "./update-arcade.js";
+} from "./update-arcade-challenges.js";
+
 import { makeRoleCalls } from "./update-roles.js";
 import { makeAchievementsCalls } from "./update-achievements.js";
 
 const main = async () => {
   const account_manifest = await loadAccountManifestFromCmdArgs();
-  let arcade_data = loadJson("./post-deploy-config/arcade.json");
+  let arcade_data = loadJson("./post-deploy-config/arcade-challenges.json");
 
   const calls_metas = [
     ...(await makeRoleCalls(account_manifest)),
@@ -34,6 +37,8 @@ const main = async () => {
       account_manifest,
       arcade_data.challenges
     )),
+    ...(await makeArcadeConfigCalls(account_manifest)),
+    ...(await makeArcadeTokenCalls(account_manifest)),
     ...(await setAmmaCollectionAddress(account_manifest)),
     ...(await makeAchievementsCalls(account_manifest)),
   ];

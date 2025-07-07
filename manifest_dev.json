@@ -2052,8 +2052,8 @@
       ]
     },
     {
-      "address": "0x776c7c09a709e80b12d419635528c730b267be689991fe0bbe9abfd2e67a48b",
-      "class_hash": "0x3ec1776b5d10161e7d58f2ba6ae1950b8d05cbd396a4651a2981850220dc582",
+      "address": "0x58f1e9f8b7d67df057dd4b31e9b494addd53e54222658aa0fb5ba82f07a6027",
+      "class_hash": "0x31403399e8c4314865967a646870f6bb90e69cd748b61714b4307615ff422f9",
       "abi": [
         {
           "type": "impl",
@@ -2533,6 +2533,107 @@
                 }
               ],
               "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "unlock_game_tokens",
+              "inputs": [
+                {
+                  "name": "password",
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_game_token_micro_usd_price",
+              "inputs": [
+                {
+                  "name": "amount",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u128"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_game_tokens_price",
+              "inputs": [
+                {
+                  "name": "erc20_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u256"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "purchase_game_tokens",
+              "inputs": [
+                {
+                  "name": "erc20_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "receiver",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "max_respawns",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "time_limit",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u64"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "game_energy_cost",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u64"
+                }
+              ],
+              "state_mutability": "view"
             }
           ]
         },
@@ -2966,6 +3067,110 @@
               ],
               "outputs": [],
               "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_unlockable_games",
+              "inputs": [
+                {
+                  "name": "code",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_pragma_contract_address",
+              "inputs": [
+                {
+                  "name": "contract_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_price_pair",
+              "inputs": [
+                {
+                  "name": "erc20_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "price_pair",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_token_micro_usd_price",
+              "inputs": [
+                {
+                  "name": "price",
+                  "type": "core::integer::u128"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_wallet_address",
+              "inputs": [
+                {
+                  "name": "wallet_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_max_respawns",
+              "inputs": [
+                {
+                  "name": "max_respawns",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_game_energy_cost",
+              "inputs": [
+                {
+                  "name": "game_energy_cost",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_time_limit",
+              "inputs": [
+                {
+                  "name": "time_limit",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
             }
           ]
         },
@@ -3093,18 +3298,28 @@
         "next_challenge_round",
         "respawn_challenge",
         "end_challenge",
+        "unlock_game_tokens",
+        "purchase_game_tokens",
         "new_opponent",
         "new_challenge",
         "set_collection",
         "set_collections",
         "set_ids_collection",
         "mint_paid_games",
+        "set_unlockable_games",
+        "set_pragma_contract_address",
+        "set_price_pair",
+        "set_token_micro_usd_price",
+        "set_wallet_address",
+        "set_max_respawns",
+        "set_game_energy_cost",
+        "set_time_limit",
         "upgrade"
       ]
     },
     {
-      "address": "0x27a5a835066a337a84c1422a4e0f06c3ca70b1596468345b7f5652159b9f851",
-      "class_hash": "0x3681e48229c3209f4f21f61351267f38cbac7a53cd66f718eba3ac938175526",
+      "address": "0x42f061f54279d13abdcc6e689dcf5e8ce11566c1245693ba03c42738ebac657",
+      "class_hash": "0xcabb0a08710321e85473b0ede58671616d0db39681dc4fca5472cab34613fb",
       "abi": [
         {
           "type": "impl",
@@ -3520,6 +3735,39 @@
                 }
               ],
               "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "max_respawns",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "time_limit",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u64"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "game_energy_cost",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u64"
+                }
+              ],
+              "state_mutability": "view"
             }
           ]
         },
@@ -3539,6 +3787,42 @@
                 {
                   "name": "collection_address",
                   "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_max_respawns",
+              "inputs": [
+                {
+                  "name": "max_respawns",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_game_energy_cost",
+              "inputs": [
+                {
+                  "name": "game_energy_cost",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_time_limit",
+              "inputs": [
+                {
+                  "name": "time_limit",
+                  "type": "core::integer::u64"
                 }
               ],
               "outputs": [],
@@ -3672,6 +3956,9 @@
         "end_challenge",
         "generate_boss",
         "set_collection_address",
+        "set_max_respawns",
+        "set_game_energy_cost",
+        "set_time_limit",
         "upgrade"
       ]
     },

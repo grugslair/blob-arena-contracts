@@ -25,3 +25,6 @@ export const setPricePairEntrypoint = "set_price_pair";
 export const setTokenMicroUsdPriceEntrypoint = "set_token_micro_usd_price";
 export const setWalletAddressEntrypoint = "set_wallet_address";
 export const setUnlockableGamesEntrypoint = "set_unlockable_games";
+export const setMaxRespawnsEntrypoint = "set_max_respawns";
+export const setGameEnergyCostEntrypoint = "set_game_energy_cost";
+export const setTimeLimitEntrypoint = "set_time_limit";

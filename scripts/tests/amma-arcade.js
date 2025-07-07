@@ -134,7 +134,7 @@ const main = async () => {
     for (const [stage, games] of Object.entries(challenge.games)) {
       console.log(`Stage ${stage}`);
       for (const game of Object.values(games)) {
-        printAttackResults(game, ["Player", "Opponent"]);
+        printAttackResults(game, allAttacks, ["Player", "Opponent"]);
         console.log(`${game.phase}\n`);
       }
     }
