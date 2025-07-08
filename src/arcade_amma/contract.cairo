@@ -138,6 +138,14 @@ trait IAmmaArcade<TContractState> {
     /// # Returns
     /// * `Array<felt252>` - The attacks of the opponent
     fn opponent_attacks(self: @TContractState, opponent_id: felt252) -> Array<felt252>;
+
+    /// Retrieves the current challenge attempt for a player
+    fn max_respawns(self: @TContractState) -> u32;
+
+    /// Retrieves the time limit for a challenge attempt
+    fn time_limit(self: @TContractState) -> u64;
+    /// Retrieves the game energy cost for a challenge attempt
+    fn game_energy_cost(self: @TContractState) -> u64;
 }
 
 /// Interface for managing Arcade (Player vs Environment) administrative functions.
@@ -151,6 +159,20 @@ trait IAmmaArcadeAdmin<TContractState> {
     /// - ArcadeCollectionAllowed
     ///
     fn set_collection_address(ref self: TContractState, collection_address: ContractAddress);
+
+    /// Sets the maximum number of respawns allowed in a challenge
+    /// # Arguments
+    /// * `max_respawns` - The maximum number of respawns allowed
+    fn set_max_respawns(ref self: TContractState, max_respawns: u32);
+
+    /// Sets the game energy cost for each challenge attempt
+    /// # Arguments
+    /// * `game_energy_cost` - The energy cost for each game attempt
+    fn set_game_energy_cost(ref self: TContractState, game_energy_cost: u64);
+    /// Sets the time limit for each challenge attempt
+    /// # Arguments
+    /// * `time_limit` - The time limit in seconds for each challenge attempt
+    fn set_time_limit(ref self: TContractState, time_limit: u64);
 }
 
 
@@ -163,6 +185,10 @@ mod arcade_amma_actions {
     use crate::arcade::{
         ArcadeTrait, ArcadeStorage, ArcadeStore, ArcadeOpponentInput, ArcadeChallengeAttempt,
         ArcadeGame, ArcadePhase, CHALLENGE_TAG_GROUP, ArcadeOpponent,
+    };
+    use crate::arcade::components::{
+        set_arcade_max_respawns, set_arcade_time_limit, set_arcade_energy_cost,
+        get_arcade_max_respawns, get_arcade_time_limit, get_arcade_energy_cost,
     };
     use crate::arcade_amma::{
         AmmaArcadeStorage, AmmaArcadeTrait, AMMA_ARCADE_NAMESPACE_HASH,
@@ -185,6 +211,9 @@ mod arcade_amma_actions {
     struct Storage {
         collection_address: ContractAddress,
         fighters: u32,
+        max_respawns: u32,
+        time_limit: u64,
+        game_energy_cost: u64,
     }
 
     use super::{IAmmaArcade, IAmmaArcadeAdmin};
@@ -291,6 +320,15 @@ mod arcade_amma_actions {
         fn opponent_token(self: @ContractState, opponent_id: felt252) -> ArcadeOpponent {
             self.get_arcade_storage().get_arcade_opponent(opponent_id)
         }
+        fn max_respawns(self: @ContractState) -> u32 {
+            get_arcade_max_respawns()
+        }
+        fn time_limit(self: @ContractState) -> u64 {
+            get_arcade_time_limit()
+        }
+        fn game_energy_cost(self: @ContractState) -> u64 {
+            get_arcade_energy_cost()
+        }
     }
 
 
@@ -299,6 +337,20 @@ mod arcade_amma_actions {
         fn set_collection_address(ref self: ContractState, collection_address: ContractAddress) {
             self.assert_caller_has_permission(Role::ArcadeSetter);
             self.collection_address.write(collection_address);
+        }
+        fn set_max_respawns(ref self: ContractState, max_respawns: u32) {
+            self.assert_caller_has_permission(Role::Manager);
+            set_arcade_max_respawns(max_respawns);
+        }
+
+        fn set_game_energy_cost(ref self: ContractState, game_energy_cost: u64) {
+            self.assert_caller_has_permission(Role::Manager);
+            set_arcade_energy_cost(game_energy_cost);
+        }
+
+        fn set_time_limit(ref self: ContractState, time_limit: u64) {
+            self.assert_caller_has_permission(Role::Manager);
+            set_arcade_time_limit(time_limit);
         }
     }
 }

@@ -151,7 +151,7 @@ export const parseAttackStruct = (attack) => {
 };
 
 export const makeClassicBlobertSeedCalls = async (account_manifest) => {
-  const seed_data = loadJson("../post-deploy-config/seed-attributes.json");
+  const seed_data = loadJson("./post-deploy-config/seed-attributes.json");
   let contract = await account_manifest.getContract(blobertContractTag);
 
   let calls = [];
@@ -167,7 +167,7 @@ export const makeClassicBlobertSeedCalls = async (account_manifest) => {
 };
 
 export const makeClassicBlobertCustomCalls = async (account_manifest) => {
-  const custom_data = loadJson("../post-deploy-config/custom-attributes.json");
+  const custom_data = loadJson("./post-deploy-config/custom-attributes.json");
   let contract = await account_manifest.getContract(blobertContractTag);
 
   let calls = [];
@@ -181,7 +181,7 @@ export const makeClassicBlobertCustomCalls = async (account_manifest) => {
 };
 
 export const makeAmmaBlobertCalls = async (account_manifest) => {
-  const amma_data = loadJson("../post-deploy-config/amma-attributes.json");
+  const amma_data = loadJson("./post-deploy-config/amma-attributes.json");
   let contract = await account_manifest.getContract(ammaBlobertContractTag);
 
   let calls = [];

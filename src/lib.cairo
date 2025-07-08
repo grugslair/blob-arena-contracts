@@ -73,8 +73,7 @@ mod arcade {
     use components::{
         ArcadeGame, ArcadeOpponent, ArcadeBlobertInfo, ArcadeStorage, ArcadePhase, ArcadeStore,
         ArcadeChallengeAttempt, ArcadePhaseTrait, ArcadeAttemptEnd, ArcadeOpponentInput,
-        ARCADE_NAMESPACE_HASH, ARCADE_CHALLENGE_MAX_RESPAWNS, CHALLENGE_TAG_GROUP,
-        ARCADE_CHALLENGE_GAME_ENERGY_COST, ARCADE_CHALLENGE_MAX_ENERGY,
+        ARCADE_NAMESPACE_HASH, CHALLENGE_TAG_GROUP, ARCADE_CHALLENGE_MAX_ENERGY,
     };
 }
 
@@ -99,7 +98,7 @@ mod achievements {
 mod game {
     mod contract;
 }
-
+mod account;
 pub use world::{default_namespace, DefaultStorage};
 #[cfg(test)]
 mod tests {

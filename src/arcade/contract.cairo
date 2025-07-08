@@ -162,6 +162,47 @@ trait IArcade<TContractState> {
     fn callers_current_challenge_attempt_id(
         self: @TContractState, collection_address: ContractAddress, token_id: u256,
     ) -> felt252;
+
+    /// Unlocks game tokens for the caller using a password
+    /// # Arguments
+    /// * `password` - The password to unlock the game tokens
+    fn unlock_game_tokens(ref self: TContractState, password: ByteArray);
+    /// Gets the price of game tokens in micro USD
+    /// # Arguments
+    /// * `amount` - The number of game tokens to get the price for
+    /// # Returns
+    /// * `u128` - The price of a single game token in micro USD
+    fn get_game_token_micro_usd_price(self: @TContractState, amount: u32) -> u128;
+
+    /// Gets the price of game tokens in the current contract
+    /// # Arguments
+    /// * `erc20_address` - The contract address of the ERC20 token used for payments
+    /// * `amount` - The number of game tokens to get the price for
+    /// # Returns
+    /// * `u256` - The price of the specified amount of game tokens
+    fn get_game_tokens_price(
+        self: @TContractState, erc20_address: ContractAddress, amount: u32,
+    ) -> u256;
+
+    /// Purchases game tokens for the caller
+    /// # Arguments
+    /// * `erc20_address` - The contract address of the ERC20 token used for payments
+    /// * `receiver` - The contract address of the receiver 0x0 for the caller
+    /// * `amount` - The number of game tokens to purchase
+    fn purchase_game_tokens(
+        ref self: TContractState,
+        erc20_address: ContractAddress,
+        receiver: ContractAddress,
+        amount: u32,
+    );
+
+    /// Retrieves the current challenge attempt for a player
+    fn max_respawns(self: @TContractState) -> u32;
+
+    /// Retrieves the time limit for a challenge attempt
+    fn time_limit(self: @TContractState) -> u64;
+    /// Retrieves the game energy cost for a challenge attempt
+    fn game_energy_cost(self: @TContractState) -> u64;
 }
 
 /// Interface for managing Arcade (Player vs Environment) administrative functions.
@@ -267,17 +308,67 @@ trait IArcadeAdmin<TContractState> {
     /// Models:
     /// - ArcadePaidGames
     fn mint_paid_games(ref self: TContractState, player: ContractAddress, amount: u32);
+    /// Sets the unlockable games code
+    /// # Arguments
+    /// * `code` - The salted hash of the password
+    /// * `amount` - The number of unlockable games available with this code
+    fn set_unlockable_games(ref self: TContractState, code: felt252, amount: u32);
+    /// Gets the current contract address for the Pragma ABI dispatcher
+    /// # Arguments
+    /// * `contract_address` - The address of the Pragma ABI dispatcher contract``
+    fn set_pragma_contract_address(ref self: TContractState, contract_address: ContractAddress);
+
+    /// Sets the price pair for a specific ERC20 token
+    /// # Arguments
+    /// * `erc20_address` - The contract address of the ERC20 token
+    /// * `price_pair` - The price pair identifier for the token ('LORDS/USD')
+    fn set_price_pair(
+        ref self: TContractState, erc20_address: ContractAddress, price_pair: felt252,
+    );
+    /// Sets the price of game tokens in micro USD
+    /// # Arguments
+    /// * `price` - The price of a single game token in micro USD
+    fn set_token_micro_usd_price(ref self: TContractState, price: u128);
+    /// Set wallet address for payments
+    /// # Arguments
+    /// * `wallet_address` - The contract address of the wallet to receive payments
+    fn set_wallet_address(ref self: TContractState, wallet_address: ContractAddress);
+
+    /// Sets the maximum number of respawns allowed in a challenge
+    /// # Arguments
+    /// * `max_respawns` - The maximum number of respawns allowed
+    fn set_max_respawns(ref self: TContractState, max_respawns: u32);
+
+    /// Sets the game energy cost for each challenge attempt
+    /// # Arguments
+    /// * `game_energy_cost` - The energy cost for each game attempt
+    fn set_game_energy_cost(ref self: TContractState, game_energy_cost: u64);
+    /// Sets the time limit for each challenge attempt
+    /// # Arguments
+    /// * `time_limit` - The time limit in seconds for each challenge attempt
+    fn set_time_limit(ref self: TContractState, time_limit: u64);
 }
 
 
 #[dojo::contract]
 mod arcade_actions {
+    use core::poseidon::poseidon_hash_span;
+    use core::num::traits::Pow;
     use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
+    use starknet::storage::Map;
     use dojo::world::WorldStorage;
     use crate::arcade::{
         ArcadeTrait, ArcadeStorage, ARCADE_NAMESPACE_HASH, ArcadeStore, ArcadeOpponentInput,
         ArcadeChallengeAttempt, ArcadeGame, ArcadePhase, CHALLENGE_TAG_GROUP, ArcadeOpponent,
     };
+    use crate::arcade::components::{
+        set_arcade_max_respawns, set_arcade_time_limit, set_arcade_energy_cost,
+        get_arcade_max_respawns, get_arcade_time_limit, get_arcade_energy_cost,
+    };
+    use pragma_lib::abi::{
+        IPragmaABIDispatcher, IPragmaABIDispatcherTrait, PragmaPricesResponse, DataType,
+    };
+    use openzeppelin_token::erc20::{ERC20ABIDispatcher, ERC20ABIDispatcherTrait};
     use crate::attacks::{AttackInput, AttackTrait};
     use crate::permissions::{Permissions, Role};
     use crate::world::{WorldTrait, pseudo_randomness};
@@ -288,9 +379,21 @@ mod arcade_actions {
     use crate::erc721::erc721_owner_of;
     use crate::starknet::return_value;
 
+    #[storage]
+    struct Storage {
+        pragma_dispatcher: IPragmaABIDispatcher,
+        price_pairs: Map<ContractAddress, felt252>,
+        token_micro_usd_price: u128,
+        wallet_address: ContractAddress,
+        unlockable_tokens: Map<felt252, u32>,
+        max_respawns: u32,
+        time_limit: u64,
+        game_energy_cost: u64,
+    }
+
     use super::{IArcade, IArcadeAdmin};
     #[generate_trait]
-    impl PrivateImpl of PrivateTrait {
+    impl PrivateStorageImpl of PrivateStorageTrait {
         fn get_storage(self: @ContractState) -> ArcadeStore {
             let dispatcher = self.world_dispatcher();
             ArcadeStore {
@@ -404,6 +507,58 @@ mod arcade_actions {
                     get_caller_address(), collection_address, token_id,
                 )
         }
+
+        fn unlock_game_tokens(ref self: ContractState, password: ByteArray) {
+            let mut serialised = array!['salt from mediterranean'];
+            password.serialize(ref serialised);
+            let hash = poseidon_hash_span(serialised.span());
+            let caller = get_caller_address();
+            let games = self.unlockable_tokens.read(hash);
+            assert(games.is_non_zero(), 'Code not available');
+            self.unlockable_tokens.write(hash, 0);
+            self.increase_number_of_paid_games(caller, games);
+        }
+
+        fn get_game_token_micro_usd_price(self: @ContractState, amount: u32) -> u128 {
+            let price = self.token_micro_usd_price.read();
+            assert(price > 0, 'Token price not set');
+            amount.into() * price
+        }
+
+        fn get_game_tokens_price(
+            self: @ContractState, erc20_address: ContractAddress, amount: u32,
+        ) -> u256 {
+            self.get_tokens_price(erc20_address, amount)
+        }
+
+        fn purchase_game_tokens(
+            ref self: ContractState,
+            erc20_address: ContractAddress,
+            mut receiver: ContractAddress,
+            amount: u32,
+        ) {
+            let caller = get_caller_address();
+            if receiver.is_zero() {
+                receiver = caller;
+            }
+            let price = self.get_tokens_price(erc20_address, amount);
+            ERC20ABIDispatcher { contract_address: erc20_address }
+                .transfer_from(caller, self.wallet_address.read(), price);
+            let mut store = self.get_arcade_storage();
+            store.increase_paid_games(receiver, amount);
+        }
+
+        fn max_respawns(self: @ContractState) -> u32 {
+            get_arcade_max_respawns()
+        }
+
+        fn time_limit(self: @ContractState) -> u64 {
+            get_arcade_time_limit()
+        }
+
+        fn game_energy_cost(self: @ContractState) -> u64 {
+            get_arcade_energy_cost()
+        }
     }
 
 
@@ -465,8 +620,74 @@ mod arcade_actions {
         fn mint_paid_games(ref self: ContractState, player: ContractAddress, amount: u32) {
             let mut store = self.storage(ARCADE_NAMESPACE_HASH);
             store.assert_caller_has_permission(Role::ArcadePaidMinter);
-            let games = store.get_number_of_paid_games(player);
-            store.set_number_of_paid_games(player, games + amount);
+            store.increase_paid_games(player, amount);
+        }
+
+        fn set_pragma_contract_address(ref self: ContractState, contract_address: ContractAddress) {
+            self.assert_caller_has_permission(Role::Manager);
+            self.pragma_dispatcher.write(IPragmaABIDispatcher { contract_address });
+        }
+
+        fn set_price_pair(
+            ref self: ContractState, erc20_address: ContractAddress, price_pair: felt252,
+        ) {
+            self.assert_caller_has_permission(Role::Manager);
+            self.price_pairs.write(erc20_address, price_pair);
+        }
+
+        fn set_token_micro_usd_price(ref self: ContractState, price: u128) {
+            self.assert_caller_has_permission(Role::Manager);
+            self.token_micro_usd_price.write(price);
+        }
+
+        fn set_wallet_address(ref self: ContractState, wallet_address: ContractAddress) {
+            self.assert_caller_has_permission(Role::Manager);
+            self.wallet_address.write(wallet_address);
+        }
+
+        fn set_unlockable_games(ref self: ContractState, code: felt252, amount: u32) {
+            self.assert_caller_has_permission(Role::ArcadePaidMinter);
+            self.unlockable_tokens.write(code, amount);
+        }
+
+        fn set_max_respawns(ref self: ContractState, max_respawns: u32) {
+            self.assert_caller_has_permission(Role::Manager);
+            set_arcade_max_respawns(max_respawns);
+        }
+
+        fn set_game_energy_cost(ref self: ContractState, game_energy_cost: u64) {
+            self.assert_caller_has_permission(Role::Manager);
+            set_arcade_energy_cost(game_energy_cost);
+        }
+
+        fn set_time_limit(ref self: ContractState, time_limit: u64) {
+            self.assert_caller_has_permission(Role::Manager);
+            set_arcade_time_limit(time_limit);
+        }
+    }
+
+
+    #[generate_trait]
+    impl PrivateImpl of PrivateTrait {
+        fn get_tokens_price(
+            self: @ContractState, erc20_address: ContractAddress, amount: u32,
+        ) -> u256 {
+            let price_pair = self.price_pairs.read(erc20_address);
+            assert(price_pair.is_non_zero(), 'ERC20 not accepted');
+            let PragmaPricesResponse {
+                price,
+                decimals,
+                last_updated_timestamp: _,
+                num_sources_aggregated: _,
+                expiration_timestamp: _,
+            } = self.pragma_dispatcher.read().get_data_median(DataType::SpotEntry(price_pair));
+
+            (self.token_micro_usd_price.read().into()
+                * amount.into()
+                * 10_u256.pow(decimals.into())
+                * 1_000_000_000_000_000_000
+                / (price.into() * 1_000_000))
+                .into()
         }
     }
 }

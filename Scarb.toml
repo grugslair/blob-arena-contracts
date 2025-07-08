@@ -10,17 +10,19 @@ sierra-replace-ids = true
 [dependencies]
 dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.6.0-alpha.0" }
 cubit = { git = "https://github.com/bengineer42/cubit", tag = "cairo--2.8.0" }
-openzeppelin_token = { git = "https://github.com/OpenZeppelin/cairo-contracts", tag = "v1.0.0" }
-openzeppelin_access = { git = "https://github.com/OpenZeppelin/cairo-contracts", tag = "v1.0.0" }
-openzeppelin_introspection = { git = "https://github.com/OpenZeppelin/cairo-contracts", tag = "v1.0.0" }
-openzeppelin_upgrades = { git = "https://github.com/OpenZeppelin/cairo-contracts", tag = "v1.0.0" }
+openzeppelin_token = "1.0.0"
+openzeppelin_account = "1.0.0"
+openzeppelin_introspection = "1.0.0"
+openzeppelin_upgrades = "1.0.0"
 achievement = { git = "https://github.com/cartridge-gg/arcade", tag = "v0.0.0" }
+pragma_lib = { git = "https://github.com/astraly-labs/pragma-lib", commit = "c429179ed6153004b79657337c589548b73d5151" }
 
 [tool.dojo]
 initializer_class_hash = "0xbeef"
 
 [[target.starknet-contract]]
 sierra = true
+casm = true
 build-external-contracts = [
     "dojo::world::world_contract::world",
     "achievement::events::index::e_TrophyCreation",
@@ -29,6 +31,7 @@ build-external-contracts = [
 
 [dev-dependencies]
 dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.5.0" }
+
 
 [profile.sepolia]
 [profile.cloud]

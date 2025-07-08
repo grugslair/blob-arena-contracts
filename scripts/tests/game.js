@@ -1,5 +1,6 @@
 import { hash, num } from "starknet";
 import { DojoParser, namespaceNameToHash } from "../dojo.js";
+import { declareContract } from "../stark-utils.js";
 
 const roundResultHash = namespaceNameToHash("blob_arena-RoundResult");
 const combatantStateHash = namespaceNameToHash("blob_arena-CombatantState");
@@ -9,6 +10,16 @@ const combatantStatePath = "blob_arena::combatants::components::CombatantState";
 export const dojoNamespaceMap = {
   [roundResultHash]: num.toHex(hash.starknetKeccak("RoundResult")),
   [combatantStateHash]: num.toHex(hash.starknetKeccak("CombatantState")),
+};
+
+export const declareAccountContract = async (account_manifest) => {
+  const contractPath = `./target/${account_manifest.profile}/blob_arena_oz_account.contract_class.json`;
+  const casmPath = `./target/${account_manifest.profile}/blob_arena_oz_account.compiled_contract_class.json`;
+  return await declareContract(
+    account_manifest.account,
+    contractPath,
+    casmPath
+  );
 };
 
 export const printRoundResults = (game) => {
@@ -127,12 +138,9 @@ export const getRoundResults = async (
   return games;
 };
 
-export const printAttackResults = (game, names) => {
+export const printAttackResults = (game, allAttacks, names) => {
   let stateA = game.combatants[0];
   let stateB = game.combatants[1];
-  const allAttacks = Object.fromEntries(
-    stateA.attacks.concat(stateB.attacks).map((a) => [a.id, a])
-  );
   const combatantAId = stateA.id;
   const combatantBId = stateB.id;
   const combatantNames = {
@@ -141,20 +149,20 @@ export const printAttackResults = (game, names) => {
   };
   const combatantAName = combatantNames[combatantAId];
   const combatantBName = combatantNames[combatantBId];
-  for (const [n, { attacks, states }] of game.rounds.entries()) {
+  for (const [n, { attacks: attackResults, states }] of game.rounds.entries()) {
     console.log(`Round ${n + 1}: `);
-    const [attackResult1, attackResult2] = attacks;
+    const [attackResult1, attackResult2] = attackResults;
     const combatantA = states[combatantAId];
     const combatantB = states[combatantBId];
     console.log(
       `${combatantNames[attackResult1.combatant_id]}: ${
-        allAttacks[attackResult1.attack].name
+        allAttacks.attacks[attackResult1.attack].name
       } ${attackResult1.result.activeVariant()}`
     );
     if (attackResult2) {
       console.log(
         `${combatantNames[attackResult2.combatant_id]}: ${
-          allAttacks[attackResult2.attack].name
+          allAttacks.attacks[attackResult2.attack].name
         } ${attackResult2.result.activeVariant()}`
       );
     }

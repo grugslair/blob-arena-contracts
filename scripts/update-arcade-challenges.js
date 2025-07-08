@@ -125,7 +125,7 @@ export const setAmmaCollectionAddress = async (account_manifest) => {
 
 const main = async () => {
   const account_manifest = await loadAccountManifestFromCmdArgs();
-  let arcade_data = loadJson("../post-deploy-config/arcade.json");
+  let arcade_data = loadJson("./post-deploy-config/arcade-opponents.json");
   const calls_metas = [
     ...(await makeArcadeOpponentsCalls(
       account_manifest,

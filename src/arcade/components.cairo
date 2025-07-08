@@ -12,14 +12,19 @@ use crate::tags::IdTagNew;
 use crate::collections::TokenAttributes;
 use crate::constants::{SECONDS_8_HOURS, SECONDS_24_HOURS, SECONDS_2_HOURS};
 use crate::world::{WorldTrait, NsModelStorage};
+use crate::storage::{read_value_from_const, write_value_from_const};
+
 
 const ARCADE_NAMESPACE_HASH: felt252 = bytearray_hash!("arcade");
 const OPPONENT_TAG_GROUP: felt252 = 'arcade-opponent';
 const CHALLENGE_TAG_GROUP: felt252 = 'arcade-challenge';
-const ARCADE_CHALLENGE_TIME_LIMIT: u64 = SECONDS_2_HOURS; // 2 hours
-const ARCADE_CHALLENGE_MAX_RESPAWNS: u32 = 2;
-const ARCADE_CHALLENGE_GAME_ENERGY_COST: u64 = SECONDS_8_HOURS;
+// const ARCADE_CHALLENGE_TIME_LIMIT: u64 = SECONDS_2_HOURS; // 2 hours
+// const ARCADE_CHALLENGE_MAX_RESPAWNS: u32 = 2;
+// const ARCADE_CHALLENGE_GAME_ENERGY_COST: u64 = SECONDS_8_HOURS;
 const ARCADE_CHALLENGE_MAX_ENERGY: u64 = SECONDS_24_HOURS;
+const MAX_RESPAWNS_STORAGE_SELECTOR: felt252 = selector!("max_respawns");
+const TIME_LIMIT_STORAGE_SELECTOR: felt252 = selector!("time_limit");
+const GAME_ENERGY_COST_STORAGE_SELECTOR: felt252 = selector!("game_energy_cost");
 
 #[derive(Drop, Copy, Introspect, PartialEq, Serde)]
 enum ArcadePhase {
@@ -41,6 +46,30 @@ impl ArcadePhaseImpl of ArcadePhaseTrait {
     fn assert_active(self: ArcadePhase) {
         assert(self == ArcadePhase::Active, 'Phase not active');
     }
+}
+
+fn get_arcade_max_respawns() -> u32 {
+    read_value_from_const::<MAX_RESPAWNS_STORAGE_SELECTOR>()
+}
+
+fn get_arcade_time_limit() -> u64 {
+    read_value_from_const::<TIME_LIMIT_STORAGE_SELECTOR>()
+}
+
+fn get_arcade_energy_cost() -> u64 {
+    read_value_from_const::<GAME_ENERGY_COST_STORAGE_SELECTOR>()
+}
+
+fn set_arcade_max_respawns(max_respawns: u32) {
+    write_value_from_const::<MAX_RESPAWNS_STORAGE_SELECTOR>(max_respawns);
+}
+
+fn set_arcade_time_limit(time_limit: u64) {
+    write_value_from_const::<TIME_LIMIT_STORAGE_SELECTOR>(time_limit);
+}
+
+fn set_arcade_energy_cost(energy_cost: u64) {
+    write_value_from_const::<GAME_ENERGY_COST_STORAGE_SELECTOR>(energy_cost);
 }
 
 ///////////////// Setup models
@@ -515,7 +544,7 @@ impl ArcadeStorageImpl of ArcadeStorage {
             stage: 0,
             respawns: 0,
             phase: ArcadePhase::Active,
-            expiry: timestamp + ARCADE_CHALLENGE_TIME_LIMIT,
+            expiry: timestamp + get_arcade_time_limit(),
         };
         self.write_model(@model);
         model

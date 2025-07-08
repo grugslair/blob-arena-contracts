@@ -2,10 +2,20 @@ use starknet::SyscallResultTrait;
 use starknet::storage_access::{
     storage_base_address_from_felt252, storage_address_from_base,
     storage_address_from_base_and_offset, StorageBaseAddress, storage_write_syscall,
-    storage_read_syscall
+    storage_read_syscall, storage_base_address_const,
 };
 
 use super::serde::{deserialize_unwrap, serialize_inline};
+
+fn read_value_from_const<const address: felt252, T, +TryInto<felt252, T>>() -> T {
+    let storage_address = storage_address_from_base(storage_base_address_const::<address>());
+    storage_read_syscall(0, storage_address).unwrap_syscall().try_into().unwrap()
+}
+
+fn write_value_from_const<const address: felt252, T, +Into<T, felt252>, +Drop<T>>(value: T) {
+    let storage_address = storage_address_from_base(storage_base_address_const::<address>());
+    storage_write_syscall(0, storage_address, value.into()).unwrap_syscall();
+}
 
 fn read_value_from_felt252<T, +TryInto<felt252, T>>(address: felt252) -> T {
     storage_read_syscall(0, address.try_into().unwrap()).unwrap_syscall().try_into().unwrap()

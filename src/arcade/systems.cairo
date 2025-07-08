@@ -10,9 +10,8 @@ use crate::arcade::{
     ArcadeGame, ArcadeOpponent, ArcadeOpponentInput, ArcadeBlobertInfo, ArcadeStorage, ArcadePhase,
     ArcadeStore, ArcadeChallengeAttempt, ArcadePhaseTrait, ArcadeAttemptEnd,
     components::{
-        OPPONENT_TAG_GROUP, CHALLENGE_TAG_GROUP, ARCADE_CHALLENGE_MAX_RESPAWNS,
-        ArcadeAttemptRespawn, ArcadeAttemptGetGame, ARCADE_CHALLENGE_GAME_ENERGY_COST,
-        ARCADE_CHALLENGE_MAX_ENERGY,
+        OPPONENT_TAG_GROUP, CHALLENGE_TAG_GROUP, ArcadeAttemptRespawn, ArcadeAttemptGetGame,
+        ARCADE_CHALLENGE_MAX_ENERGY, get_arcade_max_respawns, get_arcade_energy_cost,
     },
     ARCADE_NAMESPACE_HASH,
 };
@@ -31,6 +30,7 @@ use crate::tags::{Tag, IdTagNew};
 use crate::core::{byte_array_to_felt252_array, BoolIntoOneZero};
 use crate::erc721::ERC721TokenStorage;
 use crate::achievements::{Achievements, TaskId};
+
 
 fn calc_restored_health(current_health: u8, vitality: u8, health_recovery_percent: u8) -> u8 {
     let max_health = STARTING_HEALTH + vitality;
@@ -65,6 +65,7 @@ fn get_arcade_opponent_id(
     };
     poseidon_hash_span(output.span())
 }
+
 
 #[generate_trait]
 impl ArcadeImpl of ArcadeTrait {
@@ -430,7 +431,7 @@ impl ArcadeImpl of ArcadeTrait {
         assert(attempt.player == get_caller_address(), 'Not player');
         assert(timestamp <= attempt.expiry, 'Challenge expired');
         assert(phase == ArcadePhase::PlayerLost, 'Player not lost round');
-        assert(attempt.respawns < ARCADE_CHALLENGE_MAX_RESPAWNS, 'Max respawns');
+        assert(attempt.respawns < get_arcade_max_respawns(), 'Max respawns');
         self.arcade.use_game(attempt.player, timestamp);
 
         attempt.respawns += 1;
@@ -502,12 +503,12 @@ impl ArcadeImpl of ArcadeTrait {
     fn use_free_game(ref self: WorldStorage, player: ContractAddress, timestamp: u64) -> bool {
         let model = self.get_free_games(player);
         let mut energy = model.energy + timestamp - model.timestamp;
-
-        if energy >= ARCADE_CHALLENGE_GAME_ENERGY_COST {
+        let energy_cost = get_arcade_energy_cost();
+        if energy >= energy_cost {
             if energy > ARCADE_CHALLENGE_MAX_ENERGY {
                 energy = ARCADE_CHALLENGE_MAX_ENERGY;
             };
-            self.set_free_games(player, energy - ARCADE_CHALLENGE_GAME_ENERGY_COST, timestamp);
+            self.set_free_games(player, energy - energy_cost, timestamp);
             true
         } else {
             false
@@ -520,11 +521,23 @@ impl ArcadeImpl of ArcadeTrait {
         self.set_number_of_paid_games(player, games - 1);
     }
 
+    fn increase_paid_games(ref self: WorldStorage, player: ContractAddress, amount: u32) {
+        self.set_number_of_paid_games(player, self.get_number_of_paid_games(player) + amount);
+    }
+
     fn use_game(ref self: WorldStorage, player: ContractAddress, timestamp: u64) {
         let mut store = self.storage(ARCADE_NAMESPACE_HASH);
         if !store.use_free_game(player, timestamp) {
             store.use_paid_game(player);
         };
+    }
+
+    fn increase_number_of_paid_games<S, +WorldTrait<S>, +Drop<S>>(
+        ref self: S, player: ContractAddress, amount: u32,
+    ) {
+        let mut store = self.storage(ARCADE_NAMESPACE_HASH);
+        let games = store.get_number_of_paid_games(player);
+        store.set_number_of_paid_games(player, games + amount);
     }
 
     fn get_arcade_attempt_game(self: @WorldStorage, attempt_id: felt252) -> ArcadeGame {

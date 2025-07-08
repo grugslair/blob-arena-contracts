@@ -21,7 +21,7 @@ import * as toml from "toml";
 import { isDict } from "./utils.js";
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = process.cwd();
 const returnKey =
   "0x17c9a55536e844e86b35cd70d23a4e304a30e5e08de591b6788319186160f50";
 
@@ -176,15 +176,20 @@ export const splitCallDescriptions = (calls_metas) => {
   return [calls, descriptions];
 };
 
-export const loadAccountManifest = async (profile, password = null) => {
+export const loadAccountManifest = async (
+  profile,
+  password = null,
+  privateKey = null
+) => {
   const account_manifest = new AccountManifest(
-    `../dojo_${profile}.toml`,
-    `../manifest_${profile}.json`,
-    profile
+    `./dojo_${profile}.toml`,
+    `./manifest_${profile}.json`,
+    profile,
+    privateKey
   );
-  if (password) {
+  if (password && !privateKey) {
     await account_manifest.init_keystore(password);
-  } else if (account_manifest.dojo_toml.env.keystore_path) {
+  } else if (account_manifest.dojo_toml.env.keystore_path && !privateKey) {
     throw new Error(
       `Keystore path is set, but no password provided. Please provide a password.`
     );
@@ -216,6 +221,26 @@ export const deployContract = async (
     deployer_address: account.address,
     transaction_hash: deployResponse.transaction_hash,
   };
+};
+
+export const declareContract = async (account, contractPath, CasmPath) => {
+  const contract = loadJson(contractPath);
+
+  const classHash = hash.computeContractClassHash(contract);
+  try {
+    await account.getClassByHash(classHash);
+    console.log(`Already declared with classHash\n\t\t${classHash}`);
+  } catch {
+    const casm = loadJson(CasmPath);
+    const declareResponse = await account.declare({
+      contract,
+      casm,
+      version: 3,
+    });
+    await account.waitForTransaction(declareResponse.transaction_hash);
+    console.log(`Declared with classHash\n\t\t${declareResponse.class_hash}`);
+  }
+  return classHash;
 };
 
 export const loadAccountManifestFromCmdArgs = async () => {
@@ -280,6 +305,7 @@ export const newAccount = async (account, classHash) => {
       version: 3,
     }
   );
+  await account.waitForTransaction(transaction_hash);
   return new Account(
     { nodeUrl: account.channel.nodeUrl },
     contract_address[0],
@@ -290,6 +316,7 @@ export const newAccount = async (account, classHash) => {
 export const newAccounts = async (account, classHash, amount) => {
   let calls = [];
   let keys = [];
+
   for (let i = 0; i < amount; i++) {
     const { privateKey, publicKey } = newKeyPair();
     calls.push({
