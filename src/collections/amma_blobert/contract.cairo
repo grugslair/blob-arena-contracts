@@ -180,6 +180,11 @@ mod AmmaBlobert {
             assert(number_of_fighters >= self.number_of_fighters.read(), 'Cannot reduce fighters');
             self.number_of_fighters.write(number_of_fighters);
         }
+
+        fn mint(ref self: ContractState, player: ContractAddress, fighter: u32) {
+            self.assert_caller_is_writer();
+            self.mint_internal(player, fighter);
+        }
     }
 
     #[abi(embed_v0)]
@@ -200,7 +205,7 @@ mod AmmaBlobert {
                 fighter.is_non_zero() && fighter <= self.number_of_fighters.read(),
                 'Invalid fighter ID',
             );
-            let token_id = self.erc721.mint(player, token_id);
+            self.erc721.mint(player, token_id);
             self.token_fighters.write(token_id, fighter);
             token_id
         }
