@@ -282,14 +282,14 @@ impl ArcadeImpl of ArcadeTrait {
         }
         for result in results {
             if result.combatant_id == game.combatant_id {
-                let new_attack_uses: u32 = self
+                let new_attack_uses: u128 = self
                     .arcade
                     .increment_attack_uses(game.player, player_attack)
                     .is_zero()
                     .into();
 
                 let (_, opponent) = result.effects();
-                let mut damage = opponent.damage;
+                let mut damage: u128 = opponent.damage.into();
                 if opponent.health < 0 {
                     damage += (-opponent.health).try_into().unwrap();
                 };
@@ -300,7 +300,7 @@ impl ArcadeImpl of ArcadeTrait {
                         array![
                             (TaskId::ArcadeUniqueMoves, new_attack_uses),
                             (TaskId::ArcadeTotalDamage, damage),
-                            (TaskId::CriticalHits, opponent.criticals),
+                            (TaskId::CriticalHits, opponent.criticals.into()),
                         ],
                     );
             }
