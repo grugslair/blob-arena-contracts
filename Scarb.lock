@@ -24,6 +24,7 @@ dependencies = [
  "openzeppelin_token",
  "openzeppelin_upgrades",
  "pragma_lib",
+ "sai_owners_writers",
 ]
 
 [[package]]
@@ -186,3 +187,8 @@ source = "git+https://github.com/astraly-labs/pragma-lib#c429179ed6153004b796573
 dependencies = [
  "openzeppelin",
 ]
+
+[[package]]
+name = "sai_owners_writers"
+version = "0.1.0"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=main#62528efd1f02afbd3caa10a4fc9ec80749a7a4ce"

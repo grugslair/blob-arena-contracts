@@ -3,17 +3,6 @@ use starknet::ContractAddress;
 
 #[starknet::interface]
 trait IAmmaBlobert<TContractState> {
-    /// Mints a free Blobert token
-    /// # Returns
-    /// * `Array<u256>` - An array containing the token id(s) of the minted Blobert(s)
-    fn mint_free(ref self: TContractState) -> Array<u256>;
-    /// Mints a Blobert token using an arcade unlock attempt
-    /// # Arguments
-    /// * `attempt_id` - The unique identifier for the arcade attempt that was won
-    /// # Returns
-    /// * `u256` - The token id of the minted Blobert
-    fn mint_arcade_unlock(ref self: TContractState, attempt_id: felt252) -> u256;
-
     /// Gets the fighter associated with a Blobert token
     /// # Arguments
     /// * `token_id` - The unique identifier of the Blobert token
@@ -30,6 +19,7 @@ trait IAmmaBlobert<TContractState> {
 #[starknet::interface]
 trait IAmmaBlobertAdmin<TContractState> {
     fn set_n_fighters(ref self: TContractState, number_of_fighters: u32);
+    fn mint(ref self: TContractState, player: ContractAddress, fighter: u32);
 }
 
 #[starknet::contract]
@@ -45,19 +35,19 @@ mod AmmaBlobert {
     use dojo_beacon::emitter_component;
     use dojo_beacon::dojo::const_ns;
     use dojo_beacon::emitter::Registry;
+    use sai_owners_writers::{owners_writers_component, OwnersWriters};
+
 
     use crate::erc721;
     use crate::erc721::ERC721Internal;
+    use super::{IAmmaBlobertAdmin, IAmmaBlobert};
+
     component!(path: ERC721Component, storage: erc721, event: ERC721Event);
     component!(path: SRC5Component, storage: src5, event: SRC5Event);
-    component!(path: OwnableComponent, storage: ownable, event: OwnableEvent);
     component!(path: UpgradeableComponent, storage: upgradeable, event: UpgradeableEvent);
     component!(path: emitter_component, storage: emitter, event: EmitterEvents);
+    component!(path: owners_writers_component, storage: owners_writers, event: OwnersWritersEvents);
 
-
-    #[abi(embed_v0)]
-    impl OwnableMixinImpl =
-        OwnableComponent::OwnableTwoStepMixinImpl<ContractState>;
 
     #[abi(embed_v0)]
     impl SRC5Impl = SRC5Component::SRC5Impl<ContractState>;
@@ -65,10 +55,13 @@ mod AmmaBlobert {
     #[abi(embed_v0)]
     impl ERC721Abi = erc721::IERC721Abi<ContractState, ERC721>;
 
+    #[abi(embed_v0)]
+    impl OwnersWritersImpl =
+        owners_writers_component::OwnersWritersImpl<ContractState>;
+
     impl ERC721Impl = ERC721Component::ERC721Impl<ContractState>;
     // Internal
     impl ERC721InternalImpl = ERC721Component::InternalImpl<ContractState>;
-    impl OwnableInternalImpl = OwnableComponent::InternalImpl<ContractState>;
     impl UpgradeableInternalImpl = UpgradeableComponent::InternalImpl<ContractState>;
     impl SRC5InternalImpl = SRC5Component::InternalImpl<ContractState>;
 
@@ -79,11 +72,11 @@ mod AmmaBlobert {
         #[substorage(v0)]
         src5: SRC5Component::Storage,
         #[substorage(v0)]
-        ownable: OwnableComponent::Storage,
-        #[substorage(v0)]
         upgradeable: UpgradeableComponent::Storage,
         #[substorage(v0)]
         emitter: emitter_component::Storage,
+        #[substorage(v0)]
+        owners_writers: owners_writers_component::Storage,
         number_of_fighters: u32,
         token_fighters: Map<u256, u32>,
         tokens_minted: u128,
@@ -97,17 +90,17 @@ mod AmmaBlobert {
         #[flat]
         SRC5Event: SRC5Component::Event,
         #[flat]
-        OwnableEvent: OwnableComponent::Event,
-        #[flat]
         UpgradeableEvent: UpgradeableComponent::Event,
         #[flat]
         EmitterEvents: emitter_component::Event,
+        #[flat]
+        OwnersWritersEvents: owners_writers_component::Event,
     }
 
     #[constructor]
     fn constructor(ref self: ContractState, beacon: ContractAddress, owner: ContractAddress) {
         self.erc721.initializer_no_metadata();
-        self.ownable.initializer(owner);
+        self.grant_owner(owner);
         self.src5.register_interface(interface::IERC721_METADATA_ID);
     }
 
@@ -171,18 +164,45 @@ mod AmmaBlobert {
     }
 
     #[abi(embed_v0)]
+    impl IAmmaBlobertImpl of IAmmaBlobert<ContractState> {
+        fn fighter(self: @ContractState, token_id: u256) -> u32 {
+            self.token_fighters.read(token_id)
+        }
+        fn number_of_fighters(self: @ContractState) -> u32 {
+            self.number_of_fighters.read()
+        }
+    }
+
+    #[abi(embed_v0)]
+    impl IAmmaBlobertAdminImpl of IAmmaBlobertAdmin<ContractState> {
+        fn set_n_fighters(ref self: ContractState, number_of_fighters: u32) {
+            self.assert_caller_is_owner();
+            assert(number_of_fighters >= self.number_of_fighters.read(), 'Cannot reduce fighters');
+            self.number_of_fighters.write(number_of_fighters);
+        }
+    }
+
+    #[abi(embed_v0)]
     impl UpgradeableImpl of IUpgradeable<ContractState> {
         fn upgrade(ref self: ContractState, new_class_hash: ClassHash) {
-            self.ownable.assert_only_owner();
+            self.assert_caller_is_owner();
             self.upgradeable.upgrade(new_class_hash);
         }
+    }
 
-        fn admin_mint(ref self: ContractState, player: ContractAddress, fighter: u32) -> u256 {
-            let mut storage = self.storage(AMMA_BLOBERT_NAMESPACE_HASH);
-            storage.assert_caller_has_permission(Role::CollectionMinter);
-            let token_id = uuid().into();
-            storage.set_blobert_token(token_id, player, TokenAttributes::Custom(fighter.into()));
-            return_value(token_id)
+    #[generate_trait]
+    impl PrivateImpl of PrivateTrait {
+        fn mint_internal(ref self: ContractState, player: ContractAddress, fighter: u32) -> u256 {
+            let token_id = self.tokens_minted.read() + 1;
+            self.tokens_minted.write(token_id);
+            let token_id: u256 = token_id.into();
+            assert(
+                fighter.is_non_zero() && fighter <= self.number_of_fighters.read(),
+                'Invalid fighter ID',
+            );
+            let token_id = self.erc721.mint(player, token_id);
+            self.token_fighters.write(token_id, fighter);
+            token_id
         }
     }
 }
