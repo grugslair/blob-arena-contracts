@@ -4,7 +4,7 @@ version = 1
 [[package]]
 name = "achievement"
 version = "0.0.0"
-source = "git+https://github.com/cartridge-gg/arcade?tag=v0.0.0#5fceaacd8f25891abf9d292badcfb6ea490929bd"
+source = "git+https://github.com/cartridge-gg/arcade?tag=v1.5.1#70c40678262ba19d4f60b76af8654f2e17ed018b"
 dependencies = [
  "dojo",
 ]
@@ -16,7 +16,9 @@ dependencies = [
  "achievement",
  "cubit",
  "dojo",
+ "dojo_beacon",
  "dojo_cairo_test",
+ "openzeppelin_access",
  "openzeppelin_account",
  "openzeppelin_introspection",
  "openzeppelin_token",
@@ -31,16 +33,24 @@ source = "git+https://github.com/bengineer42/cubit?tag=cairo--2.8.0#32a20af893b3
 
 [[package]]
 name = "dojo"
-version = "1.5.0"
-source = "git+https://github.com/dojoengine/dojo?tag=v1.5.0#812f17c9c57fd057d0bf1e648a591ea0ca9ea718"
+version = "1.5.1"
+source = "git+https://github.com/dojoengine/dojo?tag=v1.5.1#986c3b0c6d647b23847c70ddceb1d33ddac86ead"
 dependencies = [
  "dojo_plugin",
 ]
 
 [[package]]
+name = "dojo_beacon"
+version = "0.2.3"
+source = "git+https://github.com/sai-starknet/dojo-beacon?branch=v0.2.0#de2d35c2858025c1bfb20fa02ff9ae582f6d38f1"
+dependencies = [
+ "dojo",
+]
+
+[[package]]
 name = "dojo_cairo_test"
 version = "1.0.12"
-source = "git+https://github.com/dojoengine/dojo?tag=v1.5.0#812f17c9c57fd057d0bf1e648a591ea0ca9ea718"
+source = "git+https://github.com/dojoengine/dojo?tag=v1.5.1#986c3b0c6d647b23847c70ddceb1d33ddac86ead"
 dependencies = [
  "dojo",
 ]
@@ -48,7 +58,7 @@ dependencies = [
 [[package]]
 name = "dojo_plugin"
 version = "2.10.1"
-source = "git+https://github.com/dojoengine/dojo?tag=v1.5.0#812f17c9c57fd057d0bf1e648a591ea0ca9ea718"
+source = "git+https://github.com/dojoengine/dojo?tag=v1.5.1#986c3b0c6d647b23847c70ddceb1d33ddac86ead"
 
 [[package]]
 name = "openzeppelin"

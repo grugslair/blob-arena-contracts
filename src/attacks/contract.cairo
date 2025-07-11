@@ -3,7 +3,7 @@ use blob_arena::{attacks::components::EffectInput};
 
 #[starknet::interface]
 trait IAttackActions<TContractState> {
-    fn new_attack(
+    fn create_attack(
         ref self: TContractState,
         name: ByteArray,
         speed: u8,
@@ -12,6 +12,8 @@ trait IAttackActions<TContractState> {
         hit: Array<EffectInput>,
         miss: Array<EffectInput>,
     ) -> felt252;
+
+    fn create_attacks(ref self: TContractState, attacks: Array<AttackInput>) -> Array<felt252>;
 }
 
 
@@ -20,7 +22,7 @@ mod attack_actions {
     use starknet::{ContractAddress, get_caller_address};
     use dojo::model::ModelStorage;
     use blob_arena::{
-        attacks::{AttackStorage, components::{EffectInput, AttackInput}}, default_namespace, uuid
+        attacks::{AttackStorage, components::{EffectInput, AttackInput}}, default_namespace, uuid,
     };
 
     use super::IAttackActions;

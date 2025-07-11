@@ -13,115 +13,23 @@ trait IAmmaBlobert<TContractState> {
     /// # Returns
     /// * `u256` - The token id of the minted Blobert
     fn mint_arcade_unlock(ref self: TContractState, attempt_id: felt252) -> u256;
-}
 
-#[starknet::interface]
-trait IAmmaBlobertFighters<TContractState> {
-    /// Creates a new fighter with the given attributes
+    /// Gets the fighter associated with a Blobert token
     /// # Arguments
-    /// * `name` - Name of the fighter
-    /// * `stats` - Base statistics of the fighter
-    /// * `generated_stats` - stats of the fighter used when generating
-    /// * `attacks` - Array of attacks available to the fighter either a tag, attack input or attack
-    /// id # Returns
-    /// * `u32` - ID of the newly created fighter
-    ///
-    /// Models:
-    /// * AmmaFighter
-    ///
-    /// Events:
-    /// * AmmaFighterName
-    fn new_fighter(
-        ref self: TContractState,
-        name: ByteArray,
-        stats: UStats,
-        generated_stats: UStats,
-        attacks: Array<IdTagNew<AttackInput>>,
-    ) -> u32;
-
-    /// Updates an existing fighter's attributes
-    /// # Arguments
-    /// * `fighter` - ID of the fighter to update
-    /// * `name` - New name for the fighter
-    /// * `stats` - New base statistics for the fighter
-    /// * `generated_stats` - New generated statistics for the fighter
-    /// * `attacks` - Array of attacks available to the fighter either a tag, attack input or attack
-    /// id
-    ///
-    /// Models:
-    /// * AmmaFighter
-    ///
-    /// Events:
-    /// * AmmaFighterName
-    fn set_fighter(
-        ref self: TContractState,
-        fighter: u32,
-        name: ByteArray,
-        stats: UStats,
-        generated_stats: UStats,
-        attacks: Array<IdTagNew<AttackInput>>,
-    );
-
-    /// Updates a fighter's base statistics
-    /// # Arguments
-    /// * `fighter` - ID of the fighter to update
-    /// * `stats` - New statistics to set
-    ///
-    /// Models:
-    /// * AmmaFighter
-    fn set_fighter_stats(ref self: TContractState, fighter: u32, stats: UStats);
-
-    /// Updates a fighter's generated statistics
-    /// # Arguments
-    /// * `fighter` - ID of the fighter to update
-    /// * `stats` - New generated statistics to set
-    ///
-    /// Models:
-    /// * AmmaFighter
-    fn set_fighter_generated_stats(ref self: TContractState, fighter: u32, stats: UStats);
-
-    /// Updates a fighter's available attacks
-    /// # Arguments
-    /// * `fighter` - ID of the fighter to update
-    /// * `attacks` - New array of attacks to set
-    ///
-    /// Models:
-    /// * AmmaFighter
-    fn set_fighter_attacks(
-        ref self: TContractState, fighter: u32, attacks: Array<IdTagNew<AttackInput>>,
-    );
-
-    /// Updates a fighter's name
-    /// # Arguments
-    /// * `fighter` - ID of the fighter to update
-    /// * `name` - New name to set
-    ///
-    /// Events:
-    /// * AmmaFighterName
-    fn set_fighter_name(ref self: TContractState, fighter: u32, name: ByteArray);
+    /// * `token_id` - The unique identifier of the Blobert token
+    /// # Returns
+    /// * `u32` - The ID of the fighter associated with the Blobert token
+    fn fighter(self: @TContractState, token_id: u256) -> u32;
 
     /// Gets the total number of fighters
     /// # Returns
-    /// * `u32` - Total number of fighters
-    fn amount_of_fighters(self: @TContractState) -> u32;
-
-    /// Sets the total number of fighters
-    /// # Arguments
-    /// * `amount` - New total number of fighters to set
-    fn set_amount_of_fighters(ref self: TContractState, amount: u32);
-
-    /// Mints a Blobert token without unlock
-    /// # Arguments
-    /// * `player` - Contract address of the player to mint the token for
-    /// * `fighter` - ID of the fighter to mint
-    /// # Returns
-    /// * `u256` - The token ID of the minted Blobert
-    fn admin_mint(ref self: TContractState, player: ContractAddress, fighter: u32) -> u256;
+    /// * `u32` - The total number of fighters in the contract
+    fn number_of_fighters(self: @TContractState) -> u32;
 }
 
-
-fn get_amount_of_fighters(contract_address: ContractAddress) -> u32 {
-    IAmmaBlobertFightersDispatcher { contract_address }.amount_of_fighters()
+#[starknet::interface]
+trait IAmmaBlobertAdmin<TContractState> {
+    fn set_n_fighters(ref self: TContractState, number_of_fighters: u32);
 }
 
 #[starknet::contract]
@@ -134,12 +42,18 @@ mod AmmaBlobert {
     use openzeppelin_upgrades::interface::IUpgradeable;
     use starknet::storage::Map;
     use starknet::{ClassHash, ContractAddress, get_caller_address, get_contract_address};
+    use dojo_beacon::emitter_component;
+    use dojo_beacon::dojo::const_ns;
+    use dojo_beacon::emitter::Registry;
+
     use crate::erc721;
     use crate::erc721::ERC721Internal;
     component!(path: ERC721Component, storage: erc721, event: ERC721Event);
     component!(path: SRC5Component, storage: src5, event: SRC5Event);
     component!(path: OwnableComponent, storage: ownable, event: OwnableEvent);
     component!(path: UpgradeableComponent, storage: upgradeable, event: UpgradeableEvent);
+    component!(path: emitter_component, storage: emitter, event: EmitterEvents);
+
 
     #[abi(embed_v0)]
     impl OwnableMixinImpl =
@@ -168,8 +82,11 @@ mod AmmaBlobert {
         ownable: OwnableComponent::Storage,
         #[substorage(v0)]
         upgradeable: UpgradeableComponent::Storage,
-        fighters: Map<felt252, bool>,
-        token_fighters: Map<u256, felt252>,
+        #[substorage(v0)]
+        emitter: emitter_component::Storage,
+        number_of_fighters: u32,
+        token_fighters: Map<u256, u32>,
+        tokens_minted: u128,
     }
 
     #[event]
@@ -183,6 +100,8 @@ mod AmmaBlobert {
         OwnableEvent: OwnableComponent::Event,
         #[flat]
         UpgradeableEvent: UpgradeableComponent::Event,
+        #[flat]
+        EmitterEvents: emitter_component::Event,
     }
 
     #[constructor]
