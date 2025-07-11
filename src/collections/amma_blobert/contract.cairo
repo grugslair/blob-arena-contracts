@@ -22,8 +22,13 @@ trait IAmmaBlobertAdmin<TContractState> {
     fn mint(ref self: TContractState, player: ContractAddress, fighter: u32);
 }
 
+pub fn get_amount_of_fighters(collection: ContractAddress) -> u32 {
+    IAmmaBlobertDispatcher { contract_address: collection }.number_of_fighters()
+}
+
 #[starknet::contract]
 mod AmmaBlobert {
+    use dojo_beacon::dojo::traits::BeaconEmitterTrait;
     use core::poseidon::poseidon_hash_span;
     use openzeppelin_access::ownable::OwnableComponent;
     use openzeppelin_introspection::src5::SRC5Component;
@@ -41,6 +46,7 @@ mod AmmaBlobert {
     use crate::erc721;
     use crate::erc721::ERC721Internal;
     use super::{IAmmaBlobertAdmin, IAmmaBlobert};
+    use super::super::components::AmmaBlobertTokenFighter;
 
     component!(path: ERC721Component, storage: erc721, event: ERC721Event);
     component!(path: SRC5Component, storage: src5, event: SRC5Event);
@@ -64,6 +70,8 @@ mod AmmaBlobert {
     impl ERC721InternalImpl = ERC721Component::InternalImpl<ContractState>;
     impl UpgradeableInternalImpl = UpgradeableComponent::InternalImpl<ContractState>;
     impl SRC5InternalImpl = SRC5Component::InternalImpl<ContractState>;
+    const NAMESPACE_HASH: felt252 = bytearray_hash!("amma_blobert");
+    impl Emitter = const_ns::ConstNsBeaconEmitter<NAMESPACE_HASH, ContractState>;
 
     #[storage]
     struct Storage {
@@ -205,6 +213,7 @@ mod AmmaBlobert {
                 fighter.is_non_zero() && fighter <= self.number_of_fighters.read(),
                 'Invalid fighter ID',
             );
+            self.emit_model(@AmmaBlobertTokenFighter { token_id, fighter });
             self.erc721.mint(player, token_id);
             self.token_fighters.write(token_id, fighter);
             token_id

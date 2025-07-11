@@ -139,7 +139,7 @@ impl GameImpl of GameTrait {
         };
         for result in results {
             let player = self.get_player(result.combatant_id);
-            let new_attack_uses: u32 = self
+            let new_attack_uses: u128 = self
                 .increment_attack_uses(player, result.attack)
                 .is_zero()
                 .into();
@@ -150,7 +150,7 @@ impl GameImpl of GameTrait {
                     player,
                     array![
                         (TaskId::PvpUniqueMoves, new_attack_uses),
-                        (TaskId::CriticalHits, opponent.criticals),
+                        (TaskId::CriticalHits, opponent.criticals.into()),
                     ],
                 );
         }

@@ -47,7 +47,7 @@ impl TaskIdIntoFelt252 of Into<TaskId, felt252> {
 #[derive(Drop, Serde)]
 struct TaskInput {
     id: TaskId,
-    total: u32,
+    total: u128,
     description: ByteArray,
 }
 
@@ -70,7 +70,7 @@ struct TrophyCreationInput {
 
 impl TaskInputIntoTask of Into<TaskInput, Task> {
     fn into(self: TaskInput) -> Task {
-        Task { id: self.id.into(), total: self.total, description: self.description }
+        Task { id: self.id.into(), total: self.total.into(), description: self.description }
     }
 }
 
@@ -103,11 +103,13 @@ impl AchievementsEventsImpl of AchievementsEvents {
         self.emit_event(@trophy);
     }
     fn emit_achievement_progress(
-        ref self: WorldStorage, player_id: felt252, task: TaskId, count: u32, time: u64,
+        ref self: WorldStorage, player_id: felt252, task: TaskId, count: u128, time: u64,
     ) {
         self
             .emit_event(
-                @TrophyProgression { player_id: player_id, task_id: task.into(), count, time },
+                @TrophyProgression {
+                    player_id: player_id, task_id: task.into(), count, time: time.into(),
+                },
             );
     }
 }

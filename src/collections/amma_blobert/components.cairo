@@ -54,6 +54,14 @@ struct AmmaFighter {
     attacks: u32,
 }
 
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct AmmaBlobertTokenFighter {
+    #[key]
+    token_id: u256,
+    fighter: u32,
+}
+
 /// Event emitted when the name of an Amma Fighter is set or updated.
 ///
 /// # Fields
