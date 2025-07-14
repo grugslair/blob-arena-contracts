@@ -1,5 +1,5 @@
 # The World address to index.
-world_address = "0x1f4cbda175e5f687c386e096ea14afd6ef24b830578ae36b3e93a3b65e3198c"
+world_address = "0x2b35586554637a4078741d57a4f930dc3f08cfee2b210df119b8096909617c5"
 
 # Default RPC URL configuration
 rpc = "http://127.0.0.1:5050"
@@ -11,3 +11,8 @@ db_dir = "torii/dev"
 
 [sql]
 historical = ["achievements-TrophyProgression"]
+
+[indexing]
+contracts = [
+    "erc721-world:0x8306e065b4e8f0c8ffb90bec1c70a50b0fc60565371ec7be97f1f485426008",
+]

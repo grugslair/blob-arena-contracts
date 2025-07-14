@@ -21,7 +21,7 @@ export const makeCollectionAddressDict = (account_manifest) => {
   return {
     blobert: account_manifest.getContractAddress(blobertContractTag),
     free_blobert: account_manifest.getContractAddress(freeBlobertContractTag),
-    amma_blobert: account_manifest.getContractAddress(ammaBlobertContractTag),
+    // amma_blobert: account_manifest.getContractAddress(ammaBlobertContractTag),
   };
 };
 
@@ -135,7 +135,7 @@ const main = async () => {
       account_manifest,
       arcade_data.challenges
     )),
-    ...(await setAmmaCollectionAddress(account_manifest)),
+    // ...(await setAmmaCollectionAddress(account_manifest)),
   ];
   const [calls, descriptions] = splitCallDescriptions(calls_metas);
   console.log(descriptions);

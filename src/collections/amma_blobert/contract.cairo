@@ -14,6 +14,9 @@ trait IAmmaBlobert<TContractState> {
     /// # Returns
     /// * `u32` - The total number of fighters in the contract
     fn number_of_fighters(self: @TContractState) -> u32;
+
+
+    fn test(ref self: TContractState);
 }
 
 #[starknet::interface]
@@ -27,7 +30,7 @@ pub fn get_amount_of_fighters(collection: ContractAddress) -> u32 {
 }
 
 #[starknet::contract]
-mod AmmaBlobert {
+mod amma_blobert_token {
     use dojo_beacon::dojo::traits::BeaconEmitterTrait;
     use core::poseidon::poseidon_hash_span;
     use openzeppelin_access::ownable::OwnableComponent;
@@ -106,7 +109,7 @@ mod AmmaBlobert {
     }
 
     #[constructor]
-    fn constructor(ref self: ContractState, beacon: ContractAddress, owner: ContractAddress) {
+    fn constructor(ref self: ContractState, owner: ContractAddress) {
         self.erc721.initializer_no_metadata();
         self.grant_owner(owner);
         self.src5.register_interface(interface::IERC721_METADATA_ID);
@@ -178,6 +181,15 @@ mod AmmaBlobert {
         }
         fn number_of_fighters(self: @ContractState) -> u32 {
             self.number_of_fighters.read()
+        }
+
+        fn test(ref self: ContractState) {
+            self.number_of_fighters.write(10);
+            let token_1 = self.mint_internal(get_caller_address(), 1);
+            let token_2 = self.mint_internal(get_caller_address(), 2);
+            ERC721Impl::transfer_from(
+                ref self, get_caller_address(), get_contract_address(), token_1,
+            );
         }
     }
 
