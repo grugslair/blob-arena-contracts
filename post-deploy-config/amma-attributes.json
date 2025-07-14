@@ -67,7 +67,7 @@
             "affect": {
               "Damage": {
                 "power": 40,
-                "critical": 0
+                "critical": 10
               }
             }
           },
@@ -95,7 +95,7 @@
         "name": "Osoto Gari",
         "speed": 45,
         "accuracy": 80,
-        "cooldown": 5,
+        "cooldown": 3,
         "hit": [
           {
             "target": "Opponent",
@@ -170,15 +170,21 @@
             "affect": {
               "Damage": {
                 "power": 55,
-                "critical": 0
+                "critical": 10
               }
             }
           },
           {
             "target": "Opponent",
             "affect": {
+              "Stun": 20
+            }
+          },
+          {
+            "target": "Opponent",
+            "affect": {
               "Stats": {
-                "strength": -25,
+                "strength": -20,
                 "vitality": 0,
                 "dexterity": 0,
                 "luck": 0
@@ -192,7 +198,7 @@
         "name": "White Company",
         "speed": 40,
         "accuracy": 90,
-        "cooldown": 5,
+        "cooldown": 3,
         "hit": [
           {
             "target": "Opponent",
@@ -296,7 +302,7 @@
         "name": "Spin Attack",
         "speed": 50,
         "accuracy": 90,
-        "cooldown": 5,
+        "cooldown": 3,
         "hit": [
           {
             "target": "Opponent",
@@ -363,7 +369,7 @@
         "name": "Swag",
         "speed": 65,
         "accuracy": 100,
-        "cooldown": 5,
+        "cooldown": 3,
         "hit": [
           {
             "target": "Player",
@@ -390,7 +396,7 @@
             "affect": {
               "Damage": {
                 "power": 60,
-                "critical": 0
+                "critical": 10
               }
             }
           },
@@ -519,7 +525,7 @@
             "affect": {
               "Damage": {
                 "power": 60,
-                "critical": 10
+                "critical": 15
               }
             }
           }
@@ -903,7 +909,7 @@
             "name": "Steel Sonata",
             "speed": 70,
             "accuracy": 80,
-            "cooldown": 5,
+            "cooldown": 3,
             "hit": [
                 {
                     "target": "Opponent",
@@ -918,10 +924,10 @@
                     "target": "Player",
                     "affect": {
                         "Stats": {
-                            "strength": 30,
+                            "strength": 20,
                             "vitality": 0,
                             "dexterity": 0,
-                            "luck": 30
+                            "luck": 20
                         }
                     }
                 }
@@ -1008,7 +1014,7 @@
                   "target": "Opponent",
                   "affect": {
                       "Damage": {
-                          "power": 55,
+                          "power": 60,
                           "critical": 20
                       }
                   }
@@ -1019,7 +1025,7 @@
         {
             "name": "One Shot",
             "speed": 40,
-            "accuracy": 60,
+            "accuracy": 65,
             "cooldown": 5,
             "hit": [
                 {
@@ -1075,7 +1081,7 @@
                 {
                   "target": "Opponent",
                   "affect": {
-                      "Stun": 10
+                      "Stun": 20
                   }
               }
             ],
@@ -1177,7 +1183,7 @@
                     "target": "Opponent",
                     "affect": {
                         "Damage": {
-                            "power": 60,
+                            "power": 50,
                             "critical": 10
                         }
                     }
@@ -1185,7 +1191,7 @@
                 {
                     "target": "Opponent",
                     "affect": {
-                        "Stun": 50
+                        "Stun": 30
                     }
                 },
                 {
@@ -1200,7 +1206,7 @@
         {
             "name": "Final Judgement",
             "speed": 40,
-            "accuracy": 95,
+            "accuracy": 90,
             "cooldown": 3,
             "hit": [
                 {
@@ -1277,7 +1283,7 @@
         {
             "name": "Seismic Toss",
             "speed": 30,
-            "accuracy": 75,
+            "accuracy": 80,
             "cooldown": 3,
             "hit": [
                 {

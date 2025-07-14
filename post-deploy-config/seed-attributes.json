@@ -1421,7 +1421,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 45,
+                  "power": 60,
                   "critical": 20
                 }
               }
@@ -1430,6 +1430,23 @@
               "target": "Opponent",
               "affect": {
                 "Stun": 10
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Stats": {
+                  "strength": 0,
+                  "vitality": 20,
+                  "dexterity": 0,
+                  "luck": 0
+                }
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 20
               }
             }
           ],
@@ -1474,7 +1491,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 30,
+                  "power": 40,
                   "critical": 20
                 }
               }
@@ -1498,7 +1515,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 40,
+                  "power": 60,
                   "critical": 30
                 }
               }
@@ -1569,7 +1586,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 55,
+                  "power": 60,
                   "critical": 15
                 }
               }
@@ -1578,6 +1595,17 @@
               "target": "Opponent",
               "affect": {
                 "Stun": 15
+              }
+            },
+            {
+              "target": "Opponent",
+              "affect": {
+                "Stats": {
+                  "strength": -20,
+                  "vitality": 0,
+                  "dexterity": 0,
+                  "luck": 0
+                }
               }
             }
           ],
@@ -1625,7 +1653,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 45,
+                  "power": 55,
                   "critical": 20
                 }
               }
@@ -1634,6 +1662,17 @@
               "target": "Opponent",
               "affect": {
                 "Stun": 20
+              }
+            },
+            {
+              "target": "Opponent",
+              "affect": {
+                "Stats": {
+                  "strength": 0,
+                  "vitality": 0,
+                  "dexterity": -30,
+                  "luck": 0
+                }
               }
             }
           ],
@@ -1681,7 +1720,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 50,
+                  "power": 60,
                   "critical": 20
                 }
               }
@@ -1737,7 +1776,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 55,
+                  "power": 65,
                   "critical": 15
                 }
               }
@@ -1746,6 +1785,17 @@
               "target": "Opponent",
               "affect": {
                 "Stun": 10
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Stats": {
+                  "strength": 0,
+                  "vitality": 0,
+                  "dexterity": 0,
+                  "luck": 30
+                }
               }
             }
           ],
@@ -1793,7 +1843,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 65,
+                  "power": 70,
                   "critical": 0
                 }
               }
@@ -1905,7 +1955,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 60,
+                  "power": 70,
                   "critical": 0
                 }
               }
@@ -1935,7 +1985,7 @@
               "affect": {
                 "Damage": {
                   "power": 30,
-                  "critical": 0
+                  "critical": 10
                 }
               }
             }
@@ -1955,7 +2005,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 100,
+                  "power": 80,
                   "critical": 0
                 }
               }
@@ -2005,7 +2055,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 50,
+                  "power": 60,
                   "critical": 10
                 }
               }
@@ -2014,6 +2064,23 @@
               "target": "Opponent",
               "affect": {
                 "Stun": 20
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Stats": {
+                  "strength": 0,
+                  "vitality": 20,
+                  "dexterity": 0,
+                  "luck": 0
+                }
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 20
               }
             }
           ],
@@ -2117,7 +2184,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 45,
+                  "power": 65,
                   "critical": 20
                 }
               }
@@ -2183,6 +2250,17 @@
               "affect": {
                 "Stun": 10
               }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Stats": {
+                  "strength": 20,
+                  "vitality": 0,
+                  "dexterity": 0,
+                  "luck": 20
+                }
+              }
             }
           ],
           "miss": []
@@ -2229,7 +2307,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 55,
+                  "power": 65,
                   "critical": 10
                 }
               }
@@ -2285,15 +2363,9 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 60,
+                  "power": 70,
                   "critical": 10
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
               }
             }
           ],
@@ -2397,7 +2469,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 55,
+                  "power": 65,
                   "critical": 10
                 }
               }
@@ -2453,7 +2525,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 45,
+                  "power": 55,
                   "critical": 20
                 }
               }
@@ -2462,6 +2534,17 @@
               "target": "Opponent",
               "affect": {
                 "Stun": 20
+              }
+            },
+            {
+              "target": "Opponent",
+              "affect": {
+                "Stats": {
+                  "strength": 0,
+                  "vitality": 0,
+                  "dexterity": -30,
+                  "luck": 0
+                }
               }
             }
           ],
@@ -2509,7 +2592,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 50,
+                  "power": 60,
                   "critical": 20
                 }
               }
@@ -2663,7 +2746,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 60,
+                  "power": 65,
                   "critical": 10
                 }
               }
@@ -2672,6 +2755,17 @@
               "target": "Opponent",
               "affect": {
                 "Stun": 10
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Stats": {
+                  "strength": 20,
+                  "vitality": 0,
+                  "dexterity": 0,
+                  "luck": 20
+                }
               }
             }
           ],
@@ -2740,15 +2834,9 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 55,
+                  "power": 70,
                   "critical": 15
                 }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
               }
             }
           ],
@@ -2825,7 +2913,7 @@
             {
               "target": "Opponent",
               "affect": {
-                "Stun": 10
+                "Stun": 20
               }
             }
           ],
@@ -2894,7 +2982,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 55,
+                  "power": 65,
                   "critical": 15
                 }
               }
@@ -2903,6 +2991,17 @@
               "target": "Opponent",
               "affect": {
                 "Stun": 5
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Stats": {
+                  "strength": 0,
+                  "vitality": 0,
+                  "dexterity": 30,
+                  "luck": 0
+                }
               }
             }
           ],
@@ -2971,7 +3070,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 50,
+                  "power": 60,
                   "critical": 20
                 }
               }
@@ -3048,7 +3147,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 60,
+                  "power": 70,
                   "critical": 10
                 }
               }
@@ -3118,7 +3217,7 @@
         {
           "name": "Giant Rock Uppercut Grapple",
           "speed": 30,
-          "accuracy": 60,
+          "accuracy": 70,
           "cooldown": 3,
           "hit": [
             {
@@ -3202,7 +3301,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 55,
+                  "power": 65,
                   "critical": 10
                 }
               }
@@ -3279,7 +3378,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 50,
+                  "power": 60,
                   "critical": 20
                 }
               }
@@ -3356,7 +3455,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 55,
+                  "power": 65,
                   "critical": 10
                 }
               }
@@ -3433,7 +3532,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 60,
+                  "power": 65,
                   "critical": 10
                 }
               }
@@ -3444,6 +3543,18 @@
                 "Stun": 15
               }
             }
+            ,
+          {
+            "target": "Opponent",
+            "affect": {
+              "Stats": {
+                "strength": 0,
+                "vitality": 0,
+                "dexterity": -20,
+                "luck": 0
+              }
+            }
+          }
           ],
           "miss": []
         }
@@ -3510,7 +3621,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 45,
+                  "power": 60,
                   "critical": 20
                 }
               }
@@ -3587,7 +3698,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 55,
+                  "power": 65,
                   "critical": 10
                 }
               }
@@ -3640,7 +3751,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 35,
+                  "power": 65,
                   "critical": 20
                 }
               }
@@ -3655,28 +3766,7 @@
           "miss": []
         },
         {
-          "name": "Banner Whirlwind",
-          "speed": 50,
-          "accuracy": 90,
-          "cooldown": 3,
-          "hit": [
-            {
-              "target": "Opponent",
-              "affect": {
-                "Damage": {
-                  "power": 55,
-                  "critical": 10
-                }
-              }
-            },
-            {
-              "target": "Opponent",
-              "affect": {
-                "Stun": 10
-              }
-            }
-          ],
-          "miss": []
+          "tag": "Banner Whirlwind"
         }
       ]
     },
@@ -3818,7 +3908,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 45,
+                  "power": 65,
                   "critical": 20
                 }
               }
@@ -4029,6 +4119,23 @@
               "affect": {
                 "Stun": 10
               }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Stats": {
+                  "strength": 0,
+                  "vitality": 20,
+                  "dexterity": 0,
+                  "luck": 0
+                }
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 20
+              }
             }
           ],
           "miss": []
@@ -4043,7 +4150,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 50,
+                  "power": 60,
                   "critical": 20
                 }
               }
