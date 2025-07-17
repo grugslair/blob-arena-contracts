@@ -1,11 +1,10 @@
 [package]
-name = "ba_tokens"
+name = "ba_attack"
 version.workspace = true
 edition.workspace = true
 cairo-version.workspace = true
 scarb-version.workspace = true
 experimental-features = ["associated_item_constraints"]
-
 
 [tool]
 fmt.workspace = true
@@ -16,11 +15,8 @@ sierra-replace-ids = true
 
 [dependencies]
 starknet.workspace = true
-openzeppelin_token.workspace = true
-openzeppelin_introspection.workspace = true
-openzeppelin_upgrades.workspace = true
-openzeppelin_access.workspace = true
 dojo_macros.workspace = true
+dojo.workspace = true
 
 [[target.starknet-contract]]
 allowed-libfuncs-list.name = "experimental"

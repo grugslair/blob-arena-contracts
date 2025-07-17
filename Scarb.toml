@@ -9,7 +9,7 @@ scarb-version = "2.11.4"
 members = [
     "packages/amma_blobert",
     "packages/arena_blobert",
-    "packages/tokens",
+    "packages/attack",
     "packages/blobert",
 ]
 
@@ -26,7 +26,8 @@ dojo_macros = { git = "https://github.com/dojoengine/dojo", rev = "1a93f26b416ef
 cubit = { git = "https://github.com/bengineer42/cubit", tag = "cairo--2.8.0" }
 pragma_lib = { git = "https://github.com/bengineer42/pragma-lib", branch = "v2.11.4" }
 dojo_beacon = { git = "https://github.com/sai-starknet/dojo-beacon", branch = "proc-macro" }
-sai_owners_writers = { git = "https://github.com/sai-starknet/cairo-utils", branch = "main" }
+sai_access = { git = "https://github.com/sai-starknet/cairo-utils", branch = "main" }
+sai_token = { git = "https://github.com/sai-starknet/cairo-utils", branch = "main" }
 
 [workspace.tool.fmt]
 sort-module-level-items = true
@@ -45,8 +46,8 @@ edition.workspace = true
 starknet.workspace = true
 amma_blobert = { path = "packages/amma_blobert" }
 arena_blobert = { path = "packages/arena_blobert" }
-ba_tokens = { path = "packages/tokens" }
 blobert = { path = "packages/blobert" }
+ba_attack = { path = "packages/attack" }
 
 [dev-dependencies]
 # dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.6.0-alpha.2" }

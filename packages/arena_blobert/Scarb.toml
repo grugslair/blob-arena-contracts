@@ -26,8 +26,8 @@ dojo_macros.workspace = true
 cubit.workspace = true
 pragma_lib.workspace = true
 dojo_beacon.workspace = true
-sai_owners_writers.workspace = true
-ba_tokens = { path = "../tokens" }
+sai_access.workspace = true
+sai_token.workspace = true
 blobert = { path = "../blobert" }
 
 [[target.starknet-contract]]

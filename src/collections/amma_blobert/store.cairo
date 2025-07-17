@@ -1,2 +1,0 @@
-
-fn fighter_attacks

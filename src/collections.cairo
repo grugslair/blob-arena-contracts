@@ -5,21 +5,19 @@ mod store;
 mod world_blobert;
 mod amma_blobert {
     mod contract;
-    mod components;
-    mod systems;
     use contract::get_amount_of_fighters;
     use systems::AmmaBlobertTrait;
     use components::{AmmaBlobertStorage, AMMA_BLOBERT_NAMESPACE_HASH};
 }
 mod group;
 use group::{CollectionGroupStorage, CollectionGroup};
-mod blobert {
+mod classic_blobert {
     mod contract;
     mod external;
     use external::{IBlobertDispatcher, IBlobertDispatcherTrait};
     use contract::BLOBERT_NAMESPACE_HASH;
 }
-mod free_blobert {
+mod arena_blobert {
     mod contract;
     mod storage;
     mod systems;

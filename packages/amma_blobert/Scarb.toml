@@ -20,11 +20,11 @@ openzeppelin_token.workspace = true
 openzeppelin_introspection.workspace = true
 openzeppelin_upgrades.workspace = true
 openzeppelin_access.workspace = true
-ba_tokens = { path = "../tokens" }
 dojo.workspace = true
 dojo_macros.workspace = true
 dojo_beacon.workspace = true
-sai_owners_writers.workspace = true
+sai_access.workspace = true
+sai_token.workspace = true
 
 [[target.starknet-contract]]
 allowed-libfuncs-list.name = "experimental"

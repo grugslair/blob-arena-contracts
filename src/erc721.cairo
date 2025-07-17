@@ -1,7 +1,8 @@
 use core::poseidon::poseidon_hash_span;
+use dojo::model::{Model, ModelStorage};
+use dojo::world::WorldStorage;
+use openzeppelin_token::erc721::ERC721Component;
 use starknet::ContractAddress;
-use openzeppelin_token::erc721::{ERC721Component};
-use dojo::{world::WorldStorage, model::{Model, ModelStorage}};
 use crate::world::WorldTrait;
 
 

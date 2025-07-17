@@ -30,7 +30,6 @@ pub const AMMA_BLOBERT_NAMESPACE_HASH: felt252 = bytearray_hash!("amma_blobert")
 
 #[starknet::contract]
 mod amma_blobert_token {
-    use ba_tokens::erc721::{ERC721MetadataInfo, metadata_impl};
     use core::num::traits::Zero;
     use dojo_beacon::dojo::const_ns;
     use dojo_beacon::dojo::traits::BeaconEmitterTrait;
@@ -40,7 +39,8 @@ mod amma_blobert_token {
     use openzeppelin_token::erc721::{ERC721Component, ERC721HooksEmptyImpl};
     use openzeppelin_upgrades::UpgradeableComponent;
     use openzeppelin_upgrades::interface::IUpgradeable;
-    use sai_owners_writers::{OwnersWriters, owners_writers_component};
+    use sai_access::{Access, access_component};
+    use sai_token::erc721::{ERC721MetadataInfo, metadata_impl};
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
         StoragePointerWriteAccess,
@@ -52,7 +52,7 @@ mod amma_blobert_token {
     component!(path: SRC5Component, storage: src5, event: SRC5Event);
     component!(path: UpgradeableComponent, storage: upgradeable, event: UpgradeableEvent);
     component!(path: emitter_component, storage: emitter, event: EmitterEvents);
-    component!(path: owners_writers_component, storage: owners_writers, event: OwnersWritersEvents);
+    component!(path: access_component, storage: access, event: AccessEvents);
 
     #[dojo::model]
     #[derive(Drop, Serde)]
@@ -73,7 +73,7 @@ mod amma_blobert_token {
         #[substorage(v0)]
         emitter: emitter_component::Storage,
         #[substorage(v0)]
-        owners_writers: owners_writers_component::Storage,
+        access: access_component::Storage,
         number_of_fighters: u32,
         token_fighters: Map<u256, u32>,
         tokens_minted: u128,
@@ -91,7 +91,7 @@ mod amma_blobert_token {
         #[flat]
         EmitterEvents: emitter_component::Event,
         #[flat]
-        OwnersWritersEvents: owners_writers_component::Event,
+        AccessEvents: access_component::Event,
     }
 
     #[constructor]
@@ -111,8 +111,7 @@ mod amma_blobert_token {
     impl ERC721CamelOnlyImpl = ERC721Component::ERC721CamelOnlyImpl<ContractState>;
 
     #[abi(embed_v0)]
-    impl OwnersWritersImpl =
-        owners_writers_component::OwnersWritersImpl<ContractState>;
+    impl AccessImpl = access_component::AccessImpl<ContractState>;
 
     #[abi(embed_v0)]
     impl ERC721Metadata =

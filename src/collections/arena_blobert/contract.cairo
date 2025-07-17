@@ -1,42 +1,52 @@
 use starknet::ContractAddress;
-
+use super::super::attributes::{Seed, TokenAttributes};
+/// Interface for the FreeBlobert NFT contract
+///
+/// # Interface Functions
+///
+/// * `mint` - Mints a random Blobert NFT and returns its token ID
+///    Returns:
+///    * `u256` - The ID of the newly minted token
+///
+///    Models:
+///    * BlobertToken
+///
+/// * `traits` - Retrieves the attributes/traits of a specific Blobert NFT
+///    Parameters:
+///    * `token_id` - The ID of the token to query
+///    Returns:
+///    * `TokenAttributes` - The attributes associated with the token
+#[starknet::interface]
+trait IFreeBlobert<TContractState> {
+    fn burn(ref self: TContractState, token_id: u256);
+    fn traits(self: @TContractState, token_id: u256) -> TokenAttributes;
+}
 
 #[starknet::interface]
-trait IAmmaBlobert<TContractState> {
-    /// Gets the fighter associated with a Blobert token
-    /// # Arguments
-    /// * `token_id` - The unique identifier of the Blobert token
-    /// # Returns
-    /// * `u32` - The ID of the fighter associated with the Blobert token
-    fn fighter(self: @TContractState, token_id: u256) -> u32;
-
-    /// Gets the total number of fighters
-    /// # Returns
-    /// * `u32` - The total number of fighters in the contract
-    fn number_of_fighters(self: @TContractState) -> u32;
+trait IFreeBlobertAdmin<TContractState> {
+    fn mint(ref self: TContractState, owner: ContractAddress, attributes: TokenAttributes) -> u256;
 }
 
-#[starknet::interface]
-trait IAmmaBlobertAdmin<TContractState> {
-    fn set_n_fighters(ref self: TContractState, number_of_fighters: u32);
-    fn mint(ref self: TContractState, owner: ContractAddress, fighter: u32);
-}
-
-pub fn get_amount_of_fighters(collection: ContractAddress) -> u32 {
-    IAmmaBlobertDispatcher { contract_address: collection }.number_of_fighters()
-}
 
 #[dojo::model]
-#[derive(Drop, Serde)]
-struct AmmaBlobertTokenFighter {
+#[derive(Copy, Drop, Serde, PartialEq)]
+struct ArenaBlobertToken {
     #[key]
     token_id: u256,
-    fighter: u32,
+    attributes: TokenAttributes,
+}
+
+#[derive(Copy, Drop, Serde, PartialEq, starknet::Store)]
+enum TokenType {
+    #[default]
+    NotMinted,
+    Seed,
+    Custom,
 }
 
 
 #[starknet::contract]
-mod amma_blobert_token {
+mod arena_blobert_actions {
     use core::poseidon::poseidon_hash_span;
     use dojo_beacon::dojo::const_ns;
     use dojo_beacon::dojo::traits::BeaconEmitterTrait;
@@ -52,7 +62,7 @@ mod amma_blobert_token {
     use starknet::{ClassHash, ContractAddress, get_caller_address, get_contract_address};
     use crate::erc721;
     use crate::erc721::ERC721Internal;
-    use super::{AmmaBlobertTokenFighter, IAmmaBlobert, IAmmaBlobertAdmin};
+    use super::{IFreeBlobert, IFreeBlobertAdmin, Seed, TokenAttributes, TokenType};
 
     component!(path: ERC721Component, storage: erc721, event: ERC721Event);
     component!(path: SRC5Component, storage: src5, event: SRC5Event);
@@ -75,7 +85,7 @@ mod amma_blobert_token {
     impl ERC721InternalImpl = ERC721Component::InternalImpl<ContractState>;
     impl UpgradeableInternalImpl = UpgradeableComponent::InternalImpl<ContractState>;
     impl SRC5InternalImpl = SRC5Component::InternalImpl<ContractState>;
-    const NAMESPACE_HASH: felt252 = bytearray_hash!("amma_blobert");
+    const NAMESPACE_HASH: felt252 = bytearray_hash!("arena_blobert");
     impl Emitter = const_ns::ConstNsBeaconEmitter<NAMESPACE_HASH, ContractState>;
 
     #[storage]
@@ -90,9 +100,10 @@ mod amma_blobert_token {
         emitter: emitter_component::Storage,
         #[substorage(v0)]
         access: access_component::Storage,
-        number_of_fighters: u32,
-        token_fighters: Map<u256, u32>,
+        token_seeds: Map<u256, Seed>,
+        token_customs: Map<u256, felt252>,
         tokens_minted: u128,
+        token_types: Map<u256, TokenType>,
     }
 
     #[event]
@@ -120,11 +131,11 @@ mod amma_blobert_token {
 
     impl ERC721 of ERC721Internal<ContractState> {
         fn name(self: @ContractState) -> ByteArray {
-            "Amma Blobert"
+            "Arena Blobert"
         }
 
         fn symbol(self: @ContractState) -> ByteArray {
-            "AMMA"
+            "BABLOB"
         }
 
         fn token_uri(self: @ContractState, token_id: u256) -> ByteArray {
@@ -178,28 +189,14 @@ mod amma_blobert_token {
     }
 
     #[abi(embed_v0)]
-    impl IAmmaBlobertImpl of IAmmaBlobert<ContractState> {
-        fn fighter(self: @ContractState, token_id: u256) -> u32 {
-            self.token_fighters.read(token_id)
-        }
-        fn number_of_fighters(self: @ContractState) -> u32 {
-            self.number_of_fighters.read()
+    impl IFreeBlobertImpl of IFreeBlobert<ContractState> {
+        fn burn(ref self: ContractState, token_id: u256) {
+            self.erc721.burn(token_id);
         }
     }
 
     #[abi(embed_v0)]
-    impl IAmmaBlobertAdminImpl of IAmmaBlobertAdmin<ContractState> {
-        fn set_n_fighters(ref self: ContractState, number_of_fighters: u32) {
-            self.assert_caller_is_owner();
-            assert(number_of_fighters >= self.number_of_fighters.read(), 'Cannot reduce fighters');
-            self.number_of_fighters.write(number_of_fighters);
-        }
-
-        fn mint(ref self: ContractState, owner: ContractAddress, fighter: u32) {
-            self.assert_caller_is_writer();
-            self.mint_internal(owner, fighter);
-        }
-    }
+    impl IFreeBlobertAdminImpl of IFreeBlobertAdmin<ContractState> {}
 
     #[abi(embed_v0)]
     impl UpgradeableImpl of IUpgradeable<ContractState> {
@@ -212,17 +209,21 @@ mod amma_blobert_token {
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
         fn mint_internal(ref self: ContractState, owner: ContractAddress, fighter: u32) -> u256 {
-            let token_id = self.tokens_minted.read() + 1;
-            self.tokens_minted.write(token_id);
-            let token_id: u256 = token_id.into();
-            assert(
-                fighter.is_non_zero() && fighter <= self.number_of_fighters.read(),
-                'Invalid fighter ID',
-            );
+            let minted = self.tokens_minted.read() + 1;
+            self.tokens_minted.write(minted);
+            let token_id: u256 = minted.into() + 4844;
             self.emit_model(@AmmaBlobertTokenFighter { token_id, fighter });
             self.erc721.mint(owner, token_id);
             self.token_fighters.write(token_id, fighter);
             token_id
         }
+
+        fn caller_is_token_owner(self: @ContractState, token_id: u256) {
+            assert(
+                get_caller_address() == self.erc721._owner_of(token_id),
+                'Caller is not the token owner',
+            );
+        }
     }
 }
+
