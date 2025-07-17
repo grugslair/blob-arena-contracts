@@ -36,11 +36,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "ba_attack"
+name = "ba_loadout"
 version = "0.15.0"
 dependencies = [
  "dojo",
  "dojo_macros",
+ "sai_core_utils",
 ]
 
 [[package]]
@@ -49,7 +50,7 @@ version = "0.15.0"
 dependencies = [
  "amma_blobert",
  "arena_blobert",
- "ba_attack",
+ "ba_loadout",
  "blobert",
 ]
 
@@ -216,12 +217,17 @@ dependencies = [
 [[package]]
 name = "sai_access"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=main#64f16a782b1ab57f41d92dada9332d0432944ccf"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=main#305d56c57e5ffb94264bfcb65c21605a1f7a577a"
+
+[[package]]
+name = "sai_core_utils"
+version = "0.1.0"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=main#ef1fa4bd72ade1e8f38fc84646d6422f09821df2"
 
 [[package]]
 name = "sai_token"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=main#64f16a782b1ab57f41d92dada9332d0432944ccf"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=main#305d56c57e5ffb94264bfcb65c21605a1f7a577a"
 dependencies = [
  "openzeppelin_introspection",
  "openzeppelin_token",

@@ -25,7 +25,7 @@ mod arena_blobert_actions {
     use openzeppelin_token::erc721::{ERC721Component, ERC721HooksEmptyImpl, interface};
     use openzeppelin_upgrades::UpgradeableComponent;
     use openzeppelin_upgrades::interface::IUpgradeable;
-    use sai_access::{Access, access_component};
+    use sai_access::{AccessTrait, access_component};
     use sai_token::erc721::{ERC721MetadataInfo, soulbound};
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,

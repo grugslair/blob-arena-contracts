@@ -39,7 +39,7 @@ mod amma_blobert_token {
     use openzeppelin_token::erc721::{ERC721Component, ERC721HooksEmptyImpl};
     use openzeppelin_upgrades::UpgradeableComponent;
     use openzeppelin_upgrades::interface::IUpgradeable;
-    use sai_access::{Access, access_component};
+    use sai_access::{AccessTrait, access_component};
     use sai_token::erc721::{ERC721MetadataInfo, metadata_impl};
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,

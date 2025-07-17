@@ -1,7 +1,6 @@
-use core::{
-    traits::Neg, num::traits::{Bounded, Zero, One, OverflowingSub, OverflowingAdd, OverflowingMul},
-    cmp::{min, max},
-};
+use core::cmp::{max, min};
+use core::num::traits::{Bounded, One, OverflowingAdd, OverflowingMul, OverflowingSub, Zero};
+use core::traits::Neg;
 
 trait BoundedT<T, S> {
     fn min() -> S;
@@ -198,6 +197,7 @@ impl Felt252TryIntoBoolImpl of TryInto<felt252, bool> {
         }
     }
 }
+
 impl ArrayTryIntoTTupleSized2<T, +Drop<T>, +Copy<T>> of TryInto<Array<T>, (T, T)> {
     fn try_into(self: Array<T>) -> Option<(T, T)> {
         if self.len() == 2 {
@@ -227,12 +227,12 @@ trait Sum<T, S> {
 }
 
 
-impl SumTArray<S, +Add<S>, +Zeroable<S>, +Drop<S>> of Sum<Array<S>, S> {
+impl SumTArray<S, +AddEq<S>, +Zeroable<S>, +Drop<S>> of Sum<Array<S>, S> {
     fn sum(self: Array<S>) -> S {
         let mut result = Zeroable::<S>::zero();
         for value in self {
-            result = result + value;
-        };
+            result += value;
+        }
         result
     }
 }
@@ -241,7 +241,7 @@ fn byte31_array_to_felt252_array(array: Span<bytes31>) -> Array<felt252> {
     let mut result = ArrayTrait::<felt252>::new();
     for bytes in array {
         result.append((*bytes).into());
-    };
+    }
     result
 }
 
