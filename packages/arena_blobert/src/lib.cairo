@@ -18,9 +18,6 @@ const ARENA_BLOBERT_NAMESPACE_HASH: felt252 = bytearray_hash!("arena_blobert");
 #[starknet::contract]
 mod arena_blobert_actions {
     use blobert::{Seed, TokenAttributes};
-    use dojo_beacon::dojo::const_ns;
-    use dojo_beacon::dojo::traits::BeaconEmitterTrait;
-    use dojo_beacon::emitter_component;
     use openzeppelin_introspection::src5::SRC5Component;
     use openzeppelin_token::erc721::{ERC721Component, ERC721HooksEmptyImpl, interface};
     use openzeppelin_upgrades::UpgradeableComponent;
@@ -32,6 +29,9 @@ mod arena_blobert_actions {
         StoragePointerWriteAccess,
     };
     use starknet::{ClassHash, ContractAddress, get_caller_address};
+    use torii_beacon::dojo::const_ns;
+    use torii_beacon::dojo::traits::BeaconEmitterTrait;
+    use torii_beacon::emitter_component;
     use super::{ARENA_BLOBERT_NAMESPACE_HASH, IArenaBlobert, IArenaBlobertAdmin};
 
     component!(path: ERC721Component, storage: erc721, event: ERC721Event);

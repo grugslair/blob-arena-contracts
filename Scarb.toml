@@ -21,16 +21,16 @@ openzeppelin_account = "2.0.0"
 openzeppelin_introspection = "2.0.0"
 openzeppelin_upgrades = "2.0.0"
 openzeppelin_access = "2.0.0"
-dojo = { git = "https://github.com/dojoengine/dojo", rev = "1a93f26b416ef0278eab3aee65cbfc993934d8b5" }
-dojo_macros = { git = "https://github.com/dojoengine/dojo", rev = "1a93f26b416ef0278eab3aee65cbfc993934d8b5" }
+dojo = { git = "https://github.com/dojoengine/dojo" }
+dojo_macros = { git = "https://github.com/dojoengine/dojo" }
 cubit = { git = "https://github.com/bengineer42/cubit", tag = "cairo--2.8.0" }
 pragma_lib = { git = "https://github.com/bengineer42/pragma-lib", branch = "v2.11.4" }
-dojo_beacon = { git = "https://github.com/sai-starknet/dojo-beacon", branch = "proc-macro" }
-sai_access = { git = "https://github.com/sai-starknet/cairo-utils", branch = "main" }
-sai_token = { git = "https://github.com/sai-starknet/cairo-utils", branch = "main" }
-sai_core_utils = { git = "https://github.com/sai-starknet/cairo-utils", branch = "main" }
-sai_emit_return = { git = "https://github.com/sai-starknet/cairo-utils", branch = "main" }
-
+torii_beacon = { git = "https://github.com/sai-starknet/torii-beacon", branch = "1.7.0-rc.0" }
+torii_beacon_macros = { git = "https://github.com/sai-starknet/torii-beacon", branch = "1.7.0-rc.0" }
+sai_access = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
+sai_token = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
+sai_core_utils = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
+sai_emit_return = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
 
 [workspace.tool.fmt]
 sort-module-level-items = true

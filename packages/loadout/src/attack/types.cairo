@@ -1,8 +1,7 @@
-use blob_arena::core::Signed;
-use blob_arena::id_trait::{IdTrait, TIdsImpl};
+use core::poseidon::poseidon_hash_span;
 use sai_core_utils::poseidon_serde::PoseidonSerde;
-use starknet::ContractAddress;
-use crate::abilities::{AbilityTypes, IAbilities, SignedAbilities};
+use crate::ability::{AbilityTypes, IAbilities, SignedAbilities};
+use crate::signed::Signed;
 const ATTACK_TAG_GROUP: felt252 = 'attacks';
 
 /// Setup models
@@ -17,9 +16,8 @@ const ATTACK_TAG_GROUP: felt252 = 'attacks';
 /// * `hit` - Array of effects that occur when the attack hits
 /// * `miss` - Array of effects that occur when the attack misses
 
-#[dojo::model]
 #[derive(Drop, Serde, Default)]
-struct Attack {
+pub struct Attack {
     speed: u8,
     accuracy: u8,
     cooldown: u8,
@@ -40,7 +38,7 @@ struct Attack {
 /// * `name` - The name of the attack. (For off chain use)
 
 #[derive(Drop, Serde)]
-struct AttackInput {
+pub struct AttackInput {
     name: ByteArray,
     speed: u8,
     accuracy: u8,
@@ -55,7 +53,7 @@ struct AttackInput {
 /// * `target` - Specifies who receives the effect (Player or Opponent)
 /// * `affect` - The type of effect to be applied
 
-#[derive(Drop, Serde, PartialEq, Introspect)]
+#[derive(Drop, Serde, PartialEq, Introspect, starknet::Store)]
 pub struct Effect {
     target: Target,
     affect: Affect,
@@ -68,8 +66,9 @@ pub struct EffectInput {
 }
 
 
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+#[derive(Drop, Serde, Copy, PartialEq, Introspect, Default, starknet::Store)]
 pub enum Target {
+    #[default]
     Player,
     Opponent,
 }
@@ -83,20 +82,21 @@ pub enum Target {
 
 #[derive(Copy, Drop, Serde, PartialEq)]
 pub enum AffectInput {
+    Health: Signed<u8>,
     Abilities: SignedAbilities,
     Ability: AbilityAffectInput,
     Damage: Damage,
     Stun: u8,
-    Health: Signed<u8>,
 }
 
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+#[derive(Drop, Serde, Copy, PartialEq, Introspect, Default, starknet::Store)]
 pub enum Affect {
+    #[default]
+    Health: i16,
     Abilities: IAbilities,
     Ability: AbilityAffect,
     Damage: Damage,
     Stun: u8,
-    Health: i16,
 }
 
 
@@ -104,7 +104,7 @@ pub enum Affect {
 /// * `ability` - The type of abilityistic (Strength, Vitality, Dexterity, Luck)
 /// * `amount` - The numerical value of the ability, ranging from -100 to +100
 
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+#[derive(Drop, Serde, Copy, PartialEq, Introspect, starknet::Store)]
 pub struct AbilityAffect {
     ability: AbilityTypes,
     amount: i32,
@@ -121,7 +121,7 @@ pub struct AbilityAffectInput {
 /// * `critical` - Critical hit chance value between 0-100
 /// * `power` - Attack power value between 0-100
 
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+#[derive(Drop, Serde, Copy, PartialEq, Introspect, starknet::Store)]
 pub struct Damage {
     critical: u32,
     power: u32,
@@ -133,6 +133,22 @@ pub struct AttackExists {
     miss: u32,
 }
 
+pub fn get_attack_id(
+    name: @ByteArray,
+    speed: u8,
+    accuracy: u8,
+    cooldown: u8,
+    hit: @Array<Effect>,
+    miss: @Array<Effect>,
+) -> felt252 {
+    let mut serialized: Array<felt252> = Default::default();
+    Serde::serialize(name, ref serialized);
+    serialized.append_span([speed.into(), accuracy.into(), cooldown.into()].span());
+    Serde::serialize(hit, ref serialized);
+    Serde::serialize(miss, ref serialized);
+
+    poseidon_hash_span(serialized.span())
+}
 
 pub impl InputIntoAffect of Into<AffectInput, Affect> {
     fn into(self: AffectInput) -> Affect {
@@ -167,32 +183,3 @@ pub impl InputIntoEffectArray of Into<Array<EffectInput>, Array<Effect>> {
     }
 }
 
-#[generate_trait]
-pub impl AttackInputImpl of AttackInputTrait {
-    fn to_attack_and_name(self: AttackInput, id: felt252) -> (Attack, ByteArray) {
-        (
-            Attack {
-                id,
-                speed: self.speed,
-                accuracy: self.accuracy,
-                cooldown: self.cooldown,
-                hit: self.hit.into(),
-                miss: self.miss.into(),
-            },
-            self.name,
-        )
-    }
-
-    fn id(self: @AttackInput) -> felt252 {
-        self.poseidon_hash()
-    }
-}
-
-
-pub impl AttackIdImpl of IdTrait<Attack> {
-    fn id(self: @Attack) -> felt252 {
-        *(self.id)
-    }
-}
-
-pub impl AttackIdsImpl = TIdsImpl<Attack>;

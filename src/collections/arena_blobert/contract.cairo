@@ -48,10 +48,6 @@ enum TokenType {
 #[starknet::contract]
 mod arena_blobert_actions {
     use core::poseidon::poseidon_hash_span;
-    use dojo_beacon::dojo::const_ns;
-    use dojo_beacon::dojo::traits::BeaconEmitterTrait;
-    use dojo_beacon::emitter::Registry;
-    use dojo_beacon::emitter_component;
     use openzeppelin_access::ownable::OwnableComponent;
     use openzeppelin_introspection::src5::SRC5Component;
     use openzeppelin_token::erc721::{ERC721Component, ERC721HooksEmptyImpl, interface};
@@ -60,6 +56,10 @@ mod arena_blobert_actions {
     use sai_access::{Access, access_component};
     use starknet::storage::Map;
     use starknet::{ClassHash, ContractAddress, get_caller_address, get_contract_address};
+    use torii_beacon::dojo::const_ns;
+    use torii_beacon::dojo::traits::BeaconEmitterTrait;
+    use torii_beacon::emitter::Registry;
+    use torii_beacon::emitter_component;
     use crate::erc721;
     use crate::erc721::ERC721Internal;
     use super::{IFreeBlobert, IFreeBlobertAdmin, Seed, TokenAttributes, TokenType};

@@ -6,7 +6,6 @@ name = "amma_blobert"
 version = "0.15.0"
 dependencies = [
  "dojo",
- "dojo_beacon",
  "dojo_macros",
  "openzeppelin_access",
  "openzeppelin_introspection",
@@ -14,6 +13,8 @@ dependencies = [
  "openzeppelin_upgrades",
  "sai_access",
  "sai_token",
+ "torii_beacon",
+ "torii_beacon_macros",
 ]
 
 [[package]]
@@ -23,7 +24,6 @@ dependencies = [
  "blobert",
  "cubit",
  "dojo",
- "dojo_beacon",
  "dojo_macros",
  "openzeppelin_access",
  "openzeppelin_account",
@@ -33,6 +33,7 @@ dependencies = [
  "pragma_lib",
  "sai_access",
  "sai_token",
+ "torii_beacon",
 ]
 
 [[package]]
@@ -41,7 +42,9 @@ version = "0.15.0"
 dependencies = [
  "dojo",
  "dojo_macros",
+ "sai_access",
  "sai_core_utils",
+ "torii_beacon",
 ]
 
 [[package]]
@@ -70,23 +73,15 @@ source = "git+https://github.com/bengineer42/cubit?tag=cairo--2.8.0#32a20af893b3
 [[package]]
 name = "dojo"
 version = "1.6.0-alpha.1"
-source = "git+https://github.com/dojoengine/dojo?rev=1a93f26b416ef0278eab3aee65cbfc993934d8b5#1a93f26b416ef0278eab3aee65cbfc993934d8b5"
+source = "git+https://github.com/dojoengine/dojo#c876437d20b101e051656fa846288340b65612bc"
 dependencies = [
  "dojo_macros",
 ]
 
 [[package]]
-name = "dojo_beacon"
-version = "0.2.3"
-source = "git+https://github.com/sai-starknet/dojo-beacon?branch=proc-macro#1caed95df9cae3b23bd1ff2d2f388db93fa7095d"
-dependencies = [
- "dojo",
-]
-
-[[package]]
 name = "dojo_macros"
 version = "1.6.0-alpha.1"
-source = "git+https://github.com/dojoengine/dojo?rev=1a93f26b416ef0278eab3aee65cbfc993934d8b5#1a93f26b416ef0278eab3aee65cbfc993934d8b5"
+source = "git+https://github.com/dojoengine/dojo#c876437d20b101e051656fa846288340b65612bc"
 
 [[package]]
 name = "openzeppelin"
@@ -217,18 +212,34 @@ dependencies = [
 [[package]]
 name = "sai_access"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=main#305d56c57e5ffb94264bfcb65c21605a1f7a577a"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#ef1fa4bd72ade1e8f38fc84646d6422f09821df2"
 
 [[package]]
 name = "sai_core_utils"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=main#ef1fa4bd72ade1e8f38fc84646d6422f09821df2"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#ef1fa4bd72ade1e8f38fc84646d6422f09821df2"
 
 [[package]]
 name = "sai_token"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=main#305d56c57e5ffb94264bfcb65c21605a1f7a577a"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#ef1fa4bd72ade1e8f38fc84646d6422f09821df2"
 dependencies = [
  "openzeppelin_introspection",
  "openzeppelin_token",
 ]
+
+[[package]]
+name = "torii_beacon"
+version = "1.6.0-rc.0"
+source = "git+https://github.com/sai-starknet/torii-beacon?branch=1.7.0-rc.0#08320a4b9ea5fc29c02a6840d11a41dcfcd05355"
+dependencies = [
+ "dojo",
+ "dojo_macros",
+ "sai_access",
+ "sai_core_utils",
+]
+
+[[package]]
+name = "torii_beacon_macros"
+version = "0.1.0"
+source = "git+https://github.com/sai-starknet/torii-beacon?branch=1.7.0-rc.0#7ed1d4c8162cd5383b5a5c998a42259610783fb3"

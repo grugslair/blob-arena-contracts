@@ -1,14 +1,15 @@
 use core::cmp::min;
 use core::fmt::{Debug, Display, Error, Formatter};
-use core::num::traits::{SaturatingAdd, SaturatingSub, Zero};
+use core::num::traits::{Pow, SaturatingAdd, SaturatingSub, Zero};
 use core::ops::AddAssign;
 use sai_core_utils::SaturatingInto;
+use starknet::storage_access::StorePacking;
 use crate::signed::Signed;
 
 const MAX_ABILITY_SCORE: u32 = 100;
 const BASE_HEALTH: u32 = 100;
 
-#[derive(Copy, Drop, Serde, PartialEq, Introspect, Default)]
+#[derive(Copy, Drop, Serde, Default, PartialEq)]
 struct TAbilities<T> {
     strength: T,
     vitality: T,
@@ -16,8 +17,68 @@ struct TAbilities<T> {
     luck: T,
 }
 
-#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
-enum AbilityTypes {
+
+const U32_SHIFT_1: u128 = 2_u128.pow(32);
+const U32_SHIFT_2: u128 = 2_u128.pow(64);
+const U32_SHIFT_3: u128 = 2_u128.pow(96);
+
+const I32_NEG_MSB: u32 = 2_u32.pow(31);
+
+const U32_MASK_U128: u128 = U32_SHIFT_1 - 1;
+
+fn pack_i32(value: i32) -> u32 {
+    match value < 0 {
+        true => I32_NEG_MSB + (-value).try_into().unwrap(),
+        false => value.try_into().unwrap(),
+    }
+}
+
+fn unpack_i32(value: u32) -> i32 {
+    match value < I32_NEG_MSB {
+        true => value.try_into().unwrap(),
+        false => -((value - I32_NEG_MSB).try_into().unwrap()),
+    }
+}
+
+impl UAbilityStorePacking of StorePacking<UAbilities, u128> {
+    fn pack(value: UAbilities) -> u128 {
+        (value.strength.into()
+            + value.vitality.into() * U32_SHIFT_1
+            + value.dexterity.into() * U32_SHIFT_2
+            + value.luck.into() * U32_SHIFT_3)
+            .into()
+    }
+
+    fn unpack(value: u128) -> UAbilities {
+        let strength = (value & U32_MASK_U128).try_into().unwrap();
+        let vitality = ((value / U32_SHIFT_1) & U32_MASK_U128).try_into().unwrap();
+        let dexterity = ((value / U32_SHIFT_2) & U32_MASK_U128).try_into().unwrap();
+        let luck = ((value / U32_SHIFT_3) & U32_MASK_U128).try_into().unwrap();
+        UAbilities { strength, vitality, dexterity, luck }
+    }
+}
+
+impl IAbilityStorePacking of StorePacking<IAbilities, u128> {
+    fn pack(value: IAbilities) -> u128 {
+        (pack_i32(value.strength).into()
+            + pack_i32(value.vitality).into() * U32_SHIFT_1
+            + pack_i32(value.dexterity).into() * U32_SHIFT_2
+            + pack_i32(value.luck).into() * U32_SHIFT_3)
+            .into()
+    }
+
+    fn unpack(value: u128) -> IAbilities {
+        let strength = unpack_i32((value & U32_MASK_U128).try_into().unwrap());
+        let vitality = unpack_i32(((value / U32_SHIFT_1) & U32_MASK_U128).try_into().unwrap());
+        let dexterity = unpack_i32(((value / U32_SHIFT_2) & U32_MASK_U128).try_into().unwrap());
+        let luck = unpack_i32(((value / U32_SHIFT_3) & U32_MASK_U128).try_into().unwrap());
+        IAbilities { strength, vitality, dexterity, luck }
+    }
+}
+
+#[derive(Copy, Drop, Serde, PartialEq, Default, Introspect, starknet::Store)]
+pub enum AbilityTypes {
+    #[default]
     Strength,
     Vitality,
     Dexterity,
@@ -45,9 +106,10 @@ impl TAbilitiesZeroable<T, +Zero<T>, +Drop<T>> of Zero<TAbilities<T>> {
 }
 
 
-type UAbilities = TAbilities<u32>;
-type IAbilities = TAbilities<i32>;
-type SignedAbilities = TAbilities<Signed<u32>>;
+pub type UAbilities = TAbilities<u32>;
+
+pub type IAbilities = TAbilities<i32>;
+pub type SignedAbilities = TAbilities<Signed<u32>>;
 
 impl TIntoTAbilities<T, +Copy<T>> of Into<T, TAbilities<T>> {
     fn into(self: T) -> TAbilities<T> {
@@ -56,22 +118,22 @@ impl TIntoTAbilities<T, +Copy<T>> of Into<T, TAbilities<T>> {
 }
 
 fn add_buff(stat: u32, buff: i32) -> u32 {
-    min(stat.saturating_into().saturating_add(buff).saturating_into(), 100)
+    min(stat.saturating_into().saturating_add(buff).saturating_into(), MAX_ABILITY_SCORE)
 }
 
-fn apply_buff(ref stat: u32, buff: i32) -> i32 {
-    let prev_value: i32 = stat.into();
-    stat = add_buff(stat, buff);
-    (stat.into() - prev_value).saturating_into()
+fn apply_buff(ref current: u32, buff: i32) -> i32 {
+    let prev_value: i32 = current.try_into().unwrap();
+    current = add_buff(current, buff);
+    (current.try_into().unwrap() - prev_value)
 }
 
 #[generate_trait]
 impl AbilitiesImpl of AbilitiesTrait {
     fn limit(ref self: UAbilities) {
-        self.strength = min(self.strength, MAX_STAT);
-        self.vitality = min(self.vitality, MAX_STAT);
-        self.dexterity = min(self.dexterity, MAX_STAT);
-        self.luck = min(self.luck, MAX_STAT);
+        self.strength = min(self.strength, MAX_ABILITY_SCORE);
+        self.vitality = min(self.vitality, MAX_ABILITY_SCORE);
+        self.dexterity = min(self.dexterity, MAX_ABILITY_SCORE);
+        self.luck = min(self.luck, MAX_ABILITY_SCORE);
     }
     fn apply_buff(ref self: UAbilities, stat: AbilityTypes, amount: i32) -> i32 {
         match stat {

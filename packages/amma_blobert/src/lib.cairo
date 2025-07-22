@@ -31,9 +31,6 @@ pub const AMMA_BLOBERT_NAMESPACE_HASH: felt252 = bytearray_hash!("amma_blobert")
 #[starknet::contract]
 mod amma_blobert_token {
     use core::num::traits::Zero;
-    use dojo_beacon::dojo::const_ns;
-    use dojo_beacon::dojo::traits::BeaconEmitterTrait;
-    use dojo_beacon::emitter_component;
     use openzeppelin_introspection::src5::SRC5Component;
     use openzeppelin_token::erc721::interface::IERC721_METADATA_ID;
     use openzeppelin_token::erc721::{ERC721Component, ERC721HooksEmptyImpl};
@@ -46,6 +43,9 @@ mod amma_blobert_token {
         StoragePointerWriteAccess,
     };
     use starknet::{ClassHash, ContractAddress};
+    use torii_beacon::dojo::const_ns;
+    use torii_beacon::dojo::traits::BeaconEmitterTrait;
+    use torii_beacon::emitter_component;
     use super::{IAmmaBlobert, IAmmaBlobertAdmin};
 
     component!(path: ERC721Component, storage: erc721, event: ERC721Event);
@@ -54,8 +54,11 @@ mod amma_blobert_token {
     component!(path: emitter_component, storage: emitter, event: EmitterEvents);
     component!(path: access_component, storage: access, event: AccessEvents);
 
-    #[dojo::model]
-    #[derive(Drop, Serde)]
+    const NAMESPACE_HASH: felt252 = bytearray_hash!("my_ns");
+    const TABLE_ID: felt252 = bytearrays_hash!("my_ns", "my_table");
+
+    #[beacon_model]
+    #[derive(Drop, Serde, Introspect)]
     struct AmmaBlobertTokenFighter {
         #[key]
         token_id: u256,
