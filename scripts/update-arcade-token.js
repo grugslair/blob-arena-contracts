@@ -13,7 +13,7 @@ import {
 
 export const makeArcadeTokenCalls = async (account_manifest) => {
   const arcadeTokenData =
-    loadJson("../post-deploy-config/arcade-tokens.json")[
+    loadJson("./post-deploy-config/arcade-tokens.json")[
       account_manifest.profile
     ] || {};
   const contract = await account_manifest.getContract(arcadeContractTag);

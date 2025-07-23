@@ -4,7 +4,7 @@ seed = "blob-arena-0.14"
 
 
 [env]
-rpc_url = "https://api.cartridge.gg/x/starknet/mainnet"
+rpc_url = "https://starknet-mainnet.public.blastapi.io/rpc/v0_8"
 account_address = "0x049848982e9b089a1f4eb5e1cd12ab58be55feb6937bc9cfcad34c2dfd0a6df8"
 keystore_path = "/home/ben/sn-accounts/0x049848982e9b089a1f4eb5e1cd12ab58be55feb6937bc9cfcad34c2dfd0a6df8-keystore.json"
 
