@@ -24,10 +24,6 @@ pub fn get_amount_of_fighters(collection: ContractAddress) -> u32 {
     IAmmaBlobertDispatcher { contract_address: collection }.number_of_fighters()
 }
 
-
-pub const AMMA_BLOBERT_NAMESPACE_HASH: felt252 = bytearray_hash!("amma_blobert");
-
-
 #[starknet::contract]
 mod amma_blobert_token {
     use core::num::traits::Zero;
@@ -43,8 +39,7 @@ mod amma_blobert_token {
         StoragePointerWriteAccess,
     };
     use starknet::{ClassHash, ContractAddress};
-    use torii_beacon::dojo::const_ns;
-    use torii_beacon::dojo::traits::BeaconEmitterTrait;
+    use torii_beacon::emitter::const_entity;
     use torii_beacon::emitter_component;
     use super::{IAmmaBlobert, IAmmaBlobertAdmin};
 
@@ -54,14 +49,13 @@ mod amma_blobert_token {
     component!(path: emitter_component, storage: emitter, event: EmitterEvents);
     component!(path: access_component, storage: access, event: AccessEvents);
 
-    const NAMESPACE_HASH: felt252 = bytearray_hash!("my_ns");
-    const TABLE_ID: felt252 = bytearrays_hash!("my_ns", "my_table");
+    const TABLE_ID: felt252 = bytearrays_hash!("amma_blobert", "TokenFighter");
+    impl TokenEmitter = const_entity::ConstEntityEmitter<TABLE_ID, ContractState>;
 
-    #[beacon_model]
+
+    #[beacon_entity]
     #[derive(Drop, Serde, Introspect)]
-    struct AmmaBlobertTokenFighter {
-        #[key]
-        token_id: u256,
+    struct TokenFighter {
         fighter: u32,
     }
 
@@ -78,7 +72,7 @@ mod amma_blobert_token {
         #[substorage(v0)]
         access: access_component::Storage,
         number_of_fighters: u32,
-        token_fighters: Map<u256, u32>,
+        token_fighters: Map<u128, u32>,
         tokens_minted: u128,
     }
 
@@ -98,10 +92,13 @@ mod amma_blobert_token {
     }
 
     #[constructor]
-    fn constructor(ref self: ContractState, owner: ContractAddress) {
+    fn constructor(
+        ref self: ContractState, owner: ContractAddress, token_fighter_class_hash: ClassHash,
+    ) {
         self.erc721.initializer_no_metadata();
-        self.grant_owner(owner);
         self.src5.register_interface(IERC721_METADATA_ID);
+        self.grant_owner(owner);
+        self.emit_register_model("amma_blobert", "TokenFighter", token_fighter_class_hash);
     }
 
     #[abi(embed_v0)]
@@ -123,7 +120,7 @@ mod amma_blobert_token {
     #[abi(embed_v0)]
     impl IAmmaBlobertImpl of IAmmaBlobert<ContractState> {
         fn fighter(self: @ContractState, token_id: u256) -> u32 {
-            self.token_fighters.read(token_id)
+            self.token_fighters.read(token_id.try_into().expect('Invalid token ID'))
         }
         fn number_of_fighters(self: @ContractState) -> u32 {
             self.number_of_fighters.read()
@@ -172,23 +169,20 @@ mod amma_blobert_token {
     impl UpgradeableInternalImpl = UpgradeableComponent::InternalImpl<ContractState>;
     impl SRC5InternalImpl = SRC5Component::InternalImpl<ContractState>;
 
-    impl Emitter =
-        const_ns::ConstNsBeaconEmitter<super::AMMA_BLOBERT_NAMESPACE_HASH, ContractState>;
-
 
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
         fn mint_internal(ref self: ContractState, owner: ContractAddress, fighter: u32) -> u256 {
             let token_id = self.tokens_minted.read() + 1;
             self.tokens_minted.write(token_id);
-            let token_id: u256 = token_id.into();
             assert(
                 fighter.is_non_zero() && fighter <= self.number_of_fighters.read(),
                 'Invalid fighter ID',
             );
-            self.emit_model(@AmmaBlobertTokenFighter { token_id, fighter });
-            self.erc721.mint(owner, token_id);
+            self.emit_member(selector!("fighter"), token_id.into(), @fighter);
             self.token_fighters.write(token_id, fighter);
+            let token_id: u256 = token_id.into();
+            self.erc721.mint(owner, token_id);
             token_id
         }
     }

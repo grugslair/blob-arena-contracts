@@ -12,14 +12,12 @@ trait IArenaBlobertAdmin<TContractState> {
     fn mint(ref self: TContractState, owner: ContractAddress, attributes: TokenAttributes) -> u256;
 }
 
-
-const ARENA_BLOBERT_NAMESPACE_HASH: felt252 = bytearray_hash!("arena_blobert");
-
 #[starknet::contract]
 mod arena_blobert_actions {
     use blobert::{Seed, TokenAttributes};
     use openzeppelin_introspection::src5::SRC5Component;
-    use openzeppelin_token::erc721::{ERC721Component, ERC721HooksEmptyImpl, interface};
+    use openzeppelin_token::erc721::interface::IERC721_METADATA_ID;
+    use openzeppelin_token::erc721::{ERC721Component, ERC721HooksEmptyImpl};
     use openzeppelin_upgrades::UpgradeableComponent;
     use openzeppelin_upgrades::interface::IUpgradeable;
     use sai_access::{AccessTrait, access_component};
@@ -29,16 +27,18 @@ mod arena_blobert_actions {
         StoragePointerWriteAccess,
     };
     use starknet::{ClassHash, ContractAddress, get_caller_address};
-    use torii_beacon::dojo::const_ns;
-    use torii_beacon::dojo::traits::BeaconEmitterTrait;
+    use torii_beacon::emitter::const_entity;
     use torii_beacon::emitter_component;
-    use super::{ARENA_BLOBERT_NAMESPACE_HASH, IArenaBlobert, IArenaBlobertAdmin};
+    use super::{IArenaBlobert, IArenaBlobertAdmin};
 
     component!(path: ERC721Component, storage: erc721, event: ERC721Event);
     component!(path: SRC5Component, storage: src5, event: SRC5Event);
     component!(path: UpgradeableComponent, storage: upgradeable, event: UpgradeableEvent);
     component!(path: emitter_component, storage: emitter, event: EmitterEvents);
     component!(path: access_component, storage: access, event: AccessEvents);
+
+    const TABLE_ID: felt252 = bytearrays_hash!("arena_blobert", "TokenAttributes");
+    impl TokenEmitter = const_entity::ConstEntityEmitter<TABLE_ID, ContractState>;
 
     #[derive(Copy, Drop, Serde, PartialEq, starknet::Store)]
     enum TokenType {
@@ -48,11 +48,9 @@ mod arena_blobert_actions {
         Custom,
     }
 
-    #[dojo::model]
-    #[derive(Copy, Drop, Serde, PartialEq)]
+    #[beacon_entity]
+    #[derive(Drop, Serde, Introspect)]
     struct ArenaBlobertToken {
-        #[key]
-        token_id: u256,
         attributes: TokenAttributes,
     }
 
@@ -69,9 +67,9 @@ mod arena_blobert_actions {
         #[substorage(v0)]
         access: access_component::Storage,
         tokens_minted: u128,
-        token_seeds: Map<u256, Seed>,
-        token_customs: Map<u256, felt252>,
-        token_types: Map<u256, TokenType>,
+        token_seeds: Map<u128, Seed>,
+        token_customs: Map<u128, felt252>,
+        token_types: Map<u128, TokenType>,
     }
 
     #[event]
@@ -90,10 +88,13 @@ mod arena_blobert_actions {
     }
 
     #[constructor]
-    fn constructor(ref self: ContractState, owner: ContractAddress) {
+    fn constructor(
+        ref self: ContractState, owner: ContractAddress, token_attributes_class_hash: ClassHash,
+    ) {
         self.erc721.initializer_no_metadata();
+        self.src5.register_interface(IERC721_METADATA_ID);
         self.grant_owner(owner);
-        self.src5.register_interface(interface::IERC721_METADATA_ID);
+        self.emit_register_model("arena_blobert", "TokenAttributes", token_attributes_class_hash);
     }
 
     #[abi(embed_v0)]
@@ -108,9 +109,11 @@ mod arena_blobert_actions {
         fn burn(ref self: ContractState, token_id: u256) {
             self.caller_is_token_owner(token_id);
             self.erc721.burn(token_id);
+            self.token_types.write(token_id, TokenType::NotMinted);
         }
 
         fn traits(self: @ContractState, token_id: u256) -> TokenAttributes {
+            let token_id: u128 = token_id.try_into().expect('Invalid token ID');
             let token_type = self.token_types.read(token_id);
             match token_type {
                 TokenType::Seed => { TokenAttributes::Seed(self.token_seeds.read(token_id)) },
@@ -157,8 +160,6 @@ mod arena_blobert_actions {
     impl UpgradeableInternalImpl = UpgradeableComponent::InternalImpl<ContractState>;
     impl SRC5InternalImpl = SRC5Component::InternalImpl<ContractState>;
 
-    impl Emitter = const_ns::ConstNsBeaconEmitter<ARENA_BLOBERT_NAMESPACE_HASH, ContractState>;
-
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
         fn mint_internal(
@@ -166,7 +167,7 @@ mod arena_blobert_actions {
         ) -> u256 {
             let minted = self.tokens_minted.read() + 1;
             self.tokens_minted.write(minted);
-            let token_id: u256 = minted.into() + 4844;
+            let token_id = minted + 4844;
             match attributes {
                 TokenAttributes::Seed(seed) => {
                     self.token_seeds.write(token_id, seed);
@@ -177,9 +178,9 @@ mod arena_blobert_actions {
                     self.token_types.write(token_id, TokenType::Custom);
                 },
             }
-            self.emit_model(@ArenaBlobertToken { token_id, attributes });
+            self.emit_member(selector!("attributes"), token_id.into(), @attributes);
+            let token_id: u256 = token_id.into();
             self.erc721.mint(owner, token_id);
-
             token_id
         }
 
