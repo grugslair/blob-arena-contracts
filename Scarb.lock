@@ -44,6 +44,7 @@ name = "ba_loadout"
 version = "0.15.0"
 dependencies = [
  "alexandria_macros",
+ "amma_blobert",
  "dojo",
  "dojo_macros",
  "sai_access",

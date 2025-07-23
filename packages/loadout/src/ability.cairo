@@ -24,11 +24,11 @@ const BASE_HEALTH: u32 = 100;
     MulAssign,
     DivAssign,
 )]
-struct TAbilities<T, +Drop<T>> {
-    strength: T,
-    vitality: T,
-    dexterity: T,
-    luck: T,
+pub struct Abilities {
+    pub strength: u32,
+    pub vitality: u32,
+    pub dexterity: u32,
+    pub luck: u32,
 }
 
 #[derive(
@@ -47,34 +47,20 @@ struct TAbilities<T, +Drop<T>> {
     MulAssign,
     DivAssign,
 )]
-struct Abilities {
-    strength: u32,
-    vitality: u32,
-    dexterity: u32,
-    luck: u32,
+pub struct DAbilities {
+    pub strength: i32,
+    pub vitality: i32,
+    pub dexterity: i32,
+    pub luck: i32,
 }
 
-#[derive(
-    Copy,
-    Drop,
-    Serde,
-    Default,
-    PartialEq,
-    Introspect,
-    Add,
-    Sub,
-    Mul,
-    Div,
-    AddAssign,
-    SubAssign,
-    MulAssign,
-    DivAssign,
-)]
-struct AbilityModifiers {
-    strength: i32,
-    vitality: i32,
-    dexterity: i32,
-    luck: i32,
+
+#[derive(Drop, Serde)]
+pub struct SignedAbilities {
+    pub strength: Signed<u32>,
+    pub vitality: Signed<u32>,
+    pub dexterity: Signed<u32>,
+    pub luck: Signed<u32>,
 }
 
 const U32_SHIFT_1: u128 = 2_u128.pow(32);
@@ -98,9 +84,8 @@ fn unpack_i32(value: u32) -> i32 {
         false => -((value - I32_NEG_MSB).try_into().unwrap()),
     }
 }
-
-impl UAbilityStorePacking of StorePacking<UAbilities, u128> {
-    fn pack(value: UAbilities) -> u128 {
+impl UAbilityStorePacking of StorePacking<Abilities, u128> {
+    fn pack(value: Abilities) -> u128 {
         (value.strength.into()
             + value.vitality.into() * U32_SHIFT_1
             + value.dexterity.into() * U32_SHIFT_2
@@ -108,17 +93,17 @@ impl UAbilityStorePacking of StorePacking<UAbilities, u128> {
             .into()
     }
 
-    fn unpack(value: u128) -> UAbilities {
+    fn unpack(value: u128) -> Abilities {
         let strength = (value & U32_MASK_U128).try_into().unwrap();
         let vitality = ((value / U32_SHIFT_1) & U32_MASK_U128).try_into().unwrap();
         let dexterity = ((value / U32_SHIFT_2) & U32_MASK_U128).try_into().unwrap();
         let luck = ((value / U32_SHIFT_3) & U32_MASK_U128).try_into().unwrap();
-        UAbilities { strength, vitality, dexterity, luck }
+        Abilities { strength, vitality, dexterity, luck }
     }
 }
 
-impl IAbilityStorePacking of StorePacking<IAbilities, u128> {
-    fn pack(value: IAbilities) -> u128 {
+impl IAbilityStorePacking of StorePacking<DAbilities, u128> {
+    fn pack(value: DAbilities) -> u128 {
         (pack_i32(value.strength).into()
             + pack_i32(value.vitality).into() * U32_SHIFT_1
             + pack_i32(value.dexterity).into() * U32_SHIFT_2
@@ -126,12 +111,12 @@ impl IAbilityStorePacking of StorePacking<IAbilities, u128> {
             .into()
     }
 
-    fn unpack(value: u128) -> IAbilities {
+    fn unpack(value: u128) -> DAbilities {
         let strength = unpack_i32((value & U32_MASK_U128).try_into().unwrap());
         let vitality = unpack_i32(((value / U32_SHIFT_1) & U32_MASK_U128).try_into().unwrap());
         let dexterity = unpack_i32(((value / U32_SHIFT_2) & U32_MASK_U128).try_into().unwrap());
         let luck = unpack_i32(((value / U32_SHIFT_3) & U32_MASK_U128).try_into().unwrap());
-        IAbilities { strength, vitality, dexterity, luck }
+        DAbilities { strength, vitality, dexterity, luck }
     }
 }
 
@@ -144,37 +129,65 @@ pub enum AbilityTypes {
     Luck,
 }
 
-impl TAbilitiesZeroable<T, +Zero<T>, +Drop<T>> of Zero<TAbilities<T>> {
-    fn zero() -> TAbilities<T> {
-        TAbilities {
-            strength: Zero::zero(),
-            vitality: Zero::zero(),
-            dexterity: Zero::zero(),
-            luck: Zero::zero(),
+
+impl U32IntoAbilities of Into<u32, Abilities> {
+    fn into(self: u32) -> Abilities {
+        Abilities { strength: self, vitality: self, dexterity: self, luck: self }
+    }
+}
+
+impl I32IntoDAbilities of Into<i32, DAbilities> {
+    fn into(self: i32) -> DAbilities {
+        DAbilities { strength: self, vitality: self, dexterity: self, luck: self }
+    }
+}
+
+impl SignedAbilitiesIntoDAbilities of Into<SignedAbilities, DAbilities> {
+    fn into(self: SignedAbilities) -> DAbilities {
+        DAbilities {
+            strength: self.strength.into(),
+            vitality: self.vitality.into(),
+            dexterity: self.dexterity.into(),
+            luck: self.luck.into(),
         }
     }
-    fn is_zero(self: @TAbilities<T>) -> bool {
+}
+
+impl DAbilitiesZeroable of Zero<DAbilities> {
+    fn zero() -> DAbilities {
+        0_i32.into()
+    }
+    fn is_zero(self: @DAbilities) -> bool {
         self.strength.is_zero()
             && self.vitality.is_zero()
             && self.dexterity.is_zero()
             && self.luck.is_zero()
     }
-    fn is_non_zero(self: @TAbilities<T>) -> bool {
+    fn is_non_zero(self: @DAbilities) -> bool {
+        !self.is_zero()
+    }
+}
+
+impl AbilitiesZeroable of Zero<Abilities> {
+    fn zero() -> Abilities {
+        0_u32.into()
+    }
+    fn is_zero(self: @Abilities) -> bool {
+        self.strength.is_zero()
+            && self.vitality.is_zero()
+            && self.dexterity.is_zero()
+            && self.luck.is_zero()
+    }
+    fn is_non_zero(self: @Abilities) -> bool {
         !self.is_zero()
     }
 }
 
 
-pub type UAbilities = TAbilities<u32>;
+// pub type Abilities = TAbilities<u32>;
 
-pub type IAbilities = TAbilities<i32>;
-pub type SignedAbilities = TAbilities<Signed<u32>>;
-
-impl TIntoTAbilities<T, +Copy<T>> of Into<T, TAbilities<T>> {
-    fn into(self: T) -> TAbilities<T> {
-        TAbilities { strength: self, vitality: self, dexterity: self, luck: self }
-    }
-}
+// pub type DAbilities = TAbilities<i32>;
+// pub type SignedAbilities = TAbilities<Signed<u32>>;
 
 fn add_buff(stat: u32, buff: i32) -> u32 {
     min(stat.saturating_into().saturating_add(buff).saturating_into(), MAX_ABILITY_SCORE)
@@ -188,13 +201,13 @@ fn apply_buff(ref current: u32, buff: i32) -> i32 {
 
 #[generate_trait]
 impl AbilitiesImpl of AbilitiesTrait {
-    fn limit(ref self: UAbilities) {
+    fn limit(ref self: Abilities) {
         self.strength = min(self.strength, MAX_ABILITY_SCORE);
         self.vitality = min(self.vitality, MAX_ABILITY_SCORE);
         self.dexterity = min(self.dexterity, MAX_ABILITY_SCORE);
         self.luck = min(self.luck, MAX_ABILITY_SCORE);
     }
-    fn apply_buff(ref self: UAbilities, stat: AbilityTypes, amount: i32) -> i32 {
+    fn apply_buff(ref self: Abilities, stat: AbilityTypes, amount: i32) -> i32 {
         match stat {
             AbilityTypes::Strength => { apply_buff(ref self.strength, amount) },
             AbilityTypes::Vitality => { apply_buff(ref self.vitality, amount) },
@@ -202,22 +215,30 @@ impl AbilitiesImpl of AbilitiesTrait {
             AbilityTypes::Luck => { apply_buff(ref self.luck, amount) },
         }
     }
-    fn apply_buffs(ref self: UAbilities, buffs: IAbilities) -> IAbilities {
-        IAbilities {
+    fn apply_buffs(ref self: Abilities, buffs: DAbilities) -> DAbilities {
+        DAbilities {
             strength: apply_buff(ref self.strength, buffs.strength),
             vitality: apply_buff(ref self.vitality, buffs.vitality),
             dexterity: apply_buff(ref self.dexterity, buffs.dexterity),
             luck: apply_buff(ref self.luck, buffs.luck),
         }
     }
-    fn get_max_health(self: @UAbilities) -> u32 {
+    fn get_max_health(self: @Abilities) -> u32 {
         *self.vitality + BASE_HEALTH
+    }
+    fn get_stat(self: @Abilities, stat: AbilityTypes) -> u32 {
+        match stat {
+            AbilityTypes::Strength => *self.strength,
+            AbilityTypes::Vitality => *self.vitality,
+            AbilityTypes::Dexterity => *self.dexterity,
+            AbilityTypes::Luck => *self.luck,
+        }
     }
 }
 
 #[generate_trait]
-impl IAbilitiesImpl of IAbilitiesTrait {
-    fn add_stat(ref self: IAbilities, stat: AbilityTypes, amount: i32) {
+impl DAbilitiesImpl of DAbilitiesTrait {
+    fn add_stat(ref self: DAbilities, stat: AbilityTypes, amount: i32) {
         match stat {
             AbilityTypes::Strength => { self.strength += amount },
             AbilityTypes::Vitality => { self.vitality += amount },
@@ -227,46 +248,9 @@ impl IAbilitiesImpl of IAbilitiesTrait {
     }
 }
 
-
-#[generate_trait]
-impl TAbilitiesImpl<T, +Drop<T>, +Copy<T>> of TAbilitiesTrait<T> {
-    fn get_stat(self: @TAbilities<T>, stat: AbilityTypes) -> T {
-        match stat {
-            AbilityTypes::Strength => *self.strength,
-            AbilityTypes::Vitality => *self.vitality,
-            AbilityTypes::Dexterity => *self.dexterity,
-            AbilityTypes::Luck => *self.luck,
-        }
-    }
-
-    fn set_stat(ref self: TAbilities<T>, stat: AbilityTypes, value: T) {
-        match stat {
-            AbilityTypes::Strength => { self.strength = value },
-            AbilityTypes::Vitality => { self.vitality = value },
-            AbilityTypes::Dexterity => { self.dexterity = value },
-            AbilityTypes::Luck => { self.luck = value },
-        }
-    }
-}
-
-impl TAbilitiesIntoTAbilitya<
-    T, S, +Into<T, S>, +Copy<T>, +Drop<S>, +Drop<T>,
-> of Into<TAbilities<T>, TAbilities<S>> {
-    fn into(self: TAbilities<T>) -> TAbilities<S> {
-        TAbilities {
-            strength: self.strength.into(),
-            vitality: self.vitality.into(),
-            dexterity: self.dexterity.into(),
-            luck: self.luck.into(),
-        }
-    }
-}
-
-impl TAbilitiesSaturatingIntoTAbilities<
-    T, S, +SaturatingInto<T, S>, +Drop<T>, +Copy<T>, +Drop<S>,
-> of SaturatingInto<TAbilities<T>, TAbilities<S>> {
-    fn saturating_into(self: TAbilities<T>) -> TAbilities<S> {
-        TAbilities {
+impl AbilitiesSaturatingIntoDAbilities of SaturatingInto<Abilities, DAbilities> {
+    fn saturating_into(self: Abilities) -> DAbilities {
+        DAbilities {
             strength: self.strength.saturating_into(),
             vitality: self.vitality.saturating_into(),
             dexterity: self.dexterity.saturating_into(),
@@ -275,9 +259,19 @@ impl TAbilitiesSaturatingIntoTAbilities<
     }
 }
 
+impl DAbilitiesSaturatingIntoAbilities of SaturatingInto<DAbilities, Abilities> {
+    fn saturating_into(self: DAbilities) -> Abilities {
+        Abilities {
+            strength: self.strength.saturating_into(),
+            vitality: self.vitality.saturating_into(),
+            dexterity: self.dexterity.saturating_into(),
+            luck: self.luck.saturating_into(),
+        }
+    }
+}
 
-impl AbilitiesDisplayImpl<T, +Debug<T>, +Drop<T>, +Copy<T>> of Display<TAbilities<T>> {
-    fn fmt(self: @TAbilities<T>, ref f: Formatter) -> Result<(), Error> {
+impl AbilitiesDisplayImpl of Display<Abilities> {
+    fn fmt(self: @Abilities, ref f: Formatter) -> Result<(), Error> {
         write!(
             f,
             "strength: {:?}, vitality: {:?}, dexterity: {:?}, luck: {:?}",
@@ -288,8 +282,8 @@ impl AbilitiesDisplayImpl<T, +Debug<T>, +Drop<T>, +Copy<T>> of Display<TAbilitie
         )
     }
 }
-impl AbilitiesDebugImpl<T, +Display<TAbilities<T>>> of Debug<TAbilities<T>> {
-    fn fmt(self: @TAbilities<T>, ref f: Formatter) -> Result<(), Error> {
+impl AbilitiesDebugImpl of Debug<Abilities> {
+    fn fmt(self: @Abilities, ref f: Formatter) -> Result<(), Error> {
         Display::fmt(self, ref f)
     }
 }

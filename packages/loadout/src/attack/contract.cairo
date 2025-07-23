@@ -1,33 +1,3 @@
-use super::{Attack, AttackInput, Effect, EffectInput};
-
-
-#[starknet::interface]
-pub trait IAttacks<TContractState> {
-    fn attack(self: @TContractState, id: felt252) -> Attack;
-    fn attacks(self: @TContractState, ids: Array<felt252>) -> Array<Attack>;
-    fn speed(self: @TContractState, id: felt252) -> u8;
-    fn speeds(self: @TContractState, ids: Array<felt252>) -> Array<u8>;
-    fn accuracy(self: @TContractState, id: felt252) -> u8;
-    fn accuracies(self: @TContractState, ids: Array<felt252>) -> Array<u8>;
-    fn cooldown(self: @TContractState, id: felt252) -> u8;
-    fn cooldowns(self: @TContractState, ids: Array<felt252>) -> Array<u8>;
-    fn hit(self: @TContractState, id: felt252) -> Array<Effect>;
-    fn hits(self: @TContractState, ids: Array<felt252>) -> Array<Array<Effect>>;
-    fn miss(self: @TContractState, id: felt252) -> Array<Effect>;
-    fn misses(self: @TContractState, ids: Array<felt252>) -> Array<Array<Effect>>;
-    fn create_attack(
-        ref self: TContractState,
-        name: ByteArray,
-        speed: u8,
-        accuracy: u8,
-        cooldown: u8,
-        hit: Array<EffectInput>,
-        miss: Array<EffectInput>,
-    ) -> felt252;
-    fn create_attacks(ref self: TContractState, attacks: Array<AttackInput>) -> Array<felt252>;
-}
-
-
 #[starknet::contract]
 mod attack {
     use sai_access::access_component;
@@ -38,7 +8,7 @@ mod attack {
     use crate::attack::types::{
         EffectArrayStorageMapReadAccess, EffectArrayStorageMapWriteAccess, InputIntoEffectArray,
     };
-    use crate::attack::{Attack, AttackInput, Effect, EffectInput, get_attack_id};
+    use crate::attack::{Attack, AttackWithName, AttackWithNameTrait, Effect, IAttack, IAttackAdmin};
 
 
     component!(path: emitter_component, storage: emitter, event: EmitterEvents);
@@ -70,7 +40,7 @@ mod attack {
     }
 
     #[abi(embed_v0)]
-    impl IAttacksImpl of super::IAttacks<ContractState> {
+    impl IAttackImpl of IAttack<ContractState> {
         fn attack(self: @ContractState, id: felt252) -> Attack {
             Attack {
                 speed: self.speeds.read(id),
@@ -125,33 +95,43 @@ mod attack {
             ids.into_iter().map(|id| self.miss(id)).collect()
         }
 
+        fn attack_id(
+            self: @ContractState,
+            name: ByteArray,
+            speed: u8,
+            accuracy: u8,
+            cooldown: u8,
+            hit: Array<Effect>,
+            miss: Array<Effect>,
+        ) -> felt252 {
+            AttackWithName { name, speed, accuracy, cooldown, hit: hit, miss: miss }.attack_id()
+        }
+
+        fn attack_ids(self: @ContractState, attacks: Array<AttackWithName>) -> Array<felt252> {
+            attacks.into_iter().map(|attack| attack.attack_id()).collect()
+        }
+    }
+
+    #[abi(embed_v0)]
+    impl IAttackAdminImpl of IAttackAdmin<ContractState> {
         fn create_attack(
             ref self: ContractState,
             name: ByteArray,
             speed: u8,
             accuracy: u8,
             cooldown: u8,
-            hit: Array<EffectInput>,
-            miss: Array<EffectInput>,
+            hit: Array<Effect>,
+            miss: Array<Effect>,
         ) -> felt252 {
-            self._create_attack(name, speed, accuracy, cooldown, hit, miss)
+            self._create_attack(AttackWithName { name, speed, accuracy, cooldown, hit, miss })
         }
 
-        fn create_attacks(ref self: ContractState, attacks: Array<AttackInput>) -> Array<felt252> {
+        fn create_attacks(
+            ref self: ContractState, attacks: Array<AttackWithName>,
+        ) -> Array<felt252> {
             let mut attack_ids: Array<felt252> = Default::default();
             for attack in attacks {
-                attack_ids
-                    .append(
-                        self
-                            ._create_attack(
-                                attack.name,
-                                attack.speed,
-                                attack.accuracy,
-                                attack.cooldown,
-                                attack.hit,
-                                attack.miss,
-                            ),
-                    )
+                attack_ids.append(self._create_attack(attack))
             }
             attack_ids
         }
@@ -160,23 +140,14 @@ mod attack {
 
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
-        fn _create_attack(
-            ref self: ContractState,
-            name: ByteArray,
-            speed: u8,
-            accuracy: u8,
-            cooldown: u8,
-            hit: Array<EffectInput>,
-            miss: Array<EffectInput>,
-        ) -> felt252 {
-            let hit: Array<Effect> = hit.into();
-            let miss: Array<Effect> = miss.into();
-            let id = get_attack_id(@name, speed, accuracy, cooldown, @hit, @miss);
-            self.speeds.write(id, speed);
-            self.accuracies.write(id, accuracy);
-            self.cooldowns.write(id, cooldown);
-            self.hits.write(id, hit);
-            self.misses.write(id, miss);
+        fn _create_attack(ref self: ContractState, attack: AttackWithName) -> felt252 {
+            let id = attack.attack_id();
+            self.emit_entity(id, @attack);
+            self.speeds.write(id, attack.speed);
+            self.accuracies.write(id, attack.accuracy);
+            self.cooldowns.write(id, attack.cooldown);
+            self.hits.write(id, attack.hit);
+            self.misses.write(id, attack.miss);
             id
         }
     }

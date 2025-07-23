@@ -24,6 +24,10 @@ pub fn get_amount_of_fighters(collection: ContractAddress) -> u32 {
     IAmmaBlobertDispatcher { contract_address: collection }.number_of_fighters()
 }
 
+pub fn get_fighter(collection: ContractAddress, token_id: u256) -> u32 {
+    IAmmaBlobertDispatcher { contract_address: collection }.fighter(token_id)
+}
+
 #[starknet::contract]
 mod amma_blobert_token {
     use core::num::traits::Zero;

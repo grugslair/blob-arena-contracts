@@ -4,7 +4,7 @@ pub use starknet::storage::{
     Map, Mutable, MutableVecTrait, StorageBase, StorageMapReadAccess, StorageMapWriteAccess,
     StoragePath, StoragePathEntry, StoragePointerReadAccess, Vec, VecTrait,
 };
-use crate::ability::{AbilityTypes, IAbilities, SignedAbilities};
+use crate::ability::{AbilityTypes, DAbilities, SignedAbilities};
 use crate::signed::Signed;
 const ATTACK_TAG_GROUP: felt252 = 'attacks';
 
@@ -52,6 +52,17 @@ pub struct AttackInput {
     pub miss: Array<EffectInput>,
 }
 
+#[beacon_entity]
+#[derive(Drop, Serde, Introspect)]
+pub struct AttackWithName {
+    pub name: ByteArray,
+    pub speed: u8,
+    pub accuracy: u8,
+    pub cooldown: u8,
+    pub hit: Array<Effect>,
+    pub miss: Array<Effect>,
+}
+
 /// Represents an effect that can be applied during the game.
 ///
 /// # Arguments
@@ -64,7 +75,7 @@ pub struct Effect {
     affect: Affect,
 }
 
-#[derive(Copy, Drop, Serde, PartialEq)]
+#[derive(Drop, Serde)]
 pub struct EffectInput {
     target: Target,
     affect: AffectInput,
@@ -85,7 +96,7 @@ pub enum Target {
 /// * `Stun` - Stun chance increase of target on next attack in percentage
 /// * `Health` - Health modification (can be positive for healing or negative for damage)
 
-#[derive(Copy, Drop, Serde, PartialEq)]
+#[derive(Drop, Serde)]
 pub enum AffectInput {
     Health: Signed<u8>,
     Abilities: SignedAbilities,
@@ -98,7 +109,7 @@ pub enum AffectInput {
 pub enum Affect {
     #[default]
     Health: i16,
-    Abilities: IAbilities,
+    Abilities: DAbilities,
     Ability: AbilityAffect,
     Damage: Damage,
     Stun: u8,
@@ -136,6 +147,13 @@ pub struct Damage {
 pub struct AttackExists {
     hit: u32,
     miss: u32,
+}
+
+#[generate_trait]
+pub impl AttackWithNameImpl of AttackWithNameTrait {
+    fn attack_id(self: @AttackWithName) -> felt252 {
+        get_attack_id(self.name, *self.speed, *self.accuracy, *self.cooldown, self.hit, self.miss)
+    }
 }
 
 pub fn get_attack_id(
