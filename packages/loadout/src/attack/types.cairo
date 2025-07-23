@@ -1,8 +1,13 @@
 use core::poseidon::poseidon_hash_span;
 use sai_core_utils::poseidon_serde::PoseidonSerde;
+pub use starknet::storage::{
+    Map, Mutable, MutableVecTrait, StorageBase, StorageMapReadAccess, StorageMapWriteAccess,
+    StoragePath, StoragePathEntry, StoragePointerReadAccess, Vec, VecTrait,
+};
 use crate::ability::{AbilityTypes, IAbilities, SignedAbilities};
 use crate::signed::Signed;
 const ATTACK_TAG_GROUP: felt252 = 'attacks';
+
 
 /// Setup models
 
@@ -15,14 +20,14 @@ const ATTACK_TAG_GROUP: felt252 = 'attacks';
 /// * `cooldown` - The cooldown period of the attack in rounds
 /// * `hit` - Array of effects that occur when the attack hits
 /// * `miss` - Array of effects that occur when the attack misses
-
-#[derive(Drop, Serde, Default)]
+#[beacon_entity]
+#[derive(Drop, Serde, Default, Introspect)]
 pub struct Attack {
-    speed: u8,
-    accuracy: u8,
-    cooldown: u8,
-    hit: Array<Effect>,
-    miss: Array<Effect>,
+    pub speed: u8,
+    pub accuracy: u8,
+    pub cooldown: u8,
+    pub hit: Array<Effect>,
+    pub miss: Array<Effect>,
 }
 /// A component representing an attack or input of attack in the game.
 ///
@@ -39,12 +44,12 @@ pub struct Attack {
 
 #[derive(Drop, Serde)]
 pub struct AttackInput {
-    name: ByteArray,
-    speed: u8,
-    accuracy: u8,
-    cooldown: u8,
-    hit: Array<EffectInput>,
-    miss: Array<EffectInput>,
+    pub name: ByteArray,
+    pub speed: u8,
+    pub accuracy: u8,
+    pub cooldown: u8,
+    pub hit: Array<EffectInput>,
+    pub miss: Array<EffectInput>,
 }
 
 /// Represents an effect that can be applied during the game.
@@ -183,3 +188,33 @@ pub impl InputIntoEffectArray of Into<Array<EffectInput>, Array<Effect>> {
     }
 }
 
+
+pub impl EffectArrayStorageMapWriteAccess of StorageMapWriteAccess<
+    StorageBase<Mutable<Map<felt252, Vec<Effect>>>>,
+> {
+    type Key = felt252;
+    type Value = Array<Effect>;
+    fn write(
+        self: StorageBase<Mutable<Map<felt252, Vec<Effect>>>>, key: felt252, value: Array<Effect>,
+    ) {
+        let mut vec = self.entry(key);
+        for effect in value {
+            vec.push(effect);
+        }
+    }
+}
+
+pub impl EffectArrayStorageMapReadAccess of StorageMapReadAccess<
+    StorageBase<Map<felt252, Vec<Effect>>>,
+> {
+    type Key = felt252;
+    type Value = Array<Effect>;
+    fn read(self: StorageBase<Map<felt252, Vec<Effect>>>, key: felt252) -> Array<Effect> {
+        let ptr = self.entry(key);
+        let mut effects: Array<Effect> = Default::default();
+        for i in 0..ptr.len() {
+            effects.append(ptr.at(i).read());
+        }
+        effects
+    }
+}

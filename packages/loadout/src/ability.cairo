@@ -1,7 +1,6 @@
 use core::cmp::min;
 use core::fmt::{Debug, Display, Error, Formatter};
-use core::num::traits::{Pow, SaturatingAdd, SaturatingSub, Zero};
-use core::ops::AddAssign;
+use core::num::traits::{Pow, SaturatingAdd, Zero};
 use sai_core_utils::SaturatingInto;
 use starknet::storage_access::StorePacking;
 use crate::signed::Signed;
@@ -9,14 +8,74 @@ use crate::signed::Signed;
 const MAX_ABILITY_SCORE: u32 = 100;
 const BASE_HEALTH: u32 = 100;
 
-#[derive(Copy, Drop, Serde, Default, PartialEq)]
-struct TAbilities<T> {
+#[derive(
+    Copy,
+    Drop,
+    Serde,
+    Default,
+    PartialEq,
+    Introspect,
+    Add,
+    Sub,
+    Mul,
+    Div,
+    AddAssign,
+    SubAssign,
+    MulAssign,
+    DivAssign,
+)]
+struct TAbilities<T, +Drop<T>> {
     strength: T,
     vitality: T,
     dexterity: T,
     luck: T,
 }
 
+#[derive(
+    Copy,
+    Drop,
+    Serde,
+    Default,
+    PartialEq,
+    Introspect,
+    Add,
+    Sub,
+    Mul,
+    Div,
+    AddAssign,
+    SubAssign,
+    MulAssign,
+    DivAssign,
+)]
+struct Abilities {
+    strength: u32,
+    vitality: u32,
+    dexterity: u32,
+    luck: u32,
+}
+
+#[derive(
+    Copy,
+    Drop,
+    Serde,
+    Default,
+    PartialEq,
+    Introspect,
+    Add,
+    Sub,
+    Mul,
+    Div,
+    AddAssign,
+    SubAssign,
+    MulAssign,
+    DivAssign,
+)]
+struct AbilityModifiers {
+    strength: i32,
+    vitality: i32,
+    dexterity: i32,
+    luck: i32,
+}
 
 const U32_SHIFT_1: u128 = 2_u128.pow(32);
 const U32_SHIFT_2: u128 = 2_u128.pow(64);
@@ -143,7 +202,7 @@ impl AbilitiesImpl of AbilitiesTrait {
             AbilityTypes::Luck => { apply_buff(ref self.luck, amount) },
         }
     }
-    fn apply_buffs(ref self: UAbilities, buffs: TAbilities<i32>) -> IAbilities {
+    fn apply_buffs(ref self: UAbilities, buffs: IAbilities) -> IAbilities {
         IAbilities {
             strength: apply_buff(ref self.strength, buffs.strength),
             vitality: apply_buff(ref self.vitality, buffs.vitality),
@@ -187,83 +246,6 @@ impl TAbilitiesImpl<T, +Drop<T>, +Copy<T>> of TAbilitiesTrait<T> {
             AbilityTypes::Dexterity => { self.dexterity = value },
             AbilityTypes::Luck => { self.luck = value },
         }
-    }
-}
-
-impl TAbilitiesAdd<T, +Add<T>, +Drop<T>> of Add<TAbilities<T>> {
-    fn add(lhs: TAbilities<T>, rhs: TAbilities<T>) -> TAbilities<T> {
-        TAbilities {
-            strength: lhs.strength + rhs.strength,
-            vitality: lhs.vitality + rhs.vitality,
-            dexterity: lhs.dexterity + rhs.dexterity,
-            luck: lhs.luck + rhs.luck,
-        }
-    }
-}
-
-impl TAbilitiesAddEq<T, +AddAssign<T, T>, +Drop<T>> of AddAssign<TAbilities<T>, TAbilities<T>> {
-    fn add_assign(ref self: TAbilities<T>, rhs: TAbilities<T>) {
-        self.strength += rhs.strength;
-        self.vitality += rhs.vitality;
-        self.dexterity += rhs.dexterity;
-        self.luck += rhs.luck;
-    }
-}
-
-
-impl TAbilitiesSaturatingSub<T, +SaturatingSub<T>, +Drop<T>> of SaturatingSub<TAbilities<T>> {
-    fn saturating_sub(self: TAbilities<T>, other: TAbilities<T>) -> TAbilities<T> {
-        TAbilities {
-            strength: self.strength.saturating_sub(other.strength),
-            vitality: self.vitality.saturating_sub(other.vitality),
-            dexterity: self.dexterity.saturating_sub(other.dexterity),
-            luck: self.luck.saturating_sub(other.luck),
-        }
-    }
-}
-
-impl TSaturatingAdd<T, +SaturatingAdd<T>, +Drop<T>> of SaturatingAdd<TAbilities<T>> {
-    fn saturating_add(self: TAbilities<T>, other: TAbilities<T>) -> TAbilities<T> {
-        TAbilities {
-            strength: self.strength.saturating_add(other.strength),
-            vitality: self.vitality.saturating_add(other.vitality),
-            dexterity: self.dexterity.saturating_add(other.dexterity),
-            luck: self.luck.saturating_add(other.luck),
-        }
-    }
-}
-
-
-impl TAbilitiesSub<T, +Sub<T>, +Drop<T>> of Sub<TAbilities<T>> {
-    fn sub(lhs: TAbilities<T>, rhs: TAbilities<T>) -> TAbilities<T> {
-        return TAbilities {
-            strength: lhs.strength - rhs.strength,
-            vitality: lhs.vitality - rhs.vitality,
-            dexterity: lhs.dexterity - rhs.dexterity,
-            luck: lhs.luck - rhs.luck,
-        };
-    }
-}
-
-impl TAbilitiesMul<T, +Mul<T>, +Drop<T>> of Mul<TAbilities<T>> {
-    fn mul(lhs: TAbilities<T>, rhs: TAbilities<T>) -> TAbilities<T> {
-        return TAbilities {
-            strength: lhs.strength * rhs.strength,
-            vitality: lhs.vitality * rhs.vitality,
-            dexterity: lhs.dexterity * rhs.dexterity,
-            luck: lhs.luck * rhs.luck,
-        };
-    }
-}
-
-impl TAbilitiesDiv<T, +Div<T>, +Drop<T>> of Div<TAbilities<T>> {
-    fn div(lhs: TAbilities<T>, rhs: TAbilities<T>) -> TAbilities<T> {
-        return TAbilities {
-            strength: lhs.strength / rhs.strength,
-            vitality: lhs.vitality / rhs.vitality,
-            dexterity: lhs.dexterity / rhs.dexterity,
-            luck: lhs.luck / rhs.luck,
-        };
     }
 }
 

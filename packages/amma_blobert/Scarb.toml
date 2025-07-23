@@ -15,17 +15,17 @@ scarb.workspace = true
 sierra-replace-ids = true
 
 [dependencies]
-starknet.workspace = true
-openzeppelin_token.workspace = true
-openzeppelin_introspection.workspace = true
-openzeppelin_upgrades.workspace = true
-openzeppelin_access.workspace = true
-dojo.workspace = true
 dojo_macros.workspace = true
-torii_beacon.workspace = true
-torii_beacon_macros.workspace = true
+dojo.workspace = true
+openzeppelin_access.workspace = true
+openzeppelin_introspection.workspace = true
+openzeppelin_token.workspace = true
+openzeppelin_upgrades.workspace = true
 sai_access.workspace = true
 sai_token.workspace = true
+starknet.workspace = true
+torii_beacon_macros.workspace = true
+torii_beacon.workspace = true
 
 [[target.starknet-contract]]
 allowed-libfuncs-list.name = "experimental"

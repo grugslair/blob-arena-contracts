@@ -2,6 +2,11 @@
 version = 1
 
 [[package]]
+name = "alexandria_macros"
+version = "0.5.0"
+source = "git+https://github.com/keep-starknet-strange/alexandria/?tag=v0.5.0#adf6c44f5c0f8a7fdca30ffb8f1cc79207cb4ae8"
+
+[[package]]
 name = "amma_blobert"
 version = "0.15.0"
 dependencies = [
@@ -38,11 +43,13 @@ dependencies = [
 name = "ba_loadout"
 version = "0.15.0"
 dependencies = [
+ "alexandria_macros",
  "dojo",
  "dojo_macros",
  "sai_access",
  "sai_core_utils",
  "torii_beacon",
+ "torii_beacon_macros",
 ]
 
 [[package]]

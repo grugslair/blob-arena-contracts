@@ -14,12 +14,14 @@ scarb.workspace = true
 sierra-replace-ids = true
 
 [dependencies]
+alexandria_macros.workspace = true
 starknet.workspace = true
 sai_core_utils.workspace = true
 sai_access.workspace = true
 dojo_macros.workspace = true
 dojo.workspace = true
 torii_beacon.workspace = true
+torii_beacon_macros.workspace = true
 
 
 [[target.starknet-contract]]
