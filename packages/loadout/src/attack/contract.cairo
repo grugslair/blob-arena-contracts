@@ -1,15 +1,15 @@
 #[starknet::contract]
 mod attack {
-    use sai_access::access_component;
+    use sai_access::{AccessTrait, access_component};
     use sai_core_utils::poseidon_serde::PoseidonSerde;
     use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess, Vec};
+    use starknet::{ClassHash, ContractAddress};
     use torii_beacon::emitter::const_entity;
     use torii_beacon::emitter_component;
     use crate::attack::types::{
         EffectArrayStorageMapReadAccess, EffectArrayStorageMapWriteAccess, InputIntoEffectArray,
     };
     use crate::attack::{Attack, AttackWithName, AttackWithNameTrait, Effect, IAttack, IAttackAdmin};
-
 
     component!(path: emitter_component, storage: emitter, event: EmitterEvents);
     component!(path: access_component, storage: access, event: AccessEvents);
@@ -37,6 +37,12 @@ mod attack {
         EmitterEvents: emitter_component::Event,
         #[flat]
         AccessEvents: access_component::Event,
+    }
+
+    #[constructor]
+    fn constructor(ref self: ContractState, owner: ContractAddress, attack_class_hash: ClassHash) {
+        self.grant_owner(owner);
+        self.emit_register_model("attack", "Attack", attack_class_hash);
     }
 
     #[abi(embed_v0)]

@@ -14,21 +14,63 @@ pub trait IAmmaBlobertLoadout<TContractState> {
 #[starknet::contract]
 mod amma_blobert_loadout {
     use amma_blobert::get_fighter;
-    use starknet::ContractAddress;
+    use sai_access::{AccessTrait, access_component};
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
+        StoragePointerWriteAccess,
     };
+    use starknet::{ClassHash, ContractAddress};
+    use torii_beacon::emitter::const_entity;
+    use torii_beacon::emitter_component;
     use crate::ability::Abilities;
     use crate::attack::{AttackWithName, IAttackAdminDispatcher, IAttackAdminDispatcherTrait};
     use crate::interface::ILoadout;
     use super::IAmmaBlobertLoadout;
 
+    component!(path: emitter_component, storage: emitter, event: EmitterEvents);
+    component!(path: access_component, storage: access, event: AccessEvents);
+
+    const TABLE_ID: felt252 = bytearrays_hash!("amma_blobert_loadout", "AmmaBlobertLoadout");
+    impl TokenEmitter = const_entity::ConstEntityEmitter<TABLE_ID, ContractState>;
+
     #[storage]
     struct Storage {
+        #[substorage(v0)]
+        emitter: emitter_component::Storage,
+        #[substorage(v0)]
+        access: access_component::Storage,
         collection_address: ContractAddress,
         attack_dispatcher: IAttackAdminDispatcher,
         attack_slots: Map<(u32, u32), felt252>,
         abilities: Map<u32, Abilities>,
+    }
+
+    #[event]
+    #[derive(Drop, starknet::Event)]
+    enum Event {
+        #[flat]
+        EmitterEvents: emitter_component::Event,
+        #[flat]
+        AccessEvents: access_component::Event,
+    }
+
+    #[constructor]
+    fn constructor(
+        ref self: ContractState,
+        owner: ContractAddress,
+        collection_address: ContractAddress,
+        attack_dispatcher_address: ContractAddress,
+        blobert_loadout_class_hash: ClassHash,
+    ) {
+        self.grant_owner(owner);
+        self.collection_address.write(collection_address);
+        self
+            .attack_dispatcher
+            .write(IAttackAdminDispatcher { contract_address: attack_dispatcher_address });
+        self
+            .emit_register_model(
+                "amma_blobert_loadout", "AmmaBlobertLoadout", blobert_loadout_class_hash,
+            );
     }
 
     #[abi(embed_v0)]
