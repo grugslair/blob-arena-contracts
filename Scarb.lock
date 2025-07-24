@@ -26,7 +26,7 @@ dependencies = [
 name = "arena_blobert"
 version = "0.15.0"
 dependencies = [
- "blobert",
+ "ba_blobert",
  "dojo",
  "dojo_macros",
  "openzeppelin_access",
@@ -40,11 +40,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "ba_blobert"
+version = "0.15.0"
+dependencies = [
+ "arena_blobert",
+ "dojo",
+ "dojo_macros",
+ "sai_core_utils",
+]
+
+[[package]]
 name = "ba_loadout"
 version = "0.15.0"
 dependencies = [
  "alexandria_macros",
  "amma_blobert",
+ "ba_blobert",
  "dojo",
  "dojo_macros",
  "sai_access",
@@ -60,16 +71,8 @@ version = "0.15.0"
 dependencies = [
  "amma_blobert",
  "arena_blobert",
+ "ba_blobert",
  "ba_loadout",
- "blobert",
-]
-
-[[package]]
-name = "blobert"
-version = "0.15.0"
-dependencies = [
- "dojo",
- "dojo_macros",
 ]
 
 [[package]]
@@ -137,22 +140,22 @@ checksum = "sha256:bf799c794139837f397975ffdf6a7ed5032d198bbf70e87a8f44f144a9dfc
 [[package]]
 name = "sai_access"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#df752ece30aa815c11b7551e8759ac8f83d1017e"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#3565ddb994671bf424c25212180aba452d5eb946"
 
 [[package]]
 name = "sai_core_utils"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#df752ece30aa815c11b7551e8759ac8f83d1017e"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#3565ddb994671bf424c25212180aba452d5eb946"
 
 [[package]]
 name = "sai_packing"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#df752ece30aa815c11b7551e8759ac8f83d1017e"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#3565ddb994671bf424c25212180aba452d5eb946"
 
 [[package]]
 name = "sai_token"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#df752ece30aa815c11b7551e8759ac8f83d1017e"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#3565ddb994671bf424c25212180aba452d5eb946"
 dependencies = [
  "openzeppelin_introspection",
  "openzeppelin_token",
@@ -161,7 +164,6 @@ dependencies = [
 [[package]]
 name = "torii_beacon"
 version = "1.6.0-rc.0"
-source = "git+https://github.com/sai-starknet/torii-beacon?branch=1.7.0-rc.0#52b11d053af18d7c02abff569817a31e0e27efb6"
 dependencies = [
  "dojo",
  "dojo_macros",
@@ -172,4 +174,3 @@ dependencies = [
 [[package]]
 name = "torii_beacon_macros"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/torii-beacon?branch=1.7.0-rc.0#52b11d053af18d7c02abff569817a31e0e27efb6"

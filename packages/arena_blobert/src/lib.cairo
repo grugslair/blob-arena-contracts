@@ -1,8 +1,8 @@
-use blobert::TokenAttributes;
+use ba_blobert::TokenAttributes;
 use starknet::ContractAddress;
 
 #[starknet::interface]
-trait IArenaBlobert<TContractState> {
+pub trait IArenaBlobert<TContractState> {
     fn burn(ref self: TContractState, token_id: u256);
     fn traits(self: @TContractState, token_id: u256) -> TokenAttributes;
 }
@@ -14,7 +14,7 @@ trait IArenaBlobertAdmin<TContractState> {
 
 #[starknet::contract]
 mod arena_blobert_actions {
-    use blobert::{Seed, TokenAttributes};
+    use ba_blobert::{Seed, TokenAttributes};
     use openzeppelin_introspection::src5::SRC5Component;
     use openzeppelin_token::erc721::interface::IERC721_METADATA_ID;
     use openzeppelin_token::erc721::{ERC721Component, ERC721HooksEmptyImpl};
@@ -27,7 +27,7 @@ mod arena_blobert_actions {
         StoragePointerWriteAccess,
     };
     use starknet::{ClassHash, ContractAddress, get_caller_address};
-    use torii_beacon::emitter::const_entity;
+    use torii_beacon::emitter::{ToriiRegistryEmitter, const_entity};
     use torii_beacon::emitter_component;
     use super::{IArenaBlobert, IArenaBlobertAdmin};
 
@@ -94,7 +94,7 @@ mod arena_blobert_actions {
         self.erc721.initializer_no_metadata();
         self.src5.register_interface(IERC721_METADATA_ID);
         self.grant_owner(owner);
-        self.emit_register_model("arena_blobert", "TokenAttributes", token_attributes_class_hash);
+        self.emit_register_entity("arena_blobert", "TokenAttributes", token_attributes_class_hash);
     }
 
     #[abi(embed_v0)]
@@ -109,7 +109,9 @@ mod arena_blobert_actions {
         fn burn(ref self: ContractState, token_id: u256) {
             self.caller_is_token_owner(token_id);
             self.erc721.burn(token_id);
-            self.token_types.write(token_id, TokenType::NotMinted);
+            self
+                .token_types
+                .write(token_id.try_into().expect('Invalid token ID'), TokenType::NotMinted);
         }
 
         fn traits(self: @ContractState, token_id: u256) -> TokenAttributes {

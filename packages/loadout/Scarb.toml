@@ -24,6 +24,7 @@ dojo.workspace = true
 torii_beacon.workspace = true
 torii_beacon_macros.workspace = true
 amma_blobert = { path = "../amma_blobert" }
+ba_blobert = { path = "../blobert" }
 
 
 [[target.starknet-contract]]

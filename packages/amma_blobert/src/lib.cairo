@@ -43,7 +43,7 @@ mod amma_blobert_token {
         StoragePointerWriteAccess,
     };
     use starknet::{ClassHash, ContractAddress};
-    use torii_beacon::emitter::const_entity;
+    use torii_beacon::emitter::{ToriiRegistryEmitter, const_entity};
     use torii_beacon::emitter_component;
     use super::{IAmmaBlobert, IAmmaBlobertAdmin};
 
@@ -102,7 +102,7 @@ mod amma_blobert_token {
         self.erc721.initializer_no_metadata();
         self.src5.register_interface(IERC721_METADATA_ID);
         self.grant_owner(owner);
-        self.emit_register_model("amma_blobert", "TokenFighter", token_fighter_class_hash);
+        self.emit_register_entity("amma_blobert", "TokenFighter", token_fighter_class_hash);
     }
 
     #[abi(embed_v0)]

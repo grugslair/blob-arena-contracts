@@ -26,8 +26,10 @@ dojo = { git = "https://github.com/dojoengine/dojo" }
 dojo_macros = { git = "https://github.com/dojoengine/dojo" }
 cubit = { git = "https://github.com/bengineer42/cubit", tag = "cairo--2.8.0" }
 pragma_lib = { git = "https://github.com/bengineer42/pragma-lib", branch = "v2.11.4" }
-torii_beacon = { git = "https://github.com/sai-starknet/torii-beacon", branch = "1.7.0-rc.0" }
-torii_beacon_macros = { git = "https://github.com/sai-starknet/torii-beacon", branch = "1.7.0-rc.0" }
+# torii_beacon = { git = "https://github.com/sai-starknet/torii-beacon", branch = "1.7.0-rc.0" }
+# torii_beacon_macros = { git = "https://github.com/sai-starknet/torii-beacon", branch = "1.7.0-rc.0" }
+torii_beacon = { path = "../../../sai/torii-beacon" }
+torii_beacon_macros = { path = "../../../sai/torii-beacon" }
 sai_access = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
 sai_token = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
 sai_core_utils = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
@@ -51,7 +53,7 @@ edition.workspace = true
 starknet.workspace = true
 amma_blobert = { path = "packages/amma_blobert" }
 arena_blobert = { path = "packages/arena_blobert" }
-blobert = { path = "packages/blobert" }
+ba_blobert = { path = "packages/blobert" }
 ba_loadout = { path = "packages/loadout" }
 
 [dev-dependencies]

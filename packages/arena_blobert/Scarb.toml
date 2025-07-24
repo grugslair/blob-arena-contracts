@@ -15,7 +15,7 @@ scarb.workspace = true
 sierra-replace-ids = true
 
 [dependencies]
-blobert = { path = "../blobert" }
+ba_blobert = { path = "../blobert" }
 dojo_macros.workspace = true
 dojo.workspace = true
 openzeppelin_access.workspace = true

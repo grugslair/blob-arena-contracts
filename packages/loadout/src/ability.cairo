@@ -9,6 +9,7 @@ use starknet::storage_access::StorePacking;
 const MAX_ABILITY_SCORE: u32 = 100;
 const BASE_HEALTH: u32 = 100;
 
+#[beacon_entity]
 #[derive(
     Copy,
     Drop,

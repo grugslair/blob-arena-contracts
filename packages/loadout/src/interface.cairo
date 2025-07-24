@@ -11,4 +11,10 @@ pub trait ILoadout<TContractState> {
         token_id: u256,
         slots: Array<Array<felt252>>,
     ) -> Array<felt252>;
+    fn loadout(
+        self: @TContractState,
+        collection_address: ContractAddress,
+        token_id: u256,
+        slots: Array<Array<felt252>>,
+    ) -> (Abilities, Array<felt252>);
 }

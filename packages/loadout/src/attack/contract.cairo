@@ -1,10 +1,11 @@
 #[starknet::contract]
 mod attack {
+    use core::num::traits::Zero;
     use sai_access::{AccessTrait, access_component};
     use sai_core_utils::poseidon_serde::PoseidonSerde;
     use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess, Vec};
     use starknet::{ClassHash, ContractAddress};
-    use torii_beacon::emitter::const_entity;
+    use torii_beacon::emitter::{ToriiRegistryEmitter, const_entity};
     use torii_beacon::emitter_component;
     use crate::attack::types::{EffectArrayStorageMapReadAccess, EffectArrayStorageMapWriteAccess};
     use crate::attack::{Attack, AttackWithName, AttackWithNameTrait, Effect, IAttack, IAttackAdmin};
@@ -40,7 +41,7 @@ mod attack {
     #[constructor]
     fn constructor(ref self: ContractState, owner: ContractAddress, attack_class_hash: ClassHash) {
         self.grant_owner(owner);
-        self.emit_register_model("attack", "Attack", attack_class_hash);
+        self.emit_register_entity("attack", "Attack", attack_class_hash);
     }
 
     #[abi(embed_v0)]
@@ -145,13 +146,22 @@ mod attack {
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
         fn _create_attack(ref self: ContractState, attack: AttackWithName) -> felt252 {
-            let id = attack.attack_id();
+            let id = (@attack).attack_id();
+            if self.accuracies.read(id).is_non_zero() {
+                return id; // Attack already exists
+            }
+            assert(
+                0 < attack.accuracy && attack.accuracy <= 100, 'Accuracy must between 0 and 100',
+            );
+            assert(attack.speed <= 100, 'Speed must be between 0 and 100');
             self.emit_entity(id, @attack);
             self.speeds.write(id, attack.speed);
+
             self.accuracies.write(id, attack.accuracy);
             self.cooldowns.write(id, attack.cooldown);
             self.hits.write(id, attack.hit);
             self.misses.write(id, attack.miss);
+
             id
         }
     }

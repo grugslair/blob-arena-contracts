@@ -1,5 +1,5 @@
 [package]
-name = "blobert"
+name = "ba_blobert"
 version.workspace = true
 edition.workspace = true
 cairo-version.workspace = true
@@ -17,6 +17,8 @@ sierra-replace-ids = true
 starknet.workspace = true
 dojo_macros.workspace = true
 dojo.workspace = true
+sai_core_utils.workspace = true
+arena_blobert = { path = "../arena_blobert" }
 
 [[target.starknet-contract]]
 allowed-libfuncs-list.name = "experimental"
