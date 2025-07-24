@@ -6,9 +6,7 @@ mod attack {
     use starknet::{ClassHash, ContractAddress};
     use torii_beacon::emitter::const_entity;
     use torii_beacon::emitter_component;
-    use crate::attack::types::{
-        EffectArrayStorageMapReadAccess, EffectArrayStorageMapWriteAccess, InputIntoEffectArray,
-    };
+    use crate::attack::types::{EffectArrayStorageMapReadAccess, EffectArrayStorageMapWriteAccess};
     use crate::attack::{Attack, AttackWithName, AttackWithNameTrait, Effect, IAttack, IAttackAdmin};
 
     component!(path: emitter_component, storage: emitter, event: EmitterEvents);

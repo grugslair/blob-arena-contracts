@@ -2,8 +2,9 @@ use core::cmp::min;
 use core::fmt::{Debug, Display, Error, Formatter};
 use core::num::traits::{Pow, SaturatingAdd, Zero};
 use sai_core_utils::SaturatingInto;
+use sai_packing::IntPacking;
 use starknet::storage_access::StorePacking;
-use crate::signed::Signed;
+// use crate::signed::Signed;
 
 const MAX_ABILITY_SCORE: u32 = 100;
 const BASE_HEALTH: u32 = 100;
@@ -54,36 +55,13 @@ pub struct DAbilities {
     pub luck: i32,
 }
 
-
-#[derive(Drop, Serde)]
-pub struct SignedAbilities {
-    pub strength: Signed<u32>,
-    pub vitality: Signed<u32>,
-    pub dexterity: Signed<u32>,
-    pub luck: Signed<u32>,
-}
-
 const U32_SHIFT_1: u128 = 2_u128.pow(32);
 const U32_SHIFT_2: u128 = 2_u128.pow(64);
 const U32_SHIFT_3: u128 = 2_u128.pow(96);
 
-const I32_NEG_MSB: u32 = 2_u32.pow(31);
-
 const U32_MASK_U128: u128 = U32_SHIFT_1 - 1;
 
-fn pack_i32(value: i32) -> u32 {
-    match value < 0 {
-        true => I32_NEG_MSB + (-value).try_into().unwrap(),
-        false => value.try_into().unwrap(),
-    }
-}
 
-fn unpack_i32(value: u32) -> i32 {
-    match value < I32_NEG_MSB {
-        true => value.try_into().unwrap(),
-        false => -((value - I32_NEG_MSB).try_into().unwrap()),
-    }
-}
 impl UAbilityStorePacking of StorePacking<Abilities, u128> {
     fn pack(value: Abilities) -> u128 {
         (value.strength.into()
@@ -104,18 +82,23 @@ impl UAbilityStorePacking of StorePacking<Abilities, u128> {
 
 impl IAbilityStorePacking of StorePacking<DAbilities, u128> {
     fn pack(value: DAbilities) -> u128 {
-        (pack_i32(value.strength).into()
-            + pack_i32(value.vitality).into() * U32_SHIFT_1
-            + pack_i32(value.dexterity).into() * U32_SHIFT_2
-            + pack_i32(value.luck).into() * U32_SHIFT_3)
-            .into()
+        value.strength.pack().into()
+            + value.vitality.pack().into() * U32_SHIFT_1
+            + value.dexterity.pack().into() * U32_SHIFT_2
+            + value.luck.pack().into() * U32_SHIFT_3.into()
     }
 
     fn unpack(value: u128) -> DAbilities {
-        let strength = unpack_i32((value & U32_MASK_U128).try_into().unwrap());
-        let vitality = unpack_i32(((value / U32_SHIFT_1) & U32_MASK_U128).try_into().unwrap());
-        let dexterity = unpack_i32(((value / U32_SHIFT_2) & U32_MASK_U128).try_into().unwrap());
-        let luck = unpack_i32(((value / U32_SHIFT_3) & U32_MASK_U128).try_into().unwrap());
+        let strength: i32 = IntPacking::unpack((value & U32_MASK_U128).try_into().unwrap());
+        let vitality: i32 = IntPacking::unpack(
+            ((value / U32_SHIFT_1) & U32_MASK_U128).try_into().unwrap(),
+        );
+        let dexterity: i32 = IntPacking::unpack(
+            ((value / U32_SHIFT_2) & U32_MASK_U128).try_into().unwrap(),
+        );
+        let luck: i32 = IntPacking::unpack(
+            ((value / U32_SHIFT_3) & U32_MASK_U128).try_into().unwrap(),
+        );
         DAbilities { strength, vitality, dexterity, luck }
     }
 }
@@ -139,17 +122,6 @@ impl U32IntoAbilities of Into<u32, Abilities> {
 impl I32IntoDAbilities of Into<i32, DAbilities> {
     fn into(self: i32) -> DAbilities {
         DAbilities { strength: self, vitality: self, dexterity: self, luck: self }
-    }
-}
-
-impl SignedAbilitiesIntoDAbilities of Into<SignedAbilities, DAbilities> {
-    fn into(self: SignedAbilities) -> DAbilities {
-        DAbilities {
-            strength: self.strength.into(),
-            vitality: self.vitality.into(),
-            dexterity: self.dexterity.into(),
-            luck: self.luck.into(),
-        }
     }
 }
 

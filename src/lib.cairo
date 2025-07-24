@@ -1,1 +1,1 @@
-pub use {amma_blobert, arena_blobert, ba_attack, blobert};
+pub use {amma_blobert, arena_blobert, ba_loadout as loadout, blobert};

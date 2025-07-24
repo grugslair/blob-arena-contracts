@@ -32,6 +32,7 @@ sai_access = { git = "https://github.com/sai-starknet/cairo-utils", branch = "ca
 sai_token = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
 sai_core_utils = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
 sai_emit_return = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
+sai_packing = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
 
 [workspace.tool.fmt]
 sort-module-level-items = true

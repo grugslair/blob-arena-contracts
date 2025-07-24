@@ -49,6 +49,7 @@ dependencies = [
  "dojo_macros",
  "sai_access",
  "sai_core_utils",
+ "sai_packing",
  "torii_beacon",
  "torii_beacon_macros",
 ]
@@ -136,17 +137,22 @@ checksum = "sha256:bf799c794139837f397975ffdf6a7ed5032d198bbf70e87a8f44f144a9dfc
 [[package]]
 name = "sai_access"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#ef1fa4bd72ade1e8f38fc84646d6422f09821df2"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#df752ece30aa815c11b7551e8759ac8f83d1017e"
 
 [[package]]
 name = "sai_core_utils"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#ef1fa4bd72ade1e8f38fc84646d6422f09821df2"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#df752ece30aa815c11b7551e8759ac8f83d1017e"
+
+[[package]]
+name = "sai_packing"
+version = "0.1.0"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#df752ece30aa815c11b7551e8759ac8f83d1017e"
 
 [[package]]
 name = "sai_token"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#ef1fa4bd72ade1e8f38fc84646d6422f09821df2"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#df752ece30aa815c11b7551e8759ac8f83d1017e"
 dependencies = [
  "openzeppelin_introspection",
  "openzeppelin_token",

@@ -4,8 +4,7 @@ pub use starknet::storage::{
     Map, Mutable, MutableVecTrait, StorageBase, StorageMapReadAccess, StorageMapWriteAccess,
     StoragePath, StoragePathEntry, StoragePointerReadAccess, Vec, VecTrait,
 };
-use crate::ability::{AbilityTypes, DAbilities, SignedAbilities};
-use crate::signed::Signed;
+use crate::ability::{AbilityTypes, DAbilities};
 const ATTACK_TAG_GROUP: felt252 = 'attacks';
 
 
@@ -42,16 +41,6 @@ pub struct Attack {
 /// * `miss` - An array of effects that are applied when the attack misses.
 /// * `name` - The name of the attack. (For off chain use)
 
-#[derive(Drop, Serde)]
-pub struct AttackInput {
-    pub name: ByteArray,
-    pub speed: u8,
-    pub accuracy: u8,
-    pub cooldown: u8,
-    pub hit: Array<EffectInput>,
-    pub miss: Array<EffectInput>,
-}
-
 #[beacon_entity]
 #[derive(Drop, Serde, Introspect)]
 pub struct AttackWithName {
@@ -75,12 +64,6 @@ pub struct Effect {
     affect: Affect,
 }
 
-#[derive(Drop, Serde)]
-pub struct EffectInput {
-    target: Target,
-    affect: AffectInput,
-}
-
 
 #[derive(Drop, Serde, Copy, PartialEq, Introspect, Default, starknet::Store)]
 pub enum Target {
@@ -91,19 +74,10 @@ pub enum Target {
 
 /// Represents different types of effects that can be applied in the game
 /// * `Abilities` - Multiple ability modifications applied at once using SignedAbilities
-/// * `Ability` - A single ability modification using AbilityInput
+/// * `Ability` - A single ability modification using Ability
 /// * `Damage` - Direct damage effect
 /// * `Stun` - Stun chance increase of target on next attack in percentage
 /// * `Health` - Health modification (can be positive for healing or negative for damage)
-
-#[derive(Drop, Serde)]
-pub enum AffectInput {
-    Health: Signed<u8>,
-    Abilities: SignedAbilities,
-    Ability: AbilityAffectInput,
-    Damage: Damage,
-    Stun: u8,
-}
 
 #[derive(Drop, Serde, Copy, PartialEq, Introspect, Default, starknet::Store)]
 pub enum Affect {
@@ -125,13 +99,6 @@ pub struct AbilityAffect {
     ability: AbilityTypes,
     amount: i32,
 }
-
-#[derive(Drop, Serde, Copy, PartialEq)]
-pub struct AbilityAffectInput {
-    ability: AbilityTypes,
-    amount: Signed<u8>,
-}
-
 
 /// Represents damage attributes of an attack.
 /// * `critical` - Critical hit chance value between 0-100
@@ -171,39 +138,6 @@ pub fn get_attack_id(
     Serde::serialize(miss, ref serialized);
 
     poseidon_hash_span(serialized.span())
-}
-
-pub impl InputIntoAffect of Into<AffectInput, Affect> {
-    fn into(self: AffectInput) -> Affect {
-        match self {
-            AffectInput::Abilities(abilities) => Affect::Abilities(abilities.into()),
-            AffectInput::Ability(ability) => Affect::Ability(
-                AbilityAffect { ability: ability.ability, amount: ability.amount.into() },
-            ),
-            AffectInput::Damage(damage) => Affect::Damage(damage),
-            AffectInput::Stun(stun) => Affect::Stun(stun),
-            AffectInput::Health(health) => Affect::Health(health.into()),
-        }
-    }
-}
-
-pub impl InputIntoEffect of Into<EffectInput, Effect> {
-    fn into(self: EffectInput) -> Effect {
-        Effect { target: self.target, affect: self.affect.into() }
-    }
-}
-
-pub impl InputIntoEffectArray of Into<Array<EffectInput>, Array<Effect>> {
-    fn into(mut self: Array<EffectInput>) -> Array<Effect> {
-        let mut effects = array![];
-        loop {
-            match self.pop_front() {
-                Option::Some(effect) => { effects.append(effect.into()); },
-                Option::None => { break; },
-            };
-        }
-        effects
-    }
 }
 
 
