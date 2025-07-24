@@ -157,6 +157,7 @@ mod amma_blobert_loadout {
             let mut attack_dispatcher = self.attack_dispatcher.read();
             let attack_ids = attack_dispatcher.create_attacks(attacks);
             self.abilities.write(fighter, abilities);
+            AbilityEmitter::emit_entity(ref self, fighter.into(), @abilities);
             self.clip_attack_slot_slots(fighter, attack_ids.len());
             for (slot, attack_id) in attack_ids.into_iter().enumerate() {
                 let slot_id = (fighter, slot).poseidon_hash();

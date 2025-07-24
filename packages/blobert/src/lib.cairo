@@ -54,6 +54,7 @@ pub enum BlobertAttributeKey {
     Jewelry: u32,
     Mask: u32,
     Weapon: u32,
+    Custom: felt252,
 }
 
 

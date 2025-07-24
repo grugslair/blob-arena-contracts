@@ -4,30 +4,42 @@ use crate::attack::AttackWithName;
 
 #[starknet::interface]
 pub trait IArenaBlobertLoadout<TContractState> {
-    fn set_seed_attribute(
+    fn set_attribute(
         ref self: TContractState,
-        fighter: BlobertAttributeKey,
+        key: BlobertAttributeKey,
         abilities: Abilities,
         attacks: Array<AttackWithName>,
     );
 
-    fn set_seed_attributes(
+    fn set_attributes(
         ref self: TContractState,
-        fighters_abilities_attacks: Array<(BlobertAttributeKey, Abilities, Array<AttackWithName>)>,
+        keys_abilities_attacks: Array<(BlobertAttributeKey, Abilities, Array<AttackWithName>)>,
     );
 }
 
 #[beacon_entity]
 #[derive(Drop, Serde, Introspect)]
 struct AttackSlot {
-    fighter: u32,
+    key: BlobertAttributeKey,
     slot: u32,
     attack: felt252,
 }
 
+
+#[beacon_entity]
+#[derive(Drop, Serde, Introspect)]
+struct BlobertAbilities {
+    key: BlobertAttributeKey,
+    strength: u32,
+    vitality: u32,
+    dexterity: u32,
+    luck: u32,
+}
+
+
 #[starknet::contract]
 mod arena_blobert_loadout {
-    use ba_blobert::{BlobertAttributeKey, Seed, SeedTrait, TokenAttributes, get_blobert_attributes};
+    use ba_blobert::{BlobertAttributeKey, SeedTrait, TokenAttributes, get_blobert_attributes};
     use core::num::traits::Zero;
     use sai_access::{AccessTrait, access_component};
     use sai_core_utils::poseidon_serde::PoseidonSerde;
@@ -148,6 +160,61 @@ mod arena_blobert_loadout {
         }
     }
 
+    #[abi(embed_v0)]
+    impl IArenaBlobertLoadoutImpl of IArenaBlobertLoadout<ContractState> {
+        fn set_attribute(
+            ref self: ContractState,
+            key: BlobertAttributeKey,
+            abilities: Abilities,
+            attacks: Array<AttackWithName>,
+        ) {
+            self.assert_caller_is_writer();
+            let hash = key.poseidon_hash();
+            self.get_abilities_ptr(key).write(hash, abilities);
+            AbilityEmitter::emit_entity(ref self, hash, @(key, abilities));
+            let attack_ids = self.attack_dispatcher.read().create_attacks(attacks);
+            let mut attacks_ptr = self.get_attacks_ptr(key);
+            attacks_ptr.clip_attack_slot_slots(hash, attack_ids.len());
+            for (slot, attack_id) in attack_ids.into_iter().enumerate() {
+                let slot_id = (hash, slot).poseidon_hash();
+                AttackSlotEmitter::emit_entity(ref self, slot_id, @(key, slot, attack_id));
+                attacks_ptr.write(slot_id, attack_id);
+            }
+        }
+
+        fn set_attributes(
+            ref self: ContractState,
+            keys_abilities_attacks: Array<(BlobertAttributeKey, Abilities, Array<AttackWithName>)>,
+        ) {
+            self.assert_caller_is_writer();
+            let mut all_attacks: Array<AttackWithName> = Default::default();
+            let mut indexes: Array<
+                (StorageBase<Mutable<Map<felt252, felt252>>>, BlobertAttributeKey, felt252, u32),
+            > =
+                Default::default();
+            for (key, abilities, attacks) in keys_abilities_attacks {
+                self.assert_caller_is_writer();
+                let hash = key.poseidon_hash();
+                AbilityEmitter::emit_entity(ref self, hash, @(key, abilities));
+                self.get_abilities_ptr(key).write(hash, abilities);
+                let mut attacks_ptr = self.get_attacks_ptr(key);
+                attacks_ptr.clip_attack_slot_slots(hash, attacks.len());
+                for (slot, attack) in attacks.into_iter().enumerate() {
+                    all_attacks.append(attack);
+                    indexes.append((attacks_ptr, key, hash, slot));
+                }
+            }
+            let attack_ids = self.attack_dispatcher.read().create_attacks(all_attacks);
+            for (attack_id, (mut attacks_ptr, key, hash, slot)) in attack_ids
+                .into_iter()
+                .zip(indexes) {
+                let slot_id = (hash, slot).poseidon_hash();
+                AttackSlotEmitter::emit_entity(ref self, slot_id, @(key, slot, attack_id));
+                attacks_ptr.write(slot_id, attack_id);
+            }
+        }
+    }
+
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
         fn assert_collection_address(self: @ContractState, collection_address: ContractAddress) {
@@ -197,6 +264,24 @@ mod arena_blobert_loadout {
                 .map(|slot| self.custom_attack_slots.read((custom_id, *slot[0]).poseidon_hash()))
                 .collect()
         }
+
+        fn get_attacks_ptr(
+            ref self: ContractState, key: BlobertAttributeKey,
+        ) -> StorageBase<Mutable<Map<felt252, felt252>>> {
+            match key {
+                BlobertAttributeKey::Custom(_) => self.custom_attack_slots,
+                _ => self.seed_attack_slots,
+            }
+        }
+
+        fn get_abilities_ptr(
+            ref self: ContractState, key: BlobertAttributeKey,
+        ) -> StorageBase<Mutable<Map<felt252, Abilities>>> {
+            match key {
+                BlobertAttributeKey::Custom(_) => self.custom_abilities,
+                _ => self.seed_abilities,
+            }
+        }
     }
 
     impl Felt252ArrayTryIntoU32FixedArray2 of TryInto<Array<felt252>, [u32; 2]> {
@@ -208,4 +293,27 @@ mod arena_blobert_loadout {
         }
     }
 }
+// let (abilities_ptr, attacks_ptr) match key {
+//                 BlobertAttributeKey::Custom(custom_id) => {
+//                     self.custom_abilities.write(custom_id, abilities);
+//                     let attack_ids = self.attack_dispatcher.read().create_attacks(attacks);
+//                     AbilityEmitter::emit_entity(ref self, hash, @abilities);
+//                     for (slot, attack_id) in attack_ids.into_iter().enumerate() {
+//                         let slot_id = (hash, slot).poseidon_hash();
+//                         AttackSlotEmitter::emit_entity(ref self, slot_id, @(key, slot,
+//                         attack_id));
+//                         self.custom_attack_slots.write(slot_id, attack_id);
+//                     }
+//                 },
+//                 _ => {
+//                     self.seed_abilities.write(key.poseidon_hash(), abilities);
+//                     for attack in attacks {
+//                         self
+//                             .seed_attack_slots
+//                             .write((key.poseidon_hash(), attack.slot).poseidon_hash(),
+//                             attack.id);
+//                     }
+//                 },
+//             }
+
 
