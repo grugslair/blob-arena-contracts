@@ -1,6 +1,7 @@
 use core::cmp::min;
 use core::fmt::{Debug, Display, Error, Formatter};
 use core::num::traits::{Pow, SaturatingAdd, Zero};
+use core::ops::AddAssign;
 use sai_core_utils::SaturatingInto;
 use sai_packing::IntPacking;
 use starknet::storage_access::StorePacking;
@@ -9,23 +10,7 @@ use starknet::storage_access::StorePacking;
 const MAX_ABILITY_SCORE: u32 = 100;
 const BASE_HEALTH: u32 = 100;
 
-#[beacon_entity]
-#[derive(
-    Copy,
-    Drop,
-    Serde,
-    Default,
-    PartialEq,
-    Introspect,
-    Add,
-    Sub,
-    Mul,
-    Div,
-    AddAssign,
-    SubAssign,
-    MulAssign,
-    DivAssign,
-)]
+#[derive(Copy, Drop, Serde, Default, PartialEq, Introspect)]
 pub struct Abilities {
     pub strength: u32,
     pub vitality: u32,
@@ -33,22 +18,7 @@ pub struct Abilities {
     pub luck: u32,
 }
 
-#[derive(
-    Copy,
-    Drop,
-    Serde,
-    Default,
-    PartialEq,
-    Introspect,
-    Add,
-    Sub,
-    Mul,
-    Div,
-    AddAssign,
-    SubAssign,
-    MulAssign,
-    DivAssign,
-)]
+#[derive(Copy, Drop, Serde, Default, PartialEq, Introspect)]
 pub struct DAbilities {
     pub strength: i32,
     pub vitality: i32,
@@ -62,6 +32,30 @@ const U32_SHIFT_3: u128 = 2_u128.pow(96);
 
 const U32_MASK_U128: u128 = U32_SHIFT_1 - 1;
 
+
+impl DAbilitiesAdd of Add<DAbilities> {
+    fn add(lhs: DAbilities, rhs: DAbilities) -> DAbilities {
+        lhs + rhs
+    }
+}
+
+impl AbilitiesAdd of Add<Abilities> {
+    fn add(lhs: Abilities, rhs: Abilities) -> Abilities {
+        lhs + rhs
+    }
+}
+
+impl DAbilitiesAddAssign of AddAssign<DAbilities, DAbilities> {
+    fn add_assign(ref self: DAbilities, rhs: DAbilities) {
+        self = self + rhs
+    }
+}
+
+impl AbilitiesAddAssign of AddAssign<Abilities, Abilities> {
+    fn add_assign(ref self: Abilities, rhs: Abilities) {
+        self = self + rhs
+    }
+}
 
 impl UAbilityStorePacking of StorePacking<Abilities, u128> {
     fn pack(value: Abilities) -> u128 {
@@ -173,7 +167,7 @@ fn apply_buff(ref current: u32, buff: i32) -> i32 {
 }
 
 #[generate_trait]
-impl AbilitiesImpl of AbilitiesTrait {
+pub impl AbilitiesImpl of AbilitiesTrait {
     fn limit(ref self: Abilities) {
         self.strength = min(self.strength, MAX_ABILITY_SCORE);
         self.vitality = min(self.vitality, MAX_ABILITY_SCORE);
@@ -210,8 +204,8 @@ impl AbilitiesImpl of AbilitiesTrait {
 }
 
 #[generate_trait]
-impl DAbilitiesImpl of DAbilitiesTrait {
-    fn add_stat(ref self: DAbilities, stat: AbilityTypes, amount: i32) {
+pub impl DAbilitiesImpl of DAbilitiesTrait {
+    fn add_ability(ref self: DAbilities, stat: AbilityTypes, amount: i32) {
         match stat {
             AbilityTypes::Strength => { self.strength += amount },
             AbilityTypes::Vitality => { self.vitality += amount },

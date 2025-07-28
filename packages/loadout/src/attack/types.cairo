@@ -19,8 +19,7 @@ const ATTACK_TAG_GROUP: felt252 = 'attacks';
 /// * `cooldown` - The cooldown period of the attack in rounds
 /// * `hit` - Array of effects that occur when the attack hits
 /// * `miss` - Array of effects that occur when the attack misses
-#[beacon_entity]
-#[derive(Drop, Serde, Default, Introspect)]
+#[derive(Drop, Serde, Default)]
 pub struct Attack {
     pub speed: u8,
     pub accuracy: u8,
@@ -41,7 +40,6 @@ pub struct Attack {
 /// * `miss` - An array of effects that are applied when the attack misses.
 /// * `name` - The name of the attack. (For off chain use)
 
-#[beacon_entity]
 #[derive(Drop, Serde, Introspect)]
 pub struct AttackWithName {
     pub name: ByteArray,
@@ -60,8 +58,8 @@ pub struct AttackWithName {
 
 #[derive(Drop, Serde, PartialEq, Introspect, starknet::Store)]
 pub struct Effect {
-    target: Target,
-    affect: Affect,
+    pub target: Target,
+    pub affect: Affect,
 }
 
 
@@ -82,7 +80,7 @@ pub enum Target {
 #[derive(Drop, Serde, Copy, PartialEq, Introspect, Default, starknet::Store)]
 pub enum Affect {
     #[default]
-    Health: i16,
+    Health: i32,
     Abilities: DAbilities,
     Ability: AbilityAffect,
     Damage: Damage,
@@ -96,8 +94,8 @@ pub enum Affect {
 
 #[derive(Drop, Serde, Copy, PartialEq, Introspect, starknet::Store)]
 pub struct AbilityAffect {
-    ability: AbilityTypes,
-    amount: i32,
+    pub ability: AbilityTypes,
+    pub amount: i32,
 }
 
 /// Represents damage attributes of an attack.
@@ -106,14 +104,8 @@ pub struct AbilityAffect {
 
 #[derive(Drop, Serde, Copy, PartialEq, Introspect, starknet::Store)]
 pub struct Damage {
-    critical: u32,
-    power: u32,
-}
-
-#[derive(Drop, Serde, Introspect)]
-pub struct AttackExists {
-    hit: u32,
-    miss: u32,
+    pub critical: u8,
+    pub power: u32,
 }
 
 #[generate_trait]

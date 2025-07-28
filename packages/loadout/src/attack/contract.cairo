@@ -1,25 +1,21 @@
 #[starknet::contract]
 mod attack {
+    use beacon_library::{ToriiTable, register_table_with_schema};
     use core::num::traits::Zero;
     use sai_access::{AccessTrait, access_component};
     use sai_core_utils::poseidon_serde::PoseidonSerde;
+    use starknet::ContractAddress;
     use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess, Vec};
-    use starknet::{ClassHash, ContractAddress};
-    use torii_beacon::emitter::{ToriiRegistryEmitter, const_entity};
-    use torii_beacon::emitter_component;
     use crate::attack::types::{EffectArrayStorageMapReadAccess, EffectArrayStorageMapWriteAccess};
     use crate::attack::{Attack, AttackWithName, AttackWithNameTrait, Effect, IAttack, IAttackAdmin};
 
-    component!(path: emitter_component, storage: emitter, event: EmitterEvents);
     component!(path: access_component, storage: access, event: AccessEvents);
 
-    const TABLE_ID: felt252 = bytearrays_hash!("attack", "Attack");
-    impl TokenEmitter = const_entity::ConstEntityEmitter<TABLE_ID, ContractState>;
+    const ATTACK_TABLE_ID: felt252 = bytearrays_hash!("attack", "Attack");
+    impl AttackTable = ToriiTable<ATTACK_TABLE_ID>;
 
     #[storage]
     struct Storage {
-        #[substorage(v0)]
-        emitter: emitter_component::Storage,
         #[substorage(v0)]
         access: access_component::Storage,
         speeds: Map<felt252, u8>,
@@ -33,15 +29,13 @@ mod attack {
     #[derive(Drop, starknet::Event)]
     enum Event {
         #[flat]
-        EmitterEvents: emitter_component::Event,
-        #[flat]
         AccessEvents: access_component::Event,
     }
 
     #[constructor]
-    fn constructor(ref self: ContractState, owner: ContractAddress, attack_class_hash: ClassHash) {
+    fn constructor(ref self: ContractState, owner: ContractAddress) {
         self.grant_owner(owner);
-        self.emit_register_entity("attack", "Attack", attack_class_hash);
+        register_table_with_schema::<AttackWithName>("attack", "Attack");
     }
 
     #[abi(embed_v0)]
@@ -154,7 +148,7 @@ mod attack {
                 0 < attack.accuracy && attack.accuracy <= 100, 'Accuracy must between 0 and 100',
             );
             assert(attack.speed <= 100, 'Speed must be between 0 and 100');
-            self.emit_entity(id, @attack);
+            AttackTable::set_entity(id, @attack);
             self.speeds.write(id, attack.speed);
 
             self.accuracies.write(id, attack.accuracy);

@@ -15,6 +15,7 @@ trait IArenaBlobertAdmin<TContractState> {
 #[starknet::contract]
 mod arena_blobert_actions {
     use ba_blobert::{Seed, TokenAttributes};
+    use beacon_library::{ToriiTable, register_table_with_schema};
     use openzeppelin_introspection::src5::SRC5Component;
     use openzeppelin_token::erc721::interface::IERC721_METADATA_ID;
     use openzeppelin_token::erc721::{ERC721Component, ERC721HooksEmptyImpl};
@@ -26,19 +27,16 @@ mod arena_blobert_actions {
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
         StoragePointerWriteAccess,
     };
-    use starknet::{ClassHash, ContractAddress, get_caller_address};
-    use torii_beacon::emitter::{ToriiRegistryEmitter, const_entity};
-    use torii_beacon::emitter_component;
+    use starknet::{ContractAddress, get_caller_address};
     use super::{IArenaBlobert, IArenaBlobertAdmin};
 
     component!(path: ERC721Component, storage: erc721, event: ERC721Event);
     component!(path: SRC5Component, storage: src5, event: SRC5Event);
     component!(path: UpgradeableComponent, storage: upgradeable, event: UpgradeableEvent);
-    component!(path: emitter_component, storage: emitter, event: EmitterEvents);
     component!(path: access_component, storage: access, event: AccessEvents);
 
-    const TABLE_ID: felt252 = bytearrays_hash!("arena_blobert", "TokenAttributes");
-    impl TokenEmitter = const_entity::ConstEntityEmitter<TABLE_ID, ContractState>;
+    const TOKEN_TABLE_ID: felt252 = bytearrays_hash!("arena_blobert", "TokenAttributes");
+    impl TokenTable = ToriiTable<TOKEN_TABLE_ID>;
 
     #[derive(Copy, Drop, Serde, PartialEq, starknet::Store)]
     enum TokenType {
@@ -48,7 +46,6 @@ mod arena_blobert_actions {
         Custom,
     }
 
-    #[beacon_entity]
     #[derive(Drop, Serde, Introspect)]
     struct ArenaBlobertToken {
         attributes: TokenAttributes,
@@ -62,8 +59,6 @@ mod arena_blobert_actions {
         src5: SRC5Component::Storage,
         #[substorage(v0)]
         upgradeable: UpgradeableComponent::Storage,
-        #[substorage(v0)]
-        emitter: emitter_component::Storage,
         #[substorage(v0)]
         access: access_component::Storage,
         tokens_minted: u128,
@@ -82,19 +77,15 @@ mod arena_blobert_actions {
         #[flat]
         UpgradeableEvent: UpgradeableComponent::Event,
         #[flat]
-        EmitterEvents: emitter_component::Event,
-        #[flat]
         AccessEvents: access_component::Event,
     }
 
     #[constructor]
-    fn constructor(
-        ref self: ContractState, owner: ContractAddress, token_attributes_class_hash: ClassHash,
-    ) {
+    fn constructor(ref self: ContractState, owner: ContractAddress) {
         self.erc721.initializer_no_metadata();
         self.src5.register_interface(IERC721_METADATA_ID);
         self.grant_owner(owner);
-        self.emit_register_entity("arena_blobert", "TokenAttributes", token_attributes_class_hash);
+        register_table_with_schema::<ArenaBlobertToken>("arena_blobert", "TokenAttributes");
     }
 
     #[abi(embed_v0)]
@@ -135,13 +126,6 @@ mod arena_blobert_actions {
         }
     }
 
-    #[abi(embed_v0)]
-    impl UpgradeableImpl of IUpgradeable<ContractState> {
-        fn upgrade(ref self: ContractState, new_class_hash: ClassHash) {
-            self.assert_caller_is_owner();
-            self.upgradeable.upgrade(new_class_hash);
-        }
-    }
 
     // Internal
     impl ERC721MetadataInfoImpl of ERC721MetadataInfo {
@@ -180,7 +164,7 @@ mod arena_blobert_actions {
                     self.token_types.write(token_id, TokenType::Custom);
                 },
             }
-            self.emit_member(selector!("attributes"), token_id.into(), @attributes);
+            TokenTable::set_entity(token_id, @attributes);
             let token_id: u256 = token_id.into();
             self.erc721.mint(owner, token_id);
             token_id

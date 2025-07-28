@@ -17,7 +17,6 @@ pub trait IArenaBlobertLoadout<TContractState> {
     );
 }
 
-#[beacon_entity]
 #[derive(Drop, Serde, Introspect)]
 struct AttackSlot {
     key: BlobertAttributeKey,
@@ -26,7 +25,6 @@ struct AttackSlot {
 }
 
 
-#[beacon_entity]
 #[derive(Drop, Serde, Introspect)]
 struct BlobertAbilities {
     key: BlobertAttributeKey,
@@ -40,6 +38,7 @@ struct BlobertAbilities {
 #[starknet::contract]
 mod arena_blobert_loadout {
     use ba_blobert::{BlobertAttributeKey, SeedTrait, TokenAttributes, get_blobert_attributes};
+    use beacon_library::{ToriiTable, register_table_with_schema};
     use core::num::traits::Zero;
     use sai_access::{AccessTrait, access_component};
     use sai_core_utils::poseidon_serde::PoseidonSerde;
@@ -48,14 +47,11 @@ mod arena_blobert_loadout {
         StoragePointerReadAccess, StoragePointerWriteAccess,
     };
     use starknet::{ClassHash, ContractAddress};
-    use torii_beacon::emitter::{ToriiRegistryEmitter, const_entity};
-    use torii_beacon::emitter_component;
     use crate::ability::Abilities;
     use crate::attack::{AttackWithName, IAttackAdminDispatcher, IAttackAdminDispatcherTrait};
     use crate::interface::ILoadout;
-    use super::IArenaBlobertLoadout;
+    use super::{AttackSlot, IArenaBlobertLoadout};
 
-    component!(path: emitter_component, storage: emitter, event: EmitterEvents);
     component!(path: access_component, storage: access, event: AccessEvents);
 
     const ABILITY_TABLE_ID: felt252 = bytearrays_hash!(
@@ -64,13 +60,12 @@ mod arena_blobert_loadout {
     const ATTACK_SLOT_TABLE_ID: felt252 = bytearrays_hash!(
         "arena_blobert_loadout", "ArenaBlobertAttackSlot",
     );
-    impl AbilityEmitter = const_entity::ConstEntityEmitter<ABILITY_TABLE_ID, ContractState>;
-    impl AttackSlotEmitter = const_entity::ConstEntityEmitter<ATTACK_SLOT_TABLE_ID, ContractState>;
+
+    impl AbilityTable = ToriiTable<ABILITY_TABLE_ID>;
+    impl AttackSlotTable = ToriiTable<ATTACK_SLOT_TABLE_ID>;
 
     #[storage]
     struct Storage {
-        #[substorage(v0)]
-        emitter: emitter_component::Storage,
         #[substorage(v0)]
         access: access_component::Storage,
         collection_addresses: Map<ContractAddress, bool>,
@@ -85,8 +80,6 @@ mod arena_blobert_loadout {
     #[derive(Drop, starknet::Event)]
     enum Event {
         #[flat]
-        EmitterEvents: emitter_component::Event,
-        #[flat]
         AccessEvents: access_component::Event,
     }
 
@@ -96,8 +89,6 @@ mod arena_blobert_loadout {
         owner: ContractAddress,
         collection_addresses: Array<ContractAddress>,
         attack_dispatcher_address: ContractAddress,
-        blobert_ability_class_hash: ClassHash,
-        blobert_attack_slot_class_hash: ClassHash,
     ) {
         self.grant_owner(owner);
         for address in collection_addresses {
@@ -106,14 +97,8 @@ mod arena_blobert_loadout {
         self
             .attack_dispatcher
             .write(IAttackAdminDispatcher { contract_address: attack_dispatcher_address });
-        self
-            .emit_register_entity(
-                "arena_blobert_loadout", "ArenaBlobertAbility", blobert_ability_class_hash,
-            );
-        self
-            .emit_register_entity(
-                "arena_blobert_loadout", "ArenaBlobertAttackSlot", blobert_attack_slot_class_hash,
-            );
+        register_table_with_schema::<Abilities>("arena_blobert_loadout", "ArenaBlobertAbility");
+        register_table_with_schema::<AttackSlot>("arena_blobert_loadout", "ArenaBlobertAttackSlot");
     }
 
     #[abi(embed_v0)]
@@ -171,13 +156,13 @@ mod arena_blobert_loadout {
             self.assert_caller_is_writer();
             let hash = key.poseidon_hash();
             self.get_abilities_ptr(key).write(hash, abilities);
-            AbilityEmitter::emit_entity(ref self, hash, @(key, abilities));
+            AbilityTable::set_entity(hash, @(key, abilities));
             let attack_ids = self.attack_dispatcher.read().create_attacks(attacks);
             let mut attacks_ptr = self.get_attacks_ptr(key);
             attacks_ptr.clip_attack_slot_slots(hash, attack_ids.len());
             for (slot, attack_id) in attack_ids.into_iter().enumerate() {
                 let slot_id = (hash, slot).poseidon_hash();
-                AttackSlotEmitter::emit_entity(ref self, slot_id, @(key, slot, attack_id));
+                AttackSlotTable::set_entity(slot_id, @(key, slot, attack_id));
                 attacks_ptr.write(slot_id, attack_id);
             }
         }
@@ -195,7 +180,7 @@ mod arena_blobert_loadout {
             for (key, abilities, attacks) in keys_abilities_attacks {
                 self.assert_caller_is_writer();
                 let hash = key.poseidon_hash();
-                AbilityEmitter::emit_entity(ref self, hash, @(key, abilities));
+                AbilityTable::set_entity(hash, @(key, abilities));
                 self.get_abilities_ptr(key).write(hash, abilities);
                 let mut attacks_ptr = self.get_attacks_ptr(key);
                 attacks_ptr.clip_attack_slot_slots(hash, attacks.len());
@@ -209,7 +194,7 @@ mod arena_blobert_loadout {
                 .into_iter()
                 .zip(indexes) {
                 let slot_id = (hash, slot).poseidon_hash();
-                AttackSlotEmitter::emit_entity(ref self, slot_id, @(key, slot, attack_id));
+                AttackSlotTable::set_entity(slot_id, @(key, slot, attack_id));
                 attacks_ptr.write(slot_id, attack_id);
             }
         }

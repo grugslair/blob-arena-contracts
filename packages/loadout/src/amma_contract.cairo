@@ -16,7 +16,6 @@ pub trait IAmmaBlobertLoadout<TContractState> {
     );
 }
 
-#[beacon_entity]
 #[derive(Drop, Serde, Introspect)]
 struct AttackSlot {
     fighter: u32,
@@ -27,6 +26,7 @@ struct AttackSlot {
 #[starknet::contract]
 mod amma_blobert_loadout {
     use amma_blobert::get_fighter;
+    use beacon_library::{ToriiTable, register_table_with_schema};
     use core::num::traits::Zero;
     use sai_access::{AccessTrait, access_component};
     use sai_core_utils::poseidon_serde::PoseidonSerde;
@@ -35,14 +35,11 @@ mod amma_blobert_loadout {
         StoragePointerWriteAccess,
     };
     use starknet::{ClassHash, ContractAddress};
-    use torii_beacon::emitter::{ToriiRegistryEmitter, const_entity};
-    use torii_beacon::emitter_component;
     use crate::ability::Abilities;
     use crate::attack::{AttackWithName, IAttackAdminDispatcher, IAttackAdminDispatcherTrait};
     use crate::interface::ILoadout;
-    use super::IAmmaBlobertLoadout;
+    use super::{AttackSlot, IAmmaBlobertLoadout};
 
-    component!(path: emitter_component, storage: emitter, event: EmitterEvents);
     component!(path: access_component, storage: access, event: AccessEvents);
 
     const ABILITY_TABLE_ID: felt252 = bytearrays_hash!(
@@ -51,13 +48,12 @@ mod amma_blobert_loadout {
     const ATTACK_SLOT_TABLE_ID: felt252 = bytearrays_hash!(
         "amma_blobert_loadout", "AmmaBlobertAttackSlot",
     );
-    impl AbilityEmitter = const_entity::ConstEntityEmitter<ABILITY_TABLE_ID, ContractState>;
-    impl AttackSlotEmitter = const_entity::ConstEntityEmitter<ATTACK_SLOT_TABLE_ID, ContractState>;
+
+    impl AbilityTable = ToriiTable<ABILITY_TABLE_ID>;
+    impl AttackSlotTable = ToriiTable<ATTACK_SLOT_TABLE_ID>;
 
     #[storage]
     struct Storage {
-        #[substorage(v0)]
-        emitter: emitter_component::Storage,
         #[substorage(v0)]
         access: access_component::Storage,
         collection_address: ContractAddress,
@@ -69,8 +65,6 @@ mod amma_blobert_loadout {
     #[event]
     #[derive(Drop, starknet::Event)]
     enum Event {
-        #[flat]
-        EmitterEvents: emitter_component::Event,
         #[flat]
         AccessEvents: access_component::Event,
     }
@@ -89,14 +83,8 @@ mod amma_blobert_loadout {
         self
             .attack_dispatcher
             .write(IAttackAdminDispatcher { contract_address: attack_dispatcher_address });
-        self
-            .emit_register_entity(
-                "amma_blobert_loadout", "AmmaBlobertAbility", blobert_ability_class_hash,
-            );
-        self
-            .emit_register_entity(
-                "amma_blobert_loadout", "AmmaBlobertAttackSlot", blobert_attack_slot_class_hash,
-            );
+        register_table_with_schema::<Abilities>("amma_blobert_loadout", "AmmaBlobertAbility");
+        register_table_with_schema::<AttackSlot>("amma_blobert_loadout", "AmmaBlobertAttackSlot");
     }
 
     #[abi(embed_v0)]
@@ -157,11 +145,11 @@ mod amma_blobert_loadout {
             let mut attack_dispatcher = self.attack_dispatcher.read();
             let attack_ids = attack_dispatcher.create_attacks(attacks);
             self.abilities.write(fighter, abilities);
-            AbilityEmitter::emit_entity(ref self, fighter.into(), @abilities);
+            AbilityTable::set_entity(fighter, @abilities);
             self.clip_attack_slot_slots(fighter, attack_ids.len());
             for (slot, attack_id) in attack_ids.into_iter().enumerate() {
                 let slot_id = (fighter, slot).poseidon_hash();
-                AttackSlotEmitter::emit_entity(ref self, slot_id, @(fighter, slot, attack_id));
+                AttackSlotTable::set_entity(slot_id, @(fighter, slot, attack_id));
                 self.attack_slots.write(slot_id, attack_id);
             }
         }
@@ -175,7 +163,7 @@ mod amma_blobert_loadout {
             let mut indexes: Array<(u32, u32)> = Default::default();
             for (fighter, abilities, attacks) in fighters_abilities_attacks {
                 self.abilities.write(fighter, abilities);
-                AbilityEmitter::emit_entity(ref self, fighter.into(), @abilities);
+                AbilityTable::set_entity(fighter, @abilities);
                 self.clip_attack_slot_slots(fighter, attacks.len());
                 for (i, attack) in attacks.into_iter().enumerate() {
                     all_attacks.append(attack);
@@ -186,7 +174,7 @@ mod amma_blobert_loadout {
             let attack_ids = attack_dispatcher.create_attacks(all_attacks);
             for (attack_id, (fighter, slot)) in attack_ids.into_iter().zip(indexes) {
                 let slot_id = (fighter, slot).poseidon_hash();
-                AttackSlotEmitter::emit_entity(ref self, slot_id, @(fighter, slot, attack_id));
+                AttackSlotTable::set_entity(slot_id, @(fighter, slot, attack_id));
                 self.attack_slots.write(slot_id, attack_id);
             }
         }

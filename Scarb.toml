@@ -11,11 +11,14 @@ members = [
     "packages/arena_blobert",
     "packages/loadout",
     "packages/blobert",
+    "packages/combat",
+    "packages/classic_arcade",
+    "packages/utils",
 ]
 
 
 [workspace.dependencies]
-alexandria_macros = { git = "https://github.com/keep-starknet-strange/alexandria/", tag = "v0.5.0" }
+alexandria_macros = { git = "https://github.com/keep-starknet-strange/alexandria/", tag = "v0.5.1" }
 starknet = "2.11.4"
 openzeppelin_token = "2.0.0"
 openzeppelin_account = "2.0.0"
@@ -26,10 +29,11 @@ dojo = { git = "https://github.com/dojoengine/dojo" }
 dojo_macros = { git = "https://github.com/dojoengine/dojo" }
 cubit = { git = "https://github.com/bengineer42/cubit", tag = "cairo--2.8.0" }
 pragma_lib = { git = "https://github.com/bengineer42/pragma-lib", branch = "v2.11.4" }
-# torii_beacon = { git = "https://github.com/sai-starknet/torii-beacon", branch = "1.7.0-rc.0" }
-# torii_beacon_macros = { git = "https://github.com/sai-starknet/torii-beacon", branch = "1.7.0-rc.0" }
-torii_beacon = { path = "../../../sai/torii-beacon" }
-torii_beacon_macros = { path = "../../../sai/torii-beacon" }
+# beacon_entity = { git = "https://github.com/sai-starknet/torii-beacon", branch = "1.7.0-rc.0" }
+# beacon_macros = { git = "https://github.com/sai-starknet/torii-beacon", branch = "1.7.0-rc.0" }
+beacon_entity = { path = "../../../sai/torii-beacon" }
+beacon_macros = { path = "../../../sai/torii-beacon" }
+beacon_library = { path = "../../../sai/torii-beacon" }
 sai_access = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
 sai_token = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
 sai_core_utils = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
@@ -55,6 +59,10 @@ amma_blobert = { path = "packages/amma_blobert" }
 arena_blobert = { path = "packages/arena_blobert" }
 ba_blobert = { path = "packages/blobert" }
 ba_loadout = { path = "packages/loadout" }
+ba_combat = { path = "packages/combat" }
+ba_classic_arcade = { path = "packages/classic_arcade" }
+ba_utils = { path = "packages/utils" }
+
 
 [dev-dependencies]
 # dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.6.0-alpha.2" }
@@ -64,11 +72,6 @@ ba_loadout = { path = "packages/loadout" }
 [[target.starknet-contract]]
 sierra = true
 casm = true
-# build-external-contracts = [
-#     "dojo::world::world_contract::world",
-#     # "achievement::events::index::e_TrophyCreation",
-#     # "achievement::events::index::e_TrophyProgression",
-# ]
 
 [tool]
 fmt.workspace = true
