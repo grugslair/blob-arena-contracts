@@ -12,8 +12,9 @@ members = [
     "packages/loadout",
     "packages/blobert",
     "packages/combat",
-    "packages/classic_arcade",
+    "packages/arcade",
     "packages/utils",
+    "packages/classic_arcade",
 ]
 
 
@@ -60,8 +61,9 @@ arena_blobert = { path = "packages/arena_blobert" }
 ba_blobert = { path = "packages/blobert" }
 ba_loadout = { path = "packages/loadout" }
 ba_combat = { path = "packages/combat" }
-ba_classic_arcade = { path = "packages/classic_arcade" }
+ba_arcade = { path = "packages/arcade" }
 ba_utils = { path = "packages/utils" }
+ba_classic_arcade = { path = "packages/classic_arcade" }
 
 
 [dev-dependencies]

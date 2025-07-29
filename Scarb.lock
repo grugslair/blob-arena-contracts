@@ -42,6 +42,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "ba_arcade"
+version = "0.15.0"
+dependencies = [
+ "alexandria_macros",
+ "ba_combat",
+ "ba_loadout",
+ "ba_utils",
+ "beacon_entity",
+ "beacon_library",
+ "beacon_macros",
+ "dojo",
+ "dojo_macros",
+ "sai_access",
+ "sai_core_utils",
+ "sai_packing",
+]
+
+[[package]]
 name = "ba_blobert"
 version = "0.15.0"
 dependencies = [
@@ -56,8 +74,10 @@ name = "ba_classic_arcade"
 version = "0.15.0"
 dependencies = [
  "alexandria_macros",
+ "ba_arcade",
  "ba_combat",
  "ba_loadout",
+ "ba_utils",
  "beacon_entity",
  "beacon_library",
  "beacon_macros",
@@ -66,6 +86,7 @@ dependencies = [
  "sai_access",
  "sai_core_utils",
  "sai_packing",
+ "sai_token",
 ]
 
 [[package]]
@@ -142,6 +163,7 @@ version = "0.15.0"
 dependencies = [
  "amma_blobert",
  "arena_blobert",
+ "ba_arcade",
  "ba_blobert",
  "ba_classic_arcade",
  "ba_combat",
@@ -219,12 +241,12 @@ checksum = "sha256:bf799c794139837f397975ffdf6a7ed5032d198bbf70e87a8f44f144a9dfc
 [[package]]
 name = "sai_access"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#7061385cdf56b78bbc8f8496c032ba08eeedc7a0"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#a9f77a5091a216084d31bdc0157dd84a9f695b2d"
 
 [[package]]
 name = "sai_address"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#7061385cdf56b78bbc8f8496c032ba08eeedc7a0"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#a9f77a5091a216084d31bdc0157dd84a9f695b2d"
 dependencies = [
  "sai_core_utils",
 ]
@@ -232,17 +254,17 @@ dependencies = [
 [[package]]
 name = "sai_core_utils"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#7061385cdf56b78bbc8f8496c032ba08eeedc7a0"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#a9f77a5091a216084d31bdc0157dd84a9f695b2d"
 
 [[package]]
 name = "sai_packing"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#7061385cdf56b78bbc8f8496c032ba08eeedc7a0"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#a9f77a5091a216084d31bdc0157dd84a9f695b2d"
 
 [[package]]
 name = "sai_token"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#7061385cdf56b78bbc8f8496c032ba08eeedc7a0"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#a9f77a5091a216084d31bdc0157dd84a9f695b2d"
 dependencies = [
  "openzeppelin_introspection",
  "openzeppelin_token",

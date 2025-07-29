@@ -1,5 +1,5 @@
 [package]
-name = "ba_classic_arcade"
+name = "ba_arcade"
 version.workspace = true
 edition.workspace = true
 cairo-version.workspace = true
@@ -19,7 +19,6 @@ starknet.workspace = true
 sai_core_utils.workspace = true
 sai_access.workspace = true
 sai_packing.workspace = true
-sai_token.workspace = true
 dojo_macros.workspace = true
 dojo.workspace = true
 beacon_library.workspace = true
@@ -28,7 +27,6 @@ beacon_entity.workspace = true
 ba_loadout = { path = "../loadout" }
 ba_combat = { path = "../combat" }
 ba_utils = { path = "../utils" }
-ba_arcade = { path = "../arcade" }
 
 
 [[target.starknet-contract]]

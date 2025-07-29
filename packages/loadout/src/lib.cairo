@@ -16,6 +16,7 @@ pub mod amma_contract;
 pub mod arena_contract;
 pub mod interface;
 pub mod signed;
+pub use interface::get_loadout;
 
 #[cfg(test)]
 mod test {

@@ -5,8 +5,8 @@ use core::num::traits::SaturatingAdd;
 use sai_core_utils::SaturatingInto;
 use starknet::ContractAddress;
 use starknet::storage::{
-    Map, Mutable, StorageBase, StorageMapReadAccess, StorageMapWriteAccess, StorageNodeDeref,
-    StoragePathEntry, StoragePointerReadAccess, StoragePointerWriteAccess,
+    Map, Mutable, StorageBase, StorageNodeDeref, StoragePathEntry, StoragePointerReadAccess,
+    StoragePointerWriteAccess,
 };
 use crate::calculations::{apply_luck_modifier, get_new_stun_chance};
 
@@ -32,13 +32,19 @@ pub struct Combatant {
     pub abilities: Abilities,
 }
 
-#[derive(Drop, Serde, Schema, starknet::Store)]
+#[derive(Drop, Serde, Schema, starknet::Store, Introspect)]
 pub struct CombatantState {
     pub health: u32,
     pub stun_chance: u8,
     pub abilities: Abilities,
 }
 
+
+impl AbilitiesIntoCombatantState of Into<Abilities, CombatantState> {
+    fn into(self: Abilities) -> CombatantState {
+        CombatantState { health: self.get_max_health(), stun_chance: 0, abilities: self }
+    }
+}
 
 #[generate_trait]
 impl CombatantNodeImpl of CombatantNodeTrait {

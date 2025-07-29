@@ -21,7 +21,7 @@ const ATTACK_TAG_GROUP: felt252 = 'attacks';
 /// * `miss` - Array of effects that occur when the attack misses
 #[derive(Drop, Serde, Default)]
 pub struct Attack {
-    pub speed: u8,
+    pub speed: u32,
     pub accuracy: u8,
     pub cooldown: u8,
     pub hit: Array<Effect>,
@@ -43,7 +43,7 @@ pub struct Attack {
 #[derive(Drop, Serde, Introspect)]
 pub struct AttackWithName {
     pub name: ByteArray,
-    pub speed: u8,
+    pub speed: u32,
     pub accuracy: u8,
     pub cooldown: u8,
     pub hit: Array<Effect>,
@@ -117,7 +117,7 @@ pub impl AttackWithNameImpl of AttackWithNameTrait {
 
 pub fn get_attack_id(
     name: @ByteArray,
-    speed: u8,
+    speed: u32,
     accuracy: u8,
     cooldown: u8,
     hit: @Array<Effect>,
