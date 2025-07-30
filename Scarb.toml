@@ -56,24 +56,33 @@ edition.workspace = true
 
 [dependencies]
 starknet.workspace = true
-amma_blobert = { path = "packages/amma_blobert" }
-arena_blobert = { path = "packages/arena_blobert" }
-ba_blobert = { path = "packages/blobert" }
-ba_loadout = { path = "packages/loadout" }
-ba_combat = { path = "packages/combat" }
-ba_arcade = { path = "packages/arcade" }
-ba_utils = { path = "packages/utils" }
-ba_classic_arcade = { path = "packages/classic_arcade" }
+amma_blobert.path = "packages/amma_blobert"
+arena_blobert.path = "packages/arena_blobert"
+ba_blobert.path = "packages/blobert"
+ba_loadout.path = "packages/loadout"
+ba_combat.path = "packages/combat"
+ba_arcade.path = "packages/arcade"
+ba_utils.path = "packages/utils"
+ba_classic_arcade.path = "packages/classic_arcade"
 
 
 [dev-dependencies]
 # dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.6.0-alpha.2" }
+
 
 [lib]
 
 [[target.starknet-contract]]
 sierra = true
 casm = true
+build-external-contracts = [
+    "amma_blobert::amma_blobert",
+    "arena_blobert::arena_blobert",
+    "ba_classic_arcade::contract::classic_arcade",
+    "ba_loadout::attack::contract::attack",
+    "ba_loadout::amma_contract::amma_blobert_loadout",
+    "ba_loadout::arena_contract::arena_blobert_loadout",
+]
 
 [tool]
 fmt.workspace = true
