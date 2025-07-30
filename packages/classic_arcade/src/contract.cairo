@@ -7,12 +7,13 @@ struct Opponent {
     abilities: Abilities,
     attacks: [felt252; 4],
 }
+
+struct Combat {}
+
 mod errors {
-    pub const RESPAWN_WHEN_WON: felt252 = 'Cannot respawn when player won';
+    pub const RESPAWN_WHEN_NOT_LOST: felt252 = 'Cannot respawn, player not lost';
     pub const NOT_ACTIVE: felt252 = 'Combat is not active';
-    pub const ATTEMPT_DOES_NOT_EXIST: felt252 = 'Attempt does not exist';
     pub const MAX_RESPAWNS_REACHED: felt252 = 'Max respawns reached';
-    pub const NOT_CALLERS_GAME: felt252 = 'Not caller\'s game';
 }
 
 #[starknet::interface]
@@ -24,31 +25,41 @@ trait IClassicArcade<TState> {
         token_id: u256,
         attack_slots: Array<Array<felt252>>,
     ) -> felt252;
-    fn attack(ref self: TState, attempt: felt252, attack: felt252);
-    fn respawn(ref self: TState, attempt: felt252);
-    fn forfeit(ref self: TState, attempt: felt252);
+    fn attack(ref self: TState, attempt_id: felt252, attack_id: felt252);
+    fn respawn(ref self: TState, attempt_id: felt252);
+    fn forfeit(ref self: TState, attempt_id: felt252);
+}
+
+#[starknet::interface]
+trait IClassicArcadeAdmin<TState> {
+    fn set_opponents(ref self: TState, opponents: Array<Opponent>);
+    fn set_max_respawns(ref self: TState, max_respawns: u32);
+    fn set_time_limit(ref self: TState, time_limit: u64);
+    fn set_loadouts_allowed(ref self: TState, loadouts: Array<(ContractAddress, bool)>);
 }
 
 #[starknet::contract]
 mod classic_arcade {
     use ba_arcade::component::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::table::{ArcadeAttempt, ArcadeRound, AttackLastUsed};
-    use ba_combat::CombatantState;
     use ba_loadout::attack::IAttackDispatcher;
-    use ba_loadout::{attack, get_loadout};
+    use ba_loadout::get_loadout;
     use ba_utils::{erc721_token_hash, uuid};
     use beacon_library::{ToriiTable, register_table_with_schema};
     use core::num::traits::Zero;
     use core::panic_with_const_felt252;
     use core::poseidon::poseidon_hash_span;
+    use sai_access::{AccessTrait, access_component};
     use sai_token::erc721::erc721_owner_of;
     use starknet::storage::{
-        Map, Mutable, MutableVecTrait, PendingStoragePath, StorageMapReadAccess,
-        StorageMapWriteAccess, StoragePath, StoragePathEntry, StoragePointerReadAccess,
-        StoragePointerWriteAccess, Vec,
+        Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePathEntry,
+        StoragePointerReadAccess, StoragePointerWriteAccess,
     };
-    use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
-    use super::{IClassicArcade, Opponent, errors};
+    use starknet::{ContractAddress, get_block_timestamp};
+    use super::{IClassicArcade, IClassicArcadeAdmin, Opponent, errors};
+
+
+    component!(path: access_component, storage: access, event: AccessEvents);
 
     const ROUND_HASH: felt252 = bytearrays_hash!("classic_arcade", "Round");
     const ATTEMPT_HASH: felt252 = bytearrays_hash!("classic_arcade", "Attempt");
@@ -60,6 +71,8 @@ mod classic_arcade {
 
     #[storage]
     struct Storage {
+        #[substorage(v0)]
+        access: access_component::Storage,
         attack_dispatcher: IAttackDispatcher,
         attempts: Map<felt252, AttemptNode>,
         opponents: Map<u32, Opponent>,
@@ -70,6 +83,13 @@ mod classic_arcade {
         loadouts_allowed: Map<ContractAddress, bool>,
     }
 
+    #[event]
+    #[derive(Drop, starknet::Event)]
+    enum Event {
+        #[flat]
+        AccessEvents: access_component::Event,
+    }
+
     #[constructor]
     fn constructor(ref self: ContractState, owner: ContractAddress) {
         self.grant_owner(owner);
@@ -78,6 +98,10 @@ mod classic_arcade {
         register_table_with_schema::<AttackLastUsed>("classic_arcade", "AttackLastUsed");
     }
 
+    #[abi(embed_v0)]
+    impl IAccessImpl = access_component::AccessImpl<ContractState>;
+
+    #[abi(embed_v0)]
     impl IClassicArcadeImpl of IClassicArcade<ContractState> {
         fn start(
             ref self: ContractState,
@@ -114,82 +138,127 @@ mod classic_arcade {
                 },
             );
 
-            attempt_ptr.new_attempt(player, abilities, attack_id, expiry);
+            attempt_ptr.new_attempt(player, abilities, attack_id, token_hash, expiry);
             self.new_combat(attempt_id, 0, 0);
             attempt_id
         }
 
-        fn attack(ref self: ContractState, attempt: felt252, attack: felt252) {
-            let mut attempts_ptr = self.attempts;
+        fn attack(ref self: ContractState, attempt_id: felt252, attack_id: felt252) {
+            let mut attempt_ptr = self.attempts.entry(attempt_id);
             let randomness = uuid();
-            let (result, success) = attempts_ptr
+            let stage = attempt_ptr.stage.read();
+            let combat_n = stage + attempt_ptr.respawns.read();
+            let result = attempt_ptr
                 .attack::<
                     LAST_USED_ATTACK_HASH, ROUND_HASH,
-                >(self.attack_dispatcher.read(), attempt, attack, randomness);
-            if success {
-                LastUsedAttackTable::set_entity(
-                    poseidon_hash_span([attempt, attack].span()),
-                    @AttackLastUsed { attack, attempt, combat: 0, round: 0 },
-                );
+                >(self.attack_dispatcher.read(), attempt_id, combat_n, attack_id, randomness);
+            if result.phase == ArcadePhase::PlayerWon {
+                let next_stage = stage + 1;
+                if next_stage == self.stages_len.read() {
+                    attempt_ptr.set_phase(attempt_id, ArcadePhase::PlayerWon);
+                } else if attempt_ptr.is_not_expired() {
+                    attempt_ptr.stage.write(next_stage);
+                    self.new_combat(attempt_id, combat_n + 1, next_stage);
+                } else {
+                    self.set_loss(ref attempt_ptr, attempt_id);
+                }
             }
-            if result.phase == ArcadePhase::PlayerWon {}
         }
 
-        fn respawn(ref self: ContractState, attempt: felt252) {
-            let mut attempts_ptr = self.attempts;
-            let mut attempt_ptr = attempts_ptr.entry(attempt);
-            let caller = attempt_ptr.assert_caller_is_owner();
-            let (stage, respawns) = (attempt_ptr.stage.read(), attempt_ptr.respawns.read());
+        fn respawn(ref self: ContractState, attempt_id: felt252) {
+            let mut attempt_ptr = self.attempts.entry(attempt_id);
+
+            attempt_ptr.assert_active();
+            attempt_ptr.assert_caller_is_owner();
+            assert(attempt_ptr.is_not_expired(), 'Attempt Expired');
+            let (stage, respawns) = (attempt_ptr.stage.read(), attempt_ptr.respawns.read() + 1);
+            assert(respawns <= self.max_respawns.read(), 'Max Respawns Reached');
+
             let combat_n = stage + respawns;
-            let combat = attempt_ptr.combats.entry(combat_n);
-            let combat_phase = combat.phase.read();
-            assert(attempt_ptr.phase.read() == ArcadePhase::Active, errors::ATTEMPT_DOES_NOT_EXIST);
-            match combat_phase {
+            match attempt_ptr.combats.entry(combat_n).phase.read() {
                 ArcadePhase::None => { panic_with_const_felt252::<errors::NOT_ACTIVE>(); },
-                ArcadePhase::PlayerWon => {
-                    panic_with_const_felt252::<errors::RESPAWN_WHEN_WON>();
+                ArcadePhase::PlayerWon |
+                ArcadePhase::Active => {
+                    panic_with_const_felt252::<errors::RESPAWN_WHEN_NOT_LOST>();
                 },
-                ArcadePhase::Active => { combat.phase.write(ArcadePhase::PlayerLost); },
                 ArcadePhase::PlayerLost => {},
             }
-            assert(attempt_ptr.respawns.read() < self.max_respawns.read(), 'Max Respawns Reached');
-            self.new_combat(attempt, combat_n + 1, stage);
+            self.new_combat(attempt_id, combat_n + 1, stage);
+            attempt_ptr.respawns.write(respawns);
+            AttemptTable::set_member(
+                selector!("respawns"), attempt_id, @attempt_ptr.respawns.write(respawns),
+            );
         }
 
-        fn forfeit(ref self: ContractState, attempt: felt252) {
-            let mut attempt_ptr = self.attempts.entry(attempt);
-            let caller = attempt_ptr.assert_caller_is_owner();
+        fn forfeit(ref self: ContractState, attempt_id: felt252) {
+            let mut attempt_ptr = self.attempts.entry(attempt_id);
+            attempt_ptr.assert_caller_is_owner();
             assert(attempt_ptr.phase.read() == ArcadePhase::Active, errors::NOT_ACTIVE);
-            attempt_ptr.phase.write(ArcadePhase::PlayerLost);
+            self.set_loss(ref attempt_ptr, attempt_id);
+        }
+    }
+
+
+    impl IClassicArcadeAdminImpl of IClassicArcadeAdmin<ContractState> {
+        fn set_opponents(ref self: ContractState, opponents: Array<Opponent>) {
+            self.assert_caller_is_writer();
+            self.stages_len.write(opponents.len());
+            for (i, opponent) in opponents.into_iter().enumerate() {
+                self.opponents.write(i, opponent);
+            }
+        }
+
+        fn set_max_respawns(ref self: ContractState, max_respawns: u32) {
+            self.assert_caller_is_writer();
+            self.max_respawns.write(max_respawns);
+        }
+
+        fn set_time_limit(ref self: ContractState, time_limit: u64) {
+            self.assert_caller_is_writer();
+            self.time_limit.write(time_limit);
+        }
+
+        fn set_loadouts_allowed(ref self: ContractState, loadouts: Array<(ContractAddress, bool)>) {
+            self.assert_caller_is_writer();
+            for (loadout_address, allowed) in loadouts {
+                self.loadouts_allowed.write(loadout_address, allowed);
+            }
         }
     }
 
 
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
-        fn new_combat(ref self: ContractState, attempt: felt252, combat_n: u32, stage: u32) {
-            assert(stage < self.stages_len.read(), 'Stage does not exist');
-            let mut attempt_ptr = self.attempts.entry(attempt);
+        fn new_combat(ref self: ContractState, attempt_id: felt252, combat_n: u32, stage: u32) {
+            let mut attempt_ptr = self.attempts.entry(attempt_id);
             let mut combat = attempt_ptr.combats.entry(combat_n);
             let opponent = self.opponents.entry(stage).read();
-            let player_abilities = attempt_ptr.abilities.read();
-            combat
-                .new_combat(
-                    player_abilities.into(), opponent.abilities.into(), opponent.attacks.span(),
-                );
-
+            let player_state = attempt_ptr.abilities.read().into();
+            combat.new_combat(player_state, opponent.abilities.into(), opponent.attacks.span());
             RoundTable::set_entity(
-                poseidon_hash_span([attempt, combat_n.into(), 0.into()].span()),
+                poseidon_hash_span([attempt_id, combat_n.into(), 0.into()].span()),
                 @ArcadeRound {
-                    attempt,
+                    attempt: attempt_id,
                     combat: combat_n,
                     round: 0,
-                    player_states: [player_abilities.into(), opponent.abilities.into()],
+                    states: [player_state, opponent.abilities.into()],
                     switch_order: false,
                     outcomes: [].span(),
                     phase: ArcadePhase::Active,
                 },
             );
+        }
+
+        fn set_phase(ref self: AttemptNodePath, attempt_id: felt252, phase: ArcadePhase) {
+            self.phase.write(phase);
+            AttemptTable::set_member(selector!("phase"), attempt_id, @phase);
+        }
+
+        fn set_loss(ref self: ContractState, ref attempt: AttemptNodePath, attempt_id: felt252) {
+            attempt.set_phase(attempt_id, ArcadePhase::PlayerLost);
+            let token_hash = attempt.token_hash.read();
+            assert(self.current_attempt.read(token_hash) == attempt_id, 'Token not in Challenge');
+            self.current_attempt.write(token_hash, 0x0);
         }
     }
 }

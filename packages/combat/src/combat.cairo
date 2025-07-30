@@ -122,7 +122,7 @@ fn get_switch_order(
 #[derive(Drop, Serde)]
 pub struct Round {
     pub round: u32,
-    pub player_states: [CombatantState; 2],
+    pub states: [CombatantState; 2],
     pub switch_order: bool,
     pub outcomes: Array<AttackResult>,
     pub progress: CombatProgress,
@@ -163,9 +163,7 @@ pub fn run_round(
         false => (state_1, state_2),
         true => (state_2, state_1),
     };
-    Round {
-        round, player_states: [player_1_state, player_2_state], switch_order, outcomes, progress,
-    }
+    Round { round, states: [player_1_state, player_2_state], switch_order, outcomes, progress }
 }
 
 

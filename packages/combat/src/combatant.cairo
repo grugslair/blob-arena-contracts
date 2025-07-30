@@ -1,4 +1,4 @@
-use ba_loadout::ability::{Abilities, AbilitiesTrait, AbilityTypes, DAbilities, DAbilitiesTrait};
+use ba_loadout::ability::{Abilities, AbilitiesTrait, AbilityTypes, DAbilities};
 use ba_utils::SeedProbability;
 use core::cmp::min;
 use core::num::traits::SaturatingAdd;
@@ -32,7 +32,7 @@ pub struct Combatant {
     pub abilities: Abilities,
 }
 
-#[derive(Drop, Serde, Schema, starknet::Store, Introspect)]
+#[derive(Drop, Copy, Serde, Schema, starknet::Store, Introspect)]
 pub struct CombatantState {
     pub health: u32,
     pub stun_chance: u8,
@@ -120,23 +120,4 @@ pub impl CombatantStateImpl of CombatantStateTrait {
         self.stun_chance = get_new_stun_chance(self.stun_chance, stun)
     }
 }
-// #[starknet::contract]
-// mod contract {
-//     use starknet::storage::{
-//         FlattenedStorage, Map, StorageBase, StorageMapReadAccess, StorageMapWriteAccess,
-//         StorageNode, StorageNodeDeref, StorageNodeMut, StoragePathEntry,
-//         StoragePointerReadAccess, StoragePointerWriteAccess, StorageTrait, StorageTraitMut,
-//     };
-//     use super::CombatantNode;
-
-//     #[storage]
-//     struct Storage {
-//         combatants: Map<felt252, CombatantNode>,
-//     }
-
-//     fn something(ref self: ContractState) {
-//         let blah = self.combatants.entry(12);
-//     }
-// }
-
 

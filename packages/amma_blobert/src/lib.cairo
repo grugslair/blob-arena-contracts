@@ -29,14 +29,13 @@ pub fn get_fighter(collection: ContractAddress, token_id: u256) -> u32 {
 }
 
 #[starknet::contract]
-mod amma_blobert_token {
+mod amma_blobert {
     use beacon_library::{ToriiTable, register_table_with_schema};
     use core::num::traits::Zero;
     use openzeppelin_introspection::src5::SRC5Component;
     use openzeppelin_token::erc721::interface::IERC721_METADATA_ID;
     use openzeppelin_token::erc721::{ERC721Component, ERC721HooksEmptyImpl};
     use openzeppelin_upgrades::UpgradeableComponent;
-    use openzeppelin_upgrades::interface::IUpgradeable;
     use sai_access::{AccessTrait, access_component};
     use sai_token::erc721::{ERC721MetadataInfo, metadata_impl};
     use starknet::ContractAddress;

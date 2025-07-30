@@ -1,4 +1,5 @@
 use crate::attack::{Attack, AttackWithName, Effect};
+use super::IdTagAttack;
 
 #[starknet::interface]
 pub trait IAttack<TContractState> {
@@ -24,6 +25,7 @@ pub trait IAttack<TContractState> {
         miss: Array<Effect>,
     ) -> felt252;
     fn attack_ids(self: @TContractState, attacks: Array<AttackWithName>) -> Array<felt252>;
+    fn tag(self: @TContractState, tag: felt252) -> felt252;
 }
 
 
@@ -39,5 +41,8 @@ pub trait IAttackAdmin<TContractState> {
         miss: Array<Effect>,
     ) -> felt252;
     fn create_attacks(ref self: TContractState, attacks: Array<AttackWithName>) -> Array<felt252>;
+    fn maybe_create_attacks(
+        ref self: TContractState, attacks: Array<IdTagAttack>,
+    ) -> Array<felt252>;
 }
 

@@ -1,4 +1,6 @@
+use core::num::traits::{One, Zero};
 use core::poseidon::poseidon_hash_span;
+use sai_core_utils::SerdeAll;
 use sai_core_utils::poseidon_serde::PoseidonSerde;
 pub use starknet::storage::{
     Map, Mutable, MutableVecTrait, StorageBase, StorageMapReadAccess, StorageMapWriteAccess,
@@ -88,6 +90,13 @@ pub enum Affect {
 }
 
 
+#[derive(Drop, Serde)]
+pub enum IdTagAttack {
+    Id: felt252,
+    Tag: ByteArray,
+    Attack: AttackWithName,
+}
+
 /// Represents a modifier to a ability in the game.
 /// * `ability` - The type of abilityistic (Strength, Vitality, Dexterity, Luck)
 /// * `amount` - The numerical value of the ability, ranging from -100 to +100
@@ -160,5 +169,26 @@ pub impl EffectArrayStorageMapReadAccess of StorageMapReadAccess<
             effects.append(ptr.at(i).read());
         }
         effects
+    }
+}
+
+
+pub fn byte_array_to_tag(array: @ByteArray) -> felt252 {
+    let serialized = array.serialize_all();
+    let data_len = serialized.len() - 3;
+    let pending_word = *serialized.at(data_len + 1);
+    let pending_word_len = *serialized.at(data_len + 2);
+    if data_len.is_zero() {
+        return pending_word;
+    } else if data_len.is_one() && pending_word_len.is_zero() {
+        return *serialized.at(0);
+    }
+    let mut data = serialized.slice(1, data_len);
+    if pending_word.is_zero() {
+        poseidon_hash_span(data)
+    } else {
+        let mut data: Array<felt252> = data.into();
+        data.append(pending_word);
+        poseidon_hash_span(data.span())
     }
 }

@@ -7,15 +7,14 @@ use beacon_library::set_entity;
 use core::num::traits::Zero;
 use core::poseidon::poseidon_hash_span;
 use starknet::storage::{
-    Map, Mutable, MutableVecTrait, StorageBase, StorageMapReadAccess, StorageMapWriteAccess,
-    StoragePath, StoragePathEntry, StoragePointerReadAccess, StoragePointerWriteAccess, Vec,
+    Map, Mutable, MutableVecTrait, StorageMapReadAccess, StorageMapWriteAccess, StoragePath,
+    StoragePathEntry, StoragePointerReadAccess, StoragePointerWriteAccess, Vec,
 };
-use starknet::{ContractAddress, get_caller_address};
+use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
 use crate::table::{ArcadeRound, AttackLastUsed, AttemptRoundTrait};
 
-type CombatNodePath = StoragePath<Mutable<CombatNode>>;
-type AttemptNodePath = StoragePath<Mutable<AttemptNode>>;
-type AttemptsNodePath = StorageBase<Mutable<Map<felt252, AttemptNode>>>;
+pub type CombatNodePath = StoragePath<Mutable<CombatNode>>;
+pub type AttemptNodePath = StoragePath<Mutable<AttemptNode>>;
 
 
 #[derive(Drop, Copy, Introspect, PartialEq, Serde, starknet::Store, Default)]
@@ -43,6 +42,7 @@ impl CombatProgressIntoArcadePhase of Into<CombatProgress, ArcadePhase> {
 pub struct AttemptNode {
     pub player: ContractAddress,
     pub abilities: Abilities,
+    pub token_hash: felt252,
     pub attacks_available: Map<felt252, bool>,
     pub combats: Map<u32, CombatNode>,
     pub expiry: u64,
@@ -62,27 +62,6 @@ pub struct CombatNode {
 }
 
 
-struct ArcadeAttempt {
-    player: ContractAddress,
-    collection_address: ContractAddress,
-    token_id: u256,
-    expiry: u64,
-    respawns: u32,
-    stage: u32,
-    phase: ArcadePhase,
-    attacks: Array<felt252>,
-    abilities: Abilities,
-}
-
-struct ArcadeCombat {
-    attempt: felt252,
-    combat: u32,
-    stage: u32,
-    phase: ArcadePhase,
-    round: u32,
-}
-
-
 #[generate_trait]
 pub impl AttemptNodeImpl of AttemptNodeTrait {
     fn assert_caller_is_owner(ref self: AttemptNodePath) -> ContractAddress {
@@ -90,16 +69,24 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
         assert(self.player.read() == caller, 'Not Callers Game');
         caller
     }
+    fn is_not_expired(ref self: AttemptNodePath) -> bool {
+        get_block_timestamp() <= self.expiry.read()
+    }
+    fn assert_active(ref self: AttemptNodePath) {
+        assert(self.phase.read() == ArcadePhase::Active, 'Attempt is not active');
+    }
     fn new_attempt(
         ref self: AttemptNodePath,
         player: ContractAddress,
         abilities: Abilities,
         attacks: Array<felt252>,
+        token_hash: felt252,
         expiry: u64,
     ) {
         self.player.write(player);
         self.expiry.write(expiry);
         self.abilities.write(abilities);
+        self.token_hash.write(token_hash);
         for attack in attacks {
             self.attacks_available.write(attack, true);
         }
@@ -149,22 +136,24 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
     }
 
     fn attack<const LAST_USED_ATTACK_TABLE: felt252, const ROUND_TABLE_HASH: felt252>(
-        ref self: AttemptsNodePath,
+        ref self: AttemptNodePath,
         attacks: IAttackDispatcher,
         attempt_id: felt252,
+        combat_n: u32,
         attack_id: felt252,
         randomness: felt252,
-    ) -> (ArcadeRound, bool) {
-        let mut attempt = self.entry(attempt_id);
-        let caller = attempt.assert_caller_is_owner();
-        assert(attempt.phase.read() == ArcadePhase::Active, 'Game is not active');
-        let combat_n = attempt.stage.read() + attempt.respawns.read();
+    ) -> ArcadeRound {
+        self.assert_caller_is_owner();
+        assert(self.phase.read() == ArcadePhase::Active, 'Game is not active');
 
-        let mut combat: CombatNodePath = attempt.combats.entry(combat_n);
+        let mut combat: CombatNodePath = self.combats.entry(combat_n);
 
         let round = combat.round.read();
         let opponent_attack = combat.get_opponent_attack(attacks, round, randomness);
-        let player_attack = combat.player_attack_cooldown(attacks, attack_id, round);
+        let player_attack = match self.attacks_available.read(attack_id) {
+            false => 0x0,
+            true => combat.player_attack_cooldown(attacks, attack_id, round),
+        };
         let result = run_round(
             combat.player_state.read(),
             combat.opponent_state.read(),
@@ -175,11 +164,15 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
             randomness,
         )
             .to_round(attempt_id, combat_n);
-
-        combat.phase.write(result.phase);
+        let [player_state, opponent_state] = result.states;
+        combat.player_state.write(player_state);
+        combat.opponent_state.write(opponent_state);
         if result.phase == ArcadePhase::Active {
             combat.round.write(round + 1);
+        } else {
+            combat.phase.write(result.phase);
         }
+
         set_entity(
             ROUND_TABLE_HASH,
             poseidon_hash_span([attempt_id, combat_n.into(), round.into()].span()),
@@ -193,7 +186,7 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
             );
         }
 
-        (result, player_attack.is_non_zero())
+        result
     }
 
 

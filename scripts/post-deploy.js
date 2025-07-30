@@ -8,7 +8,7 @@ import {
   makeClassicBlobertSeedCalls,
   makeClassicBlobertCustomCalls,
   makeAmmaBlobertCalls,
-} from "./update-attributes.js";
+} from "./set-classic-loadout.js";
 import { makeArcadeConfigCalls } from "./update-arcade-config.js";
 import { makeArcadeTokenCalls } from "./update-arcade-token.js";
 import {
@@ -19,9 +19,11 @@ import {
 
 import { makeRoleCalls } from "./update-roles.js";
 import { makeAchievementsCalls } from "./update-achievements.js";
+import { loadSai } from "./sai.js";
 
 const main = async () => {
-  const account_manifest = await loadAccountManifestFromCmdArgs();
+  const sai = await loadSai();
+  sai.loadManifest();
   let arcade_data = loadJson("./post-deploy-config/arcade-challenges.json");
 
   const calls_metas = [

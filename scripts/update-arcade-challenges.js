@@ -15,7 +15,7 @@ import {
   arcadeAmmaContractTag,
 } from "./contract-defs.js";
 
-import { makeAttacksStruct } from "./update-attributes.js";
+import { makeAttacksStruct } from "./set-classic-loadout.js";
 
 export const makeCollectionAddressDict = (account_manifest) => {
   return {

@@ -12,25 +12,31 @@ import {
   events as cairoEvents,
 } from "starknet";
 import { fileURLToPath } from "url";
-import { dirname } from "path";
 import commandLineArgs from "command-line-args";
 import * as fs from "fs";
 import * as path from "path";
 import * as accounts from "web3-eth-accounts";
-import * as toml from "toml";
-import { isDict } from "./utils.js";
+import { parse as parseTomlString } from "smol-toml";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = process.cwd();
 const returnKey =
   "0x17c9a55536e844e86b35cd70d23a4e304a30e5e08de591b6788319186160f50";
 
+export const isDict = (obj) => {
+  return typeof obj === "object" && !Array.isArray(obj) && obj !== null;
+};
+
 export const loadJson = (path) => {
   return JSON.parse(fs.readFileSync(resolvePath(path)));
 };
 
+export const dumpJson = (path, data) => {
+  fs.writeFileSync(resolvePath(path), JSON.stringify(data, null, 2));
+};
+
 export const loadToml = (path) => {
-  return toml.parse(fs.readFileSync(resolvePath(path)));
+  return parseTomlString(fs.readFileSync(resolvePath(path), "utf8"));
 };
 
 export const resolvePath = (rpath) => {
@@ -176,20 +182,15 @@ export const splitCallDescriptions = (calls_metas) => {
   return [calls, descriptions];
 };
 
-export const loadAccountManifest = async (
-  profile,
-  password = null,
-  privateKey = null
-) => {
+export const loadAccountManifest = async (profile, password = null) => {
   const account_manifest = new AccountManifest(
-    `./dojo_${profile}.toml`,
-    `./manifest_${profile}.json`,
-    profile,
-    privateKey
+    `../dojo_${profile}.toml`,
+    `../manifest_${profile}.json`,
+    profile
   );
-  if (password && !privateKey) {
+  if (password) {
     await account_manifest.init_keystore(password);
-  } else if (account_manifest.dojo_toml.env.keystore_path && !privateKey) {
+  } else if (account_manifest.dojo_toml.env.keystore_path) {
     throw new Error(
       `Keystore path is set, but no password provided. Please provide a password.`
     );
@@ -227,6 +228,7 @@ export const declareContract = async (account, contractPath, CasmPath) => {
   const contract = loadJson(contractPath);
 
   const classHash = hash.computeContractClassHash(contract);
+  const declaration = { class_hash: classHash, abi: contract.abi };
   try {
     await account.getClassByHash(classHash);
     console.log(`Already declared with classHash\n\t\t${classHash}`);
@@ -237,10 +239,11 @@ export const declareContract = async (account, contractPath, CasmPath) => {
       casm,
       version: 3,
     });
+    Object.assign(declaration, declareResponse);
     await account.waitForTransaction(declareResponse.transaction_hash);
     console.log(`Declared with classHash\n\t\t${declareResponse.class_hash}`);
   }
-  return classHash;
+  return declaration;
 };
 
 export const loadAccountManifestFromCmdArgs = async () => {
@@ -305,7 +308,6 @@ export const newAccount = async (account, classHash) => {
       version: 3,
     }
   );
-  await account.waitForTransaction(transaction_hash);
   return new Account(
     { nodeUrl: account.channel.nodeUrl },
     contract_address[0],
@@ -316,7 +318,6 @@ export const newAccount = async (account, classHash) => {
 export const newAccounts = async (account, classHash, amount) => {
   let calls = [];
   let keys = [];
-
   for (let i = 0; i < amount; i++) {
     const { privateKey, publicKey } = newKeyPair();
     calls.push({
@@ -433,3 +434,25 @@ export class Abi {
     responseParser();
   }
 }
+
+export const calculateUDCContractAddressFromHash = (
+  deployerAddress,
+  classHash,
+  salt,
+  unique,
+  callData
+) => {
+  if (unique) {
+    salt = hash.computePedersenHash(salt, deployerAddress);
+    deployerAddress =
+      "0x041a78e741e5af2fec34b695679bc6891742439f7afb8484ecd7766661ad02bf";
+  } else {
+    deployerAddress = "0x0";
+  }
+  return hash.calculateContractAddressFromHash(
+    salt,
+    classHash,
+    callData,
+    deployerAddress
+  );
+};

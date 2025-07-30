@@ -13,14 +13,13 @@ trait IArenaBlobertAdmin<TContractState> {
 }
 
 #[starknet::contract]
-mod arena_blobert_actions {
+mod arena_blobert {
     use ba_blobert::{Seed, TokenAttributes};
     use beacon_library::{ToriiTable, register_table_with_schema};
     use openzeppelin_introspection::src5::SRC5Component;
     use openzeppelin_token::erc721::interface::IERC721_METADATA_ID;
     use openzeppelin_token::erc721::{ERC721Component, ERC721HooksEmptyImpl};
     use openzeppelin_upgrades::UpgradeableComponent;
-    use openzeppelin_upgrades::interface::IUpgradeable;
     use sai_access::{AccessTrait, access_component};
     use sai_token::erc721::{ERC721MetadataInfo, soulbound};
     use starknet::storage::{

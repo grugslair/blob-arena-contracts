@@ -1,18 +1,15 @@
 use crate::ability::Abilities;
-use crate::attack::AttackWithName;
+use crate::attack::IdTagAttack;
 
 #[starknet::interface]
 pub trait IAmmaBlobertLoadout<TContractState> {
     fn set_fighter(
-        ref self: TContractState,
-        fighter: u32,
-        abilities: Abilities,
-        attacks: Array<AttackWithName>,
+        ref self: TContractState, fighter: u32, abilities: Abilities, attacks: Array<IdTagAttack>,
     );
 
     fn set_fighters(
         ref self: TContractState,
-        fighters_abilities_attacks: Array<(u32, Abilities, Array<AttackWithName>)>,
+        fighters_abilities_attacks: Array<(u32, Abilities, Array<IdTagAttack>)>,
     );
 }
 
@@ -30,13 +27,13 @@ mod amma_blobert_loadout {
     use core::num::traits::Zero;
     use sai_access::{AccessTrait, access_component};
     use sai_core_utils::poseidon_serde::PoseidonSerde;
+    use starknet::ContractAddress;
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
         StoragePointerWriteAccess,
     };
-    use starknet::{ClassHash, ContractAddress};
     use crate::ability::Abilities;
-    use crate::attack::{AttackWithName, IAttackAdminDispatcher, IAttackAdminDispatcherTrait};
+    use crate::attack::{IAttackAdminDispatcher, IAttackAdminDispatcherTrait, IdTagAttack};
     use crate::interface::ILoadout;
     use super::{AttackSlot, IAmmaBlobertLoadout};
 
@@ -73,10 +70,8 @@ mod amma_blobert_loadout {
     fn constructor(
         ref self: ContractState,
         owner: ContractAddress,
-        collection_address: ContractAddress,
         attack_dispatcher_address: ContractAddress,
-        blobert_ability_class_hash: ClassHash,
-        blobert_attack_slot_class_hash: ClassHash,
+        collection_address: ContractAddress,
     ) {
         self.grant_owner(owner);
         self.collection_address.write(collection_address);
@@ -86,6 +81,9 @@ mod amma_blobert_loadout {
         register_table_with_schema::<Abilities>("amma_blobert_loadout", "AmmaBlobertAbility");
         register_table_with_schema::<AttackSlot>("amma_blobert_loadout", "AmmaBlobertAttackSlot");
     }
+
+    #[abi(embed_v0)]
+    impl IAccessImpl = access_component::AccessImpl<ContractState>;
 
     #[abi(embed_v0)]
     impl ILoadoutImpl of ILoadout<ContractState> {
@@ -138,12 +136,12 @@ mod amma_blobert_loadout {
             ref self: ContractState,
             fighter: u32,
             abilities: Abilities,
-            attacks: Array<AttackWithName>,
+            attacks: Array<IdTagAttack>,
         ) {
             self.assert_caller_is_writer();
             assert(fighter > 0, 'Fighter must be greater than 0');
             let mut attack_dispatcher = self.attack_dispatcher.read();
-            let attack_ids = attack_dispatcher.create_attacks(attacks);
+            let attack_ids = attack_dispatcher.maybe_create_attacks(attacks);
             self.abilities.write(fighter, abilities);
             AbilityTable::set_entity(fighter, @abilities);
             self.clip_attack_slot_slots(fighter, attack_ids.len());
@@ -156,10 +154,10 @@ mod amma_blobert_loadout {
 
         fn set_fighters(
             ref self: ContractState,
-            fighters_abilities_attacks: Array<(u32, Abilities, Array<AttackWithName>)>,
+            fighters_abilities_attacks: Array<(u32, Abilities, Array<IdTagAttack>)>,
         ) {
             self.assert_caller_is_writer();
-            let mut all_attacks: Array<AttackWithName> = Default::default();
+            let mut all_attacks: Array<IdTagAttack> = Default::default();
             let mut indexes: Array<(u32, u32)> = Default::default();
             for (fighter, abilities, attacks) in fighters_abilities_attacks {
                 self.abilities.write(fighter, abilities);
@@ -171,7 +169,7 @@ mod amma_blobert_loadout {
                 }
             }
             let mut attack_dispatcher = self.attack_dispatcher.read();
-            let attack_ids = attack_dispatcher.create_attacks(all_attacks);
+            let attack_ids = attack_dispatcher.maybe_create_attacks(all_attacks);
             for (attack_id, (fighter, slot)) in attack_ids.into_iter().zip(indexes) {
                 let slot_id = (fighter, slot).poseidon_hash();
                 AttackSlotTable::set_entity(slot_id, @(fighter, slot, attack_id));

@@ -17,14 +17,6 @@ import {
 } from "./contract-defs.js";
 import { pascalCase } from "pascal-case";
 
-export const toSigned = (x) => {
-  if (x >= 0) {
-    return { sign: false, value: x };
-  } else {
-    return { sign: true, value: -x };
-  }
-};
-
 export const parseNestedSignedStruct = (obj) => {
   for (let key in obj) {
     if (typeof obj[key] === "number") {
@@ -85,11 +77,9 @@ export const makeEffectStruct = (effect) => {
   let [key, affect] = parseEnumObject(effect.affect);
 
   if (key == "Stat") {
-    effect.affect.Stat = parseNestedSignedStruct(makeCairoEnum(value.stats));
+    effect.affect.Stat = makeCairoEnum(value.stats);
   } else if (["Health", "Stats"].includes(key)) {
-    effect.affect = parseNestedSignedStruct(effect.affect);
-  } else if (key == "Stats") {
-    effect.affect = parseNestedSignedStruct(effect.affect);
+    effect.affect = effect.affect;
   }
   return {
     target: makeCairoEnum(effect.target),
@@ -103,19 +93,6 @@ export const makeEffectsArray = (effects) => {
     effectsArray.push(makeEffectStruct(effect));
   });
   return effectsArray;
-};
-
-export const makeRequirementsArray = (input) => {
-  let requirements = [];
-  if (input) {
-    for (const requirement of input) {
-      const [key, value] = Object.entries(requirement)[0];
-      requirements.push(
-        new CairoCustomEnum({ [pascalCase(key)]: Number(value) })
-      );
-    }
-  }
-  return requirements;
 };
 
 export const parseNewAttack = (attack) => {
@@ -144,10 +121,10 @@ export const parseAttackStruct = (attack) => {
   if (attack.id != null) {
     return new CairoCustomEnum({ Id: attack.id });
   }
-  if (attack.new != null) {
-    return new CairoCustomEnum({ New: attack.new });
+  if (attack.attack != null) {
+    return new CairoCustomEnum({ Attack: parseNewAttack(attack.attack) });
   }
-  return new CairoCustomEnum({ New: parseNewAttack(attack) });
+  return new CairoCustomEnum({ Attack: parseNewAttack(attack) });
 };
 
 export const makeClassicBlobertSeedCalls = async (account_manifest) => {

@@ -6,8 +6,12 @@ mod attack {
     use sai_core_utils::poseidon_serde::PoseidonSerde;
     use starknet::ContractAddress;
     use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess, Vec};
-    use crate::attack::types::{EffectArrayStorageMapReadAccess, EffectArrayStorageMapWriteAccess};
-    use crate::attack::{Attack, AttackWithName, AttackWithNameTrait, Effect, IAttack, IAttackAdmin};
+    use crate::attack::types::{
+        EffectArrayStorageMapReadAccess, EffectArrayStorageMapWriteAccess, byte_array_to_tag,
+    };
+    use crate::attack::{
+        Attack, AttackWithName, AttackWithNameTrait, Effect, IAttack, IAttackAdmin, IdTagAttack,
+    };
 
     component!(path: access_component, storage: access, event: AccessEvents);
 
@@ -23,6 +27,7 @@ mod attack {
         cooldowns: Map<felt252, u8>,
         hits: Map<felt252, Vec<Effect>>,
         misses: Map<felt252, Vec<Effect>>,
+        tags: Map<felt252, felt252>,
     }
 
     #[event]
@@ -37,6 +42,9 @@ mod attack {
         self.grant_owner(owner);
         register_table_with_schema::<AttackWithName>("attack", "Attack");
     }
+
+    #[abi(embed_v0)]
+    impl IAccessImpl = access_component::AccessImpl<ContractState>;
 
     #[abi(embed_v0)]
     impl IAttackImpl of IAttack<ContractState> {
@@ -109,6 +117,10 @@ mod attack {
         fn attack_ids(self: @ContractState, attacks: Array<AttackWithName>) -> Array<felt252> {
             attacks.into_iter().map(|attack| attack.attack_id()).collect()
         }
+
+        fn tag(self: @ContractState, tag: felt252) -> felt252 {
+            self.tags.read(tag)
+        }
     }
 
     #[abi(embed_v0)]
@@ -134,6 +146,21 @@ mod attack {
             }
             attack_ids
         }
+
+        fn maybe_create_attacks(
+            ref self: ContractState, attacks: Array<IdTagAttack>,
+        ) -> Array<felt252> {
+            let mut attack_ids: Array<felt252> = Default::default();
+            for maybe_attack in attacks {
+                let attack_id = match maybe_attack {
+                    IdTagAttack::Id(attack_id) => { attack_id },
+                    IdTagAttack::Tag(tag) => { self.tags.read(byte_array_to_tag(@tag)) },
+                    IdTagAttack::Attack(attack) => { self._create_attack(attack) },
+                };
+                attack_ids.append(attack_id);
+            }
+            attack_ids
+        }
     }
 
 
@@ -150,7 +177,7 @@ mod attack {
             assert(attack.speed <= 100, 'Speed must be between 0 and 100');
             AttackTable::set_entity(id, @attack);
             self.speeds.write(id, attack.speed);
-
+            self.tags.write(byte_array_to_tag(@attack.name), id);
             self.accuracies.write(id, attack.accuracy);
             self.cooldowns.write(id, attack.cooldown);
             self.hits.write(id, attack.hit);
@@ -160,64 +187,4 @@ mod attack {
         }
     }
 }
-// use starknet::ContractAddress;
-
-// #[starknet::interface]
-// trait IContractRegistry<TContractState> {
-//     fn register(
-//         ref self: TContractState, namespace_hash: felt252, contract_address: ContractAddress,
-//     );
-//     fn lookup(self: @TContractState, namespace_hash: felt252) -> ContractAddress;
-//     fn grant_owner(ref self: TContractState, owner: ContractAddress);
-//     fn revoke_owner(ref self: TContractState, owner: ContractAddress);
-//     fn is_owner(self: @TContractState, owner: ContractAddress) -> bool;
-// }
-
-// #[starknet::contract]
-// mod contract_registry {
-//     use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess};
-//     use starknet::{ContractAddress, get_caller_address};
-
-//     #[storage]
-//     struct Storage {
-//         contracts: Map<felt252, ContractAddress>,
-//         owners: Map<ContractAddress, bool>,
-//     }
-
-//     #[abi(embed_v0)]
-//     impl IContractRegistryImpl of super::IContractRegistry<ContractState> {
-//         fn register(
-//             ref self: ContractState, namespace_hash: felt252, contract_address: ContractAddress,
-//         ) {
-//             self.assert_caller_is_owner();
-//             self.contracts.write(namespace_hash, contract_address);
-//         }
-
-//         fn lookup(self: @ContractState, namespace_hash: felt252) -> ContractAddress {
-//             self.contracts.read(namespace_hash)
-//         }
-
-//         fn grant_owner(ref self: ContractState, owner: ContractAddress) {
-//             self.assert_caller_is_owner();
-//             self.owners.write(owner, true);
-//         }
-
-//         fn revoke_owner(ref self: ContractState, owner: ContractAddress) {
-//             self.assert_caller_is_owner();
-//             self.owners.write(owner, false);
-//         }
-
-//         fn is_owner(self: @ContractState, owner: ContractAddress) -> bool {
-//             self.owners.read(owner)
-//         }
-//     }
-
-//     #[generate_trait]
-//     impl PrivateImpl of PrivateTrait {
-//         fn assert_caller_is_owner(self: @ContractState) {
-//             assert(self.owners.read(get_caller_address()), 'Caller is not owner');
-//         }
-//     }
-// }
-
 
