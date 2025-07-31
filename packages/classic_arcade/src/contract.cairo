@@ -1,4 +1,6 @@
+use ba_blobert::Seed;
 use ba_loadout::ability::Abilities;
+use ba_loadout::attack::IdTagAttack;
 use starknet::ContractAddress;
 
 
@@ -8,7 +10,20 @@ struct Opponent {
     attacks: [felt252; 4],
 }
 
-struct Combat {}
+#[derive(Drop, Serde, Introspect)]
+struct OpponentTable {
+    attributes: Seed,
+    abilities: Abilities,
+    attacks: Span<felt252>,
+}
+
+
+#[derive(Drop, Serde)]
+struct OpponentInput {
+    attributes: Seed,
+    abilities: Abilities,
+    attacks: [IdTagAttack; 4],
+}
 
 mod errors {
     pub const RESPAWN_WHEN_NOT_LOST: felt252 = 'Cannot respawn, player not lost';
@@ -32,17 +47,19 @@ trait IClassicArcade<TState> {
 
 #[starknet::interface]
 trait IClassicArcadeAdmin<TState> {
-    fn set_opponents(ref self: TState, opponents: Array<Opponent>);
+    fn set_opponents(ref self: TState, opponents: Array<OpponentInput>);
     fn set_max_respawns(ref self: TState, max_respawns: u32);
     fn set_time_limit(ref self: TState, time_limit: u64);
-    fn set_loadouts_allowed(ref self: TState, loadouts: Array<(ContractAddress, bool)>);
 }
 
 #[starknet::contract]
 mod classic_arcade {
     use ba_arcade::component::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::table::{ArcadeAttempt, ArcadeRound, AttackLastUsed};
-    use ba_loadout::attack::IAttackDispatcher;
+    use ba_combat::CombatantState;
+    use ba_loadout::attack::{
+        IAttackAdminDispatcher, IAttackAdminDispatcherTrait, IAttackDispatcher,
+    };
     use ba_loadout::get_loadout;
     use ba_utils::{erc721_token_hash, uuid};
     use beacon_library::{ToriiTable, register_table_with_schema};
@@ -56,31 +73,33 @@ mod classic_arcade {
         StoragePointerReadAccess, StoragePointerWriteAccess,
     };
     use starknet::{ContractAddress, get_block_timestamp};
-    use super::{IClassicArcade, IClassicArcadeAdmin, Opponent, errors};
+    use super::{IClassicArcade, IClassicArcadeAdmin, IdTagAttack, Opponent, OpponentInput, errors};
 
 
     component!(path: access_component, storage: access, event: AccessEvents);
 
-    const ROUND_HASH: felt252 = bytearrays_hash!("classic_arcade", "Round");
-    const ATTEMPT_HASH: felt252 = bytearrays_hash!("classic_arcade", "Attempt");
+    const ROUND_HASH: felt252 = bytearrays_hash!("classic_arcade", "ArcadeRound");
+    const ATTEMPT_HASH: felt252 = bytearrays_hash!("classic_arcade", "ArcadeAttempt");
     const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("classic_arcade", "AttackLastUsed");
+    const OPPONENT_HASH: felt252 = bytearrays_hash!("classic_arcade", "Opponent");
 
     impl RoundTable = ToriiTable<ROUND_HASH>;
     impl AttemptTable = ToriiTable<ATTEMPT_HASH>;
     impl LastUsedAttackTable = ToriiTable<LAST_USED_ATTACK_HASH>;
+    impl OpponentTable = ToriiTable<OPPONENT_HASH>;
 
     #[storage]
     struct Storage {
         #[substorage(v0)]
         access: access_component::Storage,
-        attack_dispatcher: IAttackDispatcher,
+        attack_contract: ContractAddress,
         attempts: Map<felt252, AttemptNode>,
         opponents: Map<u32, Opponent>,
         stages_len: u32,
         max_respawns: u32,
         time_limit: u64,
         current_attempt: Map<felt252, felt252>,
-        loadouts_allowed: Map<ContractAddress, bool>,
+        loadout_contract: ContractAddress,
     }
 
     #[event]
@@ -91,11 +110,19 @@ mod classic_arcade {
     }
 
     #[constructor]
-    fn constructor(ref self: ContractState, owner: ContractAddress) {
+    fn constructor(
+        ref self: ContractState,
+        owner: ContractAddress,
+        attack_contract: ContractAddress,
+        loadout_contract: ContractAddress,
+    ) {
         self.grant_owner(owner);
-        register_table_with_schema::<ArcadeRound>("classic_arcade", "Attempt");
-        register_table_with_schema::<ArcadeAttempt>("classic_arcade", "Round");
+        register_table_with_schema::<ArcadeRound>("classic_arcade", "ArcadeRound");
+        register_table_with_schema::<ArcadeAttempt>("classic_arcade", "ArcadeAttempt");
         register_table_with_schema::<AttackLastUsed>("classic_arcade", "AttackLastUsed");
+        register_table_with_schema::<super::OpponentTable>("classic_arcade", "Opponent");
+        self.loadout_contract.write(loadout_contract);
+        self.attack_contract.write(attack_contract);
     }
 
     #[abi(embed_v0)]
@@ -151,7 +178,7 @@ mod classic_arcade {
             let result = attempt_ptr
                 .attack::<
                     LAST_USED_ATTACK_HASH, ROUND_HASH,
-                >(self.attack_dispatcher.read(), attempt_id, combat_n, attack_id, randomness);
+                >(self.attack_dispatcher(), attempt_id, combat_n, attack_id, randomness);
             if result.phase == ArcadePhase::PlayerWon {
                 let next_stage = stage + 1;
                 if next_stage == self.stages_len.read() {
@@ -198,13 +225,27 @@ mod classic_arcade {
         }
     }
 
-
+    #[abi(embed_v0)]
     impl IClassicArcadeAdminImpl of IClassicArcadeAdmin<ContractState> {
-        fn set_opponents(ref self: ContractState, opponents: Array<Opponent>) {
+        fn set_opponents(ref self: ContractState, opponents: Array<OpponentInput>) {
             self.assert_caller_is_writer();
             self.stages_len.write(opponents.len());
+            let mut attacks: Array<IdTagAttack> = Default::default();
+            for opponent in opponents.span() {
+                attacks.append_span(opponent.attacks.span());
+            }
+            let mut all_attack_ids = self
+                .attack_admin_dispatcher()
+                .maybe_create_attacks(attacks)
+                .span();
             for (i, opponent) in opponents.into_iter().enumerate() {
-                self.opponents.write(i, opponent);
+                let attack_ids = all_attack_ids.multi_pop_front::<4>().unwrap().unbox();
+                OpponentTable::set_entity(
+                    i, @(opponent.attributes, opponent.abilities, attack_ids.span()),
+                );
+                self
+                    .opponents
+                    .write(i, Opponent { abilities: opponent.abilities, attacks: attack_ids });
             }
         }
 
@@ -217,13 +258,6 @@ mod classic_arcade {
             self.assert_caller_is_writer();
             self.time_limit.write(time_limit);
         }
-
-        fn set_loadouts_allowed(ref self: ContractState, loadouts: Array<(ContractAddress, bool)>) {
-            self.assert_caller_is_writer();
-            for (loadout_address, allowed) in loadouts {
-                self.loadouts_allowed.write(loadout_address, allowed);
-            }
-        }
     }
 
 
@@ -233,15 +267,17 @@ mod classic_arcade {
             let mut attempt_ptr = self.attempts.entry(attempt_id);
             let mut combat = attempt_ptr.combats.entry(combat_n);
             let opponent = self.opponents.entry(stage).read();
-            let player_state = attempt_ptr.abilities.read().into();
-            combat.new_combat(player_state, opponent.abilities.into(), opponent.attacks.span());
+            let player_state: CombatantState = attempt_ptr.abilities.read().into();
+            let usable_attacks = opponent.attacks.span();
+
+            combat.new_combat(player_state, opponent.abilities.into(), usable_attacks);
             RoundTable::set_entity(
                 poseidon_hash_span([attempt_id, combat_n.into(), 0.into()].span()),
                 @ArcadeRound {
                     attempt: attempt_id,
                     combat: combat_n,
                     round: 0,
-                    states: [player_state, opponent.abilities.into()],
+                    states: [player_state, opponent.abilities.into()].span(),
                     switch_order: false,
                     outcomes: [].span(),
                     phase: ArcadePhase::Active,
@@ -259,6 +295,14 @@ mod classic_arcade {
             let token_hash = attempt.token_hash.read();
             assert(self.current_attempt.read(token_hash) == attempt_id, 'Token not in Challenge');
             self.current_attempt.write(token_hash, 0x0);
+        }
+
+        fn attack_dispatcher(ref self: ContractState) -> IAttackDispatcher {
+            IAttackDispatcher { contract_address: self.attack_contract.read() }
+        }
+
+        fn attack_admin_dispatcher(ref self: ContractState) -> IAttackAdminDispatcher {
+            IAttackAdminDispatcher { contract_address: self.attack_contract.read() }
         }
     }
 }

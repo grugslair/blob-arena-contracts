@@ -2,7 +2,7 @@
   "armour": {
     "0": {
       "name": "Sheeps Wool",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 10,
         "dexterity": 15,
@@ -18,7 +18,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 0,
                   "vitality": 20,
                   "dexterity": 0,
@@ -39,7 +39,7 @@
     },
     "1": {
       "name": "Kigurumi",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 8,
         "dexterity": 12,
@@ -55,7 +55,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 0,
                   "vitality": 10,
                   "dexterity": 15,
@@ -76,7 +76,7 @@
     },
     "2": {
       "name": "Divine Robe Dark",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 15,
         "dexterity": 8,
@@ -92,7 +92,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": -10,
                   "vitality": 25,
                   "dexterity": 0,
@@ -113,7 +113,7 @@
     },
     "3": {
       "name": "Divine Robe",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 12,
         "dexterity": 8,
@@ -129,7 +129,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 0,
                   "vitality": 20,
                   "dexterity": 0,
@@ -150,7 +150,7 @@
     },
     "4": {
       "name": "Dojo Robe",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 9,
         "dexterity": 12,
@@ -166,7 +166,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 0,
                   "vitality": 10,
                   "dexterity": 10,
@@ -187,7 +187,7 @@
     },
     "5": {
       "name": "Holy Chestplate",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 18,
         "dexterity": 5,
@@ -203,7 +203,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 0,
                   "vitality": 20,
                   "dexterity": 0,
@@ -224,7 +224,7 @@
     },
     "6": {
       "name": "Demon Husk",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 10,
         "dexterity": 10,
@@ -240,7 +240,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 0,
                   "vitality": 25,
                   "dexterity": 0,
@@ -261,7 +261,7 @@
     },
     "7": {
       "name": "Leather Armour",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 9,
         "dexterity": 10,
@@ -277,7 +277,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 0,
                   "vitality": 15,
                   "dexterity": 5,
@@ -298,7 +298,7 @@
     },
     "8": {
       "name": "Leopard Skin",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 6,
         "dexterity": 15,
@@ -320,7 +320,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 0,
                   "vitality": -10,
                   "dexterity": 30,
@@ -335,7 +335,7 @@
     },
     "9": {
       "name": "Linen Robe",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 9,
         "dexterity": 12,
@@ -351,7 +351,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 0,
                   "vitality": 20,
                   "dexterity": 0,
@@ -372,7 +372,7 @@
     },
     "10": {
       "name": "Lords Armor",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 20,
         "dexterity": 5,
@@ -388,7 +388,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": -10,
                   "vitality": 30,
                   "dexterity": 0,
@@ -409,7 +409,7 @@
     },
     "11": {
       "name": "Secret Tattoo",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 9,
         "dexterity": 12,
@@ -425,7 +425,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 0,
                   "vitality": 15,
                   "dexterity": 10,
@@ -446,7 +446,7 @@
     },
     "12": {
       "name": "Chainmail",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 15,
         "dexterity": 9,
@@ -462,7 +462,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 0,
                   "vitality": 20,
                   "dexterity": 0,
@@ -483,7 +483,7 @@
     },
     "13": {
       "name": "Suit",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 9,
         "dexterity": 10,
@@ -499,7 +499,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 0,
                   "vitality": 15,
                   "dexterity": 10,
@@ -520,7 +520,7 @@
     },
     "14": {
       "name": "Underpants",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 3,
         "dexterity": 15,
@@ -536,7 +536,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 0,
                   "vitality": 10,
                   "dexterity": 20,
@@ -557,7 +557,7 @@
     },
     "15": {
       "name": "Wen Shirt",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 9,
         "dexterity": 12,
@@ -573,7 +573,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 0,
                   "vitality": 10,
                   "dexterity": 10,
@@ -594,7 +594,7 @@
     },
     "16": {
       "name": "Wsb Tank Top",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 6,
         "dexterity": 15,
@@ -616,7 +616,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 20,
                   "vitality": -10,
                   "dexterity": 0,
@@ -633,7 +633,7 @@
   "background": {
     "0": {
       "name": "Avnu Blue",
-      "stats": {
+      "abilities": {
         "strength": 16,
         "vitality": 8,
         "dexterity": 10,
@@ -643,7 +643,7 @@
     },
     "1": {
       "name": "Blue",
-      "stats": {
+      "abilities": {
         "strength": 8,
         "vitality": 12,
         "dexterity": 14,
@@ -653,7 +653,7 @@
     },
     "2": {
       "name": "Crypts and Caverns",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 15,
         "dexterity": 12,
@@ -663,7 +663,7 @@
     },
     "3": {
       "name": "Fibrous Frame",
-      "stats": {
+      "abilities": {
         "strength": 14,
         "vitality": 10,
         "dexterity": 12,
@@ -673,7 +673,7 @@
     },
     "4": {
       "name": "Green",
-      "stats": {
+      "abilities": {
         "strength": 6,
         "vitality": 10,
         "dexterity": 18,
@@ -683,7 +683,7 @@
     },
     "5": {
       "name": "Holo",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 8,
         "dexterity": 14,
@@ -693,7 +693,7 @@
     },
     "6": {
       "name": "Orange",
-      "stats": {
+      "abilities": {
         "strength": 12,
         "vitality": 6,
         "dexterity": 14,
@@ -703,7 +703,7 @@
     },
     "7": {
       "name": "Purple",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 10,
         "dexterity": 10,
@@ -713,7 +713,7 @@
     },
     "8": {
       "name": "Realms Dark",
-      "stats": {
+      "abilities": {
         "strength": 6,
         "vitality": 18,
         "dexterity": 8,
@@ -723,7 +723,7 @@
     },
     "9": {
       "name": "Realms",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 10,
         "dexterity": 12,
@@ -733,7 +733,7 @@
     },
     "10": {
       "name": "Terraforms",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 14,
         "dexterity": 16,
@@ -743,7 +743,7 @@
     },
     "11": {
       "name": "Tulip",
-      "stats": {
+      "abilities": {
         "strength": 12,
         "vitality": 6,
         "dexterity": 14,
@@ -755,7 +755,7 @@
   "jewelry": {
     "0": {
       "name": "Amulet",
-      "stats": {
+      "abilities": {
         "strength": 18,
         "vitality": 5,
         "dexterity": 5,
@@ -771,7 +771,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 15,
                   "vitality": 0,
                   "dexterity": 0,
@@ -786,7 +786,7 @@
     },
     "1": {
       "name": "Bronze Ring",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 5,
         "dexterity": 20,
@@ -802,7 +802,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 0,
                   "vitality": 0,
                   "dexterity": 20,
@@ -817,7 +817,7 @@
     },
     "2": {
       "name": "Gold Ring",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 5,
         "dexterity": 10,
@@ -833,7 +833,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 20,
                   "vitality": 20,
                   "dexterity": 0,
@@ -854,7 +854,7 @@
     },
     "3": {
       "name": "Necklace",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 18,
         "dexterity": 10,
@@ -870,7 +870,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 20,
                   "vitality": 0,
                   "dexterity": 0,
@@ -885,7 +885,7 @@
     },
     "4": {
       "name": "Pendant",
-      "stats": {
+      "abilities": {
         "strength": 15,
         "vitality": 5,
         "dexterity": 5,
@@ -901,7 +901,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 0,
                   "vitality": 25,
                   "dexterity": 0,
@@ -922,7 +922,7 @@
     },
     "5": {
       "name": "Platinum Ring",
-      "stats": {
+      "abilities": {
         "strength": 18,
         "vitality": 5,
         "dexterity": 5,
@@ -938,7 +938,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 20,
                   "vitality": 0,
                   "dexterity": 0,
@@ -953,7 +953,7 @@
     },
     "6": {
       "name": "Silver Ring",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 15,
         "dexterity": 15,
@@ -969,7 +969,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 0,
                   "vitality": 10,
                   "dexterity": 15,
@@ -990,7 +990,7 @@
     },
     "7": {
       "name": "Titanium Ring",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 18,
         "dexterity": 5,
@@ -1006,7 +1006,7 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
+                "Abilities": {
                   "strength": 20,
                   "vitality": 0,
                   "dexterity": 0,
@@ -1023,7 +1023,7 @@
   "mask": {
     "0": {
       "name": "Blobert",
-      "stats": {
+      "abilities": {
         "strength": 18,
         "vitality": 5,
         "dexterity": 5,
@@ -1033,7 +1033,7 @@
     },
     "1": {
       "name": "Doge",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 5,
         "dexterity": 20,
@@ -1043,7 +1043,7 @@
     },
     "2": {
       "name": "Dojo",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 5,
         "dexterity": 10,
@@ -1053,7 +1053,7 @@
     },
     "3": {
       "name": "Ducks",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 18,
         "dexterity": 10,
@@ -1063,7 +1063,7 @@
     },
     "4": {
       "name": "Kevin",
-      "stats": {
+      "abilities": {
         "strength": 15,
         "vitality": 5,
         "dexterity": 5,
@@ -1073,7 +1073,7 @@
     },
     "5": {
       "name": "Milady",
-      "stats": {
+      "abilities": {
         "strength": 18,
         "vitality": 5,
         "dexterity": 5,
@@ -1083,7 +1083,7 @@
     },
     "6": {
       "name": "Pepe",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 15,
         "dexterity": 15,
@@ -1093,7 +1093,7 @@
     },
     "7": {
       "name": "Pudgy",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 18,
         "dexterity": 5,
@@ -1103,7 +1103,7 @@
     },
     "8": {
       "name": "3d glasses",
-      "stats": {
+      "abilities": {
         "strength": 15,
         "vitality": 5,
         "dexterity": 15,
@@ -1113,7 +1113,7 @@
     },
     "9": {
       "name": "1337 Skulls",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 10,
         "dexterity": 10,
@@ -1123,7 +1123,7 @@
     },
     "10": {
       "name": "Ancient Helm",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 18,
         "dexterity": 5,
@@ -1133,7 +1133,7 @@
     },
     "11": {
       "name": "Bane",
-      "stats": {
+      "abilities": {
         "strength": 18,
         "vitality": 5,
         "dexterity": 5,
@@ -1143,7 +1143,7 @@
     },
     "12": {
       "name": "Braavos Helm",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 18,
         "dexterity": 5,
@@ -1153,7 +1153,7 @@
     },
     "13": {
       "name": "Bulbhead",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 10,
         "dexterity": 5,
@@ -1163,7 +1163,7 @@
     },
     "14": {
       "name": "Deal With It Glasses",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 10,
         "dexterity": 10,
@@ -1173,7 +1173,7 @@
     },
     "15": {
       "name": "Demon Crown",
-      "stats": {
+      "abilities": {
         "strength": 18,
         "vitality": 5,
         "dexterity": 5,
@@ -1183,7 +1183,7 @@
     },
     "16": {
       "name": "Divine Hood",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 18,
         "dexterity": 5,
@@ -1193,7 +1193,7 @@
     },
     "17": {
       "name": "Ekubo",
-      "stats": {
+      "abilities": {
         "strength": 15,
         "vitality": 5,
         "dexterity": 15,
@@ -1203,7 +1203,7 @@
     },
     "18": {
       "name": "Hyperloot Crown",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 10,
         "dexterity": 10,
@@ -1213,7 +1213,7 @@
     },
     "19": {
       "name": "Influence Helmet",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 18,
         "dexterity": 5,
@@ -1223,7 +1223,7 @@
     },
     "20": {
       "name": "Lords Helm",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 18,
         "dexterity": 5,
@@ -1233,7 +1233,7 @@
     },
     "21": {
       "name": "Nostrahat",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 10,
         "dexterity": 10,
@@ -1243,7 +1243,7 @@
     },
     "22": {
       "name": "Nouns Glasses",
-      "stats": {
+      "abilities": {
         "strength": 15,
         "vitality": 5,
         "dexterity": 10,
@@ -1253,7 +1253,7 @@
     },
     "23": {
       "name": "Pope Hat",
-      "stats": {
+      "abilities": {
         "strength": 5,
         "vitality": 18,
         "dexterity": 5,
@@ -1263,7 +1263,7 @@
     },
     "24": {
       "name": "Taproot Wizard Hat",
-      "stats": {
+      "abilities": {
         "strength": 15,
         "vitality": 5,
         "dexterity": 10,
@@ -1273,7 +1273,7 @@
     },
     "25": {
       "name": "Wif Hat",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 10,
         "dexterity": 10,
@@ -1285,7 +1285,7 @@
   "weapon": {
     "0": {
       "name": "Algorithmic Aegis",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 20,
         "dexterity": 10,
@@ -1362,7 +1362,7 @@
     },
     "1": {
       "name": "Argent Shield",
-      "stats": {
+      "abilities": {
         "strength": 8,
         "vitality": 20,
         "dexterity": 12,
@@ -1439,7 +1439,7 @@
     },
     "2": {
       "name": "Balloons",
-      "stats": {
+      "abilities": {
         "strength": 12,
         "vitality": 5,
         "dexterity": 18,
@@ -1510,7 +1510,7 @@
     },
     "3": {
       "name": "Banner of Anger",
-      "stats": {
+      "abilities": {
         "strength": 20,
         "vitality": 8,
         "dexterity": 10,
@@ -1587,7 +1587,7 @@
     },
     "4": {
       "name": "Banner of Brilliance",
-      "stats": {
+      "abilities": {
         "strength": 12,
         "vitality": 10,
         "dexterity": 16,
@@ -1643,7 +1643,7 @@
     },
     "5": {
       "name": "Banner of Detection",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 12,
         "dexterity": 15,
@@ -1699,7 +1699,7 @@
     },
     "6": {
       "name": "Banner of Enlightenment",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 20,
         "dexterity": 10,
@@ -1755,7 +1755,7 @@
     },
     "7": {
       "name": "Banner of Fury",
-      "stats": {
+      "abilities": {
         "strength": 20,
         "vitality": 8,
         "dexterity": 15,
@@ -1811,7 +1811,7 @@
     },
     "8": {
       "name": "Banner of Giants",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 12,
         "dexterity": 10,
@@ -1867,7 +1867,7 @@
     },
     "9": {
       "name": "Banner of Perfection",
-      "stats": {
+      "abilities": {
         "strength": 12,
         "vitality": 12,
         "dexterity": 12,
@@ -1917,7 +1917,7 @@
     },
     "10": {
       "name": "Banner of Power",
-      "stats": {
+      "abilities": {
         "strength": 18,
         "vitality": 8,
         "dexterity": 10,
@@ -1967,7 +1967,7 @@
     },
     "11": {
       "name": "Banner of Protection",
-      "stats": {
+      "abilities": {
         "strength": 8,
         "vitality": 20,
         "dexterity": 10,
@@ -2023,7 +2023,7 @@
     },
     "12": {
       "name": "Banner of Rage",
-      "stats": {
+      "abilities": {
         "strength": 20,
         "vitality": 10,
         "dexterity": 10,
@@ -2079,7 +2079,7 @@
     },
     "13": {
       "name": "Banner of Reflection",
-      "stats": {
+      "abilities": {
         "strength": 12,
         "vitality": 18,
         "dexterity": 8,
@@ -2135,7 +2135,7 @@
     },
     "14": {
       "name": "Banner of Skill",
-      "stats": {
+      "abilities": {
         "strength": 16,
         "vitality": 10,
         "dexterity": 14,
@@ -2191,7 +2191,7 @@
     },
     "15": {
       "name": "Banner of The Fox",
-      "stats": {
+      "abilities": {
         "strength": 14,
         "vitality": 8,
         "dexterity": 18,
@@ -2247,7 +2247,7 @@
     },
     "16": {
       "name": "Banner of The Twins",
-      "stats": {
+      "abilities": {
         "strength": 14,
         "vitality": 12,
         "dexterity": 12,
@@ -2303,7 +2303,7 @@
     },
     "17": {
       "name": "Banner of Titans",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 18,
         "dexterity": 10,
@@ -2359,7 +2359,7 @@
     },
     "18": {
       "name": "Banner of Tony Hawk",
-      "stats": {
+      "abilities": {
         "strength": 14,
         "vitality": 8,
         "dexterity": 18,
@@ -2415,7 +2415,7 @@
     },
     "19": {
       "name": "Banner of Vitriol",
-      "stats": {
+      "abilities": {
         "strength": 18,
         "vitality": 8,
         "dexterity": 12,
@@ -2471,7 +2471,7 @@
     },
     "20": {
       "name": "Banner",
-      "stats": {
+      "abilities": {
         "strength": 12,
         "vitality": 10,
         "dexterity": 14,
@@ -2527,7 +2527,7 @@
     },
     "21": {
       "name": "Briq",
-      "stats": {
+      "abilities": {
         "strength": 14,
         "vitality": 10,
         "dexterity": 10,
@@ -2604,7 +2604,7 @@
     },
     "22": {
       "name": "Calculator",
-      "stats": {
+      "abilities": {
         "strength": 16,
         "vitality": 12,
         "dexterity": 12,
@@ -2681,7 +2681,7 @@
     },
     "23": {
       "name": "Devving for The Distracted",
-      "stats": {
+      "abilities": {
         "strength": 12,
         "vitality": 10,
         "dexterity": 14,
@@ -2758,7 +2758,7 @@
     },
     "24": {
       "name": "Diamond Hands",
-      "stats": {
+      "abilities": {
         "strength": 18,
         "vitality": 10,
         "dexterity": 10,
@@ -2835,7 +2835,7 @@
     },
     "25": {
       "name": "Dope Uzi",
-      "stats": {
+      "abilities": {
         "strength": 20,
         "vitality": 8,
         "dexterity": 12,
@@ -2912,7 +2912,7 @@
     },
     "26": {
       "name": "Ghost Wand",
-      "stats": {
+      "abilities": {
         "strength": 12,
         "vitality": 12,
         "dexterity": 14,
@@ -2989,7 +2989,7 @@
     },
     "27": {
       "name": "Grimoire",
-      "stats": {
+      "abilities": {
         "strength": 16,
         "vitality": 10,
         "dexterity": 14,
@@ -3066,7 +3066,7 @@
     },
     "28": {
       "name": "Grugs Club",
-      "stats": {
+      "abilities": {
         "strength": 18,
         "vitality": 10,
         "dexterity": 10,
@@ -3143,7 +3143,7 @@
     },
     "29": {
       "name": "Jediswap Saber",
-      "stats": {
+      "abilities": {
         "strength": 16,
         "vitality": 12,
         "dexterity": 12,
@@ -3220,7 +3220,7 @@
     },
     "30": {
       "name": "Katana",
-      "stats": {
+      "abilities": {
         "strength": 18,
         "vitality": 8,
         "dexterity": 14,
@@ -3297,7 +3297,7 @@
     },
     "31": {
       "name": "Lords Banner",
-      "stats": {
+      "abilities": {
         "strength": 12,
         "vitality": 10,
         "dexterity": 14,
@@ -3374,7 +3374,7 @@
     },
     "32": {
       "name": "Ls has no chill",
-      "stats": {
+      "abilities": {
         "strength": 14,
         "vitality": 10,
         "dexterity": 14,
@@ -3451,7 +3451,7 @@
     },
     "33": {
       "name": "Mandolin",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 12,
         "dexterity": 16,
@@ -3528,7 +3528,7 @@
     },
     "34": {
       "name": "Sign Iso",
-      "stats": {
+      "abilities": {
         "strength": 12,
         "vitality": 10,
         "dexterity": 14,
@@ -3605,7 +3605,7 @@
     },
     "35": {
       "name": "Signature Banner",
-      "stats": {
+      "abilities": {
         "strength": 14,
         "vitality": 10,
         "dexterity": 14,
@@ -3682,7 +3682,7 @@
     },
     "36": {
       "name": "Sithswap Saber",
-      "stats": {
+      "abilities": {
         "strength": 16,
         "vitality": 12,
         "dexterity": 12,
@@ -3759,7 +3759,7 @@
     },
     "37": {
       "name": "Spaghetti",
-      "stats": {
+      "abilities": {
         "strength": 12,
         "vitality": 12,
         "dexterity": 14,
@@ -3830,7 +3830,7 @@
     },
     "38": {
       "name": "Squid",
-      "stats": {
+      "abilities": {
         "strength": 14,
         "vitality": 10,
         "dexterity": 14,
@@ -3907,7 +3907,7 @@
     },
     "39": {
       "name": "Stark Magic",
-      "stats": {
+      "abilities": {
         "strength": 16,
         "vitality": 12,
         "dexterity": 12,
@@ -3984,7 +3984,7 @@
     },
     "40": {
       "name": "Stark Shield",
-      "stats": {
+      "abilities": {
         "strength": 10,
         "vitality": 18,
         "dexterity": 10,
@@ -4061,7 +4061,7 @@
     },
     "41": {
       "name": "Stool",
-      "stats": {
+      "abilities": {
         "strength": 14,
         "vitality": 10,
         "dexterity": 10,
@@ -4138,7 +4138,7 @@
     },
     "42": {
       "name": "Warhammer",
-      "stats": {
+      "abilities": {
         "strength": 18,
         "vitality": 10,
         "dexterity": 10,

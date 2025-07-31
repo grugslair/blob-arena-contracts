@@ -1,25 +1,33 @@
-use ba_blobert::BlobertAttributeKey;
+use ba_blobert::{BlobertAttribute, BlobertAttributeKey};
 use crate::ability::Abilities;
 use crate::attack::IdTagAttack;
 
 #[starknet::interface]
 pub trait IArenaBlobertLoadout<TContractState> {
-    fn set_attribute(
+    fn set_loadout(
         ref self: TContractState,
         key: BlobertAttributeKey,
+        name: ByteArray,
         abilities: Abilities,
         attacks: Array<IdTagAttack>,
     );
 
-    fn set_attributes(
-        ref self: TContractState,
-        keys_abilities_attacks: Array<(BlobertAttributeKey, Abilities, Array<IdTagAttack>)>,
-    );
+    fn set_loadouts(ref self: TContractState, loadouts: Array<LoadoutInput>);
 }
+
+#[derive(Drop, Serde)]
+struct LoadoutInput {
+    key: BlobertAttributeKey,
+    name: ByteArray,
+    abilities: Abilities,
+    attacks: Array<IdTagAttack>,
+}
+
 
 #[derive(Drop, Serde, Introspect)]
 struct AttackSlot {
-    key: BlobertAttributeKey,
+    attribute: BlobertAttribute,
+    index: u32,
     slot: u32,
     attack: felt252,
 }
@@ -27,17 +35,20 @@ struct AttackSlot {
 
 #[derive(Drop, Serde, Introspect)]
 struct BlobertAbilities {
-    key: BlobertAttributeKey,
+    attribute: BlobertAttribute,
+    index: u32,
+    // name: ByteArray,
     strength: u32,
     vitality: u32,
     dexterity: u32,
     luck: u32,
 }
 
-
 #[starknet::contract]
 mod arena_blobert_loadout {
-    use ba_blobert::{BlobertAttributeKey, SeedTrait, TokenAttributes, get_blobert_attributes};
+    use ba_blobert::{
+        BlobertAttribute, BlobertAttributeKey, SeedTrait, TokenAttributes, get_blobert_attributes,
+    };
     use beacon_library::{ToriiTable, register_table_with_schema};
     use core::num::traits::Zero;
     use sai_access::{AccessTrait, access_component};
@@ -50,7 +61,7 @@ mod arena_blobert_loadout {
     use crate::ability::Abilities;
     use crate::attack::{IAttackAdminDispatcher, IAttackAdminDispatcherTrait};
     use crate::interface::ILoadout;
-    use super::{AttackSlot, IArenaBlobertLoadout, IdTagAttack};
+    use super::{AttackSlot, BlobertAbilities, IArenaBlobertLoadout, IdTagAttack, LoadoutInput};
 
     component!(path: access_component, storage: access, event: AccessEvents);
 
@@ -97,7 +108,9 @@ mod arena_blobert_loadout {
         self
             .attack_dispatcher
             .write(IAttackAdminDispatcher { contract_address: attack_dispatcher_address });
-        register_table_with_schema::<Abilities>("arena_blobert_loadout", "ArenaBlobertAbility");
+        register_table_with_schema::<
+            BlobertAbilities,
+        >("arena_blobert_loadout", "ArenaBlobertAbility");
         register_table_with_schema::<AttackSlot>("arena_blobert_loadout", "ArenaBlobertAttackSlot");
     }
 
@@ -112,7 +125,7 @@ mod arena_blobert_loadout {
             self.assert_collection_address(collection_address);
             match get_blobert_attributes(collection_address, token_id) {
                 TokenAttributes::Seed(seed) => self.get_seed_attributes(seed.key_hashes().span()),
-                TokenAttributes::Custom(key) => self.custom_abilities.read(key),
+                TokenAttributes::Custom(key) => self.custom_abilities.read(key.into()),
             }
         }
         fn attacks(
@@ -142,7 +155,8 @@ mod arena_blobert_loadout {
                     (self.get_seed_attributes(hashes), self.get_seed_attack_slots(hashes, slots))
                 },
                 TokenAttributes::Custom(key) => (
-                    self.custom_abilities.read(key), self.get_custom_attack_slots(key, slots),
+                    self.custom_abilities.read(key.into()),
+                    self.get_custom_attack_slots(key, slots),
                 ),
             }
         }
@@ -150,54 +164,56 @@ mod arena_blobert_loadout {
 
     #[abi(embed_v0)]
     impl IArenaBlobertLoadoutImpl of IArenaBlobertLoadout<ContractState> {
-        fn set_attribute(
+        fn set_loadout(
             ref self: ContractState,
             key: BlobertAttributeKey,
+            name: ByteArray,
             abilities: Abilities,
             attacks: Array<IdTagAttack>,
         ) {
             self.assert_caller_is_writer();
             let hash = key.poseidon_hash();
             self.get_abilities_ptr(key).write(hash, abilities);
-            AbilityTable::set_entity(hash, @(key, abilities));
+
             let attack_ids = self.attack_dispatcher.read().maybe_create_attacks(attacks);
             let mut attacks_ptr = self.get_attacks_ptr(key);
             attacks_ptr.clip_attack_slot_slots(hash, attack_ids.len());
+            let (attribute, index) = key.into();
             for (slot, attack_id) in attack_ids.into_iter().enumerate() {
                 let slot_id = (hash, slot).poseidon_hash();
-                AttackSlotTable::set_entity(slot_id, @(key, slot, attack_id));
+                AttackSlotTable::set_entity(slot_id, @(attribute, index, slot, attack_id));
                 attacks_ptr.write(slot_id, attack_id);
             }
+            AbilityTable::set_entity(hash, @(attribute, index, abilities));
         }
 
-        fn set_attributes(
-            ref self: ContractState,
-            keys_abilities_attacks: Array<(BlobertAttributeKey, Abilities, Array<IdTagAttack>)>,
-        ) {
+        fn set_loadouts(ref self: ContractState, loadouts: Array<LoadoutInput>) {
             self.assert_caller_is_writer();
             let mut all_attacks: Array<IdTagAttack> = Default::default();
             let mut indexes: Array<
-                (StorageBase<Mutable<Map<felt252, felt252>>>, BlobertAttributeKey, felt252, u32),
+                (StorageBase<Mutable<Map<felt252, felt252>>>, BlobertAttribute, u32, felt252, u32),
             > =
                 Default::default();
-            for (key, abilities, attacks) in keys_abilities_attacks {
+            for LoadoutInput { key, name, abilities, attacks } in loadouts {
                 self.assert_caller_is_writer();
                 let hash = key.poseidon_hash();
-                AbilityTable::set_entity(hash, @(key, abilities));
-                self.get_abilities_ptr(key).write(hash, abilities);
-                let mut attacks_ptr = self.get_attacks_ptr(key);
+
+                let (mut abilities_ptr, mut attacks_ptr) = self.get_loadout_ptrs(key);
+                abilities_ptr.write(hash, abilities);
                 attacks_ptr.clip_attack_slot_slots(hash, attacks.len());
+                let (attribute, index) = key.into();
                 for (slot, attack) in attacks.into_iter().enumerate() {
                     all_attacks.append(attack);
-                    indexes.append((attacks_ptr, key, hash, slot));
+                    indexes.append((attacks_ptr, attribute, index, hash, slot));
                 }
+                AbilityTable::set_entity(hash, @(attribute, index, abilities));
             }
             let attack_ids = self.attack_dispatcher.read().maybe_create_attacks(all_attacks);
-            for (attack_id, (mut attacks_ptr, key, hash, slot)) in attack_ids
+            for (attack_id, (mut attacks_ptr, attribute, index, hash, slot)) in attack_ids
                 .into_iter()
                 .zip(indexes) {
                 let slot_id = (hash, slot).poseidon_hash();
-                AttackSlotTable::set_entity(slot_id, @(key, slot, attack_id));
+                AttackSlotTable::set_entity(slot_id, @(attribute, index, slot, attack_id));
                 attacks_ptr.write(slot_id, attack_id);
             }
         }
@@ -245,7 +261,7 @@ mod arena_blobert_loadout {
         }
 
         fn get_custom_attack_slots(
-            self: @ContractState, custom_id: felt252, slots: Array<Array<felt252>>,
+            self: @ContractState, custom_id: u32, slots: Array<Array<felt252>>,
         ) -> Array<felt252> {
             slots
                 .into_iter()
@@ -268,6 +284,18 @@ mod arena_blobert_loadout {
             match key {
                 BlobertAttributeKey::Custom(_) => self.custom_abilities,
                 _ => self.seed_abilities,
+            }
+        }
+
+        fn get_loadout_ptrs(
+            ref self: ContractState, key: BlobertAttributeKey,
+        ) -> (
+            StorageBase<Mutable<Map<felt252, Abilities>>>,
+            StorageBase<Mutable<Map<felt252, felt252>>>,
+        ) {
+            match key {
+                BlobertAttributeKey::Custom(_) => (self.custom_abilities, self.custom_attack_slots),
+                _ => (self.seed_abilities, self.seed_attack_slots),
             }
         }
     }

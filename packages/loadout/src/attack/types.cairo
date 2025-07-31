@@ -21,7 +21,7 @@ const ATTACK_TAG_GROUP: felt252 = 'attacks';
 /// * `cooldown` - The cooldown period of the attack in rounds
 /// * `hit` - Array of effects that occur when the attack hits
 /// * `miss` - Array of effects that occur when the attack misses
-#[derive(Drop, Serde, Default)]
+#[derive(Drop, Serde, Default, Introspect)]
 pub struct Attack {
     pub speed: u32,
     pub accuracy: u8,
@@ -42,7 +42,7 @@ pub struct Attack {
 /// * `miss` - An array of effects that are applied when the attack misses.
 /// * `name` - The name of the attack. (For off chain use)
 
-#[derive(Drop, Serde, Introspect)]
+#[derive(Drop, Serde, Clone, Introspect)]
 pub struct AttackWithName {
     pub name: ByteArray,
     pub speed: u32,
@@ -52,13 +52,25 @@ pub struct AttackWithName {
     pub miss: Array<Effect>,
 }
 
+impl AttackWithNameIntoAttack of Into<AttackWithName, Attack> {
+    fn into(self: AttackWithName) -> Attack {
+        Attack {
+            speed: self.speed,
+            accuracy: self.accuracy,
+            cooldown: self.cooldown,
+            hit: self.hit,
+            miss: self.miss,
+        }
+    }
+}
+
 /// Represents an effect that can be applied during the game.
 ///
 /// # Arguments
 /// * `target` - Specifies who receives the effect (Player or Opponent)
 /// * `affect` - The type of effect to be applied
 
-#[derive(Drop, Serde, PartialEq, Introspect, starknet::Store)]
+#[derive(Drop, Serde, Copy, PartialEq, Introspect, starknet::Store)]
 pub struct Effect {
     pub target: Target,
     pub affect: Affect,
@@ -90,7 +102,7 @@ pub enum Affect {
 }
 
 
-#[derive(Drop, Serde)]
+#[derive(Drop, Serde, Clone)]
 pub enum IdTagAttack {
     Id: felt252,
     Tag: ByteArray,

@@ -229,19 +229,15 @@ export class SaiProject {
   }
 
   async getContract(tag) {
-    if (!this.classes[tag]) {
+    if (!this.contracts[tag]) {
       throw new Error(`Contract with tag ${tag} not found`);
     }
-    const classs = this.classes[tag];
-    if (!this.classes[tag].abi) {
-      const { abi } = await this.account.getClassAt(classs.contract_address);
-      this.classes[tag].abi = abi;
+    const contract = this.contracts[tag];
+    if (!contract.abi) {
+      const { abi } = await this.account.getClassAt(contract.contract_address);
+      contract.abi = abi;
     }
-    return new Contract(
-      this.classes[tag].abi,
-      this.classes[tag].contract_address,
-      this.account
-    );
+    return new Contract(contract.abi, contract.contract_address, this.account);
   }
 
   async deployAllContracts() {

@@ -1,12 +1,12 @@
-use arena_blobert::{IArenaBlobertDispatcher, IArenaBlobertDispatcherTrait};
 use sai_core_utils::poseidon_serde::PoseidonSerde;
 use starknet::ContractAddress;
+
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect, Default)]
 pub enum TokenAttributes {
     #[default]
     Seed: Seed,
-    Custom: felt252,
+    Custom: u32,
 }
 
 
@@ -36,13 +36,25 @@ pub impl SeedImpl of SeedTrait {
 
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect, Default)]
-pub enum BlobertAttribute {
+pub enum BlobertTrait {
     #[default]
     Background,
     Armour,
     Jewelry,
     Mask,
     Weapon,
+}
+
+#[derive(Copy, Drop, Serde, PartialEq, Introspect, Default)]
+pub enum BlobertAttribute {
+    #[default]
+    None,
+    Background,
+    Armour,
+    Jewelry,
+    Mask,
+    Weapon,
+    Custom,
 }
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect, Default)]
@@ -54,10 +66,40 @@ pub enum BlobertAttributeKey {
     Jewelry: u32,
     Mask: u32,
     Weapon: u32,
-    Custom: felt252,
+    Custom: u32,
 }
 
+impl BlobertTraitIntoBlobertAttribute of Into<BlobertTrait, BlobertAttribute> {
+    fn into(self: BlobertTrait) -> BlobertAttribute {
+        match self {
+            BlobertTrait::Background => BlobertAttribute::Background,
+            BlobertTrait::Armour => BlobertAttribute::Armour,
+            BlobertTrait::Jewelry => BlobertAttribute::Jewelry,
+            BlobertTrait::Mask => BlobertAttribute::Mask,
+            BlobertTrait::Weapon => BlobertAttribute::Weapon,
+        }
+    }
+}
+
+impl BlobertAttributeKeyIntoBlobertAttribute of Into<BlobertAttributeKey, (BlobertAttribute, u32)> {
+    fn into(self: BlobertAttributeKey) -> (BlobertAttribute, u32) {
+        match self {
+            BlobertAttributeKey::Background(index) => (BlobertAttribute::Background, index),
+            BlobertAttributeKey::Armour(index) => (BlobertAttribute::Armour, index),
+            BlobertAttributeKey::Jewelry(index) => (BlobertAttribute::Jewelry, index),
+            BlobertAttributeKey::Mask(index) => (BlobertAttribute::Mask, index),
+            BlobertAttributeKey::Weapon(index) => (BlobertAttribute::Weapon, index),
+            BlobertAttributeKey::Custom(index) => (BlobertAttribute::Custom, index),
+            BlobertAttributeKey::None => (BlobertAttribute::None, 0),
+        }
+    }
+}
+
+#[starknet::interface]
+trait IBlobert<TState> {
+    fn traits(self: @TState, token_id: u256) -> TokenAttributes;
+}
 
 pub fn get_blobert_attributes(collection: ContractAddress, token_id: u256) -> TokenAttributes {
-    IArenaBlobertDispatcher { contract_address: collection }.traits(token_id)
+    IBlobertDispatcher { contract_address: collection }.traits(token_id)
 }

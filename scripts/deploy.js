@@ -1,11 +1,6 @@
 import { loadSai } from "./sai.js";
 
-const deployWithOwner = [
-  "amma_blobert",
-  "arena_blobert",
-  "attack",
-  "classic_arcade",
-];
+const deployWithOwner = ["amma_blobert", "arena_blobert", "attack"];
 
 const sai = await loadSai();
 await sai.declareAllClasses();
@@ -45,6 +40,17 @@ const deploysData2 = [
   },
 ];
 await sai.deployContract(deploysData2);
+await sai.deployContract({
+  tag: "classic_arcade",
+  class: "classic_arcade",
+  salt: "0x0",
+  unique: false,
+  calldata: {
+    owner: sai.account.address,
+    attack_contract: sai.deployments["attack"].contract_address,
+    loadout_contract: sai.deployments["arena_blobert_loadout"].contract_address,
+  },
+});
 const calls = [];
 for (const contract_tag in sai.deployments) {
   const contract = await sai.getContract(contract_tag);
@@ -54,11 +60,14 @@ for (const contract_tag in sai.deployments) {
   );
 }
 const attack_contract = await sai.getContract("attack");
-attack_contract.populate("grant_contract_writers", {
-  writers: [
-    sai.deployments["amma_blobert_loadout"].contract_address,
-    sai.deployments["arena_blobert_loadout"].contract_address,
-  ],
-});
+calls.push(
+  attack_contract.populate("grant_contract_writers", {
+    writers: [
+      sai.deployments["amma_blobert_loadout"].contract_address,
+      sai.deployments["arena_blobert_loadout"].contract_address,
+    ],
+  })
+);
+await sai.account.execute(calls);
 
 sai.dumpJson();

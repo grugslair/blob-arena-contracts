@@ -104,7 +104,9 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
         self.phase.write(ArcadePhase::Active);
         self.round.write(1);
         for attack in opponent_attacks {
-            self.opponent_attacks.push((*attack, 0));
+            if attack.is_non_zero() {
+                self.opponent_attacks.push((*attack, 0));
+            }
         }
     }
 
@@ -164,9 +166,8 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
             randomness,
         )
             .to_round(attempt_id, combat_n);
-        let [player_state, opponent_state] = result.states;
-        combat.player_state.write(player_state);
-        combat.opponent_state.write(opponent_state);
+        combat.player_state.write(*result.states.at(0));
+        combat.opponent_state.write(*result.states.at(1));
         if result.phase == ArcadePhase::Active {
             combat.round.write(round + 1);
         } else {

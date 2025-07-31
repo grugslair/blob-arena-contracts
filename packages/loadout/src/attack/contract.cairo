@@ -40,7 +40,7 @@ mod attack {
     #[constructor]
     fn constructor(ref self: ContractState, owner: ContractAddress) {
         self.grant_owner(owner);
-        register_table_with_schema::<AttackWithName>("attack", "Attack");
+        register_table_with_schema::<Attack>("attack", "Attack");
     }
 
     #[abi(embed_v0)]
@@ -168,6 +168,8 @@ mod attack {
     impl PrivateImpl of PrivateTrait {
         fn _create_attack(ref self: ContractState, attack: AttackWithName) -> felt252 {
             let id = (@attack).attack_id();
+            self.tags.write(byte_array_to_tag(@attack.name), id);
+            let attack: Attack = attack.into();
             if self.accuracies.read(id).is_non_zero() {
                 return id; // Attack already exists
             }
@@ -175,9 +177,9 @@ mod attack {
                 0 < attack.accuracy && attack.accuracy <= 100, 'Accuracy must between 0 and 100',
             );
             assert(attack.speed <= 100, 'Speed must be between 0 and 100');
+
             AttackTable::set_entity(id, @attack);
             self.speeds.write(id, attack.speed);
-            self.tags.write(byte_array_to_tag(@attack.name), id);
             self.accuracies.write(id, attack.accuracy);
             self.cooldowns.write(id, attack.cooldown);
             self.hits.write(id, attack.hit);

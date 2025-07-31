@@ -25,6 +25,7 @@ dojo.workspace = true
 beacon_library.workspace = true
 beacon_macros.workspace = true
 beacon_entity.workspace = true
+ba_blobert = { path = "../blobert" }
 ba_loadout = { path = "../loadout" }
 ba_combat = { path = "../combat" }
 ba_utils = { path = "../utils" }

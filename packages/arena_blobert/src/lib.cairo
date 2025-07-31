@@ -62,7 +62,7 @@ mod arena_blobert {
         access: access_component::Storage,
         tokens_minted: u128,
         token_seeds: Map<u128, Seed>,
-        token_customs: Map<u128, felt252>,
+        token_customs: Map<u128, u32>,
         token_types: Map<u128, TokenType>,
     }
 

@@ -7,7 +7,7 @@
     "pascal-case": "^3.1.2",
     "requirejs": "^2.3.7",
     "smol-toml": "^1.4.1",
-    "starknet": "path:../../../../../starknet/starknet.js",
+    "starknet": "github:bengineer42/starknet.js#add-signed-ints",
     "toml": "^3.0.0",
     "web3-eth-accounts": "^4.3.1",
     "yargs": "^18.0.0"

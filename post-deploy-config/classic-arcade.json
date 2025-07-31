@@ -1,0 +1,207 @@
+{
+  "max_respawns": 2,
+  "game_energy_cost": 28800,
+  "time_limit": 7200,
+  "opponents": [
+    {
+      "attributes": {
+        "background": 0,
+        "armour": 0,
+        "jewelry": 0,
+        "mask": 0,
+        "weapon": 0
+      },
+      "abilities": {
+        "strength": 15,
+        "vitality": 15,
+        "dexterity": 15,
+        "luck": 15
+      },
+      "attacks": [
+        { "tag": "Binary Bash" },
+        { "tag": "Algorithm Assault" },
+        { "tag": "Algorithmic Overload" }
+      ]
+    },
+    {
+      "attributes": {
+        "background": 1,
+        "armour": 1,
+        "jewelry": 1,
+        "mask": 1,
+        "weapon": 1
+      },
+      "abilities": {
+        "strength": 20,
+        "vitality": 20,
+        "dexterity": 20,
+        "luck": 20
+      },
+      "attacks": [
+        { "tag": "Argent Assault" },
+        { "tag": "Argent Crush" },
+        { "tag": "Two Factor Authentication" }
+      ]
+    },
+    {
+      "attributes": {
+        "background": 9,
+        "armour": 10,
+        "jewelry": 6,
+        "mask": 20,
+        "weapon": 31
+      },
+      "abilities": {
+        "strength": 25,
+        "vitality": 25,
+        "dexterity": 25,
+        "luck": 25
+      },
+      "attacks": [
+        { "tag": "Helium Blast" },
+        { "tag": "Balloon Bombardment" },
+        { "tag": "Inflatable Explosion" }
+      ]
+    },
+    {
+      "attributes": {
+        "background": 3,
+        "armour": 3,
+        "jewelry": 3,
+        "mask": 3,
+        "weapon": 21
+      },
+      "abilities": {
+        "strength": 30,
+        "vitality": 30,
+        "dexterity": 30,
+        "luck": 30
+      },
+      "attacks": [
+        { "tag": "Briq Bash" },
+        { "tag": "Briq Breaker" },
+        { "tag": "Briq Avalanche" }
+      ]
+    },
+    {
+      "attributes": {
+        "background": 4,
+        "armour": 4,
+        "jewelry": 4,
+        "mask": 4,
+        "weapon": 22
+      },
+      "abilities": {
+        "strength": 35,
+        "vitality": 35,
+        "dexterity": 35,
+        "luck": 35
+      },
+      "attacks": [
+        { "tag": "Hash Hit" },
+        { "tag": "Calculated Crush" },
+        { "tag": "Quantum Singularity" }
+      ]
+    },
+    {
+      "attributes": {
+        "background": 5,
+        "armour": 5,
+        "jewelry": 5,
+        "mask": 5,
+        "weapon": 23
+      },
+      "abilities": {
+        "strength": 40,
+        "vitality": 40,
+        "dexterity": 40,
+        "luck": 40
+      },
+      "attacks": [
+        { "tag": "Code Crush" },
+        { "tag": "Debug Destruction" },
+        { "tag": "Algorithm Overload" }
+      ]
+    },
+    {
+      "attributes": {
+        "background": 6,
+        "armour": 6,
+        "jewelry": 6,
+        "mask": 6,
+        "weapon": 24
+      },
+      "abilities": {
+        "strength": 45,
+        "vitality": 45,
+        "dexterity": 45,
+        "luck": 45
+      },
+      "attacks": [
+        { "tag": "Diamond Strike" },
+        { "tag": "Diamond Destruction" },
+        { "tag": "Diamond Hand" }
+      ]
+    },
+    {
+      "attributes": {
+        "background": 7,
+        "armour": 7,
+        "jewelry": 7,
+        "mask": 7,
+        "weapon": 25
+      },
+      "abilities": {
+        "strength": 50,
+        "vitality": 50,
+        "dexterity": 50,
+        "luck": 50
+      },
+      "attacks": [
+        { "tag": "Bullet Blast" },
+        { "tag": "Bullet Barrage" },
+        { "tag": "Desperation Toss" }
+      ]
+    },
+    {
+      "attributes": {
+        "background": 8,
+        "armour": 8,
+        "jewelry": 0,
+        "mask": 8,
+        "weapon": 26
+      },
+      "abilities": {
+        "strength": 55,
+        "vitality": 55,
+        "dexterity": 55,
+        "luck": 55
+      },
+      "attacks": [
+        { "tag": "Spectral Hit" },
+        { "tag": "Phantom Pulse" },
+        { "tag": "Phantom Blast" }
+      ]
+    },
+    {
+      "attributes": {
+        "background": 7,
+        "armour": 14,
+        "jewelry": 3,
+        "mask": 0,
+        "weapon": 28
+      },
+      "abilities": {
+        "strength": 70,
+        "vitality": 70,
+        "dexterity": 70,
+        "luck": 70
+      },
+      "attacks": [
+        { "tag": "Grug's Crush" },
+        { "tag": "Grug's Smash" },
+        { "tag": "Giant Rock Uppercut Grapple" }
+      ]
+    }
+  ]
+}
