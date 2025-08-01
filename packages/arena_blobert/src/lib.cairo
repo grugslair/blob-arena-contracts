@@ -1,3 +1,4 @@
+mod minter;
 use ba_blobert::TokenAttributes;
 use starknet::ContractAddress;
 

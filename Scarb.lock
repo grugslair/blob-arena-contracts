@@ -28,6 +28,7 @@ name = "arena_blobert"
 version = "0.15.0"
 dependencies = [
  "ba_blobert",
+ "ba_utils",
  "beacon_entity",
  "beacon_library",
  "beacon_macros",

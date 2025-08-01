@@ -15,7 +15,6 @@ scarb.workspace = true
 sierra-replace-ids = true
 
 [dependencies]
-ba_blobert = { path = "../blobert" }
 dojo_macros.workspace = true
 dojo.workspace = true
 openzeppelin_access.workspace = true
@@ -28,6 +27,8 @@ starknet.workspace = true
 beacon_macros.workspace = true
 beacon_library.workspace = true
 beacon_entity.workspace = true
+ba_blobert = { path = "../blobert" }
+ba_utils = { path = "../utils" }
 
 [[target.starknet-contract]]
 allowed-libfuncs-list.name = "experimental"
