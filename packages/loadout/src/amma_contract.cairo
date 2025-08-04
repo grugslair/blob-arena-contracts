@@ -11,6 +11,12 @@ pub trait IAmmaBlobertLoadout<TContractState> {
         ref self: TContractState,
         fighters_abilities_attacks: Array<(u32, Abilities, Array<IdTagAttack>)>,
     );
+
+    fn fighter_abilities(self: @TContractState, fighter: u32) -> Abilities;
+
+    fn fighter_attacks(self: @TContractState, fighter: u32) -> Array<felt252>;
+
+    fn fighter_loadout(self: @TContractState, fighter: u32) -> (Abilities, Array<felt252>);
 }
 
 #[derive(Drop, Serde, Introspect)]
@@ -57,6 +63,7 @@ mod amma_blobert_loadout {
         attack_dispatcher: IAttackAdminDispatcher,
         attack_slots: Map<felt252, felt252>,
         abilities: Map<u32, Abilities>,
+        gen_abilities: Map<u32, Abilities>,
     }
 
     #[event]
@@ -145,6 +152,7 @@ mod amma_blobert_loadout {
             self.abilities.write(fighter, abilities);
             AbilityTable::set_entity(fighter, @abilities);
             self.clip_attack_slot_slots(fighter, attack_ids.len());
+
             for (slot, attack_id) in attack_ids.into_iter().enumerate() {
                 let slot_id = (fighter, slot).poseidon_hash();
                 AttackSlotTable::set_entity(slot_id, @(fighter, slot, attack_id));
@@ -175,6 +183,30 @@ mod amma_blobert_loadout {
                 AttackSlotTable::set_entity(slot_id, @(fighter, slot, attack_id));
                 self.attack_slots.write(slot_id, attack_id);
             }
+        }
+
+        fn fighter_abilities(self: @ContractState, fighter: u32) -> Abilities {
+            self.abilities.read(fighter)
+        }
+
+        fn fighter_attacks(self: @ContractState, fighter: u32) -> Array<felt252> {
+            let mut attack_ids: Array<felt252> = Default::default();
+            let mut slot = 0;
+            loop {
+                let attack_id = self.attack_slots.read((fighter, slot).poseidon_hash());
+                if attack_id.is_zero() {
+                    break;
+                }
+                attack_ids.append(attack_id);
+                slot += 1;
+            }
+            attack_ids
+        }
+
+        fn fighter_loadout(self: @ContractState, fighter: u32) -> (Abilities, Array<felt252>) {
+            let abilities = self.fighter_abilities(fighter);
+            let attacks = self.fighter_attacks(fighter);
+            (abilities, attacks)
         }
     }
 
