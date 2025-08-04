@@ -3751,7 +3751,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 65,
+                  "power": 30,
                   "critical": 20
                 }
               }
