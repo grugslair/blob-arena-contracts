@@ -130,11 +130,12 @@ mod arena_blobert {
     // Internal
     impl ERC721MetadataInfoImpl of ERC721MetadataInfo {
         fn name() -> ByteArray {
-            "Arena Blobert"
+            //TODO - replace with real name
+            "TEST Arena Blobert"
         }
 
         fn symbol() -> ByteArray {
-            "BABLOB"
+            "TESTBABLOB"
         }
 
         fn base_token_uri() -> ByteArray {

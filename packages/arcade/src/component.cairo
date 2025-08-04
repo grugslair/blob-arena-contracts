@@ -93,7 +93,7 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
         self.phase.write(ArcadePhase::Active);
     }
 
-    fn new_combat(
+    fn create_combat(
         ref self: StoragePath<Mutable<CombatNode>>,
         player_state: CombatantState,
         opponent_state: CombatantState,

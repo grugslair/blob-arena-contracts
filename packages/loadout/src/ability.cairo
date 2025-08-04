@@ -35,13 +35,23 @@ const U32_MASK_U128: u128 = U32_SHIFT_1 - 1;
 
 impl DAbilitiesAdd of Add<DAbilities> {
     fn add(lhs: DAbilities, rhs: DAbilities) -> DAbilities {
-        lhs + rhs
+        DAbilities {
+            strength: lhs.strength + rhs.strength,
+            vitality: lhs.vitality + rhs.vitality,
+            dexterity: lhs.dexterity + rhs.dexterity,
+            luck: lhs.luck + rhs.luck,
+        }
     }
 }
 
 impl AbilitiesAdd of Add<Abilities> {
     fn add(lhs: Abilities, rhs: Abilities) -> Abilities {
-        lhs + rhs
+        Abilities {
+            strength: lhs.strength + rhs.strength,
+            vitality: lhs.vitality + rhs.vitality,
+            dexterity: lhs.dexterity + rhs.dexterity,
+            luck: lhs.luck + rhs.luck,
+        }
     }
 }
 

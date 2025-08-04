@@ -227,7 +227,14 @@ export class SaiProject {
       };
     });
   }
-
+  async executeAndWait(calls, transactionDetails) {
+    const { transaction_hash } = await this.account.execute(calls, {
+      ...this.transactionDetails,
+      ...transactionDetails,
+    });
+    await this.account.waitForTransaction(transaction_hash);
+    return transaction_hash;
+  }
   async getContract(tag) {
     if (!this.contracts[tag]) {
       throw new Error(`Contract with tag ${tag} not found`);

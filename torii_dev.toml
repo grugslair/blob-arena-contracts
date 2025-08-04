@@ -1,5 +1,5 @@
 # The World address to index.
-world_address = "0x533aceddfc927467969ef2e043c2a74a8ac12172831d3f7fc9585c4ecdbe837"
+world_address = "0x51d1bf3d105a804d8bdb7b1170c4e034cb8f1e869356542a00a30be8f2914c3"
 
 # Default RPC URL configuration
 rpc = "http://127.0.0.1:5050"
@@ -11,8 +11,8 @@ db_dir = "torii/dev"
 
 [indexing]
 contracts = [
-    "erc721-world:0x3c1cfc0c7c5698be0d6545addfab55505ae2b01020b144b35a5b2fef52fd021",
-    "erc721-world:0x40158f89473d166f286854ff3a3bd124e830aeb0c529b1a1a1f247005802a98",
-    "contract:0x14503adebe62170512bc515a2616a1d3ab56c56f562f09ad45bc5b868d2f816",
-    "contract:0x5f7bd7c92e5ae0976f9fa85c572711a9f9044ae8cdf977e831b2f83f2adac45",
+    "erc721-world:0x12b4e56225d27118708d8ff187de5b21a739626908b7009240ace82aeced586",
+    "contract:0x301c351e63e97bdda4dae3cfebe714732f601339d21bd50251c7f425dd40118",
+    "contract:0x1b36f7b8cdf0f85d0d8a3cc28774b11795a4374baffa2499c4ab28719f57e1c",
+    "contract:0xf0120db865595976dd5bf73f5df3e406321a9c03c5dfa494043042dc1d2861",
 ]

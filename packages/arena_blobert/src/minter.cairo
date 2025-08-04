@@ -14,6 +14,12 @@ trait IArcadeBlobertMinter<TState> {
 }
 
 #[starknet::interface]
+trait IArcadeBlobertMinterAdmin<TState> {
+    fn set_min_mint_time(ref self: TState, min_mint_time: u64);
+    fn set_max_bloberts(ref self: TState, max_bloberts: u32);
+}
+
+#[starknet::interface]
 trait IArenaBlobert<TState> {
     fn balance_of(self: @TState, account: ContractAddress) -> u256;
     fn mint(ref self: TState, owner: ContractAddress, attributes: TokenAttributes) -> u256;
@@ -38,10 +44,16 @@ fn generate_seed(randomness: felt252) -> Seed {
     return Seed { background, armour, jewelry, mask, weapon };
 }
 
+#[derive(Drop, Serde, Introspect)]
+struct LastMint {
+    last_mint: u64,
+}
+
 #[starknet::contract]
 mod arena_blobert_minter {
     use ba_blobert::TokenAttributes;
-    use core::poseidon::poseidon_hash_span;
+    use ba_utils::uuid;
+    use beacon_library::{ToriiTable, register_table_with_schema};
     use sai_access::{AccessTrait, access_component};
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
@@ -49,10 +61,14 @@ mod arena_blobert_minter {
     };
     use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
     use super::{
-        IArcadeBlobertMinter, IArenaBlobertDispatcher, IArenaBlobertDispatcherTrait, generate_seed,
+        IArcadeBlobertMinter, IArcadeBlobertMinterAdmin, IArenaBlobertDispatcher,
+        IArenaBlobertDispatcherTrait, LastMint, generate_seed,
     };
 
     component!(path: access_component, storage: access, event: AccessEvents);
+
+    const LAST_MINT_TABLE_ID: felt252 = bytearrays_hash!("arena_blobert", "LastMint");
+    impl LastMintTable = ToriiTable<LAST_MINT_TABLE_ID>;
 
     #[storage]
     struct Storage {
@@ -77,6 +93,7 @@ mod arena_blobert_minter {
     ) {
         self.grant_owner(owner);
         self.token_contract.write(IArenaBlobertDispatcher { contract_address: token_address });
+        register_table_with_schema::<LastMint>("arena_blobert", "LastMint");
     }
 
 
@@ -90,7 +107,7 @@ mod arena_blobert_minter {
 
             let caller = get_caller_address();
             // TODO: make randomness
-            let randomness = poseidon_hash_span([].span());
+            let randomness = uuid();
             let mut token_contract = self.token_contract.read();
             assert(
                 self.last_mint.read(caller) + self.min_mint_time.read() <= timestamp,
@@ -101,7 +118,21 @@ mod arena_blobert_minter {
                 'Max bloberts reached',
             );
             self.last_mint.write(caller, timestamp);
+            LastMintTable::set_entity(caller, @timestamp);
+
             token_contract.mint(caller, TokenAttributes::Seed(generate_seed(randomness)))
+        }
+    }
+
+    #[abi(embed_v0)]
+    impl IArcadeBlobertMinterAdminImpl of IArcadeBlobertMinterAdmin<ContractState> {
+        fn set_min_mint_time(ref self: ContractState, min_mint_time: u64) {
+            self.access.caller_is_owner();
+            self.min_mint_time.write(min_mint_time);
+        }
+        fn set_max_bloberts(ref self: ContractState, max_bloberts: u32) {
+            self.access.caller_is_owner();
+            self.max_bloberts.write(max_bloberts);
         }
     }
 }

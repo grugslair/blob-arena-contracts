@@ -1,0 +1,20 @@
+[account]
+rpc_url = "https://starknet-sepolia.public.blastapi.io/rpc/v0_8"
+account_address = "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d2194723B5bd"
+keystore_path = "/home/ben/sn-accounts/0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd-keystore.json"
+
+
+[contracts.blobert]
+contract_address = "0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578d0549d"
+
+[declare]
+arena_blobert = {}
+arena_blobert_minter = {}
+amma_blobert = {}
+attack = {}
+amma_blobert_loadout = {}
+arena_blobert_loadout = {}
+classic_arcade = {}
+
+[variables]
+arena_contracts = []

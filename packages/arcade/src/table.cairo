@@ -9,7 +9,6 @@ use crate::component::ArcadePhase;
 #[derive(Drop, Serde, Introspect)]
 pub struct ArcadeAttempt {
     pub player: ContractAddress,
-    pub loadout: ContractAddress,
     pub collection_address: ContractAddress,
     pub token_id: u256,
     pub expiry: u64,

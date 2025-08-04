@@ -78,6 +78,7 @@ casm = true
 build-external-contracts = [
     "amma_blobert::amma_blobert",
     "arena_blobert::arena_blobert",
+    "arena_blobert::minter::arena_blobert_minter",
     "ba_classic_arcade::contract::classic_arcade",
     "ba_loadout::attack::contract::attack",
     "ba_loadout::amma_contract::amma_blobert_loadout",

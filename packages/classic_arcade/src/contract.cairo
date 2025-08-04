@@ -35,7 +35,6 @@ mod errors {
 trait IClassicArcade<TState> {
     fn start(
         ref self: TState,
-        loadout_address: ContractAddress,
         collection_address: ContractAddress,
         token_id: u256,
         attack_slots: Array<Array<felt252>>,
@@ -72,7 +71,7 @@ mod classic_arcade {
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePathEntry,
         StoragePointerReadAccess, StoragePointerWriteAccess,
     };
-    use starknet::{ContractAddress, get_block_timestamp};
+    use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
     use super::{IClassicArcade, IClassicArcadeAdmin, IdTagAttack, Opponent, OpponentInput, errors};
 
 
@@ -132,20 +131,18 @@ mod classic_arcade {
     impl IClassicArcadeImpl of IClassicArcade<ContractState> {
         fn start(
             ref self: ContractState,
-            loadout_address: ContractAddress,
             collection_address: ContractAddress,
             token_id: u256,
             attack_slots: Array<Array<felt252>>,
         ) -> felt252 {
             let attempt_id = uuid();
             let mut attempt_ptr = self.attempts.entry(attempt_id);
-            let player = attempt_ptr.assert_caller_is_owner();
+            let player = get_caller_address();
             let token_hash = erc721_token_hash(collection_address, token_id);
-            assert(self.current_attempt.read(token_hash).is_zero(), 'Token ALready in Challenge');
+            assert(self.current_attempt.read(token_hash).is_zero(), 'Token Already in Challenge');
             assert(erc721_owner_of(collection_address, token_id) == player, 'Not Token Owner');
-
-            let (abilities, attack_id) = get_loadout(
-                loadout_address, collection_address, token_id, attack_slots,
+            let (abilities, attack_ids) = get_loadout(
+                self.loadout_contract.read(), collection_address, token_id, attack_slots,
             );
             let expiry = get_block_timestamp() + self.time_limit.read();
 
@@ -153,19 +150,18 @@ mod classic_arcade {
                 attempt_id,
                 @ArcadeAttempt {
                     player,
-                    loadout: loadout_address,
                     collection_address,
                     token_id,
                     expiry,
                     abilities,
-                    attacks: attack_id.span(),
+                    attacks: attack_ids.span(),
                     respawns: 0,
                     stage: 0,
                     phase: ArcadePhase::Active,
                 },
             );
 
-            attempt_ptr.new_attempt(player, abilities, attack_id, token_hash, expiry);
+            attempt_ptr.new_attempt(player, abilities, attack_ids, token_hash, expiry);
             self.new_combat(attempt_id, 0, 0);
             attempt_id
         }
@@ -270,7 +266,7 @@ mod classic_arcade {
             let player_state: CombatantState = attempt_ptr.abilities.read().into();
             let usable_attacks = opponent.attacks.span();
 
-            combat.new_combat(player_state, opponent.abilities.into(), usable_attacks);
+            combat.create_combat(player_state, opponent.abilities.into(), usable_attacks);
             RoundTable::set_entity(
                 poseidon_hash_span([attempt_id, combat_n.into(), 0.into()].span()),
                 @ArcadeRound {

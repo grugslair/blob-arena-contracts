@@ -138,11 +138,12 @@ mod amma_blobert {
     // Internal
     impl ERC721MetadataInfoImpl of ERC721MetadataInfo {
         fn name() -> ByteArray {
-            "AMMA Blobert"
+            // TODO - replace with real name
+            "Test AMMA Blobert"
         }
 
         fn symbol() -> ByteArray {
-            "AMMA"
+            "TESTAMMA"
         }
 
         fn base_token_uri() -> ByteArray {

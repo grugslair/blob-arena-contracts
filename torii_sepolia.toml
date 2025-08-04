@@ -1,13 +1,18 @@
 # The World address to index.
-world_address = "0x2d26295d6c541d64740e1ae56abc079b82b22c35ab83985ef8bd15dc0f9edfb"
+world_address = "0x5300c119eda3fe244edebf229996bcaf357c50840c5013b6f7c6522d21d084e"
 
 # Default RPC URL configuration
-rpc = "https://api.cartridge.gg/rpc/starknet-sepolia"
+rpc = "https://starknet-sepolia.public.blastapi.io/rpc/v0_8"
 
 # Database configuration
 # Optional: If not specified, uses in-memory database
-db_dir = "torii/sepolia"
+db_dir = "~/database/sepolia"
 
-
-[sql]
-historical = ["achievements-TrophyProgression"]
+[indexing]
+contracts = [
+    "erc721-world:0x250a4cbb0a47265a4a41f10ecbaea14b1e7066e3441a1e7ae92910c6600b787",
+    "erc721-world:0x660660e39c015d292edab0ddf8b640088fd3337a29af2deca705cfd6f665cae",
+    "contract:0xb2f93b5f07fb9660a0409591f276a3588bff95d0908332415ac6d4eb1d21a6",
+    "contract:0x3fabc7db10e23e559f851fd02584b6389c520aaef497afc33502957847661e",
+    "contract:0x730088457ad8424675fe28ceeb2c48b731aa35ac2b87a5471ca4c7ac8736f6",
+]
