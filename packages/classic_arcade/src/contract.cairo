@@ -49,6 +49,7 @@ trait IClassicArcadeAdmin<TState> {
     fn set_opponents(ref self: TState, opponents: Array<OpponentInput>);
     fn set_max_respawns(ref self: TState, max_respawns: u32);
     fn set_time_limit(ref self: TState, time_limit: u64);
+    fn set_health_regen_permille(ref self: TState, health_regen_permille: u32);
 }
 
 #[starknet::contract]
@@ -62,6 +63,7 @@ mod classic_arcade {
     use ba_loadout::get_loadout;
     use ba_utils::{erc721_token_hash, uuid};
     use beacon_library::{ToriiTable, register_table_with_schema};
+    use core::cmp::min;
     use core::num::traits::Zero;
     use core::panic_with_const_felt252;
     use core::poseidon::poseidon_hash_span;
@@ -99,6 +101,7 @@ mod classic_arcade {
         time_limit: u64,
         current_attempt: Map<felt252, felt252>,
         loadout_contract: ContractAddress,
+        health_regen_permille: u32,
     }
 
     #[event]
@@ -162,7 +165,7 @@ mod classic_arcade {
             );
 
             attempt_ptr.new_attempt(player, abilities, attack_ids, token_hash, expiry);
-            self.new_combat(attempt_id, 0, 0);
+            self.new_combat(attempt_id, 0, 0, None);
             attempt_id
         }
 
@@ -181,7 +184,8 @@ mod classic_arcade {
                     attempt_ptr.set_phase(attempt_id, ArcadePhase::PlayerWon);
                 } else if attempt_ptr.is_not_expired() {
                     attempt_ptr.stage.write(next_stage);
-                    self.new_combat(attempt_id, combat_n + 1, next_stage);
+                    let health = *result.states.at(0).health;
+                    self.new_combat(attempt_id, combat_n + 1, next_stage, Some(health));
                 } else {
                     self.set_loss(ref attempt_ptr, attempt_id);
                 }
@@ -206,7 +210,7 @@ mod classic_arcade {
                 },
                 ArcadePhase::PlayerLost => {},
             }
-            self.new_combat(attempt_id, combat_n + 1, stage);
+            self.new_combat(attempt_id, combat_n + 1, stage, None);
             attempt_ptr.respawns.write(respawns);
             AttemptTable::set_member(
                 selector!("respawns"), attempt_id, @attempt_ptr.respawns.write(respawns),
@@ -254,26 +258,42 @@ mod classic_arcade {
             self.assert_caller_is_writer();
             self.time_limit.write(time_limit);
         }
+
+        fn set_health_regen_permille(ref self: ContractState, health_regen_permille: u32) {
+            self.assert_caller_is_writer();
+            assert(health_regen_permille <= 1000, 'Health regen must be <= 1000');
+            self.health_regen_permille.write(health_regen_permille);
+        }
     }
 
 
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
-        fn new_combat(ref self: ContractState, attempt_id: felt252, combat_n: u32, stage: u32) {
+        fn new_combat(
+            ref self: ContractState,
+            attempt_id: felt252,
+            combat_n: u32,
+            stage: u32,
+            health: Option<u32>,
+        ) {
             let mut attempt_ptr = self.attempts.entry(attempt_id);
             let mut combat = attempt_ptr.combats.entry(combat_n);
             let opponent = self.opponents.entry(stage).read();
-            let player_state: CombatantState = attempt_ptr.abilities.read().into();
+            let mut player_state: CombatantState = attempt_ptr.abilities.read().into();
+            if let Some(health) = health {
+                let new_health = health + (health * self.health_regen_permille.read()) / 1000;
+                player_state.health = min(player_state.health, new_health);
+            }
             let usable_attacks = opponent.attacks.span();
-
-            combat.create_combat(player_state, opponent.abilities.into(), usable_attacks);
+            let opponent_state: CombatantState = opponent.abilities.into();
+            combat.create_combat(player_state, opponent_state, usable_attacks);
             RoundTable::set_entity(
                 poseidon_hash_span([attempt_id, combat_n.into(), 0.into()].span()),
                 @ArcadeRound {
                     attempt: attempt_id,
                     combat: combat_n,
                     round: 0,
-                    states: [player_state, opponent.abilities.into()].span(),
+                    states: [player_state, opponent_state].span(),
                     switch_order: false,
                     outcomes: [].span(),
                     phase: ArcadePhase::Active,

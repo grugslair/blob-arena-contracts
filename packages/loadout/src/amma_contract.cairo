@@ -1,22 +1,30 @@
 use crate::ability::Abilities;
 use crate::attack::IdTagAttack;
 
+#[derive(Drop, Serde)]
+struct FighterInput {
+    fighter: u32,
+    abilities: Abilities,
+    attacks: Array<IdTagAttack>,
+}
+
 #[starknet::interface]
 pub trait IAmmaBlobertLoadout<TContractState> {
     fn set_fighter(
         ref self: TContractState, fighter: u32, abilities: Abilities, attacks: Array<IdTagAttack>,
     );
 
-    fn set_fighters(
-        ref self: TContractState,
-        fighters_abilities_attacks: Array<(u32, Abilities, Array<IdTagAttack>)>,
-    );
+    fn set_fighters(ref self: TContractState, loadouts: Array<FighterInput>);
 
     fn fighter_abilities(self: @TContractState, fighter: u32) -> Abilities;
 
     fn fighter_attacks(self: @TContractState, fighter: u32) -> Array<felt252>;
 
     fn fighter_loadout(self: @TContractState, fighter: u32) -> (Abilities, Array<felt252>);
+
+    fn fighter_gen_abilities(self: @TContractState, fighter: u32) -> Abilities;
+
+    fn fighter_gen_loadout(self: @TContractState, fighter: u32) -> (Abilities, Array<felt252>);
 }
 
 #[derive(Drop, Serde, Introspect)]
@@ -41,7 +49,7 @@ mod amma_blobert_loadout {
     use crate::ability::Abilities;
     use crate::attack::{IAttackAdminDispatcher, IAttackAdminDispatcherTrait, IdTagAttack};
     use crate::interface::ILoadout;
-    use super::{AttackSlot, IAmmaBlobertLoadout};
+    use super::{AttackSlot, FighterInput, IAmmaBlobertLoadout};
 
     component!(path: access_component, storage: access, event: AccessEvents);
 
@@ -59,7 +67,7 @@ mod amma_blobert_loadout {
     struct Storage {
         #[substorage(v0)]
         access: access_component::Storage,
-        collection_address: ContractAddress,
+        collection_addresses: Map<ContractAddress, bool>,
         attack_dispatcher: IAttackAdminDispatcher,
         attack_slots: Map<felt252, felt252>,
         abilities: Map<u32, Abilities>,
@@ -78,10 +86,12 @@ mod amma_blobert_loadout {
         ref self: ContractState,
         owner: ContractAddress,
         attack_dispatcher_address: ContractAddress,
-        collection_address: ContractAddress,
+        collection_addresses: Array<ContractAddress>,
     ) {
         self.grant_owner(owner);
-        self.collection_address.write(collection_address);
+        for address in collection_addresses {
+            self.collection_addresses.write(address, true);
+        }
         self
             .attack_dispatcher
             .write(IAttackAdminDispatcher { contract_address: attack_dispatcher_address });
@@ -97,9 +107,7 @@ mod amma_blobert_loadout {
         fn abilities(
             self: @ContractState, collection_address: ContractAddress, token_id: u256,
         ) -> Abilities {
-            assert(
-                self.collection_address.read() == collection_address, 'Invalid collection address',
-            );
+            self.assert_collection_address(collection_address);
             self.abilities.read(get_fighter(collection_address, token_id))
         }
         fn attacks(
@@ -108,9 +116,7 @@ mod amma_blobert_loadout {
             token_id: u256,
             slots: Array<Array<felt252>>,
         ) -> Array<felt252> {
-            assert(
-                self.collection_address.read() == collection_address, 'Invalid collection address',
-            );
+            self.assert_collection_address(collection_address);
             let fighter = get_fighter(collection_address, token_id);
             let mut attack_ids: Array<felt252> = Default::default();
             for slot in slots {
@@ -124,9 +130,7 @@ mod amma_blobert_loadout {
             token_id: u256,
             slots: Array<Array<felt252>>,
         ) -> (Abilities, Array<felt252>) {
-            assert(
-                self.collection_address.read() == collection_address, 'Invalid collection address',
-            );
+            self.assert_collection_address(collection_address);
             let fighter = get_fighter(collection_address, token_id);
             let abilities = self.abilities.read(fighter);
             let mut attack_ids: Array<felt252> = Default::default();
@@ -160,14 +164,11 @@ mod amma_blobert_loadout {
             }
         }
 
-        fn set_fighters(
-            ref self: ContractState,
-            fighters_abilities_attacks: Array<(u32, Abilities, Array<IdTagAttack>)>,
-        ) {
+        fn set_fighters(ref self: ContractState, loadouts: Array<FighterInput>) {
             self.assert_caller_is_writer();
             let mut all_attacks: Array<IdTagAttack> = Default::default();
             let mut indexes: Array<(u32, u32)> = Default::default();
-            for (fighter, abilities, attacks) in fighters_abilities_attacks {
+            for FighterInput { fighter, abilities, attacks } in loadouts {
                 self.abilities.write(fighter, abilities);
                 AbilityTable::set_entity(fighter, @abilities);
                 self.clip_attack_slot_slots(fighter, attacks.len());
@@ -208,10 +209,34 @@ mod amma_blobert_loadout {
             let attacks = self.fighter_attacks(fighter);
             (abilities, attacks)
         }
+
+        fn fighter_gen_abilities(self: @ContractState, fighter: u32) -> Abilities {
+            self.gen_abilities.read(fighter)
+        }
+
+        fn fighter_gen_loadout(self: @ContractState, fighter: u32) -> (Abilities, Array<felt252>) {
+            let abilities = self.fighter_gen_abilities(fighter);
+            let mut attack_ids: Array<felt252> = Default::default();
+            let mut slot = 0;
+            loop {
+                let attack_id = self.attack_slots.read((fighter, slot).poseidon_hash());
+                if attack_id.is_zero() {
+                    break;
+                }
+                attack_ids.append(attack_id);
+                slot += 1;
+            }
+            (abilities, attack_ids)
+        }
     }
 
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
+        fn assert_collection_address(self: @ContractState, collection_address: ContractAddress) {
+            assert(
+                self.collection_addresses.read(collection_address), 'Invalid collection address',
+            );
+        }
         fn clip_attack_slot_slots(ref self: ContractState, fighter: u32, mut slots: u32) {
             loop {
                 let slot_id = (fighter, slots).poseidon_hash();

@@ -38,6 +38,17 @@ impl CombatProgressIntoArcadePhase of Into<CombatProgress, ArcadePhase> {
     }
 }
 
+#[derive(Drop, Serde)]
+pub struct Attempt {
+    pub player: ContractAddress,
+    pub abilities: Abilities,
+    pub token_hash: felt252,
+    pub expiry: u64,
+    pub phase: ArcadePhase,
+    pub stage: u32,
+    pub respawns: u32,
+}
+
 #[starknet::storage_node]
 pub struct AttemptNode {
     pub player: ContractAddress,
@@ -59,6 +70,11 @@ pub struct CombatNode {
     pub opponent_attacks: Vec<(felt252, u32)>,
     pub round: u32,
     pub phase: ArcadePhase,
+}
+
+
+trait AttemptNodeReadTrait<TState> {
+    fn attempt_node(self: @TState, attempt_id: felt252) -> AttemptNodePath;
 }
 
 

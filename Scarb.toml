@@ -83,7 +83,7 @@ build-external-contracts = [
     "arena_blobert::minter::arena_blobert_minter",
     "ba_classic_arcade::contract::classic_arcade",
     "ba_loadout::attack::contract::attack",
-    "ba_loadout::amma_contract::amma_blobert_loadout",
+    # "ba_loadout::amma_contract::amma_blobert_loadout",
     "ba_loadout::arena_contract::arena_blobert_loadout",
 ]
 

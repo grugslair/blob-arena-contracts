@@ -2,6 +2,7 @@
   "max_respawns": 2,
   "game_energy_cost": 28800,
   "time_limit": 7200,
+  "health_regen_permille": 400,
   "opponents": [
     {
       "attributes": {

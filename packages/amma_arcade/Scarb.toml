@@ -39,6 +39,5 @@ casm = true
 
 [dev-dependencies]
 cairo_test = "2.11.4"
-# dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.6.0-alpha.2" }
 
 [lib]

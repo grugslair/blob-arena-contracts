@@ -33,7 +33,12 @@ mod errors {
 
 #[starknet::interface]
 trait IClassicArcade<TState> {
-    fn start(ref self: TState, token_id: u256, attack_slots: Array<Array<felt252>>) -> felt252;
+    fn start(
+        ref self: TState,
+        collection_address: ContractAddress,
+        token_id: u256,
+        attack_slots: Array<Array<felt252>>,
+    ) -> felt252;
     fn attack(ref self: TState, attempt_id: felt252, attack_id: felt252);
     fn respawn(ref self: TState, attempt_id: felt252);
     fn forfeit(ref self: TState, attempt_id: felt252);
@@ -41,7 +46,7 @@ trait IClassicArcade<TState> {
 
 #[starknet::interface]
 trait IClassicArcadeAdmin<TState> {
-    fn set_opponents(ref self: TState, opponents: Array<OpponentInput>);
+    fn set_gen_stages(ref self: TState, gen_stages: u32);
     fn set_max_respawns(ref self: TState, max_respawns: u32);
     fn set_time_limit(ref self: TState, time_limit: u64);
 }
@@ -87,16 +92,16 @@ mod amma_arcade {
     struct Storage {
         #[substorage(v0)]
         access: access_component::Storage,
-        attack_contract: ContractAddress,
         attempts: Map<felt252, AttemptNode>,
-        stages: Map<felt252, Opponent>,
-        opponents: Map<u32, Abilities>,
-        standard_stages: u32,
+        gen_stages: u32,
+        opponents: Map<felt252, u32>,
+        bosses: Map<felt252, u32>,
         max_respawns: u32,
         time_limit: u64,
         current_attempt: Map<felt252, felt252>,
-        loadout_contract: ContractAddress,
-        collection_address: ContractAddress,
+        attack_address: ContractAddress,
+        loadout_address: ContractAddress,
+        collectable_address: ContractAddress,
     }
 
     #[event]
@@ -110,18 +115,18 @@ mod amma_arcade {
     fn constructor(
         ref self: ContractState,
         owner: ContractAddress,
-        attack_contract: ContractAddress,
-        loadout_contract: ContractAddress,
-        collection_address: ContractAddress,
+        attack_address: ContractAddress,
+        loadout_address: ContractAddress,
+        collectable_address: ContractAddress,
     ) {
         self.grant_owner(owner);
         register_table_with_schema::<ArcadeRound>("amma_arcade", "ArcadeRound");
         register_table_with_schema::<ArcadeAttempt>("amma_arcade", "ArcadeAttempt");
         register_table_with_schema::<AttackLastUsed>("amma_arcade", "AttackLastUsed");
         register_table_with_schema::<super::OpponentTable>("amma_arcade", "Opponent");
-        self.loadout_contract.write(loadout_contract);
-        self.attack_contract.write(attack_contract);
-        self.collection_address.write(collection_address);
+        self.loadout_address.write(loadout_address);
+        self.attack_address.write(attack_address);
+        self.collectable_address.write(collectable_address);
     }
 
     #[abi(embed_v0)]
@@ -130,7 +135,10 @@ mod amma_arcade {
     #[abi(embed_v0)]
     impl IClassicArcadeImpl of IClassicArcade<ContractState> {
         fn start(
-            ref self: ContractState, token_id: u256, attack_slots: Array<Array<felt252>>,
+            ref self: ContractState,
+            collection_address: ContractAddress,
+            token_id: u256,
+            attack_slots: Array<Array<felt252>>,
         ) -> felt252 {
             let attempt_id = uuid();
             let mut attempt_ptr = self.attempts.entry(attempt_id);
@@ -139,7 +147,7 @@ mod amma_arcade {
             assert(self.current_attempt.read(token_hash).is_zero(), 'Token Already in Challenge');
             assert(erc721_owner_of(collection_address, token_id) == player, 'Not Token Owner');
             let (abilities, attack_ids) = get_loadout(
-                self.loadout_contract.read(), collection_address, token_id, attack_slots,
+                self.loadout_address.read(), collection_address, token_id, attack_slots,
             );
             let expiry = get_block_timestamp() + self.time_limit.read();
 
@@ -174,7 +182,7 @@ mod amma_arcade {
                 >(self.attack_dispatcher(), attempt_id, combat_n, attack_id, randomness);
             if result.phase == ArcadePhase::PlayerWon {
                 let next_stage = stage + 1;
-                if next_stage == self.stages_len.read() {
+                if next_stage > self.gen_stages.read() {
                     attempt_ptr.set_phase(attempt_id, ArcadePhase::PlayerWon);
                 } else if attempt_ptr.is_not_expired() {
                     attempt_ptr.stage.write(next_stage);
@@ -256,7 +264,7 @@ mod amma_arcade {
 
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
-        fn new_combat(ref self: ContractState, attempt_id: felt252, combat_n: u32, stage: u32) {
+        fn new_combat(ref self: ContractState, attempt_id: felt252, combat_n: u32, stage: u32, opponent:) {
             let mut attempt_ptr = self.attempts.entry(attempt_id);
             let mut combat = attempt_ptr.combats.entry(combat_n);
             let opponent = self.opponents.entry(stage).read();

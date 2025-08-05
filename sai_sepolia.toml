@@ -10,9 +10,9 @@ contract_address = "0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578
 [declare]
 arena_blobert = {}
 arena_blobert_minter = {}
-amma_blobert = {}
+# amma_blobert = {}
 attack = {}
-amma_blobert_loadout = {}
+# amma_blobert_loadout = {}
 arena_blobert_loadout = {}
 classic_arcade = {}
 

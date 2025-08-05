@@ -160,7 +160,7 @@ export class SaiProject {
     });
   }
 
-  async declareClass(tag, { name, contract_path, casm_path }) {
+  async declareClass(tag, { name, contract_path, casm_path } = {}) {
     const contractPath =
       contract_path ||
       `${this.targetPath}/${this.name}_${name || tag}.contract_class.json`;

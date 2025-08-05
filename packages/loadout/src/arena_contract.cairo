@@ -194,7 +194,7 @@ mod arena_blobert_loadout {
                 (StorageBase<Mutable<Map<felt252, felt252>>>, BlobertAttribute, u32, felt252, u32),
             > =
                 Default::default();
-            for LoadoutInput { key, name, abilities, attacks } in loadouts {
+            for LoadoutInput { key, name: _, abilities, attacks } in loadouts {
                 self.assert_caller_is_writer();
                 let hash = key.poseidon_hash();
 

@@ -9,9 +9,7 @@ contract_address = "0x0"
 [declare]
 arena_blobert = {}
 arena_blobert_minter = {}
-amma_blobert = {}
 attack = {}
-amma_blobert_loadout = {}
 arena_blobert_loadout = {}
 classic_arcade = {}
 

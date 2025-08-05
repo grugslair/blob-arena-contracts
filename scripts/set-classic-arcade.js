@@ -1,5 +1,4 @@
-import { loadJson, makeCairoEnum } from "./stark-utils.js";
-import { CairoCustomEnum } from "starknet";
+import { loadJson } from "./stark-utils.js";
 import { loadSai } from "./sai.js";
 import { parseIdTagAttackStructs } from "./attack.js";
 
@@ -27,6 +26,9 @@ export const makeSetConfigCalls = (contract, config) => {
     }),
     contract.populate("set_time_limit", {
       time_limit: BigInt(config.time_limit),
+    }),
+    contract.populate("set_health_regen_permille", {
+      health_regen_permille: BigInt(config.health_regen_permille),
     }),
   ];
 };
