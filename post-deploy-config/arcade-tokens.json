@@ -2,14 +2,15 @@
   "release": {
     "pragma_contract_address": "0x2a85bd616f912537c50a49a4076db02c00b29b2cdc8a197ce92ed1837fa875b",
     "price_pairs": {
-      "lords": {
-        "erc20_address": "0x0124aeb495b947201f5fac96fd1138e326ad86195b98df6dec9009158a533b49",
-        "price_pair": "1407668255603079598916"
-      },
       "stark": {
         "erc20_address": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
         "price_pair": "6004514686061859652"
       }
+    },
+    "lords": {
+      "erc20_address": "0x0124aeb495b947201f5fac96fd1138e326ad86195b98df6dec9009158a533b49",
+      "staking_address": "0x045c587318c9ebcf2fbe21febf288ee2e3597a21cd48676005a5770a50d433c5",
+      "price_pair": "1407668255603079598916"
     },
     "token_price_usd": 0.25,
     "wallet_address": "0x075ebc0186a90b78dae3fdbf6d73e9881426749b89cb5c57b266f2c8b54e83c3"
@@ -25,6 +26,11 @@
         "erc20_address": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
         "price_pair": "6004514686061859652"
       }
+    },
+    "lords": {
+      "erc20_address": "0x072599086bffce6593a2e08169c21d23564f08be1e1d0b8e05a9768f20469a3f",
+      "staking_address": "0x0c1f5b2d3e4f8a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0",
+      "price_pair": "1407668255603079598916"
     },
     "token_price_usd": 0.25,
     "wallet_address": "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d2194723B5bd"

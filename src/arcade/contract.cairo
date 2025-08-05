@@ -1,10 +1,10 @@
 use starknet::ContractAddress;
-use crate::stats::UStats;
 use crate::arcade::ArcadeOpponentInput;
-use crate::collections::{TokenAttributes, BlobertItemKey};
-use crate::tags::IdTagNew;
 use crate::attacks::components::AttackInput;
-use super::{ArcadeGame, ArcadeChallengeAttempt, ArcadePhase, ArcadeOpponent};
+use crate::collections::{BlobertItemKey, TokenAttributes};
+use crate::stats::UStats;
+use crate::tags::IdTagNew;
+use super::{ArcadeChallengeAttempt, ArcadeGame, ArcadeOpponent, ArcadePhase};
 
 #[starknet::interface]
 trait IArcade<TContractState> {
@@ -196,6 +196,7 @@ trait IArcade<TContractState> {
         amount: u32,
     );
 
+
     /// Retrieves the current challenge attempt for a player
     fn max_respawns(self: @TContractState) -> u32;
 
@@ -325,6 +326,13 @@ trait IArcadeAdmin<TContractState> {
     fn set_price_pair(
         ref self: TContractState, erc20_address: ContractAddress, price_pair: felt252,
     );
+
+    fn set_lords_token(
+        ref self: TContractState,
+        erc20_address: ContractAddress,
+        staking_address: ContractAddress,
+        price_pair: felt252,
+    );
     /// Sets the price of game tokens in micro USD
     /// # Arguments
     /// * `price` - The price of a single game token in micro USD
@@ -352,32 +360,33 @@ trait IArcadeAdmin<TContractState> {
 
 #[dojo::contract]
 mod arcade_actions {
-    use core::poseidon::poseidon_hash_span;
     use core::num::traits::Pow;
-    use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
-    use starknet::storage::Map;
+    use core::poseidon::poseidon_hash_span;
     use dojo::world::WorldStorage;
-    use crate::arcade::{
-        ArcadeTrait, ArcadeStorage, ARCADE_NAMESPACE_HASH, ArcadeStore, ArcadeOpponentInput,
-        ArcadeChallengeAttempt, ArcadeGame, ArcadePhase, CHALLENGE_TAG_GROUP, ArcadeOpponent,
-    };
-    use crate::arcade::components::{
-        set_arcade_max_respawns, set_arcade_time_limit, set_arcade_energy_cost,
-        get_arcade_max_respawns, get_arcade_time_limit, get_arcade_energy_cost,
-    };
-    use pragma_lib::abi::{
-        IPragmaABIDispatcher, IPragmaABIDispatcherTrait, PragmaPricesResponse, DataType,
-    };
     use openzeppelin_token::erc20::{ERC20ABIDispatcher, ERC20ABIDispatcherTrait};
+    use pragma_lib::abi::{
+        DataType, IPragmaABIDispatcher, IPragmaABIDispatcherTrait, PragmaPricesResponse,
+    };
+    use starknet::storage::Map;
+    use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
+    use crate::arcade::components::{
+        get_arcade_energy_cost, get_arcade_max_respawns, get_arcade_time_limit,
+        set_arcade_energy_cost, set_arcade_max_respawns, set_arcade_time_limit,
+    };
+    use crate::arcade::{
+        ARCADE_NAMESPACE_HASH, ArcadeChallengeAttempt, ArcadeGame, ArcadeOpponent,
+        ArcadeOpponentInput, ArcadePhase, ArcadeStorage, ArcadeStore, ArcadeTrait,
+        CHALLENGE_TAG_GROUP,
+    };
     use crate::attacks::{AttackInput, AttackTrait};
-    use crate::permissions::{Permissions, Role};
-    use crate::world::{WorldTrait, pseudo_randomness};
-    use crate::combat::CombatProgress;
-    use crate::stats::UStats;
     use crate::collections::TokenAttributes;
-    use crate::tags::{IdTagNew, Tag};
+    use crate::combat::CombatProgress;
     use crate::erc721::erc721_owner_of;
+    use crate::permissions::{Permissions, Role};
     use crate::starknet::return_value;
+    use crate::stats::UStats;
+    use crate::tags::{IdTagNew, Tag};
+    use crate::world::{WorldTrait, pseudo_randomness};
 
     #[storage]
     struct Storage {
@@ -386,11 +395,12 @@ mod arcade_actions {
         token_micro_usd_price: u128,
         wallet_address: ContractAddress,
         unlockable_tokens: Map<felt252, u32>,
+        lords_address: ContractAddress,
+        staking_address: ContractAddress,
         max_respawns: u32,
         time_limit: u64,
         game_energy_cost: u64,
     }
-
     use super::{IArcade, IArcadeAdmin};
     #[generate_trait]
     impl PrivateStorageImpl of PrivateStorageTrait {
@@ -541,9 +551,14 @@ mod arcade_actions {
             if receiver.is_zero() {
                 receiver = caller;
             }
-            let price = self.get_tokens_price(erc20_address, amount);
-            ERC20ABIDispatcher { contract_address: erc20_address }
-                .transfer_from(caller, self.wallet_address.read(), price);
+            let mut price = self.get_tokens_price(erc20_address, amount);
+            let mut dispatcher = ERC20ABIDispatcher { contract_address: erc20_address };
+            if erc20_address == self.lords_address.read() {
+                let vlords_amount = price / 10;
+                dispatcher.transfer_from(caller, self.staking_address.read(), vlords_amount);
+                price -= vlords_amount;
+            }
+            dispatcher.transfer_from(caller, self.wallet_address.read(), price);
             let mut store = self.get_arcade_storage();
             store.increase_paid_games(receiver, amount);
         }
@@ -632,6 +647,18 @@ mod arcade_actions {
             ref self: ContractState, erc20_address: ContractAddress, price_pair: felt252,
         ) {
             self.assert_caller_has_permission(Role::Manager);
+            self.price_pairs.write(erc20_address, price_pair);
+        }
+
+        fn set_lords_token(
+            ref self: ContractState,
+            erc20_address: ContractAddress,
+            staking_address: ContractAddress,
+            price_pair: felt252,
+        ) {
+            self.assert_caller_has_permission(Role::Manager);
+            self.lords_address.write(erc20_address);
+            self.staking_address.write(staking_address);
             self.price_pairs.write(erc20_address, price_pair);
         }
 

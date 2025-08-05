@@ -2053,7 +2053,7 @@
     },
     {
       "address": "0x674562426ddac305e5c53ed51004b7fce77bde3dc9a1ce562e1f6093e4f33c6",
-      "class_hash": "0x31403399e8c4314865967a646870f6bb90e69cd748b61714b4307615ff422f9",
+      "class_hash": "0x2af359cad6b12322cb6c0deb34f017a273f26378826c5b70c1cec9d67c69f20",
       "abi": [
         {
           "type": "impl",
@@ -3114,6 +3114,26 @@
             },
             {
               "type": "function",
+              "name": "set_lords_token",
+              "inputs": [
+                {
+                  "name": "erc20_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "staking_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "price_pair",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
               "name": "set_token_micro_usd_price",
               "inputs": [
                 {
@@ -3309,6 +3329,7 @@
         "set_unlockable_games",
         "set_pragma_contract_address",
         "set_price_pair",
+        "set_lords_token",
         "set_token_micro_usd_price",
         "set_wallet_address",
         "set_max_respawns",

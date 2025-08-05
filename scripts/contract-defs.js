@@ -28,3 +28,4 @@ export const setUnlockableGamesEntrypoint = "set_unlockable_games";
 export const setMaxRespawnsEntrypoint = "set_max_respawns";
 export const setGameEnergyCostEntrypoint = "set_game_energy_cost";
 export const setTimeLimitEntrypoint = "set_time_limit";
+export const setLordsEntrypoint = "set_lords_token";

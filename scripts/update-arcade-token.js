@@ -9,6 +9,7 @@ import {
   setPricePairEntrypoint,
   setTokenMicroUsdPriceEntrypoint,
   setWalletAddressEntrypoint,
+  setLordsEntrypoint,
 } from "./contract-defs.js";
 
 export const makeArcadeTokenCalls = async (account_manifest) => {
@@ -34,6 +35,10 @@ export const makeArcadeTokenCalls = async (account_manifest) => {
       wallet_address: arcadeTokenData.wallet_address,
     }),
     { description: `Wallet Address` },
+  ]);
+  calls.push([
+    contract.populate(setLordsEntrypoint, arcadeTokenData.lords),
+    { description: `Lords Token Address` },
   ]);
   for (const [token, data] of Object.entries(
     arcadeTokenData.price_pairs || {}
