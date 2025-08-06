@@ -67,7 +67,7 @@ mod classic_arcade {
     use core::num::traits::Zero;
     use core::panic_with_const_felt252;
     use core::poseidon::poseidon_hash_span;
-    use sai_access::{AccessTrait, access_component};
+    use sai_ownable::{OwnableTrait, ownable_component};
     use sai_token::erc721::erc721_owner_of;
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePathEntry,
@@ -77,7 +77,7 @@ mod classic_arcade {
     use super::{IClassicArcade, IClassicArcadeAdmin, IdTagAttack, Opponent, OpponentInput, errors};
 
 
-    component!(path: access_component, storage: access, event: AccessEvents);
+    component!(path: ownable_component, storage: ownable, event: OwnableEvents);
 
     const ROUND_HASH: felt252 = bytearrays_hash!("classic_arcade", "ArcadeRound");
     const ATTEMPT_HASH: felt252 = bytearrays_hash!("classic_arcade", "ArcadeAttempt");
@@ -92,7 +92,7 @@ mod classic_arcade {
     #[storage]
     struct Storage {
         #[substorage(v0)]
-        access: access_component::Storage,
+        ownable: ownable_component::Storage,
         attack_contract: ContractAddress,
         attempts: Map<felt252, AttemptNode>,
         opponents: Map<u32, Opponent>,
@@ -108,7 +108,7 @@ mod classic_arcade {
     #[derive(Drop, starknet::Event)]
     enum Event {
         #[flat]
-        AccessEvents: access_component::Event,
+        OwnableEvents: ownable_component::Event,
     }
 
     #[constructor]
@@ -128,7 +128,7 @@ mod classic_arcade {
     }
 
     #[abi(embed_v0)]
-    impl IAccessImpl = access_component::AccessImpl<ContractState>;
+    impl IOwnableImpl = ownable_component::OwnableImpl<ContractState>;
 
     #[abi(embed_v0)]
     impl IClassicArcadeImpl of IClassicArcade<ContractState> {
@@ -228,7 +228,7 @@ mod classic_arcade {
     #[abi(embed_v0)]
     impl IClassicArcadeAdminImpl of IClassicArcadeAdmin<ContractState> {
         fn set_opponents(ref self: ContractState, opponents: Array<OpponentInput>) {
-            self.assert_caller_is_writer();
+            self.assert_caller_is_owner();
             self.stages_len.write(opponents.len());
             let mut attacks: Array<IdTagAttack> = Default::default();
             for opponent in opponents.span() {
@@ -250,17 +250,17 @@ mod classic_arcade {
         }
 
         fn set_max_respawns(ref self: ContractState, max_respawns: u32) {
-            self.assert_caller_is_writer();
+            self.assert_caller_is_owner();
             self.max_respawns.write(max_respawns);
         }
 
         fn set_time_limit(ref self: ContractState, time_limit: u64) {
-            self.assert_caller_is_writer();
+            self.assert_caller_is_owner();
             self.time_limit.write(time_limit);
         }
 
         fn set_health_regen_permille(ref self: ContractState, health_regen_permille: u32) {
-            self.assert_caller_is_writer();
+            self.assert_caller_is_owner();
             assert(health_regen_permille <= 1000, 'Health regen must be <= 1000');
             self.health_regen_permille.write(health_regen_permille);
         }

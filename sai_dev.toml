@@ -9,9 +9,18 @@ contract_address = "0x0"
 [declare]
 arena_blobert = {}
 arena_blobert_minter = {}
+amma_blobert = {}
+amma_blobert_soulbound = {}
+amma_blobert_minter = {}
 attack = {}
 arena_blobert_loadout = {}
 classic_arcade = {}
 
 [variables]
 arena_contracts = []
+
+[writers]
+arena_blobert = "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
+amma_blobert = [
+    "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
+]

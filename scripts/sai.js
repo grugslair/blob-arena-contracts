@@ -115,22 +115,23 @@ export class SaiProject {
     name,
     directoryPath,
     targetPath,
-    { declare, deploy, classes, contracts, variables },
+    profile_config,
     transactionDetails
   ) {
+    this.profile_config = profile_config;
     this.name = name;
     this.profile = profile;
     this.declarations = {};
     this.deployments = {};
-    this.declare = declare || {};
-    this.deploy = deploy || {};
-    this.classes = classes || {};
-    this.contracts = contracts || {};
+    this.declare = profile_config.declare || {};
+    this.deploy = profile_config.deploy || {};
+    this.classes = profile_config.classes || {};
+    this.contracts = profile_config.contracts || {};
     this.account = account;
     this.directoryPath = directoryPath || process.cwd();
     this.targetPath = targetPath || `${directoryPath}/target/${profile}`;
     this.transactionDetails = transactionDetails;
-    this.variables = variables || {};
+    this.variables = profile_config.variables || {};
   }
 
   loadManifest(path) {
@@ -253,6 +254,44 @@ export class SaiProject {
       ...data,
     }));
     await this.deployContract(contractList);
+  }
+
+  async grantWritersCalls() {
+    return await Promise.all(
+      Object.entries(this.profile_config.writers).map(
+        async ([tag, writers]) => {
+          const contract = await this.getContract(tag);
+          if (Array.isArray(writers)) {
+            return contract.populate("grant_contract_writers", {
+              writers,
+            });
+          } else {
+            return contract.populate("grant_contract_writer", {
+              writer: writers,
+            });
+          }
+        }
+      )
+    );
+  }
+
+  async grantOwnersCalls() {
+    return await Promise.all(
+      Object.entries(this.profile_config.owners || {}).map(
+        async ([tag, owners]) => {
+          const contract = await this.getContract(tag);
+          if (Array.isArray(owners)) {
+            return contract.populate("grant_contract_owners", {
+              owners,
+            });
+          } else {
+            return contract.populate("grant_contract_owner", {
+              owner: owners,
+            });
+          }
+        }
+      )
+    );
   }
 }
 

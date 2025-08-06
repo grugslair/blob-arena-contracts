@@ -37,6 +37,7 @@ beacon_entity = { path = "../../../sai/torii-beacon" }
 beacon_macros = { path = "../../../sai/torii-beacon" }
 beacon_library = { path = "../../../sai/torii-beacon" }
 sai_access = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
+sai_ownable = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
 sai_token = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
 sai_core_utils = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
 sai_emit_return = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
@@ -78,13 +79,15 @@ ba_amma_arcade.path = "packages/amma_arcade"
 sierra = true
 casm = true
 build-external-contracts = [
-    "amma_blobert::amma_blobert",
+    "amma_blobert::collectable::amma_blobert",
+    "amma_blobert::soulbound::amma_blobert_soulbound",
+    "amma_blobert::minter::amma_blobert_minter",
     "arena_blobert::arena_blobert",
     "arena_blobert::minter::arena_blobert_minter",
-    "ba_classic_arcade::contract::classic_arcade",
     "ba_loadout::attack::contract::attack",
-    # "ba_loadout::amma_contract::amma_blobert_loadout",
+    "ba_loadout::amma_contract::amma_blobert_loadout",
     "ba_loadout::arena_contract::arena_blobert_loadout",
+    "ba_classic_arcade::contract::classic_arcade",
 ]
 
 [tool]

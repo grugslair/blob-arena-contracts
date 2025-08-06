@@ -17,7 +17,7 @@ pub trait IAmmaBlobert<TContractState> {
 #[starknet::interface]
 pub trait IAmmaBlobertAdmin<TContractState> {
     fn set_n_fighters(ref self: TContractState, number_of_fighters: u32);
-    fn mint(ref self: TContractState, owner: ContractAddress, fighter: u32);
+    fn mint(ref self: TContractState, owner: ContractAddress, fighter: u32) -> u256;
 }
 
 pub fn get_amount_of_fighters(collection: ContractAddress) -> u32 {
@@ -26,6 +26,10 @@ pub fn get_amount_of_fighters(collection: ContractAddress) -> u32 {
 
 pub fn get_fighter(collection: ContractAddress, token_id: u256) -> u32 {
     IAmmaBlobertDispatcher { contract_address: collection }.fighter(token_id)
+}
+
+pub fn mint_fighter(collection: ContractAddress, owner: ContractAddress, fighter: u32) -> u256 {
+    IAmmaBlobertAdminDispatcher { contract_address: collection }.mint(owner, fighter)
 }
 
 #[derive(Drop, Serde, Introspect)]
@@ -129,9 +133,9 @@ mod amma_blobert {
             self.number_of_fighters.write(number_of_fighters);
         }
 
-        fn mint(ref self: ContractState, owner: ContractAddress, fighter: u32) {
+        fn mint(ref self: ContractState, owner: ContractAddress, fighter: u32) -> u256 {
             self.assert_caller_is_writer();
-            self.mint_internal(owner, fighter);
+            self.mint_internal(owner, fighter)
         }
     }
 

@@ -2,7 +2,7 @@ use starknet::ContractAddress;
 
 #[starknet::interface]
 pub trait IAmmaBlobertSoulboundAdmin<TContractState> {
-    fn mint(ref self: TContractState, owner: ContractAddress, fighter: u32);
+    fn mint(ref self: TContractState, owner: ContractAddress, fighter: u32) -> u256;
 }
 
 #[starknet::contract]
@@ -95,9 +95,9 @@ mod amma_blobert_soulbound {
 
     #[abi(embed_v0)]
     impl IAmmaBlobertSoulboundAdminImpl of IAmmaBlobertSoulboundAdmin<ContractState> {
-        fn mint(ref self: ContractState, owner: ContractAddress, fighter: u32) {
+        fn mint(ref self: ContractState, owner: ContractAddress, fighter: u32) -> u256 {
             self.assert_caller_is_writer();
-            self.mint_internal(owner, fighter);
+            self.mint_internal(owner, fighter)
         }
     }
 

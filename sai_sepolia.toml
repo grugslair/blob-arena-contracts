@@ -10,11 +10,29 @@ contract_address = "0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578
 [declare]
 arena_blobert = {}
 arena_blobert_minter = {}
-# amma_blobert = {}
+amma_blobert = {}
+amma_blobert_soulbound = {}
+amma_blobert_minter = {}
 attack = {}
-# amma_blobert_loadout = {}
 arena_blobert_loadout = {}
 classic_arcade = {}
 
+
 [variables]
 arena_contracts = []
+
+[writers]
+arena_blobert = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+amma_blobert = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+amma_blobert_soulbound = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+arena_blobert_loadout = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+classic_arcade = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+
+[owners]
+arena_blobert = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+arena_blobert_minter = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+amma_blobert = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+amma_blobert_soulbound = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+attack = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+arena_blobert_loadout = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+classic_arcade = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"

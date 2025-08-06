@@ -5,13 +5,18 @@ use crate::attack::IdTagAttack;
 struct FighterInput {
     fighter: u32,
     abilities: Abilities,
+    gen_abilities: Abilities,
     attacks: Array<IdTagAttack>,
 }
 
 #[starknet::interface]
 pub trait IAmmaBlobertLoadout<TContractState> {
     fn set_fighter(
-        ref self: TContractState, fighter: u32, abilities: Abilities, attacks: Array<IdTagAttack>,
+        ref self: TContractState,
+        fighter: u32,
+        abilities: Abilities,
+        gen_abilities: Abilities,
+        attacks: Array<IdTagAttack>,
     );
 
     fn set_fighters(ref self: TContractState, loadouts: Array<FighterInput>);
@@ -34,6 +39,12 @@ struct AttackSlot {
     attack: felt252,
 }
 
+#[derive(Drop, Serde, Introspect)]
+struct FighterAbilities {
+    abilities: Abilities,
+    gen_abilities: Abilities,
+}
+
 #[starknet::contract]
 mod amma_blobert_loadout {
     use amma_blobert::get_fighter;
@@ -49,7 +60,7 @@ mod amma_blobert_loadout {
     use crate::ability::Abilities;
     use crate::attack::{IAttackAdminDispatcher, IAttackAdminDispatcherTrait, IdTagAttack};
     use crate::interface::ILoadout;
-    use super::{AttackSlot, FighterInput, IAmmaBlobertLoadout};
+    use super::{AttackSlot, FighterAbilities, FighterInput, IAmmaBlobertLoadout};
 
     component!(path: access_component, storage: access, event: AccessEvents);
 
@@ -95,7 +106,9 @@ mod amma_blobert_loadout {
         self
             .attack_dispatcher
             .write(IAttackAdminDispatcher { contract_address: attack_dispatcher_address });
-        register_table_with_schema::<Abilities>("amma_blobert_loadout", "AmmaBlobertAbility");
+        register_table_with_schema::<
+            FighterAbilities,
+        >("amma_blobert_loadout", "AmmaBlobertAbility");
         register_table_with_schema::<AttackSlot>("amma_blobert_loadout", "AmmaBlobertAttackSlot");
     }
 
@@ -147,6 +160,7 @@ mod amma_blobert_loadout {
             ref self: ContractState,
             fighter: u32,
             abilities: Abilities,
+            gen_abilities: Abilities,
             attacks: Array<IdTagAttack>,
         ) {
             self.assert_caller_is_writer();
@@ -154,7 +168,8 @@ mod amma_blobert_loadout {
             let mut attack_dispatcher = self.attack_dispatcher.read();
             let attack_ids = attack_dispatcher.maybe_create_attacks(attacks);
             self.abilities.write(fighter, abilities);
-            AbilityTable::set_entity(fighter, @abilities);
+            self.gen_abilities.write(fighter, gen_abilities);
+            AbilityTable::set_entity(fighter, @(abilities, gen_abilities));
             self.clip_attack_slot_slots(fighter, attack_ids.len());
 
             for (slot, attack_id) in attack_ids.into_iter().enumerate() {
@@ -168,9 +183,10 @@ mod amma_blobert_loadout {
             self.assert_caller_is_writer();
             let mut all_attacks: Array<IdTagAttack> = Default::default();
             let mut indexes: Array<(u32, u32)> = Default::default();
-            for FighterInput { fighter, abilities, attacks } in loadouts {
+            for FighterInput { fighter, abilities, attacks, gen_abilities } in loadouts {
                 self.abilities.write(fighter, abilities);
-                AbilityTable::set_entity(fighter, @abilities);
+                self.gen_abilities.write(fighter, gen_abilities);
+                AbilityTable::set_entity(fighter, @(abilities, gen_abilities));
                 self.clip_attack_slot_slots(fighter, attacks.len());
                 for (i, attack) in attacks.into_iter().enumerate() {
                     all_attacks.append(attack);

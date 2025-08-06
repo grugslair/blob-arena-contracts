@@ -51,8 +51,8 @@ mod arena_blobert_loadout {
     };
     use beacon_library::{ToriiTable, register_table_with_schema};
     use core::num::traits::Zero;
-    use sai_access::{AccessTrait, access_component};
     use sai_core_utils::poseidon_serde::PoseidonSerde;
+    use sai_ownable::{OwnableTrait, ownable_component};
     use starknet::ContractAddress;
     use starknet::storage::{
         Map, Mutable, StorageBase, StorageMapReadAccess, StorageMapWriteAccess,
@@ -63,7 +63,7 @@ mod arena_blobert_loadout {
     use crate::interface::ILoadout;
     use super::{AttackSlot, BlobertAbilities, IArenaBlobertLoadout, IdTagAttack, LoadoutInput};
 
-    component!(path: access_component, storage: access, event: AccessEvents);
+    component!(path: ownable_component, storage: ownable, event: OwnableEvents);
 
     const ABILITY_TABLE_ID: felt252 = bytearrays_hash!(
         "arena_blobert_loadout", "ArenaBlobertAbility",
@@ -78,7 +78,7 @@ mod arena_blobert_loadout {
     #[storage]
     struct Storage {
         #[substorage(v0)]
-        access: access_component::Storage,
+        ownable: ownable_component::Storage,
         collection_addresses: Map<ContractAddress, bool>,
         attack_dispatcher: IAttackAdminDispatcher,
         seed_attack_slots: Map<felt252, felt252>,
@@ -91,7 +91,7 @@ mod arena_blobert_loadout {
     #[derive(Drop, starknet::Event)]
     enum Event {
         #[flat]
-        AccessEvents: access_component::Event,
+        OwnableEvents: ownable_component::Event,
     }
 
     #[constructor]
@@ -115,7 +115,7 @@ mod arena_blobert_loadout {
     }
 
     #[abi(embed_v0)]
-    impl IAccessImpl = access_component::AccessImpl<ContractState>;
+    impl IOwnableImpl = ownable_component::OwnableImpl<ContractState>;
 
     #[abi(embed_v0)]
     impl ILoadoutImpl of ILoadout<ContractState> {
@@ -171,7 +171,7 @@ mod arena_blobert_loadout {
             abilities: Abilities,
             attacks: Array<IdTagAttack>,
         ) {
-            self.assert_caller_is_writer();
+            self.assert_caller_is_owner();
             let hash = key.poseidon_hash();
             self.get_abilities_ptr(key).write(hash, abilities);
 
@@ -188,14 +188,14 @@ mod arena_blobert_loadout {
         }
 
         fn set_loadouts(ref self: ContractState, loadouts: Array<LoadoutInput>) {
-            self.assert_caller_is_writer();
+            self.assert_caller_is_owner();
             let mut all_attacks: Array<IdTagAttack> = Default::default();
             let mut indexes: Array<
                 (StorageBase<Mutable<Map<felt252, felt252>>>, BlobertAttribute, u32, felt252, u32),
             > =
                 Default::default();
             for LoadoutInput { key, name: _, abilities, attacks } in loadouts {
-                self.assert_caller_is_writer();
+                self.assert_caller_is_owner();
                 let hash = key.poseidon_hash();
 
                 let (mut abilities_ptr, mut attacks_ptr) = self.get_loadout_ptrs(key);

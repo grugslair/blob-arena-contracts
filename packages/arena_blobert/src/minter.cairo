@@ -54,7 +54,7 @@ mod arena_blobert_minter {
     use ba_blobert::TokenAttributes;
     use ba_utils::uuid;
     use beacon_library::{ToriiTable, register_table_with_schema};
-    use sai_access::{AccessTrait, access_component};
+    use sai_ownable::{OwnableTrait, ownable_component};
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
         StoragePointerWriteAccess,
@@ -65,7 +65,7 @@ mod arena_blobert_minter {
         IArenaBlobertDispatcherTrait, LastMint, generate_seed,
     };
 
-    component!(path: access_component, storage: access, event: AccessEvents);
+    component!(path: ownable_component, storage: ownable, event: OwnableEvents);
 
     const LAST_MINT_TABLE_ID: felt252 = bytearrays_hash!("arena_blobert", "LastMint");
     impl LastMintTable = ToriiTable<LAST_MINT_TABLE_ID>;
@@ -73,7 +73,7 @@ mod arena_blobert_minter {
     #[storage]
     struct Storage {
         #[substorage(v0)]
-        access: access_component::Storage,
+        ownable: ownable_component::Storage,
         token_contract: IArenaBlobertDispatcher,
         last_mint: Map<ContractAddress, u64>,
         min_mint_time: u64,
@@ -84,7 +84,7 @@ mod arena_blobert_minter {
     #[derive(Drop, starknet::Event)]
     enum Event {
         #[flat]
-        AccessEvents: access_component::Event,
+        OwnableEvents: ownable_component::Event,
     }
 
     #[constructor]
@@ -98,7 +98,7 @@ mod arena_blobert_minter {
 
 
     #[abi(embed_v0)]
-    impl IAccessImpl = access_component::AccessImpl<ContractState>;
+    impl IOwnableImpl = ownable_component::OwnableImpl<ContractState>;
 
     #[abi(embed_v0)]
     impl IArcadeBlobertMinterImpl of IArcadeBlobertMinter<ContractState> {
@@ -127,11 +127,11 @@ mod arena_blobert_minter {
     #[abi(embed_v0)]
     impl IArcadeBlobertMinterAdminImpl of IArcadeBlobertMinterAdmin<ContractState> {
         fn set_min_mint_time(ref self: ContractState, min_mint_time: u64) {
-            self.access.caller_is_owner();
+            self.ownable.caller_is_owner();
             self.min_mint_time.write(min_mint_time);
         }
         fn set_max_bloberts(ref self: ContractState, max_bloberts: u32) {
-            self.access.caller_is_owner();
+            self.ownable.caller_is_owner();
             self.max_bloberts.write(max_bloberts);
         }
     }
