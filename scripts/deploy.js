@@ -49,7 +49,7 @@ await sai.deployContract([
     salt,
     unique: false,
     calldata: {
-      token_address: sai.contracts["amma_blobert"].contract_address,
+      token_address: sai.contracts["amma_blobert_soulbound"].contract_address,
     },
   },
   {
@@ -87,6 +87,12 @@ await sai.executeAndWait([
   ).populate("grant_contract_writer", {
     writer: sai.deployments["arena_blobert_minter"].contract_address,
   }),
+  (
+    await sai.getContract("amma_blobert_soulbound")
+  ).populate("grant_contract_writer", {
+    writer: sai.deployments["amma_blobert_minter"].contract_address,
+  }),
+
   (
     await sai.getContract("attack")
   ).populate("grant_contract_writers", {
