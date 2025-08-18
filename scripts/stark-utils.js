@@ -16,7 +16,7 @@ import commandLineArgs from "command-line-args";
 import * as fs from "fs";
 import * as path from "path";
 import * as accounts from "web3-eth-accounts";
-import { parse as parseTomlString } from "smol-toml";
+import TOML from "smol-toml";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = process.cwd();
@@ -31,12 +31,16 @@ export const loadJson = (path) => {
   return JSON.parse(fs.readFileSync(resolvePath(path)));
 };
 
-export const dumpJson = (path, data) => {
+export const dumpJson = (data, path) => {
   fs.writeFileSync(resolvePath(path), JSON.stringify(data, null, 2));
 };
 
 export const loadToml = (path) => {
-  return parseTomlString(fs.readFileSync(resolvePath(path), "utf8"));
+  return TOML.parse(fs.readFileSync(resolvePath(path), "utf8"));
+};
+
+export const dumpToml = (data, path) => {
+  fs.writeFileSync(resolvePath(path), TOML.stringify(data));
 };
 
 export const resolvePath = (rpath) => {

@@ -136,7 +136,7 @@ export class SaiProject {
 
   loadManifest(path) {
     const manifestPath =
-      path || `${this.directoryPath}/sai_manifest_${this.profile}.json`;
+      path || `${this.directoryPath}/manifest_${this.profile}.json`;
     console.log(`Reading SAI profile: ${this.profile} from ${manifestPath}`);
     const manifest = loadJson(manifestPath);
     this.deployments = { ...this.deployments, ...(manifest.deployments || {}) };
@@ -149,16 +149,19 @@ export class SaiProject {
     return this;
   }
 
-  dumpJson(path) {
+  dumpManifest(path) {
     const dumpPath =
-      path || `${this.directoryPath}/sai_manifest_${this.profile}.json`;
+      path || `${this.directoryPath}/manifest_${this.profile}.json`;
     console.log(`Dumping SAI profile: ${this.profile} to ${dumpPath}`);
-    dumpJson(dumpPath, {
-      deployments: this.deployments,
-      classes: this.classes,
-      contracts: this.contracts,
-      declarations: this.declarations,
-    });
+    dumpJson(
+      {
+        deployments: this.deployments,
+        classes: this.classes,
+        contracts: this.contracts,
+        declarations: this.declarations,
+      },
+      dumpPath
+    );
   }
 
   async declareClass(tag, { name, contract_path, casm_path } = {}) {
