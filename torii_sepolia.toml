@@ -1,18 +1,14 @@
-# The World address to index.
-world_address = "0x5300c119eda3fe244edebf229996bcaf357c50840c5013b6f7c6522d21d084e"
-
-# Default RPC URL configuration
 rpc = "https://starknet-sepolia.public.blastapi.io/rpc/v0_8"
-
-# Database configuration
-# Optional: If not specified, uses in-memory database
-db_dir = "~/database/sepolia"
+db_dir = "~/ba-database/sepolia"
 
 [indexing]
 contracts = [
-    "erc721-world:0x250a4cbb0a47265a4a41f10ecbaea14b1e7066e3441a1e7ae92910c6600b787",
-    "erc721-world:0x660660e39c015d292edab0ddf8b640088fd3337a29af2deca705cfd6f665cae",
-    "contract:0xb2f93b5f07fb9660a0409591f276a3588bff95d0908332415ac6d4eb1d21a6",
-    "contract:0x3fabc7db10e23e559f851fd02584b6389c520aaef497afc33502957847661e",
-    "contract:0x730088457ad8424675fe28ceeb2c48b731aa35ac2b87a5471ca4c7ac8736f6",
+    "erc721-world:0x39e74b3c115ad4afed68060f658f12cade8a694df7ae92c331aca0eb7cdb5de",
+    "erc721-world:0x365b3ad4a5bf5f72c5cffa5b68fe0d7a067590e8bea87850609a2dfd25c46c6",
+    "erc721-world:0x3a8e1db455e67650078c4f99395846939613aebc8bdb597cf8a208c6bb75e6a",
+    "contract:0x1f1ab4042cd58336ba2e94a002641343a36ee92190aaeffaeae890b17f3ef4f",
+    "contract:0x7aae0de3954b53a67646ba9fdf32e31fe28223495e3299d7950eb4f8929cc5f",
+    "contract:0x7dce84a4cfcf511e92ee8b4fc253a2cff0523d41f0d8658b01d25ef2ae70da9",
+    "contract:0x5bdea85748252aac171f4880bb41f035c0842cd058de8749540c90f270b7fe4",
+    "contract:0x50569f1c55aa24e9c878ced9e71f3079e8238a4bb6c7a68b81f93e26b4b88f",
 ]

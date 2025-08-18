@@ -3,120 +3,120 @@
     "arena_blobert": {
       "tag": "arena_blobert",
       "class": "arena_blobert",
-      "salt": "0x79c8167160b269ad38c92e5d8061f01138a0a118c2990321d169da9d82af9e6",
+      "salt": "0x70f548c0e6d2be1d7214830f0a4f613bb3c920d87f4a6b61e9a71d15d9d1607",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd"
       },
-      "class_hash": "0x79d7d7b758026cf46e2e73577fcb3be12b11f1cba9d345f1fd2949c1166f5a8",
-      "contract_address": "0x7178ecdf7f0fa8c476af93cad305e7b3296f0913823c646a3da47a18d4c3701",
+      "class_hash": "0x65c960474c4a763613160253c12c970d481aca45e151279eff95c6969667a1a",
+      "contract_address": "0x39e74b3c115ad4afed68060f658f12cade8a694df7ae92c331aca0eb7cdb5de",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x2a05042dcfc9d15b5096ed25870ec2125898a1babfa4ba6b393f013f3df8b9f"
+      "transaction_hash": "0x61c27bed88f4342d94bfded503585fecbfe70f6ee4a002e10f0570cba05a7ba"
     },
     "amma_blobert": {
       "tag": "amma_blobert",
       "class": "amma_blobert",
-      "salt": "0x79c8167160b269ad38c92e5d8061f01138a0a118c2990321d169da9d82af9e6",
+      "salt": "0x70f548c0e6d2be1d7214830f0a4f613bb3c920d87f4a6b61e9a71d15d9d1607",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd"
       },
-      "class_hash": "0x2218a747b23c2d3bdd50ea9189ff0a7a638f024af98fd244b92c94b537672c0",
-      "contract_address": "0x26e7a90a400bc782b803de0d7c914c2440e7ad8832332b889efc821c7b11b66",
+      "class_hash": "0x255cf11d3158e105d26f9fdd16b160d67e86d25b11b7ef0306473a293d952a1",
+      "contract_address": "0x365b3ad4a5bf5f72c5cffa5b68fe0d7a067590e8bea87850609a2dfd25c46c6",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x2a05042dcfc9d15b5096ed25870ec2125898a1babfa4ba6b393f013f3df8b9f"
+      "transaction_hash": "0x61c27bed88f4342d94bfded503585fecbfe70f6ee4a002e10f0570cba05a7ba"
     },
     "attack": {
       "tag": "attack",
       "class": "attack",
-      "salt": "0x79c8167160b269ad38c92e5d8061f01138a0a118c2990321d169da9d82af9e6",
+      "salt": "0x70f548c0e6d2be1d7214830f0a4f613bb3c920d87f4a6b61e9a71d15d9d1607",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd"
       },
-      "class_hash": "0x59a3146b2c949d79c8c914604914fa3187d1d72cc23cda409808c98ec6195c3",
-      "contract_address": "0x53ac286d1ced8ff531d732ab4df7aced0a2be0c848c755c31881300628c59fc",
+      "class_hash": "0x3af1e7936ebd63c7725cb9f77811439da9a033138ae804964438a904b19b0b1",
+      "contract_address": "0x5bdea85748252aac171f4880bb41f035c0842cd058de8749540c90f270b7fe4",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x2a05042dcfc9d15b5096ed25870ec2125898a1babfa4ba6b393f013f3df8b9f"
+      "transaction_hash": "0x61c27bed88f4342d94bfded503585fecbfe70f6ee4a002e10f0570cba05a7ba"
     },
     "arena_blobert_minter": {
       "tag": "arena_blobert_minter",
       "class": "arena_blobert_minter",
-      "salt": "0x79c8167160b269ad38c92e5d8061f01138a0a118c2990321d169da9d82af9e6",
+      "salt": "0x70f548c0e6d2be1d7214830f0a4f613bb3c920d87f4a6b61e9a71d15d9d1607",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-        "token_address": "0x7178ecdf7f0fa8c476af93cad305e7b3296f0913823c646a3da47a18d4c3701"
+        "token_address": "0x39e74b3c115ad4afed68060f658f12cade8a694df7ae92c331aca0eb7cdb5de"
       },
-      "class_hash": "0x30f9d3938916326ad7e9492489f23309e0b190b94979f76855f90a40b63e839",
-      "contract_address": "0x3ce4de8a11a866971f145c035aec975630cb441b738e06f2f2c758f2bad9219",
+      "class_hash": "0x155c20ef870bb4ebc33d9d59c4dabb6bd99ecfe00c15958adbf5c1962acd3f5",
+      "contract_address": "0x1f1ab4042cd58336ba2e94a002641343a36ee92190aaeffaeae890b17f3ef4f",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x112666f40d0d5e248a296cb9a083a461029c44046c3f15e3fca346c0c034499"
+      "transaction_hash": "0x57330f55eaf24295f14376a4c821f2100b993204beb22d52527e8346de64fa3"
     },
     "amma_blobert_soulbound": {
       "tag": "amma_blobert_soulbound",
       "class": "amma_blobert_soulbound",
-      "salt": "0x79c8167160b269ad38c92e5d8061f01138a0a118c2990321d169da9d82af9e6",
+      "salt": "0x70f548c0e6d2be1d7214830f0a4f613bb3c920d87f4a6b61e9a71d15d9d1607",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-        "collectable_address": "0x26e7a90a400bc782b803de0d7c914c2440e7ad8832332b889efc821c7b11b66"
+        "collectable_address": "0x365b3ad4a5bf5f72c5cffa5b68fe0d7a067590e8bea87850609a2dfd25c46c6"
       },
-      "class_hash": "0x46ab535cb2ba71f647ea8d805c6f802465efc4a6565910a26a36f331fcc0ac0",
-      "contract_address": "0x5064ada1d587889d237ab5f247f084977b32cfff62d5dc3f93c53a1df6716cd",
+      "class_hash": "0x3a717266d538a77d6aea60279fcc0836308d5b3ad8f009ae05fed0f02abfecb",
+      "contract_address": "0x3a8e1db455e67650078c4f99395846939613aebc8bdb597cf8a208c6bb75e6a",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x112666f40d0d5e248a296cb9a083a461029c44046c3f15e3fca346c0c034499"
-    },
-    "amma_blobert_minter": {
-      "tag": "amma_blobert_minter",
-      "class": "amma_blobert_minter",
-      "salt": "0x426bf1f94d948569bc7bd3d1bcb864481f1196a5d11cad20931882513b403f1",
-      "unique": false,
-      "calldata": {
-        "token_address": "0x5064ada1d587889d237ab5f247f084977b32cfff62d5dc3f93c53a1df6716cd"
-      },
-      "class_hash": "0x4426646131b497a6636da4b71e335d643734ecfb687c036da1f328b278f459b",
-      "contract_address": "0x53a839b2a8a46d2a0d2f1500fa0893c32d33b1af3b1f4100c7d54e7bc47366d",
-      "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x617ffbec7552d5ff72fcb053cf1faa29c0c3b9b0a5c976c6d6025f8fd3644a3"
+      "transaction_hash": "0x57330f55eaf24295f14376a4c821f2100b993204beb22d52527e8346de64fa3"
     },
     "arena_blobert_loadout": {
       "tag": "arena_blobert_loadout",
       "class": "arena_blobert_loadout",
-      "salt": "0x79c8167160b269ad38c92e5d8061f01138a0a118c2990321d169da9d82af9e6",
+      "salt": "0x70f548c0e6d2be1d7214830f0a4f613bb3c920d87f4a6b61e9a71d15d9d1607",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-        "attack_dispatcher_address": "0x53ac286d1ced8ff531d732ab4df7aced0a2be0c848c755c31881300628c59fc",
+        "attack_dispatcher_address": "0x5bdea85748252aac171f4880bb41f035c0842cd058de8749540c90f270b7fe4",
         "collection_addresses": [
-          "0x7178ecdf7f0fa8c476af93cad305e7b3296f0913823c646a3da47a18d4c3701",
+          "0x39e74b3c115ad4afed68060f658f12cade8a694df7ae92c331aca0eb7cdb5de",
           "0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578d0549d"
         ]
       },
-      "class_hash": "0x3f8beb8f45e9ea26423537e869f41649e7745766e218050dd6309fa8cb384c9",
-      "contract_address": "0x3c5917702f59ba246f1c935625ea30c245d664099298e793e2076e3eb0b508e",
+      "class_hash": "0x5b1ee390555612f76220b131d2c8f78e18f0e722589d4f0d045140c610b9ec4",
+      "contract_address": "0x7dce84a4cfcf511e92ee8b4fc253a2cff0523d41f0d8658b01d25ef2ae70da9",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x112666f40d0d5e248a296cb9a083a461029c44046c3f15e3fca346c0c034499"
+      "transaction_hash": "0x57330f55eaf24295f14376a4c821f2100b993204beb22d52527e8346de64fa3"
+    },
+    "amma_blobert_minter": {
+      "tag": "amma_blobert_minter",
+      "class": "amma_blobert_minter",
+      "salt": "0x70f548c0e6d2be1d7214830f0a4f613bb3c920d87f4a6b61e9a71d15d9d1607",
+      "unique": false,
+      "calldata": {
+        "token_address": "0x3a8e1db455e67650078c4f99395846939613aebc8bdb597cf8a208c6bb75e6a"
+      },
+      "class_hash": "0x4426646131b497a6636da4b71e335d643734ecfb687c036da1f328b278f459b",
+      "contract_address": "0x7aae0de3954b53a67646ba9fdf32e31fe28223495e3299d7950eb4f8929cc5f",
+      "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
+      "transaction_hash": "0x2c07a6188e9e9fd5d2759129fdbcf9102821f53da9457ea0e0fef1b3bde5734"
     },
     "classic_arcade": {
       "tag": "classic_arcade",
       "class": "classic_arcade",
-      "salt": "0x79c8167160b269ad38c92e5d8061f01138a0a118c2990321d169da9d82af9e6",
+      "salt": "0x70f548c0e6d2be1d7214830f0a4f613bb3c920d87f4a6b61e9a71d15d9d1607",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-        "attack_contract": "0x53ac286d1ced8ff531d732ab4df7aced0a2be0c848c755c31881300628c59fc",
-        "loadout_contract": "0x3c5917702f59ba246f1c935625ea30c245d664099298e793e2076e3eb0b508e"
+        "attack_contract": "0x5bdea85748252aac171f4880bb41f035c0842cd058de8749540c90f270b7fe4",
+        "loadout_contract": "0x7dce84a4cfcf511e92ee8b4fc253a2cff0523d41f0d8658b01d25ef2ae70da9"
       },
-      "class_hash": "0x54938f1f4037dffd0823f3976444793b20e7fcf1996ee257b8db32ea7114e93",
-      "contract_address": "0x13be8d6882401e69b4a58ac2622a7599e68d41be31866d14ca9c08df096ccaa",
+      "class_hash": "0x30e0f9853486aa453fc2bdd69141a7005300060d58de411a3adb21e91b71b31",
+      "contract_address": "0x50569f1c55aa24e9c878ced9e71f3079e8238a4bb6c7a68b81f93e26b4b88f",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x363363d3f16acf6ff4447906ccca3187ec38d3dd8038663f97e588cb50e777c"
+      "transaction_hash": "0x2c07a6188e9e9fd5d2759129fdbcf9102821f53da9457ea0e0fef1b3bde5734"
     }
   },
   "classes": {
     "arena_blobert": {
-      "class_hash": "0x79d7d7b758026cf46e2e73577fcb3be12b11f1cba9d345f1fd2949c1166f5a8",
+      "class_hash": "0x65c960474c4a763613160253c12c970d481aca45e151279eff95c6969667a1a",
       "abi": [
         {
           "type": "impl",
@@ -1041,7 +1041,7 @@
       ]
     },
     "arena_blobert_minter": {
-      "class_hash": "0x30f9d3938916326ad7e9492489f23309e0b190b94979f76855f90a40b63e839",
+      "class_hash": "0x155c20ef870bb4ebc33d9d59c4dabb6bd99ecfe00c15958adbf5c1962acd3f5",
       "abi": [
         {
           "type": "impl",
@@ -1289,7 +1289,7 @@
       ]
     },
     "amma_blobert": {
-      "class_hash": "0x2218a747b23c2d3bdd50ea9189ff0a7a638f024af98fd244b92c94b537672c0",
+      "class_hash": "0x255cf11d3158e105d26f9fdd16b160d67e86d25b11b7ef0306473a293d952a1",
       "abi": [
         {
           "type": "impl",
@@ -2218,7 +2218,7 @@
       ]
     },
     "amma_blobert_soulbound": {
-      "class_hash": "0x46ab535cb2ba71f647ea8d805c6f802465efc4a6565910a26a36f331fcc0ac0",
+      "class_hash": "0x3a717266d538a77d6aea60279fcc0836308d5b3ad8f009ae05fed0f02abfecb",
       "abi": [
         {
           "type": "impl",
@@ -3193,7 +3193,7 @@
       ]
     },
     "attack": {
-      "class_hash": "0x59a3146b2c949d79c8c914604914fa3187d1d72cc23cda409808c98ec6195c3",
+      "class_hash": "0x3af1e7936ebd63c7725cb9f77811439da9a033138ae804964438a904b19b0b1",
       "abi": [
         {
           "type": "impl",
@@ -4048,7 +4048,7 @@
       ]
     },
     "arena_blobert_loadout": {
-      "class_hash": "0x3f8beb8f45e9ea26423537e869f41649e7745766e218050dd6309fa8cb384c9",
+      "class_hash": "0x5b1ee390555612f76220b131d2c8f78e18f0e722589d4f0d045140c610b9ec4",
       "abi": [
         {
           "type": "impl",
@@ -4462,8 +4462,8 @@
         },
         {
           "type": "impl",
-          "name": "IAccessImpl",
-          "interface_name": "sai_access::IAccess"
+          "name": "IOwnableImpl",
+          "interface_name": "sai_ownable::IOwnable"
         },
         {
           "type": "enum",
@@ -4481,7 +4481,7 @@
         },
         {
           "type": "interface",
-          "name": "sai_access::IAccess",
+          "name": "sai_ownable::IOwnable",
           "items": [
             {
               "type": "function",
@@ -4489,22 +4489,6 @@
               "inputs": [
                 {
                   "name": "owner",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::bool"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "contract_writer",
-              "inputs": [
-                {
-                  "name": "writer",
                   "type": "core::starknet::contract_address::ContractAddress"
                 }
               ],
@@ -4525,22 +4509,6 @@
                 },
                 {
                   "name": "is_owner",
-                  "type": "core::bool"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "set_contract_writer",
-              "inputs": [
-                {
-                  "name": "writer",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                },
-                {
-                  "name": "is_writer",
                   "type": "core::bool"
                 }
               ],
@@ -4594,54 +4562,6 @@
               ],
               "outputs": [],
               "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "grant_contract_writer",
-              "inputs": [
-                {
-                  "name": "writer",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "grant_contract_writers",
-              "inputs": [
-                {
-                  "name": "writers",
-                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "revoke_contract_writer",
-              "inputs": [
-                {
-                  "name": "writer",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "revoke_contract_writers",
-              "inputs": [
-                {
-                  "name": "writers",
-                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
             }
           ]
         },
@@ -4665,7 +4585,7 @@
         },
         {
           "type": "event",
-          "name": "sai_access::access_component::GrantContractOwner",
+          "name": "sai_ownable::ownable_component::GrantContractOwner",
           "kind": "struct",
           "members": [
             {
@@ -4677,7 +4597,7 @@
         },
         {
           "type": "event",
-          "name": "sai_access::access_component::RevokeContractOwner",
+          "name": "sai_ownable::ownable_component::RevokeContractOwner",
           "kind": "struct",
           "members": [
             {
@@ -4689,51 +4609,17 @@
         },
         {
           "type": "event",
-          "name": "sai_access::access_component::GrantContractWriter",
-          "kind": "struct",
-          "members": [
-            {
-              "name": "user",
-              "type": "core::starknet::contract_address::ContractAddress",
-              "kind": "key"
-            }
-          ]
-        },
-        {
-          "type": "event",
-          "name": "sai_access::access_component::RevokeContractWriter",
-          "kind": "struct",
-          "members": [
-            {
-              "name": "user",
-              "type": "core::starknet::contract_address::ContractAddress",
-              "kind": "key"
-            }
-          ]
-        },
-        {
-          "type": "event",
-          "name": "sai_access::access_component::Event",
+          "name": "sai_ownable::ownable_component::Event",
           "kind": "enum",
           "variants": [
             {
               "name": "GrantContractOwner",
-              "type": "sai_access::access_component::GrantContractOwner",
+              "type": "sai_ownable::ownable_component::GrantContractOwner",
               "kind": "nested"
             },
             {
               "name": "RevokeContractOwner",
-              "type": "sai_access::access_component::RevokeContractOwner",
-              "kind": "nested"
-            },
-            {
-              "name": "GrantContractWriter",
-              "type": "sai_access::access_component::GrantContractWriter",
-              "kind": "nested"
-            },
-            {
-              "name": "RevokeContractWriter",
-              "type": "sai_access::access_component::RevokeContractWriter",
+              "type": "sai_ownable::ownable_component::RevokeContractOwner",
               "kind": "nested"
             }
           ]
@@ -4744,8 +4630,8 @@
           "kind": "enum",
           "variants": [
             {
-              "name": "AccessEvents",
-              "type": "sai_access::access_component::Event",
+              "name": "OwnableEvents",
+              "type": "sai_ownable::ownable_component::Event",
               "kind": "flat"
             }
           ]
@@ -4753,7 +4639,7 @@
       ]
     },
     "classic_arcade": {
-      "class_hash": "0x54938f1f4037dffd0823f3976444793b20e7fcf1996ee257b8db32ea7114e93",
+      "class_hash": "0x30e0f9853486aa453fc2bdd69141a7005300060d58de411a3adb21e91b71b31",
       "abi": [
         {
           "type": "impl",
@@ -5163,8 +5049,8 @@
         },
         {
           "type": "impl",
-          "name": "IAccessImpl",
-          "interface_name": "sai_access::IAccess"
+          "name": "IOwnableImpl",
+          "interface_name": "sai_ownable::IOwnable"
         },
         {
           "type": "enum",
@@ -5182,7 +5068,7 @@
         },
         {
           "type": "interface",
-          "name": "sai_access::IAccess",
+          "name": "sai_ownable::IOwnable",
           "items": [
             {
               "type": "function",
@@ -5190,22 +5076,6 @@
               "inputs": [
                 {
                   "name": "owner",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::bool"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "contract_writer",
-              "inputs": [
-                {
-                  "name": "writer",
                   "type": "core::starknet::contract_address::ContractAddress"
                 }
               ],
@@ -5226,22 +5096,6 @@
                 },
                 {
                   "name": "is_owner",
-                  "type": "core::bool"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "set_contract_writer",
-              "inputs": [
-                {
-                  "name": "writer",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                },
-                {
-                  "name": "is_writer",
                   "type": "core::bool"
                 }
               ],
@@ -5295,54 +5149,6 @@
               ],
               "outputs": [],
               "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "grant_contract_writer",
-              "inputs": [
-                {
-                  "name": "writer",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "grant_contract_writers",
-              "inputs": [
-                {
-                  "name": "writers",
-                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "revoke_contract_writer",
-              "inputs": [
-                {
-                  "name": "writer",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "revoke_contract_writers",
-              "inputs": [
-                {
-                  "name": "writers",
-                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
             }
           ]
         },
@@ -5366,7 +5172,7 @@
         },
         {
           "type": "event",
-          "name": "sai_access::access_component::GrantContractOwner",
+          "name": "sai_ownable::ownable_component::GrantContractOwner",
           "kind": "struct",
           "members": [
             {
@@ -5378,7 +5184,7 @@
         },
         {
           "type": "event",
-          "name": "sai_access::access_component::RevokeContractOwner",
+          "name": "sai_ownable::ownable_component::RevokeContractOwner",
           "kind": "struct",
           "members": [
             {
@@ -5390,51 +5196,17 @@
         },
         {
           "type": "event",
-          "name": "sai_access::access_component::GrantContractWriter",
-          "kind": "struct",
-          "members": [
-            {
-              "name": "user",
-              "type": "core::starknet::contract_address::ContractAddress",
-              "kind": "key"
-            }
-          ]
-        },
-        {
-          "type": "event",
-          "name": "sai_access::access_component::RevokeContractWriter",
-          "kind": "struct",
-          "members": [
-            {
-              "name": "user",
-              "type": "core::starknet::contract_address::ContractAddress",
-              "kind": "key"
-            }
-          ]
-        },
-        {
-          "type": "event",
-          "name": "sai_access::access_component::Event",
+          "name": "sai_ownable::ownable_component::Event",
           "kind": "enum",
           "variants": [
             {
               "name": "GrantContractOwner",
-              "type": "sai_access::access_component::GrantContractOwner",
+              "type": "sai_ownable::ownable_component::GrantContractOwner",
               "kind": "nested"
             },
             {
               "name": "RevokeContractOwner",
-              "type": "sai_access::access_component::RevokeContractOwner",
-              "kind": "nested"
-            },
-            {
-              "name": "GrantContractWriter",
-              "type": "sai_access::access_component::GrantContractWriter",
-              "kind": "nested"
-            },
-            {
-              "name": "RevokeContractWriter",
-              "type": "sai_access::access_component::RevokeContractWriter",
+              "type": "sai_ownable::ownable_component::RevokeContractOwner",
               "kind": "nested"
             }
           ]
@@ -5445,8 +5217,8 @@
           "kind": "enum",
           "variants": [
             {
-              "name": "AccessEvents",
-              "type": "sai_access::access_component::Event",
+              "name": "OwnableEvents",
+              "type": "sai_ownable::ownable_component::Event",
               "kind": "flat"
             }
           ]
@@ -5459,49 +5231,49 @@
       "contract_address": "0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578d0549d"
     },
     "arena_blobert": {
-      "contract_address": "0x7178ecdf7f0fa8c476af93cad305e7b3296f0913823c646a3da47a18d4c3701",
-      "class_hash": "0x79d7d7b758026cf46e2e73577fcb3be12b11f1cba9d345f1fd2949c1166f5a8",
+      "contract_address": "0x39e74b3c115ad4afed68060f658f12cade8a694df7ae92c331aca0eb7cdb5de",
+      "class_hash": "0x65c960474c4a763613160253c12c970d481aca45e151279eff95c6969667a1a",
       "class": "arena_blobert"
     },
     "amma_blobert": {
-      "contract_address": "0x26e7a90a400bc782b803de0d7c914c2440e7ad8832332b889efc821c7b11b66",
-      "class_hash": "0x2218a747b23c2d3bdd50ea9189ff0a7a638f024af98fd244b92c94b537672c0",
+      "contract_address": "0x365b3ad4a5bf5f72c5cffa5b68fe0d7a067590e8bea87850609a2dfd25c46c6",
+      "class_hash": "0x255cf11d3158e105d26f9fdd16b160d67e86d25b11b7ef0306473a293d952a1",
       "class": "amma_blobert"
     },
     "attack": {
-      "contract_address": "0x53ac286d1ced8ff531d732ab4df7aced0a2be0c848c755c31881300628c59fc",
-      "class_hash": "0x59a3146b2c949d79c8c914604914fa3187d1d72cc23cda409808c98ec6195c3",
+      "contract_address": "0x5bdea85748252aac171f4880bb41f035c0842cd058de8749540c90f270b7fe4",
+      "class_hash": "0x3af1e7936ebd63c7725cb9f77811439da9a033138ae804964438a904b19b0b1",
       "class": "attack"
     },
     "arena_blobert_minter": {
-      "contract_address": "0x3ce4de8a11a866971f145c035aec975630cb441b738e06f2f2c758f2bad9219",
-      "class_hash": "0x30f9d3938916326ad7e9492489f23309e0b190b94979f76855f90a40b63e839",
+      "contract_address": "0x1f1ab4042cd58336ba2e94a002641343a36ee92190aaeffaeae890b17f3ef4f",
+      "class_hash": "0x155c20ef870bb4ebc33d9d59c4dabb6bd99ecfe00c15958adbf5c1962acd3f5",
       "class": "arena_blobert_minter"
     },
     "amma_blobert_soulbound": {
-      "contract_address": "0x5064ada1d587889d237ab5f247f084977b32cfff62d5dc3f93c53a1df6716cd",
-      "class_hash": "0x46ab535cb2ba71f647ea8d805c6f802465efc4a6565910a26a36f331fcc0ac0",
+      "contract_address": "0x3a8e1db455e67650078c4f99395846939613aebc8bdb597cf8a208c6bb75e6a",
+      "class_hash": "0x3a717266d538a77d6aea60279fcc0836308d5b3ad8f009ae05fed0f02abfecb",
       "class": "amma_blobert_soulbound"
     },
+    "arena_blobert_loadout": {
+      "contract_address": "0x7dce84a4cfcf511e92ee8b4fc253a2cff0523d41f0d8658b01d25ef2ae70da9",
+      "class_hash": "0x5b1ee390555612f76220b131d2c8f78e18f0e722589d4f0d045140c610b9ec4",
+      "class": "arena_blobert_loadout"
+    },
     "amma_blobert_minter": {
-      "contract_address": "0x53a839b2a8a46d2a0d2f1500fa0893c32d33b1af3b1f4100c7d54e7bc47366d",
+      "contract_address": "0x7aae0de3954b53a67646ba9fdf32e31fe28223495e3299d7950eb4f8929cc5f",
       "class_hash": "0x4426646131b497a6636da4b71e335d643734ecfb687c036da1f328b278f459b",
       "class": "amma_blobert_minter"
     },
-    "arena_blobert_loadout": {
-      "contract_address": "0x3c5917702f59ba246f1c935625ea30c245d664099298e793e2076e3eb0b508e",
-      "class_hash": "0x3f8beb8f45e9ea26423537e869f41649e7745766e218050dd6309fa8cb384c9",
-      "class": "arena_blobert_loadout"
-    },
     "classic_arcade": {
-      "contract_address": "0x13be8d6882401e69b4a58ac2622a7599e68d41be31866d14ca9c08df096ccaa",
-      "class_hash": "0x54938f1f4037dffd0823f3976444793b20e7fcf1996ee257b8db32ea7114e93",
+      "contract_address": "0x50569f1c55aa24e9c878ced9e71f3079e8238a4bb6c7a68b81f93e26b4b88f",
+      "class_hash": "0x30e0f9853486aa453fc2bdd69141a7005300060d58de411a3adb21e91b71b31",
       "class": "classic_arcade"
     }
   },
   "declarations": {
     "arena_blobert": {
-      "class_hash": "0x79d7d7b758026cf46e2e73577fcb3be12b11f1cba9d345f1fd2949c1166f5a8",
+      "class_hash": "0x65c960474c4a763613160253c12c970d481aca45e151279eff95c6969667a1a",
       "abi": [
         {
           "type": "impl",
@@ -6426,7 +6198,7 @@
       ]
     },
     "arena_blobert_minter": {
-      "class_hash": "0x30f9d3938916326ad7e9492489f23309e0b190b94979f76855f90a40b63e839",
+      "class_hash": "0x155c20ef870bb4ebc33d9d59c4dabb6bd99ecfe00c15958adbf5c1962acd3f5",
       "abi": [
         {
           "type": "impl",
@@ -6674,7 +6446,7 @@
       ]
     },
     "amma_blobert": {
-      "class_hash": "0x2218a747b23c2d3bdd50ea9189ff0a7a638f024af98fd244b92c94b537672c0",
+      "class_hash": "0x255cf11d3158e105d26f9fdd16b160d67e86d25b11b7ef0306473a293d952a1",
       "abi": [
         {
           "type": "impl",
@@ -7600,11 +7372,10 @@
             }
           ]
         }
-      ],
-      "transaction_hash": "0x72a9eb491dd665e1ae2b5e1d12d4a8820651f193c70763d73defea1947c2435"
+      ]
     },
     "amma_blobert_soulbound": {
-      "class_hash": "0x46ab535cb2ba71f647ea8d805c6f802465efc4a6565910a26a36f331fcc0ac0",
+      "class_hash": "0x3a717266d538a77d6aea60279fcc0836308d5b3ad8f009ae05fed0f02abfecb",
       "abi": [
         {
           "type": "impl",
@@ -8489,8 +8260,7 @@
             }
           ]
         }
-      ],
-      "transaction_hash": "0x6b77508a046606881fcdfab7f3ac68704c9049966aa4ffd1b6eac456a723b5d"
+      ]
     },
     "amma_blobert_minter": {
       "class_hash": "0x4426646131b497a6636da4b71e335d643734ecfb687c036da1f328b278f459b",
@@ -8577,11 +8347,10 @@
           "kind": "enum",
           "variants": []
         }
-      ],
-      "transaction_hash": "0x4523eb314152bacc4d7f7e24d45e081d33d51c183963d8329caf67b4374a92e"
+      ]
     },
     "attack": {
-      "class_hash": "0x59a3146b2c949d79c8c914604914fa3187d1d72cc23cda409808c98ec6195c3",
+      "class_hash": "0x3af1e7936ebd63c7725cb9f77811439da9a033138ae804964438a904b19b0b1",
       "abi": [
         {
           "type": "impl",
@@ -9436,7 +9205,7 @@
       ]
     },
     "arena_blobert_loadout": {
-      "class_hash": "0x3f8beb8f45e9ea26423537e869f41649e7745766e218050dd6309fa8cb384c9",
+      "class_hash": "0x5b1ee390555612f76220b131d2c8f78e18f0e722589d4f0d045140c610b9ec4",
       "abi": [
         {
           "type": "impl",
@@ -9850,8 +9619,8 @@
         },
         {
           "type": "impl",
-          "name": "IAccessImpl",
-          "interface_name": "sai_access::IAccess"
+          "name": "IOwnableImpl",
+          "interface_name": "sai_ownable::IOwnable"
         },
         {
           "type": "enum",
@@ -9869,7 +9638,7 @@
         },
         {
           "type": "interface",
-          "name": "sai_access::IAccess",
+          "name": "sai_ownable::IOwnable",
           "items": [
             {
               "type": "function",
@@ -9877,22 +9646,6 @@
               "inputs": [
                 {
                   "name": "owner",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::bool"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "contract_writer",
-              "inputs": [
-                {
-                  "name": "writer",
                   "type": "core::starknet::contract_address::ContractAddress"
                 }
               ],
@@ -9913,22 +9666,6 @@
                 },
                 {
                   "name": "is_owner",
-                  "type": "core::bool"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "set_contract_writer",
-              "inputs": [
-                {
-                  "name": "writer",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                },
-                {
-                  "name": "is_writer",
                   "type": "core::bool"
                 }
               ],
@@ -9982,54 +9719,6 @@
               ],
               "outputs": [],
               "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "grant_contract_writer",
-              "inputs": [
-                {
-                  "name": "writer",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "grant_contract_writers",
-              "inputs": [
-                {
-                  "name": "writers",
-                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "revoke_contract_writer",
-              "inputs": [
-                {
-                  "name": "writer",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "revoke_contract_writers",
-              "inputs": [
-                {
-                  "name": "writers",
-                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
             }
           ]
         },
@@ -10053,7 +9742,7 @@
         },
         {
           "type": "event",
-          "name": "sai_access::access_component::GrantContractOwner",
+          "name": "sai_ownable::ownable_component::GrantContractOwner",
           "kind": "struct",
           "members": [
             {
@@ -10065,7 +9754,7 @@
         },
         {
           "type": "event",
-          "name": "sai_access::access_component::RevokeContractOwner",
+          "name": "sai_ownable::ownable_component::RevokeContractOwner",
           "kind": "struct",
           "members": [
             {
@@ -10077,51 +9766,17 @@
         },
         {
           "type": "event",
-          "name": "sai_access::access_component::GrantContractWriter",
-          "kind": "struct",
-          "members": [
-            {
-              "name": "user",
-              "type": "core::starknet::contract_address::ContractAddress",
-              "kind": "key"
-            }
-          ]
-        },
-        {
-          "type": "event",
-          "name": "sai_access::access_component::RevokeContractWriter",
-          "kind": "struct",
-          "members": [
-            {
-              "name": "user",
-              "type": "core::starknet::contract_address::ContractAddress",
-              "kind": "key"
-            }
-          ]
-        },
-        {
-          "type": "event",
-          "name": "sai_access::access_component::Event",
+          "name": "sai_ownable::ownable_component::Event",
           "kind": "enum",
           "variants": [
             {
               "name": "GrantContractOwner",
-              "type": "sai_access::access_component::GrantContractOwner",
+              "type": "sai_ownable::ownable_component::GrantContractOwner",
               "kind": "nested"
             },
             {
               "name": "RevokeContractOwner",
-              "type": "sai_access::access_component::RevokeContractOwner",
-              "kind": "nested"
-            },
-            {
-              "name": "GrantContractWriter",
-              "type": "sai_access::access_component::GrantContractWriter",
-              "kind": "nested"
-            },
-            {
-              "name": "RevokeContractWriter",
-              "type": "sai_access::access_component::RevokeContractWriter",
+              "type": "sai_ownable::ownable_component::RevokeContractOwner",
               "kind": "nested"
             }
           ]
@@ -10132,8 +9787,8 @@
           "kind": "enum",
           "variants": [
             {
-              "name": "AccessEvents",
-              "type": "sai_access::access_component::Event",
+              "name": "OwnableEvents",
+              "type": "sai_ownable::ownable_component::Event",
               "kind": "flat"
             }
           ]
@@ -10141,7 +9796,7 @@
       ]
     },
     "classic_arcade": {
-      "class_hash": "0x54938f1f4037dffd0823f3976444793b20e7fcf1996ee257b8db32ea7114e93",
+      "class_hash": "0x30e0f9853486aa453fc2bdd69141a7005300060d58de411a3adb21e91b71b31",
       "abi": [
         {
           "type": "impl",
@@ -10551,8 +10206,8 @@
         },
         {
           "type": "impl",
-          "name": "IAccessImpl",
-          "interface_name": "sai_access::IAccess"
+          "name": "IOwnableImpl",
+          "interface_name": "sai_ownable::IOwnable"
         },
         {
           "type": "enum",
@@ -10570,7 +10225,7 @@
         },
         {
           "type": "interface",
-          "name": "sai_access::IAccess",
+          "name": "sai_ownable::IOwnable",
           "items": [
             {
               "type": "function",
@@ -10578,22 +10233,6 @@
               "inputs": [
                 {
                   "name": "owner",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::bool"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "contract_writer",
-              "inputs": [
-                {
-                  "name": "writer",
                   "type": "core::starknet::contract_address::ContractAddress"
                 }
               ],
@@ -10614,22 +10253,6 @@
                 },
                 {
                   "name": "is_owner",
-                  "type": "core::bool"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "set_contract_writer",
-              "inputs": [
-                {
-                  "name": "writer",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                },
-                {
-                  "name": "is_writer",
                   "type": "core::bool"
                 }
               ],
@@ -10683,54 +10306,6 @@
               ],
               "outputs": [],
               "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "grant_contract_writer",
-              "inputs": [
-                {
-                  "name": "writer",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "grant_contract_writers",
-              "inputs": [
-                {
-                  "name": "writers",
-                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "revoke_contract_writer",
-              "inputs": [
-                {
-                  "name": "writer",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "revoke_contract_writers",
-              "inputs": [
-                {
-                  "name": "writers",
-                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
             }
           ]
         },
@@ -10754,7 +10329,7 @@
         },
         {
           "type": "event",
-          "name": "sai_access::access_component::GrantContractOwner",
+          "name": "sai_ownable::ownable_component::GrantContractOwner",
           "kind": "struct",
           "members": [
             {
@@ -10766,7 +10341,7 @@
         },
         {
           "type": "event",
-          "name": "sai_access::access_component::RevokeContractOwner",
+          "name": "sai_ownable::ownable_component::RevokeContractOwner",
           "kind": "struct",
           "members": [
             {
@@ -10778,51 +10353,17 @@
         },
         {
           "type": "event",
-          "name": "sai_access::access_component::GrantContractWriter",
-          "kind": "struct",
-          "members": [
-            {
-              "name": "user",
-              "type": "core::starknet::contract_address::ContractAddress",
-              "kind": "key"
-            }
-          ]
-        },
-        {
-          "type": "event",
-          "name": "sai_access::access_component::RevokeContractWriter",
-          "kind": "struct",
-          "members": [
-            {
-              "name": "user",
-              "type": "core::starknet::contract_address::ContractAddress",
-              "kind": "key"
-            }
-          ]
-        },
-        {
-          "type": "event",
-          "name": "sai_access::access_component::Event",
+          "name": "sai_ownable::ownable_component::Event",
           "kind": "enum",
           "variants": [
             {
               "name": "GrantContractOwner",
-              "type": "sai_access::access_component::GrantContractOwner",
+              "type": "sai_ownable::ownable_component::GrantContractOwner",
               "kind": "nested"
             },
             {
               "name": "RevokeContractOwner",
-              "type": "sai_access::access_component::RevokeContractOwner",
-              "kind": "nested"
-            },
-            {
-              "name": "GrantContractWriter",
-              "type": "sai_access::access_component::GrantContractWriter",
-              "kind": "nested"
-            },
-            {
-              "name": "RevokeContractWriter",
-              "type": "sai_access::access_component::RevokeContractWriter",
+              "type": "sai_ownable::ownable_component::RevokeContractOwner",
               "kind": "nested"
             }
           ]
@@ -10833,8 +10374,8 @@
           "kind": "enum",
           "variants": [
             {
-              "name": "AccessEvents",
-              "type": "sai_access::access_component::Event",
+              "name": "OwnableEvents",
+              "type": "sai_ownable::ownable_component::Event",
               "kind": "flat"
             }
           ]
