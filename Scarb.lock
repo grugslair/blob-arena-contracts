@@ -205,7 +205,7 @@ source = "git+https://github.com/bengineer42/cubit?tag=cairo--2.8.0#32a20af893b3
 [[package]]
 name = "dojo"
 version = "1.6.0-alpha.1"
-source = "git+https://github.com/dojoengine/dojo#fe1121002991544bd0cbf517eb557863977c17a7"
+source = "git+https://github.com/dojoengine/dojo?tag=v1.7.0-alpha.1#67aeb9f49c6b8c30b1850badd065c9192617c3b2"
 dependencies = [
  "dojo_macros",
 ]
@@ -213,7 +213,7 @@ dependencies = [
 [[package]]
 name = "dojo_macros"
 version = "1.6.0-alpha.1"
-source = "git+https://github.com/dojoengine/dojo#fe1121002991544bd0cbf517eb557863977c17a7"
+source = "git+https://github.com/dojoengine/dojo?tag=v1.7.0-alpha.1#67aeb9f49c6b8c30b1850badd065c9192617c3b2"
 
 [[package]]
 name = "openzeppelin_access"

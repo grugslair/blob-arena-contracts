@@ -27,8 +27,8 @@ openzeppelin_account = "2.0.0"
 openzeppelin_introspection = "2.0.0"
 openzeppelin_upgrades = "2.0.0"
 openzeppelin_access = "2.0.0"
-dojo = { git = "https://github.com/dojoengine/dojo" }
-dojo_macros = { git = "https://github.com/dojoengine/dojo" }
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.7.0-alpha.1" }
+dojo_macros = { git = "https://github.com/dojoengine/dojo", tag = "v1.7.0-alpha.1" }
 cubit = { git = "https://github.com/bengineer42/cubit", tag = "cairo--2.8.0" }
 pragma_lib = { git = "https://github.com/bengineer42/pragma-lib", branch = "v2.11.4" }
 # beacon_entity = { git = "https://github.com/sai-starknet/torii-beacon", branch = "1.7.0-rc.0" }

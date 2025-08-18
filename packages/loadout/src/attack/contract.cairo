@@ -40,7 +40,7 @@ mod attack {
     #[constructor]
     fn constructor(ref self: ContractState, owner: ContractAddress) {
         self.grant_owner(owner);
-        register_table_with_schema::<Attack>("attack", "Attack");
+        register_table_with_schema::<AttackWithName>("attack", "Attack");
     }
 
     #[abi(embed_v0)]
@@ -169,7 +169,7 @@ mod attack {
         fn _create_attack(ref self: ContractState, attack: AttackWithName) -> felt252 {
             let id = (@attack).attack_id();
             self.tags.write(byte_array_to_tag(@attack.name), id);
-            let attack: Attack = attack.into();
+            // let attack: Attack = attack.into();
             if self.accuracies.read(id).is_non_zero() {
                 return id; // Attack already exists
             }

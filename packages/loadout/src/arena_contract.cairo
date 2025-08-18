@@ -37,7 +37,7 @@ struct AttackSlot {
 struct BlobertAbilities {
     attribute: BlobertAttribute,
     index: u32,
-    // name: ByteArray,
+    name: ByteArray,
     strength: u32,
     vitality: u32,
     dexterity: u32,
@@ -184,7 +184,7 @@ mod arena_blobert_loadout {
                 AttackSlotTable::set_entity(slot_id, @(attribute, index, slot, attack_id));
                 attacks_ptr.write(slot_id, attack_id);
             }
-            AbilityTable::set_entity(hash, @(attribute, index, abilities));
+            AbilityTable::set_entity(hash, @(attribute, index, name, abilities));
         }
 
         fn set_loadouts(ref self: ContractState, loadouts: Array<LoadoutInput>) {
@@ -194,7 +194,7 @@ mod arena_blobert_loadout {
                 (StorageBase<Mutable<Map<felt252, felt252>>>, BlobertAttribute, u32, felt252, u32),
             > =
                 Default::default();
-            for LoadoutInput { key, name: _, abilities, attacks } in loadouts {
+            for LoadoutInput { key, name, abilities, attacks } in loadouts {
                 self.assert_caller_is_owner();
                 let hash = key.poseidon_hash();
 
@@ -206,7 +206,7 @@ mod arena_blobert_loadout {
                     all_attacks.append(attack);
                     indexes.append((attacks_ptr, attribute, index, hash, slot));
                 }
-                AbilityTable::set_entity(hash, @(attribute, index, abilities));
+                AbilityTable::set_entity(hash, @(attribute, index, name, abilities));
             }
             let attack_ids = self.attack_dispatcher.read().maybe_create_attacks(all_attacks);
             for (attack_id, (mut attacks_ptr, attribute, index, hash, slot)) in attack_ids
