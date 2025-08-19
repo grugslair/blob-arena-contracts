@@ -11,6 +11,12 @@ struct OpponentTable {
     attacks: Span<felt252>,
 }
 
+#[derive(Drop, Serde, starknet::Store)]
+struct Opponent {
+    abilities: Abilities,
+    attacks: [felt252; 4],
+}
+
 
 #[derive(Drop, Serde)]
 struct OpponentInput {
@@ -48,9 +54,7 @@ trait IClassicArcadeAdmin<TState> {
 
 #[starknet::contract]
 mod classic_arcade {
-    use ba_arcade::component::{
-        ArcadePhase, AttemptNode, AttemptNodePath, AttemptNodeTrait, Opponent,
-    };
+    use ba_arcade::component::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::table::{ArcadeAttempt, ArcadeRound, AttackLastUsed};
     use ba_combat::CombatantState;
     use ba_loadout::ability::AbilitiesTrait;
@@ -72,7 +76,7 @@ mod classic_arcade {
         StoragePointerReadAccess, StoragePointerWriteAccess,
     };
     use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
-    use super::{IClassicArcade, IClassicArcadeAdmin, IdTagAttack, OpponentInput, errors};
+    use super::{IClassicArcade, IClassicArcadeAdmin, IdTagAttack, Opponent, OpponentInput, errors};
 
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);

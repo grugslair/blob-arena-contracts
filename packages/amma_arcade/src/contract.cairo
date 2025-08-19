@@ -1,9 +1,16 @@
+use ba_loadout::ability::Abilities;
 use starknet::ContractAddress;
 
 mod errors {
     pub const RESPAWN_WHEN_NOT_LOST: felt252 = 'Cannot respawn, player not lost';
     pub const NOT_ACTIVE: felt252 = 'Combat is not active';
     pub const MAX_RESPAWNS_REACHED: felt252 = 'Max respawns reached';
+}
+
+#[derive(Drop)]
+struct Opponent {
+    abilities: Abilities,
+    attacks: Array<felt252>,
 }
 
 #[starknet::interface]
@@ -27,12 +34,9 @@ trait IAmmaArcadeAdmin<TState> {
     fn set_health_regen_permille(ref self: TState, health_regen_permille: u32);
 }
 
-
 #[starknet::contract]
 mod amma_arcade {
-    use ba_arcade::component::{
-        ArcadePhase, AttemptNode, AttemptNodePath, AttemptNodeTrait, Opponent,
-    };
+    use ba_arcade::component::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::table::{ArcadeAttempt, ArcadeRound, AttackLastUsed};
     use ba_combat::CombatantState;
     use ba_loadout::ability::AbilitiesTrait;
@@ -57,7 +61,7 @@ mod amma_arcade {
     };
     use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
     use crate::systems::{attack_slots, get_stage_stats, random_selection};
-    use super::{IAmmaArcade, IAmmaArcadeAdmin, errors};
+    use super::{IAmmaArcade, IAmmaArcadeAdmin, Opponent, errors};
 
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
@@ -66,12 +70,12 @@ mod amma_arcade {
     const ROUND_HASH: felt252 = bytearrays_hash!("amma_arcade", "ArcadeRound");
     const ATTEMPT_HASH: felt252 = bytearrays_hash!("amma_arcade", "ArcadeAttempt");
     const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("amma_arcade", "AttackLastUsed");
-    const OPPONENT_HASH: felt252 = bytearrays_hash!("amma_arcade", "Opponent");
+    const OPPONENTS_HASH: felt252 = bytearrays_hash!("amma_arcade", "Opponents");
 
     impl RoundTable = ToriiTable<ROUND_HASH>;
     impl AttemptTable = ToriiTable<ATTEMPT_HASH>;
     impl LastUsedAttackTable = ToriiTable<LAST_USED_ATTACK_HASH>;
-    impl OpponentsTable = ToriiTable<OPPONENT_HASH>;
+    impl OpponentsTable = ToriiTable<OPPONENTS_HASH>;
 
     #[storage]
     struct Storage {
@@ -175,11 +179,11 @@ mod amma_arcade {
                     self.gen_opponent(loadout_address, *opponents[0], 0),
                     None,
                 );
-            OpponentsTable::set_member(selector!("generated"), attempt_id, @opponents);
-
+            OpponentsTable::set_entity(attempt_id, @(opponents.span(), 0));
             for (i, opponent) in opponents.into_iter().enumerate() {
                 self.opponents.write(poseidon_hash_two(attempt_id, i), opponent);
             }
+
             emit_return(attempt_id)
         }
 
@@ -349,7 +353,6 @@ mod amma_arcade {
             );
 
             let abilities = get_stage_stats(stage, gen_abilities);
-            let attacks: [felt252; 4] = (*attacks.span().try_into().unwrap()).unbox();
             Opponent { abilities, attacks }
         }
 
@@ -361,6 +364,7 @@ mod amma_arcade {
             let fighter: u32 = (felt252_to_u128(poseidon_hash_two(randomness, 'boss'))
                 .get_final_value(count)
                 + 1);
+            OpponentsTable::set_member(selector!("boss"), attempt_id, @fighter);
             self.bosses.write(attempt_id, fighter);
             self.boss_opponent(loadout_address, fighter)
         }
@@ -376,7 +380,6 @@ mod amma_arcade {
             let (abilities, attacks) = get_fighter_loadout(
                 loadout_address, fighter, attack_slots(),
             );
-            let attacks: [felt252; 4] = (*attacks.span().try_into().unwrap()).unbox();
             Opponent { abilities, attacks }
         }
     }

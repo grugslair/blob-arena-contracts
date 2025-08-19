@@ -7,19 +7,17 @@ pub fn random_selection(seed: felt252, range: u32, number: u32) -> Array<u32> {
     assert(number <= range, 'Number must be <= to range');
     let mut seed = felt252_to_u128(seed);
     let mut values: Array<u32> = Default::default();
-    let mut dict: Felt252Dict<u128> = Default::default();
+    let mut dict: Felt252Dict<u32> = Default::default();
     for n in 0..range {
         dict.insert(n.into(), n.into());
     }
-    for i in 0_u128..min(number.into(), range.into() - 1) {
-        let j: u128 = (i + seed.get_value((range.into() - i).try_into().unwrap()))
-            .try_into()
-            .unwrap();
-        values.append(dict.get(j.into()).try_into().unwrap() + 1);
+    for i in 0..min(number, range - 1) {
+        let j = i + seed.get_value(range - i);
+        values.append(dict.get(j.into()) + 1);
         dict.insert(j.into(), dict.get(i.into()));
     }
     if range == number {
-        values.append(dict.get((range - 1).into()).try_into().unwrap() + 1);
+        values.append(dict.get((range - 1).into()) + 1);
     }
     values
 }

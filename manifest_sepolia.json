@@ -3,115 +3,148 @@
     "arena_blobert": {
       "tag": "arena_blobert",
       "class": "arena_blobert",
-      "salt": "0x70f548c0e6d2be1d7214830f0a4f613bb3c920d87f4a6b61e9a71d15d9d1607",
+      "salt": "0x5d02cf8e7c409158bc6dfa51732741242e20c49c903845a26f67dd79c864cb2",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd"
       },
       "class_hash": "0x65c960474c4a763613160253c12c970d481aca45e151279eff95c6969667a1a",
-      "contract_address": "0x39e74b3c115ad4afed68060f658f12cade8a694df7ae92c331aca0eb7cdb5de",
+      "contract_address": "0xd9c3696b3495d5d4cf199d72124af452ace947a0ec027230f77cb66c41cb5d",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x61c27bed88f4342d94bfded503585fecbfe70f6ee4a002e10f0570cba05a7ba"
+      "transaction_hash": "0xb7533faf9193bad251b5e4aa1ebbc218cdfe68d43a5ef4900b48857e142333"
     },
     "amma_blobert": {
       "tag": "amma_blobert",
       "class": "amma_blobert",
-      "salt": "0x70f548c0e6d2be1d7214830f0a4f613bb3c920d87f4a6b61e9a71d15d9d1607",
+      "salt": "0x5d02cf8e7c409158bc6dfa51732741242e20c49c903845a26f67dd79c864cb2",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd"
       },
-      "class_hash": "0x255cf11d3158e105d26f9fdd16b160d67e86d25b11b7ef0306473a293d952a1",
-      "contract_address": "0x365b3ad4a5bf5f72c5cffa5b68fe0d7a067590e8bea87850609a2dfd25c46c6",
+      "class_hash": "0xad67917de81c1665aa9ce7d293c94f3ae85c66906953205b6a755bab7027a6",
+      "contract_address": "0x3ab0b7741c38141e0b843be3fef9c28d3749f41c5d883ef389436f99751f37f",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x61c27bed88f4342d94bfded503585fecbfe70f6ee4a002e10f0570cba05a7ba"
+      "transaction_hash": "0xb7533faf9193bad251b5e4aa1ebbc218cdfe68d43a5ef4900b48857e142333"
+    },
+    "amma_blobert_soulbound": {
+      "tag": "amma_blobert_soulbound",
+      "class": "amma_blobert_soulbound",
+      "salt": "0x5d02cf8e7c409158bc6dfa51732741242e20c49c903845a26f67dd79c864cb2",
+      "unique": false,
+      "calldata": {
+        "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd"
+      },
+      "class_hash": "0x2180fc2bcbdeea447ae0668796532c7a9de96b5492bdeb542e670287fec05fc",
+      "contract_address": "0x4ac4296370cbbfdf1eb258d03d862a4fbc6cc84649ff60682cfadfdccc724a4",
+      "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
+      "transaction_hash": "0xb7533faf9193bad251b5e4aa1ebbc218cdfe68d43a5ef4900b48857e142333"
     },
     "attack": {
       "tag": "attack",
       "class": "attack",
-      "salt": "0x70f548c0e6d2be1d7214830f0a4f613bb3c920d87f4a6b61e9a71d15d9d1607",
+      "salt": "0x5d02cf8e7c409158bc6dfa51732741242e20c49c903845a26f67dd79c864cb2",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd"
       },
       "class_hash": "0x3af1e7936ebd63c7725cb9f77811439da9a033138ae804964438a904b19b0b1",
-      "contract_address": "0x5bdea85748252aac171f4880bb41f035c0842cd058de8749540c90f270b7fe4",
+      "contract_address": "0x61d3a5289beaf79bcdf876ceee834c5c9c9f02c2468814ce87bac4eec1a0198",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x61c27bed88f4342d94bfded503585fecbfe70f6ee4a002e10f0570cba05a7ba"
+      "transaction_hash": "0xb7533faf9193bad251b5e4aa1ebbc218cdfe68d43a5ef4900b48857e142333"
     },
     "arena_blobert_minter": {
       "tag": "arena_blobert_minter",
       "class": "arena_blobert_minter",
-      "salt": "0x70f548c0e6d2be1d7214830f0a4f613bb3c920d87f4a6b61e9a71d15d9d1607",
+      "salt": "0x5d02cf8e7c409158bc6dfa51732741242e20c49c903845a26f67dd79c864cb2",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-        "token_address": "0x39e74b3c115ad4afed68060f658f12cade8a694df7ae92c331aca0eb7cdb5de"
+        "token_address": "0xd9c3696b3495d5d4cf199d72124af452ace947a0ec027230f77cb66c41cb5d"
       },
-      "class_hash": "0x155c20ef870bb4ebc33d9d59c4dabb6bd99ecfe00c15958adbf5c1962acd3f5",
-      "contract_address": "0x1f1ab4042cd58336ba2e94a002641343a36ee92190aaeffaeae890b17f3ef4f",
+      "class_hash": "0x7859e23b1ac4ccd5c7160d1d09e357753bb69ada7e2f8cf20d690a8cfcc28d3",
+      "contract_address": "0x1b315b4a109b3b313779a32155f601dcb9f236a989da8d3e09e30e828f9b2af",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x57330f55eaf24295f14376a4c821f2100b993204beb22d52527e8346de64fa3"
-    },
-    "amma_blobert_soulbound": {
-      "tag": "amma_blobert_soulbound",
-      "class": "amma_blobert_soulbound",
-      "salt": "0x70f548c0e6d2be1d7214830f0a4f613bb3c920d87f4a6b61e9a71d15d9d1607",
-      "unique": false,
-      "calldata": {
-        "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-        "collectable_address": "0x365b3ad4a5bf5f72c5cffa5b68fe0d7a067590e8bea87850609a2dfd25c46c6"
-      },
-      "class_hash": "0x3a717266d538a77d6aea60279fcc0836308d5b3ad8f009ae05fed0f02abfecb",
-      "contract_address": "0x3a8e1db455e67650078c4f99395846939613aebc8bdb597cf8a208c6bb75e6a",
-      "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x57330f55eaf24295f14376a4c821f2100b993204beb22d52527e8346de64fa3"
-    },
-    "arena_blobert_loadout": {
-      "tag": "arena_blobert_loadout",
-      "class": "arena_blobert_loadout",
-      "salt": "0x70f548c0e6d2be1d7214830f0a4f613bb3c920d87f4a6b61e9a71d15d9d1607",
-      "unique": false,
-      "calldata": {
-        "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-        "attack_dispatcher_address": "0x5bdea85748252aac171f4880bb41f035c0842cd058de8749540c90f270b7fe4",
-        "collection_addresses": [
-          "0x39e74b3c115ad4afed68060f658f12cade8a694df7ae92c331aca0eb7cdb5de",
-          "0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578d0549d"
-        ]
-      },
-      "class_hash": "0x5b1ee390555612f76220b131d2c8f78e18f0e722589d4f0d045140c610b9ec4",
-      "contract_address": "0x7dce84a4cfcf511e92ee8b4fc253a2cff0523d41f0d8658b01d25ef2ae70da9",
-      "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x57330f55eaf24295f14376a4c821f2100b993204beb22d52527e8346de64fa3"
+      "transaction_hash": "0x23c66fbb073cebda34ee68be8458da793839bbe05aa8a37da5acf1bc9c519c"
     },
     "amma_blobert_minter": {
       "tag": "amma_blobert_minter",
       "class": "amma_blobert_minter",
-      "salt": "0x70f548c0e6d2be1d7214830f0a4f613bb3c920d87f4a6b61e9a71d15d9d1607",
+      "salt": "0x5d02cf8e7c409158bc6dfa51732741242e20c49c903845a26f67dd79c864cb2",
       "unique": false,
       "calldata": {
-        "token_address": "0x3a8e1db455e67650078c4f99395846939613aebc8bdb597cf8a208c6bb75e6a"
+        "token_address": "0x4ac4296370cbbfdf1eb258d03d862a4fbc6cc84649ff60682cfadfdccc724a4"
       },
-      "class_hash": "0x4426646131b497a6636da4b71e335d643734ecfb687c036da1f328b278f459b",
-      "contract_address": "0x7aae0de3954b53a67646ba9fdf32e31fe28223495e3299d7950eb4f8929cc5f",
+      "class_hash": "0xec0f69cb288620eeee0b4b4a38c6558650c0ec46a011fcb960bcfb69b67c80",
+      "contract_address": "0x610de5dd7cc97dd1b59c64f5c37f583750abd1929eb8dbfa5630574f559904e",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x2c07a6188e9e9fd5d2759129fdbcf9102821f53da9457ea0e0fef1b3bde5734"
+      "transaction_hash": "0x23c66fbb073cebda34ee68be8458da793839bbe05aa8a37da5acf1bc9c519c"
+    },
+    "classic_blobert_loadout": {
+      "tag": "classic_blobert_loadout",
+      "class": "classic_blobert_loadout",
+      "salt": "0x5d02cf8e7c409158bc6dfa51732741242e20c49c903845a26f67dd79c864cb2",
+      "unique": false,
+      "calldata": {
+        "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
+        "attack_dispatcher_address": "0x61d3a5289beaf79bcdf876ceee834c5c9c9f02c2468814ce87bac4eec1a0198",
+        "collection_addresses": [
+          "0xd9c3696b3495d5d4cf199d72124af452ace947a0ec027230f77cb66c41cb5d",
+          "0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578d0549d"
+        ]
+      },
+      "class_hash": "0x6b05538ce150c10f90c8f996de28ca41c69b1d65481c9318f136f4c24dc6dce",
+      "contract_address": "0x7e0ef6e73bcac2a17e55f3c7a019978c4f215515744466332d78e714e3820d7",
+      "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
+      "transaction_hash": "0x23c66fbb073cebda34ee68be8458da793839bbe05aa8a37da5acf1bc9c519c"
+    },
+    "amma_blobert_loadout": {
+      "tag": "amma_blobert_loadout",
+      "class": "amma_blobert_loadout",
+      "salt": "0x5d02cf8e7c409158bc6dfa51732741242e20c49c903845a26f67dd79c864cb2",
+      "unique": false,
+      "calldata": {
+        "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
+        "attack_dispatcher_address": "0x61d3a5289beaf79bcdf876ceee834c5c9c9f02c2468814ce87bac4eec1a0198",
+        "collection_addresses": [
+          "0x3ab0b7741c38141e0b843be3fef9c28d3749f41c5d883ef389436f99751f37f",
+          "0x4ac4296370cbbfdf1eb258d03d862a4fbc6cc84649ff60682cfadfdccc724a4"
+        ]
+      },
+      "class_hash": "0x3467b064d4cd9ac5c5ea2d1202ea424eb8cf735578e0caed9d805397b1a64ac",
+      "contract_address": "0x6bf186a7a9f0531c172863a94431a70e5c9c38dd1ccb33a676b0fe9d98bed15",
+      "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
+      "transaction_hash": "0x23c66fbb073cebda34ee68be8458da793839bbe05aa8a37da5acf1bc9c519c"
     },
     "classic_arcade": {
       "tag": "classic_arcade",
       "class": "classic_arcade",
-      "salt": "0x70f548c0e6d2be1d7214830f0a4f613bb3c920d87f4a6b61e9a71d15d9d1607",
+      "salt": "0x5d02cf8e7c409158bc6dfa51732741242e20c49c903845a26f67dd79c864cb2",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-        "attack_contract": "0x5bdea85748252aac171f4880bb41f035c0842cd058de8749540c90f270b7fe4",
-        "loadout_contract": "0x7dce84a4cfcf511e92ee8b4fc253a2cff0523d41f0d8658b01d25ef2ae70da9"
+        "attack_contract": "0x61d3a5289beaf79bcdf876ceee834c5c9c9f02c2468814ce87bac4eec1a0198",
+        "loadout_contract": "0x7e0ef6e73bcac2a17e55f3c7a019978c4f215515744466332d78e714e3820d7"
       },
-      "class_hash": "0x30e0f9853486aa453fc2bdd69141a7005300060d58de411a3adb21e91b71b31",
-      "contract_address": "0x50569f1c55aa24e9c878ced9e71f3079e8238a4bb6c7a68b81f93e26b4b88f",
+      "class_hash": "0x5708c44799ea41af02a0c87bcfa12d9afae9aa9be768d23397fa788c2a05629",
+      "contract_address": "0x6262d9d57d480982c43b46ab1fd4d9f6177be4832a079ba1b4a47583134b82a",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x2c07a6188e9e9fd5d2759129fdbcf9102821f53da9457ea0e0fef1b3bde5734"
+      "transaction_hash": "0x6b10f87146b963616a632a0f6e1fd7c278c91876b87429bfb9cc0ae193f3041"
+    },
+    "amma_arcade": {
+      "tag": "amma_arcade",
+      "class": "amma_arcade",
+      "salt": "0x5d02cf8e7c409158bc6dfa51732741242e20c49c903845a26f67dd79c864cb2",
+      "unique": false,
+      "calldata": {
+        "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
+        "attack_contract": "0x61d3a5289beaf79bcdf876ceee834c5c9c9f02c2468814ce87bac4eec1a0198",
+        "loadout_contract": "0x6bf186a7a9f0531c172863a94431a70e5c9c38dd1ccb33a676b0fe9d98bed15",
+        "collectable_address": "0x3ab0b7741c38141e0b843be3fef9c28d3749f41c5d883ef389436f99751f37f"
+      },
+      "class_hash": "0x7cdebba73b33499da9c6c255d051d7c17130cd791717343d30521fb193dd62e",
+      "contract_address": "0x5f51e0e601729711d7ccc63ec70548dce57528e97c0c7382f05d70a2411b3af",
+      "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
+      "transaction_hash": "0x6b10f87146b963616a632a0f6e1fd7c278c91876b87429bfb9cc0ae193f3041"
     }
   },
   "classes": {
@@ -1041,7 +1074,7 @@
       ]
     },
     "arena_blobert_minter": {
-      "class_hash": "0x155c20ef870bb4ebc33d9d59c4dabb6bd99ecfe00c15958adbf5c1962acd3f5",
+      "class_hash": "0x7859e23b1ac4ccd5c7160d1d09e357753bb69ada7e2f8cf20d690a8cfcc28d3",
       "abi": [
         {
           "type": "impl",
@@ -1289,7 +1322,7 @@
       ]
     },
     "amma_blobert": {
-      "class_hash": "0x255cf11d3158e105d26f9fdd16b160d67e86d25b11b7ef0306473a293d952a1",
+      "class_hash": "0xad67917de81c1665aa9ce7d293c94f3ae85c66906953205b6a755bab7027a6",
       "abi": [
         {
           "type": "impl",
@@ -1329,17 +1362,6 @@
                 }
               ],
               "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "number_of_fighters",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::integer::u32"
-                }
-              ],
-              "state_mutability": "view"
             }
           ]
         },
@@ -1352,18 +1374,6 @@
           "type": "interface",
           "name": "amma_blobert::collectable::IAmmaBlobertAdmin",
           "items": [
-            {
-              "type": "function",
-              "name": "set_n_fighters",
-              "inputs": [
-                {
-                  "name": "number_of_fighters",
-                  "type": "core::integer::u32"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
             {
               "type": "function",
               "name": "mint",
@@ -2218,7 +2228,7 @@
       ]
     },
     "amma_blobert_soulbound": {
-      "class_hash": "0x3a717266d538a77d6aea60279fcc0836308d5b3ad8f009ae05fed0f02abfecb",
+      "class_hash": "0x2180fc2bcbdeea447ae0668796532c7a9de96b5492bdeb542e670287fec05fc",
       "abi": [
         {
           "type": "impl",
@@ -2252,17 +2262,6 @@
                   "type": "core::integer::u256"
                 }
               ],
-              "outputs": [
-                {
-                  "type": "core::integer::u32"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "number_of_fighters",
-              "inputs": [],
               "outputs": [
                 {
                   "type": "core::integer::u32"
@@ -2876,10 +2875,6 @@
             {
               "name": "owner",
               "type": "core::starknet::contract_address::ContractAddress"
-            },
-            {
-              "name": "collectable_address",
-              "type": "core::starknet::contract_address::ContractAddress"
             }
           ]
         },
@@ -3106,7 +3101,7 @@
       ]
     },
     "amma_blobert_minter": {
-      "class_hash": "0x4426646131b497a6636da4b71e335d643734ecfb687c036da1f328b278f459b",
+      "class_hash": "0xec0f69cb288620eeee0b4b4a38c6558650c0ec46a011fcb960bcfb69b67c80",
       "abi": [
         {
           "type": "impl",
@@ -4047,8 +4042,8 @@
         }
       ]
     },
-    "arena_blobert_loadout": {
-      "class_hash": "0x5b1ee390555612f76220b131d2c8f78e18f0e722589d4f0d045140c610b9ec4",
+    "classic_blobert_loadout": {
+      "class_hash": "0x6b05538ce150c10f90c8f996de28ca41c69b1d65481c9318f136f4c24dc6dce",
       "abi": [
         {
           "type": "impl",
@@ -4167,8 +4162,8 @@
         },
         {
           "type": "impl",
-          "name": "IArenaBlobertLoadoutImpl",
-          "interface_name": "ba_loadout::arena_contract::IArenaBlobertLoadout"
+          "name": "IClassicBlobertLoadoutImpl",
+          "interface_name": "ba_loadout::classic_contract::IClassicBlobertLoadout"
         },
         {
           "type": "enum",
@@ -4398,7 +4393,7 @@
         },
         {
           "type": "struct",
-          "name": "ba_loadout::arena_contract::LoadoutInput",
+          "name": "ba_loadout::classic_contract::LoadoutInput",
           "members": [
             {
               "name": "key",
@@ -4420,7 +4415,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_loadout::arena_contract::IArenaBlobertLoadout",
+          "name": "ba_loadout::classic_contract::IClassicBlobertLoadout",
           "items": [
             {
               "type": "function",
@@ -4452,7 +4447,7 @@
               "inputs": [
                 {
                   "name": "loadouts",
-                  "type": "core::array::Array::<ba_loadout::arena_contract::LoadoutInput>"
+                  "type": "core::array::Array::<ba_loadout::classic_contract::LoadoutInput>"
                 }
               ],
               "outputs": [],
@@ -4626,7 +4621,679 @@
         },
         {
           "type": "event",
-          "name": "ba_loadout::arena_contract::arena_blobert_loadout::Event",
+          "name": "ba_loadout::classic_contract::classic_blobert_loadout::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "OwnableEvents",
+              "type": "sai_ownable::ownable_component::Event",
+              "kind": "flat"
+            }
+          ]
+        }
+      ]
+    },
+    "amma_blobert_loadout": {
+      "class_hash": "0x3467b064d4cd9ac5c5ea2d1202ea424eb8cf735578e0caed9d805397b1a64ac",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "ILoadoutImpl",
+          "interface_name": "ba_loadout::interface::ILoadout"
+        },
+        {
+          "type": "struct",
+          "name": "core::integer::u256",
+          "members": [
+            {
+              "name": "low",
+              "type": "core::integer::u128"
+            },
+            {
+              "name": "high",
+              "type": "core::integer::u128"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "ba_loadout::ability::Abilities",
+          "members": [
+            {
+              "name": "strength",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "vitality",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "dexterity",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "luck",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "ba_loadout::interface::ILoadout",
+          "items": [
+            {
+              "type": "function",
+              "name": "abilities",
+              "inputs": [
+                {
+                  "name": "collection_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "ba_loadout::ability::Abilities"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "attacks",
+              "inputs": [
+                {
+                  "name": "collection_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                },
+                {
+                  "name": "slots",
+                  "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Array::<core::felt252>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "loadout",
+              "inputs": [
+                {
+                  "name": "collection_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                },
+                {
+                  "name": "slots",
+                  "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "(ba_loadout::ability::Abilities, core::array::Array::<core::felt252>)"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IAmmaBlobertLoadoutImpl",
+          "interface_name": "ba_loadout::amma_contract::IAmmaBlobertLoadout"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "ba_loadout::attack::types::Target",
+          "variants": [
+            {
+              "name": "Player",
+              "type": "()"
+            },
+            {
+              "name": "Opponent",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "ba_loadout::ability::DAbilities",
+          "members": [
+            {
+              "name": "strength",
+              "type": "core::integer::i32"
+            },
+            {
+              "name": "vitality",
+              "type": "core::integer::i32"
+            },
+            {
+              "name": "dexterity",
+              "type": "core::integer::i32"
+            },
+            {
+              "name": "luck",
+              "type": "core::integer::i32"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "ba_loadout::ability::AbilityTypes",
+          "variants": [
+            {
+              "name": "Strength",
+              "type": "()"
+            },
+            {
+              "name": "Vitality",
+              "type": "()"
+            },
+            {
+              "name": "Dexterity",
+              "type": "()"
+            },
+            {
+              "name": "Luck",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "ba_loadout::attack::types::AbilityAffect",
+          "members": [
+            {
+              "name": "ability",
+              "type": "ba_loadout::ability::AbilityTypes"
+            },
+            {
+              "name": "amount",
+              "type": "core::integer::i32"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "ba_loadout::attack::types::Damage",
+          "members": [
+            {
+              "name": "critical",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "power",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "ba_loadout::attack::types::Affect",
+          "variants": [
+            {
+              "name": "Health",
+              "type": "core::integer::i32"
+            },
+            {
+              "name": "Abilities",
+              "type": "ba_loadout::ability::DAbilities"
+            },
+            {
+              "name": "Ability",
+              "type": "ba_loadout::attack::types::AbilityAffect"
+            },
+            {
+              "name": "Damage",
+              "type": "ba_loadout::attack::types::Damage"
+            },
+            {
+              "name": "Stun",
+              "type": "core::integer::u8"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "ba_loadout::attack::types::Effect",
+          "members": [
+            {
+              "name": "target",
+              "type": "ba_loadout::attack::types::Target"
+            },
+            {
+              "name": "affect",
+              "type": "ba_loadout::attack::types::Affect"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "ba_loadout::attack::types::AttackWithName",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::byte_array::ByteArray"
+            },
+            {
+              "name": "speed",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "accuracy",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "cooldown",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "hit",
+              "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
+            },
+            {
+              "name": "miss",
+              "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "ba_loadout::attack::types::IdTagAttack",
+          "variants": [
+            {
+              "name": "Id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "Tag",
+              "type": "core::byte_array::ByteArray"
+            },
+            {
+              "name": "Attack",
+              "type": "ba_loadout::attack::types::AttackWithName"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "ba_loadout::amma_contract::FighterInput",
+          "members": [
+            {
+              "name": "fighter",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "abilities",
+              "type": "ba_loadout::ability::Abilities"
+            },
+            {
+              "name": "gen_abilities",
+              "type": "ba_loadout::ability::Abilities"
+            },
+            {
+              "name": "attacks",
+              "type": "core::array::Array::<ba_loadout::attack::types::IdTagAttack>"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "ba_loadout::amma_contract::IAmmaBlobertLoadout",
+          "items": [
+            {
+              "type": "function",
+              "name": "set_fighter",
+              "inputs": [
+                {
+                  "name": "fighter",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "abilities",
+                  "type": "ba_loadout::ability::Abilities"
+                },
+                {
+                  "name": "gen_abilities",
+                  "type": "ba_loadout::ability::Abilities"
+                },
+                {
+                  "name": "attacks",
+                  "type": "core::array::Array::<ba_loadout::attack::types::IdTagAttack>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_fighters",
+              "inputs": [
+                {
+                  "name": "fighters",
+                  "type": "core::array::Array::<ba_loadout::amma_contract::FighterInput>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_fighter_count",
+              "inputs": [
+                {
+                  "name": "count",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "fighter_count",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "fighter_abilities",
+              "inputs": [
+                {
+                  "name": "fighter",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "ba_loadout::ability::Abilities"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "fighter_attacks",
+              "inputs": [
+                {
+                  "name": "fighter",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "slots",
+                  "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Array::<core::felt252>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "fighter_loadout",
+              "inputs": [
+                {
+                  "name": "fighter",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "slots",
+                  "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "(ba_loadout::ability::Abilities, core::array::Array::<core::felt252>)"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "fighter_gen_abilities",
+              "inputs": [
+                {
+                  "name": "fighter",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "ba_loadout::ability::Abilities"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "fighter_gen_loadout",
+              "inputs": [
+                {
+                  "name": "fighter",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "slots",
+                  "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "(ba_loadout::ability::Abilities, core::array::Array::<core::felt252>)"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IOwnableImpl",
+          "interface_name": "sai_ownable::IOwnable"
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "sai_ownable::IOwnable",
+          "items": [
+            {
+              "type": "function",
+              "name": "contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "set_contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "is_owner",
+                  "type": "core::bool"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "grant_contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "grant_contract_owners",
+              "inputs": [
+                {
+                  "name": "owners",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "revoke_contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "revoke_contract_owners",
+              "inputs": [
+                {
+                  "name": "owners",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": [
+            {
+              "name": "owner",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "attack_dispatcher_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "collection_addresses",
+              "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_ownable::ownable_component::GrantContractOwner",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_ownable::ownable_component::RevokeContractOwner",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_ownable::ownable_component::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "GrantContractOwner",
+              "type": "sai_ownable::ownable_component::GrantContractOwner",
+              "kind": "nested"
+            },
+            {
+              "name": "RevokeContractOwner",
+              "type": "sai_ownable::ownable_component::RevokeContractOwner",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "ba_loadout::amma_contract::amma_blobert_loadout::Event",
           "kind": "enum",
           "variants": [
             {
@@ -4639,12 +5306,12 @@
       ]
     },
     "classic_arcade": {
-      "class_hash": "0x30e0f9853486aa453fc2bdd69141a7005300060d58de411a3adb21e91b71b31",
+      "class_hash": "0x5708c44799ea41af02a0c87bcfa12d9afae9aa9be768d23397fa788c2a05629",
       "abi": [
         {
           "type": "impl",
           "name": "IClassicArcadeImpl",
-          "interface_name": "ba_classic_arcade::contract::IClassicArcade"
+          "interface_name": "ba_classic_arcade::IClassicArcade"
         },
         {
           "type": "struct",
@@ -4662,7 +5329,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_classic_arcade::contract::IClassicArcade",
+          "name": "ba_classic_arcade::IClassicArcade",
           "items": [
             {
               "type": "function",
@@ -4733,7 +5400,7 @@
         {
           "type": "impl",
           "name": "IClassicArcadeAdminImpl",
-          "interface_name": "ba_classic_arcade::contract::IClassicArcadeAdmin"
+          "interface_name": "ba_classic_arcade::IClassicArcadeAdmin"
         },
         {
           "type": "struct",
@@ -4977,7 +5644,7 @@
         },
         {
           "type": "struct",
-          "name": "ba_classic_arcade::contract::OpponentInput",
+          "name": "ba_classic_arcade::OpponentInput",
           "members": [
             {
               "name": "attributes",
@@ -4995,7 +5662,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_classic_arcade::contract::IClassicArcadeAdmin",
+          "name": "ba_classic_arcade::IClassicArcadeAdmin",
           "items": [
             {
               "type": "function",
@@ -5003,7 +5670,7 @@
               "inputs": [
                 {
                   "name": "opponents",
-                  "type": "core::array::Array::<ba_classic_arcade::contract::OpponentInput>"
+                  "type": "core::array::Array::<ba_classic_arcade::OpponentInput>"
                 }
               ],
               "outputs": [],
@@ -5213,7 +5880,340 @@
         },
         {
           "type": "event",
-          "name": "ba_classic_arcade::contract::classic_arcade::Event",
+          "name": "ba_classic_arcade::classic_arcade::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "OwnableEvents",
+              "type": "sai_ownable::ownable_component::Event",
+              "kind": "flat"
+            }
+          ]
+        }
+      ]
+    },
+    "amma_arcade": {
+      "class_hash": "0x7cdebba73b33499da9c6c255d051d7c17130cd791717343d30521fb193dd62e",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "IAmmaArcadeImpl",
+          "interface_name": "ba_amma_arcade::contract::IAmmaArcade"
+        },
+        {
+          "type": "struct",
+          "name": "core::integer::u256",
+          "members": [
+            {
+              "name": "low",
+              "type": "core::integer::u128"
+            },
+            {
+              "name": "high",
+              "type": "core::integer::u128"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "ba_amma_arcade::contract::IAmmaArcade",
+          "items": [
+            {
+              "type": "function",
+              "name": "start",
+              "inputs": [
+                {
+                  "name": "collection_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                },
+                {
+                  "name": "attack_slots",
+                  "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "attack",
+              "inputs": [
+                {
+                  "name": "attempt_id",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "attack_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "respawn",
+              "inputs": [
+                {
+                  "name": "attempt_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "forfeit",
+              "inputs": [
+                {
+                  "name": "attempt_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IAmmaArcadeAdminImpl",
+          "interface_name": "ba_amma_arcade::contract::IAmmaArcadeAdmin"
+        },
+        {
+          "type": "interface",
+          "name": "ba_amma_arcade::contract::IAmmaArcadeAdmin",
+          "items": [
+            {
+              "type": "function",
+              "name": "set_gen_stages",
+              "inputs": [
+                {
+                  "name": "gen_stages",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_max_respawns",
+              "inputs": [
+                {
+                  "name": "max_respawns",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_time_limit",
+              "inputs": [
+                {
+                  "name": "time_limit",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_health_regen_permille",
+              "inputs": [
+                {
+                  "name": "health_regen_permille",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IOwnableImpl",
+          "interface_name": "sai_ownable::IOwnable"
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "sai_ownable::IOwnable",
+          "items": [
+            {
+              "type": "function",
+              "name": "contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "set_contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "is_owner",
+                  "type": "core::bool"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "grant_contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "grant_contract_owners",
+              "inputs": [
+                {
+                  "name": "owners",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "revoke_contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "revoke_contract_owners",
+              "inputs": [
+                {
+                  "name": "owners",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": [
+            {
+              "name": "owner",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "attack_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "loadout_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "collectable_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_ownable::ownable_component::GrantContractOwner",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_ownable::ownable_component::RevokeContractOwner",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_ownable::ownable_component::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "GrantContractOwner",
+              "type": "sai_ownable::ownable_component::GrantContractOwner",
+              "kind": "nested"
+            },
+            {
+              "name": "RevokeContractOwner",
+              "type": "sai_ownable::ownable_component::RevokeContractOwner",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "ba_amma_arcade::contract::amma_arcade::Event",
           "kind": "enum",
           "variants": [
             {
@@ -5231,44 +6231,54 @@
       "contract_address": "0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578d0549d"
     },
     "arena_blobert": {
-      "contract_address": "0x39e74b3c115ad4afed68060f658f12cade8a694df7ae92c331aca0eb7cdb5de",
+      "contract_address": "0xd9c3696b3495d5d4cf199d72124af452ace947a0ec027230f77cb66c41cb5d",
       "class_hash": "0x65c960474c4a763613160253c12c970d481aca45e151279eff95c6969667a1a",
       "class": "arena_blobert"
     },
     "amma_blobert": {
-      "contract_address": "0x365b3ad4a5bf5f72c5cffa5b68fe0d7a067590e8bea87850609a2dfd25c46c6",
-      "class_hash": "0x255cf11d3158e105d26f9fdd16b160d67e86d25b11b7ef0306473a293d952a1",
+      "contract_address": "0x3ab0b7741c38141e0b843be3fef9c28d3749f41c5d883ef389436f99751f37f",
+      "class_hash": "0xad67917de81c1665aa9ce7d293c94f3ae85c66906953205b6a755bab7027a6",
       "class": "amma_blobert"
     },
+    "amma_blobert_soulbound": {
+      "contract_address": "0x4ac4296370cbbfdf1eb258d03d862a4fbc6cc84649ff60682cfadfdccc724a4",
+      "class_hash": "0x2180fc2bcbdeea447ae0668796532c7a9de96b5492bdeb542e670287fec05fc",
+      "class": "amma_blobert_soulbound"
+    },
     "attack": {
-      "contract_address": "0x5bdea85748252aac171f4880bb41f035c0842cd058de8749540c90f270b7fe4",
+      "contract_address": "0x61d3a5289beaf79bcdf876ceee834c5c9c9f02c2468814ce87bac4eec1a0198",
       "class_hash": "0x3af1e7936ebd63c7725cb9f77811439da9a033138ae804964438a904b19b0b1",
       "class": "attack"
     },
     "arena_blobert_minter": {
-      "contract_address": "0x1f1ab4042cd58336ba2e94a002641343a36ee92190aaeffaeae890b17f3ef4f",
-      "class_hash": "0x155c20ef870bb4ebc33d9d59c4dabb6bd99ecfe00c15958adbf5c1962acd3f5",
+      "contract_address": "0x1b315b4a109b3b313779a32155f601dcb9f236a989da8d3e09e30e828f9b2af",
+      "class_hash": "0x7859e23b1ac4ccd5c7160d1d09e357753bb69ada7e2f8cf20d690a8cfcc28d3",
       "class": "arena_blobert_minter"
     },
-    "amma_blobert_soulbound": {
-      "contract_address": "0x3a8e1db455e67650078c4f99395846939613aebc8bdb597cf8a208c6bb75e6a",
-      "class_hash": "0x3a717266d538a77d6aea60279fcc0836308d5b3ad8f009ae05fed0f02abfecb",
-      "class": "amma_blobert_soulbound"
-    },
-    "arena_blobert_loadout": {
-      "contract_address": "0x7dce84a4cfcf511e92ee8b4fc253a2cff0523d41f0d8658b01d25ef2ae70da9",
-      "class_hash": "0x5b1ee390555612f76220b131d2c8f78e18f0e722589d4f0d045140c610b9ec4",
-      "class": "arena_blobert_loadout"
-    },
     "amma_blobert_minter": {
-      "contract_address": "0x7aae0de3954b53a67646ba9fdf32e31fe28223495e3299d7950eb4f8929cc5f",
-      "class_hash": "0x4426646131b497a6636da4b71e335d643734ecfb687c036da1f328b278f459b",
+      "contract_address": "0x610de5dd7cc97dd1b59c64f5c37f583750abd1929eb8dbfa5630574f559904e",
+      "class_hash": "0xec0f69cb288620eeee0b4b4a38c6558650c0ec46a011fcb960bcfb69b67c80",
       "class": "amma_blobert_minter"
     },
+    "classic_blobert_loadout": {
+      "contract_address": "0x7e0ef6e73bcac2a17e55f3c7a019978c4f215515744466332d78e714e3820d7",
+      "class_hash": "0x6b05538ce150c10f90c8f996de28ca41c69b1d65481c9318f136f4c24dc6dce",
+      "class": "classic_blobert_loadout"
+    },
+    "amma_blobert_loadout": {
+      "contract_address": "0x6bf186a7a9f0531c172863a94431a70e5c9c38dd1ccb33a676b0fe9d98bed15",
+      "class_hash": "0x3467b064d4cd9ac5c5ea2d1202ea424eb8cf735578e0caed9d805397b1a64ac",
+      "class": "amma_blobert_loadout"
+    },
     "classic_arcade": {
-      "contract_address": "0x50569f1c55aa24e9c878ced9e71f3079e8238a4bb6c7a68b81f93e26b4b88f",
-      "class_hash": "0x30e0f9853486aa453fc2bdd69141a7005300060d58de411a3adb21e91b71b31",
+      "contract_address": "0x6262d9d57d480982c43b46ab1fd4d9f6177be4832a079ba1b4a47583134b82a",
+      "class_hash": "0x5708c44799ea41af02a0c87bcfa12d9afae9aa9be768d23397fa788c2a05629",
       "class": "classic_arcade"
+    },
+    "amma_arcade": {
+      "contract_address": "0x5f51e0e601729711d7ccc63ec70548dce57528e97c0c7382f05d70a2411b3af",
+      "class_hash": "0x7cdebba73b33499da9c6c255d051d7c17130cd791717343d30521fb193dd62e",
+      "class": "amma_arcade"
     }
   },
   "declarations": {
@@ -6198,7 +7208,7 @@
       ]
     },
     "arena_blobert_minter": {
-      "class_hash": "0x155c20ef870bb4ebc33d9d59c4dabb6bd99ecfe00c15958adbf5c1962acd3f5",
+      "class_hash": "0x7859e23b1ac4ccd5c7160d1d09e357753bb69ada7e2f8cf20d690a8cfcc28d3",
       "abi": [
         {
           "type": "impl",
@@ -6443,10 +7453,11 @@
             }
           ]
         }
-      ]
+      ],
+      "transaction_hash": "0x4b350694df3f7a3e7b85e5e5c8470d3fbec3f2a2b6428317ea36d3cde9a7625"
     },
     "amma_blobert": {
-      "class_hash": "0x255cf11d3158e105d26f9fdd16b160d67e86d25b11b7ef0306473a293d952a1",
+      "class_hash": "0xad67917de81c1665aa9ce7d293c94f3ae85c66906953205b6a755bab7027a6",
       "abi": [
         {
           "type": "impl",
@@ -6486,17 +7497,6 @@
                 }
               ],
               "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "number_of_fighters",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::integer::u32"
-                }
-              ],
-              "state_mutability": "view"
             }
           ]
         },
@@ -6509,18 +7509,6 @@
           "type": "interface",
           "name": "amma_blobert::collectable::IAmmaBlobertAdmin",
           "items": [
-            {
-              "type": "function",
-              "name": "set_n_fighters",
-              "inputs": [
-                {
-                  "name": "number_of_fighters",
-                  "type": "core::integer::u32"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
             {
               "type": "function",
               "name": "mint",
@@ -7372,10 +8360,11 @@
             }
           ]
         }
-      ]
+      ],
+      "transaction_hash": "0x6a2b5102670d55f73eb5948a3dcb859526907bb84ebbbf387a958f705a657f4"
     },
     "amma_blobert_soulbound": {
-      "class_hash": "0x3a717266d538a77d6aea60279fcc0836308d5b3ad8f009ae05fed0f02abfecb",
+      "class_hash": "0x2180fc2bcbdeea447ae0668796532c7a9de96b5492bdeb542e670287fec05fc",
       "abi": [
         {
           "type": "impl",
@@ -7409,17 +8398,6 @@
                   "type": "core::integer::u256"
                 }
               ],
-              "outputs": [
-                {
-                  "type": "core::integer::u32"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "number_of_fighters",
-              "inputs": [],
               "outputs": [
                 {
                   "type": "core::integer::u32"
@@ -8033,10 +9011,6 @@
             {
               "name": "owner",
               "type": "core::starknet::contract_address::ContractAddress"
-            },
-            {
-              "name": "collectable_address",
-              "type": "core::starknet::contract_address::ContractAddress"
             }
           ]
         },
@@ -8260,10 +9234,11 @@
             }
           ]
         }
-      ]
+      ],
+      "transaction_hash": "0x179aac6ee00b333a73e255365125ff05f91eaffecddd93600eaf30468761d85"
     },
     "amma_blobert_minter": {
-      "class_hash": "0x4426646131b497a6636da4b71e335d643734ecfb687c036da1f328b278f459b",
+      "class_hash": "0xec0f69cb288620eeee0b4b4a38c6558650c0ec46a011fcb960bcfb69b67c80",
       "abi": [
         {
           "type": "impl",
@@ -8347,7 +9322,8 @@
           "kind": "enum",
           "variants": []
         }
-      ]
+      ],
+      "transaction_hash": "0x57fb194ef36738a0008e4d75586a37b00c6b73367c6d08956043649b666f7e3"
     },
     "attack": {
       "class_hash": "0x3af1e7936ebd63c7725cb9f77811439da9a033138ae804964438a904b19b0b1",
@@ -9204,8 +10180,8 @@
         }
       ]
     },
-    "arena_blobert_loadout": {
-      "class_hash": "0x5b1ee390555612f76220b131d2c8f78e18f0e722589d4f0d045140c610b9ec4",
+    "classic_blobert_loadout": {
+      "class_hash": "0x6b05538ce150c10f90c8f996de28ca41c69b1d65481c9318f136f4c24dc6dce",
       "abi": [
         {
           "type": "impl",
@@ -9324,8 +10300,8 @@
         },
         {
           "type": "impl",
-          "name": "IArenaBlobertLoadoutImpl",
-          "interface_name": "ba_loadout::arena_contract::IArenaBlobertLoadout"
+          "name": "IClassicBlobertLoadoutImpl",
+          "interface_name": "ba_loadout::classic_contract::IClassicBlobertLoadout"
         },
         {
           "type": "enum",
@@ -9555,7 +10531,7 @@
         },
         {
           "type": "struct",
-          "name": "ba_loadout::arena_contract::LoadoutInput",
+          "name": "ba_loadout::classic_contract::LoadoutInput",
           "members": [
             {
               "name": "key",
@@ -9577,7 +10553,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_loadout::arena_contract::IArenaBlobertLoadout",
+          "name": "ba_loadout::classic_contract::IClassicBlobertLoadout",
           "items": [
             {
               "type": "function",
@@ -9609,7 +10585,7 @@
               "inputs": [
                 {
                   "name": "loadouts",
-                  "type": "core::array::Array::<ba_loadout::arena_contract::LoadoutInput>"
+                  "type": "core::array::Array::<ba_loadout::classic_contract::LoadoutInput>"
                 }
               ],
               "outputs": [],
@@ -9783,7 +10759,7 @@
         },
         {
           "type": "event",
-          "name": "ba_loadout::arena_contract::arena_blobert_loadout::Event",
+          "name": "ba_loadout::classic_contract::classic_blobert_loadout::Event",
           "kind": "enum",
           "variants": [
             {
@@ -9793,15 +10769,689 @@
             }
           ]
         }
-      ]
+      ],
+      "transaction_hash": "0x410e7fb6321988058fa3faaa2a42bd44e8a431baea25e35e8bba4f738403c52"
+    },
+    "amma_blobert_loadout": {
+      "class_hash": "0x3467b064d4cd9ac5c5ea2d1202ea424eb8cf735578e0caed9d805397b1a64ac",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "ILoadoutImpl",
+          "interface_name": "ba_loadout::interface::ILoadout"
+        },
+        {
+          "type": "struct",
+          "name": "core::integer::u256",
+          "members": [
+            {
+              "name": "low",
+              "type": "core::integer::u128"
+            },
+            {
+              "name": "high",
+              "type": "core::integer::u128"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "ba_loadout::ability::Abilities",
+          "members": [
+            {
+              "name": "strength",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "vitality",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "dexterity",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "luck",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "ba_loadout::interface::ILoadout",
+          "items": [
+            {
+              "type": "function",
+              "name": "abilities",
+              "inputs": [
+                {
+                  "name": "collection_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "ba_loadout::ability::Abilities"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "attacks",
+              "inputs": [
+                {
+                  "name": "collection_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                },
+                {
+                  "name": "slots",
+                  "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Array::<core::felt252>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "loadout",
+              "inputs": [
+                {
+                  "name": "collection_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                },
+                {
+                  "name": "slots",
+                  "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "(ba_loadout::ability::Abilities, core::array::Array::<core::felt252>)"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IAmmaBlobertLoadoutImpl",
+          "interface_name": "ba_loadout::amma_contract::IAmmaBlobertLoadout"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "ba_loadout::attack::types::Target",
+          "variants": [
+            {
+              "name": "Player",
+              "type": "()"
+            },
+            {
+              "name": "Opponent",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "ba_loadout::ability::DAbilities",
+          "members": [
+            {
+              "name": "strength",
+              "type": "core::integer::i32"
+            },
+            {
+              "name": "vitality",
+              "type": "core::integer::i32"
+            },
+            {
+              "name": "dexterity",
+              "type": "core::integer::i32"
+            },
+            {
+              "name": "luck",
+              "type": "core::integer::i32"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "ba_loadout::ability::AbilityTypes",
+          "variants": [
+            {
+              "name": "Strength",
+              "type": "()"
+            },
+            {
+              "name": "Vitality",
+              "type": "()"
+            },
+            {
+              "name": "Dexterity",
+              "type": "()"
+            },
+            {
+              "name": "Luck",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "ba_loadout::attack::types::AbilityAffect",
+          "members": [
+            {
+              "name": "ability",
+              "type": "ba_loadout::ability::AbilityTypes"
+            },
+            {
+              "name": "amount",
+              "type": "core::integer::i32"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "ba_loadout::attack::types::Damage",
+          "members": [
+            {
+              "name": "critical",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "power",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "ba_loadout::attack::types::Affect",
+          "variants": [
+            {
+              "name": "Health",
+              "type": "core::integer::i32"
+            },
+            {
+              "name": "Abilities",
+              "type": "ba_loadout::ability::DAbilities"
+            },
+            {
+              "name": "Ability",
+              "type": "ba_loadout::attack::types::AbilityAffect"
+            },
+            {
+              "name": "Damage",
+              "type": "ba_loadout::attack::types::Damage"
+            },
+            {
+              "name": "Stun",
+              "type": "core::integer::u8"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "ba_loadout::attack::types::Effect",
+          "members": [
+            {
+              "name": "target",
+              "type": "ba_loadout::attack::types::Target"
+            },
+            {
+              "name": "affect",
+              "type": "ba_loadout::attack::types::Affect"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "ba_loadout::attack::types::AttackWithName",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::byte_array::ByteArray"
+            },
+            {
+              "name": "speed",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "accuracy",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "cooldown",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "hit",
+              "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
+            },
+            {
+              "name": "miss",
+              "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "ba_loadout::attack::types::IdTagAttack",
+          "variants": [
+            {
+              "name": "Id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "Tag",
+              "type": "core::byte_array::ByteArray"
+            },
+            {
+              "name": "Attack",
+              "type": "ba_loadout::attack::types::AttackWithName"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "ba_loadout::amma_contract::FighterInput",
+          "members": [
+            {
+              "name": "fighter",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "abilities",
+              "type": "ba_loadout::ability::Abilities"
+            },
+            {
+              "name": "gen_abilities",
+              "type": "ba_loadout::ability::Abilities"
+            },
+            {
+              "name": "attacks",
+              "type": "core::array::Array::<ba_loadout::attack::types::IdTagAttack>"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "ba_loadout::amma_contract::IAmmaBlobertLoadout",
+          "items": [
+            {
+              "type": "function",
+              "name": "set_fighter",
+              "inputs": [
+                {
+                  "name": "fighter",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "abilities",
+                  "type": "ba_loadout::ability::Abilities"
+                },
+                {
+                  "name": "gen_abilities",
+                  "type": "ba_loadout::ability::Abilities"
+                },
+                {
+                  "name": "attacks",
+                  "type": "core::array::Array::<ba_loadout::attack::types::IdTagAttack>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_fighters",
+              "inputs": [
+                {
+                  "name": "fighters",
+                  "type": "core::array::Array::<ba_loadout::amma_contract::FighterInput>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_fighter_count",
+              "inputs": [
+                {
+                  "name": "count",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "fighter_count",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "fighter_abilities",
+              "inputs": [
+                {
+                  "name": "fighter",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "ba_loadout::ability::Abilities"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "fighter_attacks",
+              "inputs": [
+                {
+                  "name": "fighter",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "slots",
+                  "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Array::<core::felt252>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "fighter_loadout",
+              "inputs": [
+                {
+                  "name": "fighter",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "slots",
+                  "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "(ba_loadout::ability::Abilities, core::array::Array::<core::felt252>)"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "fighter_gen_abilities",
+              "inputs": [
+                {
+                  "name": "fighter",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "ba_loadout::ability::Abilities"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "fighter_gen_loadout",
+              "inputs": [
+                {
+                  "name": "fighter",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "slots",
+                  "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "(ba_loadout::ability::Abilities, core::array::Array::<core::felt252>)"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IOwnableImpl",
+          "interface_name": "sai_ownable::IOwnable"
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "sai_ownable::IOwnable",
+          "items": [
+            {
+              "type": "function",
+              "name": "contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "set_contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "is_owner",
+                  "type": "core::bool"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "grant_contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "grant_contract_owners",
+              "inputs": [
+                {
+                  "name": "owners",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "revoke_contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "revoke_contract_owners",
+              "inputs": [
+                {
+                  "name": "owners",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": [
+            {
+              "name": "owner",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "attack_dispatcher_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "collection_addresses",
+              "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_ownable::ownable_component::GrantContractOwner",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_ownable::ownable_component::RevokeContractOwner",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_ownable::ownable_component::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "GrantContractOwner",
+              "type": "sai_ownable::ownable_component::GrantContractOwner",
+              "kind": "nested"
+            },
+            {
+              "name": "RevokeContractOwner",
+              "type": "sai_ownable::ownable_component::RevokeContractOwner",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "ba_loadout::amma_contract::amma_blobert_loadout::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "OwnableEvents",
+              "type": "sai_ownable::ownable_component::Event",
+              "kind": "flat"
+            }
+          ]
+        }
+      ],
+      "transaction_hash": "0x219ce5ad9d6b5c9cd1b3eeac2272e1fc446b2fa3974976fd89456da4beafc57"
     },
     "classic_arcade": {
-      "class_hash": "0x30e0f9853486aa453fc2bdd69141a7005300060d58de411a3adb21e91b71b31",
+      "class_hash": "0x5708c44799ea41af02a0c87bcfa12d9afae9aa9be768d23397fa788c2a05629",
       "abi": [
         {
           "type": "impl",
           "name": "IClassicArcadeImpl",
-          "interface_name": "ba_classic_arcade::contract::IClassicArcade"
+          "interface_name": "ba_classic_arcade::IClassicArcade"
         },
         {
           "type": "struct",
@@ -9819,7 +11469,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_classic_arcade::contract::IClassicArcade",
+          "name": "ba_classic_arcade::IClassicArcade",
           "items": [
             {
               "type": "function",
@@ -9890,7 +11540,7 @@
         {
           "type": "impl",
           "name": "IClassicArcadeAdminImpl",
-          "interface_name": "ba_classic_arcade::contract::IClassicArcadeAdmin"
+          "interface_name": "ba_classic_arcade::IClassicArcadeAdmin"
         },
         {
           "type": "struct",
@@ -10134,7 +11784,7 @@
         },
         {
           "type": "struct",
-          "name": "ba_classic_arcade::contract::OpponentInput",
+          "name": "ba_classic_arcade::OpponentInput",
           "members": [
             {
               "name": "attributes",
@@ -10152,7 +11802,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_classic_arcade::contract::IClassicArcadeAdmin",
+          "name": "ba_classic_arcade::IClassicArcadeAdmin",
           "items": [
             {
               "type": "function",
@@ -10160,7 +11810,7 @@
               "inputs": [
                 {
                   "name": "opponents",
-                  "type": "core::array::Array::<ba_classic_arcade::contract::OpponentInput>"
+                  "type": "core::array::Array::<ba_classic_arcade::OpponentInput>"
                 }
               ],
               "outputs": [],
@@ -10370,7 +12020,7 @@
         },
         {
           "type": "event",
-          "name": "ba_classic_arcade::contract::classic_arcade::Event",
+          "name": "ba_classic_arcade::classic_arcade::Event",
           "kind": "enum",
           "variants": [
             {
@@ -10380,7 +12030,342 @@
             }
           ]
         }
-      ]
+      ],
+      "transaction_hash": "0x6554ae0829105bd0b942a1a4fc5b26cd9a946f8d3b94c2a7c28159bce9b6bd3"
+    },
+    "amma_arcade": {
+      "class_hash": "0x7cdebba73b33499da9c6c255d051d7c17130cd791717343d30521fb193dd62e",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "IAmmaArcadeImpl",
+          "interface_name": "ba_amma_arcade::contract::IAmmaArcade"
+        },
+        {
+          "type": "struct",
+          "name": "core::integer::u256",
+          "members": [
+            {
+              "name": "low",
+              "type": "core::integer::u128"
+            },
+            {
+              "name": "high",
+              "type": "core::integer::u128"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "ba_amma_arcade::contract::IAmmaArcade",
+          "items": [
+            {
+              "type": "function",
+              "name": "start",
+              "inputs": [
+                {
+                  "name": "collection_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "token_id",
+                  "type": "core::integer::u256"
+                },
+                {
+                  "name": "attack_slots",
+                  "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "attack",
+              "inputs": [
+                {
+                  "name": "attempt_id",
+                  "type": "core::felt252"
+                },
+                {
+                  "name": "attack_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "respawn",
+              "inputs": [
+                {
+                  "name": "attempt_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "forfeit",
+              "inputs": [
+                {
+                  "name": "attempt_id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IAmmaArcadeAdminImpl",
+          "interface_name": "ba_amma_arcade::contract::IAmmaArcadeAdmin"
+        },
+        {
+          "type": "interface",
+          "name": "ba_amma_arcade::contract::IAmmaArcadeAdmin",
+          "items": [
+            {
+              "type": "function",
+              "name": "set_gen_stages",
+              "inputs": [
+                {
+                  "name": "gen_stages",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_max_respawns",
+              "inputs": [
+                {
+                  "name": "max_respawns",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_time_limit",
+              "inputs": [
+                {
+                  "name": "time_limit",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_health_regen_permille",
+              "inputs": [
+                {
+                  "name": "health_regen_permille",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IOwnableImpl",
+          "interface_name": "sai_ownable::IOwnable"
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "sai_ownable::IOwnable",
+          "items": [
+            {
+              "type": "function",
+              "name": "contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "set_contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "is_owner",
+                  "type": "core::bool"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "grant_contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "grant_contract_owners",
+              "inputs": [
+                {
+                  "name": "owners",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "revoke_contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "revoke_contract_owners",
+              "inputs": [
+                {
+                  "name": "owners",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": [
+            {
+              "name": "owner",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "attack_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "loadout_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "collectable_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_ownable::ownable_component::GrantContractOwner",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_ownable::ownable_component::RevokeContractOwner",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_ownable::ownable_component::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "GrantContractOwner",
+              "type": "sai_ownable::ownable_component::GrantContractOwner",
+              "kind": "nested"
+            },
+            {
+              "name": "RevokeContractOwner",
+              "type": "sai_ownable::ownable_component::RevokeContractOwner",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "ba_amma_arcade::contract::amma_arcade::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "OwnableEvents",
+              "type": "sai_ownable::ownable_component::Event",
+              "kind": "flat"
+            }
+          ]
+        }
+      ],
+      "transaction_hash": "0x2b9539416f138754a7cefea37eb5354c73932b055afd8ca6e96af57d15fdb01"
     }
   }
 }

@@ -108,6 +108,27 @@ await sai.deployContract([
 ]);
 
 sai.dumpManifest();
+
+const toriiContract = [
+  ["arena_blobert", "erc721-world"],
+  ["amma_blobert", "erc721-world"],
+  ["amma_blobert_soulbound", "erc721-world"],
+  ["arena_blobert_minter", "contract"],
+  ["amma_blobert_minter", "contract"],
+  ["classic_blobert_loadout", "contract"],
+  ["amma_blobert_loadout", "contract"],
+  ["attack", "contract"],
+  ["classic_arcade", "contract"],
+  ["amma_arcade", "contract"],
+]
+  .filter(([tag]) => sai.contracts[tag])
+  .map(([tag, type]) => `${type}:${sai.contracts[tag].contract_address}`);
+const toriiConfigPath = `torii_${sai.profile}.toml`;
+
+const torii = loadToml(toriiConfigPath);
+torii.indexing.contracts = toriiContract;
+dumpToml(torii, toriiConfigPath);
+
 await sai.executeAndWait([
   (
     await sai.getContract("arena_blobert")
@@ -148,23 +169,3 @@ await sai.executeAndWait([
   ...(await sai.grantOwnersCalls()),
   ...(await sai.grantWritersCalls()),
 ]);
-
-const toriiContract = [
-  ["arena_blobert", "erc721-world"],
-  ["amma_blobert", "erc721-world"],
-  ["amma_blobert_soulbound", "erc721-world"],
-  ["arena_blobert_minter", "contract"],
-  ["amma_blobert_minter", "contract"],
-  ["classic_blobert_loadout", "contract"],
-  ["amma_blobert_loadout", "contract"],
-  ["attack", "contract"],
-  ["classic_arcade", "contract"],
-  ["amma_arcade", "contract"],
-]
-  .filter(([tag]) => sai.contracts[tag])
-  .map(([tag, type]) => `${type}:${sai.contracts[tag].contract_address}`);
-const toriiConfigPath = `torii_${sai.profile}.toml`;
-
-const torii = loadToml(toriiConfigPath);
-torii.indexing.contracts = toriiContract;
-dumpToml(torii, toriiConfigPath);

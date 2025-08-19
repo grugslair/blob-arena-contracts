@@ -17,12 +17,6 @@ pub type CombatNodePath = StoragePath<Mutable<CombatNode>>;
 pub type AttemptNodePath = StoragePath<Mutable<AttemptNode>>;
 
 
-#[derive(Drop, Serde, starknet::Store)]
-pub struct Opponent {
-    pub abilities: Abilities,
-    pub attacks: [felt252; 4],
-}
-
 #[derive(Drop, Copy, Introspect, PartialEq, Serde, starknet::Store, Default)]
 pub enum ArcadePhase {
     #[default]
