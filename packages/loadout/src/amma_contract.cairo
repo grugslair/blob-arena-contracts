@@ -21,15 +21,25 @@ pub trait IAmmaBlobertLoadout<TContractState> {
 
     fn set_fighters(ref self: TContractState, loadouts: Array<FighterInput>);
 
+    fn set_fighter_count(ref self: TContractState, count: u32);
+
+    fn fighter_count(self: @TContractState) -> u32;
+
     fn fighter_abilities(self: @TContractState, fighter: u32) -> Abilities;
 
-    fn fighter_attacks(self: @TContractState, fighter: u32) -> Array<felt252>;
+    fn fighter_attacks(
+        self: @TContractState, fighter: u32, slots: Array<Array<felt252>>,
+    ) -> Array<felt252>;
 
-    fn fighter_loadout(self: @TContractState, fighter: u32) -> (Abilities, Array<felt252>);
+    fn fighter_loadout(
+        self: @TContractState, fighter: u32, slots: Array<Array<felt252>>,
+    ) -> (Abilities, Array<felt252>);
 
     fn fighter_gen_abilities(self: @TContractState, fighter: u32) -> Abilities;
 
-    fn fighter_gen_loadout(self: @TContractState, fighter: u32) -> (Abilities, Array<felt252>);
+    fn fighter_gen_loadout(
+        self: @TContractState, fighter: u32, slots: Array<Array<felt252>>,
+    ) -> (Abilities, Array<felt252>);
 }
 
 #[derive(Drop, Serde, Introspect)]
@@ -83,6 +93,7 @@ mod amma_blobert_loadout {
         attack_slots: Map<felt252, felt252>,
         abilities: Map<u32, Abilities>,
         gen_abilities: Map<u32, Abilities>,
+        count: u32,
     }
 
     #[event]
@@ -120,8 +131,7 @@ mod amma_blobert_loadout {
         fn abilities(
             self: @ContractState, collection_address: ContractAddress, token_id: u256,
         ) -> Abilities {
-            self.assert_collection_address(collection_address);
-            self.abilities.read(get_fighter(collection_address, token_id))
+            self.fighter_abilities(self.fighter(collection_address, token_id))
         }
         fn attacks(
             self: @ContractState,
@@ -129,13 +139,7 @@ mod amma_blobert_loadout {
             token_id: u256,
             slots: Array<Array<felt252>>,
         ) -> Array<felt252> {
-            self.assert_collection_address(collection_address);
-            let fighter = get_fighter(collection_address, token_id);
-            let mut attack_ids: Array<felt252> = Default::default();
-            for slot in slots {
-                attack_ids.append(self.attack_slots.read((fighter, *slot[0]).poseidon_hash()));
-            }
-            attack_ids
+            self.fighter_attacks(self.fighter(collection_address, token_id), slots)
         }
         fn loadout(
             self: @ContractState,
@@ -143,14 +147,7 @@ mod amma_blobert_loadout {
             token_id: u256,
             slots: Array<Array<felt252>>,
         ) -> (Abilities, Array<felt252>) {
-            self.assert_collection_address(collection_address);
-            let fighter = get_fighter(collection_address, token_id);
-            let abilities = self.abilities.read(fighter);
-            let mut attack_ids: Array<felt252> = Default::default();
-            for slot in slots {
-                attack_ids.append(self.attack_slots.read((fighter, *slot[0]).poseidon_hash()));
-            }
-            (abilities, attack_ids)
+            self.fighter_loadout(self.fighter(collection_address, token_id), slots)
         }
     }
 
@@ -206,43 +203,33 @@ mod amma_blobert_loadout {
             self.abilities.read(fighter)
         }
 
-        fn fighter_attacks(self: @ContractState, fighter: u32) -> Array<felt252> {
+        fn fighter_attacks(
+            self: @ContractState, fighter: u32, slots: Array<Array<felt252>>,
+        ) -> Array<felt252> {
             let mut attack_ids: Array<felt252> = Default::default();
-            let mut slot = 0;
-            loop {
-                let attack_id = self.attack_slots.read((fighter, slot).poseidon_hash());
-                if attack_id.is_zero() {
-                    break;
+            for slot in slots {
+                let attack_id = self.attack_slots.read((fighter, *slot[0]).poseidon_hash());
+                if attack_id.is_non_zero() {
+                    attack_ids.append(attack_id);
                 }
-                attack_ids.append(attack_id);
-                slot += 1;
             }
             attack_ids
         }
 
-        fn fighter_loadout(self: @ContractState, fighter: u32) -> (Abilities, Array<felt252>) {
-            let abilities = self.fighter_abilities(fighter);
-            let attacks = self.fighter_attacks(fighter);
-            (abilities, attacks)
+        fn fighter_loadout(
+            self: @ContractState, fighter: u32, slots: Array<Array<felt252>>,
+        ) -> (Abilities, Array<felt252>) {
+            (self.fighter_abilities(fighter), self.fighter_attacks(fighter, slots))
         }
 
         fn fighter_gen_abilities(self: @ContractState, fighter: u32) -> Abilities {
             self.gen_abilities.read(fighter)
         }
 
-        fn fighter_gen_loadout(self: @ContractState, fighter: u32) -> (Abilities, Array<felt252>) {
-            let abilities = self.fighter_gen_abilities(fighter);
-            let mut attack_ids: Array<felt252> = Default::default();
-            let mut slot = 0;
-            loop {
-                let attack_id = self.attack_slots.read((fighter, slot).poseidon_hash());
-                if attack_id.is_zero() {
-                    break;
-                }
-                attack_ids.append(attack_id);
-                slot += 1;
-            }
-            (abilities, attack_ids)
+        fn fighter_gen_loadout(
+            self: @ContractState, fighter: u32, slots: Array<Array<felt252>>,
+        ) -> (Abilities, Array<felt252>) {
+            (self.fighter_gen_abilities(fighter), self.fighter_attacks(fighter, slots))
         }
     }
 
@@ -263,6 +250,13 @@ mod amma_blobert_loadout {
                     break;
                 }
             }
+        }
+
+        fn fighter(
+            self: @ContractState, collection_address: ContractAddress, token_id: u256,
+        ) -> u32 {
+            self.assert_collection_address(collection_address);
+            get_fighter(collection_address, token_id)
         }
     }
 }

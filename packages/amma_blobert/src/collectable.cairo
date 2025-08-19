@@ -16,7 +16,6 @@ pub trait IAmmaBlobert<TContractState> {
 
 #[starknet::interface]
 pub trait IAmmaBlobertAdmin<TContractState> {
-    fn set_n_fighters(ref self: TContractState, number_of_fighters: u32);
     fn mint(ref self: TContractState, owner: ContractAddress, fighter: u32) -> u256;
 }
 
@@ -73,7 +72,6 @@ mod amma_blobert {
         upgradeable: UpgradeableComponent::Storage,
         #[substorage(v0)]
         access: access_component::Storage,
-        number_of_fighters: u32,
         token_fighters: Map<u128, u32>,
         tokens_minted: u128,
     }
@@ -120,19 +118,10 @@ mod amma_blobert {
         fn fighter(self: @ContractState, token_id: u256) -> u32 {
             self.token_fighters.read(token_id.try_into().expect('Invalid token ID'))
         }
-        fn number_of_fighters(self: @ContractState) -> u32 {
-            self.number_of_fighters.read()
-        }
     }
 
     #[abi(embed_v0)]
     impl IAmmaBlobertAdminImpl of IAmmaBlobertAdmin<ContractState> {
-        fn set_n_fighters(ref self: ContractState, number_of_fighters: u32) {
-            self.assert_caller_is_owner();
-            assert(number_of_fighters >= self.number_of_fighters.read(), 'Cannot reduce fighters');
-            self.number_of_fighters.write(number_of_fighters);
-        }
-
         fn mint(ref self: ContractState, owner: ContractAddress, fighter: u32) -> u256 {
             self.assert_caller_is_writer();
             self.mint_internal(owner, fighter)
@@ -166,10 +155,7 @@ mod amma_blobert {
         fn mint_internal(ref self: ContractState, owner: ContractAddress, fighter: u32) -> u256 {
             let token_id = self.tokens_minted.read() + 1;
             self.tokens_minted.write(token_id);
-            assert(
-                fighter.is_non_zero() && fighter <= self.number_of_fighters.read(),
-                'Invalid fighter ID',
-            );
+            assert(fighter.is_non_zero(), 'Invalid fighter ID');
             TokenTable::set_entity(token_id, @fighter);
             self.token_fighters.write(token_id, fighter);
             let token_id: u256 = token_id.into();

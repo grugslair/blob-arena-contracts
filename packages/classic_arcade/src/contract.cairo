@@ -93,15 +93,15 @@ mod classic_arcade {
     struct Storage {
         #[substorage(v0)]
         ownable: ownable_component::Storage,
-        attack_contract: ContractAddress,
+        attack_address: ContractAddress,
         attempts: Map<felt252, AttemptNode>,
         opponents: Map<u32, Opponent>,
         stages_len: u32,
         max_respawns: u32,
         time_limit: u64,
-        current_attempt: Map<felt252, felt252>,
-        loadout_contract: ContractAddress,
         health_regen_permille: u32,
+        current_attempt: Map<felt252, felt252>,
+        loadout_address: ContractAddress,
     }
 
     #[event]
@@ -123,8 +123,8 @@ mod classic_arcade {
         register_table_with_schema::<ArcadeAttempt>("classic_arcade", "ArcadeAttempt");
         register_table_with_schema::<AttackLastUsed>("classic_arcade", "AttackLastUsed");
         register_table_with_schema::<super::OpponentTable>("classic_arcade", "Opponent");
-        self.loadout_contract.write(loadout_contract);
-        self.attack_contract.write(attack_contract);
+        self.loadout_address.write(loadout_contract);
+        self.attack_address.write(attack_contract);
     }
 
     #[abi(embed_v0)]
@@ -145,7 +145,7 @@ mod classic_arcade {
             assert(self.current_attempt.read(token_hash).is_zero(), 'Token Already in Challenge');
             assert(erc721_owner_of(collection_address, token_id) == player, 'Not Token Owner');
             let (abilities, attack_ids) = get_loadout(
-                self.loadout_contract.read(), collection_address, token_id, attack_slots,
+                self.loadout_address.read(), collection_address, token_id, attack_slots,
             );
             let expiry = get_block_timestamp() + self.time_limit.read();
 
@@ -165,7 +165,7 @@ mod classic_arcade {
             );
 
             attempt_ptr.new_attempt(player, abilities, attack_ids, token_hash, expiry);
-            self.new_combat(attempt_id, 0, 0, None);
+            self.new_combat(ref attempt_ptr, attempt_id, 0, 0, None);
             attempt_id
         }
 
@@ -185,7 +185,10 @@ mod classic_arcade {
                 } else if attempt_ptr.is_not_expired() {
                     attempt_ptr.stage.write(next_stage);
                     let health = *result.states.at(0).health;
-                    self.new_combat(attempt_id, combat_n + 1, next_stage, Some(health));
+                    self
+                        .new_combat(
+                            ref attempt_ptr, attempt_id, combat_n + 1, next_stage, Some(health),
+                        );
                 } else {
                     self.set_loss(ref attempt_ptr, attempt_id);
                 }
@@ -210,7 +213,7 @@ mod classic_arcade {
                 },
                 ArcadePhase::PlayerLost => {},
             }
-            self.new_combat(attempt_id, combat_n + 1, stage, None);
+            self.new_combat(ref attempt_ptr, attempt_id, combat_n + 1, stage, None);
             attempt_ptr.respawns.write(respawns);
             AttemptTable::set_member(
                 selector!("respawns"), attempt_id, @attempt_ptr.respawns.write(respawns),
@@ -271,12 +274,12 @@ mod classic_arcade {
     impl PrivateImpl of PrivateTrait {
         fn new_combat(
             ref self: ContractState,
+            ref attempt_ptr: AttemptNodePath,
             attempt_id: felt252,
             combat_n: u32,
             stage: u32,
             health: Option<u32>,
         ) {
-            let mut attempt_ptr = self.attempts.entry(attempt_id);
             let mut combat = attempt_ptr.combats.entry(combat_n);
             let opponent = self.opponents.entry(stage).read();
             let mut player_state: CombatantState = attempt_ptr.abilities.read().into();
@@ -314,11 +317,11 @@ mod classic_arcade {
         }
 
         fn attack_dispatcher(ref self: ContractState) -> IAttackDispatcher {
-            IAttackDispatcher { contract_address: self.attack_contract.read() }
+            IAttackDispatcher { contract_address: self.attack_address.read() }
         }
 
         fn attack_admin_dispatcher(ref self: ContractState) -> IAttackAdminDispatcher {
-            IAttackAdminDispatcher { contract_address: self.attack_contract.read() }
+            IAttackAdminDispatcher { contract_address: self.attack_address.read() }
         }
     }
 }

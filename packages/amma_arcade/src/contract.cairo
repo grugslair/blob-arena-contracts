@@ -32,7 +32,7 @@ mod errors {
 }
 
 #[starknet::interface]
-trait IClassicArcade<TState> {
+trait IAmmaArcade<TState> {
     fn start(
         ref self: TState,
         collection_address: ContractAddress,
@@ -45,15 +45,17 @@ trait IClassicArcade<TState> {
 }
 
 #[starknet::interface]
-trait IClassicArcadeAdmin<TState> {
+trait IAmmaArcadeAdmin<TState> {
     fn set_gen_stages(ref self: TState, gen_stages: u32);
     fn set_max_respawns(ref self: TState, max_respawns: u32);
     fn set_time_limit(ref self: TState, time_limit: u64);
+    fn set_health_regen_permille(ref self: TState, health_regen_permille: u32);
 }
 
 #[starknet::contract]
 mod amma_arcade {
-    use ba_arcade::component::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNodeTrait};
+    use core::cmp::min;
+use ba_arcade::component::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::table::{ArcadeAttempt, ArcadeRound, AttackLastUsed};
     use ba_combat::CombatantState;
     use ba_loadout::ability::Abilities;
@@ -61,22 +63,23 @@ mod amma_arcade {
         IAttackAdminDispatcher, IAttackAdminDispatcherTrait, IAttackDispatcher,
     };
     use ba_loadout::get_loadout;
-    use ba_utils::{erc721_token_hash, uuid};
+    use ba_utils::{erc721_token_hash, uuid, UpdateHashToU128, SeedProbability};
     use beacon_library::{ToriiTable, register_table_with_schema};
     use core::num::traits::Zero;
     use core::panic_with_const_felt252;
     use core::poseidon::poseidon_hash_span;
-    use sai_access::{AccessTrait, access_component};
+    use sai_ownable::{OwnableTrait, ownable_component};
     use sai_token::erc721::erc721_owner_of;
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePathEntry,
         StoragePointerReadAccess, StoragePointerWriteAccess,
     };
     use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
-    use super::{IClassicArcade, IClassicArcadeAdmin, IdTagAttack, Opponent, OpponentInput, errors};
+    use super::{IAmmaArcade, IAmmaArcadeAdmin, errors};
 
 
-    component!(path: access_component, storage: access, event: AccessEvents);
+    component!(path: ownable_component, storage: ownable, event: OwnableEvents);
+
 
     const ROUND_HASH: felt252 = bytearrays_hash!("amma_arcade", "ArcadeRound");
     const ATTEMPT_HASH: felt252 = bytearrays_hash!("amma_arcade", "ArcadeAttempt");
@@ -91,13 +94,13 @@ mod amma_arcade {
     #[storage]
     struct Storage {
         #[substorage(v0)]
-        access: access_component::Storage,
+        ownable: ownable_component::Storage,
         attempts: Map<felt252, AttemptNode>,
         gen_stages: u32,
         opponents: Map<felt252, u32>,
-        bosses: Map<felt252, u32>,
         max_respawns: u32,
         time_limit: u64,
+        health_regen_permille: u32,
         current_attempt: Map<felt252, felt252>,
         attack_address: ContractAddress,
         loadout_address: ContractAddress,
@@ -108,7 +111,7 @@ mod amma_arcade {
     #[derive(Drop, starknet::Event)]
     enum Event {
         #[flat]
-        AccessEvents: access_component::Event,
+        OwnableEvents: ownable_component::Event,
     }
 
     #[constructor]
@@ -130,10 +133,10 @@ mod amma_arcade {
     }
 
     #[abi(embed_v0)]
-    impl IAccessImpl = access_component::AccessImpl<ContractState>;
+    impl IOwnableImpl = ownable_component::OwnableImpl<ContractState>;
 
     #[abi(embed_v0)]
-    impl IClassicArcadeImpl of IClassicArcade<ContractState> {
+    impl IAmmaArcadeImpl of IAmmaArcade<ContractState> {
         fn start(
             ref self: ContractState,
             collection_address: ContractAddress,
@@ -167,7 +170,7 @@ mod amma_arcade {
             );
 
             attempt_ptr.new_attempt(player, abilities, attack_ids, token_hash, expiry);
-            self.new_combat(attempt_id, 0, 0);
+            self.new_combat(ref attempt_ptr, attempt_id, 0, 0, None);
             attempt_id
         }
 
@@ -182,11 +185,17 @@ mod amma_arcade {
                 >(self.attack_dispatcher(), attempt_id, combat_n, attack_id, randomness);
             if result.phase == ArcadePhase::PlayerWon {
                 let next_stage = stage + 1;
-                if next_stage > self.gen_stages.read() {
+                if next_stage == self.gen_stages.read() + 1 {
                     attempt_ptr.set_phase(attempt_id, ArcadePhase::PlayerWon);
                 } else if attempt_ptr.is_not_expired() {
+                    if next_stage == self.gen_stages.read() {
+                        let boss= randomness.update_to_u128('boss').get_final_value()
+                    } else {
+
+                    }
                     attempt_ptr.stage.write(next_stage);
-                    self.new_combat(attempt_id, combat_n + 1, next_stage);
+                    let health = *result.states.at(0).health;
+                    self.new_combat(ref attempt_ptr, attempt_id, combat_n + 1, next_stage, Some(health));
                 } else {
                     self.set_loss(ref attempt_ptr, attempt_id);
                 }
@@ -211,7 +220,7 @@ mod amma_arcade {
                 },
                 ArcadePhase::PlayerLost => {},
             }
-            self.new_combat(attempt_id, combat_n + 1, stage);
+            self.new_combat(ref attempt_ptr, attempt_id, combat_n + 1, stage, None);
             attempt_ptr.respawns.write(respawns);
             AttemptTable::set_member(
                 selector!("respawns"), attempt_id, @attempt_ptr.respawns.write(respawns),
@@ -227,58 +236,56 @@ mod amma_arcade {
     }
 
     #[abi(embed_v0)]
-    impl IClassicArcadeAdminImpl of IClassicArcadeAdmin<ContractState> {
-        fn set_opponents(ref self: ContractState, opponents: Array<OpponentInput>) {
-            self.assert_caller_is_writer();
-            self.stages_len.write(opponents.len());
-            let mut attacks: Array<IdTagAttack> = Default::default();
-            for opponent in opponents.span() {
-                attacks.append_span(opponent.attacks.span());
-            }
-            let mut all_attack_ids = self
-                .attack_admin_dispatcher()
-                .maybe_create_attacks(attacks)
-                .span();
-            for (i, opponent) in opponents.into_iter().enumerate() {
-                let attack_ids = all_attack_ids.multi_pop_front::<4>().unwrap().unbox();
-                OpponentTable::set_entity(
-                    i, @(opponent.attributes, opponent.abilities, attack_ids.span()),
-                );
-                self
-                    .opponents
-                    .write(i, Opponent { abilities: opponent.abilities, attacks: attack_ids });
-            }
+    impl IAmmaArcadeAdminImpl of IAmmaArcadeAdmin<ContractState> {
+        fn set_gen_stages(ref self: ContractState, gen_stages: u32) {
+            self.assert_caller_is_owner();
+            self.gen_stages.write(gen_stages);
         }
 
         fn set_max_respawns(ref self: ContractState, max_respawns: u32) {
-            self.assert_caller_is_writer();
+            self.assert_caller_is_owner();
             self.max_respawns.write(max_respawns);
         }
 
         fn set_time_limit(ref self: ContractState, time_limit: u64) {
-            self.assert_caller_is_writer();
+            self.assert_caller_is_owner();
             self.time_limit.write(time_limit);
+        }
+        fn set_health_regen_permille(ref self: ContractState, health_regen_permille: u32) {
+            self.assert_caller_is_owner();
+            assert(health_regen_permille <= 1000, 'Health regen must be <= 1000');
+            self.health_regen_permille.write(health_regen_permille);
         }
     }
 
 
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
-        fn new_combat(ref self: ContractState, attempt_id: felt252, combat_n: u32, stage: u32, opponent:) {
-            let mut attempt_ptr = self.attempts.entry(attempt_id);
+        fn new_combat(
+            ref self: ContractState,
+            ref attempt_ptr: AttemptNodePath,
+            attempt_id: felt252,
+            combat_n: u32,
+            stage: u32,
+            health: Option<u32>,
+        ) {
             let mut combat = attempt_ptr.combats.entry(combat_n);
-            let opponent = self.opponents.entry(stage).read();
-            let player_state: CombatantState = attempt_ptr.abilities.read().into();
+            let opponent = 
+            let mut player_state: CombatantState = attempt_ptr.abilities.read().into();
+            if let Some(health) = health {
+                let new_health = health + (health * self.health_regen_permille.read()) / 1000;
+                player_state.health = min(player_state.health, new_health);
+            }
             let usable_attacks = opponent.attacks.span();
-
-            combat.create_combat(player_state, opponent.abilities.into(), usable_attacks);
+            let opponent_state: CombatantState = opponent.abilities.into();
+            combat.create_combat(player_state, opponent_state, usable_attacks);
             RoundTable::set_entity(
                 poseidon_hash_span([attempt_id, combat_n.into(), 0.into()].span()),
                 @ArcadeRound {
                     attempt: attempt_id,
                     combat: combat_n,
                     round: 0,
-                    states: [player_state, opponent.abilities.into()].span(),
+                    states: [player_state, opponent_state].span(),
                     switch_order: false,
                     outcomes: [].span(),
                     phase: ArcadePhase::Active,
@@ -299,11 +306,11 @@ mod amma_arcade {
         }
 
         fn attack_dispatcher(ref self: ContractState) -> IAttackDispatcher {
-            IAttackDispatcher { contract_address: self.attack_contract.read() }
+            IAttackDispatcher { contract_address: self.attack_address.read() }
         }
 
         fn attack_admin_dispatcher(ref self: ContractState) -> IAttackAdminDispatcher {
-            IAttackAdminDispatcher { contract_address: self.attack_contract.read() }
+            IAttackAdminDispatcher { contract_address: self.attack_address.read() }
         }
     }
 }

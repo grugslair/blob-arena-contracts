@@ -58,8 +58,8 @@ dependencies = [
  "beacon_macros",
  "dojo",
  "dojo_macros",
- "sai_access",
  "sai_core_utils",
+ "sai_ownable",
  "sai_packing",
  "sai_token",
 ]

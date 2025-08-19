@@ -9,22 +9,22 @@ const UUID_STORAGE_ADDRESS_FELT: felt252 = selector!("__uuid__");
 pub trait SeedProbability {
     fn get_outcome<T, +Into<T, u128>, +Drop<T>>(
         ref self: u128, scale: u128, probability: T,
-    ) -> bool;
-    fn get_value(ref self: u128, scale: u128) -> u128;
-}
-
-pub impl SeedProbabilityImpl of SeedProbability {
-    fn get_outcome<T, +Into<T, u128>, +Drop<T>>(
-        ref self: u128, scale: u128, probability: T,
     ) -> bool {
         let (seed, value) = u128_safe_divmod(self, scale.try_into().unwrap());
         self = seed;
         value < probability.into()
     }
-
-    fn get_value(ref self: u128, scale: u128) -> u128 {
+    fn get_value(
+        ref self: u128, scale: u128,
+    ) -> u128 {
         let (seed, value) = u128_safe_divmod(self, scale.try_into().unwrap());
         self = seed;
+        value
+    }
+    fn get_final_value(
+        self: u128, scale: u128,
+    ) -> u128 {
+        let (_, value) = u128_safe_divmod(self, scale.try_into().unwrap());
         value
     }
 }
