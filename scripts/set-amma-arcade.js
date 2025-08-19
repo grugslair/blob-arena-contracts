@@ -1,0 +1,34 @@
+import { loadJson } from "./stark-utils.js";
+import { loadSai } from "./sai.js";
+
+export const makeSetConfigCalls = (contract, config) => {};
+
+export const makeAmmaArcadeCalls = async (sai) => {
+  const config = loadJson("./post-deploy-config/amma-arcade.json");
+  const contract = await sai.getContract("amma_arcade");
+  return [
+    contract.populate("set_max_respawns", {
+      max_respawns: BigInt(config.max_respawns),
+    }),
+    contract.populate("set_time_limit", {
+      time_limit: BigInt(config.time_limit),
+    }),
+    contract.populate("set_health_regen_permille", {
+      health_regen_permille: BigInt(config.health_regen_permille),
+    }),
+    contract.populate("set_gen_stages", {
+      gen_stages: BigInt(config.generated_stages),
+    }),
+  ];
+};
+
+const main = async () => {
+  const sai = await loadSai();
+  sai.loadManifest();
+  const calls = await makeAmmaArcadeCalls(sai);
+  await sai.account.execute(calls);
+};
+
+if (process.argv[1] === import.meta.filename) {
+  await main();
+}

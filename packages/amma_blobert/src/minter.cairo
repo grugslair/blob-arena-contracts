@@ -9,6 +9,7 @@ trait IAmmaBlobertMinter<TState> {
 
 #[starknet::contract]
 mod amma_blobert_minter {
+    use sai_return::emit_return;
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
         StoragePointerWriteAccess,
@@ -40,10 +41,12 @@ mod amma_blobert_minter {
             assert(!self.claimed.read(caller), 'Already Claimed');
             self.claimed.write(caller, true);
             let contract_address = self.contract_address.read();
-            array![
-                mint_fighter(contract_address, caller, 1),
-                mint_fighter(contract_address, caller, 2),
-            ]
+            emit_return(
+                array![
+                    mint_fighter(contract_address, caller, 1),
+                    mint_fighter(contract_address, caller, 2),
+                ],
+            )
         }
     }
 }

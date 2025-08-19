@@ -14,6 +14,7 @@ pub struct ArcadeAttempt {
     pub expiry: u64,
     pub abilities: Abilities,
     pub attacks: Span<felt252>,
+    pub health_regen: u32,
     pub respawns: u32,
     pub stage: u32,
     pub phase: ArcadePhase,

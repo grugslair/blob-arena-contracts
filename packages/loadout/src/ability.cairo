@@ -200,9 +200,15 @@ pub impl AbilitiesImpl of AbilitiesTrait {
             luck: apply_buff(ref self.luck, buffs.luck),
         }
     }
-    fn get_max_health(self: @Abilities) -> u32 {
+    fn max_health(self: @Abilities) -> u32 {
         *self.vitality + BASE_HEALTH
     }
+
+    fn max_health_permille(self: @Abilities, permille: u32) -> u32 {
+        self.max_health() * permille / 1000
+    }
+
+
     fn get_stat(self: @Abilities, stat: AbilityTypes) -> u32 {
         match stat {
             AbilityTypes::Strength => *self.strength,

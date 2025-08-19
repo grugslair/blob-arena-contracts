@@ -1,29 +1,4 @@
-use ba_blobert::Seed;
-use ba_loadout::ability::Abilities;
-use ba_loadout::attack::IdTagAttack;
 use starknet::ContractAddress;
-
-
-#[derive(Drop, Serde, starknet::Store)]
-struct Opponent {
-    abilities: Abilities,
-    attacks: [felt252; 4],
-}
-
-#[derive(Drop, Serde, Introspect)]
-struct OpponentTable {
-    attributes: Seed,
-    abilities: Abilities,
-    attacks: Span<felt252>,
-}
-
-
-#[derive(Drop, Serde)]
-struct OpponentInput {
-    attributes: Seed,
-    abilities: Abilities,
-    attacks: [IdTagAttack; 4],
-}
 
 mod errors {
     pub const RESPAWN_WHEN_NOT_LOST: felt252 = 'Cannot respawn, player not lost';
@@ -52,29 +27,36 @@ trait IAmmaArcadeAdmin<TState> {
     fn set_health_regen_permille(ref self: TState, health_regen_permille: u32);
 }
 
+
 #[starknet::contract]
 mod amma_arcade {
-    use core::cmp::min;
-use ba_arcade::component::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNodeTrait};
+    use ba_arcade::component::{
+        ArcadePhase, AttemptNode, AttemptNodePath, AttemptNodeTrait, Opponent,
+    };
     use ba_arcade::table::{ArcadeAttempt, ArcadeRound, AttackLastUsed};
     use ba_combat::CombatantState;
-    use ba_loadout::ability::Abilities;
-    use ba_loadout::attack::{
-        IAttackAdminDispatcher, IAttackAdminDispatcherTrait, IAttackDispatcher,
+    use ba_loadout::ability::AbilitiesTrait;
+    use ba_loadout::amma_contract::{
+        get_fighter_count, get_fighter_gen_loadout, get_fighter_loadout,
     };
+    use ba_loadout::attack::{IAttackAdminDispatcher, IAttackDispatcher};
     use ba_loadout::get_loadout;
-    use ba_utils::{erc721_token_hash, uuid, UpdateHashToU128, SeedProbability};
+    use ba_utils::{SeedProbability, erc721_token_hash, felt252_to_u128, uuid};
     use beacon_library::{ToriiTable, register_table_with_schema};
+    use core::cmp::min;
     use core::num::traits::Zero;
     use core::panic_with_const_felt252;
     use core::poseidon::poseidon_hash_span;
+    use sai_core_utils::poseidon_hash_two;
     use sai_ownable::{OwnableTrait, ownable_component};
+    use sai_return::emit_return;
     use sai_token::erc721::erc721_owner_of;
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePathEntry,
         StoragePointerReadAccess, StoragePointerWriteAccess,
     };
     use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
+    use crate::systems::{attack_slots, get_stage_stats, random_selection};
     use super::{IAmmaArcade, IAmmaArcadeAdmin, errors};
 
 
@@ -89,7 +71,7 @@ use ba_arcade::component::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNod
     impl RoundTable = ToriiTable<ROUND_HASH>;
     impl AttemptTable = ToriiTable<ATTEMPT_HASH>;
     impl LastUsedAttackTable = ToriiTable<LAST_USED_ATTACK_HASH>;
-    impl OpponentTable = ToriiTable<OPPONENT_HASH>;
+    impl OpponentsTable = ToriiTable<OPPONENT_HASH>;
 
     #[storage]
     struct Storage {
@@ -98,6 +80,8 @@ use ba_arcade::component::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNod
         attempts: Map<felt252, AttemptNode>,
         gen_stages: u32,
         opponents: Map<felt252, u32>,
+        bosses: Map<felt252, u32>,
+        attempt_gen_stages: Map<felt252, u32>,
         max_respawns: u32,
         time_limit: u64,
         health_regen_permille: u32,
@@ -114,6 +98,12 @@ use ba_arcade::component::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNod
         OwnableEvents: ownable_component::Event,
     }
 
+    #[derive(Drop, Serde, Introspect)]
+    struct Opponents {
+        generated: Array<u32>,
+        boss: u32,
+    }
+
     #[constructor]
     fn constructor(
         ref self: ContractState,
@@ -126,7 +116,7 @@ use ba_arcade::component::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNod
         register_table_with_schema::<ArcadeRound>("amma_arcade", "ArcadeRound");
         register_table_with_schema::<ArcadeAttempt>("amma_arcade", "ArcadeAttempt");
         register_table_with_schema::<AttackLastUsed>("amma_arcade", "AttackLastUsed");
-        register_table_with_schema::<super::OpponentTable>("amma_arcade", "Opponent");
+        register_table_with_schema::<Opponents>("amma_arcade", "Opponents");
         self.loadout_address.write(loadout_address);
         self.attack_address.write(attack_address);
         self.collectable_address.write(collectable_address);
@@ -149,11 +139,13 @@ use ba_arcade::component::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNod
             let token_hash = erc721_token_hash(collection_address, token_id);
             assert(self.current_attempt.read(token_hash).is_zero(), 'Token Already in Challenge');
             assert(erc721_owner_of(collection_address, token_id) == player, 'Not Token Owner');
+            let loadout_address = self.loadout_address.read();
+
             let (abilities, attack_ids) = get_loadout(
-                self.loadout_address.read(), collection_address, token_id, attack_slots,
+                loadout_address, collection_address, token_id, attack_slots,
             );
             let expiry = get_block_timestamp() + self.time_limit.read();
-
+            let health_regen = abilities.max_health_permille(self.health_regen_permille.read());
             AttemptTable::set_entity(
                 attempt_id,
                 @ArcadeAttempt {
@@ -163,15 +155,32 @@ use ba_arcade::component::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNod
                     expiry,
                     abilities,
                     attacks: attack_ids.span(),
+                    health_regen,
                     respawns: 0,
                     stage: 0,
                     phase: ArcadePhase::Active,
                 },
             );
+            attempt_ptr
+                .new_attempt(player, abilities, attack_ids, token_hash, health_regen, expiry);
 
-            attempt_ptr.new_attempt(player, abilities, attack_ids, token_hash, expiry);
-            self.new_combat(ref attempt_ptr, attempt_id, 0, 0, None);
-            attempt_id
+            let opponents = random_selection(
+                attempt_id, get_fighter_count(loadout_address), self.gen_stages.read(),
+            );
+            self
+                .new_combat(
+                    ref attempt_ptr,
+                    attempt_id,
+                    0,
+                    self.gen_opponent(loadout_address, *opponents[0], 0),
+                    None,
+                );
+            OpponentsTable::set_member(selector!("generated"), attempt_id, @opponents);
+
+            for (i, opponent) in opponents.into_iter().enumerate() {
+                self.opponents.write(poseidon_hash_two(attempt_id, i), opponent);
+            }
+            emit_return(attempt_id)
         }
 
         fn attack(ref self: ContractState, attempt_id: felt252, attack_id: felt252) {
@@ -188,14 +197,17 @@ use ba_arcade::component::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNod
                 if next_stage == self.gen_stages.read() + 1 {
                     attempt_ptr.set_phase(attempt_id, ArcadePhase::PlayerWon);
                 } else if attempt_ptr.is_not_expired() {
-                    if next_stage == self.gen_stages.read() {
-                        let boss= randomness.update_to_u128('boss').get_final_value()
-                    } else {
-
-                    }
                     attempt_ptr.stage.write(next_stage);
                     let health = *result.states.at(0).health;
-                    self.new_combat(ref attempt_ptr, attempt_id, combat_n + 1, next_stage, Some(health));
+                    let loadout_address = self.loadout_address.read();
+                    let opponent = match next_stage == self.gen_stages.read() {
+                        true => self.gen_boss_opponent(attempt_id, randomness),
+                        false => self.gen_opponent_stage(loadout_address, attempt_id, next_stage),
+                    };
+                    self
+                        .new_combat(
+                            ref attempt_ptr, attempt_id, combat_n + 1, opponent, Some(health),
+                        );
                 } else {
                     self.set_loss(ref attempt_ptr, attempt_id);
                 }
@@ -220,7 +232,13 @@ use ba_arcade::component::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNod
                 },
                 ArcadePhase::PlayerLost => {},
             }
-            self.new_combat(ref attempt_ptr, attempt_id, combat_n + 1, stage, None);
+
+            let opponent = match stage == self.gen_stages.read() {
+                true => self.read_boss_opponent(attempt_id),
+                false => self.gen_opponent_stage(self.loadout_address.read(), attempt_id, stage),
+            };
+
+            self.new_combat(ref attempt_ptr, attempt_id, combat_n + 1, opponent, None);
             attempt_ptr.respawns.write(respawns);
             AttemptTable::set_member(
                 selector!("respawns"), attempt_id, @attempt_ptr.respawns.write(respawns),
@@ -266,15 +284,14 @@ use ba_arcade::component::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNod
             ref attempt_ptr: AttemptNodePath,
             attempt_id: felt252,
             combat_n: u32,
-            stage: u32,
+            opponent: Opponent,
             health: Option<u32>,
         ) {
             let mut combat = attempt_ptr.combats.entry(combat_n);
-            let opponent = 
             let mut player_state: CombatantState = attempt_ptr.abilities.read().into();
             if let Some(health) = health {
-                let new_health = health + (health * self.health_regen_permille.read()) / 1000;
-                player_state.health = min(player_state.health, new_health);
+                player_state
+                    .health = min(player_state.health, health + attempt_ptr.health_regen.read());
             }
             let usable_attacks = opponent.attacks.span();
             let opponent_state: CombatantState = opponent.abilities.into();
@@ -311,6 +328,56 @@ use ba_arcade::component::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNod
 
         fn attack_admin_dispatcher(ref self: ContractState) -> IAttackAdminDispatcher {
             IAttackAdminDispatcher { contract_address: self.attack_address.read() }
+        }
+
+        fn gen_opponent_stage(
+            self: @ContractState, loadout_address: ContractAddress, attempt_id: felt252, stage: u32,
+        ) -> Opponent {
+            self
+                .gen_opponent(
+                    loadout_address,
+                    self.opponents.read(poseidon_hash_two(attempt_id, stage)),
+                    stage,
+                )
+        }
+
+        fn gen_opponent(
+            self: @ContractState, loadout_address: ContractAddress, fighter: u32, stage: u32,
+        ) -> Opponent {
+            let (gen_abilities, attacks) = get_fighter_gen_loadout(
+                loadout_address, fighter, attack_slots(),
+            );
+
+            let abilities = get_stage_stats(stage, gen_abilities);
+            let attacks: [felt252; 4] = (*attacks.span().try_into().unwrap()).unbox();
+            Opponent { abilities, attacks }
+        }
+
+        fn gen_boss_opponent(
+            ref self: ContractState, attempt_id: felt252, randomness: felt252,
+        ) -> Opponent {
+            let loadout_address = self.loadout_address.read();
+            let count = get_fighter_count(loadout_address);
+            let fighter: u32 = (felt252_to_u128(poseidon_hash_two(randomness, 'boss'))
+                .get_final_value(count)
+                + 1);
+            self.bosses.write(attempt_id, fighter);
+            self.boss_opponent(loadout_address, fighter)
+        }
+
+        fn read_boss_opponent(self: @ContractState, attempt_id: felt252) -> Opponent {
+            let fighter = self.bosses.read(attempt_id);
+            self.boss_opponent(self.loadout_address.read(), fighter)
+        }
+
+        fn boss_opponent(
+            self: @ContractState, loadout_address: ContractAddress, fighter: u32,
+        ) -> Opponent {
+            let (abilities, attacks) = get_fighter_loadout(
+                loadout_address, fighter, attack_slots(),
+            );
+            let attacks: [felt252; 4] = (*attacks.span().try_into().unwrap()).unbox();
+            Opponent { abilities, attacks }
         }
     }
 }

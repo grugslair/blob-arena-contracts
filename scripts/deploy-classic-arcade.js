@@ -16,7 +16,7 @@ await sai.deployContract({
   calldata: {
     owner: sai.account.address,
     attack_contract: sai.contracts["attack"].contract_address,
-    loadout_contract: sai.contracts["arena_blobert_loadout"].contract_address,
+    loadout_contract: sai.contracts["classic_blobert_loadout"].contract_address,
   },
 });
 const contract = await sai.getContract("classic_arcade");

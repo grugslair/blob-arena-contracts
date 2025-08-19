@@ -20,7 +20,7 @@ mod amma_blobert_soulbound {
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
         StoragePointerWriteAccess,
     };
-    use crate::collectable::{IAmmaBlobert, get_amount_of_fighters};
+    use crate::collectable::IAmmaBlobert;
     use super::IAmmaBlobertSoulboundAdmin;
 
     component!(path: ERC721Component, storage: erc721, event: ERC721Event);
@@ -47,7 +47,6 @@ mod amma_blobert_soulbound {
         upgradeable: UpgradeableComponent::Storage,
         #[substorage(v0)]
         access: access_component::Storage,
-        collectable_address: ContractAddress,
         token_fighters: Map<u128, u32>,
         tokens_minted: u128,
     }
@@ -66,13 +65,10 @@ mod amma_blobert_soulbound {
     }
 
     #[constructor]
-    fn constructor(
-        ref self: ContractState, owner: ContractAddress, collectable_address: ContractAddress,
-    ) {
+    fn constructor(ref self: ContractState, owner: ContractAddress) {
         self.erc721.initializer_no_metadata();
         self.src5.register_interface(IERC721_METADATA_ID);
         self.grant_owner(owner);
-        self.collectable_address.write(collectable_address);
         register_table_with_schema::<TokenFighter>("amma_blobert", "TokenFighterSoulbound");
     }
 
@@ -87,9 +83,6 @@ mod amma_blobert_soulbound {
     impl IAmmaBlobertImpl of IAmmaBlobert<ContractState> {
         fn fighter(self: @ContractState, token_id: u256) -> u32 {
             self.token_fighters.read(token_id.try_into().expect('Invalid token ID'))
-        }
-        fn number_of_fighters(self: @ContractState) -> u32 {
-            get_amount_of_fighters(self.collectable_address.read())
         }
     }
 
@@ -128,9 +121,7 @@ mod amma_blobert_soulbound {
         fn mint_internal(ref self: ContractState, owner: ContractAddress, fighter: u32) -> u256 {
             let token_id = self.tokens_minted.read() + 1;
             self.tokens_minted.write(token_id);
-            assert(
-                fighter.is_non_zero() && fighter <= self.number_of_fighters(), 'Invalid fighter ID',
-            );
+            assert(fighter.is_non_zero(), 'Invalid fighter ID');
             TokenTable::set_entity(token_id, @fighter);
             self.token_fighters.write(token_id, fighter);
             let token_id: u256 = token_id.into();

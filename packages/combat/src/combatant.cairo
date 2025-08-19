@@ -42,7 +42,7 @@ pub struct CombatantState {
 
 impl AbilitiesIntoCombatantState of Into<Abilities, CombatantState> {
     fn into(self: Abilities) -> CombatantState {
-        CombatantState { health: self.get_max_health(), stun_chance: 0, abilities: self }
+        CombatantState { health: self.max_health(), stun_chance: 0, abilities: self }
     }
 }
 
@@ -88,7 +88,7 @@ pub impl CombatantStateImpl of CombatantStateTrait {
         self
             .health =
                 min(
-                    self.get_max_health(),
+                    self.max_health(),
                     self.health.try_into().unwrap().saturating_add(health).saturating_into(),
                 );
         self.health.try_into().unwrap() - starting_health
@@ -103,12 +103,17 @@ pub impl CombatantStateImpl of CombatantStateTrait {
     }
 
     fn cap_health(ref self: CombatantState) {
-        self.health = min(self.get_max_health(), self.health);
+        self.health = min(self.max_health(), self.health);
     }
 
-    fn get_max_health(self: @CombatantState) -> u32 {
-        self.abilities.get_max_health()
+    fn max_health(self: @CombatantState) -> u32 {
+        self.abilities.max_health()
     }
+
+    fn max_health_permille(self: @CombatantState, permille: u32) -> u32 {
+        self.abilities.max_health_permille(permille)
+    }
+
 
     fn run_stun(ref self: CombatantState, ref seed: u128) -> bool {
         let stun_chance: u8 = apply_luck_modifier(self.stun_chance, 100 - self.abilities.luck);

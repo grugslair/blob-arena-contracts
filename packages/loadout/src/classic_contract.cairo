@@ -3,7 +3,7 @@ use crate::ability::Abilities;
 use crate::attack::IdTagAttack;
 
 #[starknet::interface]
-pub trait IArenaBlobertLoadout<TContractState> {
+pub trait IClassicBlobertLoadout<TContractState> {
     fn set_loadout(
         ref self: TContractState,
         key: BlobertAttributeKey,
@@ -45,7 +45,7 @@ struct BlobertAbilities {
 }
 
 #[starknet::contract]
-mod arena_blobert_loadout {
+mod classic_blobert_loadout {
     use ba_blobert::{
         BlobertAttribute, BlobertAttributeKey, SeedTrait, TokenAttributes, get_blobert_attributes,
     };
@@ -61,15 +61,15 @@ mod arena_blobert_loadout {
     use crate::ability::Abilities;
     use crate::attack::{IAttackAdminDispatcher, IAttackAdminDispatcherTrait};
     use crate::interface::ILoadout;
-    use super::{AttackSlot, BlobertAbilities, IArenaBlobertLoadout, IdTagAttack, LoadoutInput};
+    use super::{AttackSlot, BlobertAbilities, IClassicBlobertLoadout, IdTagAttack, LoadoutInput};
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
 
     const ABILITY_TABLE_ID: felt252 = bytearrays_hash!(
-        "arena_blobert_loadout", "ArenaBlobertAbility",
+        "classic_blobert_loadout", "ClassicBlobertAbility",
     );
     const ATTACK_SLOT_TABLE_ID: felt252 = bytearrays_hash!(
-        "arena_blobert_loadout", "ArenaBlobertAttackSlot",
+        "classic_blobert_loadout", "ClassicBlobertAttackSlot",
     );
 
     impl AbilityTable = ToriiTable<ABILITY_TABLE_ID>;
@@ -110,8 +110,10 @@ mod arena_blobert_loadout {
             .write(IAttackAdminDispatcher { contract_address: attack_dispatcher_address });
         register_table_with_schema::<
             BlobertAbilities,
-        >("arena_blobert_loadout", "ArenaBlobertAbility");
-        register_table_with_schema::<AttackSlot>("arena_blobert_loadout", "ArenaBlobertAttackSlot");
+        >("classic_blobert_loadout", "ClassicBlobertAbility");
+        register_table_with_schema::<
+            AttackSlot,
+        >("classic_blobert_loadout", "ClassicBlobertAttackSlot");
     }
 
     #[abi(embed_v0)]
@@ -163,7 +165,7 @@ mod arena_blobert_loadout {
     }
 
     #[abi(embed_v0)]
-    impl IArenaBlobertLoadoutImpl of IArenaBlobertLoadout<ContractState> {
+    impl IClassicBlobertLoadoutImpl of IClassicBlobertLoadout<ContractState> {
         fn set_loadout(
             ref self: ContractState,
             key: BlobertAttributeKey,

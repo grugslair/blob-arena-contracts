@@ -13,8 +13,10 @@ amma_blobert = {}
 amma_blobert_soulbound = {}
 amma_blobert_minter = {}
 attack = {}
-arena_blobert_loadout = {}
+classic_blobert_loadout = {}
+amma_blobert_loadout = {}
 classic_arcade = {}
+amma_arcade = {}
 
 [variables]
 arena_contracts = []

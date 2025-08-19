@@ -33,7 +33,7 @@ await sai.executeAndWait([
   ).populate("grant_contract_writers", {
     writers: [
       // sai.deployments["amma_blobert_loadout"].contract_address,
-      sai.deployments["arena_blobert_loadout"].contract_address,
+      sai.deployments["classic_blobert_loadout"].contract_address,
     ],
   }),
 ]);

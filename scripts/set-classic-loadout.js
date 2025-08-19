@@ -1,7 +1,7 @@
 import { loadJson, makeCairoEnum } from "./stark-utils.js";
 import { CairoCustomEnum } from "starknet";
 import { loadSai } from "./sai.js";
-import { parseIdTagAttackStruct } from "./attack.js";
+import { parseIdTagAttackStructs } from "./attack.js";
 
 export const parseBlobertItemKey = (itemKey) => {
   const [key, value] = Object.entries(itemKey)[0];
@@ -24,28 +24,18 @@ const makeSeedItemCallData = (trait, n, item) => {
     key: makeCairoEnum({ [trait_str]: Number(n) }),
     name: item.name,
     abilities: item.abilities,
-    attacks: makeAttacksStruct(item.attacks),
+    attacks: parseIdTagAttackStructs(item.attacks),
   };
 };
 
-const makeAttacksStruct = (attacks) => {
-  let attacksStructs = [];
-  for (const attack of attacks) {
-    attacksStructs.push(parseIdTagAttackStruct(attack));
-  }
-  return attacksStructs;
-};
-
 export const makeBlobertLoadouts = async (sai) => {
-  const seed_data = loadJson("./post-deploy-config/classic-attributes.json");
-  const contract = await sai.getContract("arena_blobert_loadout");
+  const seed_data = loadJson("./post-deploy-config/classic-loadouts.json");
+  const contract = await sai.getContract("classic_blobert_loadout");
 
-  let calls = [];
   let loadouts = [];
   for (const [trait, traits] of Object.entries(seed_data)) {
     for (const [n, item] of Object.entries(traits)) {
       loadouts.push(makeSeedItemCallData(trait, n, item));
-      calls.push([, { description: `seed: ${trait} ${n} ${item.name}` }]);
     }
   }
   return contract.populate("set_loadouts", { loadouts });

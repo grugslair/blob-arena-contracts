@@ -17,6 +17,12 @@ pub type CombatNodePath = StoragePath<Mutable<CombatNode>>;
 pub type AttemptNodePath = StoragePath<Mutable<AttemptNode>>;
 
 
+#[derive(Drop, Serde, starknet::Store)]
+pub struct Opponent {
+    pub abilities: Abilities,
+    pub attacks: [felt252; 4],
+}
+
 #[derive(Drop, Copy, Introspect, PartialEq, Serde, starknet::Store, Default)]
 pub enum ArcadePhase {
     #[default]
@@ -43,6 +49,7 @@ pub struct Attempt {
     pub player: ContractAddress,
     pub abilities: Abilities,
     pub token_hash: felt252,
+    pub health_regen: u32,
     pub expiry: u64,
     pub phase: ArcadePhase,
     pub stage: u32,
@@ -54,6 +61,7 @@ pub struct AttemptNode {
     pub player: ContractAddress,
     pub abilities: Abilities,
     pub token_hash: felt252,
+    pub health_regen: u32,
     pub attacks_available: Map<felt252, bool>,
     pub combats: Map<u32, CombatNode>,
     pub expiry: u64,
@@ -97,12 +105,14 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
         abilities: Abilities,
         attacks: Array<felt252>,
         token_hash: felt252,
+        health_regen: u32,
         expiry: u64,
     ) {
         self.player.write(player);
         self.expiry.write(expiry);
         self.abilities.write(abilities);
         self.token_hash.write(token_hash);
+        self.health_regen.write(health_regen);
         for attack in attacks {
             self.attacks_available.write(attack, true);
         }

@@ -40,7 +40,7 @@ sai_access = { git = "https://github.com/sai-starknet/cairo-utils", branch = "ca
 sai_ownable = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
 sai_token = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
 sai_core_utils = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
-sai_emit_return = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
+sai_return = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
 sai_packing = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
 
 [workspace.tool.fmt]
@@ -86,8 +86,9 @@ build-external-contracts = [
     "arena_blobert::minter::arena_blobert_minter",
     "ba_loadout::attack::contract::attack",
     "ba_loadout::amma_contract::amma_blobert_loadout",
-    "ba_loadout::arena_contract::arena_blobert_loadout",
-    "ba_classic_arcade::contract::classic_arcade",
+    "ba_loadout::classic_contract::classic_blobert_loadout",
+    "ba_classic_arcade::classic_arcade",
+    "ba_amma_arcade::contract::amma_arcade",
 ]
 
 [tool]

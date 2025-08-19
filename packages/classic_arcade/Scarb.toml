@@ -21,6 +21,7 @@ sai_access.workspace = true
 sai_ownable.workspace = true
 sai_packing.workspace = true
 sai_token.workspace = true
+sai_return.workspace = true
 dojo_macros.workspace = true
 dojo.workspace = true
 beacon_library.workspace = true

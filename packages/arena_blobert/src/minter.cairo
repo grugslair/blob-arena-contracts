@@ -55,6 +55,7 @@ mod arena_blobert_minter {
     use ba_utils::uuid;
     use beacon_library::{ToriiTable, register_table_with_schema};
     use sai_ownable::{OwnableTrait, ownable_component};
+    use sai_return::emit_return;
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
         StoragePointerWriteAccess,
@@ -120,7 +121,9 @@ mod arena_blobert_minter {
             self.last_mint.write(caller, timestamp);
             LastMintTable::set_entity(caller, @timestamp);
 
-            token_contract.mint(caller, TokenAttributes::Seed(generate_seed(randomness)))
+            emit_return(
+                token_contract.mint(caller, TokenAttributes::Seed(generate_seed(randomness))),
+            )
         }
     }
 

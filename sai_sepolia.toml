@@ -14,7 +14,7 @@ amma_blobert = {}
 amma_blobert_soulbound = {}
 amma_blobert_minter = {}
 attack = {}
-arena_blobert_loadout = {}
+classic_blobert_loadout = {}
 classic_arcade = {}
 
 
@@ -32,5 +32,5 @@ arena_blobert_minter = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327
 amma_blobert = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
 amma_blobert_soulbound = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
 attack = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
-arena_blobert_loadout = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+classic_blobert_loadout = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
 classic_arcade = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"

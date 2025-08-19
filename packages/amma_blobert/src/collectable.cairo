@@ -7,20 +7,11 @@ pub trait IAmmaBlobert<TContractState> {
     /// # Returns
     /// * `u32` - The ID of the fighter associated with the Blobert token
     fn fighter(self: @TContractState, token_id: u256) -> u32;
-
-    /// Gets the total number of fighters
-    /// # Returns
-    /// * `u32` - The total number of fighters in the contract
-    fn number_of_fighters(self: @TContractState) -> u32;
 }
 
 #[starknet::interface]
 pub trait IAmmaBlobertAdmin<TContractState> {
     fn mint(ref self: TContractState, owner: ContractAddress, fighter: u32) -> u256;
-}
-
-pub fn get_amount_of_fighters(collection: ContractAddress) -> u32 {
-    IAmmaBlobertDispatcher { contract_address: collection }.number_of_fighters()
 }
 
 pub fn get_fighter(collection: ContractAddress, token_id: u256) -> u32 {

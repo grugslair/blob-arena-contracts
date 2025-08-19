@@ -7,6 +7,7 @@ import {
   deployContract,
   calculateUDCContractAddressFromHash,
   dumpJson,
+  getReturns,
 } from "./stark-utils.js";
 import commandLineArgs from "command-line-args";
 import * as accounts from "web3-eth-accounts";
@@ -173,7 +174,7 @@ export class SaiProject {
       `${this.targetPath}/${this.name}_${
         name || tag
       }.compiled_contract_class.json`;
-
+    console.log(`Declaring class ${tag}`);
     this.declarations[tag] = await declareContract(
       this.account,
       contractPath,
@@ -196,7 +197,9 @@ export class SaiProject {
   async deployContract(contracts, transactionDetails) {
     const contractList = Array.isArray(contracts) ? contracts : [contracts];
     const payload = [];
+    console.log("Deploying ");
     for (const data of contractList) {
+      console.log(` - ${data.tag || data.class}...`);
       data.salt = data.salt || stark.randomAddress();
       const classData = (data.class && this.classes[data.class]) || {};
       data.class_hash = data.class_hash || classData.class_hash;
@@ -239,6 +242,17 @@ export class SaiProject {
     await this.account.waitForTransaction(transaction_hash);
     return transaction_hash;
   }
+
+  async executeWithReturn(calls, transactionDetails) {
+    const { transaction_hash } = await this.account.execute(calls, {
+      ...this.transactionDetails,
+      ...transactionDetails,
+    });
+
+    await this.account.waitForTransaction(transaction_hash);
+    return getReturns(this.account, transaction_hash);
+  }
+
   async getContract(tag) {
     if (!this.contracts[tag]) {
       throw new Error(`Contract with tag ${tag} not found`);

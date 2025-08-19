@@ -3,34 +3,61 @@ import { loadSai } from "./sai.js";
 const sai = await loadSai();
 sai.loadManifest();
 
-const token =
-  0x00000000000000000000000000000000000000000000000000000000000012edn;
-const attempt_id =
-  0x11726db434fbf5c6904659f20e93f8508236258a77564dd24d88db262ca534an;
-const attack_id =
-  0x07bd8bf3b93307872158ee00eb2d6cda7824d0d43a80978b13ec9052eeca27ecn;
-
-await sai.account.execute(
+const classicToken = 0x12edn;
+const ammaToken = 0x1n;
+const ammaAttack =
+  0x075e55f19968d78a969bacc2718b55d7272fde924c096f198d4da77d79b3d5c2n;
+await sai.executeWithReturn(
   (await sai.getContract("arena_blobert_minter")).populate("mint")
 );
+await sai.executeWithReturn(
+  (await sai.getContract("amma_blobert_minter")).populate("claim")
+);
+
+const classicAttackId = (
+  await sai.getContract("classic_blobert_loadout")
+).attacks(sai.contracts.arena_blobert.contract_address, classicToken, [
+  [1, 0],
+])[0];
+
+const classicAttemptId = (
+  await sai.executeWithReturn(
+    (
+      await sai.getContract("classic_arcade")
+    ).populate("start", {
+      collection_address: sai.deployments["arena_blobert"].contract_address,
+      token_id: classicToken,
+      attack_slots: [
+        [1, 0],
+        [4, 0],
+        [4, 1],
+        [4, 2],
+      ],
+    })
+  )
+)[0].data[0];
+
+const ammaAttemptId = (
+  await sai.executeWithReturn(
+    (
+      await sai.getContract("amma_arcade")
+    ).populate("start", {
+      collection_address:
+        sai.deployments["amma_blobert_soulbound"].contract_address,
+      token_id: ammaToken,
+      attack_slots: [[0], [1], [2], [3]],
+    })
+  )
+)[0].data[0];
 
 await sai.account.execute(
   (
     await sai.getContract("classic_arcade")
-  ).populate("start", {
-    collection_address: sai.deployments["arena_blobert"].contract_address,
-    token_id: token,
-    attack_slots: [
-      [1, 0],
-      [4, 0],
-      [4, 1],
-      [4, 2],
-    ],
-  })
+  ).populate("attack", { classicAttemptId, attack_id: classicAttackId })
 );
 
 await sai.account.execute(
   (
     await sai.getContract("classic_arcade")
-  ).populate("attack", { attempt_id, attack_id })
+  ).populate("attack", { ammaAttemptId, attack_id: ammaAttack })
 );

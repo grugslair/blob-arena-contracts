@@ -1,3 +1,4 @@
+use starknet::ContractAddress;
 use crate::ability::Abilities;
 use crate::attack::IdTagAttack;
 
@@ -19,7 +20,7 @@ pub trait IAmmaBlobertLoadout<TContractState> {
         attacks: Array<IdTagAttack>,
     );
 
-    fn set_fighters(ref self: TContractState, loadouts: Array<FighterInput>);
+    fn set_fighters(ref self: TContractState, fighters: Array<FighterInput>);
 
     fn set_fighter_count(ref self: TContractState, count: u32);
 
@@ -42,6 +43,22 @@ pub trait IAmmaBlobertLoadout<TContractState> {
     ) -> (Abilities, Array<felt252>);
 }
 
+pub fn get_fighter_loadout(
+    contract_address: ContractAddress, fighter: u32, slots: Array<Array<felt252>>,
+) -> (Abilities, Array<felt252>) {
+    IAmmaBlobertLoadoutDispatcher { contract_address }.fighter_loadout(fighter, slots)
+}
+
+pub fn get_fighter_gen_loadout(
+    contract_address: ContractAddress, fighter: u32, slots: Array<Array<felt252>>,
+) -> (Abilities, Array<felt252>) {
+    IAmmaBlobertLoadoutDispatcher { contract_address }.fighter_gen_loadout(fighter, slots)
+}
+
+pub fn get_fighter_count(contract_address: ContractAddress) -> u32 {
+    IAmmaBlobertLoadoutDispatcher { contract_address }.fighter_count()
+}
+
 #[derive(Drop, Serde, Introspect)]
 struct AttackSlot {
     fighter: u32,
@@ -60,8 +77,8 @@ mod amma_blobert_loadout {
     use amma_blobert::get_fighter;
     use beacon_library::{ToriiTable, register_table_with_schema};
     use core::num::traits::Zero;
-    use sai_access::{AccessTrait, access_component};
     use sai_core_utils::poseidon_serde::PoseidonSerde;
+    use sai_ownable::{OwnableTrait, ownable_component};
     use starknet::ContractAddress;
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
@@ -72,7 +89,7 @@ mod amma_blobert_loadout {
     use crate::interface::ILoadout;
     use super::{AttackSlot, FighterAbilities, FighterInput, IAmmaBlobertLoadout};
 
-    component!(path: access_component, storage: access, event: AccessEvents);
+    component!(path: ownable_component, storage: ownable, event: OwnableEvents);
 
     const ABILITY_TABLE_ID: felt252 = bytearrays_hash!(
         "amma_blobert_loadout", "AmmaBlobertAbility",
@@ -87,7 +104,7 @@ mod amma_blobert_loadout {
     #[storage]
     struct Storage {
         #[substorage(v0)]
-        access: access_component::Storage,
+        ownable: ownable_component::Storage,
         collection_addresses: Map<ContractAddress, bool>,
         attack_dispatcher: IAttackAdminDispatcher,
         attack_slots: Map<felt252, felt252>,
@@ -100,7 +117,7 @@ mod amma_blobert_loadout {
     #[derive(Drop, starknet::Event)]
     enum Event {
         #[flat]
-        AccessEvents: access_component::Event,
+        OwnableEvents: ownable_component::Event,
     }
 
     #[constructor]
@@ -124,7 +141,7 @@ mod amma_blobert_loadout {
     }
 
     #[abi(embed_v0)]
-    impl IAccessImpl = access_component::AccessImpl<ContractState>;
+    impl IOwnableImpl = ownable_component::OwnableImpl<ContractState>;
 
     #[abi(embed_v0)]
     impl ILoadoutImpl of ILoadout<ContractState> {
@@ -160,7 +177,7 @@ mod amma_blobert_loadout {
             gen_abilities: Abilities,
             attacks: Array<IdTagAttack>,
         ) {
-            self.assert_caller_is_writer();
+            self.assert_caller_is_owner();
             assert(fighter > 0, 'Fighter must be greater than 0');
             let mut attack_dispatcher = self.attack_dispatcher.read();
             let attack_ids = attack_dispatcher.maybe_create_attacks(attacks);
@@ -176,11 +193,11 @@ mod amma_blobert_loadout {
             }
         }
 
-        fn set_fighters(ref self: ContractState, loadouts: Array<FighterInput>) {
-            self.assert_caller_is_writer();
+        fn set_fighters(ref self: ContractState, fighters: Array<FighterInput>) {
+            self.assert_caller_is_owner();
             let mut all_attacks: Array<IdTagAttack> = Default::default();
             let mut indexes: Array<(u32, u32)> = Default::default();
-            for FighterInput { fighter, abilities, attacks, gen_abilities } in loadouts {
+            for FighterInput { fighter, abilities, attacks, gen_abilities } in fighters {
                 self.abilities.write(fighter, abilities);
                 self.gen_abilities.write(fighter, gen_abilities);
                 AbilityTable::set_entity(fighter, @(abilities, gen_abilities));
@@ -199,37 +216,54 @@ mod amma_blobert_loadout {
             }
         }
 
+        fn set_fighter_count(ref self: ContractState, count: u32) {
+            self.assert_caller_is_owner();
+            let current_count = self.count.read();
+            assert(count >= current_count, 'Fighter count cannot decrease');
+            if count > current_count {
+                self.count.write(count);
+            }
+        }
+
+        fn fighter_count(self: @ContractState) -> u32 {
+            self.count.read()
+        }
+
         fn fighter_abilities(self: @ContractState, fighter: u32) -> Abilities {
-            self.abilities.read(fighter)
+            self.check_fighter(fighter);
+            self.fighter_abilities_internal(fighter)
+        }
+
+        fn fighter_gen_abilities(self: @ContractState, fighter: u32) -> Abilities {
+            self.check_fighter(fighter);
+            self.fighter_gen_abilities_internal(fighter)
         }
 
         fn fighter_attacks(
             self: @ContractState, fighter: u32, slots: Array<Array<felt252>>,
         ) -> Array<felt252> {
-            let mut attack_ids: Array<felt252> = Default::default();
-            for slot in slots {
-                let attack_id = self.attack_slots.read((fighter, *slot[0]).poseidon_hash());
-                if attack_id.is_non_zero() {
-                    attack_ids.append(attack_id);
-                }
-            }
-            attack_ids
+            self.check_fighter(fighter);
+            self.fighter_attacks_internal(fighter, slots)
         }
 
         fn fighter_loadout(
             self: @ContractState, fighter: u32, slots: Array<Array<felt252>>,
         ) -> (Abilities, Array<felt252>) {
-            (self.fighter_abilities(fighter), self.fighter_attacks(fighter, slots))
-        }
-
-        fn fighter_gen_abilities(self: @ContractState, fighter: u32) -> Abilities {
-            self.gen_abilities.read(fighter)
+            self.check_fighter(fighter);
+            (
+                self.fighter_abilities_internal(fighter),
+                self.fighter_attacks_internal(fighter, slots),
+            )
         }
 
         fn fighter_gen_loadout(
             self: @ContractState, fighter: u32, slots: Array<Array<felt252>>,
         ) -> (Abilities, Array<felt252>) {
-            (self.fighter_gen_abilities(fighter), self.fighter_attacks(fighter, slots))
+            self.check_fighter(fighter);
+            (
+                self.fighter_gen_abilities_internal(fighter),
+                self.fighter_attacks_internal(fighter, slots),
+            )
         }
     }
 
@@ -256,7 +290,29 @@ mod amma_blobert_loadout {
             self: @ContractState, collection_address: ContractAddress, token_id: u256,
         ) -> u32 {
             self.assert_collection_address(collection_address);
+            assert(token_id.is_non_zero(), 'Invalid token ID');
             get_fighter(collection_address, token_id)
+        }
+
+        fn check_fighter(self: @ContractState, fighter: u32) {
+            assert(fighter.is_non_zero() && fighter <= self.count.read(), 'Invalid fighter');
+        }
+
+        fn fighter_abilities_internal(self: @ContractState, fighter: u32) -> Abilities {
+            self.abilities.read(fighter)
+        }
+
+        fn fighter_gen_abilities_internal(self: @ContractState, fighter: u32) -> Abilities {
+            self.gen_abilities.read(fighter)
+        }
+
+        fn fighter_attacks_internal(
+            self: @ContractState, fighter: u32, slots: Array<Array<felt252>>,
+        ) -> Array<felt252> {
+            slots
+                .into_iter()
+                .map(|s| self.attack_slots.read((fighter, *s[0]).poseidon_hash()))
+                .collect()
         }
     }
 }
