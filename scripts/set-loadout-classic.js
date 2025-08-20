@@ -28,9 +28,9 @@ const makeSeedItemCallData = (trait, n, item) => {
   };
 };
 
-export const makeBlobertLoadouts = async (sai) => {
-  const seed_data = loadJson("./post-deploy-config/classic-loadouts.json");
-  const contract = await sai.getContract("classic_blobert_loadout");
+export const makeLoadoutsClassic = async (sai) => {
+  const seed_data = loadJson("./post-deploy-config/loadouts-classic.json");
+  const contract = await sai.getContract("loadout_classic");
 
   let loadouts = [];
   for (const [trait, traits] of Object.entries(seed_data)) {
@@ -44,7 +44,7 @@ export const makeBlobertLoadouts = async (sai) => {
 const main = async () => {
   const sai = await loadSai();
   sai.loadManifest();
-  const call = await makeBlobertLoadouts(sai);
+  const call = await makeLoadoutsClassic(sai);
   await sai.account.execute(call);
 };
 

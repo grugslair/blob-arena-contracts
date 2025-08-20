@@ -35,15 +35,14 @@ mod arcade_fuel {
 
     #[derive(Drop, Serde, Introspect)]
     struct ArcadeFuel {
-        timestamp: u64,
-        fuel: u64,
+        fuel: Fuel,
         credits: u128,
     }
 
-    #[derive(Drop, Serde, Introspect, Schema)]
-    struct FuelSchema {
+    #[derive(Drop, Serde, Introspect)]
+    struct Fuel {
         timestamp: u64,
-        fuel: u64,
+        amount: u64,
     }
 
     #[storage]
@@ -145,16 +144,14 @@ mod arcade_fuel {
         }
 
 
-        fn set_fuel(
-            ref self: ContractState, contract_address: ContractAddress, timestamp: u64, fuel: u64,
-        ) {
-            self.fuel.write(contract_address, [timestamp, fuel]);
-            ArcadeFuelTable::set_schema(contract_address, @FuelSchema { timestamp, fuel });
+        fn set_fuel(ref self: ContractState, user: ContractAddress, timestamp: u64, amount: u64) {
+            self.fuel.write(user, [timestamp, amount]);
+            ArcadeFuelTable::set_member(selector!("fuel"), user, @Fuel { amount, timestamp });
         }
 
-        fn set_credits(ref self: ContractState, contract_address: ContractAddress, credits: u128) {
-            self.credits.write(contract_address, credits);
-            ArcadeFuelTable::set_member(selector!("credits"), contract_address, @credits);
+        fn set_credits(ref self: ContractState, user: ContractAddress, credits: u128) {
+            self.credits.write(user, credits);
+            ArcadeFuelTable::set_member(selector!("credits"), user, @credits);
         }
     }
 }

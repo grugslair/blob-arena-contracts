@@ -1,5 +1,5 @@
 [package]
-name = "ba_amma_arcade"
+name = "ba_arcade_classic"
 version.workspace = true
 edition.workspace = true
 cairo-version.workspace = true
@@ -17,6 +17,7 @@ sierra-replace-ids = true
 alexandria_macros.workspace = true
 starknet.workspace = true
 sai_core_utils.workspace = true
+sai_access.workspace = true
 sai_ownable.workspace = true
 sai_packing.workspace = true
 sai_token.workspace = true
@@ -40,5 +41,6 @@ casm = true
 
 [dev-dependencies]
 cairo_test = "2.11.4"
+# dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.6.0-alpha.2" }
 
 [lib]

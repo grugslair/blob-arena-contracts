@@ -13,19 +13,19 @@ await sai.executeWithReturn(
 await sai.executeAndWait(
   (await sai.getContract("amma_blobert_minter")).populate("claim")
 );
-const classicArcadeContract = await sai.getContract("classic_arcade");
-const ammaArcadeContract = await sai.getContract("amma_arcade");
+const arcadeClassicContract = await sai.getContract("arcade_classic");
+const arcadeAmmaContract = await sai.getContract("arcade_amma");
 const classicAttackId = (
   await (
-    await sai.getContract("classic_blobert_loadout")
+    await sai.getContract("loadout_classic")
   ).attacks(sai.contracts.arena_blobert.contract_address, classicToken, [
     [1, 0],
   ])
 )[0];
 const classicAttemptId = (
   await sai.executeWithReturn(
-    classicArcadeContract.populate("start", {
-      collection_address: sai.deployments["arena_blobert"].contract_address,
+    arcadeClassicContract.populate("start", {
+      collection_address: sai.contracts["arena_blobert"].contract_address,
       token_id: classicToken,
       attack_slots: [
         [1, 0],
@@ -39,23 +39,23 @@ const classicAttemptId = (
 
 const ammaAttemptId = (
   await sai.executeWithReturn(
-    ammaArcadeContract.populate("start", {
+    arcadeAmmaContract.populate("start", {
       collection_address:
-        sai.deployments["amma_blobert_soulbound"].contract_address,
+        sai.contracts["amma_blobert_soulbound"].contract_address,
       token_id: ammaToken,
       attack_slots: [[0], [1], [2], [3]],
     })
   )
 )[0].data[0];
 await sai.account.execute(
-  classicArcadeContract.populate("attack", {
+  arcadeClassicContract.populate("attack", {
     attempt_id: classicAttemptId,
     attack_id: classicAttackId,
   })
 );
 
 await sai.account.execute(
-  ammaArcadeContract.populate("attack", {
+  arcadeAmmaContract.populate("attack", {
     attempt_id: ammaAttemptId,
     attack_id: ammaAttackId,
   })

@@ -6,6 +6,8 @@ keystore_path = "/home/ben/sn-accounts/0x058e3b49d870f08c96a02f794c82b5f6c868c07
 [contracts.blobert]
 contract_address = "0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578d0549d"
 
+[defaults]
+
 [declare]
 arena_blobert = {}
 arena_blobert_minter = {}
@@ -13,10 +15,10 @@ amma_blobert = {}
 amma_blobert_soulbound = {}
 amma_blobert_minter = {}
 attack = {}
-classic_blobert_loadout = {}
-amma_blobert_loadout = {}
-classic_arcade = {}
-amma_arcade = {}
+loadout_classic = {}
+loadout_amma = {}
+arcade_classic = {}
+arcade_amma = {}
 
 [variables]
 arena_contracts = []
@@ -32,7 +34,7 @@ arena_blobert_minter = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327
 amma_blobert = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
 amma_blobert_soulbound = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
 attack = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
-classic_blobert_loadout = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
-amma_blobert_loadout = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
-classic_arcade = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
-amma_arcade = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+loadout_classic = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+loadout_amma = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+arcade_classic = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+arcade_amma = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"

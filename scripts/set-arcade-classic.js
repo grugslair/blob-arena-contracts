@@ -33,21 +33,21 @@ export const makeSetConfigCalls = (contract, config) => {
   ];
 };
 
-export const makeClassicArcadeCalls = async (sai) => {
-  const classicArcadeData = loadJson(
-    "./post-deploy-config/classic-arcade.json"
+export const makeArcadeClassicCalls = async (sai) => {
+  const arcadeClassicData = loadJson(
+    "./post-deploy-config/arcade-classic.json"
   );
-  const contract = await sai.getContract("classic_arcade");
+  const contract = await sai.getContract("arcade_classic");
   return [
-    makeOpponentCall(contract, classicArcadeData.opponents),
-    ...makeSetConfigCalls(contract, classicArcadeData),
+    makeOpponentCall(contract, arcadeClassicData.opponents),
+    ...makeSetConfigCalls(contract, arcadeClassicData),
   ];
 };
 
 const main = async () => {
   const sai = await loadSai();
   sai.loadManifest();
-  const calls = await makeClassicArcadeCalls(sai);
+  const calls = await makeArcadeClassicCalls(sai);
   await sai.account.execute(calls);
 };
 

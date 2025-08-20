@@ -11,7 +11,7 @@ struct FighterInput {
 }
 
 #[starknet::interface]
-pub trait IAmmaBlobertLoadout<TContractState> {
+pub trait IAmmaLoadout<TContractState> {
     fn set_fighter(
         ref self: TContractState,
         fighter: u32,
@@ -46,17 +46,17 @@ pub trait IAmmaBlobertLoadout<TContractState> {
 pub fn get_fighter_loadout(
     contract_address: ContractAddress, fighter: u32, slots: Array<Array<felt252>>,
 ) -> (Abilities, Array<felt252>) {
-    IAmmaBlobertLoadoutDispatcher { contract_address }.fighter_loadout(fighter, slots)
+    IAmmaLoadoutDispatcher { contract_address }.fighter_loadout(fighter, slots)
 }
 
 pub fn get_fighter_gen_loadout(
     contract_address: ContractAddress, fighter: u32, slots: Array<Array<felt252>>,
 ) -> (Abilities, Array<felt252>) {
-    IAmmaBlobertLoadoutDispatcher { contract_address }.fighter_gen_loadout(fighter, slots)
+    IAmmaLoadoutDispatcher { contract_address }.fighter_gen_loadout(fighter, slots)
 }
 
 pub fn get_fighter_count(contract_address: ContractAddress) -> u32 {
-    IAmmaBlobertLoadoutDispatcher { contract_address }.fighter_count()
+    IAmmaLoadoutDispatcher { contract_address }.fighter_count()
 }
 
 #[derive(Drop, Serde, Introspect)]
@@ -73,7 +73,7 @@ struct FighterAbilities {
 }
 
 #[starknet::contract]
-mod amma_blobert_loadout {
+mod loadout_amma {
     use amma_blobert::get_fighter;
     use beacon_library::{ToriiTable, register_table_with_schema};
     use core::num::traits::Zero;
@@ -87,16 +87,12 @@ mod amma_blobert_loadout {
     use crate::ability::Abilities;
     use crate::attack::{IAttackAdminDispatcher, IAttackAdminDispatcherTrait, IdTagAttack};
     use crate::interface::ILoadout;
-    use super::{AttackSlot, FighterAbilities, FighterInput, IAmmaBlobertLoadout};
+    use super::{AttackSlot, FighterAbilities, FighterInput, IAmmaLoadout};
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
 
-    const ABILITY_TABLE_ID: felt252 = bytearrays_hash!(
-        "amma_blobert_loadout", "AmmaBlobertAbility",
-    );
-    const ATTACK_SLOT_TABLE_ID: felt252 = bytearrays_hash!(
-        "amma_blobert_loadout", "AmmaBlobertAttackSlot",
-    );
+    const ABILITY_TABLE_ID: felt252 = bytearrays_hash!("loadout_amma", "AmmaAbility");
+    const ATTACK_SLOT_TABLE_ID: felt252 = bytearrays_hash!("loadout_amma", "AmmaAttackSlot");
 
     impl AbilityTable = ToriiTable<ABILITY_TABLE_ID>;
     impl AttackSlotTable = ToriiTable<ATTACK_SLOT_TABLE_ID>;
@@ -134,10 +130,8 @@ mod amma_blobert_loadout {
         self
             .attack_dispatcher
             .write(IAttackAdminDispatcher { contract_address: attack_dispatcher_address });
-        register_table_with_schema::<
-            FighterAbilities,
-        >("amma_blobert_loadout", "AmmaBlobertAbility");
-        register_table_with_schema::<AttackSlot>("amma_blobert_loadout", "AmmaBlobertAttackSlot");
+        register_table_with_schema::<FighterAbilities>("loadout_amma", "AmmaAbility");
+        register_table_with_schema::<AttackSlot>("loadout_amma", "AmmaAttackSlot");
     }
 
     #[abi(embed_v0)]
@@ -169,7 +163,7 @@ mod amma_blobert_loadout {
     }
 
     #[abi(embed_v0)]
-    impl IAmmaBlobertLoadoutImpl of IAmmaBlobertLoadout<ContractState> {
+    impl IAmmaLoadoutImpl of IAmmaLoadout<ContractState> {
         fn set_fighter(
             ref self: ContractState,
             fighter: u32,

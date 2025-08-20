@@ -3,9 +3,9 @@ import { loadSai } from "./sai.js";
 
 export const makeSetConfigCalls = (contract, config) => {};
 
-export const makeAmmaArcadeCalls = async (sai) => {
-  const config = loadJson("./post-deploy-config/amma-arcade.json");
-  const contract = await sai.getContract("amma_arcade");
+export const makeArcadeAmmaCalls = async (sai) => {
+  const config = loadJson("./post-deploy-config/arcade-amma.json");
+  const contract = await sai.getContract("arcade_amma");
   return [
     contract.populate("set_max_respawns", {
       max_respawns: BigInt(config.max_respawns),
@@ -25,7 +25,7 @@ export const makeAmmaArcadeCalls = async (sai) => {
 const main = async () => {
   const sai = await loadSai();
   sai.loadManifest();
-  const calls = await makeAmmaArcadeCalls(sai);
+  const calls = await makeArcadeAmmaCalls(sai);
   await sai.account.execute(calls);
 };
 

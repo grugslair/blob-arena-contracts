@@ -11,9 +11,9 @@ const makeFighterItemCallData = (n, data) => {
   };
 };
 
-export const makeAmmaLoadouts = async (sai) => {
-  const data = loadJson("./post-deploy-config/amma-loadouts.json");
-  const contract = await sai.getContract("amma_blobert_loadout");
+export const makeLoadoutsAmma = async (sai) => {
+  const data = loadJson("./post-deploy-config/loadouts-amma.json");
+  const contract = await sai.getContract("loadout_amma");
 
   let fighters = [];
   for (const [n, fighter] of Object.entries(data)) {
@@ -35,7 +35,7 @@ export const makeAmmaLoadouts = async (sai) => {
 const main = async () => {
   const sai = await loadSai();
   sai.loadManifest();
-  await sai.account.execute(await makeAmmaLoadouts(sai));
+  await sai.account.execute(await makeLoadoutsAmma(sai));
 };
 
 if (process.argv[1] === import.meta.filename) {

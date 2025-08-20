@@ -1,6 +1,6 @@
 import { loadSai } from "./sai.js";
 import { makeArenaBlobertCalls } from "./set-arena-token.js";
-import { makeClassicArcadeCalls } from "./set-classic-arcade.js";
+import { makeArcadeClassicCalls } from "./set-classic-arcade.js";
 import { makeBlobertLoadouts } from "./set-classic-loadout.js";
 
 const sai = await loadSai();
@@ -32,8 +32,8 @@ await sai.executeAndWait([
     await sai.getContract("attack")
   ).populate("grant_contract_writers", {
     writers: [
-      // sai.deployments["amma_blobert_loadout"].contract_address,
-      sai.deployments["classic_blobert_loadout"].contract_address,
+      // sai.deployments["loadout_amma"].contract_address,
+      sai.deployments["loadout_classic"].contract_address,
     ],
   }),
 ]);
@@ -41,7 +41,7 @@ await sai.executeAndWait([
 await sai.executeAndWait(await makeBlobertLoadouts(sai));
 await sai.executeAndWait([
   ...(await makeArenaBlobertCalls(sai)),
-  ...(await makeClassicArcadeCalls(sai)),
+  ...(await makeArcadeClassicCalls(sai)),
 ]);
 
 console.log("Granting writers and owners...");

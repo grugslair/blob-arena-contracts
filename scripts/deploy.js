@@ -1,17 +1,18 @@
 import { loadSai } from "./sai.js";
 import { makeArenaBlobertCalls } from "./set-arena-token.js";
-import { makeClassicArcadeCalls } from "./set-classic-arcade.js";
-import { makeBlobertLoadouts } from "./set-classic-loadout.js";
-import { makeAmmaLoadouts } from "./set-amma-loadout.js";
+import { makeArcadeClassicCalls } from "./set-arcade-classic.js";
+import { makeLoadoutsClassic } from "./set-loadout-classic.js";
+import { makeLoadoutsAmma } from "./set-loadout-amma.js";
 import { stark } from "starknet";
 import { dumpToml, loadToml } from "./stark-utils.js";
-import { makeAmmaArcadeCalls } from "./set-amma-arcade.js";
+import { makeArcadeAmmaCalls } from "./set-arcade-amma.js";
 
 const deployWithOwner = [
   "arena_blobert",
   "amma_blobert",
   "amma_blobert_soulbound",
   "attack",
+  "arcade_fuel",
 ];
 
 const salt = stark.randomAddress();
@@ -51,8 +52,8 @@ await sai.deployContract([
     },
   },
   {
-    tag: "classic_blobert_loadout",
-    class: "classic_blobert_loadout",
+    tag: "loadout_classic",
+    class: "loadout_classic",
     salt,
     unique: false,
     calldata: {
@@ -65,8 +66,8 @@ await sai.deployContract([
     },
   },
   {
-    tag: "amma_blobert_loadout",
-    class: "amma_blobert_loadout",
+    tag: "loadout_amma",
+    class: "loadout_amma",
     salt,
     unique: false,
     calldata: {
@@ -82,26 +83,25 @@ await sai.deployContract([
 
 await sai.deployContract([
   {
-    tag: "classic_arcade",
-    class: "classic_arcade",
+    tag: "arcade_classic",
+    class: "arcade_classic",
     salt,
     unique: false,
     calldata: {
       owner,
       attack_contract: sai.contracts["attack"].contract_address,
-      loadout_contract:
-        sai.contracts["classic_blobert_loadout"].contract_address,
+      loadout_contract: sai.contracts["loadout_classic"].contract_address,
     },
   },
   {
-    tag: "amma_arcade",
-    class: "amma_arcade",
+    tag: "arcade_amma",
+    class: "arcade_amma",
     salt,
     unique: false,
     calldata: {
       owner,
       attack_contract: sai.contracts["attack"].contract_address,
-      loadout_contract: sai.contracts["amma_blobert_loadout"].contract_address,
+      loadout_contract: sai.contracts["loadout_amma"].contract_address,
       collectable_address: sai.contracts["amma_blobert"].contract_address,
     },
   },
@@ -115,11 +115,12 @@ const toriiContract = [
   ["amma_blobert_soulbound", "erc721-world"],
   ["arena_blobert_minter", "contract"],
   ["amma_blobert_minter", "contract"],
-  ["classic_blobert_loadout", "contract"],
-  ["amma_blobert_loadout", "contract"],
+  ["loadout_classic", "contract"],
+  ["loadout_amma", "contract"],
   ["attack", "contract"],
-  ["classic_arcade", "contract"],
-  ["amma_arcade", "contract"],
+  ["arcade_fuel", "contract"],
+  ["arcade_classic", "contract"],
+  ["arcade_amma", "contract"],
 ]
   .filter(([tag]) => sai.contracts[tag])
   .map(([tag, type]) => `${type}:${sai.contracts[tag].contract_address}`);
@@ -145,23 +146,23 @@ await sai.executeAndWait([
     await sai.getContract("attack")
   ).populate("grant_contract_writers", {
     writers: [
-      sai.deployments["amma_blobert_loadout"].contract_address,
-      sai.deployments["classic_blobert_loadout"].contract_address,
+      sai.deployments["loadout_amma"].contract_address,
+      sai.deployments["loadout_classic"].contract_address,
     ],
   }),
 ]);
 
 console.log("Setting classic loadouts...");
-await sai.executeAndWait(await makeBlobertLoadouts(sai));
+await sai.executeAndWait(await makeLoadoutsClassic(sai));
 
 console.log("Setting amma loadouts...");
-await sai.executeAndWait(await makeAmmaLoadouts(sai));
+await sai.executeAndWait(await makeLoadoutsAmma(sai));
 
 console.log("Setting arena blobert minter...");
 await sai.executeAndWait([
   ...(await makeArenaBlobertCalls(sai)),
-  ...(await makeClassicArcadeCalls(sai)),
-  ...(await makeAmmaArcadeCalls(sai)),
+  ...(await makeArcadeClassicCalls(sai)),
+  ...(await makeArcadeAmmaCalls(sai)),
 ]);
 
 console.log("Granting writers and owners...");

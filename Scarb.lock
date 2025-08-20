@@ -46,28 +46,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ba_amma_arcade"
-version = "0.15.0"
-dependencies = [
- "alexandria_macros",
- "ba_arcade",
- "ba_blobert",
- "ba_combat",
- "ba_loadout",
- "ba_utils",
- "beacon_entity",
- "beacon_library",
- "beacon_macros",
- "dojo",
- "dojo_macros",
- "sai_core_utils",
- "sai_ownable",
- "sai_packing",
- "sai_return",
- "sai_token",
-]
-
-[[package]]
 name = "ba_arcade"
 version = "0.15.0"
 dependencies = [
@@ -86,16 +64,29 @@ dependencies = [
 ]
 
 [[package]]
-name = "ba_blobert"
+name = "ba_arcade_amma"
 version = "0.15.0"
 dependencies = [
+ "alexandria_macros",
+ "ba_arcade",
+ "ba_blobert",
+ "ba_combat",
+ "ba_loadout",
+ "ba_utils",
+ "beacon_entity",
+ "beacon_library",
+ "beacon_macros",
  "dojo",
  "dojo_macros",
  "sai_core_utils",
+ "sai_ownable",
+ "sai_packing",
+ "sai_return",
+ "sai_token",
 ]
 
 [[package]]
-name = "ba_classic_arcade"
+name = "ba_arcade_classic"
 version = "0.15.0"
 dependencies = [
  "alexandria_macros",
@@ -115,6 +106,15 @@ dependencies = [
  "sai_packing",
  "sai_return",
  "sai_token",
+]
+
+[[package]]
+name = "ba_blobert"
+version = "0.15.0"
+dependencies = [
+ "dojo",
+ "dojo_macros",
+ "sai_core_utils",
 ]
 
 [[package]]
@@ -192,10 +192,10 @@ version = "0.15.0"
 dependencies = [
  "amma_blobert",
  "arena_blobert",
- "ba_amma_arcade",
  "ba_arcade",
+ "ba_arcade_amma",
+ "ba_arcade_classic",
  "ba_blobert",
- "ba_classic_arcade",
  "ba_combat",
  "ba_loadout",
  "ba_utils",

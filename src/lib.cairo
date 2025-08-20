@@ -1,5 +1,4 @@
 pub use {
-    amma_blobert, arena_blobert, ba_arcade as arcade, ba_blobert as blobert,
-    ba_classic_arcade as classic_arcade, ba_combat as combat, ba_loadout as loadout,
-    ba_utils as utils,
+    amma_blobert, arena_blobert, ba_arcade as arcade, ba_arcade_classic as arcade_classic,
+    ba_blobert as blobert, ba_combat as combat, ba_loadout as loadout, ba_utils as utils,
 };

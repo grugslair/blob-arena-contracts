@@ -3,148 +3,161 @@
     "arena_blobert": {
       "tag": "arena_blobert",
       "class": "arena_blobert",
-      "salt": "0x3ce13249cd9b535cd29cc84f2d3099b30aacfcb07c4ebfff8af99e6e17c3d14",
+      "salt": "0x61712409851d5586316a8f226f2e264f855c018e0b48ed1866b2ed3afc5a264",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       },
       "class_hash": "0x65c960474c4a763613160253c12c970d481aca45e151279eff95c6969667a1a",
-      "contract_address": "0x136a36c848b8e688651c65e916ae50d73ddb6fb8ba5dc680267e742fd035a98",
+      "contract_address": "0x679ef50fcafa1d3ae3f395b24b7147eef6822e1a9689997778c2003afd109d2",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x4ea624cad613b06231da71afddaec67e029f82b3d5231a5263b87adcef61c16"
+      "transaction_hash": "0x434f02d559ce12f101393f7f2e5c2aef47516d90f7f959c7688e5faa525cc96"
     },
     "amma_blobert": {
       "tag": "amma_blobert",
       "class": "amma_blobert",
-      "salt": "0x3ce13249cd9b535cd29cc84f2d3099b30aacfcb07c4ebfff8af99e6e17c3d14",
+      "salt": "0x61712409851d5586316a8f226f2e264f855c018e0b48ed1866b2ed3afc5a264",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       },
       "class_hash": "0xad67917de81c1665aa9ce7d293c94f3ae85c66906953205b6a755bab7027a6",
-      "contract_address": "0x6103eb8d3353e2136888ede3af70fed100fa3f734c474fe65d2f7c759832090",
+      "contract_address": "0x4d19be8bcc9c6e905345e547c0ff2bf37caffae952b0f42e4fc863e366c9898",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x4ea624cad613b06231da71afddaec67e029f82b3d5231a5263b87adcef61c16"
+      "transaction_hash": "0x434f02d559ce12f101393f7f2e5c2aef47516d90f7f959c7688e5faa525cc96"
     },
     "amma_blobert_soulbound": {
       "tag": "amma_blobert_soulbound",
       "class": "amma_blobert_soulbound",
-      "salt": "0x3ce13249cd9b535cd29cc84f2d3099b30aacfcb07c4ebfff8af99e6e17c3d14",
+      "salt": "0x61712409851d5586316a8f226f2e264f855c018e0b48ed1866b2ed3afc5a264",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       },
       "class_hash": "0x2180fc2bcbdeea447ae0668796532c7a9de96b5492bdeb542e670287fec05fc",
-      "contract_address": "0xe934834953391a50949d10a49d264fc6a63cd145f357adc29209cc30139e94",
+      "contract_address": "0x497b248c8bd675ae22746013356508e9697c10c6282cd7c0b14e7e5277de3ee",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x4ea624cad613b06231da71afddaec67e029f82b3d5231a5263b87adcef61c16"
+      "transaction_hash": "0x434f02d559ce12f101393f7f2e5c2aef47516d90f7f959c7688e5faa525cc96"
     },
     "attack": {
       "tag": "attack",
       "class": "attack",
-      "salt": "0x3ce13249cd9b535cd29cc84f2d3099b30aacfcb07c4ebfff8af99e6e17c3d14",
+      "salt": "0x61712409851d5586316a8f226f2e264f855c018e0b48ed1866b2ed3afc5a264",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       },
       "class_hash": "0x3af1e7936ebd63c7725cb9f77811439da9a033138ae804964438a904b19b0b1",
-      "contract_address": "0x5f24d8eb51de4c36d212c6a3484c7e3b96f196347d0d4e2b33fa8128b2ff79a",
+      "contract_address": "0x7881b38a01a8a16101efe117b2a0a6e7c15cf73ca701c9da3b70b7b4aea7157",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x4ea624cad613b06231da71afddaec67e029f82b3d5231a5263b87adcef61c16"
+      "transaction_hash": "0x434f02d559ce12f101393f7f2e5c2aef47516d90f7f959c7688e5faa525cc96"
+    },
+    "arcade_fuel": {
+      "tag": "arcade_fuel",
+      "class": "arcade_fuel",
+      "salt": "0x61712409851d5586316a8f226f2e264f855c018e0b48ed1866b2ed3afc5a264",
+      "unique": false,
+      "calldata": {
+        "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
+      },
+      "class_hash": "0x21b4cc91139fed402601b0a0927600be857ffb3d02551397a0ff82f14e5b639",
+      "contract_address": "0x47e3153dde3945ac1549b7af65bbf6dd20bd26f35c0e33461f408ffb4f1ac3c",
+      "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
+      "transaction_hash": "0x434f02d559ce12f101393f7f2e5c2aef47516d90f7f959c7688e5faa525cc96"
     },
     "arena_blobert_minter": {
       "tag": "arena_blobert_minter",
       "class": "arena_blobert_minter",
-      "salt": "0x3ce13249cd9b535cd29cc84f2d3099b30aacfcb07c4ebfff8af99e6e17c3d14",
+      "salt": "0x61712409851d5586316a8f226f2e264f855c018e0b48ed1866b2ed3afc5a264",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "token_address": "0x136a36c848b8e688651c65e916ae50d73ddb6fb8ba5dc680267e742fd035a98"
+        "token_address": "0x679ef50fcafa1d3ae3f395b24b7147eef6822e1a9689997778c2003afd109d2"
       },
       "class_hash": "0x7859e23b1ac4ccd5c7160d1d09e357753bb69ada7e2f8cf20d690a8cfcc28d3",
-      "contract_address": "0x73a93a154fb5e80a6ebc0c6ee72fe55453ff8d44441a6e0836df0bb157bb1d7",
+      "contract_address": "0x61808a6902524c7a5fdd8d1cfa3f3aa621d50b1a403f65e172b830c66415472",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x1fb0d3a7b1055272985e099c2c9e1355686db3bb272da4679741b40e6d8c35f"
+      "transaction_hash": "0x6ab93273e68a876e7d95d4c32fbc47c22add714d8124cbe688950a4d85d1a11"
     },
     "amma_blobert_minter": {
       "tag": "amma_blobert_minter",
       "class": "amma_blobert_minter",
-      "salt": "0x3ce13249cd9b535cd29cc84f2d3099b30aacfcb07c4ebfff8af99e6e17c3d14",
+      "salt": "0x61712409851d5586316a8f226f2e264f855c018e0b48ed1866b2ed3afc5a264",
       "unique": false,
       "calldata": {
-        "token_address": "0xe934834953391a50949d10a49d264fc6a63cd145f357adc29209cc30139e94"
+        "token_address": "0x497b248c8bd675ae22746013356508e9697c10c6282cd7c0b14e7e5277de3ee"
       },
       "class_hash": "0xec0f69cb288620eeee0b4b4a38c6558650c0ec46a011fcb960bcfb69b67c80",
-      "contract_address": "0x1d2b6eb6b67f6a5f7ed3985da84a64a989b9f1c1720debc3db21b5bdd2dd7d5",
+      "contract_address": "0x1aad699e1f56000ac3578f652401f91aa3bea9c15612b08702665499ae46c43",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x1fb0d3a7b1055272985e099c2c9e1355686db3bb272da4679741b40e6d8c35f"
+      "transaction_hash": "0x6ab93273e68a876e7d95d4c32fbc47c22add714d8124cbe688950a4d85d1a11"
     },
-    "classic_blobert_loadout": {
-      "tag": "classic_blobert_loadout",
-      "class": "classic_blobert_loadout",
-      "salt": "0x3ce13249cd9b535cd29cc84f2d3099b30aacfcb07c4ebfff8af99e6e17c3d14",
+    "loadout_classic": {
+      "tag": "loadout_classic",
+      "class": "loadout_classic",
+      "salt": "0x61712409851d5586316a8f226f2e264f855c018e0b48ed1866b2ed3afc5a264",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_dispatcher_address": "0x5f24d8eb51de4c36d212c6a3484c7e3b96f196347d0d4e2b33fa8128b2ff79a",
+        "attack_dispatcher_address": "0x7881b38a01a8a16101efe117b2a0a6e7c15cf73ca701c9da3b70b7b4aea7157",
         "collection_addresses": [
-          "0x136a36c848b8e688651c65e916ae50d73ddb6fb8ba5dc680267e742fd035a98",
+          "0x679ef50fcafa1d3ae3f395b24b7147eef6822e1a9689997778c2003afd109d2",
           "0x0"
         ]
       },
-      "class_hash": "0x6b05538ce150c10f90c8f996de28ca41c69b1d65481c9318f136f4c24dc6dce",
-      "contract_address": "0x3737c0925eca4b28d557ac976504cf249c4a3ee7b9b22cd9228f9fc55466b7c",
+      "class_hash": "0x13d9aacaccd717d2663692546631b60f355684067f0ee55c0072d0c95995c7c",
+      "contract_address": "0x7d835f599600048c139a1d45b246fa1ccdb4a7a59612e74f3a88d08fadd1dec",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x1fb0d3a7b1055272985e099c2c9e1355686db3bb272da4679741b40e6d8c35f"
+      "transaction_hash": "0x6ab93273e68a876e7d95d4c32fbc47c22add714d8124cbe688950a4d85d1a11"
     },
-    "amma_blobert_loadout": {
-      "tag": "amma_blobert_loadout",
-      "class": "amma_blobert_loadout",
-      "salt": "0x3ce13249cd9b535cd29cc84f2d3099b30aacfcb07c4ebfff8af99e6e17c3d14",
+    "loadout_amma": {
+      "tag": "loadout_amma",
+      "class": "loadout_amma",
+      "salt": "0x61712409851d5586316a8f226f2e264f855c018e0b48ed1866b2ed3afc5a264",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_dispatcher_address": "0x5f24d8eb51de4c36d212c6a3484c7e3b96f196347d0d4e2b33fa8128b2ff79a",
+        "attack_dispatcher_address": "0x7881b38a01a8a16101efe117b2a0a6e7c15cf73ca701c9da3b70b7b4aea7157",
         "collection_addresses": [
-          "0x6103eb8d3353e2136888ede3af70fed100fa3f734c474fe65d2f7c759832090",
-          "0xe934834953391a50949d10a49d264fc6a63cd145f357adc29209cc30139e94"
+          "0x4d19be8bcc9c6e905345e547c0ff2bf37caffae952b0f42e4fc863e366c9898",
+          "0x497b248c8bd675ae22746013356508e9697c10c6282cd7c0b14e7e5277de3ee"
         ]
       },
-      "class_hash": "0x3467b064d4cd9ac5c5ea2d1202ea424eb8cf735578e0caed9d805397b1a64ac",
-      "contract_address": "0x13fcf2004226bc073a7a050b77784538f1ff738c274f8cb03b0c9e15773caf0",
+      "class_hash": "0x376365ae089416706108ea5a9ac02bcf98be2bfeb71e5306adc961cffb97f1c",
+      "contract_address": "0x7c6ff032276cbf951873212c898fcd86c7f04f32a5154367964805e41ae29be",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x1fb0d3a7b1055272985e099c2c9e1355686db3bb272da4679741b40e6d8c35f"
+      "transaction_hash": "0x6ab93273e68a876e7d95d4c32fbc47c22add714d8124cbe688950a4d85d1a11"
     },
-    "classic_arcade": {
-      "tag": "classic_arcade",
-      "class": "classic_arcade",
-      "salt": "0x3ce13249cd9b535cd29cc84f2d3099b30aacfcb07c4ebfff8af99e6e17c3d14",
+    "arcade_classic": {
+      "tag": "arcade_classic",
+      "class": "arcade_classic",
+      "salt": "0x61712409851d5586316a8f226f2e264f855c018e0b48ed1866b2ed3afc5a264",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_contract": "0x5f24d8eb51de4c36d212c6a3484c7e3b96f196347d0d4e2b33fa8128b2ff79a",
-        "loadout_contract": "0x3737c0925eca4b28d557ac976504cf249c4a3ee7b9b22cd9228f9fc55466b7c"
+        "attack_contract": "0x7881b38a01a8a16101efe117b2a0a6e7c15cf73ca701c9da3b70b7b4aea7157",
+        "loadout_contract": "0x7d835f599600048c139a1d45b246fa1ccdb4a7a59612e74f3a88d08fadd1dec"
       },
-      "class_hash": "0x5708c44799ea41af02a0c87bcfa12d9afae9aa9be768d23397fa788c2a05629",
-      "contract_address": "0x57eabb8f30ef74845312f53dcf7352f4b9de3d9f85c7189032c26d2868dc494",
+      "class_hash": "0x2719c2860f67be197ebedcb845a0073df65bc4bcacdccf4af111cc8cd4716d0",
+      "contract_address": "0xdcfedff087e39d24334ddd829d0f04ca198a2cdf89a141fde06caf3c1d4c87",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x45f9d6dce1ba9897c29d09dca5440c4e300da4a346d05f8df4022de72037830"
+      "transaction_hash": "0x219ff5668d1258f55d5fdaa7daaaf98270f95b6edb660b952e9f4b30635119e"
     },
-    "amma_arcade": {
-      "tag": "amma_arcade",
-      "class": "amma_arcade",
-      "salt": "0x3ce13249cd9b535cd29cc84f2d3099b30aacfcb07c4ebfff8af99e6e17c3d14",
+    "arcade_amma": {
+      "tag": "arcade_amma",
+      "class": "arcade_amma",
+      "salt": "0x61712409851d5586316a8f226f2e264f855c018e0b48ed1866b2ed3afc5a264",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_contract": "0x5f24d8eb51de4c36d212c6a3484c7e3b96f196347d0d4e2b33fa8128b2ff79a",
-        "loadout_contract": "0x13fcf2004226bc073a7a050b77784538f1ff738c274f8cb03b0c9e15773caf0",
-        "collectable_address": "0x6103eb8d3353e2136888ede3af70fed100fa3f734c474fe65d2f7c759832090"
+        "attack_contract": "0x7881b38a01a8a16101efe117b2a0a6e7c15cf73ca701c9da3b70b7b4aea7157",
+        "loadout_contract": "0x7c6ff032276cbf951873212c898fcd86c7f04f32a5154367964805e41ae29be",
+        "collectable_address": "0x4d19be8bcc9c6e905345e547c0ff2bf37caffae952b0f42e4fc863e366c9898"
       },
-      "class_hash": "0x7cdebba73b33499da9c6c255d051d7c17130cd791717343d30521fb193dd62e",
-      "contract_address": "0xb107fe2b972612be8cfa26ebc42f63f1492c48f0f9168fc04e5f573f8d1eaf",
+      "class_hash": "0x2cb61bbe70fce0d730e8f43b251ae1180a20991df5204d3d1a50d5d30782b94",
+      "contract_address": "0x875cb67e50b7b755e065a59718d62938d720204e552fcd6eaa5519773d9d6b",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x45f9d6dce1ba9897c29d09dca5440c4e300da4a346d05f8df4022de72037830"
+      "transaction_hash": "0x219ff5668d1258f55d5fdaa7daaaf98270f95b6edb660b952e9f4b30635119e"
     }
   },
   "classes": {
@@ -4042,8 +4055,8 @@
         }
       ]
     },
-    "classic_blobert_loadout": {
-      "class_hash": "0x6b05538ce150c10f90c8f996de28ca41c69b1d65481c9318f136f4c24dc6dce",
+    "loadout_classic": {
+      "class_hash": "0x13d9aacaccd717d2663692546631b60f355684067f0ee55c0072d0c95995c7c",
       "abi": [
         {
           "type": "impl",
@@ -4162,8 +4175,8 @@
         },
         {
           "type": "impl",
-          "name": "IClassicBlobertLoadoutImpl",
-          "interface_name": "ba_loadout::classic_contract::IClassicBlobertLoadout"
+          "name": "IClassicLoadoutImpl",
+          "interface_name": "ba_loadout::classic_contract::IClassicLoadout"
         },
         {
           "type": "enum",
@@ -4415,7 +4428,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_loadout::classic_contract::IClassicBlobertLoadout",
+          "name": "ba_loadout::classic_contract::IClassicLoadout",
           "items": [
             {
               "type": "function",
@@ -4621,7 +4634,7 @@
         },
         {
           "type": "event",
-          "name": "ba_loadout::classic_contract::classic_blobert_loadout::Event",
+          "name": "ba_loadout::classic_contract::loadout_classic::Event",
           "kind": "enum",
           "variants": [
             {
@@ -4633,8 +4646,8 @@
         }
       ]
     },
-    "amma_blobert_loadout": {
-      "class_hash": "0x3467b064d4cd9ac5c5ea2d1202ea424eb8cf735578e0caed9d805397b1a64ac",
+    "loadout_amma": {
+      "class_hash": "0x376365ae089416706108ea5a9ac02bcf98be2bfeb71e5306adc961cffb97f1c",
       "abi": [
         {
           "type": "impl",
@@ -4753,8 +4766,8 @@
         },
         {
           "type": "impl",
-          "name": "IAmmaBlobertLoadoutImpl",
-          "interface_name": "ba_loadout::amma_contract::IAmmaBlobertLoadout"
+          "name": "IAmmaLoadoutImpl",
+          "interface_name": "ba_loadout::amma_contract::IAmmaLoadout"
         },
         {
           "type": "struct",
@@ -4972,7 +4985,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_loadout::amma_contract::IAmmaBlobertLoadout",
+          "name": "ba_loadout::amma_contract::IAmmaLoadout",
           "items": [
             {
               "type": "function",
@@ -5293,7 +5306,7 @@
         },
         {
           "type": "event",
-          "name": "ba_loadout::amma_contract::amma_blobert_loadout::Event",
+          "name": "ba_loadout::amma_contract::loadout_amma::Event",
           "kind": "enum",
           "variants": [
             {
@@ -5305,13 +5318,426 @@
         }
       ]
     },
-    "classic_arcade": {
-      "class_hash": "0x5708c44799ea41af02a0c87bcfa12d9afae9aa9be768d23397fa788c2a05629",
+    "arcade_fuel": {
+      "class_hash": "0x21b4cc91139fed402601b0a0927600be857ffb3d02551397a0ff82f14e5b639",
       "abi": [
         {
           "type": "impl",
-          "name": "IClassicArcadeImpl",
-          "interface_name": "ba_classic_arcade::IClassicArcade"
+          "name": "IArcadeFuelImpl",
+          "interface_name": "ba_arcade::fuel::IArcadeFuel"
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "ba_arcade::fuel::IArcadeFuel",
+          "items": [
+            {
+              "type": "function",
+              "name": "fuel",
+              "inputs": [
+                {
+                  "name": "user",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u64"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "credits",
+              "inputs": [
+                {
+                  "name": "user",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u128"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "max_fuel",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u64"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "withdraw",
+              "inputs": [
+                {
+                  "name": "user",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "fuel_cost",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "credits_cost",
+                  "type": "core::integer::u128"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "try_withdraw",
+              "inputs": [
+                {
+                  "name": "user",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "fuel_cost",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "credits_cost",
+                  "type": "core::integer::u128"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_max_fuel",
+              "inputs": [
+                {
+                  "name": "max_fuel",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "add_credits",
+              "inputs": [
+                {
+                  "name": "user",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u128"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IAccessImpl",
+          "interface_name": "sai_access::IAccess"
+        },
+        {
+          "type": "interface",
+          "name": "sai_access::IAccess",
+          "items": [
+            {
+              "type": "function",
+              "name": "contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "contract_writer",
+              "inputs": [
+                {
+                  "name": "writer",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "set_contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "is_owner",
+                  "type": "core::bool"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_contract_writer",
+              "inputs": [
+                {
+                  "name": "writer",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "is_writer",
+                  "type": "core::bool"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "grant_contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "grant_contract_owners",
+              "inputs": [
+                {
+                  "name": "owners",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "revoke_contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "revoke_contract_owners",
+              "inputs": [
+                {
+                  "name": "owners",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "grant_contract_writer",
+              "inputs": [
+                {
+                  "name": "writer",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "grant_contract_writers",
+              "inputs": [
+                {
+                  "name": "writers",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "revoke_contract_writer",
+              "inputs": [
+                {
+                  "name": "writer",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "revoke_contract_writers",
+              "inputs": [
+                {
+                  "name": "writers",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": [
+            {
+              "name": "owner",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_access::access_component::GrantContractOwner",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_access::access_component::RevokeContractOwner",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_access::access_component::GrantContractWriter",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_access::access_component::RevokeContractWriter",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_access::access_component::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "GrantContractOwner",
+              "type": "sai_access::access_component::GrantContractOwner",
+              "kind": "nested"
+            },
+            {
+              "name": "RevokeContractOwner",
+              "type": "sai_access::access_component::RevokeContractOwner",
+              "kind": "nested"
+            },
+            {
+              "name": "GrantContractWriter",
+              "type": "sai_access::access_component::GrantContractWriter",
+              "kind": "nested"
+            },
+            {
+              "name": "RevokeContractWriter",
+              "type": "sai_access::access_component::RevokeContractWriter",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "ba_arcade::fuel::arcade_fuel::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "AccessEvents",
+              "type": "sai_access::access_component::Event",
+              "kind": "flat"
+            }
+          ]
+        }
+      ]
+    },
+    "arcade_classic": {
+      "class_hash": "0x2719c2860f67be197ebedcb845a0073df65bc4bcacdccf4af111cc8cd4716d0",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "IArcadeClassicImpl",
+          "interface_name": "ba_arcade_classic::IArcadeClassic"
         },
         {
           "type": "struct",
@@ -5329,7 +5755,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_classic_arcade::IClassicArcade",
+          "name": "ba_arcade_classic::IArcadeClassic",
           "items": [
             {
               "type": "function",
@@ -5399,8 +5825,8 @@
         },
         {
           "type": "impl",
-          "name": "IClassicArcadeAdminImpl",
-          "interface_name": "ba_classic_arcade::IClassicArcadeAdmin"
+          "name": "IArcadeClassicAdminImpl",
+          "interface_name": "ba_arcade_classic::IArcadeClassicAdmin"
         },
         {
           "type": "struct",
@@ -5644,7 +6070,7 @@
         },
         {
           "type": "struct",
-          "name": "ba_classic_arcade::OpponentInput",
+          "name": "ba_arcade_classic::OpponentInput",
           "members": [
             {
               "name": "attributes",
@@ -5662,7 +6088,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_classic_arcade::IClassicArcadeAdmin",
+          "name": "ba_arcade_classic::IArcadeClassicAdmin",
           "items": [
             {
               "type": "function",
@@ -5670,7 +6096,7 @@
               "inputs": [
                 {
                   "name": "opponents",
-                  "type": "core::array::Array::<ba_classic_arcade::OpponentInput>"
+                  "type": "core::array::Array::<ba_arcade_classic::OpponentInput>"
                 }
               ],
               "outputs": [],
@@ -5880,7 +6306,7 @@
         },
         {
           "type": "event",
-          "name": "ba_classic_arcade::classic_arcade::Event",
+          "name": "ba_arcade_classic::arcade_classic::Event",
           "kind": "enum",
           "variants": [
             {
@@ -5892,13 +6318,13 @@
         }
       ]
     },
-    "amma_arcade": {
-      "class_hash": "0x7cdebba73b33499da9c6c255d051d7c17130cd791717343d30521fb193dd62e",
+    "arcade_amma": {
+      "class_hash": "0x2cb61bbe70fce0d730e8f43b251ae1180a20991df5204d3d1a50d5d30782b94",
       "abi": [
         {
           "type": "impl",
-          "name": "IAmmaArcadeImpl",
-          "interface_name": "ba_amma_arcade::contract::IAmmaArcade"
+          "name": "IArcadeAmmaImpl",
+          "interface_name": "ba_arcade_amma::contract::IArcadeAmma"
         },
         {
           "type": "struct",
@@ -5916,7 +6342,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_amma_arcade::contract::IAmmaArcade",
+          "name": "ba_arcade_amma::contract::IArcadeAmma",
           "items": [
             {
               "type": "function",
@@ -5986,12 +6412,12 @@
         },
         {
           "type": "impl",
-          "name": "IAmmaArcadeAdminImpl",
-          "interface_name": "ba_amma_arcade::contract::IAmmaArcadeAdmin"
+          "name": "IArcadeAmmaAdminImpl",
+          "interface_name": "ba_arcade_amma::contract::IArcadeAmmaAdmin"
         },
         {
           "type": "interface",
-          "name": "ba_amma_arcade::contract::IAmmaArcadeAdmin",
+          "name": "ba_arcade_amma::contract::IArcadeAmmaAdmin",
           "items": [
             {
               "type": "function",
@@ -6213,7 +6639,7 @@
         },
         {
           "type": "event",
-          "name": "ba_amma_arcade::contract::amma_arcade::Event",
+          "name": "ba_arcade_amma::contract::arcade_amma::Event",
           "kind": "enum",
           "variants": [
             {
@@ -6231,54 +6657,59 @@
       "contract_address": "0x0"
     },
     "arena_blobert": {
-      "contract_address": "0x136a36c848b8e688651c65e916ae50d73ddb6fb8ba5dc680267e742fd035a98",
+      "contract_address": "0x679ef50fcafa1d3ae3f395b24b7147eef6822e1a9689997778c2003afd109d2",
       "class_hash": "0x65c960474c4a763613160253c12c970d481aca45e151279eff95c6969667a1a",
       "class": "arena_blobert"
     },
     "amma_blobert": {
-      "contract_address": "0x6103eb8d3353e2136888ede3af70fed100fa3f734c474fe65d2f7c759832090",
+      "contract_address": "0x4d19be8bcc9c6e905345e547c0ff2bf37caffae952b0f42e4fc863e366c9898",
       "class_hash": "0xad67917de81c1665aa9ce7d293c94f3ae85c66906953205b6a755bab7027a6",
       "class": "amma_blobert"
     },
     "amma_blobert_soulbound": {
-      "contract_address": "0xe934834953391a50949d10a49d264fc6a63cd145f357adc29209cc30139e94",
+      "contract_address": "0x497b248c8bd675ae22746013356508e9697c10c6282cd7c0b14e7e5277de3ee",
       "class_hash": "0x2180fc2bcbdeea447ae0668796532c7a9de96b5492bdeb542e670287fec05fc",
       "class": "amma_blobert_soulbound"
     },
     "attack": {
-      "contract_address": "0x5f24d8eb51de4c36d212c6a3484c7e3b96f196347d0d4e2b33fa8128b2ff79a",
+      "contract_address": "0x7881b38a01a8a16101efe117b2a0a6e7c15cf73ca701c9da3b70b7b4aea7157",
       "class_hash": "0x3af1e7936ebd63c7725cb9f77811439da9a033138ae804964438a904b19b0b1",
       "class": "attack"
     },
+    "arcade_fuel": {
+      "contract_address": "0x47e3153dde3945ac1549b7af65bbf6dd20bd26f35c0e33461f408ffb4f1ac3c",
+      "class_hash": "0x21b4cc91139fed402601b0a0927600be857ffb3d02551397a0ff82f14e5b639",
+      "class": "arcade_fuel"
+    },
     "arena_blobert_minter": {
-      "contract_address": "0x73a93a154fb5e80a6ebc0c6ee72fe55453ff8d44441a6e0836df0bb157bb1d7",
+      "contract_address": "0x61808a6902524c7a5fdd8d1cfa3f3aa621d50b1a403f65e172b830c66415472",
       "class_hash": "0x7859e23b1ac4ccd5c7160d1d09e357753bb69ada7e2f8cf20d690a8cfcc28d3",
       "class": "arena_blobert_minter"
     },
     "amma_blobert_minter": {
-      "contract_address": "0x1d2b6eb6b67f6a5f7ed3985da84a64a989b9f1c1720debc3db21b5bdd2dd7d5",
+      "contract_address": "0x1aad699e1f56000ac3578f652401f91aa3bea9c15612b08702665499ae46c43",
       "class_hash": "0xec0f69cb288620eeee0b4b4a38c6558650c0ec46a011fcb960bcfb69b67c80",
       "class": "amma_blobert_minter"
     },
-    "classic_blobert_loadout": {
-      "contract_address": "0x3737c0925eca4b28d557ac976504cf249c4a3ee7b9b22cd9228f9fc55466b7c",
-      "class_hash": "0x6b05538ce150c10f90c8f996de28ca41c69b1d65481c9318f136f4c24dc6dce",
-      "class": "classic_blobert_loadout"
+    "loadout_classic": {
+      "contract_address": "0x7d835f599600048c139a1d45b246fa1ccdb4a7a59612e74f3a88d08fadd1dec",
+      "class_hash": "0x13d9aacaccd717d2663692546631b60f355684067f0ee55c0072d0c95995c7c",
+      "class": "loadout_classic"
     },
-    "amma_blobert_loadout": {
-      "contract_address": "0x13fcf2004226bc073a7a050b77784538f1ff738c274f8cb03b0c9e15773caf0",
-      "class_hash": "0x3467b064d4cd9ac5c5ea2d1202ea424eb8cf735578e0caed9d805397b1a64ac",
-      "class": "amma_blobert_loadout"
+    "loadout_amma": {
+      "contract_address": "0x7c6ff032276cbf951873212c898fcd86c7f04f32a5154367964805e41ae29be",
+      "class_hash": "0x376365ae089416706108ea5a9ac02bcf98be2bfeb71e5306adc961cffb97f1c",
+      "class": "loadout_amma"
     },
-    "classic_arcade": {
-      "contract_address": "0x57eabb8f30ef74845312f53dcf7352f4b9de3d9f85c7189032c26d2868dc494",
-      "class_hash": "0x5708c44799ea41af02a0c87bcfa12d9afae9aa9be768d23397fa788c2a05629",
-      "class": "classic_arcade"
+    "arcade_classic": {
+      "contract_address": "0xdcfedff087e39d24334ddd829d0f04ca198a2cdf89a141fde06caf3c1d4c87",
+      "class_hash": "0x2719c2860f67be197ebedcb845a0073df65bc4bcacdccf4af111cc8cd4716d0",
+      "class": "arcade_classic"
     },
-    "amma_arcade": {
-      "contract_address": "0xb107fe2b972612be8cfa26ebc42f63f1492c48f0f9168fc04e5f573f8d1eaf",
-      "class_hash": "0x7cdebba73b33499da9c6c255d051d7c17130cd791717343d30521fb193dd62e",
-      "class": "amma_arcade"
+    "arcade_amma": {
+      "contract_address": "0x875cb67e50b7b755e065a59718d62938d720204e552fcd6eaa5519773d9d6b",
+      "class_hash": "0x2cb61bbe70fce0d730e8f43b251ae1180a20991df5204d3d1a50d5d30782b94",
+      "class": "arcade_amma"
     }
   },
   "declarations": {
@@ -10176,8 +10607,8 @@
         }
       ]
     },
-    "classic_blobert_loadout": {
-      "class_hash": "0x6b05538ce150c10f90c8f996de28ca41c69b1d65481c9318f136f4c24dc6dce",
+    "loadout_classic": {
+      "class_hash": "0x13d9aacaccd717d2663692546631b60f355684067f0ee55c0072d0c95995c7c",
       "abi": [
         {
           "type": "impl",
@@ -10296,8 +10727,8 @@
         },
         {
           "type": "impl",
-          "name": "IClassicBlobertLoadoutImpl",
-          "interface_name": "ba_loadout::classic_contract::IClassicBlobertLoadout"
+          "name": "IClassicLoadoutImpl",
+          "interface_name": "ba_loadout::classic_contract::IClassicLoadout"
         },
         {
           "type": "enum",
@@ -10549,7 +10980,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_loadout::classic_contract::IClassicBlobertLoadout",
+          "name": "ba_loadout::classic_contract::IClassicLoadout",
           "items": [
             {
               "type": "function",
@@ -10755,7 +11186,7 @@
         },
         {
           "type": "event",
-          "name": "ba_loadout::classic_contract::classic_blobert_loadout::Event",
+          "name": "ba_loadout::classic_contract::loadout_classic::Event",
           "kind": "enum",
           "variants": [
             {
@@ -10767,8 +11198,8 @@
         }
       ]
     },
-    "amma_blobert_loadout": {
-      "class_hash": "0x3467b064d4cd9ac5c5ea2d1202ea424eb8cf735578e0caed9d805397b1a64ac",
+    "loadout_amma": {
+      "class_hash": "0x376365ae089416706108ea5a9ac02bcf98be2bfeb71e5306adc961cffb97f1c",
       "abi": [
         {
           "type": "impl",
@@ -10887,8 +11318,8 @@
         },
         {
           "type": "impl",
-          "name": "IAmmaBlobertLoadoutImpl",
-          "interface_name": "ba_loadout::amma_contract::IAmmaBlobertLoadout"
+          "name": "IAmmaLoadoutImpl",
+          "interface_name": "ba_loadout::amma_contract::IAmmaLoadout"
         },
         {
           "type": "struct",
@@ -11106,7 +11537,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_loadout::amma_contract::IAmmaBlobertLoadout",
+          "name": "ba_loadout::amma_contract::IAmmaLoadout",
           "items": [
             {
               "type": "function",
@@ -11427,7 +11858,7 @@
         },
         {
           "type": "event",
-          "name": "ba_loadout::amma_contract::amma_blobert_loadout::Event",
+          "name": "ba_loadout::amma_contract::loadout_amma::Event",
           "kind": "enum",
           "variants": [
             {
@@ -11439,13 +11870,426 @@
         }
       ]
     },
-    "classic_arcade": {
-      "class_hash": "0x5708c44799ea41af02a0c87bcfa12d9afae9aa9be768d23397fa788c2a05629",
+    "arcade_fuel": {
+      "class_hash": "0x21b4cc91139fed402601b0a0927600be857ffb3d02551397a0ff82f14e5b639",
       "abi": [
         {
           "type": "impl",
-          "name": "IClassicArcadeImpl",
-          "interface_name": "ba_classic_arcade::IClassicArcade"
+          "name": "IArcadeFuelImpl",
+          "interface_name": "ba_arcade::fuel::IArcadeFuel"
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "ba_arcade::fuel::IArcadeFuel",
+          "items": [
+            {
+              "type": "function",
+              "name": "fuel",
+              "inputs": [
+                {
+                  "name": "user",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u64"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "credits",
+              "inputs": [
+                {
+                  "name": "user",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u128"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "max_fuel",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u64"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "withdraw",
+              "inputs": [
+                {
+                  "name": "user",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "fuel_cost",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "credits_cost",
+                  "type": "core::integer::u128"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "try_withdraw",
+              "inputs": [
+                {
+                  "name": "user",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "fuel_cost",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "credits_cost",
+                  "type": "core::integer::u128"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_max_fuel",
+              "inputs": [
+                {
+                  "name": "max_fuel",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "add_credits",
+              "inputs": [
+                {
+                  "name": "user",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u128"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IAccessImpl",
+          "interface_name": "sai_access::IAccess"
+        },
+        {
+          "type": "interface",
+          "name": "sai_access::IAccess",
+          "items": [
+            {
+              "type": "function",
+              "name": "contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "contract_writer",
+              "inputs": [
+                {
+                  "name": "writer",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "set_contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "is_owner",
+                  "type": "core::bool"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_contract_writer",
+              "inputs": [
+                {
+                  "name": "writer",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "is_writer",
+                  "type": "core::bool"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "grant_contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "grant_contract_owners",
+              "inputs": [
+                {
+                  "name": "owners",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "revoke_contract_owner",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "revoke_contract_owners",
+              "inputs": [
+                {
+                  "name": "owners",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "grant_contract_writer",
+              "inputs": [
+                {
+                  "name": "writer",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "grant_contract_writers",
+              "inputs": [
+                {
+                  "name": "writers",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "revoke_contract_writer",
+              "inputs": [
+                {
+                  "name": "writer",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "revoke_contract_writers",
+              "inputs": [
+                {
+                  "name": "writers",
+                  "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": [
+            {
+              "name": "owner",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_access::access_component::GrantContractOwner",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_access::access_component::RevokeContractOwner",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_access::access_component::GrantContractWriter",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_access::access_component::RevokeContractWriter",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_access::access_component::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "GrantContractOwner",
+              "type": "sai_access::access_component::GrantContractOwner",
+              "kind": "nested"
+            },
+            {
+              "name": "RevokeContractOwner",
+              "type": "sai_access::access_component::RevokeContractOwner",
+              "kind": "nested"
+            },
+            {
+              "name": "GrantContractWriter",
+              "type": "sai_access::access_component::GrantContractWriter",
+              "kind": "nested"
+            },
+            {
+              "name": "RevokeContractWriter",
+              "type": "sai_access::access_component::RevokeContractWriter",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "ba_arcade::fuel::arcade_fuel::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "AccessEvents",
+              "type": "sai_access::access_component::Event",
+              "kind": "flat"
+            }
+          ]
+        }
+      ]
+    },
+    "arcade_classic": {
+      "class_hash": "0x2719c2860f67be197ebedcb845a0073df65bc4bcacdccf4af111cc8cd4716d0",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "IArcadeClassicImpl",
+          "interface_name": "ba_arcade_classic::IArcadeClassic"
         },
         {
           "type": "struct",
@@ -11463,7 +12307,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_classic_arcade::IClassicArcade",
+          "name": "ba_arcade_classic::IArcadeClassic",
           "items": [
             {
               "type": "function",
@@ -11533,8 +12377,8 @@
         },
         {
           "type": "impl",
-          "name": "IClassicArcadeAdminImpl",
-          "interface_name": "ba_classic_arcade::IClassicArcadeAdmin"
+          "name": "IArcadeClassicAdminImpl",
+          "interface_name": "ba_arcade_classic::IArcadeClassicAdmin"
         },
         {
           "type": "struct",
@@ -11778,7 +12622,7 @@
         },
         {
           "type": "struct",
-          "name": "ba_classic_arcade::OpponentInput",
+          "name": "ba_arcade_classic::OpponentInput",
           "members": [
             {
               "name": "attributes",
@@ -11796,7 +12640,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_classic_arcade::IClassicArcadeAdmin",
+          "name": "ba_arcade_classic::IArcadeClassicAdmin",
           "items": [
             {
               "type": "function",
@@ -11804,7 +12648,7 @@
               "inputs": [
                 {
                   "name": "opponents",
-                  "type": "core::array::Array::<ba_classic_arcade::OpponentInput>"
+                  "type": "core::array::Array::<ba_arcade_classic::OpponentInput>"
                 }
               ],
               "outputs": [],
@@ -12014,7 +12858,7 @@
         },
         {
           "type": "event",
-          "name": "ba_classic_arcade::classic_arcade::Event",
+          "name": "ba_arcade_classic::arcade_classic::Event",
           "kind": "enum",
           "variants": [
             {
@@ -12026,13 +12870,13 @@
         }
       ]
     },
-    "amma_arcade": {
-      "class_hash": "0x7cdebba73b33499da9c6c255d051d7c17130cd791717343d30521fb193dd62e",
+    "arcade_amma": {
+      "class_hash": "0x2cb61bbe70fce0d730e8f43b251ae1180a20991df5204d3d1a50d5d30782b94",
       "abi": [
         {
           "type": "impl",
-          "name": "IAmmaArcadeImpl",
-          "interface_name": "ba_amma_arcade::contract::IAmmaArcade"
+          "name": "IArcadeAmmaImpl",
+          "interface_name": "ba_arcade_amma::contract::IArcadeAmma"
         },
         {
           "type": "struct",
@@ -12050,7 +12894,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_amma_arcade::contract::IAmmaArcade",
+          "name": "ba_arcade_amma::contract::IArcadeAmma",
           "items": [
             {
               "type": "function",
@@ -12120,12 +12964,12 @@
         },
         {
           "type": "impl",
-          "name": "IAmmaArcadeAdminImpl",
-          "interface_name": "ba_amma_arcade::contract::IAmmaArcadeAdmin"
+          "name": "IArcadeAmmaAdminImpl",
+          "interface_name": "ba_arcade_amma::contract::IArcadeAmmaAdmin"
         },
         {
           "type": "interface",
-          "name": "ba_amma_arcade::contract::IAmmaArcadeAdmin",
+          "name": "ba_arcade_amma::contract::IArcadeAmmaAdmin",
           "items": [
             {
               "type": "function",
@@ -12347,7 +13191,7 @@
         },
         {
           "type": "event",
-          "name": "ba_amma_arcade::contract::amma_arcade::Event",
+          "name": "ba_arcade_amma::contract::arcade_amma::Event",
           "kind": "enum",
           "variants": [
             {
@@ -12357,8 +13201,7 @@
             }
           ]
         }
-      ],
-      "transaction_hash": "0x6600a22d128a439d25d09d137e0155f686b743548113588b547976c088d92e2"
+      ]
     }
   }
 }

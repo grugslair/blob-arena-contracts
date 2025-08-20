@@ -3,7 +3,7 @@ use crate::ability::Abilities;
 use crate::attack::IdTagAttack;
 
 #[starknet::interface]
-pub trait IClassicBlobertLoadout<TContractState> {
+pub trait IClassicLoadout<TContractState> {
     fn set_loadout(
         ref self: TContractState,
         key: BlobertAttributeKey,
@@ -45,7 +45,7 @@ struct BlobertAbilities {
 }
 
 #[starknet::contract]
-mod classic_blobert_loadout {
+mod loadout_classic {
     use ba_blobert::{
         BlobertAttribute, BlobertAttributeKey, SeedTrait, TokenAttributes, get_blobert_attributes,
     };
@@ -61,16 +61,12 @@ mod classic_blobert_loadout {
     use crate::ability::Abilities;
     use crate::attack::{IAttackAdminDispatcher, IAttackAdminDispatcherTrait};
     use crate::interface::ILoadout;
-    use super::{AttackSlot, BlobertAbilities, IClassicBlobertLoadout, IdTagAttack, LoadoutInput};
+    use super::{AttackSlot, BlobertAbilities, IClassicLoadout, IdTagAttack, LoadoutInput};
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
 
-    const ABILITY_TABLE_ID: felt252 = bytearrays_hash!(
-        "classic_blobert_loadout", "ClassicBlobertAbility",
-    );
-    const ATTACK_SLOT_TABLE_ID: felt252 = bytearrays_hash!(
-        "classic_blobert_loadout", "ClassicBlobertAttackSlot",
-    );
+    const ABILITY_TABLE_ID: felt252 = bytearrays_hash!("loadout_classic", "ClassicAbility");
+    const ATTACK_SLOT_TABLE_ID: felt252 = bytearrays_hash!("loadout_classic", "ClassicAttackSlot");
 
     impl AbilityTable = ToriiTable<ABILITY_TABLE_ID>;
     impl AttackSlotTable = ToriiTable<ATTACK_SLOT_TABLE_ID>;
@@ -108,12 +104,8 @@ mod classic_blobert_loadout {
         self
             .attack_dispatcher
             .write(IAttackAdminDispatcher { contract_address: attack_dispatcher_address });
-        register_table_with_schema::<
-            BlobertAbilities,
-        >("classic_blobert_loadout", "ClassicBlobertAbility");
-        register_table_with_schema::<
-            AttackSlot,
-        >("classic_blobert_loadout", "ClassicBlobertAttackSlot");
+        register_table_with_schema::<BlobertAbilities>("loadout_classic", "ClassicAbility");
+        register_table_with_schema::<AttackSlot>("loadout_classic", "ClassicAttackSlot");
     }
 
     #[abi(embed_v0)]
@@ -165,7 +157,7 @@ mod classic_blobert_loadout {
     }
 
     #[abi(embed_v0)]
-    impl IClassicBlobertLoadoutImpl of IClassicBlobertLoadout<ContractState> {
+    impl IClassicLoadoutImpl of IClassicLoadout<ContractState> {
         fn set_loadout(
             ref self: ContractState,
             key: BlobertAttributeKey,

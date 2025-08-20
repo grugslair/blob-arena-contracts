@@ -79,9 +79,9 @@
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
       "transaction_hash": "0x23c66fbb073cebda34ee68be8458da793839bbe05aa8a37da5acf1bc9c519c"
     },
-    "classic_blobert_loadout": {
-      "tag": "classic_blobert_loadout",
-      "class": "classic_blobert_loadout",
+    "loadout_classic": {
+      "tag": "loadout_classic",
+      "class": "loadout_classic",
       "salt": "0x5d02cf8e7c409158bc6dfa51732741242e20c49c903845a26f67dd79c864cb2",
       "unique": false,
       "calldata": {
@@ -97,9 +97,9 @@
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
       "transaction_hash": "0x23c66fbb073cebda34ee68be8458da793839bbe05aa8a37da5acf1bc9c519c"
     },
-    "amma_blobert_loadout": {
-      "tag": "amma_blobert_loadout",
-      "class": "amma_blobert_loadout",
+    "loadout_amma": {
+      "tag": "loadout_amma",
+      "class": "loadout_amma",
       "salt": "0x5d02cf8e7c409158bc6dfa51732741242e20c49c903845a26f67dd79c864cb2",
       "unique": false,
       "calldata": {
@@ -115,9 +115,9 @@
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
       "transaction_hash": "0x23c66fbb073cebda34ee68be8458da793839bbe05aa8a37da5acf1bc9c519c"
     },
-    "classic_arcade": {
-      "tag": "classic_arcade",
-      "class": "classic_arcade",
+    "arcade_classic": {
+      "tag": "arcade_classic",
+      "class": "arcade_classic",
       "salt": "0x5d02cf8e7c409158bc6dfa51732741242e20c49c903845a26f67dd79c864cb2",
       "unique": false,
       "calldata": {
@@ -130,9 +130,9 @@
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
       "transaction_hash": "0x6b10f87146b963616a632a0f6e1fd7c278c91876b87429bfb9cc0ae193f3041"
     },
-    "amma_arcade": {
-      "tag": "amma_arcade",
-      "class": "amma_arcade",
+    "arcade_amma": {
+      "tag": "arcade_amma",
+      "class": "arcade_amma",
       "salt": "0x5d02cf8e7c409158bc6dfa51732741242e20c49c903845a26f67dd79c864cb2",
       "unique": false,
       "calldata": {
@@ -4042,7 +4042,7 @@
         }
       ]
     },
-    "classic_blobert_loadout": {
+    "loadout_classic": {
       "class_hash": "0x6b05538ce150c10f90c8f996de28ca41c69b1d65481c9318f136f4c24dc6dce",
       "abi": [
         {
@@ -4621,7 +4621,7 @@
         },
         {
           "type": "event",
-          "name": "ba_loadout::classic_contract::classic_blobert_loadout::Event",
+          "name": "ba_loadout::classic_contract::loadout_classic::Event",
           "kind": "enum",
           "variants": [
             {
@@ -4633,7 +4633,7 @@
         }
       ]
     },
-    "amma_blobert_loadout": {
+    "loadout_amma": {
       "class_hash": "0x3467b064d4cd9ac5c5ea2d1202ea424eb8cf735578e0caed9d805397b1a64ac",
       "abi": [
         {
@@ -5293,7 +5293,7 @@
         },
         {
           "type": "event",
-          "name": "ba_loadout::amma_contract::amma_blobert_loadout::Event",
+          "name": "ba_loadout::amma_contract::loadout_amma::Event",
           "kind": "enum",
           "variants": [
             {
@@ -5305,13 +5305,13 @@
         }
       ]
     },
-    "classic_arcade": {
+    "arcade_classic": {
       "class_hash": "0x5708c44799ea41af02a0c87bcfa12d9afae9aa9be768d23397fa788c2a05629",
       "abi": [
         {
           "type": "impl",
-          "name": "IClassicArcadeImpl",
-          "interface_name": "ba_classic_arcade::IClassicArcade"
+          "name": "IArcadeClassicImpl",
+          "interface_name": "ba_arcade_classic::IArcadeClassic"
         },
         {
           "type": "struct",
@@ -5329,7 +5329,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_classic_arcade::IClassicArcade",
+          "name": "ba_arcade_classic::IArcadeClassic",
           "items": [
             {
               "type": "function",
@@ -5399,8 +5399,8 @@
         },
         {
           "type": "impl",
-          "name": "IClassicArcadeAdminImpl",
-          "interface_name": "ba_classic_arcade::IClassicArcadeAdmin"
+          "name": "IArcadeClassicAdminImpl",
+          "interface_name": "ba_arcade_classic::IArcadeClassicAdmin"
         },
         {
           "type": "struct",
@@ -5644,7 +5644,7 @@
         },
         {
           "type": "struct",
-          "name": "ba_classic_arcade::OpponentInput",
+          "name": "ba_arcade_classic::OpponentInput",
           "members": [
             {
               "name": "attributes",
@@ -5662,7 +5662,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_classic_arcade::IClassicArcadeAdmin",
+          "name": "ba_arcade_classic::IArcadeClassicAdmin",
           "items": [
             {
               "type": "function",
@@ -5670,7 +5670,7 @@
               "inputs": [
                 {
                   "name": "opponents",
-                  "type": "core::array::Array::<ba_classic_arcade::OpponentInput>"
+                  "type": "core::array::Array::<ba_arcade_classic::OpponentInput>"
                 }
               ],
               "outputs": [],
@@ -5880,7 +5880,7 @@
         },
         {
           "type": "event",
-          "name": "ba_classic_arcade::classic_arcade::Event",
+          "name": "ba_arcade_classic::arcade_classic::Event",
           "kind": "enum",
           "variants": [
             {
@@ -5892,13 +5892,13 @@
         }
       ]
     },
-    "amma_arcade": {
+    "arcade_amma": {
       "class_hash": "0x7cdebba73b33499da9c6c255d051d7c17130cd791717343d30521fb193dd62e",
       "abi": [
         {
           "type": "impl",
-          "name": "IAmmaArcadeImpl",
-          "interface_name": "ba_amma_arcade::contract::IAmmaArcade"
+          "name": "IArcadeAmmaImpl",
+          "interface_name": "ba_arcade_amma::contract::IArcadeAmma"
         },
         {
           "type": "struct",
@@ -5916,7 +5916,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_amma_arcade::contract::IAmmaArcade",
+          "name": "ba_arcade_amma::contract::IArcadeAmma",
           "items": [
             {
               "type": "function",
@@ -5986,12 +5986,12 @@
         },
         {
           "type": "impl",
-          "name": "IAmmaArcadeAdminImpl",
-          "interface_name": "ba_amma_arcade::contract::IAmmaArcadeAdmin"
+          "name": "IArcadeAmmaAdminImpl",
+          "interface_name": "ba_arcade_amma::contract::IArcadeAmmaAdmin"
         },
         {
           "type": "interface",
-          "name": "ba_amma_arcade::contract::IAmmaArcadeAdmin",
+          "name": "ba_arcade_amma::contract::IArcadeAmmaAdmin",
           "items": [
             {
               "type": "function",
@@ -6213,7 +6213,7 @@
         },
         {
           "type": "event",
-          "name": "ba_amma_arcade::contract::amma_arcade::Event",
+          "name": "ba_arcade_amma::contract::arcade_amma::Event",
           "kind": "enum",
           "variants": [
             {
@@ -6260,25 +6260,25 @@
       "class_hash": "0xec0f69cb288620eeee0b4b4a38c6558650c0ec46a011fcb960bcfb69b67c80",
       "class": "amma_blobert_minter"
     },
-    "classic_blobert_loadout": {
+    "loadout_classic": {
       "contract_address": "0x7e0ef6e73bcac2a17e55f3c7a019978c4f215515744466332d78e714e3820d7",
       "class_hash": "0x6b05538ce150c10f90c8f996de28ca41c69b1d65481c9318f136f4c24dc6dce",
-      "class": "classic_blobert_loadout"
+      "class": "loadout_classic"
     },
-    "amma_blobert_loadout": {
+    "loadout_amma": {
       "contract_address": "0x6bf186a7a9f0531c172863a94431a70e5c9c38dd1ccb33a676b0fe9d98bed15",
       "class_hash": "0x3467b064d4cd9ac5c5ea2d1202ea424eb8cf735578e0caed9d805397b1a64ac",
-      "class": "amma_blobert_loadout"
+      "class": "loadout_amma"
     },
-    "classic_arcade": {
+    "arcade_classic": {
       "contract_address": "0x6262d9d57d480982c43b46ab1fd4d9f6177be4832a079ba1b4a47583134b82a",
       "class_hash": "0x5708c44799ea41af02a0c87bcfa12d9afae9aa9be768d23397fa788c2a05629",
-      "class": "classic_arcade"
+      "class": "arcade_classic"
     },
-    "amma_arcade": {
+    "arcade_amma": {
       "contract_address": "0x5f51e0e601729711d7ccc63ec70548dce57528e97c0c7382f05d70a2411b3af",
       "class_hash": "0x7cdebba73b33499da9c6c255d051d7c17130cd791717343d30521fb193dd62e",
-      "class": "amma_arcade"
+      "class": "arcade_amma"
     }
   },
   "declarations": {
@@ -10180,7 +10180,7 @@
         }
       ]
     },
-    "classic_blobert_loadout": {
+    "loadout_classic": {
       "class_hash": "0x6b05538ce150c10f90c8f996de28ca41c69b1d65481c9318f136f4c24dc6dce",
       "abi": [
         {
@@ -10759,7 +10759,7 @@
         },
         {
           "type": "event",
-          "name": "ba_loadout::classic_contract::classic_blobert_loadout::Event",
+          "name": "ba_loadout::classic_contract::loadout_classic::Event",
           "kind": "enum",
           "variants": [
             {
@@ -10772,7 +10772,7 @@
       ],
       "transaction_hash": "0x410e7fb6321988058fa3faaa2a42bd44e8a431baea25e35e8bba4f738403c52"
     },
-    "amma_blobert_loadout": {
+    "loadout_amma": {
       "class_hash": "0x3467b064d4cd9ac5c5ea2d1202ea424eb8cf735578e0caed9d805397b1a64ac",
       "abi": [
         {
@@ -11432,7 +11432,7 @@
         },
         {
           "type": "event",
-          "name": "ba_loadout::amma_contract::amma_blobert_loadout::Event",
+          "name": "ba_loadout::amma_contract::loadout_amma::Event",
           "kind": "enum",
           "variants": [
             {
@@ -11445,13 +11445,13 @@
       ],
       "transaction_hash": "0x219ce5ad9d6b5c9cd1b3eeac2272e1fc446b2fa3974976fd89456da4beafc57"
     },
-    "classic_arcade": {
+    "arcade_classic": {
       "class_hash": "0x5708c44799ea41af02a0c87bcfa12d9afae9aa9be768d23397fa788c2a05629",
       "abi": [
         {
           "type": "impl",
-          "name": "IClassicArcadeImpl",
-          "interface_name": "ba_classic_arcade::IClassicArcade"
+          "name": "IArcadeClassicImpl",
+          "interface_name": "ba_arcade_classic::IArcadeClassic"
         },
         {
           "type": "struct",
@@ -11469,7 +11469,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_classic_arcade::IClassicArcade",
+          "name": "ba_arcade_classic::IArcadeClassic",
           "items": [
             {
               "type": "function",
@@ -11539,8 +11539,8 @@
         },
         {
           "type": "impl",
-          "name": "IClassicArcadeAdminImpl",
-          "interface_name": "ba_classic_arcade::IClassicArcadeAdmin"
+          "name": "IArcadeClassicAdminImpl",
+          "interface_name": "ba_arcade_classic::IArcadeClassicAdmin"
         },
         {
           "type": "struct",
@@ -11784,7 +11784,7 @@
         },
         {
           "type": "struct",
-          "name": "ba_classic_arcade::OpponentInput",
+          "name": "ba_arcade_classic::OpponentInput",
           "members": [
             {
               "name": "attributes",
@@ -11802,7 +11802,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_classic_arcade::IClassicArcadeAdmin",
+          "name": "ba_arcade_classic::IArcadeClassicAdmin",
           "items": [
             {
               "type": "function",
@@ -11810,7 +11810,7 @@
               "inputs": [
                 {
                   "name": "opponents",
-                  "type": "core::array::Array::<ba_classic_arcade::OpponentInput>"
+                  "type": "core::array::Array::<ba_arcade_classic::OpponentInput>"
                 }
               ],
               "outputs": [],
@@ -12020,7 +12020,7 @@
         },
         {
           "type": "event",
-          "name": "ba_classic_arcade::classic_arcade::Event",
+          "name": "ba_arcade_classic::arcade_classic::Event",
           "kind": "enum",
           "variants": [
             {
@@ -12033,13 +12033,13 @@
       ],
       "transaction_hash": "0x6554ae0829105bd0b942a1a4fc5b26cd9a946f8d3b94c2a7c28159bce9b6bd3"
     },
-    "amma_arcade": {
+    "arcade_amma": {
       "class_hash": "0x7cdebba73b33499da9c6c255d051d7c17130cd791717343d30521fb193dd62e",
       "abi": [
         {
           "type": "impl",
-          "name": "IAmmaArcadeImpl",
-          "interface_name": "ba_amma_arcade::contract::IAmmaArcade"
+          "name": "IArcadeAmmaImpl",
+          "interface_name": "ba_arcade_amma::contract::IArcadeAmma"
         },
         {
           "type": "struct",
@@ -12057,7 +12057,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_amma_arcade::contract::IAmmaArcade",
+          "name": "ba_arcade_amma::contract::IArcadeAmma",
           "items": [
             {
               "type": "function",
@@ -12127,12 +12127,12 @@
         },
         {
           "type": "impl",
-          "name": "IAmmaArcadeAdminImpl",
-          "interface_name": "ba_amma_arcade::contract::IAmmaArcadeAdmin"
+          "name": "IArcadeAmmaAdminImpl",
+          "interface_name": "ba_arcade_amma::contract::IArcadeAmmaAdmin"
         },
         {
           "type": "interface",
-          "name": "ba_amma_arcade::contract::IAmmaArcadeAdmin",
+          "name": "ba_arcade_amma::contract::IArcadeAmmaAdmin",
           "items": [
             {
               "type": "function",
@@ -12354,7 +12354,7 @@
         },
         {
           "type": "event",
-          "name": "ba_amma_arcade::contract::amma_arcade::Event",
+          "name": "ba_arcade_amma::contract::arcade_amma::Event",
           "kind": "enum",
           "variants": [
             {
