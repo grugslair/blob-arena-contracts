@@ -80,6 +80,16 @@ await sai.deployContract([
       ],
     },
   },
+  {
+    tag: "arena_credit_purchase",
+    class: "arena_credit_purchase",
+    salt,
+    unique: false,
+    calldata: {
+      owner,
+      credit_address: sai.contracts["arena_credit"].contract_address,
+    },
+  },
 ]);
 
 await sai.deployContract([
@@ -137,28 +147,29 @@ await sai.executeAndWait([
   (
     await sai.getContract("arena_blobert")
   ).populate("grant_contract_writer", {
-    writer: sai.deployments["arena_blobert_minter"].contract_address,
+    writer: sai.contracts["arena_blobert_minter"].contract_address,
   }),
   (
     await sai.getContract("amma_blobert_soulbound")
   ).populate("grant_contract_writer", {
-    writer: sai.deployments["amma_blobert_minter"].contract_address,
+    writer: sai.contracts["amma_blobert_minter"].contract_address,
   }),
 
   (
     await sai.getContract("attack")
   ).populate("grant_contract_writers", {
     writers: [
-      sai.deployments["loadout_amma"].contract_address,
-      sai.deployments["loadout_classic"].contract_address,
+      sai.contracts["loadout_amma"].contract_address,
+      sai.contracts["loadout_classic"].contract_address,
     ],
   }),
   (
     await sai.getContract("arena_credit")
   ).populate("grant_contract_writers", {
     writers: [
-      sai.deployments["arcade_classic"].contract_address,
-      sai.deployments["arcade_amma"].contract_address,
+      sai.contracts["arcade_classic"].contract_address,
+      sai.contracts["arcade_amma"].contract_address,
+      sai.contracts["arena_credit_purchase"].contract_address,
     ],
   }),
 ]);

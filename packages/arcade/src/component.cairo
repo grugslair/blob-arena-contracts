@@ -27,6 +27,7 @@ pub mod arcade_component {
     use ba_arcade::attempt::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::table::{ArcadeAttempt, ArcadeRound, AttackLastUsed};
     use ba_combat::CombatantState;
+    use ba_credit::arena_credit_consume;
     use ba_loadout::ability::AbilitiesTrait;
     use ba_loadout::attack::IAttackDispatcher;
     use ba_loadout::get_loadout;
@@ -43,7 +44,6 @@ pub mod arcade_component {
         StoragePointerReadAccess, StoragePointerWriteAccess,
     };
     use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
-    use crate::credit::arena_credit_consume;
     use super::{ArcadeAttackResult, Opponent, errors};
 
 

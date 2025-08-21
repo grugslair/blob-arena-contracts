@@ -3,163 +3,177 @@
     "arena_blobert": {
       "tag": "arena_blobert",
       "class": "arena_blobert",
-      "salt": "0x53c7785dde83f7628ec5da35dcb3ebcba6be8e54727af4561b153dff0aa484b",
+      "salt": "0x2efe6026e2846da8332a5cec7aa8d0221bdadad51ad2bbe1140fb88b197c785",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       },
       "class_hash": "0x65c960474c4a763613160253c12c970d481aca45e151279eff95c6969667a1a",
-      "contract_address": "0x6ec993c1274cd3845b17b1b812bb4e448bf23a0b3eb47f380deab0d6d80202c",
+      "contract_address": "0xb7b5b67928040489851cf8901d38891bd80e933e7a6f0b5575b87ca0ad6589",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x592d3b5a70f89a8861ff243a98d82393b3fe79a9a5f975dcda5bff54e31067a"
+      "transaction_hash": "0x5b756be2c983740564b21e55efb2bac83f5e177c36f92d99d97dd83cbd4e167"
     },
     "amma_blobert": {
       "tag": "amma_blobert",
       "class": "amma_blobert",
-      "salt": "0x53c7785dde83f7628ec5da35dcb3ebcba6be8e54727af4561b153dff0aa484b",
+      "salt": "0x2efe6026e2846da8332a5cec7aa8d0221bdadad51ad2bbe1140fb88b197c785",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       },
       "class_hash": "0xad67917de81c1665aa9ce7d293c94f3ae85c66906953205b6a755bab7027a6",
-      "contract_address": "0x3c088fdb56478fe6ffce6d5248db0065a8291d59d2f4f5c658564dffe37c28e",
+      "contract_address": "0x9323857228ca5b1e2937e1caa68fbe8712b294da780caae397bed257a281b8",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x592d3b5a70f89a8861ff243a98d82393b3fe79a9a5f975dcda5bff54e31067a"
+      "transaction_hash": "0x5b756be2c983740564b21e55efb2bac83f5e177c36f92d99d97dd83cbd4e167"
     },
     "amma_blobert_soulbound": {
       "tag": "amma_blobert_soulbound",
       "class": "amma_blobert_soulbound",
-      "salt": "0x53c7785dde83f7628ec5da35dcb3ebcba6be8e54727af4561b153dff0aa484b",
+      "salt": "0x2efe6026e2846da8332a5cec7aa8d0221bdadad51ad2bbe1140fb88b197c785",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       },
       "class_hash": "0x2180fc2bcbdeea447ae0668796532c7a9de96b5492bdeb542e670287fec05fc",
-      "contract_address": "0x1313a64e77b577831f37e67cf4845c7573085024b2738e28d0339e6e55a9afd",
+      "contract_address": "0x177496c0fecc7bdc065a448d313c7e8541c30f8783c21dba336e049ffb315f7",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x592d3b5a70f89a8861ff243a98d82393b3fe79a9a5f975dcda5bff54e31067a"
+      "transaction_hash": "0x5b756be2c983740564b21e55efb2bac83f5e177c36f92d99d97dd83cbd4e167"
     },
     "attack": {
       "tag": "attack",
       "class": "attack",
-      "salt": "0x53c7785dde83f7628ec5da35dcb3ebcba6be8e54727af4561b153dff0aa484b",
+      "salt": "0x2efe6026e2846da8332a5cec7aa8d0221bdadad51ad2bbe1140fb88b197c785",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       },
       "class_hash": "0x3af1e7936ebd63c7725cb9f77811439da9a033138ae804964438a904b19b0b1",
-      "contract_address": "0x30c880141a9877671d0ddfe31fad3c868a2692fca102763fb9c444b4a11e7b5",
+      "contract_address": "0x2373923b947ddf5a2d5701bae503b0086f1245a78c75721b925d3296db0513a",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x592d3b5a70f89a8861ff243a98d82393b3fe79a9a5f975dcda5bff54e31067a"
+      "transaction_hash": "0x5b756be2c983740564b21e55efb2bac83f5e177c36f92d99d97dd83cbd4e167"
     },
     "arena_credit": {
       "tag": "arena_credit",
       "class": "arena_credit",
-      "salt": "0x53c7785dde83f7628ec5da35dcb3ebcba6be8e54727af4561b153dff0aa484b",
+      "salt": "0x2efe6026e2846da8332a5cec7aa8d0221bdadad51ad2bbe1140fb88b197c785",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       },
-      "class_hash": "0x4f6a7e081fead51323d0db01676239b7426893b228a895f1dcd836ddcba845",
-      "contract_address": "0x3371badf2e928a1729e2ec7e62f85ac3d7245e6b6a24383b4be0e22e04e30a8",
+      "class_hash": "0x77c63a38a07c175c101094a04727d42a33a4c9870689f9a6dfcd2d882c6515b",
+      "contract_address": "0x6b8a8369443d74fec5358140cc6ebf0724def51c11972c94004843fba9d5a5",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x592d3b5a70f89a8861ff243a98d82393b3fe79a9a5f975dcda5bff54e31067a"
+      "transaction_hash": "0x5b756be2c983740564b21e55efb2bac83f5e177c36f92d99d97dd83cbd4e167"
     },
     "arena_blobert_minter": {
       "tag": "arena_blobert_minter",
       "class": "arena_blobert_minter",
-      "salt": "0x53c7785dde83f7628ec5da35dcb3ebcba6be8e54727af4561b153dff0aa484b",
+      "salt": "0x2efe6026e2846da8332a5cec7aa8d0221bdadad51ad2bbe1140fb88b197c785",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "token_address": "0x6ec993c1274cd3845b17b1b812bb4e448bf23a0b3eb47f380deab0d6d80202c"
+        "token_address": "0xb7b5b67928040489851cf8901d38891bd80e933e7a6f0b5575b87ca0ad6589"
       },
       "class_hash": "0x7859e23b1ac4ccd5c7160d1d09e357753bb69ada7e2f8cf20d690a8cfcc28d3",
-      "contract_address": "0x64444d61ba6c50c4401ee704054749288ad60ce0991f6305527eb7b765fbcbf",
+      "contract_address": "0x53c450e0b4bd1118265f3dde6af7d7862053f5f89041acd0907a168a3c11329",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x1396b7205642fddc79aab2a96ee968575d672b61b2753f6f836c3a4ddb2c4aa"
+      "transaction_hash": "0x2fb214da6263c92eaf9fc2a0c0015d8dc1b5ffedb9265f51e79452555d56d5d"
     },
     "amma_blobert_minter": {
       "tag": "amma_blobert_minter",
       "class": "amma_blobert_minter",
-      "salt": "0x53c7785dde83f7628ec5da35dcb3ebcba6be8e54727af4561b153dff0aa484b",
+      "salt": "0x2efe6026e2846da8332a5cec7aa8d0221bdadad51ad2bbe1140fb88b197c785",
       "unique": false,
       "calldata": {
-        "token_address": "0x1313a64e77b577831f37e67cf4845c7573085024b2738e28d0339e6e55a9afd"
+        "token_address": "0x177496c0fecc7bdc065a448d313c7e8541c30f8783c21dba336e049ffb315f7"
       },
       "class_hash": "0xec0f69cb288620eeee0b4b4a38c6558650c0ec46a011fcb960bcfb69b67c80",
-      "contract_address": "0x36606b8802de29d5b6eaaf95c2b9c9f7c086a219a5d54165ccae5354aa17b61",
+      "contract_address": "0x1deb1a85ca89939e6db6d4d819bb60318caa304c220a8b7476d04807fc19945",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x1396b7205642fddc79aab2a96ee968575d672b61b2753f6f836c3a4ddb2c4aa"
+      "transaction_hash": "0x2fb214da6263c92eaf9fc2a0c0015d8dc1b5ffedb9265f51e79452555d56d5d"
     },
     "loadout_classic": {
       "tag": "loadout_classic",
       "class": "loadout_classic",
-      "salt": "0x53c7785dde83f7628ec5da35dcb3ebcba6be8e54727af4561b153dff0aa484b",
+      "salt": "0x2efe6026e2846da8332a5cec7aa8d0221bdadad51ad2bbe1140fb88b197c785",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_dispatcher_address": "0x30c880141a9877671d0ddfe31fad3c868a2692fca102763fb9c444b4a11e7b5",
+        "attack_dispatcher_address": "0x2373923b947ddf5a2d5701bae503b0086f1245a78c75721b925d3296db0513a",
         "collection_addresses": [
-          "0x6ec993c1274cd3845b17b1b812bb4e448bf23a0b3eb47f380deab0d6d80202c",
+          "0xb7b5b67928040489851cf8901d38891bd80e933e7a6f0b5575b87ca0ad6589",
           "0x0"
         ]
       },
       "class_hash": "0x13d9aacaccd717d2663692546631b60f355684067f0ee55c0072d0c95995c7c",
-      "contract_address": "0x51e9767d7309cbd34cb0a8788d641b209a0340cb5068ce12212d7f29c6bdcab",
+      "contract_address": "0x413055f903eb950f51be63dae24290b739c3b670779829123425217251a2463",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x1396b7205642fddc79aab2a96ee968575d672b61b2753f6f836c3a4ddb2c4aa"
+      "transaction_hash": "0x2fb214da6263c92eaf9fc2a0c0015d8dc1b5ffedb9265f51e79452555d56d5d"
     },
     "loadout_amma": {
       "tag": "loadout_amma",
       "class": "loadout_amma",
-      "salt": "0x53c7785dde83f7628ec5da35dcb3ebcba6be8e54727af4561b153dff0aa484b",
+      "salt": "0x2efe6026e2846da8332a5cec7aa8d0221bdadad51ad2bbe1140fb88b197c785",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_dispatcher_address": "0x30c880141a9877671d0ddfe31fad3c868a2692fca102763fb9c444b4a11e7b5",
+        "attack_dispatcher_address": "0x2373923b947ddf5a2d5701bae503b0086f1245a78c75721b925d3296db0513a",
         "collection_addresses": [
-          "0x3c088fdb56478fe6ffce6d5248db0065a8291d59d2f4f5c658564dffe37c28e",
-          "0x1313a64e77b577831f37e67cf4845c7573085024b2738e28d0339e6e55a9afd"
+          "0x9323857228ca5b1e2937e1caa68fbe8712b294da780caae397bed257a281b8",
+          "0x177496c0fecc7bdc065a448d313c7e8541c30f8783c21dba336e049ffb315f7"
         ]
       },
       "class_hash": "0x376365ae089416706108ea5a9ac02bcf98be2bfeb71e5306adc961cffb97f1c",
-      "contract_address": "0x31c67a23a693e6f0ed78eed8bda6dee35cee9bdca5af04a28c413398f42f9d4",
+      "contract_address": "0x37a3b770e5a2596671db6b10378b910a322e33622b50a011e9397bc28030ea8",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x1396b7205642fddc79aab2a96ee968575d672b61b2753f6f836c3a4ddb2c4aa"
+      "transaction_hash": "0x2fb214da6263c92eaf9fc2a0c0015d8dc1b5ffedb9265f51e79452555d56d5d"
+    },
+    "arena_credit_purchase": {
+      "tag": "arena_credit_purchase",
+      "class": "arena_credit_purchase",
+      "salt": "0x2efe6026e2846da8332a5cec7aa8d0221bdadad51ad2bbe1140fb88b197c785",
+      "unique": false,
+      "calldata": {
+        "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
+        "credit_address": "0x6b8a8369443d74fec5358140cc6ebf0724def51c11972c94004843fba9d5a5"
+      },
+      "class_hash": "0x4f904634adef27dd2e857df75ec160b72f3706dde2a1b1b7a1c5ed03d7bbe91",
+      "contract_address": "0x43beb5bd49a772e3b1f6cd89f8263ec19003d421f25dbd7648109cc90f81864",
+      "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
+      "transaction_hash": "0x2fb214da6263c92eaf9fc2a0c0015d8dc1b5ffedb9265f51e79452555d56d5d"
     },
     "arcade_classic": {
       "tag": "arcade_classic",
       "class": "arcade_classic",
-      "salt": "0x53c7785dde83f7628ec5da35dcb3ebcba6be8e54727af4561b153dff0aa484b",
+      "salt": "0x2efe6026e2846da8332a5cec7aa8d0221bdadad51ad2bbe1140fb88b197c785",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_address": "0x30c880141a9877671d0ddfe31fad3c868a2692fca102763fb9c444b4a11e7b5",
-        "loadout_address": "0x51e9767d7309cbd34cb0a8788d641b209a0340cb5068ce12212d7f29c6bdcab",
-        "credit_address": "0x3371badf2e928a1729e2ec7e62f85ac3d7245e6b6a24383b4be0e22e04e30a8"
+        "attack_address": "0x2373923b947ddf5a2d5701bae503b0086f1245a78c75721b925d3296db0513a",
+        "loadout_address": "0x413055f903eb950f51be63dae24290b739c3b670779829123425217251a2463",
+        "credit_address": "0x6b8a8369443d74fec5358140cc6ebf0724def51c11972c94004843fba9d5a5"
       },
       "class_hash": "0x793b8f66518cef8e8e8f80812c3960406be692d17f84be96c920046c42a7bea",
-      "contract_address": "0x3ff64bfda90adb06a7e60208231c7096e4b3731fb96eef8f4e811e1b939210a",
+      "contract_address": "0x747c5b943f6560c010b55a14ea53a1ceaebed9ea15f359239835ad8e425dc94",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x1d4f359a0d27a9c6992e17ae585a0874fdafe22e9271cd0519bfe98e5d19c84"
+      "transaction_hash": "0x6bcfd04d53ddf1fcbc97db3ce32399dfdaa2526ec88ef2683b6c35207a90dce"
     },
     "arcade_amma": {
       "tag": "arcade_amma",
       "class": "arcade_amma",
-      "salt": "0x53c7785dde83f7628ec5da35dcb3ebcba6be8e54727af4561b153dff0aa484b",
+      "salt": "0x2efe6026e2846da8332a5cec7aa8d0221bdadad51ad2bbe1140fb88b197c785",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_address": "0x30c880141a9877671d0ddfe31fad3c868a2692fca102763fb9c444b4a11e7b5",
-        "loadout_address": "0x31c67a23a693e6f0ed78eed8bda6dee35cee9bdca5af04a28c413398f42f9d4",
-        "credit_address": "0x3371badf2e928a1729e2ec7e62f85ac3d7245e6b6a24383b4be0e22e04e30a8",
-        "collectable_address": "0x3c088fdb56478fe6ffce6d5248db0065a8291d59d2f4f5c658564dffe37c28e"
+        "attack_address": "0x2373923b947ddf5a2d5701bae503b0086f1245a78c75721b925d3296db0513a",
+        "loadout_address": "0x37a3b770e5a2596671db6b10378b910a322e33622b50a011e9397bc28030ea8",
+        "credit_address": "0x6b8a8369443d74fec5358140cc6ebf0724def51c11972c94004843fba9d5a5",
+        "collectable_address": "0x9323857228ca5b1e2937e1caa68fbe8712b294da780caae397bed257a281b8"
       },
       "class_hash": "0x7713f61aaf42bf149fcbe522ee5d0881dc6e227bc2349ecbc1de67e41ca8a32",
-      "contract_address": "0x12a111d3226c58294705d3cd56bf6278ec04aedace4c7bd7c1b921173618c20",
+      "contract_address": "0x34b9cfd2f598b91aaa6662df977a815966c1fe0a67c96b7d36ddc5f34d09639",
       "deployer_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-      "transaction_hash": "0x1d4f359a0d27a9c6992e17ae585a0874fdafe22e9271cd0519bfe98e5d19c84"
+      "transaction_hash": "0x6bcfd04d53ddf1fcbc97db3ce32399dfdaa2526ec88ef2683b6c35207a90dce"
     }
   },
   "classes": {
@@ -5321,12 +5335,12 @@
       ]
     },
     "arena_credit": {
-      "class_hash": "0x4f6a7e081fead51323d0db01676239b7426893b228a895f1dcd836ddcba845",
+      "class_hash": "0x77c63a38a07c175c101094a04727d42a33a4c9870689f9a6dfcd2d882c6515b",
       "abi": [
         {
           "type": "impl",
           "name": "IArenaCreditsImpl",
-          "interface_name": "ba_arcade::credit::IArenaCredits"
+          "interface_name": "ba_credit::credit::IArenaCredits"
         },
         {
           "type": "enum",
@@ -5344,7 +5358,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_arcade::credit::IArenaCredits",
+          "name": "ba_credit::credit::IArenaCredits",
           "items": [
             {
               "type": "function",
@@ -5793,12 +5807,217 @@
         },
         {
           "type": "event",
-          "name": "ba_arcade::credit::arena_credit::Event",
+          "name": "ba_credit::credit::arena_credit::Event",
           "kind": "enum",
           "variants": [
             {
               "name": "AccessEvents",
               "type": "sai_access::access_component::Event",
+              "kind": "flat"
+            }
+          ]
+        }
+      ]
+    },
+    "arena_credit_purchase": {
+      "class_hash": "0x4f904634adef27dd2e857df75ec160b72f3706dde2a1b1b7a1c5ed03d7bbe91",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "IArcadeCreditPurchaseImpl",
+          "interface_name": "ba_credit::purchase::IArcadeCreditPurchase"
+        },
+        {
+          "type": "struct",
+          "name": "core::integer::u256",
+          "members": [
+            {
+              "name": "low",
+              "type": "core::integer::u128"
+            },
+            {
+              "name": "high",
+              "type": "core::integer::u128"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "ba_credit::purchase::IArcadeCreditPurchase",
+          "items": [
+            {
+              "type": "function",
+              "name": "get_micro_usd_price",
+              "inputs": [
+                {
+                  "name": "amount",
+                  "type": "core::integer::u128"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u128"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_price",
+              "inputs": [
+                {
+                  "name": "erc20_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u128"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u256"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "purchase",
+              "inputs": [
+                {
+                  "name": "erc20_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "receiver",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u128"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_pragma_contract_address",
+              "inputs": [
+                {
+                  "name": "contract_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_price_pair",
+              "inputs": [
+                {
+                  "name": "erc20_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "price_pair",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_micro_usd_price",
+              "inputs": [
+                {
+                  "name": "price",
+                  "type": "core::integer::u128"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_wallet_address",
+              "inputs": [
+                {
+                  "name": "wallet_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": [
+            {
+              "name": "owner",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "credit_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_ownable::ownable_component::GrantContractOwner",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_ownable::ownable_component::RevokeContractOwner",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_ownable::ownable_component::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "GrantContractOwner",
+              "type": "sai_ownable::ownable_component::GrantContractOwner",
+              "kind": "nested"
+            },
+            {
+              "name": "RevokeContractOwner",
+              "type": "sai_ownable::ownable_component::RevokeContractOwner",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "ba_credit::purchase::arena_credit_purchase::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "OwnableEvents",
+              "type": "sai_ownable::ownable_component::Event",
               "kind": "flat"
             }
           ]
@@ -6982,57 +7201,62 @@
       "contract_address": "0x0"
     },
     "arena_blobert": {
-      "contract_address": "0x6ec993c1274cd3845b17b1b812bb4e448bf23a0b3eb47f380deab0d6d80202c",
+      "contract_address": "0xb7b5b67928040489851cf8901d38891bd80e933e7a6f0b5575b87ca0ad6589",
       "class_hash": "0x65c960474c4a763613160253c12c970d481aca45e151279eff95c6969667a1a",
       "class": "arena_blobert"
     },
     "amma_blobert": {
-      "contract_address": "0x3c088fdb56478fe6ffce6d5248db0065a8291d59d2f4f5c658564dffe37c28e",
+      "contract_address": "0x9323857228ca5b1e2937e1caa68fbe8712b294da780caae397bed257a281b8",
       "class_hash": "0xad67917de81c1665aa9ce7d293c94f3ae85c66906953205b6a755bab7027a6",
       "class": "amma_blobert"
     },
     "amma_blobert_soulbound": {
-      "contract_address": "0x1313a64e77b577831f37e67cf4845c7573085024b2738e28d0339e6e55a9afd",
+      "contract_address": "0x177496c0fecc7bdc065a448d313c7e8541c30f8783c21dba336e049ffb315f7",
       "class_hash": "0x2180fc2bcbdeea447ae0668796532c7a9de96b5492bdeb542e670287fec05fc",
       "class": "amma_blobert_soulbound"
     },
     "attack": {
-      "contract_address": "0x30c880141a9877671d0ddfe31fad3c868a2692fca102763fb9c444b4a11e7b5",
+      "contract_address": "0x2373923b947ddf5a2d5701bae503b0086f1245a78c75721b925d3296db0513a",
       "class_hash": "0x3af1e7936ebd63c7725cb9f77811439da9a033138ae804964438a904b19b0b1",
       "class": "attack"
     },
     "arena_credit": {
-      "contract_address": "0x3371badf2e928a1729e2ec7e62f85ac3d7245e6b6a24383b4be0e22e04e30a8",
-      "class_hash": "0x4f6a7e081fead51323d0db01676239b7426893b228a895f1dcd836ddcba845",
+      "contract_address": "0x6b8a8369443d74fec5358140cc6ebf0724def51c11972c94004843fba9d5a5",
+      "class_hash": "0x77c63a38a07c175c101094a04727d42a33a4c9870689f9a6dfcd2d882c6515b",
       "class": "arena_credit"
     },
     "arena_blobert_minter": {
-      "contract_address": "0x64444d61ba6c50c4401ee704054749288ad60ce0991f6305527eb7b765fbcbf",
+      "contract_address": "0x53c450e0b4bd1118265f3dde6af7d7862053f5f89041acd0907a168a3c11329",
       "class_hash": "0x7859e23b1ac4ccd5c7160d1d09e357753bb69ada7e2f8cf20d690a8cfcc28d3",
       "class": "arena_blobert_minter"
     },
     "amma_blobert_minter": {
-      "contract_address": "0x36606b8802de29d5b6eaaf95c2b9c9f7c086a219a5d54165ccae5354aa17b61",
+      "contract_address": "0x1deb1a85ca89939e6db6d4d819bb60318caa304c220a8b7476d04807fc19945",
       "class_hash": "0xec0f69cb288620eeee0b4b4a38c6558650c0ec46a011fcb960bcfb69b67c80",
       "class": "amma_blobert_minter"
     },
     "loadout_classic": {
-      "contract_address": "0x51e9767d7309cbd34cb0a8788d641b209a0340cb5068ce12212d7f29c6bdcab",
+      "contract_address": "0x413055f903eb950f51be63dae24290b739c3b670779829123425217251a2463",
       "class_hash": "0x13d9aacaccd717d2663692546631b60f355684067f0ee55c0072d0c95995c7c",
       "class": "loadout_classic"
     },
     "loadout_amma": {
-      "contract_address": "0x31c67a23a693e6f0ed78eed8bda6dee35cee9bdca5af04a28c413398f42f9d4",
+      "contract_address": "0x37a3b770e5a2596671db6b10378b910a322e33622b50a011e9397bc28030ea8",
       "class_hash": "0x376365ae089416706108ea5a9ac02bcf98be2bfeb71e5306adc961cffb97f1c",
       "class": "loadout_amma"
     },
+    "arena_credit_purchase": {
+      "contract_address": "0x43beb5bd49a772e3b1f6cd89f8263ec19003d421f25dbd7648109cc90f81864",
+      "class_hash": "0x4f904634adef27dd2e857df75ec160b72f3706dde2a1b1b7a1c5ed03d7bbe91",
+      "class": "arena_credit_purchase"
+    },
     "arcade_classic": {
-      "contract_address": "0x3ff64bfda90adb06a7e60208231c7096e4b3731fb96eef8f4e811e1b939210a",
+      "contract_address": "0x747c5b943f6560c010b55a14ea53a1ceaebed9ea15f359239835ad8e425dc94",
       "class_hash": "0x793b8f66518cef8e8e8f80812c3960406be692d17f84be96c920046c42a7bea",
       "class": "arcade_classic"
     },
     "arcade_amma": {
-      "contract_address": "0x12a111d3226c58294705d3cd56bf6278ec04aedace4c7bd7c1b921173618c20",
+      "contract_address": "0x34b9cfd2f598b91aaa6662df977a815966c1fe0a67c96b7d36ddc5f34d09639",
       "class_hash": "0x7713f61aaf42bf149fcbe522ee5d0881dc6e227bc2349ecbc1de67e41ca8a32",
       "class": "arcade_amma"
     }
@@ -12196,12 +12420,12 @@
       ]
     },
     "arena_credit": {
-      "class_hash": "0x4f6a7e081fead51323d0db01676239b7426893b228a895f1dcd836ddcba845",
+      "class_hash": "0x77c63a38a07c175c101094a04727d42a33a4c9870689f9a6dfcd2d882c6515b",
       "abi": [
         {
           "type": "impl",
           "name": "IArenaCreditsImpl",
-          "interface_name": "ba_arcade::credit::IArenaCredits"
+          "interface_name": "ba_credit::credit::IArenaCredits"
         },
         {
           "type": "enum",
@@ -12219,7 +12443,7 @@
         },
         {
           "type": "interface",
-          "name": "ba_arcade::credit::IArenaCredits",
+          "name": "ba_credit::credit::IArenaCredits",
           "items": [
             {
               "type": "function",
@@ -12668,12 +12892,217 @@
         },
         {
           "type": "event",
-          "name": "ba_arcade::credit::arena_credit::Event",
+          "name": "ba_credit::credit::arena_credit::Event",
           "kind": "enum",
           "variants": [
             {
               "name": "AccessEvents",
               "type": "sai_access::access_component::Event",
+              "kind": "flat"
+            }
+          ]
+        }
+      ]
+    },
+    "arena_credit_purchase": {
+      "class_hash": "0x4f904634adef27dd2e857df75ec160b72f3706dde2a1b1b7a1c5ed03d7bbe91",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "IArcadeCreditPurchaseImpl",
+          "interface_name": "ba_credit::purchase::IArcadeCreditPurchase"
+        },
+        {
+          "type": "struct",
+          "name": "core::integer::u256",
+          "members": [
+            {
+              "name": "low",
+              "type": "core::integer::u128"
+            },
+            {
+              "name": "high",
+              "type": "core::integer::u128"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "ba_credit::purchase::IArcadeCreditPurchase",
+          "items": [
+            {
+              "type": "function",
+              "name": "get_micro_usd_price",
+              "inputs": [
+                {
+                  "name": "amount",
+                  "type": "core::integer::u128"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u128"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_price",
+              "inputs": [
+                {
+                  "name": "erc20_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u128"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u256"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "purchase",
+              "inputs": [
+                {
+                  "name": "erc20_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "receiver",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u128"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_pragma_contract_address",
+              "inputs": [
+                {
+                  "name": "contract_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_price_pair",
+              "inputs": [
+                {
+                  "name": "erc20_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "price_pair",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_micro_usd_price",
+              "inputs": [
+                {
+                  "name": "price",
+                  "type": "core::integer::u128"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_wallet_address",
+              "inputs": [
+                {
+                  "name": "wallet_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": [
+            {
+              "name": "owner",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "credit_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_ownable::ownable_component::GrantContractOwner",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_ownable::ownable_component::RevokeContractOwner",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "user",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "sai_ownable::ownable_component::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "GrantContractOwner",
+              "type": "sai_ownable::ownable_component::GrantContractOwner",
+              "kind": "nested"
+            },
+            {
+              "name": "RevokeContractOwner",
+              "type": "sai_ownable::ownable_component::RevokeContractOwner",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "ba_credit::purchase::arena_credit_purchase::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "OwnableEvents",
+              "type": "sai_ownable::ownable_component::Event",
               "kind": "flat"
             }
           ]

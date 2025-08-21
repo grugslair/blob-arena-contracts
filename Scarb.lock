@@ -51,6 +51,7 @@ version = "0.15.0"
 dependencies = [
  "alexandria_macros",
  "ba_combat",
+ "ba_credit",
  "ba_loadout",
  "ba_utils",
  "beacon_entity",
@@ -134,6 +135,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "ba_credit"
+version = "0.15.0"
+dependencies = [
+ "beacon_library",
+ "beacon_macros",
+ "dojo",
+ "dojo_macros",
+ "openzeppelin_token",
+ "pragma_lib",
+ "sai_access",
+ "sai_ownable",
+]
+
+[[package]]
 name = "ba_loadout"
 version = "0.15.0"
 dependencies = [
@@ -199,6 +214,7 @@ dependencies = [
  "ba_arcade_classic",
  "ba_blobert",
  "ba_combat",
+ "ba_credit",
  "ba_loadout",
  "ba_utils",
 ]
@@ -222,6 +238,25 @@ version = "1.6.0-alpha.1"
 source = "git+https://github.com/dojoengine/dojo?tag=v1.7.0-alpha.1#67aeb9f49c6b8c30b1850badd065c9192617c3b2"
 
 [[package]]
+name = "openzeppelin"
+version = "2.0.0"
+source = "registry+https://scarbs.xyz/"
+checksum = "sha256:5e4fdecc957cfca7854d95912dc72d9f725517c063b116512900900add29fd77"
+dependencies = [
+ "openzeppelin_access",
+ "openzeppelin_account",
+ "openzeppelin_finance",
+ "openzeppelin_governance",
+ "openzeppelin_introspection",
+ "openzeppelin_merkle_tree",
+ "openzeppelin_presets",
+ "openzeppelin_security",
+ "openzeppelin_token",
+ "openzeppelin_upgrades",
+ "openzeppelin_utils",
+]
+
+[[package]]
 name = "openzeppelin_access"
 version = "2.0.0"
 source = "registry+https://scarbs.xyz/"
@@ -241,10 +276,60 @@ dependencies = [
 ]
 
 [[package]]
+name = "openzeppelin_finance"
+version = "2.0.0"
+source = "registry+https://scarbs.xyz/"
+checksum = "sha256:e9456ef69502a87c4c99bf50145351b50950f8b11244847d92935c466c4ba787"
+dependencies = [
+ "openzeppelin_access",
+ "openzeppelin_token",
+]
+
+[[package]]
+name = "openzeppelin_governance"
+version = "2.0.0"
+source = "registry+https://scarbs.xyz/"
+checksum = "sha256:056e6d6f3d48193b53f06283884f8a9675f986fc85425f6a40e8c1aeb3b3ecfa"
+dependencies = [
+ "openzeppelin_access",
+ "openzeppelin_account",
+ "openzeppelin_introspection",
+ "openzeppelin_token",
+ "openzeppelin_utils",
+]
+
+[[package]]
 name = "openzeppelin_introspection"
 version = "2.0.0"
 source = "registry+https://scarbs.xyz/"
 checksum = "sha256:87773ed6cd2318f169283ecbbb161890d1996260a80302d81ec45b70ee5e54c1"
+
+[[package]]
+name = "openzeppelin_merkle_tree"
+version = "2.0.0"
+source = "registry+https://scarbs.xyz/"
+checksum = "sha256:47f80c9ce59557774243214f8e75c5e866f30f3d8daa755855f6ffd01c89ca89"
+
+[[package]]
+name = "openzeppelin_presets"
+version = "2.0.0"
+source = "registry+https://scarbs.xyz/"
+checksum = "sha256:36c761ee923f1dc0887c0eab8c224b49ac242dbfe9163fbb0b08562042ab3d98"
+dependencies = [
+ "openzeppelin_access",
+ "openzeppelin_account",
+ "openzeppelin_finance",
+ "openzeppelin_introspection",
+ "openzeppelin_token",
+ "openzeppelin_upgrades",
+ "openzeppelin_utils",
+]
+
+[[package]]
+name = "openzeppelin_security"
+version = "2.0.0"
+source = "registry+https://scarbs.xyz/"
+checksum = "sha256:902932ec296c2f400e0ac7c579edeaafd6067b6ce6d9854c1191de28e396ffe3"
 
 [[package]]
 name = "openzeppelin_token"
@@ -269,6 +354,14 @@ name = "openzeppelin_utils"
 version = "2.0.0"
 source = "registry+https://scarbs.xyz/"
 checksum = "sha256:bf799c794139837f397975ffdf6a7ed5032d198bbf70e87a8f44f144a9dfc505"
+
+[[package]]
+name = "pragma_lib"
+version = "2.11.4"
+source = "git+https://github.com/bengineer42/pragma-lib?branch=v2.11.4#1fc4d5eb39499b47193fd12c05a3779269c0396b"
+dependencies = [
+ "openzeppelin",
+]
 
 [[package]]
 name = "sai_access"

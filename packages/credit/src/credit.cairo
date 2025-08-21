@@ -18,6 +18,12 @@ pub trait IArenaCredits<TState> {
     fn add_credits(ref self: TState, user: ContractAddress, amount: u128);
 }
 
+pub fn arena_credit_add_credits(
+    contract_address: ContractAddress, user: ContractAddress, amount: u128,
+) {
+    IArenaCreditsDispatcher { contract_address }.add_credits(user, amount);
+}
+
 pub fn arena_credit_consume(
     contract_address: ContractAddress, user: ContractAddress, energy: u64, credits: u128,
 ) {

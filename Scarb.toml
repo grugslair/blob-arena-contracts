@@ -16,6 +16,7 @@ members = [
     "packages/utils",
     "packages/arcade_classic",
     "packages/arcade_amma",
+    "packages/credit",
 ]
 
 
@@ -67,6 +68,7 @@ ba_arcade.path = "packages/arcade"
 ba_utils.path = "packages/utils"
 ba_arcade_classic.path = "packages/arcade_classic"
 ba_arcade_amma.path = "packages/arcade_amma"
+ba_credit.path = "packages/credit"
 
 
 [dev-dependencies]
@@ -87,7 +89,8 @@ build-external-contracts = [
     "ba_loadout::attack::contract::attack",
     "ba_loadout::amma_contract::loadout_amma",
     "ba_loadout::classic_contract::loadout_classic",
-    "ba_arcade::credit::arena_credit",
+    "ba_credit::credit::arena_credit",
+    "ba_credit::purchase::arena_credit_purchase",
     "ba_arcade_classic::arcade_classic",
     "ba_arcade_amma::contract::arcade_amma",
 ]

@@ -1,3 +1,44 @@
 {
-  "max_energy": 86400
+  "max_energy": 86400,
+  "credit_price_usd": 0.0025,
+  "profiles": {
+    "release": {
+      "pragma_contract_address": "0x2a85bd616f912537c50a49a4076db02c00b29b2cdc8a197ce92ed1837fa875b",
+      "price_pairs": {
+        "lords": {
+          "erc20_address": "0x0124aeb495b947201f5fac96fd1138e326ad86195b98df6dec9009158a533b49",
+          "price_pair": "1407668255603079598916"
+        },
+        "stark": {
+          "erc20_address": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+          "price_pair": "6004514686061859652"
+        }
+      },
+      "wallet_address": "0x075ebc0186a90b78dae3fdbf6d73e9881426749b89cb5c57b266f2c8b54e83c3"
+    },
+    "sepolia": {
+      "pragma_contract_address": "0x36031daa264c24520b11d93af622c848b2499b66b41d611bac95e13cfca131a",
+      "price_pairs": {
+        "eth": {
+          "erc20_address": "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+          "price_pair": "19514442401534788"
+        },
+        "stark": {
+          "erc20_address": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+          "price_pair": "6004514686061859652"
+        }
+      },
+      "wallet_address": "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d2194723B5bd"
+    },
+    "dev": {
+      "pragma_contract_address": "0x36031daa264c24520b11d93af622c848b2499b66b41d611bac95e13cfca131a",
+      "price_pairs": {
+        "stark": {
+          "erc20_address": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+          "price_pair": "6004514686061859652"
+        }
+      },
+      "wallet_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
+    }
+  }
 }
