@@ -16,6 +16,10 @@ export const makeArcadeAmmaCalls = async (sai) => {
     contract.populate("set_health_regen_permille", {
       health_regen_permille: BigInt(config.health_regen_permille),
     }),
+    contract.populate("set_cost", {
+      energy: BigInt(config.energy_cost),
+      credit: BigInt(config.credit_cost),
+    }),
     contract.populate("set_gen_stages", {
       gen_stages: BigInt(config.generated_stages),
     }),

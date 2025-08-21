@@ -27,6 +27,10 @@ export const makeSetConfigCalls = (contract, config) => {
     contract.populate("set_time_limit", {
       time_limit: BigInt(config.time_limit),
     }),
+    contract.populate("set_cost", {
+      energy: BigInt(config.energy_cost),
+      credit: BigInt(config.credit_cost),
+    }),
     contract.populate("set_health_regen_permille", {
       health_regen_permille: BigInt(config.health_regen_permille),
     }),

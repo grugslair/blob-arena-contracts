@@ -3,7 +3,7 @@ use ba_combat::combat::Round;
 use ba_combat::result::AttackResult;
 use ba_loadout::ability::Abilities;
 use starknet::ContractAddress;
-use crate::component::ArcadePhase;
+use crate::attempt::ArcadePhase;
 
 
 #[derive(Drop, Serde, Introspect)]

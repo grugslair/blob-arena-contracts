@@ -8,7 +8,7 @@ pub mod attack {
     pub mod interface;
     pub use interface::{
         IAttack, IAttackAdmin, IAttackAdminDispatcher, IAttackAdminDispatcherTrait,
-        IAttackDispatcher, IAttackDispatcherTrait,
+        IAttackDispatcher, IAttackDispatcherTrait, maybe_create_attacks,
     };
 }
 pub mod ability;

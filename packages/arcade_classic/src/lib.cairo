@@ -1,7 +1,7 @@
+use ba_arcade::Opponent;
 use ba_blobert::Seed;
 use ba_loadout::ability::Abilities;
 use ba_loadout::attack::IdTagAttack;
-use starknet::ContractAddress;
 
 
 #[derive(Drop, Serde, Introspect)]
@@ -12,9 +12,15 @@ struct OpponentTable {
 }
 
 #[derive(Drop, Serde, starknet::Store)]
-struct Opponent {
+struct ClassicOpponent {
     abilities: Abilities,
     attacks: [felt252; 4],
+}
+
+impl ClassicOpponentIntoOpponent of Into<ClassicOpponent, Opponent> {
+    fn into(self: ClassicOpponent) -> Opponent {
+        Opponent { abilities: self.abilities, attacks: self.attacks.span() }
+    }
 }
 
 
@@ -32,62 +38,48 @@ mod errors {
 }
 
 #[starknet::interface]
-trait IArcadeClassicAdmin<TState> {
+trait IArcadeClassic<TState> {
     fn set_opponents(ref self: TState, opponents: Array<OpponentInput>);
 }
 
 #[starknet::contract]
 mod arcade_classic {
-    use ba_arcade::component::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNodeTrait};
-    use ba_arcade::table::{ArcadeAttempt, ArcadeRound, AttackLastUsed};
-    use ba_combat::CombatantState;
-    use ba_loadout::ability::AbilitiesTrait;
-    use ba_loadout::attack::{
-        IAttackAdminDispatcher, IAttackAdminDispatcherTrait, IAttackDispatcher,
-    };
-    use ba_loadout::get_loadout;
-    use ba_utils::{erc721_token_hash, uuid};
+    use ba_arcade::attempt::{ArcadePhase, AttemptNodePath, AttemptNodeTrait};
+    use ba_arcade::{IArcade, arcade_component};
+    use ba_loadout::attack::interface::maybe_create_attacks;
+    use ba_utils::uuid;
     use beacon_library::{ToriiTable, register_table_with_schema};
-    use core::cmp::min;
-    use core::num::traits::Zero;
-    use core::panic_with_const_felt252;
-    use core::poseidon::poseidon_hash_span;
     use sai_ownable::{OwnableTrait, ownable_component};
     use sai_return::emit_return;
-    use sai_token::erc721::erc721_owner_of;
+    use starknet::ContractAddress;
     use starknet::storage::{
-        Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePathEntry,
-        StoragePointerReadAccess, StoragePointerWriteAccess,
+        Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
+        StoragePointerWriteAccess,
     };
-    use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
-    use super::{IArcadeClassic, IArcadeClassicAdmin, IdTagAttack, Opponent, OpponentInput, errors};
-
+    use super::{ClassicOpponent, IArcadeClassic, IdTagAttack, OpponentInput};
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
+    component!(path: arcade_component, storage: arcade, event: ArcadeEvents);
 
-    const ROUND_HASH: felt252 = bytearrays_hash!("arcade_classic", "ArcadeRound");
     const ATTEMPT_HASH: felt252 = bytearrays_hash!("arcade_classic", "ArcadeAttempt");
+    const ROUND_HASH: felt252 = bytearrays_hash!("arcade_classic", "ArcadeRound");
     const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("arcade_classic", "AttackLastUsed");
     const OPPONENT_HASH: felt252 = bytearrays_hash!("arcade_classic", "Opponent");
 
-    impl RoundTable = ToriiTable<ROUND_HASH>;
-    impl AttemptTable = ToriiTable<ATTEMPT_HASH>;
-    impl LastUsedAttackTable = ToriiTable<LAST_USED_ATTACK_HASH>;
     impl OpponentTable = ToriiTable<OPPONENT_HASH>;
 
+    impl ArcadeInternal =
+        arcade_component::ArcadeInternal<
+            ContractState, ATTEMPT_HASH, ROUND_HASH, LAST_USED_ATTACK_HASH,
+        >;
     #[storage]
     struct Storage {
         #[substorage(v0)]
         ownable: ownable_component::Storage,
-        attack_address: ContractAddress,
-        attempts: Map<felt252, AttemptNode>,
-        opponents: Map<u32, Opponent>,
+        #[substorage(v0)]
+        arcade: arcade_component::Storage,
+        opponents: Map<u32, ClassicOpponent>,
         stages_len: u32,
-        max_respawns: u32,
-        time_limit: u64,
-        health_regen_permille: u32,
-        current_attempt: Map<felt252, felt252>,
-        loadout_address: ContractAddress,
     }
 
     #[event]
@@ -95,129 +87,87 @@ mod arcade_classic {
     enum Event {
         #[flat]
         OwnableEvents: ownable_component::Event,
+        #[flat]
+        ArcadeEvents: arcade_component::Event,
     }
 
     #[constructor]
     fn constructor(
         ref self: ContractState,
         owner: ContractAddress,
-        attack_contract: ContractAddress,
-        loadout_contract: ContractAddress,
+        attack_address: ContractAddress,
+        loadout_address: ContractAddress,
+        credit_address: ContractAddress,
     ) {
         self.grant_owner(owner);
-        register_table_with_schema::<ArcadeRound>("arcade_classic", "ArcadeRound");
-        register_table_with_schema::<ArcadeAttempt>("arcade_classic", "ArcadeAttempt");
-        register_table_with_schema::<AttackLastUsed>("arcade_classic", "AttackLastUsed");
+        ArcadeInternal::init(
+            ref self.arcade, "arcade_classic", attack_address, loadout_address, credit_address,
+        );
         register_table_with_schema::<super::OpponentTable>("arcade_classic", "Opponent");
-        self.loadout_address.write(loadout_contract);
-        self.attack_address.write(attack_contract);
     }
 
     #[abi(embed_v0)]
     impl IOwnableImpl = ownable_component::OwnableImpl<ContractState>;
 
     #[abi(embed_v0)]
-    impl IArcadeClassicImpl of IArcadeClassic<ContractState> {
+    impl IArcadeImpl of IArcade<ContractState> {
         fn start(
             ref self: ContractState,
             collection_address: ContractAddress,
             token_id: u256,
             attack_slots: Array<Array<felt252>>,
         ) -> felt252 {
-            let attempt_id = uuid();
-            let mut attempt_ptr = self.attempts.entry(attempt_id);
-            let player = get_caller_address();
-            let token_hash = erc721_token_hash(collection_address, token_id);
-            assert(self.current_attempt.read(token_hash).is_zero(), 'Token Already in Challenge');
-            assert(erc721_owner_of(collection_address, token_id) == player, 'Not Token Owner');
-            let (abilities, attack_ids) = get_loadout(
-                self.loadout_address.read(), collection_address, token_id, attack_slots,
-            );
-            let expiry = get_block_timestamp() + self.time_limit.read();
-            let health_regen = abilities.max_health_permille(self.health_regen_permille.read());
-            AttemptTable::set_entity(
-                attempt_id,
-                @ArcadeAttempt {
-                    player,
-                    collection_address,
-                    token_id,
-                    expiry,
-                    abilities,
-                    attacks: attack_ids.span(),
-                    health_regen,
-                    respawns: 0,
-                    stage: 0,
-                    phase: ArcadePhase::Active,
-                },
+            let (mut attempt_ptr, attempt_id, _) = ArcadeInternal::start_attempt(
+                ref self.arcade, collection_address, token_id, attack_slots,
             );
 
-            attempt_ptr
-                .new_attempt(player, abilities, attack_ids, token_hash, health_regen, expiry);
             self.new_combat(ref attempt_ptr, attempt_id, 0, 0, None);
             emit_return(attempt_id)
         }
 
         fn attack(ref self: ContractState, attempt_id: felt252, attack_id: felt252) {
-            let mut attempt_ptr = self.attempts.entry(attempt_id);
             let randomness = uuid();
-            let stage = attempt_ptr.stage.read();
-            let combat_n = stage + attempt_ptr.respawns.read();
-            let result = attempt_ptr
-                .attack::<
-                    LAST_USED_ATTACK_HASH, ROUND_HASH,
-                >(self.attack_dispatcher(), attempt_id, combat_n, attack_id, randomness);
+            let (mut attempt_ptr, result) = ArcadeInternal::attack_attempt(
+                ref self.arcade, attempt_id, attack_id, randomness,
+            );
             if result.phase == ArcadePhase::PlayerWon {
-                let next_stage = stage + 1;
+                let next_stage = result.stage + 1;
                 if next_stage == self.stages_len.read() {
-                    attempt_ptr.set_phase(attempt_id, ArcadePhase::PlayerWon);
+                    ArcadeInternal::set_phase(ref attempt_ptr, attempt_id, ArcadePhase::PlayerWon);
                 } else if attempt_ptr.is_not_expired() {
                     attempt_ptr.stage.write(next_stage);
-                    let health = *result.states.at(0).health;
+                    let health = result.health;
                     self
                         .new_combat(
-                            ref attempt_ptr, attempt_id, combat_n + 1, next_stage, Some(health),
+                            ref attempt_ptr,
+                            attempt_id,
+                            result.combat_n + 1,
+                            next_stage,
+                            Some(health),
                         );
                 } else {
-                    self.set_loss(ref attempt_ptr, attempt_id);
+                    ArcadeInternal::set_loss(ref self.arcade, ref attempt_ptr, attempt_id);
                 }
             }
         }
 
         fn respawn(ref self: ContractState, attempt_id: felt252) {
-            let mut attempt_ptr = self.attempts.entry(attempt_id);
-
-            attempt_ptr.assert_active();
-            attempt_ptr.assert_caller_is_owner();
-            assert(attempt_ptr.is_not_expired(), 'Attempt Expired');
-            let (stage, respawns) = (attempt_ptr.stage.read(), attempt_ptr.respawns.read() + 1);
-            assert(respawns <= self.max_respawns.read(), 'Max Respawns Reached');
-
-            let combat_n = stage + respawns;
-            match attempt_ptr.combats.entry(combat_n).phase.read() {
-                ArcadePhase::None => { panic_with_const_felt252::<errors::NOT_ACTIVE>(); },
-                ArcadePhase::PlayerWon |
-                ArcadePhase::Active => {
-                    panic_with_const_felt252::<errors::RESPAWN_WHEN_NOT_LOST>();
-                },
-                ArcadePhase::PlayerLost => {},
-            }
-            self.new_combat(ref attempt_ptr, attempt_id, combat_n + 1, stage, None);
-            attempt_ptr.respawns.write(respawns);
-            AttemptTable::set_member(
-                selector!("respawns"), attempt_id, @attempt_ptr.respawns.write(respawns),
+            let (mut attempt_ptr, combat_n, stage) = ArcadeInternal::respawn_attempt(
+                ref self.arcade, attempt_id,
             );
+            self.new_combat(ref attempt_ptr, attempt_id, combat_n + 1, stage, None);
         }
 
         fn forfeit(ref self: ContractState, attempt_id: felt252) {
-            let mut attempt_ptr = self.attempts.entry(attempt_id);
-            attempt_ptr.assert_caller_is_owner();
-            assert(attempt_ptr.phase.read() == ArcadePhase::Active, errors::NOT_ACTIVE);
-            self.set_loss(ref attempt_ptr, attempt_id);
+            ArcadeInternal::forfeit_attempt(ref self.arcade, attempt_id);
         }
     }
 
     #[abi(embed_v0)]
-    impl IArcadeClassicAdminImpl of IArcadeClassicAdmin<ContractState> {
+    impl IArcadeSettings = arcade_component::ArcadeSettingsImpl<ContractState>;
+
+    #[abi(embed_v0)]
+    impl IArcadeClassicImpl of IArcadeClassic<ContractState> {
         fn set_opponents(ref self: ContractState, opponents: Array<OpponentInput>) {
             self.assert_caller_is_owner();
             self.stages_len.write(opponents.len());
@@ -225,9 +175,9 @@ mod arcade_classic {
             for opponent in opponents.span() {
                 attacks.append_span(opponent.attacks.span());
             }
-            let mut all_attack_ids = self
-                .attack_admin_dispatcher()
-                .maybe_create_attacks(attacks)
+            let mut all_attack_ids = maybe_create_attacks(
+                self.arcade.attack_address.read(), attacks,
+            )
                 .span();
             for (i, opponent) in opponents.into_iter().enumerate() {
                 let attack_ids = all_attack_ids.multi_pop_front::<4>().unwrap().unbox();
@@ -236,24 +186,10 @@ mod arcade_classic {
                 );
                 self
                     .opponents
-                    .write(i, Opponent { abilities: opponent.abilities, attacks: attack_ids });
+                    .write(
+                        i, ClassicOpponent { abilities: opponent.abilities, attacks: attack_ids },
+                    );
             }
-        }
-
-        fn set_max_respawns(ref self: ContractState, max_respawns: u32) {
-            self.assert_caller_is_owner();
-            self.max_respawns.write(max_respawns);
-        }
-
-        fn set_time_limit(ref self: ContractState, time_limit: u64) {
-            self.assert_caller_is_owner();
-            self.time_limit.write(time_limit);
-        }
-
-        fn set_health_regen_permille(ref self: ContractState, health_regen_permille: u32) {
-            self.assert_caller_is_owner();
-            assert(health_regen_permille <= 1000, 'Health regen must be <= 1000');
-            self.health_regen_permille.write(health_regen_permille);
         }
     }
 
@@ -268,48 +204,14 @@ mod arcade_classic {
             stage: u32,
             health: Option<u32>,
         ) {
-            let mut combat = attempt_ptr.combats.entry(combat_n);
-            let opponent = self.opponents.entry(stage).read();
-            let mut player_state: CombatantState = attempt_ptr.abilities.read().into();
-            if let Some(health) = health {
-                let new_health = health + (health * self.health_regen_permille.read()) / 1000;
-                player_state.health = min(player_state.health, new_health);
-            }
-            let usable_attacks = opponent.attacks.span();
-            let opponent_state: CombatantState = opponent.abilities.into();
-            combat.create_combat(player_state, opponent_state, usable_attacks);
-            RoundTable::set_entity(
-                poseidon_hash_span([attempt_id, combat_n.into(), 0.into()].span()),
-                @ArcadeRound {
-                    attempt: attempt_id,
-                    combat: combat_n,
-                    round: 0,
-                    states: [player_state, opponent_state].span(),
-                    switch_order: false,
-                    outcomes: [].span(),
-                    phase: ArcadePhase::Active,
-                },
+            ArcadeInternal::new_combat(
+                ref self.arcade,
+                ref attempt_ptr,
+                attempt_id,
+                combat_n,
+                self.opponents.read(stage).into(),
+                health,
             );
-        }
-
-        fn set_phase(ref self: AttemptNodePath, attempt_id: felt252, phase: ArcadePhase) {
-            self.phase.write(phase);
-            AttemptTable::set_member(selector!("phase"), attempt_id, @phase);
-        }
-
-        fn set_loss(ref self: ContractState, ref attempt: AttemptNodePath, attempt_id: felt252) {
-            attempt.set_phase(attempt_id, ArcadePhase::PlayerLost);
-            let token_hash = attempt.token_hash.read();
-            assert(self.current_attempt.read(token_hash) == attempt_id, 'Token not in Challenge');
-            self.current_attempt.write(token_hash, 0x0);
-        }
-
-        fn attack_dispatcher(ref self: ContractState) -> IAttackDispatcher {
-            IAttackDispatcher { contract_address: self.attack_address.read() }
-        }
-
-        fn attack_admin_dispatcher(ref self: ContractState) -> IAttackAdminDispatcher {
-            IAttackAdminDispatcher { contract_address: self.attack_address.read() }
         }
     }
 }

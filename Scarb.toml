@@ -87,7 +87,7 @@ build-external-contracts = [
     "ba_loadout::attack::contract::attack",
     "ba_loadout::amma_contract::loadout_amma",
     "ba_loadout::classic_contract::loadout_classic",
-    "ba_arcade::fuel::arcade_fuel",
+    "ba_arcade::credit::arena_credit",
     "ba_arcade_classic::arcade_classic",
     "ba_arcade_amma::contract::arcade_amma",
 ]

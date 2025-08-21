@@ -1,7 +1,9 @@
 {
   "max_respawns": 2,
-  "game_energy_cost": 28800,
+  "energy_cost": 28800,
+  "credit_cost": 100,
   "time_limit": 7200,
   "health_regen_permille": 400,
+
   "generated_stages": 9
 }

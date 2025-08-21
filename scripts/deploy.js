@@ -6,13 +6,14 @@ import { makeLoadoutsAmma } from "./set-loadout-amma.js";
 import { stark } from "starknet";
 import { dumpToml, loadToml } from "./stark-utils.js";
 import { makeArcadeAmmaCalls } from "./set-arcade-amma.js";
+import { makeArenaCreditCalls } from "./set-arena-credits.js";
 
 const deployWithOwner = [
   "arena_blobert",
   "amma_blobert",
   "amma_blobert_soulbound",
   "attack",
-  "arcade_fuel",
+  "arena_credit",
 ];
 
 const salt = stark.randomAddress();
@@ -89,8 +90,9 @@ await sai.deployContract([
     unique: false,
     calldata: {
       owner,
-      attack_contract: sai.contracts["attack"].contract_address,
-      loadout_contract: sai.contracts["loadout_classic"].contract_address,
+      attack_address: sai.contracts["attack"].contract_address,
+      loadout_address: sai.contracts["loadout_classic"].contract_address,
+      credit_address: sai.contracts["arena_credit"].contract_address,
     },
   },
   {
@@ -100,8 +102,9 @@ await sai.deployContract([
     unique: false,
     calldata: {
       owner,
-      attack_contract: sai.contracts["attack"].contract_address,
-      loadout_contract: sai.contracts["loadout_amma"].contract_address,
+      attack_address: sai.contracts["attack"].contract_address,
+      loadout_address: sai.contracts["loadout_amma"].contract_address,
+      credit_address: sai.contracts["arena_credit"].contract_address,
       collectable_address: sai.contracts["amma_blobert"].contract_address,
     },
   },
@@ -118,9 +121,9 @@ const toriiContract = [
   ["loadout_classic", "contract"],
   ["loadout_amma", "contract"],
   ["attack", "contract"],
-  ["arcade_fuel", "contract"],
   ["arcade_classic", "contract"],
   ["arcade_amma", "contract"],
+  ["arena_credit", "contract"],
 ]
   .filter(([tag]) => sai.contracts[tag])
   .map(([tag, type]) => `${type}:${sai.contracts[tag].contract_address}`);
@@ -150,6 +153,14 @@ await sai.executeAndWait([
       sai.deployments["loadout_classic"].contract_address,
     ],
   }),
+  (
+    await sai.getContract("arena_credit")
+  ).populate("grant_contract_writers", {
+    writers: [
+      sai.deployments["arcade_classic"].contract_address,
+      sai.deployments["arcade_amma"].contract_address,
+    ],
+  }),
 ]);
 
 console.log("Setting classic loadouts...");
@@ -163,6 +174,7 @@ await sai.executeAndWait([
   ...(await makeArenaBlobertCalls(sai)),
   ...(await makeArcadeClassicCalls(sai)),
   ...(await makeArcadeAmmaCalls(sai)),
+  ...(await makeArenaCreditCalls(sai)),
 ]);
 
 console.log("Granting writers and owners...");

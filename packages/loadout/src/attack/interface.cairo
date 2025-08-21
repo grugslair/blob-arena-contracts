@@ -1,3 +1,4 @@
+use starknet::ContractAddress;
 use crate::attack::{Attack, AttackWithName, Effect};
 use super::IdTagAttack;
 
@@ -46,3 +47,8 @@ pub trait IAttackAdmin<TContractState> {
     ) -> Array<felt252>;
 }
 
+pub fn maybe_create_attacks(
+    contract_address: ContractAddress, attacks: Array<IdTagAttack>,
+) -> Array<felt252> {
+    IAttackAdminDispatcher { contract_address }.maybe_create_attacks(attacks)
+}

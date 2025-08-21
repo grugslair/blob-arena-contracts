@@ -17,7 +17,8 @@ attack = {}
 loadout_classic = {}
 loadout_amma = {}
 
-arcade_fuel = {}
+arena_credit = {}
+
 arcade_classic = {}
 arcade_amma = {}
 
@@ -27,4 +28,4 @@ arena_contracts = []
 [writers]
 arena_blobert = "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
 amma_blobert = "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
-arcade_fuel = "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
+arena_credit = "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
