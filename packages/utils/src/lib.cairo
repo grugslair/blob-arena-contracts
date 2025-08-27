@@ -62,3 +62,4 @@ pub fn erc721_token_hash(collection_address: ContractAddress, token_id: u256) ->
         [collection_address.into(), token_id.low.into(), token_id.high.into()].span(),
     )
 }
+

@@ -17,6 +17,7 @@ members = [
     "packages/arcade_classic",
     "packages/arcade_amma",
     "packages/credit",
+    "packages/pvp",
 ]
 
 
@@ -69,6 +70,7 @@ ba_utils.path = "packages/utils"
 ba_arcade_classic.path = "packages/arcade_classic"
 ba_arcade_amma.path = "packages/arcade_amma"
 ba_credit.path = "packages/credit"
+ba_pvp.path = "packages/pvp"
 
 
 [dev-dependencies]

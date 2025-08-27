@@ -167,6 +167,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "ba_pvp"
+version = "0.15.0"
+dependencies = [
+ "alexandria_macros",
+ "ba_combat",
+ "ba_loadout",
+ "ba_utils",
+ "beacon_entity",
+ "beacon_library",
+ "beacon_macros",
+ "dojo",
+ "dojo_macros",
+ "sai_access",
+ "sai_core_utils",
+ "sai_ownable",
+ "sai_packing",
+ "sai_token",
+]
+
+[[package]]
 name = "ba_utils"
 version = "0.15.0"
 dependencies = [
@@ -216,6 +236,7 @@ dependencies = [
  "ba_combat",
  "ba_credit",
  "ba_loadout",
+ "ba_pvp",
  "ba_utils",
 ]
 

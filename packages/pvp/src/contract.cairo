@@ -1,0 +1,405 @@
+use starknet::ContractAddress;
+use crate::components::{CombatPhase, Player};
+
+#[starknet::interface]
+pub trait IPvp<TContractState> {
+    /// ## send_invite
+    /// Creates a new lobby invite for a PvP match
+    /// * `time_limit` - Time limit for player inactivity in seconds
+    /// * `receiver` - Address of the invited receiver
+    /// * `collection_address` - NFT collection address for the blobert
+    /// * `token_id` - Token ID to use
+    /// * `attacks` - Array of attack moves as (felt252, felt252) tuples
+    /// * Returns: A felt252 representing the lobby ID
+    ///
+    fn send_invite(
+        ref self: TContractState,
+        time_limit: u64,
+        receiver: ContractAddress,
+        loadout_address: ContractAddress,
+        collection_address: ContractAddress,
+        token_id: u256,
+        attack_slots: Array<Array<felt252>>,
+    ) -> felt252;
+
+    /// ## rescind_invite
+    /// Cancels an existing lobby invite
+    /// * `challenge_id` - ID of the lobby to cancel
+    fn rescind_invite(ref self: TContractState, id: felt252);
+
+    /// ## respond_invite
+    /// Accepts a lobby invite with specified blob and attacks
+    /// * `challenge_id` - ID of the lobby to respond to
+    /// * `token_id` - Token ID of the responding player's blob
+    /// * `attacks` - Array of attack moves as (felt252, felt252) tuple
+    fn respond_invite(
+        ref self: TContractState,
+        id: felt252,
+        collection_address: ContractAddress,
+        token_id: u256,
+        attack_slots: Array<Array<felt252>>,
+    );
+    /// ## reject_invite
+    /// Rejects an incoming lobby invite
+    /// * `challenge_id` - ID of the lobby to reject#
+    ///
+    /// Models:
+    /// - Lobby
+    fn reject_invite(ref self: TContractState, id: felt252);
+    /// ## rescind_response
+    /// Withdraws a previous response to an invite
+    /// * `challenge_id` - ID of the lobby to withdraw from
+    ///
+    /// Models:
+    /// - PvpInfo
+    fn rescind_response(ref self: TContractState, id: felt252);
+    /// ## accept_response
+    /// Finalizes the lobby and starts the match
+    /// * `challenge_id` - ID of the lobby to finalize
+    ///
+    /// Models:
+    /// - CombatState
+    fn accept_response(ref self: TContractState, id: felt252);
+    /// ## reject_response
+    /// Rejects a player's response to an invite
+    /// * `challenge_id` - ID of the lobby response to reject
+    ///
+    /// Models:
+    /// - PvpInfo
+    fn reject_response(ref self: TContractState, id: felt252);
+
+
+    /// Commits a player's move by storing a hash of their attack and salt
+    /// # Arguments
+    /// * `combat_id` - The unique identifier of the combat making the move
+    /// * `hash` - The hashed combination of the player's attack and salt
+
+    fn commit(ref self: TContractState, id: felt252, player: Player, hash: felt252);
+
+    /// Reveals a player's previously committed move
+    /// # Arguments
+    /// * `combatant_id` - The unique identifier of the combatant revealing their move
+    /// * `attack` - The actual attack value that was committed
+    /// * `salt` - The salt value used in the original commitment
+    ///
+    /// Models:
+    /// - CommitmentModel
+    /// - PlannedAttack
+    /// - LastTimestamp
+    /// - CombatState
+    ///
+    /// Events:
+    /// - CombatEnd
+    fn reveal(
+        ref self: TContractState, id: felt252, player: Player, attack: felt252, salt: felt252,
+    );
+    /// Allows a player to forfeit their position in the game
+    /// # Arguments
+    /// * `combatant_id` - The unique identifier of the combatant forfeiting
+    ///
+    /// Models:
+    /// - CombatState
+    ///
+    /// Events:
+    /// - CombatEnd
+    fn forfeit(ref self: TContractState, id: felt252);
+
+    /// Returns the address of the winning player for a specific combat
+    /// # Arguments
+    /// * `combat_id` - The unique identifier of the combat to check
+    /// # Returns
+    /// * `ContractAddress` - The address of the winning player
+    fn get_winning_player(self: @TContractState, id: felt252) -> ContractAddress;
+
+    /// Returns the current combat phase for a specific game
+    /// # Arguments
+    /// * `combat_id` - The unique identifier of the combat to check
+    /// # Returns
+    /// * `Phase` - The current phase of the combat
+    fn combat_phase(self: @TContractState, id: felt252) -> CombatPhase;
+    /// Returns the current round number for a specific combat
+    /// # Arguments
+    /// * `combat_id` - The unique identifier of the combat to check
+    /// # Returns
+    /// * `u32` - The current round number of the combat
+    fn combat_round(self: @TContractState, id: felt252) -> u32;
+    /// Returns the combatants involved in a specific game
+    /// # Arguments
+    /// * `combat_id` - The unique identifier of the combat to check
+    /// # Returns
+    /// * `[felt252; 2]` - An array containing the IDs of the two combatants
+    fn combatants(self: @TContractState, id: felt252) -> [felt252; 2];
+}
+
+
+#[starknet::contract]
+mod pvp {
+    use ba_loadout::attack::IAttackDispatcher;
+    use ba_loadout::get_loadout;
+    use ba_utils::uuid;
+    use beacon_library::{ToriiTable, register_table_with_schema};
+    use core::num::traits::Zero;
+    use core::{panic_with_const_felt252, panic_with_felt252};
+    use sai_core_utils::poseidon_hash_two;
+    use sai_token::erc721::erc721_owner_of;
+    use starknet::storage::{
+        Map, Mutable, StorageMapReadAccess, StorageMapWriteAccess, StoragePath, StoragePathEntry,
+        StoragePointerReadAccess, StoragePointerWriteAccess,
+    };
+    use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
+    use crate::components::{CombatPhase, LobbyNode, LobbyPhase, PvpNode, PvpNodeTrait};
+    use crate::tables::{
+        AttackLastUsed, Combat, Lobby, LobbyCombatInitSchema, LobbyCombatRespondSchema,
+        LobbyCombatStartSchema, Round,
+    };
+    use crate::utils::pad_to_fixed;
+    use super::{IPvp, Player};
+
+    const LOBBY_HASH: felt252 = bytearrays_hash!("pvp", "Lobby");
+    const COMBAT_HASH: felt252 = bytearrays_hash!("pvp", "Combat");
+    const ROUND_HASH: felt252 = bytearrays_hash!("pvp", "Round");
+    const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("pvp", "AttackLastUsed");
+
+    impl LobbyTable = ToriiTable<LOBBY_HASH>;
+    impl CombatTable = ToriiTable<COMBAT_HASH>;
+    impl RoundTable = ToriiTable<ROUND_HASH>;
+    impl LastUsedAttackTable = ToriiTable<LAST_USED_ATTACK_HASH>;
+
+    #[storage]
+    struct Storage {
+        lobbies: Map<felt252, LobbyNode>,
+        combats: Map<felt252, PvpNode>,
+        attack_dispatcher: IAttackDispatcher,
+    }
+
+    #[constructor]
+    fn constructor(ref self: ContractState, attack_address: ContractAddress) {
+        register_table_with_schema::<Lobby>("pvp", "Lobby");
+        register_table_with_schema::<Combat>("pvp", "Combat");
+        register_table_with_schema::<Round>("pvp", "Round");
+        register_table_with_schema::<AttackLastUsed>("pvp", "AttackLastUsed");
+        self.attack_dispatcher.write(IAttackDispatcher { contract_address: attack_address });
+    }
+
+
+    #[abi(embed_v0)]
+    impl IPvpImpl of IPvp<ContractState> {
+        fn send_invite(
+            ref self: ContractState,
+            time_limit: u64,
+            receiver: ContractAddress,
+            loadout_address: ContractAddress,
+            collection_address: ContractAddress,
+            token_id: u256,
+            attack_slots: Array<Array<felt252>>,
+        ) -> felt252 {
+            let id = uuid();
+            let player = get_caller_address();
+            assert(attack_slots.len() <= 4, 'Too many attacks');
+            assert(erc721_owner_of(collection_address, token_id) == player, 'Not Token Owner');
+
+            let mut combat = self.combats.entry(id);
+            let mut lobby = self.lobbies.entry(id);
+
+            let (abilities, attack_ids) = get_loadout(
+                loadout_address, collection_address, token_id, attack_slots,
+            );
+
+            combat.player_1.write(player);
+            combat.player_2.write(receiver);
+            combat.time_limit.write(time_limit);
+            lobby.set_lobby_phase(id, LobbyPhase::Invited);
+            lobby.loadout_address.write(loadout_address);
+            lobby.abilities_1.write(abilities);
+
+            CombatTable::set_schema(
+                id,
+                @LobbyCombatInitSchema {
+                    player_1: player,
+                    player_2: receiver,
+                    p1_loadout: loadout_address,
+                    p2_loadout: loadout_address,
+                    p1_token: (collection_address, token_id),
+                    p1_attacks: attack_ids.span(),
+                    time_limit,
+                },
+            );
+            for (i, attack) in attack_ids.into_iter().enumerate() {
+                combat.attacks_1.write(i, attack);
+            }
+            id
+        }
+
+        fn rescind_invite(ref self: ContractState, id: felt252) {
+            let caller = get_caller_address();
+            let mut lobby = self.lobbies.entry(id);
+            let combat = self.combats.entry(id);
+            assert(lobby.phase.read() == LobbyPhase::Invited, 'Lobby not active');
+            assert(combat.player_1.read() == caller, 'Not Callers Lobby');
+            lobby.set_lobby_phase(id, LobbyPhase::InActive);
+        }
+
+        fn respond_invite(
+            ref self: ContractState,
+            id: felt252,
+            collection_address: ContractAddress,
+            token_id: u256,
+            attack_slots: Array<Array<felt252>>,
+        ) {
+            let caller = get_caller_address();
+            let mut lobby = self.lobbies.entry(id);
+            let combat = self.combats.entry(id);
+
+            assert(combat.player_2.read() == caller, 'Not Callers Lobby');
+            assert(lobby.phase.read() == LobbyPhase::Invited, 'Lobby not active');
+            assert(attack_slots.len() <= 4, 'Too many attacks');
+            assert(erc721_owner_of(collection_address, token_id) == caller, 'Not Token Owner');
+
+            let (abilities, attack_ids) = get_loadout(
+                lobby.loadout_address.read(), collection_address, token_id, attack_slots,
+            );
+
+            let attack_ids = pad_to_fixed(attack_ids);
+            lobby.combatant_2.write((abilities, attack_ids));
+            CombatTable::set_schema(
+                id,
+                @LobbyCombatRespondSchema {
+                    p2_token: (collection_address, token_id), p2_attacks: attack_ids.span(),
+                },
+            );
+            lobby.set_lobby_phase(id, LobbyPhase::Responded);
+        }
+
+        fn reject_invite(ref self: ContractState, id: felt252) {
+            let caller = get_caller_address();
+            let mut lobby = self.lobbies.entry(id);
+            let combat = self.combats.entry(id);
+            match lobby.phase.read() {
+                LobbyPhase::InActive => panic_with_const_felt252::<'Lobby not active'>(),
+                LobbyPhase::Accepted => panic_with_const_felt252::<'Lobby already accepted'>(),
+                _ => {},
+            }
+
+            assert(combat.player_2.read() == caller, 'Not Callers Lobby');
+            lobby.set_lobby_phase(id, LobbyPhase::InActive);
+        }
+
+        fn rescind_response(ref self: ContractState, id: felt252) {
+            let caller = get_caller_address();
+            let mut lobby = self.lobbies.entry(id);
+            let combat = self.combats.entry(id);
+            assert(lobby.phase.read() == LobbyPhase::Responded, 'Lobby not responded');
+            assert(combat.player_2.read() == caller, 'Not Callers Lobby');
+            lobby.set_lobby_phase(id, LobbyPhase::Invited);
+        }
+
+        fn reject_response(ref self: ContractState, id: felt252) {
+            let caller = get_caller_address();
+            let mut lobby = self.lobbies.entry(id);
+            let combat = self.combats.entry(id);
+            assert(lobby.phase.read() == LobbyPhase::Responded, 'Lobby not responded');
+            assert(combat.player_1.read() == caller, 'Not Callers Lobby');
+            lobby.set_lobby_phase(id, LobbyPhase::Invited);
+        }
+
+        fn accept_response(ref self: ContractState, id: felt252) {
+            let caller = get_caller_address();
+            let mut lobby = self.lobbies.entry(id);
+            let mut combat = self.combats.entry(id);
+            assert(lobby.phase.read() == LobbyPhase::Responded, 'Lobby not responded');
+            assert(combat.player_1.read() == caller, 'Not Callers Lobby');
+
+            let abilities_1 = lobby.abilities_1.read();
+            let (abilities_2, attack_ids_2) = lobby.combatant_2.read();
+
+            combat.player_states.write([abilities_1.into(), abilities_2.into()]);
+            for (i, attack) in attack_ids_2.span().into_iter().enumerate() {
+                combat.attacks_2.write(i, *attack);
+            }
+            combat.set_next_round(id, 0);
+            lobby.set_lobby_phase(id, LobbyPhase::Accepted);
+        }
+        fn commit(ref self: ContractState, id: felt252, player: Player, hash: felt252) {
+            let mut combat = self.combats.entry(id);
+            let phase = combat.phase.read();
+            combat.assert_caller_is_player(player);
+            assert(phase == CombatPhase::Commit, 'Combat not in commit phase');
+            let (commit_ptr, commit_phase) = match player {
+                Player::Player1 => (combat.commit_1, CombatPhase::Player1Committed),
+                Player::Player2 => (combat.commit_2, CombatPhase::Player2Committed),
+            };
+            match (phase, player) {
+                (CombatPhase::Commit, _) => { combat.set_combat_phase(id, commit_phase); },
+                (CombatPhase::Player1Committed, Player::Player1) |
+                (
+                    CombatPhase::Player2Committed, Player::Player2,
+                ) => panic_with_felt252('Player already committed'),
+                (CombatPhase::Player1Committed, Player::Player2) |
+                (
+                    CombatPhase::Player2Committed, Player::Player1,
+                ) => { combat.phase.write(CombatPhase::Reveal); },
+                _ => panic_with_const_felt252::<'Not in commit phase'>(),
+            }
+            commit_ptr.write(hash);
+        }
+        fn reveal(
+            ref self: ContractState, id: felt252, player: Player, attack: felt252, salt: felt252,
+        ) {
+            let mut combat = self.combats.entry(id);
+            combat.assert_caller_is_player(player);
+            let phase = combat.phase.read();
+            let (commitment, reveal_phase, op_win_phase) = match player {
+                Player::Player1 => (
+                    combat.commit_1, CombatPhase::Player1Revealed, CombatPhase::Player2Committed,
+                ),
+                Player::Player2 => (
+                    combat.commit_2, CombatPhase::Player2Revealed, CombatPhase::Player1Committed,
+                ),
+            };
+            match (phase, player) {
+                (CombatPhase::Player1Revealed, Player::Player1) |
+                (
+                    CombatPhase::Player2Revealed, Player::Player2,
+                ) => panic_with_felt252('Player already revealed'),
+                (CombatPhase::Player1Revealed, _) | (CombatPhase::Player2Revealed, _) |
+                (CombatPhase::Reveal, _) => {},
+                _ => panic_with_felt252('Not in reveal phase'),
+            }
+
+            if commitment.read() == poseidon_hash_two(attack, salt) {
+                if phase == CombatPhase::Reveal {
+                    combat.reveal.write([attack, salt]);
+                    combat.set_combat_phase(id, reveal_phase);
+                } else {}
+            } else {
+                combat.phase.write(op_win_phase);
+            }
+        }
+    }
+
+    #[generate_trait]
+    impl PrivateImpl of PrivateTrait {
+        fn set_lobby_phase(self: StoragePath<Mutable<LobbyNode>>, id: felt252, phase: LobbyPhase) {
+            LobbyTable::set_entity(id, @phase);
+            self.phase.write(phase);
+        }
+
+        fn set_next_round(self: StoragePath<Mutable<PvpNode>>, id: felt252, mut round: u32) {
+            round += 1;
+            self.phase.write(CombatPhase::Commit);
+            self.round.write(round);
+            CombatTable::set_schema(
+                id, @LobbyCombatStartSchema { round, phase: CombatPhase::Commit },
+            );
+        }
+
+        fn set_combat_phase(self: StoragePath<Mutable<PvpNode>>, id: felt252, phase: CombatPhase) {
+            let time_stamp = get_block_timestamp();
+            if self.time_limit.read().is_non_zero() {
+                self.timestamp.write(time_stamp);
+                CombatTable::set_member(selector!("timestamp"), id, @time_stamp);
+            }
+            CombatTable::set_member(selector!("phase"), id, @phase);
+        }
+    }
+}

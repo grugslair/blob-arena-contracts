@@ -32,7 +32,7 @@ pub struct Combatant {
     pub abilities: Abilities,
 }
 
-#[derive(Drop, Copy, Serde, Schema, starknet::Store, Introspect)]
+#[derive(Drop, Copy, Serde, Schema, starknet::Store, Introspect, Default)]
 pub struct CombatantState {
     pub health: u32,
     pub stun_chance: u8,
