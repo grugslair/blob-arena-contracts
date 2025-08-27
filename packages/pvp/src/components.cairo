@@ -30,6 +30,7 @@ pub enum CombatPhase {
     Commit,
     Player1Committed,
     Player2Committed,
+    Reveal,
     Player1Revealed,
     Player2Revealed,
     WinnerPlayer1,
