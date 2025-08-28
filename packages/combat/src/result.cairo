@@ -2,17 +2,6 @@ use ba_loadout::ability::{DAbilities, DAbilitiesTrait};
 use ba_loadout::attack::{AbilityAffect, Target};
 use sai_core_utils::BoolIntoBinary;
 
-/// Represents the outcome of an attack action in the blob arena game
-/// # Fields
-/// * `combatant_id` - The unique identifier of the attacking entity
-/// * `attack` - The id of the attack used
-/// * `target` - The id of the target being attacked
-/// * `result` - The outcome of the attack, represented as an AttackOutcomes pub enum
-#[derive(Drop, Serde, Introspect, Default)]
-pub struct AttackResult {
-    pub attack: felt252,
-    pub result: AttackOutcomes,
-}
 
 /// Represents the possible outcomes of an attack action in the game
 /// # Variants
@@ -128,12 +117,5 @@ impl AttackOutcomesImpl of AttackOutcomesTrait {
             }
         }
         (player, opponent)
-    }
-}
-
-#[generate_trait]
-impl AttackResultImpl of AttackResultTrait {
-    fn effects(self: @AttackResult) -> (AttackEffect, AttackEffect) {
-        self.result.effects()
     }
 }

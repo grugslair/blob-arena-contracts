@@ -6,19 +6,33 @@ use core::hash::{HashStateExTrait, HashStateTrait};
 use core::num::traits::Zero;
 use core::poseidon::HashState;
 use sai_core_utils::BoolIntoBinary;
-use starknet::storage::{Mutable, PendingStoragePath};
 use crate::calculations::{damage_calculation, did_critical};
-use crate::result::{AffectResult, AttackOutcomes, AttackResult, DamageResult, EffectResult};
+use crate::result::{AffectResult, AttackOutcomes, DamageResult, EffectResult};
 use crate::{CombatantState, CombatantStateTrait};
+
+
 #[derive(Copy, Drop, PartialEq, Introspect, Serde, Default)]
 pub enum CombatProgress {
     #[default]
     Active,
-    Ended: bool,
+    Ended: Player,
 }
 
-pub type StatePath = PendingStoragePath<Mutable<CombatantState>>;
-pub type RoundPtr = PendingStoragePath<Mutable<u32>>;
+impl BoolIntoPLayer of Into<bool, Player> {
+    fn into(self: bool) -> Player {
+        match self {
+            false => Player::Player1,
+            true => Player::Player2,
+        }
+    }
+}
+
+#[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
+pub enum Player {
+    #[default]
+    Player1,
+    Player2,
+}
 
 fn run_effect(
     ref attacker_state: CombatantState,
@@ -92,14 +106,6 @@ pub fn run_effects(
     results
 }
 
-pub fn check_combat_active(state_1: @CombatantState, state_2: @CombatantState) -> CombatProgress {
-    if state_1.health.is_non_zero() && state_2.health.is_non_zero() {
-        CombatProgress::Active
-    } else {
-        CombatProgress::Ended(state_1.health.is_non_zero())
-    }
-}
-
 
 fn get_switch_order(
     state_1: @CombatantState,
@@ -123,14 +129,15 @@ fn get_switch_order(
 pub struct Round {
     pub round: u32,
     pub states: [CombatantState; 2],
-    pub switch_order: bool,
-    pub outcomes: Array<AttackResult>,
+    pub attacks: [felt252; 2],
+    pub first: Player,
+    pub outcomes: Array<AttackOutcomes>,
     pub progress: CombatProgress,
 }
 
 pub fn run_round(
-    player_1_state: CombatantState,
-    player_2_state: CombatantState,
+    p1_state: CombatantState,
+    p2_state: CombatantState,
     attacks: IAttackDispatcher,
     p1_attack: felt252,
     p2_attack: felt252,
@@ -139,31 +146,31 @@ pub fn run_round(
 ) -> Round {
     let hash_state = Default::default().update_with(randomness);
     let switch_order = get_switch_order(
-        @player_1_state, @player_2_state, attacks, p1_attack, p2_attack, randomness,
+        @p1_state, @p2_state, attacks, p1_attack, p2_attack, randomness,
     );
     let (mut state_1, mut state_2, attack_1, attack_2) = match switch_order {
-        false => (player_1_state, player_2_state, p1_attack, p2_attack),
-        true => (player_2_state, player_1_state, p2_attack, p1_attack),
+        false => (p1_state, p2_state, p1_attack, p2_attack),
+        true => (p2_state, p1_state, p2_attack, p1_attack),
     };
 
     let mut progress = CombatProgress::Active;
     let outcome = run_attack(
         ref state_1, ref state_2, attacks, attack_1, round, hash_state.update('1'),
     );
-    let mut outcomes = array![AttackResult { attack: attack_1, result: outcome }];
+    let mut outcomes = array![outcome];
     progress = check_combat_phase(@state_1, @state_2, switch_order, true);
     if progress == CombatProgress::Active {
         let outcome = run_attack(
             ref state_2, ref state_1, attacks, attack_2, round, hash_state.update('2'),
         );
-        outcomes.append(AttackResult { attack: attack_2, result: outcome });
+        outcomes.append(outcome);
         progress = check_combat_phase(@state_1, @state_2, switch_order, false);
     }
-    let (player_1_state, player_2_state) = match switch_order {
-        false => (state_1, state_2),
-        true => (state_2, state_1),
+    let (states, attacks) = match switch_order {
+        false => ([state_1, state_2], [p1_attack, p2_attack]),
+        true => ([state_2, state_1], [p2_attack, p1_attack]),
     };
-    Round { round, states: [player_1_state, player_2_state], switch_order, outcomes, progress }
+    Round { round, attacks, first: switch_order.into(), states, outcomes, progress }
 }
 
 
@@ -203,10 +210,10 @@ fn check_combat_phase(
     if player_1.health.is_non_zero() && player_2.health.is_non_zero() {
         CombatProgress::Active
     } else if player_1.health.is_non_zero() {
-        CombatProgress::Ended(true)
+        CombatProgress::Ended(Player::Player1)
     } else if player_2.health.is_non_zero() {
-        CombatProgress::Ended(false)
+        CombatProgress::Ended(Player::Player2)
     } else {
-        CombatProgress::Ended(switched != advantage)
+        CombatProgress::Ended((switched == advantage).into())
     }
 }

@@ -26,7 +26,7 @@ pub mod arcade_component {
     use ba_arcade::IArcadeSetup;
     use ba_arcade::attempt::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::table::{ArcadeAttempt, ArcadeRound, AttackLastUsed};
-    use ba_combat::CombatantState;
+    use ba_combat::{CombatantState, Player};
     use ba_credit::arena_credit_consume;
     use ba_loadout::ability::AbilitiesTrait;
     use ba_loadout::attack::IAttackDispatcher;
@@ -333,13 +333,14 @@ pub mod arcade_component {
             combat.create_combat(player_state, opponent_state, usable_attacks);
             set_entity(
                 ROUND_HASH,
-                poseidon_hash_span([attempt_id, combat_n.into(), 0.into()].span()),
+                poseidon_hash_span([attempt_id, combat_n.into()].span()),
                 @ArcadeRound {
                     attempt: attempt_id,
                     combat: combat_n,
                     round: 0,
+                    attacks: [].span(),
                     states: [player_state, opponent_state].span(),
-                    switch_order: false,
+                    first: Player::Player1,
                     outcomes: [].span(),
                     phase: ArcadePhase::Active,
                 },

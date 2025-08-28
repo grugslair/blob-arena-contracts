@@ -1,8 +1,17 @@
-use ba_combat::CombatantState;
-use ba_combat::combat::CombatProgress;
-use ba_combat::result::AttackResult;
+use ba_combat::combat::{CombatProgress, Round};
+use ba_combat::result::AttackOutcomes;
+use ba_combat::{CombatantState, Player};
 use starknet::ContractAddress;
-use crate::components::{CombatPhase, LobbyPhase, Player};
+use crate::components::{CombatPhase, LobbyPhase};
+
+#[derive(Copy, Drop, Serde, PartialEq, Introspect, Default)]
+pub enum WinVia {
+    #[default]
+    None,
+    Combat,
+    Forfeit,
+    IncorrectReveal,
+}
 
 #[derive(Drop, Serde, Introspect)]
 pub struct Lobby {
@@ -10,7 +19,8 @@ pub struct Lobby {
 }
 
 #[derive(Drop, Serde, Introspect)]
-pub struct Combat {
+pub struct PvpCombatTable {
+    pub lobby: LobbyPhase,
     pub player_1: ContractAddress,
     pub p1_loadout: ContractAddress,
     pub p1_token: (ContractAddress, u256),
@@ -23,6 +33,7 @@ pub struct Combat {
     pub phase: CombatPhase,
     pub round: u32,
     pub last_timestamp: u64,
+    pub win_via: WinVia,
 }
 
 #[derive(Drop, Serde, Schema)]
@@ -30,9 +41,9 @@ pub struct LobbyCombatInitSchema {
     pub player_1: ContractAddress,
     pub player_2: ContractAddress,
     pub p1_loadout: ContractAddress,
-    pub p2_loadout: ContractAddress,
     pub p1_token: (ContractAddress, u256),
     pub p1_attacks: Span<felt252>,
+    pub p2_loadout: ContractAddress,
     pub time_limit: u64,
 }
 
@@ -50,22 +61,46 @@ pub struct LobbyCombatStartSchema {
 }
 
 #[derive(Drop, Serde, Introspect)]
-pub struct Round {
+pub struct PvpRoundTable {
     pub combat: felt252,
     pub round: u32,
-    pub states: [CombatantState; 2],
-    pub switch_order: bool,
-    pub outcomes: Span<AttackResult>,
+    pub states: Span<CombatantState>,
+    pub attacks: Span<felt252>,
+    pub first: Player,
+    pub outcomes: Span<AttackOutcomes>,
     pub progress: CombatProgress,
 }
 
 #[derive(Drop, Serde, Introspect)]
-pub struct AttackLastUsed {
+pub struct PvpAttackLastUsedTable {
     pub combat: felt252,
     pub player: Player,
     pub attack: felt252,
     pub last_used: u32,
 }
+
+#[derive(Drop, Serde, Schema)]
+pub struct PvpFirstRoundSchema {
+    pub combat: felt252,
+    pub round: u32,
+    pub states: Span<CombatantState>,
+}
+
+#[generate_trait]
+pub impl PvpRoundTableImpl of PvpRoundTableTrait {
+    fn to_pvp_round(self: Round, combat: felt252) -> PvpRoundTable {
+        PvpRoundTable {
+            combat,
+            round: self.round,
+            states: self.states.span(),
+            attacks: self.attacks.span(),
+            first: self.first,
+            outcomes: self.outcomes.span(),
+            progress: self.progress,
+        }
+    }
+}
+
 
 #[cfg(test)]
 mod tests {
@@ -75,8 +110,8 @@ mod tests {
 
     #[test]
     fn table_size_test() {
-        println!("LobbyTable size: {}", get_schema_size::<LobbyTable>());
-        println!("CombatTable size: {}", get_schema_size::<CombatTable>());
-        println!("CombatRound size: {}", get_schema_size::<RoundTable>());
+        println!("LobbyTable size: {}", get_schema_size::<Lobby>());
+        println!("CombatTable size: {}", get_schema_size::<PvpCombatTable>());
+        println!("CombatRound size: {}", get_schema_size::<PvpRoundTable>());
     }
 }

@@ -1,4 +1,4 @@
-use ba_combat::combat::{CombatProgress, run_round};
+use ba_combat::combat::{CombatProgress, Player, run_round};
 use ba_combat::combatant::CombatantState;
 use ba_loadout::ability::Abilities;
 use ba_loadout::attack::{IAttackDispatcher, IAttackDispatcherTrait};
@@ -31,8 +31,8 @@ impl CombatProgressIntoArcadePhase of Into<CombatProgress, ArcadePhase> {
         match self {
             CombatProgress::Active => ArcadePhase::Active,
             CombatProgress::Ended(player) => match player {
-                true => ArcadePhase::PlayerWon,
-                false => ArcadePhase::PlayerLost,
+                Player::Player1 => ArcadePhase::PlayerWon,
+                Player::Player2 => ArcadePhase::PlayerLost,
             },
         }
     }

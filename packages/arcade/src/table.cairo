@@ -1,6 +1,6 @@
-use ba_combat::CombatantState;
 use ba_combat::combat::Round;
-use ba_combat::result::AttackResult;
+use ba_combat::result::AttackOutcomes;
+use ba_combat::{CombatantState, Player};
 use ba_loadout::ability::Abilities;
 use starknet::ContractAddress;
 use crate::attempt::ArcadePhase;
@@ -26,8 +26,9 @@ pub struct ArcadeRound {
     pub combat: u32,
     pub round: u32,
     pub states: Span<CombatantState>,
-    pub switch_order: bool,
-    pub outcomes: Span<AttackResult>,
+    pub attacks: Span<felt252>,
+    pub first: Player,
+    pub outcomes: Span<AttackOutcomes>,
     pub phase: ArcadePhase,
 }
 
@@ -47,7 +48,8 @@ pub impl AttemptRoundImpl of AttemptRoundTrait {
             combat: combat,
             round: self.round,
             states: self.states.span(),
-            switch_order: self.switch_order,
+            attacks: self.attacks.span(),
+            first: self.first,
             outcomes: self.outcomes.span(),
             phase: self.progress.into(),
         }

@@ -1,5 +1,5 @@
+use ba_combat::Player;
 use starknet::ContractAddress;
-use crate::components::{CombatPhase, Player};
 
 #[starknet::interface]
 pub trait IPvp<TContractState> {
@@ -90,9 +90,7 @@ pub trait IPvp<TContractState> {
     ///
     /// Events:
     /// - CombatEnd
-    fn reveal(
-        ref self: TContractState, id: felt252, player: Player, attack: felt252, salt: felt252,
-    );
+    fn reveal(ref self: TContractState, id: felt252, player: Player, attack: u32, salt: felt252);
     /// Allows a player to forfeit their position in the game
     /// # Arguments
     /// * `combatant_id` - The unique identifier of the combatant forfeiting
@@ -102,38 +100,14 @@ pub trait IPvp<TContractState> {
     ///
     /// Events:
     /// - CombatEnd
-    fn forfeit(ref self: TContractState, id: felt252);
-
-    /// Returns the address of the winning player for a specific combat
-    /// # Arguments
-    /// * `combat_id` - The unique identifier of the combat to check
-    /// # Returns
-    /// * `ContractAddress` - The address of the winning player
-    fn get_winning_player(self: @TContractState, id: felt252) -> ContractAddress;
-
-    /// Returns the current combat phase for a specific game
-    /// # Arguments
-    /// * `combat_id` - The unique identifier of the combat to check
-    /// # Returns
-    /// * `Phase` - The current phase of the combat
-    fn combat_phase(self: @TContractState, id: felt252) -> CombatPhase;
-    /// Returns the current round number for a specific combat
-    /// # Arguments
-    /// * `combat_id` - The unique identifier of the combat to check
-    /// # Returns
-    /// * `u32` - The current round number of the combat
-    fn combat_round(self: @TContractState, id: felt252) -> u32;
-    /// Returns the combatants involved in a specific game
-    /// # Arguments
-    /// * `combat_id` - The unique identifier of the combat to check
-    /// # Returns
-    /// * `[felt252; 2]` - An array containing the IDs of the two combatants
-    fn combatants(self: @TContractState, id: felt252) -> [felt252; 2];
+    fn forfeit(ref self: TContractState, id: felt252, player: Player);
 }
 
 
 #[starknet::contract]
 mod pvp {
+    use ba_combat::CombatantState;
+    use ba_combat::combat::CombatProgress;
     use ba_loadout::attack::IAttackDispatcher;
     use ba_loadout::get_loadout;
     use ba_utils::uuid;
@@ -143,14 +117,15 @@ mod pvp {
     use sai_core_utils::poseidon_hash_two;
     use sai_token::erc721::erc721_owner_of;
     use starknet::storage::{
-        Map, Mutable, StorageMapReadAccess, StorageMapWriteAccess, StoragePath, StoragePathEntry,
+        Map, Mutable, StorageMapWriteAccess, StoragePath, StoragePathEntry,
         StoragePointerReadAccess, StoragePointerWriteAccess,
     };
     use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
     use crate::components::{CombatPhase, LobbyNode, LobbyPhase, PvpNode, PvpNodeTrait};
     use crate::tables::{
-        AttackLastUsed, Combat, Lobby, LobbyCombatInitSchema, LobbyCombatRespondSchema,
-        LobbyCombatStartSchema, Round,
+        Lobby, LobbyCombatInitSchema, LobbyCombatRespondSchema, LobbyCombatStartSchema,
+        PvpAttackLastUsedTable, PvpCombatTable, PvpFirstRoundSchema, PvpRoundTable,
+        PvpRoundTableTrait,
     };
     use crate::utils::pad_to_fixed;
     use super::{IPvp, Player};
@@ -175,9 +150,9 @@ mod pvp {
     #[constructor]
     fn constructor(ref self: ContractState, attack_address: ContractAddress) {
         register_table_with_schema::<Lobby>("pvp", "Lobby");
-        register_table_with_schema::<Combat>("pvp", "Combat");
-        register_table_with_schema::<Round>("pvp", "Round");
-        register_table_with_schema::<AttackLastUsed>("pvp", "AttackLastUsed");
+        register_table_with_schema::<PvpCombatTable>("pvp", "Combat");
+        register_table_with_schema::<PvpRoundTable>("pvp", "Round");
+        register_table_with_schema::<PvpAttackLastUsedTable>("pvp", "AttackLastUsed");
         self.attack_dispatcher.write(IAttackDispatcher { contract_address: attack_address });
     }
 
@@ -225,7 +200,7 @@ mod pvp {
                 },
             );
             for (i, attack) in attack_ids.into_iter().enumerate() {
-                combat.attacks_1.write(i, attack);
+                combat.p1_attacks.write(i, attack);
             }
             id
         }
@@ -267,6 +242,7 @@ mod pvp {
                     p2_token: (collection_address, token_id), p2_attacks: attack_ids.span(),
                 },
             );
+
             lobby.set_lobby_phase(id, LobbyPhase::Responded);
         }
 
@@ -311,11 +287,14 @@ mod pvp {
 
             let abilities_1 = lobby.abilities_1.read();
             let (abilities_2, attack_ids_2) = lobby.combatant_2.read();
-
-            combat.player_states.write([abilities_1.into(), abilities_2.into()]);
+            let states: [CombatantState; 2] = [abilities_1.into(), abilities_2.into()];
+            combat.player_states.write(states);
             for (i, attack) in attack_ids_2.span().into_iter().enumerate() {
-                combat.attacks_2.write(i, *attack);
+                combat.p2_attacks.write(i, *attack);
             }
+            RoundTable::set_schema(
+                id, @PvpFirstRoundSchema { combat: id, round: 0, states: states.span() },
+            );
             combat.set_next_round(id, 0);
             lobby.set_lobby_phase(id, LobbyPhase::Accepted);
         }
@@ -324,56 +303,71 @@ mod pvp {
             let phase = combat.phase.read();
             combat.assert_caller_is_player(player);
             assert(phase == CombatPhase::Commit, 'Combat not in commit phase');
-            let (commit_ptr, commit_phase) = match player {
-                Player::Player1 => (combat.commit_1, CombatPhase::Player1Committed),
-                Player::Player2 => (combat.commit_2, CombatPhase::Player2Committed),
-            };
-            match (phase, player) {
-                (CombatPhase::Commit, _) => { combat.set_combat_phase(id, commit_phase); },
-                (CombatPhase::Player1Committed, Player::Player1) |
-                (
-                    CombatPhase::Player2Committed, Player::Player2,
-                ) => panic_with_felt252('Player already committed'),
-                (CombatPhase::Player1Committed, Player::Player2) |
-                (
-                    CombatPhase::Player2Committed, Player::Player1,
-                ) => { combat.phase.write(CombatPhase::Reveal); },
-                _ => panic_with_const_felt252::<'Not in commit phase'>(),
+            match player {
+                Player::Player1 => combat
+                    .set_combat_phase_and_time(id, CombatPhase::Player1Committed),
+                Player::Player2 => combat
+                    .set_combat_phase_and_time(id, CombatPhase::Player2Committed),
             }
-            commit_ptr.write(hash);
+            combat.commit.write(hash);
         }
         fn reveal(
-            ref self: ContractState, id: felt252, player: Player, attack: felt252, salt: felt252,
+            ref self: ContractState, id: felt252, player: Player, attack: u32, salt: felt252,
         ) {
             let mut combat = self.combats.entry(id);
             combat.assert_caller_is_player(player);
             let phase = combat.phase.read();
-            let (commitment, reveal_phase, op_win_phase) = match player {
-                Player::Player1 => (
-                    combat.commit_1, CombatPhase::Player1Revealed, CombatPhase::Player2Committed,
-                ),
-                Player::Player2 => (
-                    combat.commit_2, CombatPhase::Player2Revealed, CombatPhase::Player1Committed,
-                ),
-            };
-            match (phase, player) {
+            let (run, next_phase) = match (phase, player) {
+                (CombatPhase::Player1Committed, Player::Player1) |
+                (CombatPhase::Player2Committed, Player::Player2) |
                 (CombatPhase::Player1Revealed, Player::Player1) |
                 (
                     CombatPhase::Player2Revealed, Player::Player2,
-                ) => panic_with_felt252('Player already revealed'),
-                (CombatPhase::Player1Revealed, _) | (CombatPhase::Player2Revealed, _) |
-                (CombatPhase::Reveal, _) => {},
+                ) => panic_with_felt252('Waiting on other player'),
+                (CombatPhase::Player1Committed, _) => (false, CombatPhase::Player1Revealed),
+                (CombatPhase::Player2Committed, _) => (false, CombatPhase::Player2Revealed),
+                (CombatPhase::Player1Revealed, _) => (true, CombatPhase::WinnerPlayer2),
+                (CombatPhase::Player2Revealed, _) => (true, CombatPhase::WinnerPlayer1),
                 _ => panic_with_felt252('Not in reveal phase'),
+            };
+            if !run {
+                combat.reveal.write((attack, salt));
+                combat.set_combat_phase_and_time(id, next_phase);
+            } else if combat.commit.read() == poseidon_hash_two(attack, salt) {
+                let result = combat.run_round(self.attack_dispatcher.read(), phase, attack, salt);
+                match result.progress {
+                    CombatProgress::Active => combat.set_next_round(id, result.round),
+                    CombatProgress::Ended(winner) => match winner {
+                        Player::Player1 => combat.set_win_phase(id, CombatPhase::WinnerPlayer1),
+                        Player::Player2 => combat.set_win_phase(id, CombatPhase::WinnerPlayer2),
+                    },
+                }
+                combat.player_states.write(result.states);
+                RoundTable::set_entity(
+                    poseidon_hash_two(id, result.round), @result.to_pvp_round(id),
+                );
+            } else {
+                combat.set_win_phase(id, next_phase)
+            }
+        }
+
+        fn forfeit(ref self: ContractState, id: felt252, player: Player) {
+            let mut combat = self.combats.entry(id);
+            combat.assert_caller_is_player(player);
+            match combat.phase.read() {
+                CombatPhase::None | CombatPhase::Created | CombatPhase::WinnerPlayer1 |
+                CombatPhase::WinnerPlayer2 => panic_with_felt252('Combat not in forfeit phase'),
+                _ => {},
             }
 
-            if commitment.read() == poseidon_hash_two(attack, salt) {
-                if phase == CombatPhase::Reveal {
-                    combat.reveal.write([attack, salt]);
-                    combat.set_combat_phase(id, reveal_phase);
-                } else {}
-            } else {
-                combat.phase.write(op_win_phase);
-            }
+            combat
+                .set_win_phase(
+                    id,
+                    match player {
+                        Player::Player1 => CombatPhase::WinnerPlayer2,
+                        Player::Player2 => CombatPhase::WinnerPlayer1,
+                    },
+                );
         }
     }
 
@@ -393,13 +387,20 @@ mod pvp {
             );
         }
 
-        fn set_combat_phase(self: StoragePath<Mutable<PvpNode>>, id: felt252, phase: CombatPhase) {
+        fn set_combat_phase_and_time(
+            self: StoragePath<Mutable<PvpNode>>, id: felt252, phase: CombatPhase,
+        ) {
             let time_stamp = get_block_timestamp();
             if self.time_limit.read().is_non_zero() {
                 self.timestamp.write(time_stamp);
                 CombatTable::set_member(selector!("timestamp"), id, @time_stamp);
             }
             CombatTable::set_member(selector!("phase"), id, @phase);
+        }
+
+        fn set_win_phase(self: StoragePath<Mutable<PvpNode>>, id: felt252, phase: CombatPhase) {
+            CombatTable::set_member(selector!("phase"), id, @phase);
+            self.phase.write(phase);
         }
     }
 }
