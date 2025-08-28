@@ -118,6 +118,15 @@ await sai.deployContract([
       collectable_address: sai.contracts["amma_blobert"].contract_address,
     },
   },
+  {
+    tag: "pvp",
+    class: "pvp",
+    salt,
+    unique: false,
+    calldata: {
+      attack_address: sai.contracts["attack"].contract_address,
+    },
+  },
 ]);
 
 sai.dumpManifest();
@@ -134,6 +143,7 @@ const toriiContract = [
   ["arcade_classic", "contract"],
   ["arcade_amma", "contract"],
   ["arena_credit", "contract"],
+  ["pvp", "contract"],
 ]
   .filter(([tag]) => sai.contracts[tag])
   .map(([tag, type]) => `${type}:${sai.contracts[tag].contract_address}`);

@@ -20,9 +20,12 @@ loadout_classic = {}
 loadout_amma = {}
 
 arena_credit = {}
+arena_credit_purchase = {}
 
 arcade_classic = {}
 arcade_amma = {}
+
+pvp = {}
 
 [variables]
 arena_contracts = []
@@ -40,6 +43,7 @@ amma_blobert = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8
 amma_blobert_soulbound = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
 
 arena_credit = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+arena_credit_purchase = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
 
 attack = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
 loadout_classic = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"

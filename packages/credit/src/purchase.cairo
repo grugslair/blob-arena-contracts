@@ -93,6 +93,9 @@ mod arena_credit_purchase {
     }
 
     #[abi(embed_v0)]
+    impl IOwnableImpl = ownable_component::OwnableImpl<ContractState>;
+
+    #[abi(embed_v0)]
     impl IArcadeCreditPurchaseImpl of IArcadeCreditPurchase<ContractState> {
         fn get_micro_usd_price(self: @ContractState, amount: u128) -> u128 {
             let price = self.token_micro_usd_price.read();

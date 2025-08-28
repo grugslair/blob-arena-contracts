@@ -297,14 +297,16 @@ export class SaiProject {
       Object.entries(this.profile_config.owners || {}).map(
         async ([tag, owners]) => {
           const contract = await this.getContract(tag);
+
           if (Array.isArray(owners)) {
             return contract.populate("grant_contract_owners", {
               owners,
             });
           } else {
-            return contract.populate("grant_contract_owner", {
+            const call = contract.populate("grant_contract_owner", {
               owner: owners,
             });
+            return call;
           }
         }
       )
