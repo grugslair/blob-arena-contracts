@@ -169,15 +169,15 @@
       ]
     },
     {
-      "name": "Bullet Barrager",
+      "name": "Stark Boss",
       "collection": "blobert",
       "attributes": {
         "Seed": {
           "background": 7,
-          "armour": 7,
-          "jewelry": 7,
-          "mask": 7,
-          "weapon": 25
+          "armour": 3,
+          "jewelry": 5,
+          "mask": 16,
+          "weapon": 40
         }
       },
       "stats": {
@@ -187,9 +187,9 @@
         "luck": 50
       },
       "attacks": [
-        { "tag": "Bullet Blast" },
-        { "tag": "Bullet Barrage" },
-        { "tag": "Desperation Toss" }
+        { "tag": "Shield Bash" },
+        { "tag": "Iron Wall" },
+        { "tag": "Cairo Blast" }
       ]
     },
     {
@@ -253,7 +253,7 @@
         { "tag": "Quantum Gladiator" },
         { "tag": "Code Conqueror" },
         { "tag": "Diamond Destroyer" },
-        { "tag": "Bullet Barrager" },
+        { "tag": "Stark Boss" },
         { "tag": "Phantom Wraith" },
         { "tag": "Grug the Colossal" }
       ],
