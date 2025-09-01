@@ -12,7 +12,7 @@
       "staking_address": "0x045c587318c9ebcf2fbe21febf288ee2e3597a21cd48676005a5770a50d433c5",
       "price_pair": "1407668255603079598916"
     },
-    "token_price_usd": 0.25,
+    "token_price_usd": 0.2,
     "wallet_address": "0x075ebc0186a90b78dae3fdbf6d73e9881426749b89cb5c57b266f2c8b54e83c3"
   },
   "sepolia": {
@@ -32,13 +32,13 @@
       "staking_address": "0x0c1f5b2d3e4f8a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0",
       "price_pair": "1407668255603079598916"
     },
-    "token_price_usd": 0.25,
+    "token_price_usd": 0.2,
     "wallet_address": "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d2194723B5bd"
   },
   "dev": {
     "pragma_contract_address": "0x36031daa264c24520b11d93af622c848b2499b66b41d611bac95e13cfca131a",
     "price_pairs": {},
-    "token_price_usd": 0.25,
+    "token_price_usd": 0.2,
     "wallet_address": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
   }
 }
