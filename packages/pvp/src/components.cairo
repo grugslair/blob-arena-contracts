@@ -36,6 +36,7 @@ pub enum CombatPhase {
     WinnerPlayer2,
 }
 
+
 #[starknet::storage_node]
 pub struct LobbyNode {
     pub phase: LobbyPhase,
@@ -50,10 +51,10 @@ pub struct PvpNode {
     pub time_limit: u64,
     pub player_1: ContractAddress,
     pub player_2: ContractAddress,
-    pub p1_attacks: Map<u32, felt252>,
-    pub p2_attacks: Map<u32, felt252>,
+    pub p1_attack_available: Map<felt252, bool>,
+    pub p2_attack_available: Map<felt252, bool>,
     pub commit: felt252,
-    pub reveal: (u32, felt252),
+    pub reveal: [felt252; 2],
     pub player_states: [CombatantState; 2],
     pub p1_attack_used: Map<felt252, u32>,
     pub p2_attack_used: Map<felt252, u32>,
@@ -80,20 +81,20 @@ pub impl PvpNodeImpl of PvpNodeTrait {
         ref self: PvpNodePath,
         attack_dispatcher: IAttackDispatcher,
         phase: CombatPhase,
-        attack: u32,
+        attack: felt252,
         salt: felt252,
     ) -> Round {
         let [state_1, state_2] = self.player_states.read();
-        let [(slot_1, salt_1), (slot_2, salt_2)] = match phase {
-            CombatPhase::Player1Revealed => [self.reveal.read(), (attack, salt)],
-            CombatPhase::Player2Revealed => [(attack, salt), self.reveal.read()],
+        let [[attack_1, salt_1], [attack_2, salt_2]] = match phase {
+            CombatPhase::Player1Revealed => [self.reveal.read(), [attack, salt]],
+            CombatPhase::Player2Revealed => [[attack, salt], self.reveal.read()],
             _ => panic_with_felt252('Invalid combat phase'),
         };
         let randomness = poseidon_hash_two(salt_1, salt_2);
 
         let round = self.round.read();
-        let attack_1 = self.run_cooldown(attack_dispatcher, Player::Player1, slot_1, round);
-        let attack_2 = self.run_cooldown(attack_dispatcher, Player::Player2, slot_2, round);
+        let attack_1 = self.run_cooldown(attack_dispatcher, Player::Player1, attack_1, round);
+        let attack_2 = self.run_cooldown(attack_dispatcher, Player::Player2, attack_2, round);
 
         run_round(state_1, state_2, attack_dispatcher, attack_1, attack_2, round, randomness)
     }
@@ -102,14 +103,14 @@ pub impl PvpNodeImpl of PvpNodeTrait {
         self: PvpNodePath,
         dispatcher: IAttackDispatcher,
         player: Player,
-        attack_slot: u32,
+        attack_id: felt252,
         round: u32,
     ) -> felt252 {
-        let (attack_id, last_used_ptr) = match player {
-            Player::Player1 => (self.p1_attacks.read(attack_slot), self.p1_attack_used),
-            Player::Player2 => (self.p2_attacks.read(attack_slot), self.p2_attack_used),
+        let (attack_available_ptr, last_used_ptr) = match player {
+            Player::Player1 => (self.p1_attack_available, self.p1_attack_used),
+            Player::Player2 => (self.p2_attack_available, self.p2_attack_used),
         };
-        if attack_id.is_zero() {
+        if !attack_available_ptr.read(attack_id) {
             return 0;
         }
         let cooldown = dispatcher.cooldown(attack_id);

@@ -43,64 +43,29 @@ pub trait IPvp<TContractState> {
     /// Rejects an incoming lobby invite
     /// * `challenge_id` - ID of the lobby to reject#
     ///
-    /// Models:
-    /// - Lobby
     fn reject_invite(ref self: TContractState, id: felt252);
     /// ## rescind_response
     /// Withdraws a previous response to an invite
     /// * `challenge_id` - ID of the lobby to withdraw from
     ///
-    /// Models:
-    /// - PvpInfo
     fn rescind_response(ref self: TContractState, id: felt252);
     /// ## accept_response
     /// Finalizes the lobby and starts the match
     /// * `challenge_id` - ID of the lobby to finalize
     ///
-    /// Models:
-    /// - CombatState
     fn accept_response(ref self: TContractState, id: felt252);
     /// ## reject_response
     /// Rejects a player's response to an invite
     /// * `challenge_id` - ID of the lobby response to reject
     ///
-    /// Models:
-    /// - PvpInfo
     fn reject_response(ref self: TContractState, id: felt252);
 
-
-    /// Commits a player's move by storing a hash of their attack and salt
-    /// # Arguments
-    /// * `combat_id` - The unique identifier of the combat making the move
-    /// * `hash` - The hashed combination of the player's attack and salt
-
     fn commit(ref self: TContractState, id: felt252, player: Player, hash: felt252);
-
-    /// Reveals a player's previously committed move
-    /// # Arguments
-    /// * `combatant_id` - The unique identifier of the combatant revealing their move
-    /// * `attack` - The actual attack value that was committed
-    /// * `salt` - The salt value used in the original commitment
-    ///
-    /// Models:
-    /// - CommitmentModel
-    /// - PlannedAttack
-    /// - LastTimestamp
-    /// - CombatState
-    ///
-    /// Events:
-    /// - CombatEnd
-    fn reveal(ref self: TContractState, id: felt252, player: Player, attack: u32, salt: felt252);
-    /// Allows a player to forfeit their position in the game
-    /// # Arguments
-    /// * `combatant_id` - The unique identifier of the combatant forfeiting
-    ///
-    /// Models:
-    /// - CombatState
-    ///
-    /// Events:
-    /// - CombatEnd
+    fn reveal(
+        ref self: TContractState, id: felt252, player: Player, attack: felt252, salt: felt252,
+    );
     fn forfeit(ref self: TContractState, id: felt252, player: Player);
+    fn kick_player(ref self: TContractState, id: felt252);
 }
 
 
@@ -125,7 +90,7 @@ mod pvp {
     use crate::tables::{
         Lobby, LobbyCombatInitSchema, LobbyCombatRespondSchema, LobbyCombatStartSchema,
         PvpAttackLastUsedTable, PvpCombatTable, PvpFirstRoundSchema, PvpRoundTable,
-        PvpRoundTableTrait,
+        PvpRoundTableTrait, WinVia,
     };
     use crate::utils::pad_to_fixed;
     use super::{IPvp, Player};
@@ -199,8 +164,8 @@ mod pvp {
                     time_limit,
                 },
             );
-            for (i, attack) in attack_ids.into_iter().enumerate() {
-                combat.p1_attacks.write(i, attack);
+            for attack_id in attack_ids {
+                combat.p1_attack_available.write(attack_id, true);
             }
             id
         }
@@ -289,8 +254,8 @@ mod pvp {
             let (abilities_2, attack_ids_2) = lobby.combatant_2.read();
             let states: [CombatantState; 2] = [abilities_1.into(), abilities_2.into()];
             combat.player_states.write(states);
-            for (i, attack) in attack_ids_2.span().into_iter().enumerate() {
-                combat.p2_attacks.write(i, *attack);
+            for attack_id in attack_ids_2.span() {
+                combat.p2_attack_available.write(*attack_id, true);
             }
             RoundTable::set_schema(
                 id, @PvpFirstRoundSchema { combat: id, round: 0, states: states.span() },
@@ -312,7 +277,7 @@ mod pvp {
             combat.commit.write(hash);
         }
         fn reveal(
-            ref self: ContractState, id: felt252, player: Player, attack: u32, salt: felt252,
+            ref self: ContractState, id: felt252, player: Player, attack: felt252, salt: felt252,
         ) {
             let mut combat = self.combats.entry(id);
             combat.assert_caller_is_player(player);
@@ -331,15 +296,17 @@ mod pvp {
                 _ => panic_with_felt252('Not in reveal phase'),
             };
             if !run {
-                combat.reveal.write((attack, salt));
+                combat.reveal.write([attack, salt]);
                 combat.set_combat_phase_and_time(id, next_phase);
             } else if combat.commit.read() == poseidon_hash_two(attack, salt) {
                 let result = combat.run_round(self.attack_dispatcher.read(), phase, attack, salt);
                 match result.progress {
                     CombatProgress::Active => combat.set_next_round(id, result.round),
                     CombatProgress::Ended(winner) => match winner {
-                        Player::Player1 => combat.set_win_phase(id, CombatPhase::WinnerPlayer1),
-                        Player::Player2 => combat.set_win_phase(id, CombatPhase::WinnerPlayer2),
+                        Player::Player1 => combat
+                            .set_win_phase(id, CombatPhase::WinnerPlayer1, WinVia::Combat),
+                        Player::Player2 => combat
+                            .set_win_phase(id, CombatPhase::WinnerPlayer2, WinVia::Combat),
                     },
                 }
                 combat.player_states.write(result.states);
@@ -347,7 +314,7 @@ mod pvp {
                     poseidon_hash_two(id, result.round), @result.to_pvp_round(id),
                 );
             } else {
-                combat.set_win_phase(id, next_phase)
+                combat.set_win_phase(id, next_phase, WinVia::IncorrectReveal);
             }
         }
 
@@ -359,7 +326,6 @@ mod pvp {
                 CombatPhase::WinnerPlayer2 => panic_with_felt252('Combat not in forfeit phase'),
                 _ => {},
             }
-
             combat
                 .set_win_phase(
                     id,
@@ -367,7 +333,22 @@ mod pvp {
                         Player::Player1 => CombatPhase::WinnerPlayer2,
                         Player::Player2 => CombatPhase::WinnerPlayer1,
                     },
+                    WinVia::Forfeit,
                 );
+        }
+
+        fn kick_player(ref self: ContractState, id: felt252) {
+            let mut combat = self.combats.entry(id);
+
+            let (player, next_phase) = match combat.phase.read() {
+                CombatPhase::Player1Committed |
+                CombatPhase::Player1Revealed => (Player::Player1, CombatPhase::WinnerPlayer2),
+                CombatPhase::Player2Committed |
+                CombatPhase::Player2Revealed => (Player::Player2, CombatPhase::WinnerPlayer1),
+                _ => panic_with_felt252('Combat not in combat phase'),
+            };
+            combat.assert_caller_is_player(player);
+            combat.set_win_phase(id, next_phase, WinVia::TimedOut);
         }
     }
 
@@ -398,8 +379,12 @@ mod pvp {
             CombatTable::set_member(selector!("phase"), id, @phase);
         }
 
-        fn set_win_phase(self: StoragePath<Mutable<PvpNode>>, id: felt252, phase: CombatPhase) {
+        fn set_win_phase(
+            self: StoragePath<Mutable<PvpNode>>, id: felt252, phase: CombatPhase, via: WinVia,
+        ) {
             CombatTable::set_member(selector!("phase"), id, @phase);
+            CombatTable::set_member(selector!("win_via"), id, @via);
+
             self.phase.write(phase);
         }
     }

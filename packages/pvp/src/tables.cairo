@@ -11,6 +11,7 @@ pub enum WinVia {
     Combat,
     Forfeit,
     IncorrectReveal,
+    TimedOut,
 }
 
 #[derive(Drop, Serde, Introspect)]
