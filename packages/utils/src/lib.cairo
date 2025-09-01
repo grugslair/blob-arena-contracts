@@ -5,6 +5,7 @@ use sai_core_utils::poseidon_hash_two;
 use starknet::syscalls::{storage_read_syscall, storage_write_syscall};
 use starknet::{ContractAddress, StorageAddress, SyscallResultTrait, get_contract_address};
 
+pub mod vrf;
 
 const UUID_STORAGE_ADDRESS_FELT: felt252 = selector!("__uuid__");
 

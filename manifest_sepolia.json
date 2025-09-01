@@ -3,190 +3,190 @@
     "arena_blobert": {
       "tag": "arena_blobert",
       "class": "arena_blobert",
-      "salt": "0x5ad6c51df70ed895f46ea7d772fd39fdac7518a972d127c640634029ae1d421",
+      "salt": "0x98fbe2aab72f13729e5fb12170a1022a42286a36946b74b7cd1fb558582fa",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd"
       },
       "class_hash": "0x65c960474c4a763613160253c12c970d481aca45e151279eff95c6969667a1a",
-      "contract_address": "0x1d36a05b05cacbdf031ceeeba3c65e96cfc4832ca448431dc354908abc3f33e",
+      "contract_address": "0x6359ab3ee5e48b4a04a778a5d7d619f307f46dbe829260f6c34167b835362e8",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x3f41a8b7d0fdab744b4ae8656c7a6cc770135b29da2a7ad4e225aa88fc79be2"
+      "transaction_hash": "0x1a664078d434d2952e51ba890af5130f518b78a4eb52cba5ff6150b3cc7d795"
     },
     "amma_blobert": {
       "tag": "amma_blobert",
       "class": "amma_blobert",
-      "salt": "0x5ad6c51df70ed895f46ea7d772fd39fdac7518a972d127c640634029ae1d421",
+      "salt": "0x98fbe2aab72f13729e5fb12170a1022a42286a36946b74b7cd1fb558582fa",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd"
       },
       "class_hash": "0xad67917de81c1665aa9ce7d293c94f3ae85c66906953205b6a755bab7027a6",
-      "contract_address": "0x1f3af3dd509ba3273334b1dee7a82975484a2bd4d139cfcfb947970874075bb",
+      "contract_address": "0x152dcd9aca9679dbfb431b7b4c8a692758ca7faa5840b4d18581e6527891987",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x3f41a8b7d0fdab744b4ae8656c7a6cc770135b29da2a7ad4e225aa88fc79be2"
+      "transaction_hash": "0x1a664078d434d2952e51ba890af5130f518b78a4eb52cba5ff6150b3cc7d795"
     },
     "amma_blobert_soulbound": {
       "tag": "amma_blobert_soulbound",
       "class": "amma_blobert_soulbound",
-      "salt": "0x5ad6c51df70ed895f46ea7d772fd39fdac7518a972d127c640634029ae1d421",
+      "salt": "0x98fbe2aab72f13729e5fb12170a1022a42286a36946b74b7cd1fb558582fa",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd"
       },
       "class_hash": "0x2180fc2bcbdeea447ae0668796532c7a9de96b5492bdeb542e670287fec05fc",
-      "contract_address": "0x7a08930e8cf00c45fbcc34482a38ed58da0abec66e87b5864cf466bb2dae65b",
+      "contract_address": "0x41b62e6c090c541752e48444de25bb2f74058f235f6abcf663ca0394ac249d9",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x3f41a8b7d0fdab744b4ae8656c7a6cc770135b29da2a7ad4e225aa88fc79be2"
+      "transaction_hash": "0x1a664078d434d2952e51ba890af5130f518b78a4eb52cba5ff6150b3cc7d795"
     },
     "attack": {
       "tag": "attack",
       "class": "attack",
-      "salt": "0x5ad6c51df70ed895f46ea7d772fd39fdac7518a972d127c640634029ae1d421",
+      "salt": "0x98fbe2aab72f13729e5fb12170a1022a42286a36946b74b7cd1fb558582fa",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd"
       },
       "class_hash": "0x3af1e7936ebd63c7725cb9f77811439da9a033138ae804964438a904b19b0b1",
-      "contract_address": "0x1df78374c797d111e64939b7fb8c22c309cf138e24ab658cf60191057e4d548",
+      "contract_address": "0x33506bf73abe097e9afd1e5611ecc9e06470d4e03bf3ce1a49e397d4e605fc1",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x3f41a8b7d0fdab744b4ae8656c7a6cc770135b29da2a7ad4e225aa88fc79be2"
+      "transaction_hash": "0x1a664078d434d2952e51ba890af5130f518b78a4eb52cba5ff6150b3cc7d795"
     },
     "arena_credit": {
       "tag": "arena_credit",
       "class": "arena_credit",
-      "salt": "0x5ad6c51df70ed895f46ea7d772fd39fdac7518a972d127c640634029ae1d421",
+      "salt": "0x98fbe2aab72f13729e5fb12170a1022a42286a36946b74b7cd1fb558582fa",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd"
       },
       "class_hash": "0x77c63a38a07c175c101094a04727d42a33a4c9870689f9a6dfcd2d882c6515b",
-      "contract_address": "0x72637cd304115e214ace5a3795525b1361f54aa119704292e5545b17b837fea",
+      "contract_address": "0x2bd857a1c6a7874526f261928f8fef3a46c3a38a8dd33a4e3dff18a7d8fcd43",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x3f41a8b7d0fdab744b4ae8656c7a6cc770135b29da2a7ad4e225aa88fc79be2"
+      "transaction_hash": "0x1a664078d434d2952e51ba890af5130f518b78a4eb52cba5ff6150b3cc7d795"
     },
     "arena_blobert_minter": {
       "tag": "arena_blobert_minter",
       "class": "arena_blobert_minter",
-      "salt": "0x5ad6c51df70ed895f46ea7d772fd39fdac7518a972d127c640634029ae1d421",
+      "salt": "0x98fbe2aab72f13729e5fb12170a1022a42286a36946b74b7cd1fb558582fa",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-        "token_address": "0x1d36a05b05cacbdf031ceeeba3c65e96cfc4832ca448431dc354908abc3f33e"
+        "token_address": "0x6359ab3ee5e48b4a04a778a5d7d619f307f46dbe829260f6c34167b835362e8"
       },
       "class_hash": "0x7859e23b1ac4ccd5c7160d1d09e357753bb69ada7e2f8cf20d690a8cfcc28d3",
-      "contract_address": "0x4d1c6d6e7d606633a33593d32c8143325437092bbbd463b503844d17dd1b125",
+      "contract_address": "0x56d3428df692ed1ae458a039fef428c2fc7d3a5af37e266c28f0171ac3bdbe8",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x4e1434d5b738ad6b23245c4808f9793c84672be678e10dbc26eca06d0ccd0"
+      "transaction_hash": "0xeb98c5e0bb505fd4385d90f90a57ad8153d167712c5ee89778b03102a9e439"
     },
     "amma_blobert_minter": {
       "tag": "amma_blobert_minter",
       "class": "amma_blobert_minter",
-      "salt": "0x5ad6c51df70ed895f46ea7d772fd39fdac7518a972d127c640634029ae1d421",
+      "salt": "0x98fbe2aab72f13729e5fb12170a1022a42286a36946b74b7cd1fb558582fa",
       "unique": false,
       "calldata": {
-        "token_address": "0x7a08930e8cf00c45fbcc34482a38ed58da0abec66e87b5864cf466bb2dae65b"
+        "token_address": "0x41b62e6c090c541752e48444de25bb2f74058f235f6abcf663ca0394ac249d9"
       },
       "class_hash": "0xec0f69cb288620eeee0b4b4a38c6558650c0ec46a011fcb960bcfb69b67c80",
-      "contract_address": "0x11dc860cde005c3d553791bdf156d7effba5cf5333ccb4797ab5ee0c3a6e755",
+      "contract_address": "0x1c9899375bc0d6e2124ff360c80d1686aa96167bf90d5a5b4c09e9842e6f567",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x4e1434d5b738ad6b23245c4808f9793c84672be678e10dbc26eca06d0ccd0"
+      "transaction_hash": "0xeb98c5e0bb505fd4385d90f90a57ad8153d167712c5ee89778b03102a9e439"
     },
     "loadout_classic": {
       "tag": "loadout_classic",
       "class": "loadout_classic",
-      "salt": "0x5ad6c51df70ed895f46ea7d772fd39fdac7518a972d127c640634029ae1d421",
+      "salt": "0x98fbe2aab72f13729e5fb12170a1022a42286a36946b74b7cd1fb558582fa",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-        "attack_dispatcher_address": "0x1df78374c797d111e64939b7fb8c22c309cf138e24ab658cf60191057e4d548",
+        "attack_dispatcher_address": "0x33506bf73abe097e9afd1e5611ecc9e06470d4e03bf3ce1a49e397d4e605fc1",
         "collection_addresses": [
-          "0x1d36a05b05cacbdf031ceeeba3c65e96cfc4832ca448431dc354908abc3f33e",
+          "0x6359ab3ee5e48b4a04a778a5d7d619f307f46dbe829260f6c34167b835362e8",
           "0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578d0549d"
         ]
       },
       "class_hash": "0x13d9aacaccd717d2663692546631b60f355684067f0ee55c0072d0c95995c7c",
-      "contract_address": "0x7855407ddecc107f85395df7123784cfc92d9034ad668df4f3d97d347486bf6",
+      "contract_address": "0x6f1bc4c479f6d3af920ad80f187d8870114933fce93fe6a9461b58480a9c964",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x4e1434d5b738ad6b23245c4808f9793c84672be678e10dbc26eca06d0ccd0"
+      "transaction_hash": "0xeb98c5e0bb505fd4385d90f90a57ad8153d167712c5ee89778b03102a9e439"
     },
     "loadout_amma": {
       "tag": "loadout_amma",
       "class": "loadout_amma",
-      "salt": "0x5ad6c51df70ed895f46ea7d772fd39fdac7518a972d127c640634029ae1d421",
+      "salt": "0x98fbe2aab72f13729e5fb12170a1022a42286a36946b74b7cd1fb558582fa",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-        "attack_dispatcher_address": "0x1df78374c797d111e64939b7fb8c22c309cf138e24ab658cf60191057e4d548",
+        "attack_dispatcher_address": "0x33506bf73abe097e9afd1e5611ecc9e06470d4e03bf3ce1a49e397d4e605fc1",
         "collection_addresses": [
-          "0x1f3af3dd509ba3273334b1dee7a82975484a2bd4d139cfcfb947970874075bb",
-          "0x7a08930e8cf00c45fbcc34482a38ed58da0abec66e87b5864cf466bb2dae65b"
+          "0x152dcd9aca9679dbfb431b7b4c8a692758ca7faa5840b4d18581e6527891987",
+          "0x41b62e6c090c541752e48444de25bb2f74058f235f6abcf663ca0394ac249d9"
         ]
       },
       "class_hash": "0x376365ae089416706108ea5a9ac02bcf98be2bfeb71e5306adc961cffb97f1c",
-      "contract_address": "0x439c2ac07330501688fb7f40e51122da84124791e3ed32beb2229d2c2ca3a71",
+      "contract_address": "0x13f8d352bea237ede01db7529ad4630a44d1c726a0de52cb334aaceec28663a",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x4e1434d5b738ad6b23245c4808f9793c84672be678e10dbc26eca06d0ccd0"
+      "transaction_hash": "0xeb98c5e0bb505fd4385d90f90a57ad8153d167712c5ee89778b03102a9e439"
     },
     "arena_credit_purchase": {
       "tag": "arena_credit_purchase",
       "class": "arena_credit_purchase",
-      "salt": "0x5ad6c51df70ed895f46ea7d772fd39fdac7518a972d127c640634029ae1d421",
+      "salt": "0x98fbe2aab72f13729e5fb12170a1022a42286a36946b74b7cd1fb558582fa",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-        "credit_address": "0x72637cd304115e214ace5a3795525b1361f54aa119704292e5545b17b837fea"
+        "credit_address": "0x2bd857a1c6a7874526f261928f8fef3a46c3a38a8dd33a4e3dff18a7d8fcd43"
       },
       "class_hash": "0x5da10994723906575037e1103308003955000b72ee7ad7147dff4af4461dd24",
-      "contract_address": "0x7d06c0d031856e03888b37dcb9be6101cd10da5c4200957697357cab416c253",
+      "contract_address": "0x6c30fa8a9c020d037f31bbed7989da0ba2ccc2af91735a081405bda6ead7dc",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x4e1434d5b738ad6b23245c4808f9793c84672be678e10dbc26eca06d0ccd0"
+      "transaction_hash": "0xeb98c5e0bb505fd4385d90f90a57ad8153d167712c5ee89778b03102a9e439"
     },
     "arcade_classic": {
       "tag": "arcade_classic",
       "class": "arcade_classic",
-      "salt": "0x5ad6c51df70ed895f46ea7d772fd39fdac7518a972d127c640634029ae1d421",
+      "salt": "0x98fbe2aab72f13729e5fb12170a1022a42286a36946b74b7cd1fb558582fa",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-        "attack_address": "0x1df78374c797d111e64939b7fb8c22c309cf138e24ab658cf60191057e4d548",
-        "loadout_address": "0x7855407ddecc107f85395df7123784cfc92d9034ad668df4f3d97d347486bf6",
-        "credit_address": "0x72637cd304115e214ace5a3795525b1361f54aa119704292e5545b17b837fea"
+        "attack_address": "0x33506bf73abe097e9afd1e5611ecc9e06470d4e03bf3ce1a49e397d4e605fc1",
+        "loadout_address": "0x6f1bc4c479f6d3af920ad80f187d8870114933fce93fe6a9461b58480a9c964",
+        "credit_address": "0x2bd857a1c6a7874526f261928f8fef3a46c3a38a8dd33a4e3dff18a7d8fcd43"
       },
       "class_hash": "0x50245d0276f28cecde37dac88e358e9f7bb567d180a83799081ff5fa7020967",
-      "contract_address": "0x1e01c25b9066431dbb794b72fb100ee6885f28f67420016a3704e2979ffe40d",
+      "contract_address": "0x12c6d9f4115379d40b47a4fc1af489b11ba771051b3a3bb63b41f348548f67b",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x414e24ede26fa48cc6359881646cb74165505df559c0cbbfa8909136d4d8b5a"
+      "transaction_hash": "0xb7fe54045a7d24f6bd1732feeb4d1b43bd81de6c02efd18b22835c26153c62"
     },
     "arcade_amma": {
       "tag": "arcade_amma",
       "class": "arcade_amma",
-      "salt": "0x5ad6c51df70ed895f46ea7d772fd39fdac7518a972d127c640634029ae1d421",
+      "salt": "0x98fbe2aab72f13729e5fb12170a1022a42286a36946b74b7cd1fb558582fa",
       "unique": false,
       "calldata": {
         "owner": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-        "attack_address": "0x1df78374c797d111e64939b7fb8c22c309cf138e24ab658cf60191057e4d548",
-        "loadout_address": "0x439c2ac07330501688fb7f40e51122da84124791e3ed32beb2229d2c2ca3a71",
-        "credit_address": "0x72637cd304115e214ace5a3795525b1361f54aa119704292e5545b17b837fea",
-        "collectable_address": "0x1f3af3dd509ba3273334b1dee7a82975484a2bd4d139cfcfb947970874075bb"
+        "attack_address": "0x33506bf73abe097e9afd1e5611ecc9e06470d4e03bf3ce1a49e397d4e605fc1",
+        "loadout_address": "0x13f8d352bea237ede01db7529ad4630a44d1c726a0de52cb334aaceec28663a",
+        "credit_address": "0x2bd857a1c6a7874526f261928f8fef3a46c3a38a8dd33a4e3dff18a7d8fcd43",
+        "collectable_address": "0x152dcd9aca9679dbfb431b7b4c8a692758ca7faa5840b4d18581e6527891987"
       },
       "class_hash": "0x57d3c3e5971121e735e52d8fc6903011f42928e2bdfada9b3471c10e85cb944",
-      "contract_address": "0x50f4007602151825610a9218678e4f3b8151d040d565f84331dc7ba53af05d0",
+      "contract_address": "0x16720e5d19d21ddde1e55be83995ad1bcfd559d3ff4188361c5934f52eac711",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x414e24ede26fa48cc6359881646cb74165505df559c0cbbfa8909136d4d8b5a"
+      "transaction_hash": "0xb7fe54045a7d24f6bd1732feeb4d1b43bd81de6c02efd18b22835c26153c62"
     },
     "pvp": {
       "tag": "pvp",
       "class": "pvp",
-      "salt": "0x5ad6c51df70ed895f46ea7d772fd39fdac7518a972d127c640634029ae1d421",
+      "salt": "0x98fbe2aab72f13729e5fb12170a1022a42286a36946b74b7cd1fb558582fa",
       "unique": false,
       "calldata": {
-        "attack_address": "0x1df78374c797d111e64939b7fb8c22c309cf138e24ab658cf60191057e4d548"
+        "attack_address": "0x33506bf73abe097e9afd1e5611ecc9e06470d4e03bf3ce1a49e397d4e605fc1"
       },
-      "class_hash": "0x3b2e3ac28240ae127c14127c6b368399bd196fedf83a3414e1cb23d20c3cee0",
-      "contract_address": "0x4db5a3501526671f98bf10a0faaaf1746d8e0bdc292bb281fc4a1e541b6e9f9",
+      "class_hash": "0x3f4c8fad7a85052a02e11b5af84f2af9cc8e93423667ba9b1091b6db78038f6",
+      "contract_address": "0x1c525a86fea35e858bbf99df4590a8370afcfff1cbe42c821e681fd53a77afe",
       "deployer_address": "0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd",
-      "transaction_hash": "0x414e24ede26fa48cc6359881646cb74165505df559c0cbbfa8909136d4d8b5a"
+      "transaction_hash": "0xb7fe54045a7d24f6bd1732feeb4d1b43bd81de6c02efd18b22835c26153c62"
     }
   },
   "classes": {
@@ -7314,7 +7314,7 @@
       ]
     },
     "pvp": {
-      "class_hash": "0x3b2e3ac28240ae127c14127c6b368399bd196fedf83a3414e1cb23d20c3cee0",
+      "class_hash": "0x3f4c8fad7a85052a02e11b5af84f2af9cc8e93423667ba9b1091b6db78038f6",
       "abi": [
         {
           "type": "impl",
@@ -7507,7 +7507,7 @@
                 },
                 {
                   "name": "attack",
-                  "type": "core::integer::u32"
+                  "type": "core::felt252"
                 },
                 {
                   "name": "salt",
@@ -7528,6 +7528,18 @@
                 {
                   "name": "player",
                   "type": "ba_combat::combat::Player"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "kick_player",
+              "inputs": [
+                {
+                  "name": "id",
+                  "type": "core::felt252"
                 }
               ],
               "outputs": [],
@@ -7559,68 +7571,68 @@
       "contract_address": "0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578d0549d"
     },
     "arena_blobert": {
-      "contract_address": "0x1d36a05b05cacbdf031ceeeba3c65e96cfc4832ca448431dc354908abc3f33e",
+      "contract_address": "0x6359ab3ee5e48b4a04a778a5d7d619f307f46dbe829260f6c34167b835362e8",
       "class_hash": "0x65c960474c4a763613160253c12c970d481aca45e151279eff95c6969667a1a",
       "class": "arena_blobert"
     },
     "amma_blobert": {
-      "contract_address": "0x1f3af3dd509ba3273334b1dee7a82975484a2bd4d139cfcfb947970874075bb",
+      "contract_address": "0x152dcd9aca9679dbfb431b7b4c8a692758ca7faa5840b4d18581e6527891987",
       "class_hash": "0xad67917de81c1665aa9ce7d293c94f3ae85c66906953205b6a755bab7027a6",
       "class": "amma_blobert"
     },
     "amma_blobert_soulbound": {
-      "contract_address": "0x7a08930e8cf00c45fbcc34482a38ed58da0abec66e87b5864cf466bb2dae65b",
+      "contract_address": "0x41b62e6c090c541752e48444de25bb2f74058f235f6abcf663ca0394ac249d9",
       "class_hash": "0x2180fc2bcbdeea447ae0668796532c7a9de96b5492bdeb542e670287fec05fc",
       "class": "amma_blobert_soulbound"
     },
     "attack": {
-      "contract_address": "0x1df78374c797d111e64939b7fb8c22c309cf138e24ab658cf60191057e4d548",
+      "contract_address": "0x33506bf73abe097e9afd1e5611ecc9e06470d4e03bf3ce1a49e397d4e605fc1",
       "class_hash": "0x3af1e7936ebd63c7725cb9f77811439da9a033138ae804964438a904b19b0b1",
       "class": "attack"
     },
     "arena_credit": {
-      "contract_address": "0x72637cd304115e214ace5a3795525b1361f54aa119704292e5545b17b837fea",
+      "contract_address": "0x2bd857a1c6a7874526f261928f8fef3a46c3a38a8dd33a4e3dff18a7d8fcd43",
       "class_hash": "0x77c63a38a07c175c101094a04727d42a33a4c9870689f9a6dfcd2d882c6515b",
       "class": "arena_credit"
     },
     "arena_blobert_minter": {
-      "contract_address": "0x4d1c6d6e7d606633a33593d32c8143325437092bbbd463b503844d17dd1b125",
+      "contract_address": "0x56d3428df692ed1ae458a039fef428c2fc7d3a5af37e266c28f0171ac3bdbe8",
       "class_hash": "0x7859e23b1ac4ccd5c7160d1d09e357753bb69ada7e2f8cf20d690a8cfcc28d3",
       "class": "arena_blobert_minter"
     },
     "amma_blobert_minter": {
-      "contract_address": "0x11dc860cde005c3d553791bdf156d7effba5cf5333ccb4797ab5ee0c3a6e755",
+      "contract_address": "0x1c9899375bc0d6e2124ff360c80d1686aa96167bf90d5a5b4c09e9842e6f567",
       "class_hash": "0xec0f69cb288620eeee0b4b4a38c6558650c0ec46a011fcb960bcfb69b67c80",
       "class": "amma_blobert_minter"
     },
     "loadout_classic": {
-      "contract_address": "0x7855407ddecc107f85395df7123784cfc92d9034ad668df4f3d97d347486bf6",
+      "contract_address": "0x6f1bc4c479f6d3af920ad80f187d8870114933fce93fe6a9461b58480a9c964",
       "class_hash": "0x13d9aacaccd717d2663692546631b60f355684067f0ee55c0072d0c95995c7c",
       "class": "loadout_classic"
     },
     "loadout_amma": {
-      "contract_address": "0x439c2ac07330501688fb7f40e51122da84124791e3ed32beb2229d2c2ca3a71",
+      "contract_address": "0x13f8d352bea237ede01db7529ad4630a44d1c726a0de52cb334aaceec28663a",
       "class_hash": "0x376365ae089416706108ea5a9ac02bcf98be2bfeb71e5306adc961cffb97f1c",
       "class": "loadout_amma"
     },
     "arena_credit_purchase": {
-      "contract_address": "0x7d06c0d031856e03888b37dcb9be6101cd10da5c4200957697357cab416c253",
+      "contract_address": "0x6c30fa8a9c020d037f31bbed7989da0ba2ccc2af91735a081405bda6ead7dc",
       "class_hash": "0x5da10994723906575037e1103308003955000b72ee7ad7147dff4af4461dd24",
       "class": "arena_credit_purchase"
     },
     "arcade_classic": {
-      "contract_address": "0x1e01c25b9066431dbb794b72fb100ee6885f28f67420016a3704e2979ffe40d",
+      "contract_address": "0x12c6d9f4115379d40b47a4fc1af489b11ba771051b3a3bb63b41f348548f67b",
       "class_hash": "0x50245d0276f28cecde37dac88e358e9f7bb567d180a83799081ff5fa7020967",
       "class": "arcade_classic"
     },
     "arcade_amma": {
-      "contract_address": "0x50f4007602151825610a9218678e4f3b8151d040d565f84331dc7ba53af05d0",
+      "contract_address": "0x16720e5d19d21ddde1e55be83995ad1bcfd559d3ff4188361c5934f52eac711",
       "class_hash": "0x57d3c3e5971121e735e52d8fc6903011f42928e2bdfada9b3471c10e85cb944",
       "class": "arcade_amma"
     },
     "pvp": {
-      "contract_address": "0x4db5a3501526671f98bf10a0faaaf1746d8e0bdc292bb281fc4a1e541b6e9f9",
-      "class_hash": "0x3b2e3ac28240ae127c14127c6b368399bd196fedf83a3414e1cb23d20c3cee0",
+      "contract_address": "0x1c525a86fea35e858bbf99df4590a8370afcfff1cbe42c821e681fd53a77afe",
+      "class_hash": "0x3f4c8fad7a85052a02e11b5af84f2af9cc8e93423667ba9b1091b6db78038f6",
       "class": "pvp"
     }
   },
@@ -13575,8 +13587,7 @@
             }
           ]
         }
-      ],
-      "transaction_hash": "0x5d5f3d7eee8edc2d636adcc5ab3beb4db79a84ebfb6eb9bc8d30a0c503fb3f2"
+      ]
     },
     "arcade_classic": {
       "class_hash": "0x50245d0276f28cecde37dac88e358e9f7bb567d180a83799081ff5fa7020967",
@@ -14750,7 +14761,7 @@
       ]
     },
     "pvp": {
-      "class_hash": "0x3b2e3ac28240ae127c14127c6b368399bd196fedf83a3414e1cb23d20c3cee0",
+      "class_hash": "0x3f4c8fad7a85052a02e11b5af84f2af9cc8e93423667ba9b1091b6db78038f6",
       "abi": [
         {
           "type": "impl",
@@ -14943,7 +14954,7 @@
                 },
                 {
                   "name": "attack",
-                  "type": "core::integer::u32"
+                  "type": "core::felt252"
                 },
                 {
                   "name": "salt",
@@ -14968,6 +14979,18 @@
               ],
               "outputs": [],
               "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "kick_player",
+              "inputs": [
+                {
+                  "name": "id",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
             }
           ]
         },
@@ -14987,7 +15010,8 @@
           "kind": "enum",
           "variants": []
         }
-      ]
+      ],
+      "transaction_hash": "0x2ea15c3d5d8c409d3f71edd7c8c85e73bd4a730ad6b13b85cdca78e3a63ee78"
     }
   }
 }

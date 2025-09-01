@@ -347,6 +347,11 @@ mod pvp {
                 CombatPhase::Player2Revealed => (Player::Player2, CombatPhase::WinnerPlayer1),
                 _ => panic_with_felt252('Combat not in combat phase'),
             };
+            let timeout = combat.time_limit.read();
+            assert(timeout.is_non_zero(), 'No timeout set');
+            assert(
+                get_block_timestamp() > (combat.timestamp.read() + timeout), 'Combat not timed out',
+            );
             combat.assert_caller_is_player(player);
             combat.set_win_phase(id, next_phase, WinVia::TimedOut);
         }
