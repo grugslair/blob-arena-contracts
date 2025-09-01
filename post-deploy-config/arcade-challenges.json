@@ -67,9 +67,9 @@
         "luck": 25
       },
       "attacks": [
-        { "tag": "Helium Blast" },
-        { "tag": "Balloon Bombardment" },
-        { "tag": "Inflatable Explosion" }
+        { "tag": "Noble Strike" },
+        { "tag": "Noble Bash" },
+        { "tag": "Royal Whirlwind" }
       ]
     },
     {
