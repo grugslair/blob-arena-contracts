@@ -10,6 +10,8 @@ contract_address = "0x0"
 contract_address = "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
 
 [declare]
+mock_vrf = {}
+
 arena_blobert = {}
 arena_blobert_minter = {}
 amma_blobert = {}
@@ -27,7 +29,7 @@ arcade_classic = {}
 arcade_amma = {}
 
 pvp = {}
-mock_vrf = { name = "mock_vrf" }
+
 
 [deploy]
 vrf = { name = "vrf", class = "mock_vrf", salt = "0x0", unique = false }
