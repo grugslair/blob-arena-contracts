@@ -1,73 +1,27 @@
 use ba_loadout::ability::{Abilities, AbilitiesTrait, AbilityTypes, DAbilities};
+use ba_loadout::attack::types::Damage;
 use ba_utils::SeedProbability;
 use core::cmp::min;
-use core::num::traits::SaturatingAdd;
+use core::num::traits::{SaturatingAdd, SaturatingSub, Zero};
 use sai_core_utils::SaturatingInto;
-use starknet::ContractAddress;
-use starknet::storage::{
-    Map, Mutable, StorageBase, StorageNodeDeref, StoragePathEntry, StoragePointerReadAccess,
-    StoragePointerWriteAccess,
+use starknet::storage::StorageNodeDeref;
+use crate::calculations::{
+    apply_luck_modifier, damage_calculation, did_critical, get_new_stun_chance,
 };
-use crate::calculations::{apply_luck_modifier, get_new_stun_chance};
-
-#[starknet::storage_node]
-pub struct CombatantNode {
-    pub combat_id: felt252,
-    pub player: ContractAddress,
-    pub collection_address: ContractAddress,
-    pub token_id: u256,
-    pub health: u32,
-    pub stun_chance: u8,
-    pub abilities: Abilities,
-}
-
-#[derive(Drop, Serde, Introspect)]
-pub struct Combatant {
-    pub combat_id: felt252,
-    pub player: ContractAddress,
-    pub collection_address: ContractAddress,
-    pub token_id: u256,
-    pub health: u32,
-    pub stun_chance: u8,
-    pub abilities: Abilities,
-}
+use crate::result::DamageResult;
 
 #[derive(Drop, Copy, Serde, Schema, starknet::Store, Introspect, Default)]
 pub struct CombatantState {
     pub health: u32,
     pub stun_chance: u8,
     pub abilities: Abilities,
+    pub block: u8,
 }
 
 
 impl AbilitiesIntoCombatantState of Into<Abilities, CombatantState> {
     fn into(self: Abilities) -> CombatantState {
-        CombatantState { health: self.max_health(), stun_chance: 0, abilities: self }
-    }
-}
-
-#[generate_trait]
-impl CombatantNodeImpl of CombatantNodeTrait {
-    fn read_abilitiese(
-        self: StorageBase<Map<felt252, CombatantNode>>, id: felt252,
-    ) -> CombatantState {
-        let node = self.entry(id);
-        CombatantState {
-            health: node.health.read(),
-            stun_chance: node.stun_chance.read(),
-            abilities: node.abilities.read(),
-        }
-    }
-
-    fn write_abilitiese(
-        ref self: StorageBase<Map<felt252, Mutable<CombatantNode>>>,
-        id: felt252,
-        state: CombatantState,
-    ) {
-        let mut node = self.entry(id);
-        node.health.write(state.health);
-        node.stun_chance.write(state.stun_chance);
-        node.abilities.write(state.abilities);
+        CombatantState { health: self.max_health(), stun_chance: 0, abilities: self, block: 0 }
     }
 }
 
@@ -81,6 +35,18 @@ pub impl CombatantStateImpl of CombatantStateTrait {
         let change = self.abilities.apply_buffs(buffs);
         self.cap_health();
         change
+    }
+
+    fn apply_damage(
+        ref self: CombatantState, damage: Damage, attacker_abilities: @Abilities, ref seed: u128,
+    ) -> DamageResult {
+        let critical = did_critical(damage.critical, *attacker_abilities.luck, ref seed);
+        let mut damage = damage_calculation(damage.power, *attacker_abilities.strength, critical);
+        if self.block.is_non_zero() {
+            damage -= (damage * self.block.into()) / 100;
+        }
+        self.health = self.health.saturating_sub(damage);
+        DamageResult { damage, critical }
     }
 
     fn modify_health(ref self: CombatantState, health: i32) -> i32 {
@@ -124,5 +90,7 @@ pub impl CombatantStateImpl of CombatantStateTrait {
     fn apply_stun(ref self: CombatantState, stun: u8) {
         self.stun_chance = get_new_stun_chance(self.stun_chance, stun)
     }
+
+    fn apply_block(ref self: CombatantState, block: u8) {}
 }
 

@@ -17,17 +17,17 @@ const ATTACK_TAG_GROUP: felt252 = 'attacks';
 /// # Fields
 /// * `id` - Unique identifier for the attack
 /// * `speed` - The speed of the attack (0-100)
-/// * `accuracy` - The accuracy of the attack (0-100)
+/// * `chance` - The chance of the attack (0-100)
 /// * `cooldown` - The cooldown period of the attack in rounds
-/// * `hit` - Array of effects that occur when the attack hits
-/// * `miss` - Array of effects that occur when the attack misses
+/// * `success` - Array of effects that occur when the attack succeeds
+/// * `fail` - Array of effects that occur when the attack fails
 #[derive(Drop, Serde, Default, Introspect)]
 pub struct Attack {
     pub speed: u32,
-    pub accuracy: u8,
-    pub cooldown: u8,
-    pub hit: Array<Effect>,
-    pub miss: Array<Effect>,
+    pub chance: u8,
+    pub cooldown: u32,
+    pub success: Array<Effect>,
+    pub fail: Array<Effect>,
 }
 /// A component representing an attack or input of attack in the game.
 ///
@@ -35,31 +35,31 @@ pub struct Attack {
 ///
 /// * `id` - A unique identifier for the attack.
 /// * `speed` - The speed of the attack, represented as a value between 0 and 255.
-/// * `accuracy` - The likelihood of the attack hitting its target, represented as a value between 0
-/// and 100.
+/// * `chance` - The likelihood of the attack successting its target, represented as a value
+/// between 0 and 100.
 /// * `cooldown` - The number of turns required before the attack can be used again.
-/// * `hit` - An array of effects that are applied when the attack successfully hits.
-/// * `miss` - An array of effects that are applied when the attack misses.
+/// * `success` - An array of effects that are applied when the attack successfully successs.
+/// * `fail` - An array of effects that are applied when the attack failes.
 /// * `name` - The name of the attack. (For off chain use)
 
 #[derive(Drop, Serde, Clone, Introspect)]
 pub struct AttackWithName {
     pub name: ByteArray,
     pub speed: u32,
-    pub accuracy: u8,
-    pub cooldown: u8,
-    pub hit: Array<Effect>,
-    pub miss: Array<Effect>,
+    pub chance: u8,
+    pub cooldown: u32,
+    pub success: Array<Effect>,
+    pub fail: Array<Effect>,
 }
 
 impl AttackWithNameIntoAttack of Into<AttackWithName, Attack> {
     fn into(self: AttackWithName) -> Attack {
         Attack {
             speed: self.speed,
-            accuracy: self.accuracy,
+            chance: self.chance,
             cooldown: self.cooldown,
-            hit: self.hit,
-            miss: self.miss,
+            success: self.success,
+            fail: self.fail,
         }
     }
 }
@@ -99,6 +99,7 @@ pub enum Affect {
     Ability: AbilityAffect,
     Damage: Damage,
     Stun: u8,
+    Block: u8,
 }
 
 
@@ -120,7 +121,7 @@ pub struct AbilityAffect {
 }
 
 /// Represents damage attributes of an attack.
-/// * `critical` - Critical hit chance value between 0-100
+/// * `critical` - Critical success chance value between 0-100
 /// * `power` - Attack power value between 0-100
 
 #[derive(Drop, Serde, Copy, PartialEq, Introspect, starknet::Store)]
@@ -132,23 +133,23 @@ pub struct Damage {
 #[generate_trait]
 pub impl AttackWithNameImpl of AttackWithNameTrait {
     fn attack_id(self: @AttackWithName) -> felt252 {
-        get_attack_id(self.name, *self.speed, *self.accuracy, *self.cooldown, self.hit, self.miss)
+        get_attack_id(self.name, *self.speed, *self.chance, *self.cooldown, self.success, self.fail)
     }
 }
 
 pub fn get_attack_id(
     name: @ByteArray,
     speed: u32,
-    accuracy: u8,
-    cooldown: u8,
-    hit: @Array<Effect>,
-    miss: @Array<Effect>,
+    chance: u8,
+    cooldown: u32,
+    success: @Array<Effect>,
+    fail: @Array<Effect>,
 ) -> felt252 {
     let mut serialized: Array<felt252> = Default::default();
     Serde::serialize(name, ref serialized);
-    serialized.append_span([speed.into(), accuracy.into(), cooldown.into()].span());
-    Serde::serialize(hit, ref serialized);
-    Serde::serialize(miss, ref serialized);
+    serialized.append_span([speed.into(), chance.into(), cooldown.into()].span());
+    Serde::serialize(success, ref serialized);
+    Serde::serialize(fail, ref serialized);
 
     poseidon_hash_span(serialized.span())
 }
@@ -184,7 +185,6 @@ pub impl EffectArrayStorageMapReadAccess of StorageMapReadAccess<
     }
 }
 
-
 pub fn byte_array_to_tag(array: @ByteArray) -> felt252 {
     let serialized = array.serialize_all();
     let data_len = serialized.len() - 3;
@@ -202,5 +202,17 @@ pub fn byte_array_to_tag(array: @ByteArray) -> felt252 {
         let mut data: Array<felt252> = data.into();
         data.append(pending_word);
         poseidon_hash_span(data.span())
+    }
+}
+
+
+#[cfg(test)]
+mod tests {
+    use beacon_entity::get_schema_size;
+    use super::*;
+
+    #[test]
+    fn table_size_test() {
+        println!("AttackWithName size: {}", get_schema_size::<AttackWithName>());
     }
 }

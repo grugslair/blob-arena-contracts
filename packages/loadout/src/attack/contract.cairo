@@ -23,10 +23,10 @@ mod attack {
         #[substorage(v0)]
         access: access_component::Storage,
         speeds: Map<felt252, u32>,
-        accuracies: Map<felt252, u8>,
-        cooldowns: Map<felt252, u8>,
-        hits: Map<felt252, Vec<Effect>>,
-        misses: Map<felt252, Vec<Effect>>,
+        chances: Map<felt252, u8>,
+        cooldowns: Map<felt252, u32>,
+        successes: Map<felt252, Vec<Effect>>,
+        fails: Map<felt252, Vec<Effect>>,
         tags: Map<felt252, felt252>,
     }
 
@@ -51,10 +51,10 @@ mod attack {
         fn attack(self: @ContractState, id: felt252) -> Attack {
             Attack {
                 speed: self.speeds.read(id),
-                accuracy: self.accuracies.read(id),
+                chance: self.chances.read(id),
                 cooldown: self.cooldowns.read(id),
-                hit: self.hits.read(id),
-                miss: self.misses.read(id),
+                success: self.successes.read(id),
+                fail: self.fails.read(id),
             }
         }
 
@@ -70,48 +70,48 @@ mod attack {
             ids.into_iter().map(|id| self.speed(id)).collect()
         }
 
-        fn accuracy(self: @ContractState, id: felt252) -> u8 {
-            self.accuracies.read(id)
+        fn chance(self: @ContractState, id: felt252) -> u8 {
+            self.chances.read(id)
         }
 
-        fn accuracies(self: @ContractState, ids: Array<felt252>) -> Array<u8> {
-            ids.into_iter().map(|id| self.accuracy(id)).collect()
+        fn chances(self: @ContractState, ids: Array<felt252>) -> Array<u8> {
+            ids.into_iter().map(|id| self.chance(id)).collect()
         }
 
-        fn cooldown(self: @ContractState, id: felt252) -> u8 {
+        fn cooldown(self: @ContractState, id: felt252) -> u32 {
             self.cooldowns.read(id)
         }
 
-        fn cooldowns(self: @ContractState, ids: Array<felt252>) -> Array<u8> {
+        fn cooldowns(self: @ContractState, ids: Array<felt252>) -> Array<u32> {
             ids.into_iter().map(|id| self.cooldown(id)).collect()
         }
 
-        fn hit(self: @ContractState, id: felt252) -> Array<Effect> {
-            self.hits.read(id).into()
+        fn success(self: @ContractState, id: felt252) -> Array<Effect> {
+            self.successes.read(id).into()
         }
 
-        fn hits(self: @ContractState, ids: Array<felt252>) -> Array<Array<Effect>> {
-            ids.into_iter().map(|id| self.hit(id)).collect()
+        fn successes(self: @ContractState, ids: Array<felt252>) -> Array<Array<Effect>> {
+            ids.into_iter().map(|id| self.success(id)).collect()
         }
 
-        fn miss(self: @ContractState, id: felt252) -> Array<Effect> {
-            self.misses.read(id).into()
+        fn fail(self: @ContractState, id: felt252) -> Array<Effect> {
+            self.fails.read(id).into()
         }
 
-        fn misses(self: @ContractState, ids: Array<felt252>) -> Array<Array<Effect>> {
-            ids.into_iter().map(|id| self.miss(id)).collect()
+        fn fails(self: @ContractState, ids: Array<felt252>) -> Array<Array<Effect>> {
+            ids.into_iter().map(|id| self.fail(id)).collect()
         }
 
         fn attack_id(
             self: @ContractState,
             name: ByteArray,
             speed: u32,
-            accuracy: u8,
-            cooldown: u8,
-            hit: Array<Effect>,
-            miss: Array<Effect>,
+            chance: u8,
+            cooldown: u32,
+            success: Array<Effect>,
+            fail: Array<Effect>,
         ) -> felt252 {
-            AttackWithName { name, speed, accuracy, cooldown, hit: hit, miss: miss }.attack_id()
+            AttackWithName { name, speed, chance, cooldown, success, fail }.attack_id()
         }
 
         fn attack_ids(self: @ContractState, attacks: Array<AttackWithName>) -> Array<felt252> {
@@ -129,12 +129,12 @@ mod attack {
             ref self: ContractState,
             name: ByteArray,
             speed: u32,
-            accuracy: u8,
-            cooldown: u8,
-            hit: Array<Effect>,
-            miss: Array<Effect>,
+            chance: u8,
+            cooldown: u32,
+            success: Array<Effect>,
+            fail: Array<Effect>,
         ) -> felt252 {
-            self._create_attack(AttackWithName { name, speed, accuracy, cooldown, hit, miss })
+            self._create_attack(AttackWithName { name, speed, chance, cooldown, success, fail })
         }
 
         fn create_attacks(
@@ -170,20 +170,17 @@ mod attack {
             let id = (@attack).attack_id();
             self.tags.write(byte_array_to_tag(@attack.name), id);
             // let attack: Attack = attack.into();
-            if self.accuracies.read(id).is_non_zero() {
+            if self.chances.read(id).is_non_zero() {
                 return id; // Attack already exists
             }
-            assert(
-                0 < attack.accuracy && attack.accuracy <= 100, 'Accuracy must between 0 and 100',
-            );
-            assert(attack.speed <= 100, 'Speed must be between 0 and 100');
+            assert(0 < attack.chance && attack.chance <= 100, 'Chance must between 0 and 100');
 
             AttackTable::set_entity(id, @attack);
             self.speeds.write(id, attack.speed);
-            self.accuracies.write(id, attack.accuracy);
+            self.chances.write(id, attack.chance);
             self.cooldowns.write(id, attack.cooldown);
-            self.hits.write(id, attack.hit);
-            self.misses.write(id, attack.miss);
+            self.successes.write(id, attack.success);
+            self.fails.write(id, attack.fail);
 
             id
         }

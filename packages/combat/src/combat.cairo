@@ -43,21 +43,20 @@ fn run_effect(
 ) -> EffectResult {
     let result = match effect.affect {
         Affect::Abilities(abilities_effect) => {
-            AffectResult::Abilities(
-                match effect.target {
-                    Target::Player => { attacker_state.apply_buffs(abilities_effect) },
-                    Target::Opponent => { defender_state.apply_buffs(abilities_effect) },
-                },
-            )
+            match effect.target {
+                Target::Player => { attacker_state.apply_buffs(abilities_effect) },
+                Target::Opponent => { defender_state.apply_buffs(abilities_effect) },
+            }
+            AffectResult::Applied
         },
         Affect::Ability(AbilityAffect {
             ability, amount,
         }) => {
-            let change = match effect.target {
+            match effect.target {
                 Target::Player => { attacker_state.apply_buff(ability, amount) },
                 Target::Opponent => { defender_state.apply_buff(ability, amount) },
-            };
-            AffectResult::Ability(AbilityAffect { ability, amount: change })
+            }
+            AffectResult::Applied
         },
         Affect::Damage(damage) => {
             let mut seed = hash_state.update_to_u128(move_n);
@@ -78,15 +77,21 @@ fn run_effect(
                 Target::Player => { attacker_state.apply_stun(stun) },
                 Target::Opponent => { defender_state.apply_stun(stun) },
             }
-            AffectResult::Stun(stun)
+            AffectResult::Applied
         },
         Affect::Health(health) => {
-            AffectResult::Health(
-                match effect.target {
-                    Target::Player => { attacker_state.modify_health(health) },
-                    Target::Opponent => { defender_state.modify_health(health) },
-                },
-            )
+            match effect.target {
+                Target::Player => { attacker_state.modify_health(health) },
+                Target::Opponent => { defender_state.modify_health(health) },
+            }
+            AffectResult::Applied
+        },
+        Affect::Block(block) => {
+            match effect.target {
+                Target::Player => { attacker_state.apply_block(block) },
+                Target::Opponent => { defender_state.apply_block(block) },
+            }
+            AffectResult::Applied
         },
     };
     EffectResult { target: effect.target, affect: result }
@@ -187,14 +192,16 @@ fn run_attack(
         AttackOutcomes::Failed
     } else if attacker_state.run_stun(ref seed) {
         AttackOutcomes::Stunned
-    } else if seed.get_outcome(100, attacks.accuracy(attack_id)) {
-        AttackOutcomes::Hit(
-            run_effects(ref attacker_state, ref defender_state, attacks.hit(attack_id), hash_state),
+    } else if seed.get_outcome(100, attacks.chance(attack_id)) {
+        AttackOutcomes::Success(
+            run_effects(
+                ref attacker_state, ref defender_state, attacks.success(attack_id), hash_state,
+            ),
         )
     } else {
-        AttackOutcomes::Miss(
+        AttackOutcomes::Fail(
             run_effects(
-                ref attacker_state, ref defender_state, attacks.miss(attack_id), hash_state,
+                ref attacker_state, ref defender_state, attacks.fail(attack_id), hash_state,
             ),
         )
     }

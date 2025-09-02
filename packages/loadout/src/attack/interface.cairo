@@ -8,22 +8,22 @@ pub trait IAttack<TContractState> {
     fn attacks(self: @TContractState, ids: Array<felt252>) -> Array<Attack>;
     fn speed(self: @TContractState, id: felt252) -> u32;
     fn speeds(self: @TContractState, ids: Array<felt252>) -> Array<u32>;
-    fn accuracy(self: @TContractState, id: felt252) -> u8;
-    fn accuracies(self: @TContractState, ids: Array<felt252>) -> Array<u8>;
-    fn cooldown(self: @TContractState, id: felt252) -> u8;
-    fn cooldowns(self: @TContractState, ids: Array<felt252>) -> Array<u8>;
-    fn hit(self: @TContractState, id: felt252) -> Array<Effect>;
-    fn hits(self: @TContractState, ids: Array<felt252>) -> Array<Array<Effect>>;
-    fn miss(self: @TContractState, id: felt252) -> Array<Effect>;
-    fn misses(self: @TContractState, ids: Array<felt252>) -> Array<Array<Effect>>;
+    fn chance(self: @TContractState, id: felt252) -> u8;
+    fn chances(self: @TContractState, ids: Array<felt252>) -> Array<u8>;
+    fn cooldown(self: @TContractState, id: felt252) -> u32;
+    fn cooldowns(self: @TContractState, ids: Array<felt252>) -> Array<u32>;
+    fn success(self: @TContractState, id: felt252) -> Array<Effect>;
+    fn successes(self: @TContractState, ids: Array<felt252>) -> Array<Array<Effect>>;
+    fn fail(self: @TContractState, id: felt252) -> Array<Effect>;
+    fn fails(self: @TContractState, ids: Array<felt252>) -> Array<Array<Effect>>;
     fn attack_id(
         self: @TContractState,
         name: ByteArray,
         speed: u32,
-        accuracy: u8,
-        cooldown: u8,
-        hit: Array<Effect>,
-        miss: Array<Effect>,
+        chance: u8,
+        cooldown: u32,
+        success: Array<Effect>,
+        fail: Array<Effect>,
     ) -> felt252;
     fn attack_ids(self: @TContractState, attacks: Array<AttackWithName>) -> Array<felt252>;
     fn tag(self: @TContractState, tag: felt252) -> felt252;
@@ -36,10 +36,10 @@ pub trait IAttackAdmin<TContractState> {
         ref self: TContractState,
         name: ByteArray,
         speed: u32,
-        accuracy: u8,
-        cooldown: u8,
-        hit: Array<Effect>,
-        miss: Array<Effect>,
+        chance: u8,
+        cooldown: u32,
+        success: Array<Effect>,
+        fail: Array<Effect>,
     ) -> felt252;
     fn create_attacks(ref self: TContractState, attacks: Array<AttackWithName>) -> Array<felt252>;
     fn maybe_create_attacks(
