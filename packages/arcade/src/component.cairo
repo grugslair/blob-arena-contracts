@@ -98,6 +98,10 @@ pub mod arcade_component {
             self.credit_address.read()
         }
 
+        fn vrf_address(self: @ComponentState<TContractState>) -> ContractAddress {
+            self.vrf_address.read()
+        }
+
         fn set_max_respawns(ref self: ComponentState<TContractState>, max_respawns: u32) {
             self.get_contract().assert_caller_is_owner();
             self.max_respawns.write(max_respawns);
@@ -126,6 +130,13 @@ pub mod arcade_component {
             self.get_contract().assert_caller_is_owner();
             self.energy_cost.write(energy);
             self.credit_cost.write(credit);
+        }
+
+        fn set_vrf_address(
+            ref self: ComponentState<TContractState>, contract_address: ContractAddress,
+        ) {
+            self.get_contract().assert_caller_is_owner();
+            self.vrf_address.write(contract_address);
         }
     }
 
