@@ -11,7 +11,7 @@ mod arcade_amma {
     use ba_loadout::amma_contract::{
         get_fighter_count, get_fighter_gen_loadout, get_fighter_loadout,
     };
-    use ba_utils::{SeedProbability, felt252_to_u128, uuid};
+    use ba_utils::{SeedProbability, felt252_to_u128};
     use beacon_library::{ToriiTable, register_table_with_schema};
     use sai_core_utils::poseidon_hash_two;
     use sai_ownable::{OwnableTrait, ownable_component};
@@ -37,6 +37,7 @@ mod arcade_amma {
         arcade_component::ArcadeInternal<
             ContractState, ATTEMPT_HASH, ROUND_HASH, LAST_USED_ATTACK_HASH,
         >;
+
     #[storage]
     struct Storage {
         #[substorage(v0)]
@@ -95,8 +96,11 @@ mod arcade_amma {
             let (mut attempt_ptr, attempt_id, loadout_address) = ArcadeInternal::start_attempt(
                 ref self.arcade, collection_address, token_id, attack_slots,
             );
+
             let opponents = random_selection(
-                attempt_id, get_fighter_count(loadout_address), self.gen_stages.read(),
+                ArcadeInternal::consume_random(ref self.arcade, attempt_id),
+                get_fighter_count(loadout_address),
+                self.gen_stages.read(),
             );
             ArcadeInternal::new_combat(
                 ref self.arcade,
@@ -115,9 +119,8 @@ mod arcade_amma {
         }
 
         fn attack(ref self: ContractState, attempt_id: felt252, attack_id: felt252) {
-            let randomness = uuid();
-            let (mut attempt_ptr, result) = ArcadeInternal::attack_attempt(
-                ref self.arcade, attempt_id, attack_id, randomness,
+            let (mut attempt_ptr, result, randomness) = ArcadeInternal::attack_attempt(
+                ref self.arcade, attempt_id, attack_id,
             );
 
             if result.phase == ArcadePhase::PlayerWon {

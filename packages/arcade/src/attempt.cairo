@@ -1,17 +1,14 @@
-use ba_combat::combat::{CombatProgress, Player, run_round};
+use ba_combat::combat::{CombatProgress, Player};
 use ba_combat::combatant::CombatantState;
 use ba_loadout::ability::Abilities;
 use ba_loadout::attack::{IAttackDispatcher, IAttackDispatcherTrait};
 use ba_utils::felt252_to_u128;
-use beacon_library::set_entity;
 use core::num::traits::Zero;
-use core::poseidon::poseidon_hash_span;
 use starknet::storage::{
     Map, Mutable, MutableVecTrait, StorageMapReadAccess, StorageMapWriteAccess, StoragePath,
-    StoragePathEntry, StoragePointerReadAccess, StoragePointerWriteAccess, Vec,
+    StoragePointerReadAccess, StoragePointerWriteAccess, Vec,
 };
 use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
-use crate::table::{ArcadeRound, AttackLastUsed, AttemptRoundTrait};
 
 pub type CombatNodePath = StoragePath<Mutable<CombatNode>>;
 pub type AttemptNodePath = StoragePath<Mutable<AttemptNode>>;
@@ -156,59 +153,6 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
                 break 0;
             };
         }
-    }
-
-    fn attack<const LAST_USED_ATTACK_TABLE: felt252, const ROUND_TABLE_HASH: felt252>(
-        ref self: AttemptNodePath,
-        attacks: IAttackDispatcher,
-        attempt_id: felt252,
-        combat_n: u32,
-        attack_id: felt252,
-        randomness: felt252,
-    ) -> ArcadeRound {
-        self.assert_caller_is_owner();
-        assert(self.phase.read() == ArcadePhase::Active, 'Game is not active');
-
-        let mut combat: CombatNodePath = self.combats.entry(combat_n);
-
-        let round = combat.round.read();
-        let opponent_attack = combat.get_opponent_attack(attacks, round, randomness);
-        let player_attack = match self.attacks_available.read(attack_id) {
-            false => 0x0,
-            true => combat.player_attack_cooldown(attacks, attack_id, round),
-        };
-        let result = run_round(
-            combat.player_state.read(),
-            combat.opponent_state.read(),
-            attacks,
-            player_attack,
-            opponent_attack,
-            round,
-            randomness,
-        )
-            .to_round(attempt_id, combat_n);
-        combat.player_state.write(*result.states.at(0));
-        combat.opponent_state.write(*result.states.at(1));
-        if result.phase == ArcadePhase::Active {
-            combat.round.write(round + 1);
-        } else {
-            combat.phase.write(result.phase);
-        }
-
-        set_entity(
-            ROUND_TABLE_HASH,
-            poseidon_hash_span([attempt_id, combat_n.into(), round.into()].span()),
-            @result,
-        );
-        if player_attack.is_non_zero() {
-            set_entity(
-                LAST_USED_ATTACK_TABLE,
-                poseidon_hash_span([attempt_id, attack_id].span()),
-                @AttackLastUsed { attack: attack_id, attempt: attempt_id, combat: combat_n, round },
-            );
-        }
-
-        result
     }
 
 

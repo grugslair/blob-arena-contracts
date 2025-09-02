@@ -47,7 +47,6 @@ mod arcade_classic {
     use ba_arcade::attempt::{ArcadePhase, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::{IArcade, arcade_component};
     use ba_loadout::attack::interface::maybe_create_attacks;
-    use ba_utils::uuid;
     use beacon_library::{ToriiTable, register_table_with_schema};
     use sai_ownable::{OwnableTrait, ownable_component};
     use sai_return::emit_return;
@@ -126,9 +125,8 @@ mod arcade_classic {
         }
 
         fn attack(ref self: ContractState, attempt_id: felt252, attack_id: felt252) {
-            let randomness = uuid();
-            let (mut attempt_ptr, result) = ArcadeInternal::attack_attempt(
-                ref self.arcade, attempt_id, attack_id, randomness,
+            let (mut attempt_ptr, result, _) = ArcadeInternal::attack_attempt(
+                ref self.arcade, attempt_id, attack_id,
             );
             if result.phase == ArcadePhase::PlayerWon {
                 let next_stage = result.stage + 1;

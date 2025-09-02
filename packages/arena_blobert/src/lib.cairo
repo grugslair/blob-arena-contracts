@@ -11,6 +11,7 @@ pub trait IArenaBlobert<TContractState> {
 #[starknet::interface]
 trait IArenaBlobertAdmin<TContractState> {
     fn mint(ref self: TContractState, owner: ContractAddress, attributes: TokenAttributes) -> u256;
+    fn total_minted(self: @TContractState) -> u256;
 }
 
 #[starknet::contract]
@@ -123,6 +124,10 @@ mod arena_blobert {
         ) -> u256 {
             self.assert_caller_is_writer();
             self.mint_internal(owner, attributes)
+        }
+
+        fn total_minted(self: @ContractState) -> u256 {
+            self.tokens_minted.read().into()
         }
     }
 

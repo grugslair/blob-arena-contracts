@@ -79,6 +79,7 @@ mod arena_blobert_minter {
         last_mint: Map<ContractAddress, u64>,
         min_mint_time: u64,
         max_bloberts: u32,
+        nonce: Map<ContractAddress, u64>,
     }
 
     #[event]

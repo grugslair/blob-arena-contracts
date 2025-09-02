@@ -20,10 +20,12 @@ pub trait IArcadeSetup<TState> {
     fn time_limit(self: @TState) -> u64;
     fn health_regen_permille(self: @TState) -> u32;
     fn credit_address(self: @TState) -> ContractAddress;
+    fn vrf_address(self: @TState) -> ContractAddress;
 
     fn set_max_respawns(ref self: TState, max_respawns: u32);
     fn set_time_limit(ref self: TState, time_limit: u64);
     fn set_health_regen_permille(ref self: TState, health_regen_permille: u32);
     fn set_credit_address(ref self: TState, contract_address: ContractAddress);
     fn set_cost(ref self: TState, energy: u64, credit: u128);
+    fn set_vrf_address(ref self: TState, contract_address: ContractAddress);
 }
