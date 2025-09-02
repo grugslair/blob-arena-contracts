@@ -27,6 +27,11 @@ arcade_classic = {}
 arcade_amma = {}
 
 pvp = {}
+mock_vrf = { name = "mock_vrf" }
+
+[deploy]
+vrf = { name = "vrf", class = "mock_vrf", salt = "0x0", unique = false }
+
 
 [variables]
 arena_contracts = []
