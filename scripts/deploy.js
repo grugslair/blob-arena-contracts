@@ -26,7 +26,6 @@ await sai.deployAllContracts();
 await sai.deployContract(
   deployWithOwner.map((tag) => ({
     tag,
-    salt,
     unique: false,
     calldata: { owner },
   }))
@@ -34,7 +33,6 @@ await sai.deployContract(
 await sai.deployContract([
   {
     tag: "arena_blobert_minter",
-    salt,
     unique: false,
     calldata: {
       owner,
@@ -43,7 +41,6 @@ await sai.deployContract([
   },
   {
     tag: "amma_blobert_minter",
-    salt,
     unique: false,
     calldata: {
       token_address: sai.contracts["amma_blobert_soulbound"].contract_address,
@@ -51,7 +48,6 @@ await sai.deployContract([
   },
   {
     tag: "loadout_classic",
-    salt,
     unique: false,
     calldata: {
       owner,
@@ -64,10 +60,10 @@ await sai.deployContract([
   },
   {
     tag: "loadout_amma",
-    salt,
     unique: false,
     calldata: {
       owner,
+      salt,
       attack_dispatcher_address: sai.contracts["attack"].contract_address,
       collection_addresses: [
         sai.contracts["amma_blobert"].contract_address,
@@ -77,7 +73,6 @@ await sai.deployContract([
   },
   {
     tag: "arena_credit_purchase",
-    salt,
     unique: false,
     calldata: {
       owner,
@@ -89,7 +84,6 @@ await sai.deployContract([
 await sai.deployContract([
   {
     tag: "arcade_classic",
-    salt,
     unique: false,
     calldata: {
       owner,
@@ -101,7 +95,6 @@ await sai.deployContract([
   },
   {
     tag: "arcade_amma",
-    salt,
     unique: false,
     calldata: {
       owner,
@@ -114,7 +107,6 @@ await sai.deployContract([
   },
   {
     tag: "pvp",
-    salt,
     unique: false,
     calldata: {
       attack_address: sai.contracts["attack"].contract_address,

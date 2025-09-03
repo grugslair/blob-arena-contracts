@@ -184,15 +184,8 @@ export class SaiProject {
     const dumpPath =
       path || `${this.directoryPath}/manifest_${this.profile}.json`;
     console.log(`Dumping SAI profile: ${this.profile} to ${dumpPath}`);
-    dumpJson(
-      {
-        deployments: this.deployments,
-        classes: this.classes,
-        contracts: this.contracts,
-        declarations: this.declarations,
-      },
-      dumpPath
-    );
+    const { deployments, classes, contracts, declarations, abis } = this;
+    dumpJson({ deployments, classes, contracts, declarations, abis }, dumpPath);
   }
 
   async declareClass(tag, { name, contract_path, casm_path } = {}) {
