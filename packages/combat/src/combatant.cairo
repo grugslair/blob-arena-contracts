@@ -1,21 +1,42 @@
-use ba_loadout::ability::{Abilities, AbilitiesTrait, AbilityTypes, DAbilities};
+use ba_loadout::ability::{
+    Abilities, AbilitiesTrait, AbilityTypes, DAbilities, U32_MASK_U128, U32_SHIFT_1,
+};
 use ba_loadout::attack::types::Damage;
 use ba_utils::SeedProbability;
 use core::cmp::min;
 use core::num::traits::{SaturatingAdd, SaturatingSub, Zero};
 use sai_core_utils::SaturatingInto;
 use starknet::storage::StorageNodeDeref;
+use starknet::storage_access::StorePacking;
 use crate::calculations::{
     apply_luck_modifier, damage_calculation, did_critical, get_new_stun_chance,
 };
 use crate::result::DamageResult;
 
-#[derive(Drop, Copy, Serde, Schema, starknet::Store, Introspect, Default)]
+
+#[derive(Drop, Copy, Serde, Schema, Introspect, Default)]
 pub struct CombatantState {
     pub health: u32,
     pub stun_chance: u8,
     pub abilities: Abilities,
     pub block: u8,
+}
+
+
+impl UAbilityStorePacking of StorePacking<CombatantState, felt252> {
+    fn pack(value: CombatantState) -> felt252 {
+        let high = value.health.into() + value.stun_chance.into() * U32_SHIFT_1;
+        let low = StorePacking::pack(value.abilities);
+        u256 { high, low }.try_into().unwrap()
+    }
+
+    fn unpack(value: felt252) -> CombatantState {
+        let u256 { high, low } = value.into();
+        let health = (high & U32_MASK_U128).try_into().unwrap();
+        let stun_chance = ((high / U32_SHIFT_1) & U32_MASK_U128).try_into().unwrap();
+        let abilities = StorePacking::unpack(low);
+        CombatantState { health, stun_chance, abilities, block: 0 }
+    }
 }
 
 
@@ -91,6 +112,8 @@ pub impl CombatantStateImpl of CombatantStateTrait {
         self.stun_chance = get_new_stun_chance(self.stun_chance, stun)
     }
 
-    fn apply_block(ref self: CombatantState, block: u8) {}
+    fn apply_block(ref self: CombatantState, block: u8) {
+        self.block = block;
+    }
 }
 

@@ -26,11 +26,11 @@ pub struct DAbilities {
     pub luck: i32,
 }
 
-const U32_SHIFT_1: u128 = 2_u128.pow(32);
-const U32_SHIFT_2: u128 = 2_u128.pow(64);
-const U32_SHIFT_3: u128 = 2_u128.pow(96);
+pub const U32_SHIFT_1: u128 = 2_u128.pow(32);
+pub const U32_SHIFT_2: u128 = 2_u128.pow(64);
+pub const U32_SHIFT_3: u128 = 2_u128.pow(96);
 
-const U32_MASK_U128: u128 = U32_SHIFT_1 - 1;
+pub const U32_MASK_U128: u128 = U32_SHIFT_1 - 1;
 
 
 impl DAbilitiesAdd of Add<DAbilities> {
