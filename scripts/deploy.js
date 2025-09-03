@@ -63,7 +63,6 @@ await sai.deployContract([
     unique: false,
     calldata: {
       owner,
-      salt,
       attack_dispatcher_address: sai.contracts["attack"].contract_address,
       collection_addresses: [
         sai.contracts["amma_blobert"].contract_address,

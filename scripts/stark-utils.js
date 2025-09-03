@@ -210,7 +210,7 @@ export const compileConstructor = (abi, calldata) => {
   if (!abiHasConstructor(abi)) {
     return [];
   }
-  return new CallData(abi).compile("constructor", calldata);
+  return CallData.toHex(new CallData(abi).compile("constructor", calldata));
 };
 
 export const isContractDeployed = async (account, classHash) => {

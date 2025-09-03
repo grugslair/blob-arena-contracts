@@ -220,7 +220,7 @@ export class SaiProject {
     if (method === "constructor") {
       return compileConstructor(abi, calldata);
     }
-    return new CallData(abi).compile(method, calldata);
+    return CallData.toHex(new CallData(abi).compile(method, calldata));
   }
   async parseDeployData(data) {
     data.salt = valueIfSet(data.salt, this.defaultSalt);
@@ -231,7 +231,7 @@ export class SaiProject {
       data.class_hash = this.classes[data.class].class_hash;
     }
     data.calldata = data.calldata || [];
-    data.compiled_calldata = Array.isArray(data.calldata)
+    data.calldata_compiled = Array.isArray(data.calldata)
       ? data.calldata
       : await this.compileCalldataFromClassHash(
           data.class_hash,
@@ -261,22 +261,23 @@ export class SaiProject {
     console.log("Deploying ");
     for (const data of contractList) {
       await this.parseDeployData(data);
-      console.log(` - ${data.tag || data.class || data.class_hash}...`);
+
       if (data.once) {
         const contract_address = calculateUDCContractAddressFromHash(
           this.account.address,
           data.class_hash,
           data.salt,
           data.unique,
-          data.compiled_calldata
+          data.calldata_compiled
         );
         if (await isContractDeployed(this.account, contract_address)) {
           const tag = data.tag || contract_address;
           this.addDeployment(tag, contract_address, data);
-          console.log(`Contract ${tag} is already deployed`);
+          console.log(` - ${tag} already deployed`);
           continue;
         }
       }
+      console.log(` - ${data.tag || data.class || data.class_hash}...`);
       toDeploy.push(data);
     }
     if (toDeploy.length) {
@@ -415,7 +416,7 @@ const deploymentToPayload = (deployment) => {
     classHash: deployment.class_hash,
     salt: deployment.salt,
     unique: deployment.unique,
-    constructorCalldata: deployment.compiled_calldata,
+    constructorCalldata: deployment.calldata_compiled,
   };
 };
 
