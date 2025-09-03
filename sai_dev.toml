@@ -9,6 +9,9 @@ contract_address = "0x0"
 [contracts.stark_token]
 contract_address = "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
 
+[defaults]
+salt = "0x0"
+
 [declare]
 mock_vrf = {}
 
@@ -32,7 +35,7 @@ pvp = {}
 
 
 [deploy]
-vrf = { name = "vrf", class = "mock_vrf", salt = "0x0", unique = false }
+vrf = { class = "mock_vrf", salt = "0x0", unique = false, once = true }
 
 
 [variables]

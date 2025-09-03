@@ -72,11 +72,17 @@ mod arcade_amma {
         attack_address: ContractAddress,
         loadout_address: ContractAddress,
         credit_address: ContractAddress,
+        vrf_address: ContractAddress,
         collectable_address: ContractAddress,
     ) {
         self.grant_owner(owner);
         ArcadeInternal::init(
-            ref self.arcade, "arcade_amma", attack_address, loadout_address, credit_address,
+            ref self.arcade,
+            "arcade_amma",
+            attack_address,
+            loadout_address,
+            credit_address,
+            vrf_address,
         );
         register_table_with_schema::<Opponents>("arcade_amma", "Opponents");
         self.collectable_address.write(collectable_address);

@@ -1,4 +1,11 @@
-import { Contract, CairoCustomEnum, Account, hash, stark } from "starknet";
+import {
+  Contract,
+  CairoCustomEnum,
+  Account,
+  hash,
+  stark,
+  CallData,
+} from "starknet";
 import {
   loadJson,
   loadToml,
@@ -8,6 +15,8 @@ import {
   calculateUDCContractAddressFromHash,
   dumpJson,
   getReturns,
+  isContractDeployed,
+  compileConstructor,
 } from "./stark-utils.js";
 import commandLineArgs from "command-line-args";
 import * as accounts from "web3-eth-accounts";
@@ -21,6 +30,12 @@ export const cmdOptions = [
   { name: "directory_path", alias: "d", type: String, defaultValue: "." },
 ];
 
+const valueIsSet = (val) =>
+  val !== null && val !== undefined && val !== false && val !== "";
+const valueIfSet = (val, defaultValue) =>
+  valueIsSet(val) ? val : defaultValue;
+const boolIsSet = (val) => val !== null && val !== undefined;
+const boolIfSet = (val, defaultValue) => (boolIsSet(val) ? val : defaultValue);
 export const readKeystorePK = async (
   keystorePath,
   accountAddress,
@@ -117,8 +132,10 @@ export class SaiProject {
     directoryPath,
     targetPath,
     profile_config,
-    transactionDetails
+    optionalConfig
   ) {
+    const { transactionDetails } = optionalConfig || {};
+
     this.profile_config = profile_config;
     this.name = name;
     this.profile = profile;
@@ -127,12 +144,25 @@ export class SaiProject {
     this.declare = profile_config.declare || {};
     this.deploy = profile_config.deploy || {};
     this.classes = profile_config.classes || {};
+    this.abis = {};
     this.contracts = profile_config.contracts || {};
     this.account = account;
     this.directoryPath = directoryPath || process.cwd();
     this.targetPath = targetPath || `${directoryPath}/target/${profile}`;
     this.transactionDetails = transactionDetails;
     this.variables = profile_config.variables || {};
+    this.defaultSalt = valueIsSet(profile_config.defaults.salt)
+      ? profile_config.defaults.salt
+      : stark.randomAddress();
+    this.defaultUnique = boolIfSet(profile_config.defaults.unique, false);
+    this.defaultOnce = boolIfSet(profile_config.defaults.once, true);
+  }
+  addClass(tag, class_hash, abi) {
+    this.classes[tag] = { class_hash };
+    if (abi == true) {
+      this.classes[tag].abi = abi;
+      this.abis[class_hash] = abi;
+    }
   }
 
   loadManifest(path) {
@@ -175,15 +205,13 @@ export class SaiProject {
         name || tag
       }.compiled_contract_class.json`;
     console.log(`Declaring class ${tag}`);
-    this.declarations[tag] = await declareContract(
+    let { abi, class_hash, transaction_hash } = await declareContract(
       this.account,
       contractPath,
       casmPath
     );
-    this.classes[tag] = {
-      class_hash: this.declarations[tag].class_hash,
-      abi: this.declarations[tag].abi,
-    };
+    this.declarations[tag] = { class_hash, transaction_hash };
+    this.addClass(tag, class_hash, abi);
   }
 
   async declareAllClasses() {
@@ -194,45 +222,84 @@ export class SaiProject {
     }
   }
 
+  async compileCalldataFromClassHash(classHash, method, calldata) {
+    const abi = await this.getAbiFromClassHash(classHash);
+    if (method === "constructor") {
+      return compileConstructor(abi, calldata);
+    }
+    return new CallData(abi).compile(method, calldata);
+  }
+  async parseDeployData(data) {
+    data.salt = valueIfSet(data.salt, this.defaultSalt);
+    data.unique = boolIfSet(data.unique, this.defaultUnique);
+    data.once = boolIfSet(data.once, this.defaultOnce);
+    if (!data.class_hash) {
+      data.class = data.class || data.tag;
+      data.class_hash = this.classes[data.class].class_hash;
+    }
+    data.calldata = data.calldata || [];
+    data.compiled_calldata = Array.isArray(data.calldata)
+      ? data.calldata
+      : await this.compileCalldataFromClassHash(
+          data.class_hash,
+          "constructor",
+          data.calldata
+        );
+
+    return data;
+  }
+  addDeployment(tag, contract_address, deployment) {
+    this.contracts[tag] = {
+      contract_address,
+      class_hash: deployment.class_hash,
+    };
+    if (deployment.class) {
+      this.contracts[tag].class = deployment.class;
+    }
+    this.deployments[tag] = {
+      contract_address,
+      ...deployment,
+      ...this.deployments[tag],
+    };
+  }
   async deployContract(contracts, transactionDetails) {
     const contractList = Array.isArray(contracts) ? contracts : [contracts];
-    const payload = [];
+    const toDeploy = [];
     console.log("Deploying ");
     for (const data of contractList) {
-      console.log(` - ${data.tag || data.class}...`);
-      data.salt = data.salt || stark.randomAddress();
-      const classData = (data.class && this.classes[data.class]) || {};
-      data.class_hash = data.class_hash || classData.class_hash;
-      payload.push({
-        classHash: data.class_hash,
-        salt: data.salt,
-        unique: data.unique,
-        constructorCalldata: data.calldata,
-      });
+      await this.parseDeployData(data);
+      console.log(` - ${data.tag || data.class || data.class_hash}...`);
+      if (data.once) {
+        const contract_address = calculateUDCContractAddressFromHash(
+          this.account.address,
+          data.class_hash,
+          data.salt,
+          data.unique,
+          data.compiled_calldata
+        );
+        if (await isContractDeployed(this.account, contract_address)) {
+          const tag = data.tag || contract_address;
+          this.addDeployment(tag, contract_address, data);
+          console.log(`Contract ${tag} is already deployed`);
+          continue;
+        }
+      }
+      toDeploy.push(data);
     }
-
-    const { contract_address: ContractAddresses, transaction_hash } =
-      await this.account.deploy(payload, {
-        ...this.transactionDetails,
-        ...transactionDetails,
+    if (toDeploy.length) {
+      const payload = toDeploy.map(deploymentToPayload);
+      const { contract_address: ContractAddresses, transaction_hash } =
+        await this.account.deploy(payload, {
+          ...this.transactionDetails,
+          ...transactionDetails,
+        });
+      toDeploy.map((data, index) => {
+        const contract_address = ContractAddresses[index];
+        const tag = data.tag || contract_address;
+        this.addDeployment(tag, contract_address, data);
       });
-    await this.account.waitForTransaction(transaction_hash);
-
-    contractList.map((data, index) => {
-      const contract_address = ContractAddresses[index];
-      const tag = data.tag || contract_address;
-      this.deployments[tag] = {
-        ...data,
-        contract_address,
-        deployer_address: this.account.address,
-        transaction_hash,
-      };
-      this.contracts[tag] = {
-        contract_address,
-        class_hash: data.class_hash,
-        class: data.class,
-      };
-    });
+      await this.account.waitForTransaction(transaction_hash);
+    }
   }
   async executeAndWait(calls, transactionDetails) {
     const { transaction_hash } = await this.account.execute(calls, {
@@ -254,15 +321,51 @@ export class SaiProject {
   }
 
   async getContract(tag) {
-    if (!this.contracts[tag]) {
+    const contract = this.contracts[tag];
+    if (!contract) {
       throw new Error(`Contract with tag ${tag} not found`);
     }
+    const abi = await this.getAbiFromContract(tag);
+    return new Contract(abi, contract.contract_address, this.account);
+  }
+
+  async getAbiFromContract(tag) {
     const contract = this.contracts[tag];
-    if (!contract.abi) {
-      const { abi } = await this.account.getClassAt(contract.contract_address);
-      contract.abi = abi;
+    if (!contract) {
+      throw new Error(`Contract with tag ${tag} not found`);
     }
-    return new Contract(contract.abi, contract.contract_address, this.account);
+    if (!contract.class_hash) {
+      await this.getClassHashFromContract(tag);
+    }
+    return await this.getAbiFromClassHash(contract.class_hash);
+  }
+
+  async getClassHashFromContract(tag) {
+    const contract = this.contracts[tag];
+    if (!contract) {
+      throw new Error(`Contract with tag ${tag} not found`);
+    }
+    if (!contract.class_hash) {
+      contract.class_hash = await this.account.getClassHashAt(
+        contract.contract_address
+      );
+    }
+    return contract.class_hash;
+  }
+
+  async getAbiFromClassHash(classHash) {
+    if (!this.abis[classHash]) {
+      this.abis[classHash] = (await this.account.getClassByHash(classHash)).abi;
+    }
+    return this.abis[classHash];
+  }
+
+  async getAbiFromClass(tag) {
+    const classs = this.classes[tag];
+    if (!classs) {
+      throw new Error(`Class with tag ${tag} not found`);
+    }
+    return await this.getAbiFromClassHash(classs.class_hash);
   }
 
   async deployAllContracts() {
@@ -314,7 +417,16 @@ export class SaiProject {
   }
 }
 
-export const loadSai = async () => {
+const deploymentToPayload = (deployment) => {
+  return {
+    classHash: deployment.class_hash,
+    salt: deployment.salt,
+    unique: deployment.unique,
+    constructorCalldata: deployment.compiled_calldata,
+  };
+};
+
+export const loadSai = async (saiConfig) => {
   const cmdArgs = commandLineArgs(cmdOptions);
 
   const directoryPath = resolvePath(cmdArgs.directory_path);
@@ -329,6 +441,7 @@ export const loadSai = async () => {
     scarb_toml.package.name,
     directoryPath,
     null,
-    profile_toml
+    profile_toml,
+    saiConfig
   );
 };

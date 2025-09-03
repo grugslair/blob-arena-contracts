@@ -8,7 +8,7 @@ pub enum Source {
 }
 
 
-fn consume_random(contract_address: ContractAddress, salt: felt252) -> felt252 {
+pub fn consume_random(contract_address: ContractAddress, salt: felt252) -> felt252 {
     *call_contract_syscall(contract_address, selector!("consume_random"), [1, salt].span())
         .unwrap_syscall()[0]
 }

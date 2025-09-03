@@ -202,6 +202,26 @@ export const loadAccountManifest = async (profile, password = null) => {
   return account_manifest;
 };
 
+export const abiHasConstructor = (abi) => {
+  return abi.find((abiFunction) => abiFunction.name === "constructor");
+};
+
+export const compileConstructor = (abi, calldata) => {
+  if (!abiHasConstructor(abi)) {
+    return [];
+  }
+  return new CallData(abi).compile("constructor", calldata);
+};
+
+export const isContractDeployed = async (account, classHash) => {
+  try {
+    await account.getClassAt(classHash);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
 export const deployContract = async (
   account,
   classHash,

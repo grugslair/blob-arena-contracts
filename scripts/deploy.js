@@ -22,20 +22,18 @@ const sai = await loadSai();
 const owner = sai.account.address;
 
 await sai.declareAllClasses();
+await sai.deployAllContracts();
 await sai.deployContract(
-  deployWithOwner.map((name) => ({
-    tag: name,
-    class: name,
+  deployWithOwner.map((tag) => ({
+    tag,
     salt,
     unique: false,
     calldata: { owner },
   }))
 );
-
 await sai.deployContract([
   {
     tag: "arena_blobert_minter",
-    class: "arena_blobert_minter",
     salt,
     unique: false,
     calldata: {
@@ -45,7 +43,6 @@ await sai.deployContract([
   },
   {
     tag: "amma_blobert_minter",
-    class: "amma_blobert_minter",
     salt,
     unique: false,
     calldata: {
@@ -54,7 +51,6 @@ await sai.deployContract([
   },
   {
     tag: "loadout_classic",
-    class: "loadout_classic",
     salt,
     unique: false,
     calldata: {
@@ -68,7 +64,6 @@ await sai.deployContract([
   },
   {
     tag: "loadout_amma",
-    class: "loadout_amma",
     salt,
     unique: false,
     calldata: {
@@ -82,7 +77,6 @@ await sai.deployContract([
   },
   {
     tag: "arena_credit_purchase",
-    class: "arena_credit_purchase",
     salt,
     unique: false,
     calldata: {
@@ -95,7 +89,6 @@ await sai.deployContract([
 await sai.deployContract([
   {
     tag: "arcade_classic",
-    class: "arcade_classic",
     salt,
     unique: false,
     calldata: {
@@ -103,11 +96,11 @@ await sai.deployContract([
       attack_address: sai.contracts["attack"].contract_address,
       loadout_address: sai.contracts["loadout_classic"].contract_address,
       credit_address: sai.contracts["arena_credit"].contract_address,
+      vrf_address: sai.contracts["vrf"].contract_address,
     },
   },
   {
     tag: "arcade_amma",
-    class: "arcade_amma",
     salt,
     unique: false,
     calldata: {
@@ -115,12 +108,12 @@ await sai.deployContract([
       attack_address: sai.contracts["attack"].contract_address,
       loadout_address: sai.contracts["loadout_amma"].contract_address,
       credit_address: sai.contracts["arena_credit"].contract_address,
+      vrf_address: sai.contracts["vrf"].contract_address,
       collectable_address: sai.contracts["amma_blobert"].contract_address,
     },
   },
   {
     tag: "pvp",
-    class: "pvp",
     salt,
     unique: false,
     calldata: {

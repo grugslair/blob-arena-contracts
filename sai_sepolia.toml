@@ -10,6 +10,7 @@ contract_address = "0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578
 contract_address = "0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f"
 
 [defaults]
+salt = "0xbeef"
 
 [declare]
 arena_blobert = {}
