@@ -3,11 +3,10 @@ import { makeArenaBlobertCalls } from "./set-arena-token.js";
 import { makeArcadeClassicCalls } from "./set-arcade-classic.js";
 import { makeLoadoutsClassic } from "./set-loadout-classic.js";
 import { makeLoadoutsAmma } from "./set-loadout-amma.js";
-import { stark } from "starknet";
+import { stark, config } from "starknet";
 import { dumpToml, loadToml } from "./stark-utils.js";
 import { makeArcadeAmmaCalls } from "./set-arcade-amma.js";
 import { makeArenaCreditCalls } from "./set-arena-credits.js";
-
 const deployWithOwner = [
   "arena_blobert",
   "amma_blobert",
@@ -116,9 +115,9 @@ await sai.deployContract([
 sai.dumpManifest();
 
 const toriiContract = [
-  ["arena_blobert", "erc721-world"],
-  ["amma_blobert", "erc721-world"],
-  ["amma_blobert_soulbound", "erc721-world"],
+  ["arena_blobert", "erc721"],
+  ["amma_blobert", "erc721"],
+  ["amma_blobert_soulbound", "erc721"],
   ["arena_blobert_minter", "contract"],
   ["amma_blobert_minter", "contract"],
   ["loadout_classic", "contract"],

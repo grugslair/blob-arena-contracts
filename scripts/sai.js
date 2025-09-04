@@ -5,6 +5,7 @@ import {
   hash,
   stark,
   CallData,
+  config,
 } from "starknet";
 import {
   loadJson,
@@ -56,7 +57,11 @@ const loadAccount = async (account, cmdOptions) => {
     const password = cmdOptions.password || account.password;
     privateKey = await readKeystorePK(keystorePath, accountAddress, password);
   }
-  return new Account({ nodeUrl }, accountAddress, privateKey);
+  return new Account({
+    provider: { nodeUrl },
+    address: accountAddress,
+    signer: privateKey,
+  });
 };
 
 const declareContracts = async (
@@ -353,7 +358,11 @@ export class SaiProject {
       throw new Error(`Contract with tag ${tag} not found`);
     }
     const abi = await this.getAbiFromContract(tag);
-    return new Contract(abi, contract.contract_address, this.account);
+    return new Contract({
+      abi,
+      address: contract.contract_address,
+      providerOrAccount: this.account,
+    });
   }
 
   async getAbiFromContract(tag) {
@@ -455,7 +464,6 @@ const deploymentToPayload = (deployment) => {
 
 export const loadSai = async (saiConfig) => {
   const cmdArgs = commandLineArgs(cmdOptions);
-
   const directoryPath = resolvePath(cmdArgs.directory_path);
   const scarb_toml = loadToml(`${directoryPath}/Scarb.toml`);
   const profile_toml = loadToml(`${directoryPath}/sai_${cmdArgs.profile}.toml`);
