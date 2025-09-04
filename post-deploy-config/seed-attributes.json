@@ -18,17 +18,6 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
-                  "strength": 0,
-                  "vitality": 20,
-                  "dexterity": 0,
-                  "luck": 0
-                }
-              }
-            },
-            {
-              "target": "Player",
-              "affect": {
                 "Health": 20
               }
             }
@@ -57,7 +46,7 @@
               "affect": {
                 "Stats": {
                   "strength": 0,
-                  "vitality": 10,
+                  "vitality": 0,
                   "dexterity": 15,
                   "luck": 0
                 }
@@ -94,7 +83,7 @@
               "affect": {
                 "Stats": {
                   "strength": -10,
-                  "vitality": 25,
+                  "vitality": 0,
                   "dexterity": 0,
                   "luck": 0
                 }
@@ -129,17 +118,6 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
-                  "strength": 0,
-                  "vitality": 20,
-                  "dexterity": 0,
-                  "luck": 0
-                }
-              }
-            },
-            {
-              "target": "Player",
-              "affect": {
                 "Health": 30
               }
             }
@@ -168,7 +146,7 @@
               "affect": {
                 "Stats": {
                   "strength": 0,
-                  "vitality": 10,
+                  "vitality": 0,
                   "dexterity": 10,
                   "luck": 0
                 }
@@ -203,17 +181,6 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
-                  "strength": 0,
-                  "vitality": 20,
-                  "dexterity": 0,
-                  "luck": 0
-                }
-              }
-            },
-            {
-              "target": "Player",
-              "affect": {
                 "Health": 40
               }
             }
@@ -237,17 +204,6 @@
           "accuracy": 100,
           "cooldown": 3,
           "hit": [
-            {
-              "target": "Player",
-              "affect": {
-                "Stats": {
-                  "strength": 0,
-                  "vitality": 25,
-                  "dexterity": 0,
-                  "luck": 0
-                }
-              }
-            },
             {
               "target": "Player",
               "affect": {
@@ -279,7 +235,7 @@
               "affect": {
                 "Stats": {
                   "strength": 0,
-                  "vitality": 15,
+                  "vitality": 0,
                   "dexterity": 5,
                   "luck": 0
                 }
@@ -351,17 +307,6 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
-                  "strength": 0,
-                  "vitality": 20,
-                  "dexterity": 0,
-                  "luck": 0
-                }
-              }
-            },
-            {
-              "target": "Player",
-              "affect": {
                 "Health": 20
               }
             }
@@ -390,7 +335,7 @@
               "affect": {
                 "Stats": {
                   "strength": -10,
-                  "vitality": 30,
+                  "vitality": 0,
                   "dexterity": 0,
                   "luck": 0
                 }
@@ -427,7 +372,7 @@
               "affect": {
                 "Stats": {
                   "strength": 0,
-                  "vitality": 15,
+                  "vitality": 0,
                   "dexterity": 10,
                   "luck": 0
                 }
@@ -462,17 +407,6 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
-                  "strength": 0,
-                  "vitality": 20,
-                  "dexterity": 0,
-                  "luck": 0
-                }
-              }
-            },
-            {
-              "target": "Player",
-              "affect": {
                 "Health": 20
               }
             }
@@ -501,7 +435,7 @@
               "affect": {
                 "Stats": {
                   "strength": 0,
-                  "vitality": 15,
+                  "vitality": 0,
                   "dexterity": 10,
                   "luck": 0
                 }
@@ -538,7 +472,7 @@
               "affect": {
                 "Stats": {
                   "strength": 0,
-                  "vitality": 10,
+                  "vitality": 0,
                   "dexterity": 20,
                   "luck": 0
                 }
@@ -575,7 +509,7 @@
               "affect": {
                 "Stats": {
                   "strength": 0,
-                  "vitality": 10,
+                  "vitality": 0,
                   "dexterity": 10,
                   "luck": 0
                 }
@@ -835,7 +769,7 @@
               "affect": {
                 "Stats": {
                   "strength": 20,
-                  "vitality": 20,
+                  "vitality": 0,
                   "dexterity": 0,
                   "luck": 0
                 }
@@ -901,17 +835,6 @@
             {
               "target": "Player",
               "affect": {
-                "Stats": {
-                  "strength": 0,
-                  "vitality": 25,
-                  "dexterity": 0,
-                  "luck": 0
-                }
-              }
-            },
-            {
-              "target": "Player",
-              "affect": {
                 "Health": 25
               }
             }
@@ -971,7 +894,7 @@
               "affect": {
                 "Stats": {
                   "strength": 0,
-                  "vitality": 10,
+                  "vitality": 0,
                   "dexterity": 15,
                   "luck": 0
                 }
@@ -1442,17 +1365,6 @@
               "target": "Opponent",
               "affect": {
                 "Stun": 15
-              }
-            },
-            {
-              "target": "Player",
-              "affect": {
-                "Stats": {
-                  "strength": 0,
-                  "vitality": 20,
-                  "dexterity": 0,
-                  "luck": 0
-                }
               }
             },
             {
@@ -2203,17 +2115,6 @@
               "target": "Opponent",
               "affect": {
                 "Stun": 30
-              }
-            },
-            {
-              "target": "Player",
-              "affect": {
-                "Stats": {
-                  "strength": 0,
-                  "vitality": 20,
-                  "dexterity": 0,
-                  "luck": 0
-                }
               }
             },
             {
@@ -4555,17 +4456,6 @@
               "target": "Opponent",
               "affect": {
                 "Stun": 15
-              }
-            },
-            {
-              "target": "Player",
-              "affect": {
-                "Stats": {
-                  "strength": 0,
-                  "vitality": 20,
-                  "dexterity": 0,
-                  "luck": 0
-                }
               }
             },
             {
