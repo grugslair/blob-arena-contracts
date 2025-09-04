@@ -97,10 +97,16 @@ mod arcade_classic {
         attack_address: ContractAddress,
         loadout_address: ContractAddress,
         credit_address: ContractAddress,
+        vrf_address: ContractAddress,
     ) {
         self.grant_owner(owner);
         ArcadeInternal::init(
-            ref self.arcade, "arcade_classic", attack_address, loadout_address, credit_address,
+            ref self.arcade,
+            "arcade_classic",
+            attack_address,
+            loadout_address,
+            credit_address,
+            vrf_address,
         );
         register_table_with_schema::<super::OpponentTable>("arcade_classic", "Opponent");
     }

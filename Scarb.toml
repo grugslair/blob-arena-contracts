@@ -6,19 +6,7 @@ scarb-version = "2.11.4"
 
 
 [workspace]
-members = [
-    "packages/amma_blobert",
-    "packages/arena_blobert",
-    "packages/loadout",
-    "packages/blobert",
-    "packages/combat",
-    "packages/arcade",
-    "packages/utils",
-    "packages/arcade_classic",
-    "packages/arcade_amma",
-    "packages/credit",
-    "packages/pvp",
-]
+members = ["packages/*"]
 
 
 [workspace.dependencies]
@@ -96,6 +84,7 @@ build-external-contracts = [
     "ba_arcade_classic::arcade_classic",
     "ba_arcade_amma::contract::arcade_amma",
     "ba_pvp::contract::pvp",
+    "ba_utils::vrf::mock_vrf",
 ]
 
 [tool]

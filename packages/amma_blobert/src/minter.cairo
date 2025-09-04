@@ -20,13 +20,13 @@ mod amma_blobert_minter {
 
     #[storage]
     struct Storage {
-        contract_address: ContractAddress,
+        token_address: ContractAddress,
         claimed: Map<ContractAddress, bool>,
     }
 
     #[constructor]
-    fn constructor(ref self: ContractState, contract_address: ContractAddress) {
-        self.contract_address.write(contract_address);
+    fn constructor(ref self: ContractState, token_address: ContractAddress) {
+        self.token_address.write(token_address);
     }
 
 
@@ -40,11 +40,10 @@ mod amma_blobert_minter {
             let caller = get_caller_address();
             assert(!self.claimed.read(caller), 'Already Claimed');
             self.claimed.write(caller, true);
-            let contract_address = self.contract_address.read();
+            let token_address = self.token_address.read();
             emit_return(
                 array![
-                    mint_fighter(contract_address, caller, 1),
-                    mint_fighter(contract_address, caller, 2),
+                    mint_fighter(token_address, caller, 1), mint_fighter(token_address, caller, 2),
                 ],
             )
         }

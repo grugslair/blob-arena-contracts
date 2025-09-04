@@ -3,13 +3,16 @@ rpc_url = "http://localhost:5050/"
 account_address = "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
 private_key = "0x1800000000300000180000000000030000000000003006001800006600"
 
-[contracts.blobert]
-contract_address = "0x0"
+[contracts]
+blobert = { contract_address = "0x0" }
+stark_token = { contract_address = "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d" }
 
-[contracts.stark_token]
-contract_address = "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
+[defaults]
+salt = "0x0"
 
 [declare]
+mock_vrf = {}
+
 arena_blobert = {}
 arena_blobert_minter = {}
 amma_blobert = {}
@@ -27,6 +30,11 @@ arcade_classic = {}
 arcade_amma = {}
 
 pvp = {}
+
+
+[deploy]
+vrf = { class = "mock_vrf" }
+
 
 [variables]
 arena_contracts = []

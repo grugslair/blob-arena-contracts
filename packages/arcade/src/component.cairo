@@ -152,6 +152,7 @@ pub mod arcade_component {
                 attack_address: ContractAddress,
                 loadout_address: ContractAddress,
                 credit_address: ContractAddress,
+                vrf_address: ContractAddress,
             );
             fn start_attempt(
                 ref self: TState,
@@ -199,10 +200,12 @@ pub mod arcade_component {
             attack_address: ContractAddress,
             loadout_address: ContractAddress,
             credit_address: ContractAddress,
+            vrf_address: ContractAddress,
         ) {
             self.attack_address.write(attack_address);
             self.loadout_address.write(loadout_address);
             self.credit_address.write(credit_address);
+            self.vrf_address.write(vrf_address);
             register_table_with_schema::<ArcadeAttempt>(namespace.clone(), "ArcadeAttempt");
             register_table_with_schema::<ArcadeRound>(namespace.clone(), "ArcadeRound");
             register_table_with_schema::<AttackLastUsed>(namespace, "AttackLastUsed");
