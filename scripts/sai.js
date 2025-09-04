@@ -17,6 +17,7 @@ import {
   getReturns,
   isContractDeployed,
   compileConstructor,
+  checkClassDeclared,
 } from "./stark-utils.js";
 import commandLineArgs from "command-line-args";
 import * as accounts from "web3-eth-accounts";
@@ -188,30 +189,62 @@ export class SaiProject {
     dumpJson({ deployments, classes, contracts, declarations, abis }, dumpPath);
   }
 
-  async declareClass(tag, { name, contract_path, casm_path } = {}) {
-    const contractPath =
-      contract_path ||
-      `${this.targetPath}/${this.name}_${name || tag}.contract_class.json`;
-    const casmPath =
-      casm_path ||
-      `${this.targetPath}/${this.name}_${
-        name || tag
-      }.compiled_contract_class.json`;
-    console.log(`Declaring class ${tag}`);
-    let { abi, class_hash, transaction_hash } = await declareContract(
-      this.account,
-      contractPath,
-      casmPath
+  getClassData(tag, { name, contract_path, casm_path } = {}) {
+    const fileName = `${this.targetPath}/${this.name}_${name || tag}`;
+    const contractPath = contract_path || `${fileName}.contract_class.json`;
+    casm_path = casm_path || `${fileName}.compiled_contract_class.json`;
+    const contract = loadJson(contractPath);
+    const class_hash = hash.computeContractClassHash(contract);
+    return { tag, name, contract, casm_path, class_hash };
+  }
+
+  async checkClassDeployed(data) {
+    const class_hash =
+      typeof data === "string" ? data : data.class_hash || data.classHash;
+    return await checkClassDeclared(this.account, class_hash);
+  }
+
+  async declareClass(tag, classData = {}) {
+    const { class_hash, contract, casm_path } = this.getClassData(
+      tag,
+      classData
     );
-    this.declarations[tag] = { class_hash, transaction_hash };
-    this.addClass(tag, class_hash, abi);
+    if (await this.checkClassDeployed(classData)) {
+      console.log(`${tag} already declared`);
+    } else {
+      console.log(`Declaring ${tag}...`);
+      const { transaction_hash } = await this.account.declare({
+        casm: loadJson(casm_path),
+        contract,
+      });
+      await this.account.waitForTransaction(transaction_hash);
+      this.declarations[tag] = { class_hash, transaction_hash };
+    }
+    this.addClass(tag, class_hash, contract.abi);
   }
 
   async declareAllClasses() {
-    for (const [tag, { name, contract_path, casm_path }] of Object.entries(
-      this.declare
-    )) {
-      await this.declareClass(tag, { name, contract_path, casm_path });
+    const classDatas = Object.entries(this.declare).map(([tag, data]) =>
+      this.getClassData(tag, data)
+    );
+    const isDeployed = await Promise.all(
+      classDatas.map((data) => this.checkClassDeployed(data))
+    );
+    for (let i = 0; i < classDatas.length; i++) {
+      const { contract, class_hash, tag, casm_path } = classDatas[i];
+      if (isDeployed[i]) {
+        console.log(` - ${classDatas[i].tag} already declared`);
+      } else {
+        console.log(` - Declaring ${classDatas[i].tag}...`);
+        const casm = loadJson(casm_path);
+        const { transaction_hash } = await this.account.declare({
+          casm,
+          contract,
+        });
+        await this.account.waitForTransaction(transaction_hash);
+        this.declarations[tag] = { class_hash, transaction_hash };
+      }
+      this.addClass(tag, class_hash, contract.abi);
     }
   }
 

@@ -17,9 +17,9 @@
       {
         "name": "Sword Slash",
         "speed": 85,
-        "accuracy": 95,
+        "chance": 95,
         "cooldown": 0,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -30,14 +30,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Shield Punch",
         "speed": 70,
-        "accuracy": 80,
+        "chance": 80,
         "cooldown": 1,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -54,14 +54,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Grapple",
         "speed": 65,
-        "accuracy": 90,
+        "chance": 90,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -89,14 +89,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Osoto Gari",
         "speed": 45,
-        "accuracy": 80,
+        "chance": 80,
         "cooldown": 5,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -113,7 +113,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       }
     ]
   },
@@ -138,9 +138,9 @@
       {
         "name": "Ground and Pound",
         "speed": 65,
-        "accuracy": 80,
+        "chance": 80,
         "cooldown": 1,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -157,14 +157,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Grind",
         "speed": 45,
-        "accuracy": 80,
+        "chance": 80,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -186,14 +186,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "White Company",
         "speed": 40,
-        "accuracy": 90,
+        "chance": 90,
         "cooldown": 5,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -204,7 +204,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       }
     ]
   },
@@ -229,9 +229,9 @@
       {
         "name": "Shield Block",
         "speed": 60,
-        "accuracy": 100,
+        "chance": 100,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Player",
             "affect": {
@@ -261,14 +261,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Sword Dance",
         "speed": 85,
-        "accuracy": 90,
+        "chance": 90,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -290,14 +290,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Spin Attack",
         "speed": 50,
-        "accuracy": 90,
+        "chance": 90,
         "cooldown": 5,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -308,7 +308,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       }
     ]
   },
@@ -333,9 +333,9 @@
       {
         "name": "Low Kick",
         "speed": 75,
-        "accuracy": 100,
+        "chance": 100,
         "cooldown": 1,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -357,14 +357,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Swag",
         "speed": 65,
-        "accuracy": 100,
+        "chance": 100,
         "cooldown": 5,
-        "hit": [
+        "success": [
           {
             "target": "Player",
             "affect": {
@@ -377,14 +377,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Mega Shield Bash",
         "speed": 50,
-        "accuracy": 80,
+        "chance": 80,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -401,7 +401,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       }
     ]
   },
@@ -423,9 +423,9 @@
       {
         "name": "Axe Attack",
         "speed": 60,
-        "accuracy": 85,
+        "chance": 85,
         "cooldown": 0,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -436,7 +436,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "tag": "Shield Punch"
@@ -447,9 +447,9 @@
       {
         "name": "Reverse Throw",
         "speed": 40,
-        "accuracy": 80,
+        "chance": 80,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -483,7 +483,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       }
     ]
   },
@@ -511,9 +511,9 @@
       {
         "name": "Swift Attack",
         "speed": 90,
-        "accuracy": 90,
+        "chance": 90,
         "cooldown": 1,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -524,14 +524,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Comeback Kid",
         "speed": 50,
-        "accuracy": 100,
+        "chance": 100,
         "cooldown": 5,
-        "hit": [
+        "success": [
           {
             "target": "Player",
             "affect": {
@@ -539,7 +539,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       }
     ]
   },
@@ -564,9 +564,9 @@
       {
         "name": "Weapon Master",
         "speed": 40,
-        "accuracy": 90,
+        "chance": 90,
         "cooldown": 1,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -577,14 +577,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Superman Shield Punch",
         "speed": 60,
-        "accuracy": 80,
+        "chance": 80,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -601,14 +601,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "People's Elbow",
         "speed": 30,
-        "accuracy": 75,
+        "chance": 75,
         "cooldown": 5,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -625,7 +625,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       }
     ]
   },
@@ -647,9 +647,9 @@
       {
         "name": "Two-Handed Slash",
         "speed": 60,
-        "accuracy": 85,
+        "chance": 85,
         "cooldown": 0,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -660,14 +660,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Sword Snipe",
         "speed": 40,
-        "accuracy": 95,
+        "chance": 95,
         "cooldown": 1,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -678,14 +678,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Multi Strike",
         "speed": 70,
-        "accuracy": 75,
+        "chance": 75,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -702,14 +702,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Knight of Wakanda",
         "speed": 80,
-        "accuracy": 100,
+        "chance": 100,
         "cooldown": 5,
-        "hit": [
+        "success": [
           {
             "target": "Player",
             "affect": {
@@ -728,7 +728,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       }
     ]
   },
@@ -753,9 +753,9 @@
       {
         "name": "Buckler Tap",
         "speed": 90,
-        "accuracy": 90,
+        "chance": 90,
         "cooldown": 1,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -783,14 +783,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Jujitsu Throw",
         "speed": 60,
-        "accuracy": 75,
+        "chance": 75,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -824,14 +824,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Steal Weapon",
         "speed": 80,
-        "accuracy": 65,
+        "chance": 65,
         "cooldown": 5,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -859,7 +859,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       }
     ]
   },
@@ -881,9 +881,9 @@
       {
         "name": "Quick Slash",
         "speed": 95,
-        "accuracy": 90,
+        "chance": 90,
         "cooldown": 0,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -894,7 +894,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "tag": "Buckler Tap"
@@ -902,9 +902,9 @@
       {
         "name": "Steel Sonata",
         "speed": 70,
-        "accuracy": 80,
+        "chance": 80,
         "cooldown": 5,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -926,14 +926,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Circle Out",
         "speed": 90,
-        "accuracy": 90,
+        "chance": 90,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Player",
             "affect": {
@@ -952,7 +952,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       }
     ]
   },
@@ -977,9 +977,9 @@
       {
         "name": "Hammer Fist",
         "speed": 70,
-        "accuracy": 80,
+        "chance": 80,
         "cooldown": 1,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -996,14 +996,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Spinning Axe",
         "speed": 50,
-        "accuracy": 80,
+        "chance": 80,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -1014,14 +1014,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "One Shot",
         "speed": 40,
-        "accuracy": 60,
+        "chance": 60,
         "cooldown": 5,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -1032,7 +1032,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       }
     ]
   },
@@ -1060,9 +1060,9 @@
       {
         "name": "Power Arm",
         "speed": 50,
-        "accuracy": 80,
+        "chance": 80,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -1079,14 +1079,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Snap Shot",
         "speed": 90,
-        "accuracy": 100,
+        "chance": 100,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Player",
             "affect": {
@@ -1110,7 +1110,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       }
     ]
   },
@@ -1135,9 +1135,9 @@
       {
         "name": "Knee Check",
         "speed": 80,
-        "accuracy": 90,
+        "chance": 90,
         "cooldown": 1,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -1165,14 +1165,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Headbutt",
         "speed": 50,
-        "accuracy": 75,
+        "chance": 75,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -1195,14 +1195,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Final Judgement",
         "speed": 40,
-        "accuracy": 95,
+        "chance": 95,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -1213,7 +1213,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       }
     ]
   },
@@ -1238,9 +1238,9 @@
       {
         "name": "Shield Check",
         "speed": 55,
-        "accuracy": 80,
+        "chance": 80,
         "cooldown": 1,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -1257,14 +1257,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Hold The Line",
         "speed": 60,
-        "accuracy": 100,
+        "chance": 100,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Player",
             "affect": {
@@ -1272,14 +1272,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Seismic Toss",
         "speed": 30,
-        "accuracy": 75,
+        "chance": 75,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -1296,7 +1296,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       }
     ]
   },
@@ -1324,9 +1324,9 @@
       {
         "name": "Axe Thrust",
         "speed": 50,
-        "accuracy": 70,
+        "chance": 70,
         "cooldown": 2,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -1348,14 +1348,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Spartan Spear",
         "speed": 70,
-        "accuracy": 80,
+        "chance": 80,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -1366,7 +1366,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       }
     ]
   },
@@ -1388,9 +1388,9 @@
       {
         "name": "Sword Attack",
         "speed": 75,
-        "accuracy": 90,
+        "chance": 90,
         "cooldown": 0,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -1401,7 +1401,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "tag": "Shield Check"
@@ -1409,9 +1409,9 @@
       {
         "name": "Karate Kick",
         "speed": 75,
-        "accuracy": 80,
+        "chance": 80,
         "cooldown": 2,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -1428,14 +1428,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Throwing Hands",
         "speed": 60,
-        "accuracy": 85,
+        "chance": 85,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -1446,7 +1446,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       }
     ]
   },
@@ -1474,9 +1474,9 @@
       {
         "name": "Meteor Shield",
         "speed": 70,
-        "accuracy": 95,
+        "chance": 95,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Player",
             "affect": {
@@ -1506,14 +1506,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Hip Throw",
         "speed": 50,
-        "accuracy": 90,
+        "chance": 90,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -1530,7 +1530,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       }
     ]
   },
@@ -1558,9 +1558,9 @@
       {
         "name": "Jumping Punch",
         "speed": 70,
-        "accuracy": 75,
+        "chance": 75,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -1577,14 +1577,14 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       },
       {
         "name": "Flying Hussar",
         "speed": 40,
-        "accuracy": 70,
+        "chance": 70,
         "cooldown": 3,
-        "hit": [
+        "success": [
           {
             "target": "Opponent",
             "affect": {
@@ -1595,7 +1595,7 @@
             }
           }
         ],
-        "miss": []
+        "fail": []
       }
     ]
   }

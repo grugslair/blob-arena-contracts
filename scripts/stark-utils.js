@@ -248,6 +248,15 @@ export const deployContract = async (
   };
 };
 
+export const checkClassDeclared = async (provider, classHash) => {
+  try {
+    await provider.getClassByHash(classHash);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
 export const declareContract = async (account, contractPath, CasmPath) => {
   const contract = loadJson(contractPath);
 

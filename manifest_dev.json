@@ -57,7 +57,7 @@
       ]
     },
     "attack": {
-      "contract_address": "0x1564d8d8e42435c776175669ae1aacb6997f9cfd47716629a43edc8c7ccbadf",
+      "contract_address": "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
       "tag": "attack",
       "unique": false,
       "calldata": {
@@ -66,7 +66,7 @@
       "salt": "0x0",
       "once": true,
       "class": "attack",
-      "class_hash": "0x3af1e7936ebd63c7725cb9f77811439da9a033138ae804964438a904b19b0b1",
+      "class_hash": "0x3d95b28de2037503f48fa20e25fb0eb5c55bf674447dd2e8b1d74cf99bb8d7d",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       ]
@@ -119,12 +119,12 @@
       ]
     },
     "loadout_classic": {
-      "contract_address": "0x7129645491b970120dbf4a39dee75517e2fc760d28ab5400fa383f638012b87",
+      "contract_address": "0x60c6418397f2be9a50d39845a4eda46865437b53db27458793b1fb9a0e7a90c",
       "tag": "loadout_classic",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_dispatcher_address": "0x1564d8d8e42435c776175669ae1aacb6997f9cfd47716629a43edc8c7ccbadf",
+        "attack_dispatcher_address": "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
         "collection_addresses": [
           "0x6788392f660b51b8bcefeab0beb881a43d0a9a6895704f389aba7af5b9b67e",
           "0x0"
@@ -133,22 +133,22 @@
       "salt": "0x0",
       "once": true,
       "class": "loadout_classic",
-      "class_hash": "0x13d9aacaccd717d2663692546631b60f355684067f0ee55c0072d0c95995c7c",
+      "class_hash": "0x2334a13d1112f6449e365b1c4766ab2dd25e28f2953cb2b246acb821da0b779",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x1564d8d8e42435c776175669ae1aacb6997f9cfd47716629a43edc8c7ccbadf",
+        "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
         "0x2",
         "0x6788392f660b51b8bcefeab0beb881a43d0a9a6895704f389aba7af5b9b67e",
         "0x0"
       ]
     },
     "loadout_amma": {
-      "contract_address": "0x76039e53b9e6afc86f2d5a8afa74a83341b925be4d59a3cb77b7ff9e6aac89",
+      "contract_address": "0x61da40e441976fd46af5a9feafb724f10fa0110d45cc4ed6540ce98d69ce427",
       "tag": "loadout_amma",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_dispatcher_address": "0x1564d8d8e42435c776175669ae1aacb6997f9cfd47716629a43edc8c7ccbadf",
+        "attack_dispatcher_address": "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
         "collection_addresses": [
           "0x7379b0bc12b06ac173e476c0cc58ffdd8621d24310bd189bea83325c9232156",
           "0x1dbe09df4d7aa57182ca4f0ef90893c9b7e27f71f5baed0998a6a7628489ed6"
@@ -157,10 +157,10 @@
       "salt": "0x0",
       "once": true,
       "class": "loadout_amma",
-      "class_hash": "0x376365ae089416706108ea5a9ac02bcf98be2bfeb71e5306adc961cffb97f1c",
+      "class_hash": "0x17945a4c99b7cf4b25d70e38b72f45ddcb913a4ee65662a0549bc95b42aaa87",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x1564d8d8e42435c776175669ae1aacb6997f9cfd47716629a43edc8c7ccbadf",
+        "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
         "0x2",
         "0x7379b0bc12b06ac173e476c0cc58ffdd8621d24310bd189bea83325c9232156",
         "0x1dbe09df4d7aa57182ca4f0ef90893c9b7e27f71f5baed0998a6a7628489ed6"
@@ -184,36 +184,36 @@
       ]
     },
     "arcade_classic": {
-      "contract_address": "0x7536d417bcec109d15be4b6b959880e989095333076b2c93014f235eca0b0ac",
+      "contract_address": "0x5d1591790a01582c6b602687c4dc81c4912cad888de5ccbe2cc7642c5935647",
       "tag": "arcade_classic",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_address": "0x1564d8d8e42435c776175669ae1aacb6997f9cfd47716629a43edc8c7ccbadf",
-        "loadout_address": "0x7129645491b970120dbf4a39dee75517e2fc760d28ab5400fa383f638012b87",
+        "attack_address": "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
+        "loadout_address": "0x60c6418397f2be9a50d39845a4eda46865437b53db27458793b1fb9a0e7a90c",
         "credit_address": "0x162a64c2694d546b84b1ce5b5e0a39e767a2e25cf6f7b941c41a6f91e047f3f",
         "vrf_address": "0x5843a115c889aed489a9136f95849fc5bf6cd243b8644657cfb9dfc8caa244e"
       },
       "salt": "0x0",
       "once": true,
       "class": "arcade_classic",
-      "class_hash": "0x10fa0ef6a3a960c1b8a2e487caede7697cbc3cafff24b6019be42de12963a68",
+      "class_hash": "0x5ee34144445c6d810c3cf755b35be4a34e804e0a23ed6172d3c746e0504a1a0",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x1564d8d8e42435c776175669ae1aacb6997f9cfd47716629a43edc8c7ccbadf",
-        "0x7129645491b970120dbf4a39dee75517e2fc760d28ab5400fa383f638012b87",
+        "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
+        "0x60c6418397f2be9a50d39845a4eda46865437b53db27458793b1fb9a0e7a90c",
         "0x162a64c2694d546b84b1ce5b5e0a39e767a2e25cf6f7b941c41a6f91e047f3f",
         "0x5843a115c889aed489a9136f95849fc5bf6cd243b8644657cfb9dfc8caa244e"
       ]
     },
     "arcade_amma": {
-      "contract_address": "0x220f9f4711d2f62f67a047d7aa6648d3f046971d9e6bed9f0feac9e30bff8c2",
+      "contract_address": "0x79408b34e5571afeed6f5b09c9b178ab4720adfb8d5a3674a249300d78a534c",
       "tag": "arcade_amma",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_address": "0x1564d8d8e42435c776175669ae1aacb6997f9cfd47716629a43edc8c7ccbadf",
-        "loadout_address": "0x76039e53b9e6afc86f2d5a8afa74a83341b925be4d59a3cb77b7ff9e6aac89",
+        "attack_address": "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
+        "loadout_address": "0x61da40e441976fd46af5a9feafb724f10fa0110d45cc4ed6540ce98d69ce427",
         "credit_address": "0x162a64c2694d546b84b1ce5b5e0a39e767a2e25cf6f7b941c41a6f91e047f3f",
         "vrf_address": "0x5843a115c889aed489a9136f95849fc5bf6cd243b8644657cfb9dfc8caa244e",
         "collectable_address": "0x7379b0bc12b06ac173e476c0cc58ffdd8621d24310bd189bea83325c9232156"
@@ -221,29 +221,29 @@
       "salt": "0x0",
       "once": true,
       "class": "arcade_amma",
-      "class_hash": "0x4a636023c70b0a5b246bc1a2cc9903405f534508e14bc8bb7da0c26a3909328",
+      "class_hash": "0x246564e9187bee635f4ca00ecaf1d64775459e1ab882b5c52068b3f500d7ecf",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x1564d8d8e42435c776175669ae1aacb6997f9cfd47716629a43edc8c7ccbadf",
-        "0x76039e53b9e6afc86f2d5a8afa74a83341b925be4d59a3cb77b7ff9e6aac89",
+        "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
+        "0x61da40e441976fd46af5a9feafb724f10fa0110d45cc4ed6540ce98d69ce427",
         "0x162a64c2694d546b84b1ce5b5e0a39e767a2e25cf6f7b941c41a6f91e047f3f",
         "0x5843a115c889aed489a9136f95849fc5bf6cd243b8644657cfb9dfc8caa244e",
         "0x7379b0bc12b06ac173e476c0cc58ffdd8621d24310bd189bea83325c9232156"
       ]
     },
     "pvp": {
-      "contract_address": "0xe65012f624ea3e5686110116cf2ae95244ce381eb1701440e4d21d51555c2a",
+      "contract_address": "0x29a8a8581b7b220da8df417fc3bdf4780bf0bb1c7b33b0b57d1ec8d99d6bbaf",
       "tag": "pvp",
       "unique": false,
       "calldata": {
-        "attack_address": "0x1564d8d8e42435c776175669ae1aacb6997f9cfd47716629a43edc8c7ccbadf"
+        "attack_address": "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432"
       },
       "salt": "0x0",
       "once": true,
       "class": "pvp",
-      "class_hash": "0x3f4c8fad7a85052a02e11b5af84f2af9cc8e93423667ba9b1091b6db78038f6",
+      "class_hash": "0x103e9546a0df25bc073dd6f6d210b955a288b5bb6f984ca72cb139fc1a1b4e0",
       "calldata_compiled": [
-        "0x1564d8d8e42435c776175669ae1aacb6997f9cfd47716629a43edc8c7ccbadf"
+        "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432"
       ]
     }
   },
@@ -267,13 +267,13 @@
       "class_hash": "0x5784a1c69e6d21c22c34deb680c685263912552ce12d92b731fceaa99e6c747"
     },
     "attack": {
-      "class_hash": "0x3af1e7936ebd63c7725cb9f77811439da9a033138ae804964438a904b19b0b1"
+      "class_hash": "0x3d95b28de2037503f48fa20e25fb0eb5c55bf674447dd2e8b1d74cf99bb8d7d"
     },
     "loadout_classic": {
-      "class_hash": "0x13d9aacaccd717d2663692546631b60f355684067f0ee55c0072d0c95995c7c"
+      "class_hash": "0x2334a13d1112f6449e365b1c4766ab2dd25e28f2953cb2b246acb821da0b779"
     },
     "loadout_amma": {
-      "class_hash": "0x376365ae089416706108ea5a9ac02bcf98be2bfeb71e5306adc961cffb97f1c"
+      "class_hash": "0x17945a4c99b7cf4b25d70e38b72f45ddcb913a4ee65662a0549bc95b42aaa87"
     },
     "arena_credit": {
       "class_hash": "0x77c63a38a07c175c101094a04727d42a33a4c9870689f9a6dfcd2d882c6515b"
@@ -282,13 +282,13 @@
       "class_hash": "0x5da10994723906575037e1103308003955000b72ee7ad7147dff4af4461dd24"
     },
     "arcade_classic": {
-      "class_hash": "0x10fa0ef6a3a960c1b8a2e487caede7697cbc3cafff24b6019be42de12963a68"
+      "class_hash": "0x5ee34144445c6d810c3cf755b35be4a34e804e0a23ed6172d3c746e0504a1a0"
     },
     "arcade_amma": {
-      "class_hash": "0x4a636023c70b0a5b246bc1a2cc9903405f534508e14bc8bb7da0c26a3909328"
+      "class_hash": "0x246564e9187bee635f4ca00ecaf1d64775459e1ab882b5c52068b3f500d7ecf"
     },
     "pvp": {
-      "class_hash": "0x3f4c8fad7a85052a02e11b5af84f2af9cc8e93423667ba9b1091b6db78038f6"
+      "class_hash": "0x103e9546a0df25bc073dd6f6d210b955a288b5bb6f984ca72cb139fc1a1b4e0"
     }
   },
   "contracts": {
@@ -319,8 +319,8 @@
       "class": "amma_blobert_soulbound"
     },
     "attack": {
-      "contract_address": "0x1564d8d8e42435c776175669ae1aacb6997f9cfd47716629a43edc8c7ccbadf",
-      "class_hash": "0x3af1e7936ebd63c7725cb9f77811439da9a033138ae804964438a904b19b0b1",
+      "contract_address": "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
+      "class_hash": "0x3d95b28de2037503f48fa20e25fb0eb5c55bf674447dd2e8b1d74cf99bb8d7d",
       "class": "attack"
     },
     "arena_credit": {
@@ -339,13 +339,13 @@
       "class": "amma_blobert_minter"
     },
     "loadout_classic": {
-      "contract_address": "0x7129645491b970120dbf4a39dee75517e2fc760d28ab5400fa383f638012b87",
-      "class_hash": "0x13d9aacaccd717d2663692546631b60f355684067f0ee55c0072d0c95995c7c",
+      "contract_address": "0x60c6418397f2be9a50d39845a4eda46865437b53db27458793b1fb9a0e7a90c",
+      "class_hash": "0x2334a13d1112f6449e365b1c4766ab2dd25e28f2953cb2b246acb821da0b779",
       "class": "loadout_classic"
     },
     "loadout_amma": {
-      "contract_address": "0x76039e53b9e6afc86f2d5a8afa74a83341b925be4d59a3cb77b7ff9e6aac89",
-      "class_hash": "0x376365ae089416706108ea5a9ac02bcf98be2bfeb71e5306adc961cffb97f1c",
+      "contract_address": "0x61da40e441976fd46af5a9feafb724f10fa0110d45cc4ed6540ce98d69ce427",
+      "class_hash": "0x17945a4c99b7cf4b25d70e38b72f45ddcb913a4ee65662a0549bc95b42aaa87",
       "class": "loadout_amma"
     },
     "arena_credit_purchase": {
@@ -354,65 +354,22 @@
       "class": "arena_credit_purchase"
     },
     "arcade_classic": {
-      "contract_address": "0x7536d417bcec109d15be4b6b959880e989095333076b2c93014f235eca0b0ac",
-      "class_hash": "0x10fa0ef6a3a960c1b8a2e487caede7697cbc3cafff24b6019be42de12963a68",
+      "contract_address": "0x5d1591790a01582c6b602687c4dc81c4912cad888de5ccbe2cc7642c5935647",
+      "class_hash": "0x5ee34144445c6d810c3cf755b35be4a34e804e0a23ed6172d3c746e0504a1a0",
       "class": "arcade_classic"
     },
     "arcade_amma": {
-      "contract_address": "0x220f9f4711d2f62f67a047d7aa6648d3f046971d9e6bed9f0feac9e30bff8c2",
-      "class_hash": "0x4a636023c70b0a5b246bc1a2cc9903405f534508e14bc8bb7da0c26a3909328",
+      "contract_address": "0x79408b34e5571afeed6f5b09c9b178ab4720adfb8d5a3674a249300d78a534c",
+      "class_hash": "0x246564e9187bee635f4ca00ecaf1d64775459e1ab882b5c52068b3f500d7ecf",
       "class": "arcade_amma"
     },
     "pvp": {
-      "contract_address": "0xe65012f624ea3e5686110116cf2ae95244ce381eb1701440e4d21d51555c2a",
-      "class_hash": "0x3f4c8fad7a85052a02e11b5af84f2af9cc8e93423667ba9b1091b6db78038f6",
+      "contract_address": "0x29a8a8581b7b220da8df417fc3bdf4780bf0bb1c7b33b0b57d1ec8d99d6bbaf",
+      "class_hash": "0x103e9546a0df25bc073dd6f6d210b955a288b5bb6f984ca72cb139fc1a1b4e0",
       "class": "pvp"
     }
   },
-  "declarations": {
-    "mock_vrf": {
-      "class_hash": "0x2bfc603e703bb2a69855698a540cdd3f400479692efab16f94a94efce38e69e"
-    },
-    "arena_blobert": {
-      "class_hash": "0x225d49fefa6bee6105c8b4a2a528764eb9057f8dc12c1534b09d27abc30c412"
-    },
-    "arena_blobert_minter": {
-      "class_hash": "0x7859e23b1ac4ccd5c7160d1d09e357753bb69ada7e2f8cf20d690a8cfcc28d3"
-    },
-    "amma_blobert": {
-      "class_hash": "0xad67917de81c1665aa9ce7d293c94f3ae85c66906953205b6a755bab7027a6"
-    },
-    "amma_blobert_soulbound": {
-      "class_hash": "0x2180fc2bcbdeea447ae0668796532c7a9de96b5492bdeb542e670287fec05fc"
-    },
-    "amma_blobert_minter": {
-      "class_hash": "0x5784a1c69e6d21c22c34deb680c685263912552ce12d92b731fceaa99e6c747"
-    },
-    "attack": {
-      "class_hash": "0x3af1e7936ebd63c7725cb9f77811439da9a033138ae804964438a904b19b0b1"
-    },
-    "loadout_classic": {
-      "class_hash": "0x13d9aacaccd717d2663692546631b60f355684067f0ee55c0072d0c95995c7c"
-    },
-    "loadout_amma": {
-      "class_hash": "0x376365ae089416706108ea5a9ac02bcf98be2bfeb71e5306adc961cffb97f1c"
-    },
-    "arena_credit": {
-      "class_hash": "0x77c63a38a07c175c101094a04727d42a33a4c9870689f9a6dfcd2d882c6515b"
-    },
-    "arena_credit_purchase": {
-      "class_hash": "0x5da10994723906575037e1103308003955000b72ee7ad7147dff4af4461dd24"
-    },
-    "arcade_classic": {
-      "class_hash": "0x10fa0ef6a3a960c1b8a2e487caede7697cbc3cafff24b6019be42de12963a68"
-    },
-    "arcade_amma": {
-      "class_hash": "0x4a636023c70b0a5b246bc1a2cc9903405f534508e14bc8bb7da0c26a3909328"
-    },
-    "pvp": {
-      "class_hash": "0x3f4c8fad7a85052a02e11b5af84f2af9cc8e93423667ba9b1091b6db78038f6"
-    }
-  },
+  "declarations": {},
   "abis": {
     "0x225d49fefa6bee6105c8b4a2a528764eb9057f8dc12c1534b09d27abc30c412": [
       {
@@ -3120,7 +3077,7 @@
         ]
       }
     ],
-    "0x3af1e7936ebd63c7725cb9f77811439da9a033138ae804964438a904b19b0b1": [
+    "0x3d95b28de2037503f48fa20e25fb0eb5c55bf674447dd2e8b1d74cf99bb8d7d": [
       {
         "type": "impl",
         "name": "IAttackImpl",
@@ -3235,6 +3192,10 @@
           {
             "name": "Stun",
             "type": "core::integer::u8"
+          },
+          {
+            "name": "Block",
+            "type": "core::integer::u8"
           }
         ]
       },
@@ -3261,19 +3222,19 @@
             "type": "core::integer::u32"
           },
           {
-            "name": "accuracy",
+            "name": "chance",
             "type": "core::integer::u8"
           },
           {
             "name": "cooldown",
-            "type": "core::integer::u8"
+            "type": "core::integer::u32"
           },
           {
-            "name": "hit",
+            "name": "success",
             "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
           },
           {
-            "name": "miss",
+            "name": "fail",
             "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
           }
         ]
@@ -3309,19 +3270,19 @@
             "type": "core::integer::u32"
           },
           {
-            "name": "accuracy",
+            "name": "chance",
             "type": "core::integer::u8"
           },
           {
             "name": "cooldown",
-            "type": "core::integer::u8"
+            "type": "core::integer::u32"
           },
           {
-            "name": "hit",
+            "name": "success",
             "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
           },
           {
-            "name": "miss",
+            "name": "fail",
             "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
           }
         ]
@@ -3396,7 +3357,7 @@
           },
           {
             "type": "function",
-            "name": "accuracy",
+            "name": "chance",
             "inputs": [
               {
                 "name": "id",
@@ -3412,7 +3373,7 @@
           },
           {
             "type": "function",
-            "name": "accuracies",
+            "name": "chances",
             "inputs": [
               {
                 "name": "ids",
@@ -3437,7 +3398,7 @@
             ],
             "outputs": [
               {
-                "type": "core::integer::u8"
+                "type": "core::integer::u32"
               }
             ],
             "state_mutability": "view"
@@ -3453,14 +3414,14 @@
             ],
             "outputs": [
               {
-                "type": "core::array::Array::<core::integer::u8>"
+                "type": "core::array::Array::<core::integer::u32>"
               }
             ],
             "state_mutability": "view"
           },
           {
             "type": "function",
-            "name": "hit",
+            "name": "success",
             "inputs": [
               {
                 "name": "id",
@@ -3476,7 +3437,7 @@
           },
           {
             "type": "function",
-            "name": "hits",
+            "name": "successes",
             "inputs": [
               {
                 "name": "ids",
@@ -3492,7 +3453,7 @@
           },
           {
             "type": "function",
-            "name": "miss",
+            "name": "fail",
             "inputs": [
               {
                 "name": "id",
@@ -3508,7 +3469,7 @@
           },
           {
             "type": "function",
-            "name": "misses",
+            "name": "fails",
             "inputs": [
               {
                 "name": "ids",
@@ -3535,19 +3496,19 @@
                 "type": "core::integer::u32"
               },
               {
-                "name": "accuracy",
+                "name": "chance",
                 "type": "core::integer::u8"
               },
               {
                 "name": "cooldown",
-                "type": "core::integer::u8"
+                "type": "core::integer::u32"
               },
               {
-                "name": "hit",
+                "name": "success",
                 "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
               },
               {
-                "name": "miss",
+                "name": "fail",
                 "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
               }
             ],
@@ -3632,19 +3593,19 @@
                 "type": "core::integer::u32"
               },
               {
-                "name": "accuracy",
+                "name": "chance",
                 "type": "core::integer::u8"
               },
               {
                 "name": "cooldown",
-                "type": "core::integer::u8"
+                "type": "core::integer::u32"
               },
               {
-                "name": "hit",
+                "name": "success",
                 "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
               },
               {
-                "name": "miss",
+                "name": "fail",
                 "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
               }
             ],
@@ -4783,7 +4744,7 @@
         "variants": []
       }
     ],
-    "0x13d9aacaccd717d2663692546631b60f355684067f0ee55c0072d0c95995c7c": [
+    "0x2334a13d1112f6449e365b1c4766ab2dd25e28f2953cb2b246acb821da0b779": [
       {
         "type": "impl",
         "name": "ILoadoutImpl",
@@ -5065,6 +5026,10 @@
           {
             "name": "Stun",
             "type": "core::integer::u8"
+          },
+          {
+            "name": "Block",
+            "type": "core::integer::u8"
           }
         ]
       },
@@ -5095,19 +5060,19 @@
             "type": "core::integer::u32"
           },
           {
-            "name": "accuracy",
+            "name": "chance",
             "type": "core::integer::u8"
           },
           {
             "name": "cooldown",
-            "type": "core::integer::u8"
+            "type": "core::integer::u32"
           },
           {
-            "name": "hit",
+            "name": "success",
             "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
           },
           {
-            "name": "miss",
+            "name": "fail",
             "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
           }
         ]
@@ -5371,7 +5336,7 @@
         ]
       }
     ],
-    "0x376365ae089416706108ea5a9ac02bcf98be2bfeb71e5306adc961cffb97f1c": [
+    "0x17945a4c99b7cf4b25d70e38b72f45ddcb913a4ee65662a0549bc95b42aaa87": [
       {
         "type": "impl",
         "name": "ILoadoutImpl",
@@ -5619,6 +5584,10 @@
           {
             "name": "Stun",
             "type": "core::integer::u8"
+          },
+          {
+            "name": "Block",
+            "type": "core::integer::u8"
           }
         ]
       },
@@ -5649,19 +5618,19 @@
             "type": "core::integer::u32"
           },
           {
-            "name": "accuracy",
+            "name": "chance",
             "type": "core::integer::u8"
           },
           {
             "name": "cooldown",
-            "type": "core::integer::u8"
+            "type": "core::integer::u32"
           },
           {
-            "name": "hit",
+            "name": "success",
             "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
           },
           {
-            "name": "miss",
+            "name": "fail",
             "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
           }
         ]
@@ -6347,7 +6316,7 @@
         ]
       }
     ],
-    "0x10fa0ef6a3a960c1b8a2e487caede7697cbc3cafff24b6019be42de12963a68": [
+    "0x5ee34144445c6d810c3cf755b35be4a34e804e0a23ed6172d3c746e0504a1a0": [
       {
         "type": "impl",
         "name": "IArcadeImpl",
@@ -6617,6 +6586,10 @@
           {
             "name": "Stun",
             "type": "core::integer::u8"
+          },
+          {
+            "name": "Block",
+            "type": "core::integer::u8"
           }
         ]
       },
@@ -6647,19 +6620,19 @@
             "type": "core::integer::u32"
           },
           {
-            "name": "accuracy",
+            "name": "chance",
             "type": "core::integer::u8"
           },
           {
             "name": "cooldown",
-            "type": "core::integer::u8"
+            "type": "core::integer::u32"
           },
           {
-            "name": "hit",
+            "name": "success",
             "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
           },
           {
-            "name": "miss",
+            "name": "fail",
             "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
           }
         ]
@@ -7078,7 +7051,7 @@
         ]
       }
     ],
-    "0x4a636023c70b0a5b246bc1a2cc9903405f534508e14bc8bb7da0c26a3909328": [
+    "0x246564e9187bee635f4ca00ecaf1d64775459e1ab882b5c52068b3f500d7ecf": [
       {
         "type": "impl",
         "name": "IArcadeImpl",
@@ -7566,7 +7539,7 @@
         ]
       }
     ],
-    "0x3f4c8fad7a85052a02e11b5af84f2af9cc8e93423667ba9b1091b6db78038f6": [
+    "0x103e9546a0df25bc073dd6f6d210b955a288b5bb6f984ca72cb139fc1a1b4e0": [
       {
         "type": "impl",
         "name": "IPvpImpl",

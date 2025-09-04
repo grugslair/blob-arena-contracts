@@ -27,10 +27,10 @@ export const parseNewAttack = (attack) => {
   return {
     name: attack.name,
     speed: attack.speed,
-    accuracy: attack.accuracy,
+    chance: attack.chance,
     cooldown: attack.cooldown,
-    hit: makeEffectsArray(attack.hit),
-    miss: makeEffectsArray(attack.miss),
+    success: makeEffectsArray(attack.success),
+    fail: makeEffectsArray(attack.fail),
   };
 };
 
