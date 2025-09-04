@@ -167,7 +167,7 @@
       "name": "Holy Chestplate",
       "stats": {
         "strength": 5,
-        "vitality": 18,
+        "vitality": 16,
         "dexterity": 5,
         "luck": 15
       },
@@ -319,7 +319,7 @@
       "name": "Lords Armor",
       "stats": {
         "strength": 5,
-        "vitality": 20,
+        "vitality": 16,
         "dexterity": 5,
         "luck": 15
       },
@@ -649,7 +649,7 @@
       "name": "Realms Dark",
       "stats": {
         "strength": 6,
-        "vitality": 18,
+        "vitality": 16,
         "dexterity": 8,
         "luck": 8
       },
@@ -790,7 +790,7 @@
       "name": "Necklace",
       "stats": {
         "strength": 5,
-        "vitality": 18,
+        "vitality": 16,
         "dexterity": 10,
         "luck": 5
       },
@@ -915,7 +915,7 @@
       "name": "Titanium Ring",
       "stats": {
         "strength": 10,
-        "vitality": 18,
+        "vitality": 16,
         "dexterity": 5,
         "luck": 7
       },
@@ -978,7 +978,7 @@
       "name": "Ducks",
       "stats": {
         "strength": 5,
-        "vitality": 18,
+        "vitality": 16,
         "dexterity": 10,
         "luck": 5
       },
@@ -1018,7 +1018,7 @@
       "name": "Pudgy",
       "stats": {
         "strength": 10,
-        "vitality": 18,
+        "vitality": 16,
         "dexterity": 5,
         "luck": 7
       },
@@ -1048,7 +1048,7 @@
       "name": "Ancient Helm",
       "stats": {
         "strength": 5,
-        "vitality": 18,
+        "vitality": 16,
         "dexterity": 5,
         "luck": 12
       },
@@ -1068,7 +1068,7 @@
       "name": "Braavos Helm",
       "stats": {
         "strength": 5,
-        "vitality": 18,
+        "vitality": 16,
         "dexterity": 5,
         "luck": 12
       },
@@ -1108,7 +1108,7 @@
       "name": "Divine Hood",
       "stats": {
         "strength": 5,
-        "vitality": 18,
+        "vitality": 16,
         "dexterity": 5,
         "luck": 12
       },
@@ -1138,7 +1138,7 @@
       "name": "Influence Helmet",
       "stats": {
         "strength": 5,
-        "vitality": 18,
+        "vitality": 16,
         "dexterity": 5,
         "luck": 12
       },
@@ -1148,7 +1148,7 @@
       "name": "Lords Helm",
       "stats": {
         "strength": 5,
-        "vitality": 18,
+        "vitality": 16,
         "dexterity": 5,
         "luck": 12
       },
@@ -1178,7 +1178,7 @@
       "name": "Pope Hat",
       "stats": {
         "strength": 5,
-        "vitality": 18,
+        "vitality": 16,
         "dexterity": 5,
         "luck": 12
       },
@@ -1210,7 +1210,7 @@
       "name": "Algorithmic Aegis",
       "stats": {
         "strength": 10,
-        "vitality": 20,
+        "vitality": 16,
         "dexterity": 10,
         "luck": 10
       },
@@ -1293,7 +1293,7 @@
       "name": "Argent Shield",
       "stats": {
         "strength": 8,
-        "vitality": 20,
+        "vitality": 16,
         "dexterity": 12,
         "luck": 10
       },
@@ -1682,7 +1682,7 @@
       "name": "Banner of Enlightenment",
       "stats": {
         "strength": 10,
-        "vitality": 20,
+        "vitality": 16,
         "dexterity": 10,
         "luck": 10
       },
@@ -2064,7 +2064,7 @@
       "name": "Banner of Protection",
       "stats": {
         "strength": 8,
-        "vitality": 20,
+        "vitality": 16,
         "dexterity": 10,
         "luck": 12
       },
@@ -2194,7 +2194,7 @@
       "name": "Banner of Reflection",
       "stats": {
         "strength": 12,
-        "vitality": 18,
+        "vitality": 16,
         "dexterity": 8,
         "luck": 12
       },
@@ -2508,7 +2508,7 @@
       "name": "Banner of Titans",
       "stats": {
         "strength": 10,
-        "vitality": 18,
+        "vitality": 16,
         "dexterity": 10,
         "luck": 12
       },
@@ -4408,7 +4408,7 @@
       "name": "Stark Shield",
       "stats": {
         "strength": 10,
-        "vitality": 18,
+        "vitality": 16,
         "dexterity": 10,
         "luck": 12
       },
