@@ -15,8 +15,8 @@ const deployWithOwner = [
   "arena_credit",
 ];
 
-const salt = stark.randomAddress();
-
+config.set();
+console.log(config);
 const sai = await loadSai();
 const owner = sai.account.address;
 

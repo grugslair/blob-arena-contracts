@@ -6,6 +6,7 @@ import {
   stark,
   CallData,
   config,
+  RPC,
 } from "starknet";
 import {
   loadJson,
@@ -31,6 +32,8 @@ export const cmdOptions = [
   { name: "rpc_url", alias: "u", type: String, defaultValue: null },
   { name: "directory_path", alias: "d", type: String, defaultValue: "." },
 ];
+
+const successStates = ["RECEIVED", "ACCEPTED_ON_L2", "ACCEPTED_ON_L1"];
 
 const valueIsSet = (val) =>
   val !== null && val !== undefined && val !== false && val !== "";
@@ -222,7 +225,9 @@ export class SaiProject {
         casm: loadJson(casm_path),
         contract,
       });
-      await this.account.waitForTransaction(transaction_hash);
+      await this.account.waitForTransaction(transaction_hash, {
+        successStates,
+      });
       this.declarations[tag] = { class_hash, transaction_hash };
     }
     this.addClass(tag, class_hash, contract.abi);
@@ -246,7 +251,9 @@ export class SaiProject {
           casm,
           contract,
         });
-        await this.account.waitForTransaction(transaction_hash);
+        await this.account.waitForTransaction(transaction_hash, {
+          successStates,
+        });
         this.declarations[tag] = { class_hash, transaction_hash };
       }
       this.addClass(tag, class_hash, contract.abi);
@@ -330,7 +337,9 @@ export class SaiProject {
         const tag = data.tag || contract_address;
         this.addDeployment(tag, contract_address, data);
       });
-      await this.account.waitForTransaction(transaction_hash);
+      await this.account.waitForTransaction(transaction_hash, {
+        successStates,
+      });
     }
   }
   async executeAndWait(calls, transactionDetails) {
@@ -338,7 +347,7 @@ export class SaiProject {
       ...this.transactionDetails,
       ...transactionDetails,
     });
-    await this.account.waitForTransaction(transaction_hash);
+    await this.account.waitForTransaction(transaction_hash, { successStates });
     return transaction_hash;
   }
 
@@ -348,7 +357,7 @@ export class SaiProject {
       ...transactionDetails,
     });
 
-    await this.account.waitForTransaction(transaction_hash);
+    await this.account.waitForTransaction(transaction_hash, { successStates });
     return getReturns(this.account, transaction_hash);
   }
 
