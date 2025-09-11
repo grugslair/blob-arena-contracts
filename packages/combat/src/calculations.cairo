@@ -1,4 +1,4 @@
-use ba_utils::SeedProbability;
+use ba_utils::{Randomness, RandomnessTrait};
 use core::num::traits::{WideMul, Zero};
 use cubit::f128::types::fixed::{Fixed, FixedTrait};
 use sai_core_utils::SaturatingInto;
@@ -31,12 +31,12 @@ const FIXED_255: Fixed = Fixed { mag: 4703919738795935662080, sign: false };
 /// If the calculated new value exceeds 255, it is capped at 255.
 
 pub fn apply_luck_modifier<T, +TryInto<Fixed, T>, +Into<u8, T>, +Zero<T>>(
-    value: u8, luck: u32,
+    value: u8, luck: u16,
 ) -> T {
     if value == 0 {
         return Zero::zero();
     }
-    let luck_ratio: Fixed = (300_u32 - luck).into() / (200_u32 + luck).into();
+    let luck_ratio: Fixed = (300_u16 - luck).into() / (200_u16 + luck).into();
     let value_float = value.into() / HUNDRED_FIXED;
     let new_value = (value_float.pow(luck_ratio) * FIXED_255);
     if new_value > FIXED_255 {
@@ -63,14 +63,14 @@ pub fn get_new_stun_chance(current_stun: u8, attack_stun: u8) -> u8 {
 /// # Returns
 /// The calculated damage as a u8 between 0 and 101 (202 if critical)
 
-pub fn damage_calculation(move_power: u32, strength: u32, critical: bool) -> u32 {
-    (move_power.wide_mul(100 + strength) / match critical {
+pub fn damage_calculation(move_power: u32, strength: u16, critical: bool) -> u16 {
+    (move_power.wide_mul(100 + strength.into()) / match critical {
         true => 75,
         false => 150,
     })
         .saturating_into()
 }
 
-pub fn did_critical(chance: u8, luck: u32, ref seed: u128) -> bool {
-    seed.get_outcome(255, apply_luck_modifier::<u128>(chance, luck))
+pub fn did_critical(chance: u8, luck: u16, ref randomness: Randomness) -> bool {
+    randomness.get(255) < apply_luck_modifier::<u16>(chance, luck)
 }

@@ -206,7 +206,7 @@ mod arcade_classic {
             attempt_id: felt252,
             combat_n: u32,
             stage: u32,
-            health: Option<u32>,
+            health: Option<u16>,
         ) {
             ArcadeInternal::new_combat(
                 ref self.arcade,

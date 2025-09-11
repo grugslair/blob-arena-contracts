@@ -2,6 +2,7 @@ use ba_combat::combat::{Round, run_round};
 use ba_combat::{CombatantState, Player};
 use ba_loadout::ability::Abilities;
 use ba_loadout::attack::{IAttackDispatcher, IAttackDispatcherTrait};
+use ba_utils::RandomnessTrait;
 use core::num::traits::Zero;
 use core::panic_with_felt252;
 use sai_core_utils::poseidon_hash_two;
@@ -90,13 +91,12 @@ pub impl PvpNodeImpl of PvpNodeTrait {
             CombatPhase::Player2Revealed => [[attack, salt], self.reveal.read()],
             _ => panic_with_felt252('Invalid combat phase'),
         };
-        let randomness = poseidon_hash_two(salt_1, salt_2);
-
+        let mut randomness = RandomnessTrait::new(poseidon_hash_two(salt_1, salt_2));
         let round = self.round.read();
         let attack_1 = self.run_cooldown(attack_dispatcher, Player::Player1, attack_1, round);
         let attack_2 = self.run_cooldown(attack_dispatcher, Player::Player2, attack_2, round);
 
-        run_round(state_1, state_2, attack_dispatcher, attack_1, attack_2, round, randomness)
+        run_round(state_1, state_2, attack_dispatcher, attack_1, attack_2, round, ref randomness)
     }
 
     fn run_cooldown(

@@ -1,13 +1,8 @@
-use ba_loadout::attack::{
-    AbilityAffect, Affect, Effect, IAttackDispatcher, IAttackDispatcherTrait, Target,
-};
-use ba_utils::{SeedProbability, UpdateHashToU128, felt252_to_u128};
-use core::hash::{HashStateExTrait, HashStateTrait};
+use ba_loadout::attack::{Affect, Effect, IAttackDispatcher, IAttackDispatcherTrait, Target};
+use ba_utils::{Randomness, RandomnessTrait};
 use core::num::traits::Zero;
-use core::poseidon::HashState;
 use sai_core_utils::BoolIntoBinary;
-use crate::calculations::{damage_calculation, did_critical};
-use crate::result::{AffectResult, AttackOutcomes, DamageResult, EffectResult};
+use crate::result::{AffectResult, AttackOutcomes, EffectResult};
 use crate::{CombatantState, CombatantStateTrait};
 
 
@@ -39,38 +34,45 @@ fn run_effect(
     ref defender_state: CombatantState,
     effect: Effect,
     move_n: u32,
-    hash_state: HashState,
+    ref randomness: Randomness,
 ) -> EffectResult {
     let result = match effect.affect {
-        Affect::Abilities(abilities_effect) => {
+        Affect::Strength(amount) => {
             match effect.target {
-                Target::Player => { attacker_state.apply_buffs(abilities_effect) },
-                Target::Opponent => { defender_state.apply_buffs(abilities_effect) },
+                Target::Player => attacker_state.apply_strength_buff(amount),
+                Target::Opponent => defender_state.apply_strength_buff(amount),
             }
             AffectResult::Applied
         },
-        Affect::Ability(AbilityAffect {
-            ability, amount,
-        }) => {
+        Affect::Vitality(amount) => {
             match effect.target {
-                Target::Player => { attacker_state.apply_buff(ability, amount) },
-                Target::Opponent => { defender_state.apply_buff(ability, amount) },
+                Target::Player => attacker_state.apply_vitality_buff(amount),
+                Target::Opponent => defender_state.apply_vitality_buff(amount),
+            }
+            AffectResult::Applied
+        },
+        Affect::Dexterity(amount) => {
+            match effect.target {
+                Target::Player => attacker_state.apply_dexterity_buff(amount),
+                Target::Opponent => defender_state.apply_dexterity_buff(amount),
+            }
+            AffectResult::Applied
+        },
+        Affect::Luck(amount) => {
+            match effect.target {
+                Target::Player => attacker_state.apply_luck_buff(amount),
+                Target::Opponent => defender_state.apply_luck_buff(amount),
             }
             AffectResult::Applied
         },
         Affect::Damage(damage) => {
-            let mut seed = hash_state.update_to_u128(move_n);
-
-            let critical = did_critical(damage.critical, attacker_state.abilities.luck, ref seed);
-
-            let damage = damage_calculation(
-                damage.power, attacker_state.abilities.strength, critical,
-            );
-            match effect.target {
-                Target::Player => { attacker_state.modify_health(-(damage.try_into().unwrap())) },
-                Target::Opponent => { defender_state.modify_health(-(damage.try_into().unwrap())) },
-            }
-            AffectResult::Damage(DamageResult { critical, damage })
+            let d_result = match effect.target {
+                Target::Player => attacker_state
+                    .apply_damage(damage, @attacker_state.abilities, ref randomness),
+                Target::Opponent => defender_state
+                    .apply_damage(damage, @attacker_state.abilities, ref randomness),
+            };
+            AffectResult::Damage(d_result)
         },
         Affect::Stun(stun) => {
             match effect.target {
@@ -102,11 +104,12 @@ pub fn run_effects(
     ref attacker_state: CombatantState,
     ref defender_state: CombatantState,
     effects: Array<Effect>,
-    hash_state: HashState,
+    ref randomness: Randomness,
 ) -> Array<EffectResult> {
     let mut results: Array<EffectResult> = ArrayTrait::new();
     for (n, effect) in effects.into_iter().enumerate() {
-        results.append(run_effect(ref attacker_state, ref defender_state, effect, n, hash_state));
+        results
+            .append(run_effect(ref attacker_state, ref defender_state, effect, n, ref randomness));
     }
     results
 }
@@ -118,12 +121,12 @@ fn get_switch_order(
     attacks: IAttackDispatcher,
     attack_1: felt252,
     attack_2: felt252,
-    randomness: felt252,
+    ref randomness: Randomness,
 ) -> bool {
     let speed_1 = attacks.speed(attack_1) + *(state_1.abilities.dexterity);
     let speed_2 = attacks.speed(attack_2) + *(state_2.abilities.dexterity);
     if speed_1 == speed_2 {
-        felt252_to_u128(randomness) % 2 == 0
+        randomness.get_bool()
     } else {
         speed_1 < speed_2
     }
@@ -147,11 +150,10 @@ pub fn run_round(
     p1_attack: felt252,
     p2_attack: felt252,
     round: u32,
-    randomness: felt252,
+    ref randomness: Randomness,
 ) -> Round {
-    let hash_state = Default::default().update_with(randomness);
     let switch_order = get_switch_order(
-        @p1_state, @p2_state, attacks, p1_attack, p2_attack, randomness,
+        @p1_state, @p2_state, attacks, p1_attack, p2_attack, ref randomness,
     );
     let (mut state_1, mut state_2, attack_1, attack_2) = match switch_order {
         false => (p1_state, p2_state, p1_attack, p2_attack),
@@ -159,14 +161,12 @@ pub fn run_round(
     };
 
     let mut progress = CombatProgress::Active;
-    let outcome = run_attack(
-        ref state_1, ref state_2, attacks, attack_1, round, hash_state.update('1'),
-    );
+    let outcome = run_attack(ref state_1, ref state_2, attacks, attack_1, round, ref randomness);
     let mut outcomes = array![outcome];
     progress = check_combat_phase(@state_1, @state_2, switch_order, true);
     if progress == CombatProgress::Active {
         let outcome = run_attack(
-            ref state_2, ref state_1, attacks, attack_2, round, hash_state.update('2'),
+            ref state_2, ref state_1, attacks, attack_2, round, ref randomness,
         );
         outcomes.append(outcome);
         progress = check_combat_phase(@state_1, @state_2, switch_order, false);
@@ -185,25 +185,22 @@ fn run_attack(
     attacks: IAttackDispatcher,
     attack_id: felt252,
     round: u32,
-    hash_state: HashState,
+    ref randomness: Randomness,
 ) -> AttackOutcomes {
-    let mut seed = hash_state.to_u128();
     if attack_id.is_zero() {
         AttackOutcomes::Failed
-    } else if attacker_state.run_stun(ref seed) {
+    } else if attacker_state.run_stun(ref randomness) {
         AttackOutcomes::Stunned
-    } else if seed.get_outcome(100, attacks.chance(attack_id)) {
-        AttackOutcomes::Success(
-            run_effects(
-                ref attacker_state, ref defender_state, attacks.success(attack_id), hash_state,
-            ),
-        )
+    } else if randomness.get(100) < attacks.chance(attack_id) {
+        let result = run_effects(
+            ref attacker_state, ref defender_state, attacks.success(attack_id), ref randomness,
+        );
+        AttackOutcomes::Success(result)
     } else {
-        AttackOutcomes::Fail(
-            run_effects(
-                ref attacker_state, ref defender_state, attacks.fail(attack_id), hash_state,
-            ),
-        )
+        let result = run_effects(
+            ref attacker_state, ref defender_state, attacks.fail(attack_id), ref randomness,
+        );
+        AttackOutcomes::Fail(result)
     }
 }
 

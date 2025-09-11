@@ -11,7 +11,7 @@ mod arcade_amma {
     use ba_loadout::amma_contract::{
         get_fighter_count, get_fighter_gen_loadout, get_fighter_loadout,
     };
-    use ba_utils::{SeedProbability, felt252_to_u128};
+    use ba_utils::{Randomness, RandomnessTrait};
     use beacon_library::{ToriiTable, register_table_with_schema};
     use sai_core_utils::poseidon_hash_two;
     use sai_ownable::{OwnableTrait, ownable_component};
@@ -102,11 +102,9 @@ mod arcade_amma {
             let (mut attempt_ptr, attempt_id, loadout_address) = ArcadeInternal::start_attempt(
                 ref self.arcade, collection_address, token_id, attack_slots,
             );
-
+            let mut randomness = ArcadeInternal::consume_randomness(ref self.arcade, attempt_id);
             let opponents = random_selection(
-                ArcadeInternal::consume_random(ref self.arcade, attempt_id),
-                get_fighter_count(loadout_address),
-                self.gen_stages.read(),
+                ref randomness, get_fighter_count(loadout_address), self.gen_stages.read(),
             );
             ArcadeInternal::new_combat(
                 ref self.arcade,
@@ -125,7 +123,7 @@ mod arcade_amma {
         }
 
         fn attack(ref self: ContractState, attempt_id: felt252, attack_id: felt252) {
-            let (mut attempt_ptr, result, randomness) = ArcadeInternal::attack_attempt(
+            let (mut attempt_ptr, result, mut randomness) = ArcadeInternal::attack_attempt(
                 ref self.arcade, attempt_id, attack_id,
             );
 
@@ -139,7 +137,7 @@ mod arcade_amma {
                     let health = result.health;
                     let loadout_address = self.arcade.loadout_address.read();
                     let opponent = match next_stage == gen_stages {
-                        true => self.gen_boss_opponent(attempt_id, randomness),
+                        true => self.gen_boss_opponent(attempt_id, ref randomness),
                         false => self.gen_opponent_stage(loadout_address, attempt_id, next_stage),
                     };
 
@@ -220,13 +218,12 @@ mod arcade_amma {
         }
 
         fn gen_boss_opponent(
-            ref self: ContractState, attempt_id: felt252, randomness: felt252,
+            ref self: ContractState, attempt_id: felt252, ref randomness: Randomness,
         ) -> Opponent {
             let loadout_address = self.arcade.loadout_address.read();
             let count = get_fighter_count(loadout_address);
-            let fighter: u32 = (felt252_to_u128(poseidon_hash_two(randomness, 'boss'))
-                .get_final_value(count)
-                + 1);
+            let fighter: u32 = randomness.final(count) + 1;
+
             OpponentsTable::set_member(selector!("boss"), attempt_id, @fighter);
             self.bosses.write(attempt_id, fighter);
             self.boss_opponent(loadout_address, fighter)

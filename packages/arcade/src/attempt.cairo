@@ -2,7 +2,7 @@ use ba_combat::combat::{CombatProgress, Player};
 use ba_combat::combatant::CombatantState;
 use ba_loadout::ability::Abilities;
 use ba_loadout::attack::{IAttackDispatcher, IAttackDispatcherTrait};
-use ba_utils::felt252_to_u128;
+use ba_utils::{Randomness, RandomnessTrait};
 use core::num::traits::Zero;
 use starknet::storage::{
     Map, Mutable, MutableVecTrait, StorageMapReadAccess, StorageMapWriteAccess, StoragePath,
@@ -53,7 +53,7 @@ pub struct AttemptNode {
     pub player: ContractAddress,
     pub abilities: Abilities,
     pub token_hash: felt252,
-    pub health_regen: u32,
+    pub health_regen: u16,
     pub attacks_available: Map<felt252, bool>,
     pub combats: Map<u32, CombatNode>,
     pub expiry: u64,
@@ -97,7 +97,7 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
         abilities: Abilities,
         attacks: Array<felt252>,
         token_hash: felt252,
-        health_regen: u32,
+        health_regen: u16,
         expiry: u64,
     ) {
         self.player.write(player);
@@ -129,10 +129,13 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
     }
 
     fn get_opponent_attack(
-        ref self: CombatNodePath, attacks: IAttackDispatcher, round: u32, randomness: felt252,
+        ref self: CombatNodePath,
+        attacks: IAttackDispatcher,
+        round: u32,
+        ref randomness: Randomness,
     ) -> felt252 {
         let (mut n, n_attacks) = (0, self.opponent_attacks.len());
-        let sn = (felt252_to_u128(randomness) % n_attacks.into()).try_into().unwrap();
+        let sn = randomness.get(n_attacks);
         loop {
             let mut i = (n + sn);
             if i >= n_attacks {

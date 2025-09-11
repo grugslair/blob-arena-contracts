@@ -6,8 +6,8 @@ use super::IdTagAttack;
 pub trait IAttack<TContractState> {
     fn attack(self: @TContractState, id: felt252) -> Attack;
     fn attacks(self: @TContractState, ids: Array<felt252>) -> Array<Attack>;
-    fn speed(self: @TContractState, id: felt252) -> u32;
-    fn speeds(self: @TContractState, ids: Array<felt252>) -> Array<u32>;
+    fn speed(self: @TContractState, id: felt252) -> u16;
+    fn speeds(self: @TContractState, ids: Array<felt252>) -> Array<u16>;
     fn chance(self: @TContractState, id: felt252) -> u8;
     fn chances(self: @TContractState, ids: Array<felt252>) -> Array<u8>;
     fn cooldown(self: @TContractState, id: felt252) -> u32;
@@ -19,7 +19,7 @@ pub trait IAttack<TContractState> {
     fn attack_id(
         self: @TContractState,
         name: ByteArray,
-        speed: u32,
+        speed: u16,
         chance: u8,
         cooldown: u32,
         success: Array<Effect>,
@@ -35,7 +35,7 @@ pub trait IAttackAdmin<TContractState> {
     fn create_attack(
         ref self: TContractState,
         name: ByteArray,
-        speed: u32,
+        speed: u16,
         chance: u8,
         cooldown: u32,
         success: Array<Effect>,

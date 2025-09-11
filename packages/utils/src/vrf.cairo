@@ -1,5 +1,7 @@
+use ba_utils::RandomnessTrait;
 use starknet::syscalls::call_contract_syscall;
 use starknet::{ContractAddress, SyscallResultTrait};
+use crate::Randomness;
 
 #[derive(Drop, Copy, Clone, Serde)]
 pub enum Source {
@@ -11,6 +13,10 @@ pub enum Source {
 pub fn consume_random(contract_address: ContractAddress, salt: felt252) -> felt252 {
     *call_contract_syscall(contract_address, selector!("consume_random"), [1, salt].span())
         .unwrap_syscall()[0]
+}
+
+pub fn consume_randomness(contract_address: ContractAddress, salt: felt252) -> Randomness {
+    RandomnessTrait::new(consume_random(contract_address, salt))
 }
 
 

@@ -18,7 +18,7 @@ pub struct ArcadeAttackResult {
     pub phase: ArcadePhase,
     pub stage: u32,
     pub combat_n: u32,
-    pub health: u32,
+    pub health: u16,
 }
 
 #[starknet::component]
@@ -32,8 +32,8 @@ pub mod arcade_component {
     use ba_loadout::ability::AbilitiesTrait;
     use ba_loadout::attack::IAttackDispatcher;
     use ba_loadout::get_loadout;
-    use ba_utils::vrf::consume_random;
-    use ba_utils::{erc721_token_hash, uuid};
+    use ba_utils::vrf::consume_randomness;
+    use ba_utils::{Randomness, erc721_token_hash, uuid};
     use beacon_library::{ToriiTable, register_table_with_schema, set_entity, set_member};
     use core::cmp::min;
     use core::num::traits::Zero;
@@ -56,7 +56,7 @@ pub mod arcade_component {
         pub attempts: Map<felt252, AttemptNode>,
         pub max_respawns: u32,
         pub time_limit: u64,
-        pub health_regen_permille: u32,
+        pub health_regen_permille: u16,
         pub current_attempt: Map<felt252, felt252>,
         pub attack_address: ContractAddress,
         pub loadout_address: ContractAddress,
@@ -90,7 +90,7 @@ pub mod arcade_component {
             self.time_limit.read()
         }
 
-        fn health_regen_permille(self: @ComponentState<TContractState>) -> u32 {
+        fn health_regen_permille(self: @ComponentState<TContractState>) -> u16 {
             self.health_regen_permille.read()
         }
 
@@ -112,7 +112,7 @@ pub mod arcade_component {
             self.time_limit.write(time_limit);
         }
         fn set_health_regen_permille(
-            ref self: ComponentState<TContractState>, health_regen_permille: u32,
+            ref self: ComponentState<TContractState>, health_regen_permille: u16,
         ) {
             self.get_contract().assert_caller_is_owner();
             assert(health_regen_permille <= 1000, 'Health regen must be <= 1000');
@@ -141,6 +141,7 @@ pub mod arcade_component {
     }
 
     mod internal_trait {
+        use ba_utils::Randomness;
         use starknet::ContractAddress;
         use crate::Opponent;
         use super::{ArcadeAttackResult, ArcadePhase, AttemptNodePath};
@@ -163,7 +164,7 @@ pub mod arcade_component {
 
             fn attack_attempt(
                 ref self: TState, attempt_id: felt252, attack_id: felt252,
-            ) -> (AttemptNodePath, ArcadeAttackResult, felt252);
+            ) -> (AttemptNodePath, ArcadeAttackResult, Randomness);
 
             fn respawn_attempt(
                 ref self: TState, attempt_id: felt252,
@@ -177,13 +178,13 @@ pub mod arcade_component {
                 attempt_id: felt252,
                 combat_n: u32,
                 opponent: Opponent,
-                health: Option<u32>,
+                health: Option<u16>,
             );
 
             fn set_phase(ref self: AttemptNodePath, attempt_id: felt252, phase: ArcadePhase);
             fn set_loss(ref self: TState, ref attempt: AttemptNodePath, attempt_id: felt252);
             fn use_credit(ref self: TState, player: ContractAddress);
-            fn consume_random(ref self: TState, salt: felt252) -> felt252;
+            fn consume_randomness(ref self: TState, salt: felt252) -> Randomness;
         }
     }
 
@@ -253,7 +254,7 @@ pub mod arcade_component {
 
         fn attack_attempt(
             ref self: ComponentState<TContractState>, attempt_id: felt252, attack_id: felt252,
-        ) -> (AttemptNodePath, ArcadeAttackResult, felt252) {
+        ) -> (AttemptNodePath, ArcadeAttackResult, Randomness) {
             let mut attempt_ptr = self.attempts.entry(attempt_id);
 
             let stage = attempt_ptr.stage.read();
@@ -266,11 +267,12 @@ pub mod arcade_component {
             };
             let mut combat = attempt_ptr.combats.entry(combat_n);
             let round = combat.round.read();
-            let randomness = consume_random(
+            let mut randomness = consume_randomness(
                 self.vrf_address.read(), poseidon_hash_three(attempt_id, combat_n, round),
             );
 
-            let opponent_attack = combat.get_opponent_attack(attack_dispatcher, round, randomness);
+            let opponent_attack = combat
+                .get_opponent_attack(attack_dispatcher, round, ref randomness);
             let player_attack = match attempt_ptr.attacks_available.read(attack_id) {
                 false => 0x0,
                 true => combat.player_attack_cooldown(attack_dispatcher, attack_id, round),
@@ -282,7 +284,7 @@ pub mod arcade_component {
                 player_attack,
                 opponent_attack,
                 round,
-                randomness,
+                ref randomness,
             )
                 .to_round(attempt_id, combat_n);
             combat.player_state.write(*result.states.at(0));
@@ -372,7 +374,7 @@ pub mod arcade_component {
             attempt_id: felt252,
             combat_n: u32,
             opponent: Opponent,
-            health: Option<u32>,
+            health: Option<u16>,
         ) {
             let mut combat = attempt_ptr.combats.entry(combat_n);
             let mut player_state: CombatantState = attempt_ptr.abilities.read().into();
@@ -408,8 +410,10 @@ pub mod arcade_component {
             );
         }
 
-        fn consume_random(ref self: ComponentState<TContractState>, salt: felt252) -> felt252 {
-            consume_random(self.vrf_address.read(), salt)
+        fn consume_randomness(
+            ref self: ComponentState<TContractState>, salt: felt252,
+        ) -> Randomness {
+            consume_randomness(self.vrf_address.read(), salt)
         }
     }
 }

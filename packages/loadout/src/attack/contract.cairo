@@ -22,7 +22,7 @@ mod attack {
     struct Storage {
         #[substorage(v0)]
         access: access_component::Storage,
-        speeds: Map<felt252, u32>,
+        speeds: Map<felt252, u16>,
         chances: Map<felt252, u8>,
         cooldowns: Map<felt252, u32>,
         successes: Map<felt252, Vec<Effect>>,
@@ -62,11 +62,11 @@ mod attack {
             ids.into_iter().map(|id| self.attack(id)).collect()
         }
 
-        fn speed(self: @ContractState, id: felt252) -> u32 {
+        fn speed(self: @ContractState, id: felt252) -> u16 {
             self.speeds.read(id)
         }
 
-        fn speeds(self: @ContractState, ids: Array<felt252>) -> Array<u32> {
+        fn speeds(self: @ContractState, ids: Array<felt252>) -> Array<u16> {
             ids.into_iter().map(|id| self.speed(id)).collect()
         }
 
@@ -105,7 +105,7 @@ mod attack {
         fn attack_id(
             self: @ContractState,
             name: ByteArray,
-            speed: u32,
+            speed: u16,
             chance: u8,
             cooldown: u32,
             success: Array<Effect>,
@@ -128,7 +128,7 @@ mod attack {
         fn create_attack(
             ref self: ContractState,
             name: ByteArray,
-            speed: u32,
+            speed: u16,
             chance: u8,
             cooldown: u32,
             success: Array<Effect>,

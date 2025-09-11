@@ -2,11 +2,13 @@ use core::num::traits::{One, Zero};
 use core::poseidon::poseidon_hash_span;
 use sai_core_utils::SerdeAll;
 use sai_core_utils::poseidon_serde::PoseidonSerde;
+use sai_packing::ShiftCast;
+use sai_packing::byte::{SHIFT_4B, SHIFT_6B};
 pub use starknet::storage::{
     Map, Mutable, MutableVecTrait, StorageBase, StorageMapReadAccess, StorageMapWriteAccess,
     StoragePath, StoragePathEntry, StoragePointerReadAccess, Vec, VecTrait,
 };
-use crate::ability::{AbilityTypes, DAbilities};
+use crate::ability::AbilityTypes;
 const ATTACK_TAG_GROUP: felt252 = 'attacks';
 
 
@@ -23,7 +25,7 @@ const ATTACK_TAG_GROUP: felt252 = 'attacks';
 /// * `fail` - Array of effects that occur when the attack fails
 #[derive(Drop, Serde, Default, Introspect)]
 pub struct Attack {
-    pub speed: u32,
+    pub speed: u16,
     pub chance: u8,
     pub cooldown: u32,
     pub success: Array<Effect>,
@@ -45,7 +47,7 @@ pub struct Attack {
 #[derive(Drop, Serde, Clone, Introspect)]
 pub struct AttackWithName {
     pub name: ByteArray,
-    pub speed: u32,
+    pub speed: u16,
     pub chance: u8,
     pub cooldown: u32,
     pub success: Array<Effect>,
@@ -94,9 +96,11 @@ pub enum Target {
 #[derive(Drop, Serde, Copy, PartialEq, Introspect, Default, starknet::Store)]
 pub enum Affect {
     #[default]
-    Health: i32,
-    Abilities: DAbilities,
-    Ability: AbilityAffect,
+    Health: i16,
+    Strength: i16,
+    Vitality: i16,
+    Dexterity: i16,
+    Luck: i16,
     Damage: Damage,
     Stun: u8,
     Block: u8,
@@ -117,7 +121,7 @@ pub enum IdTagAttack {
 #[derive(Drop, Serde, Copy, PartialEq, Introspect, starknet::Store)]
 pub struct AbilityAffect {
     pub ability: AbilityTypes,
-    pub amount: i32,
+    pub amount: i16,
 }
 
 /// Represents damage attributes of an attack.
@@ -137,17 +141,21 @@ pub impl AttackWithNameImpl of AttackWithNameTrait {
     }
 }
 
+
 pub fn get_attack_id(
     name: @ByteArray,
-    speed: u32,
+    speed: u16,
     chance: u8,
     cooldown: u32,
     success: @Array<Effect>,
     fail: @Array<Effect>,
 ) -> felt252 {
     let mut serialized: Array<felt252> = Default::default();
+    let value: u64 = cooldown.into()
+        + ShiftCast::cast::<SHIFT_4B>(speed)
+        + ShiftCast::cast::<SHIFT_6B>(chance);
     Serde::serialize(name, ref serialized);
-    serialized.append_span([speed.into(), chance.into(), cooldown.into()].span());
+    serialized.append(value.into());
     Serde::serialize(success, ref serialized);
     Serde::serialize(fail, ref serialized);
 
