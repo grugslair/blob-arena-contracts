@@ -18,6 +18,7 @@ starknet.workspace = true
 dojo_macros.workspace = true
 dojo.workspace = true
 sai_core_utils.workspace = true
+sai_packing.workspace = true
 
 [[target.starknet-contract]]
 allowed-libfuncs-list.name = "experimental"

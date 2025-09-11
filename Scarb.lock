@@ -118,6 +118,7 @@ dependencies = [
  "dojo",
  "dojo_macros",
  "sai_core_utils",
+ "sai_packing",
 ]
 
 [[package]]

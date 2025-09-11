@@ -134,12 +134,14 @@ mod attack {
             success: Array<Effect>,
             fail: Array<Effect>,
         ) -> felt252 {
+            self.assert_caller_is_writer();
             self._create_attack(AttackWithName { name, speed, chance, cooldown, success, fail })
         }
 
         fn create_attacks(
             ref self: ContractState, attacks: Array<AttackWithName>,
         ) -> Array<felt252> {
+            self.assert_caller_is_writer();
             let mut attack_ids: Array<felt252> = Default::default();
             for attack in attacks {
                 attack_ids.append(self._create_attack(attack))
@@ -150,6 +152,7 @@ mod attack {
         fn maybe_create_attacks(
             ref self: ContractState, attacks: Array<IdTagAttack>,
         ) -> Array<felt252> {
+            self.assert_caller_is_writer();
             let mut attack_ids: Array<felt252> = Default::default();
             for maybe_attack in attacks {
                 let attack_id = match maybe_attack {

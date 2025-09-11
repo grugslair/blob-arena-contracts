@@ -1,4 +1,4 @@
-use ba_loadout::ability::Abilities;
+use ba_loadout::ability::{Abilities, DAbilities};
 use ba_utils::{Randomness, RandomnessTrait};
 use core::cmp::min;
 use core::dict::Felt252Dict;
@@ -23,8 +23,8 @@ pub fn random_selection(ref randomness: Randomness, range: u32, number: u32) -> 
     values
 }
 
-pub fn get_stage_stats(stage: u32, fighter_stats: Abilities) -> Abilities {
-    (5_u16 * stage.saturating_into() + 5).into() + fighter_stats
+pub fn get_stage_stats(stage: u32, fighter_stats: DAbilities) -> Abilities {
+    ((5_i16 * stage.saturating_into() + 5).into() + fighter_stats).saturating_into()
 }
 
 

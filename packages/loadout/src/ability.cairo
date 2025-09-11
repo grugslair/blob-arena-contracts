@@ -204,6 +204,7 @@ pub impl AbilitiesImpl of AbilitiesTrait {
         self.dexterity = min(self.dexterity, MAX_ABILITY_SCORE);
         self.luck = min(self.luck, MAX_ABILITY_SCORE);
     }
+
     fn apply_buff(ref self: Abilities, stat: AbilityTypes, amount: i16) -> i16 {
         match stat {
             AbilityTypes::Strength => { apply_buff(ref self.strength, amount) },
@@ -245,6 +246,14 @@ pub impl AbilitiesImpl of AbilitiesTrait {
         self.max_health() * permille / 1000
     }
 
+    fn add_d_abilities(self: @Abilities, buffs: DAbilities) -> Abilities {
+        Abilities {
+            strength: add_buff(*self.strength, buffs.strength),
+            vitality: add_buff(*self.vitality, buffs.vitality),
+            dexterity: add_buff(*self.dexterity, buffs.dexterity),
+            luck: add_buff(*self.luck, buffs.luck),
+        }
+    }
 
     fn get_stat(self: @Abilities, stat: AbilityTypes) -> u16 {
         match stat {
