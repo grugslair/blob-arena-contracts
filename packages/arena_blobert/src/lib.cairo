@@ -1,22 +1,22 @@
 mod minter;
-use ba_blobert::TokenAttributes;
+use ba_blobert::TokenTraits;
 use starknet::ContractAddress;
 
 #[starknet::interface]
 pub trait IArenaBlobert<TContractState> {
     fn burn(ref self: TContractState, token_id: u256);
-    fn traits(self: @TContractState, token_id: u256) -> TokenAttributes;
+    fn traits(self: @TContractState, token_id: u256) -> TokenTraits;
 }
 
 #[starknet::interface]
 trait IArenaBlobertAdmin<TContractState> {
-    fn mint(ref self: TContractState, owner: ContractAddress, attributes: TokenAttributes) -> u256;
+    fn mint(ref self: TContractState, owner: ContractAddress, traits: TokenTraits) -> u256;
     fn total_minted(self: @TContractState) -> u256;
 }
 
 #[starknet::contract]
 mod arena_blobert {
-    use ba_blobert::{Seed, TokenAttributes};
+    use ba_blobert::{Seed, TokenTraits};
     use beacon_library::{ToriiTable, register_table_with_schema};
     use openzeppelin_introspection::src5::SRC5Component;
     use openzeppelin_token::erc721::interface::IERC721_METADATA_ID;
@@ -36,7 +36,7 @@ mod arena_blobert {
     component!(path: UpgradeableComponent, storage: upgradeable, event: UpgradeableEvent);
     component!(path: access_component, storage: access, event: AccessEvents);
 
-    const TOKEN_TABLE_ID: felt252 = bytearrays_hash!("arena_blobert", "TokenAttributes");
+    const TOKEN_TABLE_ID: felt252 = bytearrays_hash!("arena_blobert", "TokenTraits");
     impl TokenTable = ToriiTable<TOKEN_TABLE_ID>;
 
     #[derive(Copy, Drop, Serde, PartialEq, starknet::Store)]
@@ -49,7 +49,7 @@ mod arena_blobert {
 
     #[derive(Drop, Serde, Introspect)]
     struct ArenaBlobertToken {
-        attributes: TokenAttributes,
+        traits: TokenTraits,
     }
 
     #[storage]
@@ -86,7 +86,7 @@ mod arena_blobert {
         self.erc721.initializer_no_metadata();
         self.src5.register_interface(IERC721_METADATA_ID);
         self.grant_owner(owner);
-        register_table_with_schema::<ArenaBlobertToken>("arena_blobert", "TokenAttributes");
+        register_table_with_schema::<ArenaBlobertToken>("arena_blobert", "TokenTraits");
     }
 
     #[abi(embed_v0)]
@@ -106,12 +106,12 @@ mod arena_blobert {
                 .write(token_id.try_into().expect('Invalid token ID'), TokenType::NotMinted);
         }
 
-        fn traits(self: @ContractState, token_id: u256) -> TokenAttributes {
+        fn traits(self: @ContractState, token_id: u256) -> TokenTraits {
             let token_id: u128 = token_id.try_into().expect('Invalid token ID');
             let token_type = self.token_types.read(token_id);
             match token_type {
-                TokenType::Seed => { TokenAttributes::Seed(self.token_seeds.read(token_id)) },
-                TokenType::Custom => { TokenAttributes::Custom(self.token_customs.read(token_id)) },
+                TokenType::Seed => { TokenTraits::Seed(self.token_seeds.read(token_id)) },
+                TokenType::Custom => { TokenTraits::Custom(self.token_customs.read(token_id)) },
                 _ => panic!("Token not minted"),
             }
         }
@@ -119,11 +119,9 @@ mod arena_blobert {
 
     #[abi(embed_v0)]
     impl IArenaBlobertAdminImpl of IArenaBlobertAdmin<ContractState> {
-        fn mint(
-            ref self: ContractState, owner: ContractAddress, attributes: TokenAttributes,
-        ) -> u256 {
+        fn mint(ref self: ContractState, owner: ContractAddress, traits: TokenTraits) -> u256 {
             self.assert_caller_is_writer();
-            self.mint_internal(owner, attributes)
+            self.mint_internal(owner, traits)
         }
 
         fn total_minted(self: @ContractState) -> u256 {
@@ -155,22 +153,22 @@ mod arena_blobert {
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
         fn mint_internal(
-            ref self: ContractState, owner: ContractAddress, attributes: TokenAttributes,
+            ref self: ContractState, owner: ContractAddress, traits: TokenTraits,
         ) -> u256 {
             let minted = self.tokens_minted.read() + 1;
             self.tokens_minted.write(minted);
             let token_id = minted + 4844;
-            match attributes {
-                TokenAttributes::Seed(seed) => {
+            match traits {
+                TokenTraits::Seed(seed) => {
                     self.token_seeds.write(token_id, seed);
                     self.token_types.write(token_id, TokenType::Seed);
                 },
-                TokenAttributes::Custom(custom) => {
+                TokenTraits::Custom(custom) => {
                     self.token_customs.write(token_id, custom);
                     self.token_types.write(token_id, TokenType::Custom);
                 },
             }
-            TokenTable::set_entity(token_id, @attributes);
+            TokenTable::set_entity(token_id, @traits);
             let token_id: u256 = token_id.into();
             self.erc721.mint(owner, token_id);
             token_id

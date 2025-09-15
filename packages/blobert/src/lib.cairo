@@ -11,7 +11,7 @@ const WEAPON_INDEX: felt252 = (SHIFT_4B * 5).into();
 const CUSTOM_INDEX: felt252 = (SHIFT_4B * 6).into();
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect, Default)]
-pub enum TokenAttributes {
+pub enum TokenTraits {
     #[default]
     Seed: Seed,
     Custom: u32,
@@ -30,11 +30,11 @@ pub struct Seed {
 
 #[generate_trait]
 pub impl SeedImpl of SeedTrait {
-    fn keys(self: @Seed) -> [BlobertAttributeKey; 5] {
+    fn keys(self: @Seed) -> [BlobertTraitKey; 5] {
         [
-            BlobertAttributeKey::Background(*self.background),
-            BlobertAttributeKey::Armour(*self.armour), BlobertAttributeKey::Jewelry(*self.jewelry),
-            BlobertAttributeKey::Mask(*self.mask), BlobertAttributeKey::Weapon(*self.weapon),
+            BlobertTraitKey::Background(*self.background), BlobertTraitKey::Armour(*self.armour),
+            BlobertTraitKey::Jewelry(*self.jewelry), BlobertTraitKey::Mask(*self.mask),
+            BlobertTraitKey::Weapon(*self.weapon),
         ]
     }
     fn indexes(self: @Seed) -> Span<felt252> {
@@ -42,19 +42,8 @@ pub impl SeedImpl of SeedTrait {
     }
 }
 
-
 #[derive(Copy, Drop, Serde, PartialEq, Introspect, Default)]
 pub enum BlobertTrait {
-    #[default]
-    Background,
-    Armour,
-    Jewelry,
-    Mask,
-    Weapon,
-}
-
-#[derive(Copy, Drop, Serde, PartialEq, Introspect, Default)]
-pub enum BlobertAttribute {
     #[default]
     None,
     Background,
@@ -66,7 +55,7 @@ pub enum BlobertAttribute {
 }
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect, Default)]
-pub enum BlobertAttributeKey {
+pub enum BlobertTraitKey {
     #[default]
     None,
     Background: u32,
@@ -78,16 +67,16 @@ pub enum BlobertAttributeKey {
 }
 
 #[generate_trait]
-pub impl BlobertAttributeImpl of BlobertAttributeTrait {
-    fn index(self: BlobertAttribute, index: u32) -> felt252 {
+pub impl BlobertTraitImpl of BlobertTraitTrait {
+    fn index(self: BlobertTrait, index: u32) -> felt252 {
         match self {
-            BlobertAttribute::None => NONE_INDEX,
-            BlobertAttribute::Background => BACKGROUND_INDEX + index.into(),
-            BlobertAttribute::Armour => ARMOUR_INDEX + index.into(),
-            BlobertAttribute::Jewelry => JEWELRY_INDEX + index.into(),
-            BlobertAttribute::Mask => MASK_INDEX + index.into(),
-            BlobertAttribute::Weapon => WEAPON_INDEX + index.into(),
-            BlobertAttribute::Custom => CUSTOM_INDEX + index.into(),
+            BlobertTrait::None => NONE_INDEX,
+            BlobertTrait::Background => BACKGROUND_INDEX + index.into(),
+            BlobertTrait::Armour => ARMOUR_INDEX + index.into(),
+            BlobertTrait::Jewelry => JEWELRY_INDEX + index.into(),
+            BlobertTrait::Mask => MASK_INDEX + index.into(),
+            BlobertTrait::Weapon => WEAPON_INDEX + index.into(),
+            BlobertTrait::Custom => CUSTOM_INDEX + index.into(),
         }
     }
 }
@@ -97,57 +86,57 @@ pub fn get_custom_index(index: u32) -> felt252 {
 }
 
 #[generate_trait]
-pub impl BlobertAttributeKeyImpl of BlobertAttributeKeyTrait {
-    fn index(self: BlobertAttributeKey) -> felt252 {
+pub impl BlobertTraitKeyImpl of BlobertTraitKeyTrait {
+    fn index(self: BlobertTraitKey) -> felt252 {
         match self {
-            BlobertAttributeKey::None => NONE_INDEX,
-            BlobertAttributeKey::Background(index) => BACKGROUND_INDEX + index.into(),
-            BlobertAttributeKey::Armour(index) => ARMOUR_INDEX + index.into(),
-            BlobertAttributeKey::Jewelry(index) => JEWELRY_INDEX + index.into(),
-            BlobertAttributeKey::Mask(index) => MASK_INDEX + index.into(),
-            BlobertAttributeKey::Weapon(index) => WEAPON_INDEX + index.into(),
-            BlobertAttributeKey::Custom(index) => CUSTOM_INDEX + index.into(),
+            BlobertTraitKey::None => NONE_INDEX,
+            BlobertTraitKey::Background(index) => BACKGROUND_INDEX + index.into(),
+            BlobertTraitKey::Armour(index) => ARMOUR_INDEX + index.into(),
+            BlobertTraitKey::Jewelry(index) => JEWELRY_INDEX + index.into(),
+            BlobertTraitKey::Mask(index) => MASK_INDEX + index.into(),
+            BlobertTraitKey::Weapon(index) => WEAPON_INDEX + index.into(),
+            BlobertTraitKey::Custom(index) => CUSTOM_INDEX + index.into(),
         }
     }
 }
 
-impl BlobertAttributeIntoFelt252 of Into<BlobertAttribute, felt252> {
-    fn into(self: BlobertAttribute) -> felt252 {
+impl BlobertTraitIntoFelt252 of Into<BlobertTrait, felt252> {
+    fn into(self: BlobertTrait) -> felt252 {
         match self {
-            BlobertAttribute::None => 0,
-            BlobertAttribute::Background => 1,
-            BlobertAttribute::Armour => 2,
-            BlobertAttribute::Jewelry => 3,
-            BlobertAttribute::Mask => 4,
-            BlobertAttribute::Weapon => 5,
-            BlobertAttribute::Custom => 6,
+            BlobertTrait::None => 0,
+            BlobertTrait::Background => 1,
+            BlobertTrait::Armour => 2,
+            BlobertTrait::Jewelry => 3,
+            BlobertTrait::Mask => 4,
+            BlobertTrait::Weapon => 5,
+            BlobertTrait::Custom => 6,
         }
     }
 }
 
 
-impl BlobertTraitIntoBlobertAttribute of Into<BlobertTrait, BlobertAttribute> {
-    fn into(self: BlobertTrait) -> BlobertAttribute {
-        match self {
-            BlobertTrait::Background => BlobertAttribute::Background,
-            BlobertTrait::Armour => BlobertAttribute::Armour,
-            BlobertTrait::Jewelry => BlobertAttribute::Jewelry,
-            BlobertTrait::Mask => BlobertAttribute::Mask,
-            BlobertTrait::Weapon => BlobertAttribute::Weapon,
-        }
-    }
-}
+// impl BlobertTraitIntoBlobertTrait of Into<BlobertTrait, BlobertTrait> {
+//     fn into(self: BlobertTrait) -> BlobertTrait {
+//         match self {
+//             BlobertTrait::Background => BlobertTrait::Background,
+//             BlobertTrait::Armour => BlobertTrait::Armour,
+//             BlobertTrait::Jewelry => BlobertTrait::Jewelry,
+//             BlobertTrait::Mask => BlobertTrait::Mask,
+//             BlobertTrait::Weapon => BlobertTrait::Weapon,
+//         }
+//     }
+// }
 
-impl BlobertAttributeKeyIntoBlobertAttribute of Into<BlobertAttributeKey, (BlobertAttribute, u32)> {
-    fn into(self: BlobertAttributeKey) -> (BlobertAttribute, u32) {
+impl BlobertTraitKeyIntoBlobertTrait of Into<BlobertTraitKey, (BlobertTrait, u32)> {
+    fn into(self: BlobertTraitKey) -> (BlobertTrait, u32) {
         match self {
-            BlobertAttributeKey::None => (BlobertAttribute::None, 0),
-            BlobertAttributeKey::Background(index) => (BlobertAttribute::Background, index),
-            BlobertAttributeKey::Armour(index) => (BlobertAttribute::Armour, index),
-            BlobertAttributeKey::Jewelry(index) => (BlobertAttribute::Jewelry, index),
-            BlobertAttributeKey::Mask(index) => (BlobertAttribute::Mask, index),
-            BlobertAttributeKey::Weapon(index) => (BlobertAttribute::Weapon, index),
-            BlobertAttributeKey::Custom(index) => (BlobertAttribute::Custom, index),
+            BlobertTraitKey::None => (BlobertTrait::None, 0),
+            BlobertTraitKey::Background(index) => (BlobertTrait::Background, index),
+            BlobertTraitKey::Armour(index) => (BlobertTrait::Armour, index),
+            BlobertTraitKey::Jewelry(index) => (BlobertTrait::Jewelry, index),
+            BlobertTraitKey::Mask(index) => (BlobertTrait::Mask, index),
+            BlobertTraitKey::Weapon(index) => (BlobertTrait::Weapon, index),
+            BlobertTraitKey::Custom(index) => (BlobertTrait::Custom, index),
         }
     }
 }
@@ -155,9 +144,9 @@ impl BlobertAttributeKeyIntoBlobertAttribute of Into<BlobertAttributeKey, (Blobe
 
 #[starknet::interface]
 trait IBlobert<TState> {
-    fn traits(self: @TState, token_id: u256) -> TokenAttributes;
+    fn traits(self: @TState, token_id: u256) -> TokenTraits;
 }
 
-pub fn get_blobert_attributes(collection: ContractAddress, token_id: u256) -> TokenAttributes {
+pub fn get_blobert_traits(collection: ContractAddress, token_id: u256) -> TokenTraits {
     IBlobertDispatcher { contract_address: collection }.traits(token_id)
 }

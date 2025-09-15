@@ -10,7 +10,7 @@ members = ["packages/*"]
 
 
 [workspace.dependencies]
-alexandria_macros = { git = "https://github.com/keep-starknet-strange/alexandria/", tag = "v0.5.1" }
+alexandria_macros = { git = "https://github.com/keep-starknet-strange/alexandria/", tag = "v0.6.1" }
 starknet = "2.12.1"
 openzeppelin_token = "2.0.0"
 openzeppelin_account = "2.0.0"

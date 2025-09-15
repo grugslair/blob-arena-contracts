@@ -1,4 +1,4 @@
-use ba_blobert::BlobertAttribute;
+use ba_blobert::BlobertTrait;
 use crate::ability::DAbilities;
 use crate::attack::IdTagAttack;
 
@@ -6,7 +6,7 @@ use crate::attack::IdTagAttack;
 pub trait IClassicLoadout<TContractState> {
     fn set_loadout(
         ref self: TContractState,
-        attribute: BlobertAttribute,
+        blobert_trait: BlobertTrait,
         index: u32,
         name: ByteArray,
         abilities: DAbilities,
@@ -18,7 +18,7 @@ pub trait IClassicLoadout<TContractState> {
 
 #[derive(Drop, Serde)]
 struct LoadoutInput {
-    attribute: BlobertAttribute,
+    blobert_trait: BlobertTrait,
     index: u32,
     name: ByteArray,
     abilities: DAbilities,
@@ -27,7 +27,7 @@ struct LoadoutInput {
 
 #[derive(Drop, Serde, Introspect)]
 struct AttackSlot {
-    attribute: BlobertAttribute,
+    blobert_trait: BlobertTrait,
     index: u32,
     slot: u32,
     attack: felt252,
@@ -36,7 +36,7 @@ struct AttackSlot {
 
 #[derive(Drop, Serde, Introspect)]
 struct BlobertAbilities {
-    attribute: BlobertAttribute,
+    blobert_trait: BlobertTrait,
     index: u32,
     name: ByteArray,
     strength: u16,
@@ -48,7 +48,7 @@ struct BlobertAbilities {
 #[starknet::contract]
 mod loadout_classic {
     use ba_blobert::{
-        BlobertAttribute, BlobertAttributeTrait, SeedTrait, TokenAttributes, get_blobert_attributes,
+        BlobertTrait, BlobertTraitTrait, SeedTrait, TokenTraits, get_blobert_traits,
         get_custom_index,
     };
     use beacon_library::{ToriiTable, register_table_with_schema};
@@ -120,9 +120,9 @@ mod loadout_classic {
             self: @ContractState, collection_address: ContractAddress, token_id: u256,
         ) -> Abilities {
             self.assert_collection_address(collection_address);
-            let dabilities = match get_blobert_attributes(collection_address, token_id) {
-                TokenAttributes::Seed(seed) => self.get_seed_attributes(seed.indexes()),
-                TokenAttributes::Custom(index) => self.abilities.read(get_custom_index(index)),
+            let dabilities = match get_blobert_traits(collection_address, token_id) {
+                TokenTraits::Seed(seed) => self.get_seed_traits(seed.indexes()),
+                TokenTraits::Custom(index) => self.abilities.read(get_custom_index(index)),
             };
             self.base_stats.read().add_d_abilities(dabilities)
         }
@@ -133,9 +133,9 @@ mod loadout_classic {
             slots: Array<Array<felt252>>,
         ) -> Array<felt252> {
             self.assert_collection_address(collection_address);
-            match get_blobert_attributes(collection_address, token_id) {
-                TokenAttributes::Seed(seed) => self.get_seed_attack_slots(seed.indexes(), slots),
-                TokenAttributes::Custom(index) => self
+            match get_blobert_traits(collection_address, token_id) {
+                TokenTraits::Seed(seed) => self.get_seed_attack_slots(seed.indexes(), slots),
+                TokenTraits::Custom(index) => self
                     .get_custom_attack_slots(get_custom_index(index), slots),
             }
         }
@@ -147,13 +147,12 @@ mod loadout_classic {
             slots: Array<Array<felt252>>,
         ) -> (Abilities, Array<felt252>) {
             self.assert_collection_address(collection_address);
-            let (abilities, attack_slots) =
-                match get_blobert_attributes(collection_address, token_id) {
-                TokenAttributes::Seed(seed) => {
+            let (abilities, attack_slots) = match get_blobert_traits(collection_address, token_id) {
+                TokenTraits::Seed(seed) => {
                     let indexes = seed.indexes();
-                    (self.get_seed_attributes(indexes), self.get_seed_attack_slots(indexes, slots))
+                    (self.get_seed_traits(indexes), self.get_seed_attack_slots(indexes, slots))
                 },
-                TokenAttributes::Custom(index) => {
+                TokenTraits::Custom(index) => {
                     let aindex = get_custom_index(index);
                     (self.abilities.read(aindex), self.get_custom_attack_slots(aindex, slots))
                 },
@@ -166,14 +165,14 @@ mod loadout_classic {
     impl IClassicLoadoutImpl of IClassicLoadout<ContractState> {
         fn set_loadout(
             ref self: ContractState,
-            attribute: BlobertAttribute,
+            blobert_trait: BlobertTrait,
             index: u32,
             name: ByteArray,
             abilities: DAbilities,
             attacks: Array<IdTagAttack>,
         ) {
             self.assert_caller_is_owner();
-            let abilities_index = attribute.index(index);
+            let abilities_index = blobert_trait.index(index);
             self.abilities.write(abilities_index, abilities);
 
             let attack_ids = self.attack_dispatcher.read().maybe_create_attacks(attacks);
@@ -182,39 +181,39 @@ mod loadout_classic {
             attacks_ptr.clip_attack_slot_slots(attack_slot_index, attack_ids.len());
             for (slot, attack_id) in attack_ids.into_iter().enumerate() {
                 let slot_id = attack_slot_index + slot.into();
-                AttackSlotTable::set_entity(slot_id, @(attribute, index, slot, attack_id));
+                AttackSlotTable::set_entity(slot_id, @(blobert_trait, index, slot, attack_id));
                 attacks_ptr.write(slot_id, attack_id);
             }
-            AbilityTable::set_entity(abilities_index, @(attribute, index, name, abilities));
+            AbilityTable::set_entity(abilities_index, @(blobert_trait, index, name, abilities));
         }
 
 
         fn set_loadouts(ref self: ContractState, loadouts: Array<LoadoutInput>) {
             self.assert_caller_is_owner();
             let mut all_attacks: Array<IdTagAttack> = Default::default();
-            let mut indexes: Array<(BlobertAttribute, u32, felt252, u32)> = Default::default();
+            let mut indexes: Array<(BlobertTrait, u32, felt252, u32)> = Default::default();
             let mut attacks_ptr = self.attack_slots;
             let mut abilities_ptr = self.abilities;
 
-            for LoadoutInput { attribute, index, name, abilities, attacks } in loadouts {
+            for LoadoutInput { blobert_trait, index, name, abilities, attacks } in loadouts {
                 self.assert_caller_is_owner();
-                let abilities_index = attribute.index(index);
+                let abilities_index = blobert_trait.index(index);
 
                 abilities_ptr.write(abilities_index, abilities);
                 let slot_index = abilities_index * SHIFT_4B.into();
                 attacks_ptr.clip_attack_slot_slots(slot_index, attacks.len());
-                AbilityTable::set_entity(abilities_index, @(attribute, index, name, abilities));
+                AbilityTable::set_entity(abilities_index, @(blobert_trait, index, name, abilities));
                 for (slot, attack) in attacks.into_iter().enumerate() {
                     all_attacks.append(attack);
-                    indexes.append((attribute, index, slot_index, slot));
+                    indexes.append((blobert_trait, index, slot_index, slot));
                 }
             }
             let attack_ids = self.attack_dispatcher.read().maybe_create_attacks(all_attacks);
-            for (attack_id, (attribute, index, slot_index, slot)) in attack_ids
+            for (attack_id, (blobert_trait, index, slot_index, slot)) in attack_ids
                 .into_iter()
                 .zip(indexes) {
                 let slot_id = slot_index + slot.into();
-                AttackSlotTable::set_entity(slot_id, @(attribute, index, slot, attack_id));
+                AttackSlotTable::set_entity(slot_id, @(blobert_trait, index, slot, attack_id));
                 attacks_ptr.write(slot_id, attack_id);
             }
         }
@@ -241,7 +240,7 @@ mod loadout_classic {
             }
         }
 
-        fn get_seed_attributes(self: @ContractState, indexes: Span<felt252>) -> DAbilities {
+        fn get_seed_traits(self: @ContractState, indexes: Span<felt252>) -> DAbilities {
             indexes.into_iter().map(|k| self.abilities.read(*k)).sum()
         }
 
@@ -266,13 +265,13 @@ mod loadout_classic {
             slots.into_iter().map(|slot| self.attack_slots.read(slot_index + *slot[0])).collect()
         }
         // fn get_loadout_ptrs(
-    //     ref self: ContractState, key: BlobertAttributeKey,
+    //     ref self: ContractState, key: BlobertTraitKey,
     // ) -> (
     //     StorageBase<Mutable<Map<felt252, Abilities>>>,
     //     StorageBase<Mutable<Map<felt252, felt252>>>,
     // ) {
     //     match key {
-    //         BlobertAttributeKey::Custom(_) => (self.custom_abilities,
+    //         BlobertTraitKey::Custom(_) => (self.custom_abilities,
     //         self.custom_attack_slots), _ => (self.seed_abilities, self.seed_attack_slots),
     //     }
     // }

@@ -12,8 +12,9 @@ pub mod attack {
     };
 }
 pub mod ability;
-pub mod amma_contract;
-pub mod classic_contract;
+// pub mod amma_contract;
+// pub mod classic_contract;
+pub mod effects;
 pub mod interface;
 pub use interface::get_loadout;
 

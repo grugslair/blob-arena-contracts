@@ -27,6 +27,7 @@ beacon_macros.workspace = true
 beacon_entity.workspace = true
 amma_blobert = { path = "../amma_blobert" }
 ba_blobert = { path = "../blobert" }
+ba_utils = { path = "../utils" }
 
 
 [[target.starknet-contract]]

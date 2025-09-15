@@ -4,8 +4,8 @@ use ba_utils::{Randomness, RandomnessTrait};
 use core::cmp::min;
 use core::num::traits::{SaturatingAdd, SaturatingSub, Zero};
 use sai_core_utils::SaturatingInto;
-use sai_packing::MaskDowncast;
-use sai_packing::byte::{SHIFT_10B, SHIFT_8B, ShiftCast};
+use sai_packing::shifts::*;
+use sai_packing::{MaskDowncast, ShiftCast};
 use starknet::storage::StorageNodeDeref;
 use starknet::storage_access::StorePacking;
 use crate::calculations::{
@@ -15,35 +15,75 @@ use crate::result::DamageResult;
 
 #[derive(Drop, Copy, Serde, Schema, Introspect, Default)]
 pub struct CombatantState {
-    pub health: u16,
+    pub health: u8,
     pub stun_chance: u8,
-    pub abilities: Abilities,
     pub block: u8,
+    pub strength: u8,
+    pub vitality: u8,
+    pub dexterity: u8,
+    pub luck: u8,
+    pub bludgeon_resistance: u8,
+    pub magic_resistance: u8,
+    pub pierce_resistance: u8,
+    pub bludgeon_vulnerability: u16,
+    pub magic_vulnerability: u16,
+    pub pierce_vulnerability: u16,
 }
 
 
-impl UAbilityStorePacking of StorePacking<CombatantState, felt252> {
-    fn pack(value: CombatantState) -> felt252 {
-        let value: u128 = StorePacking::pack(value.abilities).into()
-            + ShiftCast::cast::<SHIFT_8B>(value.health)
-            + ShiftCast::cast::<SHIFT_10B>(value.stun_chance);
-        value.into()
+impl UAbilityStorePacking of StorePacking<CombatantState, u128> {
+    fn pack(value: CombatantState) -> u128 {
+        value.strength.into()
+            + ShiftCast::cast::<SHIFT_1B>(value.vitality)
+            + ShiftCast::cast::<SHIFT_2B>(value.dexterity)
+            + ShiftCast::cast::<SHIFT_3B>(value.luck)
+            + ShiftCast::cast::<SHIFT_4B>(value.bludgeon_resistance)
+            + ShiftCast::cast::<SHIFT_5B>(value.magic_resistance)
+            + ShiftCast::cast::<SHIFT_6B>(value.pierce_resistance)
+            + ShiftCast::cast::<SHIFT_7B>(value.bludgeon_vulnerability)
+            + ShiftCast::cast::<SHIFT_9B>(value.magic_vulnerability)
+            + ShiftCast::cast::<SHIFT_11B>(value.pierce_vulnerability)
+            + ShiftCast::cast::<SHIFT_12B>(value.health)
+            + ShiftCast::cast::<SHIFT_13B>(value.stun_chance)
     }
 
-    fn unpack(value: felt252) -> CombatantState {
-        let value: u128 = value.try_into().unwrap();
-
-        let health: u16 = ShiftCast::unpack::<SHIFT_8B>(value);
-        let stun_chance = ShiftCast::unpack::<SHIFT_10B>(value);
-        let abilities = StorePacking::unpack(MaskDowncast::cast(value));
-        CombatantState { health, stun_chance, abilities, block: 0 }
+    fn unpack(value: u128) -> CombatantState {
+        CombatantState {
+            strength: MaskDowncast::cast(value),
+            vitality: ShiftCast::unpack::<SHIFT_1B>(value),
+            dexterity: ShiftCast::unpack::<SHIFT_2B>(value),
+            luck: ShiftCast::unpack::<SHIFT_3B>(value),
+            bludgeon_resistance: ShiftCast::unpack::<SHIFT_4B>(value),
+            magic_resistance: ShiftCast::unpack::<SHIFT_5B>(value),
+            pierce_resistance: ShiftCast::unpack::<SHIFT_6B>(value),
+            bludgeon_vulnerability: ShiftCast::unpack::<SHIFT_7B>(value),
+            magic_vulnerability: ShiftCast::unpack::<SHIFT_9B>(value),
+            pierce_vulnerability: ShiftCast::unpack::<SHIFT_11B>(value),
+            health: ShiftCast::unpack::<SHIFT_12B>(value),
+            stun_chance: ShiftCast::unpack::<SHIFT_13B>(value),
+            block: 0,
+        }
     }
 }
 
 
 impl AbilitiesIntoCombatantState of Into<Abilities, CombatantState> {
     fn into(self: Abilities) -> CombatantState {
-        CombatantState { health: self.max_health(), stun_chance: 0, abilities: self, block: 0 }
+        CombatantState {
+            strength: self.strength,
+            vitality: self.vitality,
+            dexterity: self.dexterity,
+            luck: self.luck,
+            bludgeon_resistance: self.bludgeon_resistance,
+            magic_resistance: self.magic_resistance,
+            pierce_resistance: self.pierce_resistance,
+            bludgeon_vulnerability: self.bludgeon_vulnerability,
+            magic_vulnerability: self.magic_vulnerability,
+            pierce_vulnerability: self.pierce_vulnerability,
+            health: self.max_health(),
+            stun_chance: 0,
+            block: 0,
+        }
     }
 }
 

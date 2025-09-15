@@ -108,3 +108,38 @@ pub fn erc721_token_hash(collection_address: ContractAddress, token_id: u256) ->
     )
 }
 
+
+pub trait CapInto<T, S> {
+    fn cap_into(self: T, cap: S) -> S;
+}
+
+pub trait IntoRange<T, S> {
+    fn into_range(self: T, min: S, max: S) -> S;
+}
+
+impl CapIntoImpl<
+    T, S, +Drop<T>, +Drop<S>, +Copy<T>, +Copy<S>, +Into<S, T>, +TryInto<T, S>, +PartialOrd<T>,
+> of CapInto<T, S> {
+    fn cap_into(self: T, cap: S) -> S {
+        if self > cap.into() {
+            cap
+        } else {
+            self.try_into().unwrap()
+        }
+    }
+}
+
+
+impl IntoRangeImpl<
+    T, S, +Drop<T>, +Drop<S>, +Copy<T>, +Copy<S>, +Into<S, T>, +TryInto<T, S>, +PartialOrd<T>,
+> of IntoRange<T, S> {
+    fn into_range(self: T, min: S, max: S) -> S {
+        if self < min.into() {
+            min
+        } else if self > max.into() {
+            max
+        } else {
+            self.try_into().unwrap()
+        }
+    }
+}
