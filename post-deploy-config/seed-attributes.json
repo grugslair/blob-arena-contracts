@@ -1,5 +1,5 @@
 {
-"armour": {
+  "armour": {
     "0": {
       "name": "Sheeps Wool",
       "stats": {
@@ -82,7 +82,7 @@
               "target": "Player",
               "affect": {
                 "Stats": {
-                  "strength": -10,
+                  "strength": 10,
                   "vitality": 0,
                   "dexterity": 0,
                   "luck": 0
@@ -334,7 +334,7 @@
               "target": "Player",
               "affect": {
                 "Stats": {
-                  "strength": -10,
+                  "strength": 20,
                   "vitality": 0,
                   "dexterity": 0,
                   "luck": 0
