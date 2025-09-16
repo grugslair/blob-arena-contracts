@@ -1,7 +1,7 @@
 use ba_combat::combat::{Round, run_round};
 use ba_combat::{CombatantState, Player};
-use ba_loadout::ability::Abilities;
 use ba_loadout::attack::{IAttackDispatcher, IAttackDispatcherTrait};
+use ba_loadout::attributes::Abilities;
 use ba_utils::RandomnessTrait;
 use core::num::traits::Zero;
 use core::panic_with_felt252;

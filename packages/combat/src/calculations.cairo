@@ -31,11 +31,12 @@ const FIXED_255: Fixed = Fixed { mag: 4703919738795935662080, sign: false };
 /// If the calculated new value exceeds 255, it is capped at 255.
 
 pub fn apply_luck_modifier<T, +TryInto<Fixed, T>, +Into<u8, T>, +Zero<T>>(
-    value: u8, luck: u16,
+    value: u8, luck: u8,
 ) -> T {
     if value == 0 {
         return Zero::zero();
     }
+    let luck: u16 = luck.into();
     let luck_ratio: Fixed = (300_u16 - luck).into() / (200_u16 + luck).into();
     let value_float = value.into() / HUNDRED_FIXED;
     let new_value = (value_float.pow(luck_ratio) * FIXED_255);

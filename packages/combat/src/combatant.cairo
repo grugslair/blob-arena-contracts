@@ -1,6 +1,6 @@
-use ba_loadout::ability::{Abilities, AbilitiesTrait, AbilityTypes, DAbilities};
 use ba_loadout::attack::types::Damage;
-use ba_utils::{Randomness, RandomnessTrait};
+use ba_loadout::attributes::{Abilities, MAX_ABILITY_SCORE};
+use ba_utils::{IntoRange, Randomness, RandomnessTrait};
 use core::cmp::min;
 use core::num::traits::{SaturatingAdd, SaturatingSub, Zero};
 use sai_core_utils::SaturatingInto;
@@ -12,6 +12,9 @@ use crate::calculations::{
     apply_luck_modifier, damage_calculation, did_critical, get_new_stun_chance,
 };
 use crate::result::DamageResult;
+
+const BASE_HEALTH: u8 = 100;
+
 
 #[derive(Drop, Copy, Serde, Schema, Introspect, Default)]
 pub struct CombatantState {
@@ -43,8 +46,8 @@ impl UAbilityStorePacking of StorePacking<CombatantState, u128> {
             + ShiftCast::cast::<SHIFT_7B>(value.bludgeon_vulnerability)
             + ShiftCast::cast::<SHIFT_9B>(value.magic_vulnerability)
             + ShiftCast::cast::<SHIFT_11B>(value.pierce_vulnerability)
-            + ShiftCast::cast::<SHIFT_12B>(value.health)
-            + ShiftCast::cast::<SHIFT_13B>(value.stun_chance)
+            + ShiftCast::cast::<SHIFT_13B>(value.health)
+            + ShiftCast::cast::<SHIFT_14B>(value.stun_chance)
     }
 
     fn unpack(value: u128) -> CombatantState {
@@ -87,18 +90,18 @@ impl AbilitiesIntoCombatantState of Into<Abilities, CombatantState> {
     }
 }
 
+fn add_ability_modifier(value: u8, modifier: i8) -> u8 {
+    (Into::<_, i16>::into(value) + modifier.into()).into_range(0, MAX_ABILITY_SCORE)
+}
+
+fn modify_ability(ref current: u8, modifier: i8) -> i8 {
+    let prev_value: i8 = current.try_into().unwrap();
+    current = add_ability_modifier(current, modifier);
+    (current.try_into().unwrap() - prev_value)
+}
+
 #[generate_trait]
 pub impl CombatantStateImpl of CombatantStateTrait {
-    fn limit_buffs(ref self: CombatantState) {
-        self.abilities.limit();
-    }
-
-    fn apply_buffs(ref self: CombatantState, buffs: DAbilities) -> DAbilities {
-        let change = self.abilities.apply_buffs(buffs);
-        self.cap_health();
-        change
-    }
-
     fn apply_damage(
         ref self: CombatantState,
         damage: Damage,
@@ -125,38 +128,30 @@ pub impl CombatantStateImpl of CombatantStateTrait {
         self.health.try_into().unwrap() - starting_health
     }
 
-    fn apply_buff(ref self: CombatantState, stat: AbilityTypes, amount: i16) -> i16 {
-        let result = self.abilities.apply_buff(stat, amount);
-        if stat == AbilityTypes::Vitality {
-            self.cap_health();
-        }
-        result
+    fn modify_strength(ref self: CombatantState, amount: i8) -> i8 {
+        modify_ability(ref self.strength, amount)
     }
 
-    fn apply_strength_buff(ref self: CombatantState, amount: i16) -> i16 {
-        self.abilities.apply_strength_buff(amount)
-    }
-
-    fn apply_vitality_buff(ref self: CombatantState, amount: i16) -> i16 {
-        let result = self.abilities.apply_vitality_buff(amount);
+    fn modify_vitality(ref self: CombatantState, amount: i8) -> i8 {
+        let change = modify_ability(ref self.vitality, amount);
         self.cap_health();
-        result
+        change
     }
 
-    fn apply_dexterity_buff(ref self: CombatantState, amount: i16) -> i16 {
-        self.abilities.apply_dexterity_buff(amount)
+    fn modify_dexterity(ref self: CombatantState, amount: i8) -> i8 {
+        modify_ability(ref self.dexterity, amount)
     }
 
-    fn apply_luck_buff(ref self: CombatantState, amount: i16) -> i16 {
-        self.abilities.apply_luck_buff(amount)
+    fn modify_luck(ref self: CombatantState, amount: i8) -> i8 {
+        modify_ability(ref self.luck, amount)
     }
 
     fn cap_health(ref self: CombatantState) {
         self.health = min(self.max_health(), self.health);
     }
 
-    fn max_health(self: @CombatantState) -> u16 {
-        self.abilities.max_health()
+    fn max_health(self: @CombatantState) -> u8 {
+        BASE_HEALTH + *self.vitality
     }
 
     fn max_health_permille(self: @CombatantState, permille: u16) -> u16 {
@@ -165,7 +160,7 @@ pub impl CombatantStateImpl of CombatantStateTrait {
 
 
     fn run_stun(ref self: CombatantState, ref randomness: Randomness) -> bool {
-        let stun_chance: u8 = apply_luck_modifier(self.stun_chance, 100 - self.abilities.luck);
+        let stun_chance: u8 = apply_luck_modifier(self.stun_chance, 100 - self.luck);
         self.stun_chance = 0;
         randomness.get(255) < stun_chance
     }
