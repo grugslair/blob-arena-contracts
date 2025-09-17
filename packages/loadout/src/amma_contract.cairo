@@ -1,9 +1,10 @@
 use starknet::ContractAddress;
 use crate::attack::IdTagAttack;
-use crate::attributes::{Attributes, PartialAttributes};
+use crate::attributes::Attributes;
 
 #[derive(Drop, Serde)]
 struct FighterInput {
+    fighter: u32,
     attributes: Attributes,
     attacks: Array<IdTagAttack>,
 }
@@ -14,7 +15,7 @@ pub trait IAmmaLoadout<TContractState> {
         ref self: TContractState, fighter: u32, attributes: Attributes, attacks: Array<IdTagAttack>,
     );
 
-    fn set_fighters(ref self: TContractState, fighters: Array<(u32, FighterInput)>);
+    fn set_fighters(ref self: TContractState, fighters: Array<FighterInput>);
 
     fn set_fighter_count(ref self: TContractState, count: u32);
 
@@ -54,12 +55,6 @@ struct AttackSlot {
     attack: felt252,
 }
 
-#[derive(Drop, Serde, Introspect)]
-struct FighterAttributes {
-    attributes: Attributes,
-    gen_attributes: PartialAttributes,
-}
-
 #[starknet::contract]
 mod loadout_amma {
     use amma_blobert::get_fighter;
@@ -74,7 +69,7 @@ mod loadout_amma {
     };
     use crate::attack::{IAttackAdminDispatcher, IAttackAdminDispatcherTrait, IdTagAttack};
     use crate::interface::ILoadout;
-    use super::{AttackSlot, Attributes, FighterAttributes, FighterInput, IAmmaLoadout};
+    use super::{AttackSlot, Attributes, FighterInput, IAmmaLoadout};
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
 
@@ -116,7 +111,7 @@ mod loadout_amma {
         self
             .attack_dispatcher
             .write(IAttackAdminDispatcher { contract_address: attack_dispatcher_address });
-        register_table_with_schema::<FighterAttributes>("loadout_amma", "Attributes");
+        register_table_with_schema::<Attributes>("loadout_amma", "Attributes");
         register_table_with_schema::<AttackSlot>("loadout_amma", "AttackSlots");
     }
 
@@ -171,11 +166,11 @@ mod loadout_amma {
             }
         }
 
-        fn set_fighters(ref self: ContractState, fighters: Array<(u32, FighterInput)>) {
+        fn set_fighters(ref self: ContractState, fighters: Array<FighterInput>) {
             self.assert_caller_is_owner();
             let mut all_attacks: Array<IdTagAttack> = Default::default();
             let mut indexes: Array<(u32, u32)> = Default::default();
-            for (fighter, FighterInput { attributes, attacks }) in fighters {
+            for FighterInput { fighter, attributes, attacks } in fighters {
                 self.attributes.write(fighter, attributes);
                 AbilityTable::set_entity(fighter, @(attributes));
                 self.clip_attack_slot_slots(fighter, attacks.len());

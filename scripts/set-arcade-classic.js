@@ -8,7 +8,6 @@ export const makeOpponentStruct = (opponent) => {
   }
   return {
     attributes: opponent.attributes,
-    abilities: opponent.abilities,
     attacks: parseIdTagAttackStructs(opponent.attacks),
   };
 };

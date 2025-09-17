@@ -1,7 +1,19 @@
 import { loadJson } from "./stark-utils.js";
 import { loadSai } from "./sai.js";
+import { makeOpponentCall } from "./set-arcade-classic.js";
+import { parseIdTagAttackStructs } from "./attack.js";
 
 export const makeSetConfigCalls = (contract, config) => {};
+
+export const makeOpponentStruct = (opponent) => {
+  for (let i = 0; i < 4 - opponent.attacks.length; i++) {
+    opponent.attacks.push({ id: BigInt(0) });
+  }
+  return {
+    attributes: opponent.attributes,
+    attacks: parseIdTagAttackStructs(opponent.attacks),
+  };
+};
 
 export const makeArcadeAmmaCalls = async (sai) => {
   const config = loadJson("./post-deploy-config/arcade-amma.json");
