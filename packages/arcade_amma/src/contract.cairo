@@ -1,16 +1,38 @@
+use ba_loadout::PartialAttributes;
+
+
+#[derive(Drop, Serde)]
+struct OpponentAttributesInput {
+    fighter: u32,
+    base: PartialAttributes,
+    level: PartialAttributes,
+}
+
+#[derive(Drop, Introspect)]
+struct OpponentAttributesTable {
+    base: PartialAttributes,
+    level: PartialAttributes,
+}
+
 #[starknet::interface]
 trait IArcadeAmma<TState> {
     fn gen_stages(self: @TState) -> u32;
     fn set_gen_stages(ref self: TState, gen_stages: u32);
+    fn set_opponent_attributes(
+        ref self: TState, fighter: u32, base: PartialAttributes, level: PartialAttributes,
+    );
+    fn set_opponents_attributes(ref self: TState, opponents: Array<OpponentAttributesInput>);
 }
 
 #[starknet::contract]
 mod arcade_amma {
     use ba_arcade::attempt::{ArcadePhase, AttemptNodeTrait};
     use ba_arcade::{IArcade, Opponent, arcade_component};
+    use ba_loadout::PartialAttributes;
     use ba_loadout::amma_contract::{
-        get_fighter_count, get_fighter_gen_loadout, get_fighter_loadout,
+        get_fighter_attacks, get_fighter_count, get_fighter_gen_loadout, get_fighter_loadout,
     };
+    use ba_loadout::attributes::AttributesCalc;
     use ba_utils::{Randomness, RandomnessTrait};
     use beacon_library::{ToriiTable, register_table_with_schema};
     use sai_core_utils::poseidon_hash_two;
@@ -22,7 +44,7 @@ mod arcade_amma {
         StoragePointerWriteAccess,
     };
     use crate::systems::{attack_slots, get_stage_stats, random_selection};
-    use super::IArcadeAmma;
+    use super::{IArcadeAmma, OpponentAttributesInput};
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
     component!(path: arcade_component, storage: arcade, event: ArcadeEvents);
@@ -31,12 +53,16 @@ mod arcade_amma {
     const ATTEMPT_HASH: felt252 = bytearrays_hash!("arcade_amma", "ArcadeAttempt");
     const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("arcade_amma", "AttackLastUsed");
     const OPPONENTS_HASH: felt252 = bytearrays_hash!("arcade_amma", "Opponents");
+    const OPPONENTS_ATTRIBUTES_HASH: felt252 = bytearrays_hash!(
+        "arcade_amma", "OpponentAttributes",
+    );
 
     impl OpponentsTable = ToriiTable<OPPONENTS_HASH>;
     impl ArcadeInternal =
         arcade_component::ArcadeInternal<
             ContractState, ATTEMPT_HASH, ROUND_HASH, LAST_USED_ATTACK_HASH,
         >;
+    impl OpponentsAttributesTable = ToriiTable<OPPONENTS_ATTRIBUTES_HASH>;
 
     #[storage]
     struct Storage {
@@ -46,6 +72,7 @@ mod arcade_amma {
         arcade: arcade_component::Storage,
         collectable_address: ContractAddress,
         gen_stages: u32,
+        opponents_attributes: Map<u32, (PartialAttributes, PartialAttributes)>,
         opponents: Map<felt252, u32>,
         bosses: Map<felt252, u32>,
     }
@@ -85,6 +112,9 @@ mod arcade_amma {
             vrf_address,
         );
         register_table_with_schema::<Opponents>("arcade_amma", "Opponents");
+        register_table_with_schema::<
+            super::OpponentAttributesTable,
+        >("arcade_amma", "OpponentAttributes");
         self.collectable_address.write(collectable_address);
     }
 
@@ -190,6 +220,28 @@ mod arcade_amma {
             self.assert_caller_is_owner();
             self.gen_stages.write(gen_stages);
         }
+
+        fn set_opponent_attributes(
+            ref self: ContractState,
+            fighter: u32,
+            base: PartialAttributes,
+            level: PartialAttributes,
+        ) {
+            self.assert_caller_is_owner();
+            self.set_opponent_attributes_internal(fighter, base, level);
+        }
+
+        fn set_opponents_attributes(
+            ref self: ContractState, opponents: Array<OpponentAttributesInput>,
+        ) {
+            self.assert_caller_is_owner();
+            for opponent in opponents {
+                self
+                    .set_opponent_attributes_internal(
+                        opponent.fighter, opponent.base, opponent.level,
+                    );
+            }
+        }
     }
 
 
@@ -206,14 +258,23 @@ mod arcade_amma {
                 )
         }
 
+        fn set_opponent_attributes_internal(
+            ref self: ContractState,
+            fighter: u32,
+            base: PartialAttributes,
+            level: PartialAttributes,
+        ) {
+            self.opponents_attributes.write(fighter, (base, level));
+            OpponentsAttributesTable::set_entity(fighter, @(base, level));
+        }
+
         fn gen_opponent(
             self: @ContractState, loadout_address: ContractAddress, fighter: u32, stage: u32,
         ) -> Opponent {
-            let (gen_abilities, attacks) = get_fighter_gen_loadout(
-                loadout_address, fighter, attack_slots(),
-            );
+            let attacks = get_fighter_attacks(loadout_address, fighter, attack_slots());
+            let (base, level) = self.opponents_attributes.read(fighter);
+            let [base, level]: [AttributesCalc; 2] = [base.into(), level.into()];
 
-            let abilities = get_stage_stats(stage, gen_abilities);
             Opponent { abilities, attacks: attacks.span() }
         }
 

@@ -1,4 +1,4 @@
-use ba_loadout::attack::{Affect, Effect, IAttackDispatcher, IAttackDispatcherTrait, Target};
+use ba_loadout::attack::{Effect, IAttackDispatcher, IAttackDispatcherTrait, Target};
 use ba_utils::{Randomness, RandomnessTrait};
 use core::num::traits::Zero;
 use sai_core_utils::BoolIntoBinary;
@@ -33,69 +33,16 @@ fn run_effect(
     ref attacker_state: CombatantState,
     ref defender_state: CombatantState,
     effect: Effect,
-    move_n: u32,
     ref randomness: Randomness,
 ) -> EffectResult {
-    let result = match effect.affect {
-        Affect::Strength(amount) => {
-            match effect.target {
-                Target::Player => attacker_state.apply_strength_buff(amount),
-                Target::Opponent => defender_state.apply_strength_buff(amount),
-            }
-            AffectResult::Applied
-        },
-        Affect::Vitality(amount) => {
-            match effect.target {
-                Target::Player => attacker_state.apply_vitality_buff(amount),
-                Target::Opponent => defender_state.apply_vitality_buff(amount),
-            }
-            AffectResult::Applied
-        },
-        Affect::Dexterity(amount) => {
-            match effect.target {
-                Target::Player => attacker_state.apply_dexterity_buff(amount),
-                Target::Opponent => defender_state.apply_dexterity_buff(amount),
-            }
-            AffectResult::Applied
-        },
-        Affect::Luck(amount) => {
-            match effect.target {
-                Target::Player => attacker_state.apply_luck_buff(amount),
-                Target::Opponent => defender_state.apply_luck_buff(amount),
-            }
-            AffectResult::Applied
-        },
-        Affect::Damage(damage) => {
-            let d_result = match effect.target {
-                Target::Player => attacker_state
-                    .apply_damage(damage, @attacker_state.abilities, ref randomness),
-                Target::Opponent => defender_state
-                    .apply_damage(damage, @attacker_state.abilities, ref randomness),
-            };
-            AffectResult::Damage(d_result)
-        },
-        Affect::Stun(stun) => {
-            match effect.target {
-                Target::Player => { attacker_state.apply_stun(stun) },
-                Target::Opponent => { defender_state.apply_stun(stun) },
-            }
-            AffectResult::Applied
-        },
-        Affect::Health(health) => {
-            match effect.target {
-                Target::Player => { attacker_state.modify_health(health) },
-                Target::Opponent => { defender_state.modify_health(health) },
-            }
-            AffectResult::Applied
-        },
-        Affect::Block(block) => {
-            match effect.target {
-                Target::Player => { attacker_state.apply_block(block) },
-                Target::Opponent => { defender_state.apply_block(block) },
-            }
-            AffectResult::Applied
-        },
+    let mut result = match effect.target {
+        Target::None => AffectResult::None,
+        Target::Attacker => attacker_state
+            .apply_affect(effect.affect, @attacker_state, ref randomness),
+        Target::Defender => defender_state
+            .apply_affect(effect.affect, @attacker_state, ref randomness),
     };
+
     EffectResult { target: effect.target, affect: result }
 }
 
@@ -107,9 +54,8 @@ pub fn run_effects(
     ref randomness: Randomness,
 ) -> Array<EffectResult> {
     let mut results: Array<EffectResult> = ArrayTrait::new();
-    for (n, effect) in effects.into_iter().enumerate() {
-        results
-            .append(run_effect(ref attacker_state, ref defender_state, effect, n, ref randomness));
+    for effect in effects {
+        results.append(run_effect(ref attacker_state, ref defender_state, effect, ref randomness));
     }
     results
 }
@@ -123,8 +69,8 @@ fn get_switch_order(
     attack_2: felt252,
     ref randomness: Randomness,
 ) -> bool {
-    let speed_1 = attacks.speed(attack_1) + *(state_1.abilities.dexterity);
-    let speed_2 = attacks.speed(attack_2) + *(state_2.abilities.dexterity);
+    let speed_1 = attacks.speed(attack_1) + (*state_1.dexterity).into();
+    let speed_2 = attacks.speed(attack_2) + (*state_2.dexterity).into();
     if speed_1 == speed_2 {
         randomness.get_bool()
     } else {

@@ -8,7 +8,8 @@ pub use starknet::storage::{
     Map, Mutable, MutableVecTrait, StorageBase, StorageMapReadAccess, StorageMapWriteAccess,
     StoragePath, StoragePathEntry, StoragePointerReadAccess, Vec, VecTrait,
 };
-use crate::ability::AbilityTypes;
+use super::Effect;
+use super::effect::pack_effect_array;
 const ATTACK_TAG_GROUP: felt252 = 'attacks';
 
 
@@ -66,46 +67,6 @@ impl AttackWithNameIntoAttack of Into<AttackWithName, Attack> {
     }
 }
 
-/// Represents an effect that can be applied during the game.
-///
-/// # Arguments
-/// * `target` - Specifies who receives the effect (Player or Opponent)
-/// * `affect` - The type of effect to be applied
-
-#[derive(Drop, Serde, Copy, PartialEq, Introspect, starknet::Store)]
-pub struct Effect {
-    pub target: Target,
-    pub affect: Affect,
-}
-
-
-#[derive(Drop, Serde, Copy, PartialEq, Introspect, Default, starknet::Store)]
-pub enum Target {
-    #[default]
-    Player,
-    Opponent,
-}
-
-/// Represents different types of effects that can be applied in the game
-/// * `Abilities` - Multiple ability modifications applied at once using SignedAbilities
-/// * `Ability` - A single ability modification using Ability
-/// * `Damage` - Direct damage effect
-/// * `Stun` - Stun chance increase of target on next attack in percentage
-/// * `Health` - Health modification (can be positive for healing or negative for damage)
-
-#[derive(Drop, Serde, Copy, PartialEq, Introspect, Default, starknet::Store)]
-pub enum Affect {
-    #[default]
-    Health: i16,
-    Strength: i16,
-    Vitality: i16,
-    Dexterity: i16,
-    Luck: i16,
-    Damage: Damage,
-    Stun: u8,
-    Block: u8,
-}
-
 
 #[derive(Drop, Serde, Clone)]
 pub enum IdTagAttack {
@@ -114,25 +75,6 @@ pub enum IdTagAttack {
     Attack: AttackWithName,
 }
 
-/// Represents a modifier to a ability in the game.
-/// * `ability` - The type of abilityistic (Strength, Vitality, Dexterity, Luck)
-/// * `amount` - The numerical value of the ability, ranging from -100 to +100
-
-#[derive(Drop, Serde, Copy, PartialEq, Introspect, starknet::Store)]
-pub struct AbilityAffect {
-    pub ability: AbilityTypes,
-    pub amount: i16,
-}
-
-/// Represents damage attributes of an attack.
-/// * `critical` - Critical success chance value between 0-100
-/// * `power` - Attack power value between 0-100
-
-#[derive(Drop, Serde, Copy, PartialEq, Introspect, starknet::Store)]
-pub struct Damage {
-    pub critical: u8,
-    pub power: u32,
-}
 
 #[generate_trait]
 pub impl AttackWithNameImpl of AttackWithNameTrait {
@@ -154,11 +96,13 @@ pub fn get_attack_id(
     let value: u64 = cooldown.into()
         + ShiftCast::cast::<SHIFT_4B>(speed)
         + ShiftCast::cast::<SHIFT_6B>(chance);
+
     Serde::serialize(name, ref serialized);
     serialized.append(value.into());
-    Serde::serialize(success, ref serialized);
-    Serde::serialize(fail, ref serialized);
-
+    serialized.append(success.len().into());
+    serialized.append_span(pack_effect_array(success));
+    serialized.append(fail.len().into());
+    serialized.append_span(pack_effect_array(fail));
     poseidon_hash_span(serialized.span())
 }
 
@@ -217,10 +161,16 @@ pub fn byte_array_to_tag(array: @ByteArray) -> felt252 {
 #[cfg(test)]
 mod tests {
     use beacon_entity::get_schema_size;
+    use crate::attack::Affect;
     use super::*;
 
+    #[derive(Drop, Serde, Introspect)]
+    struct AnAffect {
+        affect: Affect,
+    }
     #[test]
     fn table_size_test() {
         println!("AttackWithName size: {}", get_schema_size::<AttackWithName>());
+        println!("Affect size: {}", get_schema_size::<AnAffect>());
     }
 }

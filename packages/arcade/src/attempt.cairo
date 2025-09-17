@@ -1,7 +1,8 @@
 use ba_combat::combat::{CombatProgress, Player};
 use ba_combat::combatant::CombatantState;
-use ba_loadout::ability::Abilities;
+use ba_loadout::Attributes;
 use ba_loadout::attack::{IAttackDispatcher, IAttackDispatcherTrait};
+use ba_loadout::attributes::Abilities;
 use ba_utils::{Randomness, RandomnessTrait};
 use core::num::traits::Zero;
 use starknet::storage::{
@@ -51,9 +52,9 @@ pub struct Attempt {
 #[starknet::storage_node]
 pub struct AttemptNode {
     pub player: ContractAddress,
-    pub abilities: Abilities,
+    pub attributes: Attributes,
     pub token_hash: felt252,
-    pub health_regen: u16,
+    pub health_regen: u8,
     pub attacks_available: Map<felt252, bool>,
     pub combats: Map<u32, CombatNode>,
     pub expiry: u64,
@@ -94,15 +95,15 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
     fn new_attempt(
         ref self: AttemptNodePath,
         player: ContractAddress,
-        abilities: Abilities,
+        attributes: Attributes,
         attacks: Array<felt252>,
         token_hash: felt252,
-        health_regen: u16,
+        health_regen: u8,
         expiry: u64,
     ) {
         self.player.write(player);
         self.expiry.write(expiry);
-        self.abilities.write(abilities);
+        self.attributes.write(attributes);
         self.token_hash.write(token_hash);
         self.health_regen.write(health_regen);
         for attack in attacks {

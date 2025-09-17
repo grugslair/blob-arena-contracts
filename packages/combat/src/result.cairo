@@ -36,6 +36,7 @@ pub struct EffectResult {
 #[derive(Drop, Serde, PartialEq, Default, Introspect)]
 pub enum AffectResult {
     #[default]
+    None,
     Applied,
     Damage: DamageResult,
 }
@@ -45,7 +46,7 @@ pub enum AffectResult {
 /// * `critical` - Whether the damage was a critical hit
 #[derive(Drop, Serde, PartialEq, Introspect)]
 pub struct DamageResult {
-    pub damage: u16,
+    pub hp: u8,
     pub critical: bool,
 }
 

@@ -1,10 +1,10 @@
 use starknet::ContractAddress;
-use crate::ability::Abilities;
+use crate::attributes::Attributes;
 #[starknet::interface]
 pub trait ILoadout<TContractState> {
-    fn abilities(
+    fn attributes(
         self: @TContractState, collection_address: ContractAddress, token_id: u256,
-    ) -> Abilities;
+    ) -> Attributes;
     fn attacks(
         self: @TContractState,
         collection_address: ContractAddress,
@@ -16,7 +16,7 @@ pub trait ILoadout<TContractState> {
         collection_address: ContractAddress,
         token_id: u256,
         slots: Array<Array<felt252>>,
-    ) -> (Abilities, Array<felt252>);
+    ) -> (Attributes, Array<felt252>);
 }
 
 
@@ -25,7 +25,7 @@ pub fn get_loadout(
     collection_address: ContractAddress,
     token_id: u256,
     slots: Array<Array<felt252>>,
-) -> (Abilities, Array<felt252>) {
+) -> (Attributes, Array<felt252>) {
     ILoadoutDispatcher { contract_address }.loadout(collection_address, token_id, slots)
 }
 
@@ -38,8 +38,8 @@ pub fn get_attacks(
     ILoadoutDispatcher { contract_address }.attacks(collection_address, token_id, slots)
 }
 
-pub fn get_abilities(
+pub fn get_attributes(
     contract_address: ContractAddress, collection_address: ContractAddress, token_id: u256,
-) -> Abilities {
-    ILoadoutDispatcher { contract_address }.abilities(collection_address, token_id)
+) -> Attributes {
+    ILoadoutDispatcher { contract_address }.attributes(collection_address, token_id)
 }

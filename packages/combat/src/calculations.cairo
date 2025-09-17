@@ -1,4 +1,4 @@
-use ba_utils::{Randomness, RandomnessTrait};
+use ba_utils::{CapInto, Randomness, RandomnessTrait};
 use core::num::traits::{WideMul, Zero};
 use cubit::f128::types::fixed::{Fixed, FixedTrait};
 use sai_core_utils::SaturatingInto;
@@ -47,6 +47,17 @@ pub fn apply_luck_modifier<T, +TryInto<Fixed, T>, +Into<u8, T>, +Zero<T>>(
     }
 }
 
+pub fn increase_resistance(value: u8, change: u8) -> u8 {
+    if change.is_zero() {
+        return value;
+    }
+    if change == 100 || value == 100 {
+        return 100;
+    }
+    let change: u16 = change.into();
+    let value: u16 = value.into();
+    (((value + change) * 100 - value * change) / 100).cap_into(100)
+}
 
 pub fn get_new_stun_chance(current_stun: u8, attack_stun: u8) -> u8 {
     (current_stun.into()
@@ -55,6 +66,23 @@ pub fn get_new_stun_chance(current_stun: u8, attack_stun: u8) -> u8 {
         .saturating_into()
 }
 
+pub fn combine_resistance<T, +Drop<T>, +Into<T, i16>>(value: u8, change: T) -> u8 {
+    let value: i16 = value.into();
+    let change: i16 = change.into();
+    if change == 100 {
+        return 100;
+    }
+    let sum = value + change;
+    if sum <= Zero::zero() {
+        Zero::zero()
+    } else if change < 0 {
+        sum * 100 / (100 + change)
+    } else {
+        (sum * 100 - value * change) / 100
+    }
+        .try_into()
+        .unwrap()
+}
 
 /// Calculates the damage dealt by an attack based on move power, strength, and critical hit status
 /// # Arguments
@@ -64,14 +92,13 @@ pub fn get_new_stun_chance(current_stun: u8, attack_stun: u8) -> u8 {
 /// # Returns
 /// The calculated damage as a u8 between 0 and 101 (202 if critical)
 
-pub fn damage_calculation(move_power: u32, strength: u16, critical: bool) -> u16 {
-    (move_power.wide_mul(100 + strength.into()) / match critical {
+pub fn damage_calculation(move_power: u8, strength: u8, critical: bool) -> u16 {
+    (move_power.wide_mul(100 + strength) / match critical {
         true => 75,
         false => 150,
     })
-        .saturating_into()
 }
 
-pub fn did_critical(chance: u8, luck: u16, ref randomness: Randomness) -> bool {
+pub fn did_critical(chance: u8, luck: u8, ref randomness: Randomness) -> bool {
     randomness.get(255) < apply_luck_modifier::<u16>(chance, luck)
 }

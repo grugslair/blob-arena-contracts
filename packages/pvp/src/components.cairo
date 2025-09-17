@@ -1,7 +1,7 @@
 use ba_combat::combat::{Round, run_round};
 use ba_combat::{CombatantState, Player};
+use ba_loadout::Attributes;
 use ba_loadout::attack::{IAttackDispatcher, IAttackDispatcherTrait};
-use ba_loadout::attributes::Abilities;
 use ba_utils::RandomnessTrait;
 use core::num::traits::Zero;
 use core::panic_with_felt252;
@@ -42,8 +42,8 @@ pub enum CombatPhase {
 pub struct LobbyNode {
     pub phase: LobbyPhase,
     pub loadout_address: ContractAddress,
-    pub abilities_1: Abilities,
-    pub combatant_2: (Abilities, [felt252; 4]),
+    pub attributes_1: Attributes,
+    pub combatant_2: (Attributes, [felt252; 4]),
 }
 
 

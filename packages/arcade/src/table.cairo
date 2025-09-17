@@ -1,7 +1,7 @@
 use ba_combat::combat::Round;
 use ba_combat::result::AttackOutcomes;
 use ba_combat::{CombatantState, Player};
-use ba_loadout::ability::Abilities;
+use ba_loadout::attributes::Attributes;
 use starknet::ContractAddress;
 use crate::attempt::ArcadePhase;
 
@@ -12,9 +12,9 @@ pub struct ArcadeAttempt {
     pub collection_address: ContractAddress,
     pub token_id: u256,
     pub expiry: u64,
-    pub abilities: Abilities,
+    pub attributes: Attributes,
     pub attacks: Span<felt252>,
-    pub health_regen: u16,
+    pub health_regen: u8,
     pub respawns: u32,
     pub stage: u32,
     pub phase: ArcadePhase,

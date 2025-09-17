@@ -1,12 +1,13 @@
 #[starknet::contract]
 mod attack {
+    use ba_utils::storage::ShortArrayStore;
     use beacon_library::{ToriiTable, register_table_with_schema};
     use core::num::traits::Zero;
     use sai_access::{AccessTrait, access_component};
     use sai_core_utils::poseidon_serde::PoseidonSerde;
     use starknet::ContractAddress;
-    use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess, Vec};
-    use crate::attack::types::{
+    use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess};
+    use crate::attack::attack::{
         EffectArrayStorageMapReadAccess, EffectArrayStorageMapWriteAccess, byte_array_to_tag,
     };
     use crate::attack::{
@@ -25,8 +26,8 @@ mod attack {
         speeds: Map<felt252, u16>,
         chances: Map<felt252, u8>,
         cooldowns: Map<felt252, u32>,
-        successes: Map<felt252, Vec<Effect>>,
-        fails: Map<felt252, Vec<Effect>>,
+        successes: Map<felt252, Array<Effect>>,
+        fails: Map<felt252, Array<Effect>>,
         tags: Map<felt252, felt252>,
     }
 

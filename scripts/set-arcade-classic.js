@@ -31,8 +31,8 @@ export const makeSetConfigCalls = (contract, config) => {
       energy: BigInt(config.energy_cost),
       credit: BigInt(config.credit_cost),
     }),
-    contract.populate("set_health_regen_permille", {
-      health_regen_permille: BigInt(config.health_regen_permille),
+    contract.populate("set_health_regen_percent", {
+      health_regen_percent: BigInt(config.health_regen_percent),
     }),
   ];
 };

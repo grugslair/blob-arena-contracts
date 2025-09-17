@@ -1,4 +1,4 @@
-use ba_loadout::ability::Abilities;
+use ba_loadout::Attributes;
 use crate::attempt::ArcadePhase;
 
 mod errors {
@@ -9,7 +9,7 @@ mod errors {
 
 #[derive(Drop)]
 pub struct Opponent {
-    pub abilities: Abilities,
+    pub attributes: Attributes,
     pub attacks: Span<felt252>,
 }
 
@@ -18,7 +18,7 @@ pub struct ArcadeAttackResult {
     pub phase: ArcadePhase,
     pub stage: u32,
     pub combat_n: u32,
-    pub health: u16,
+    pub health: u8,
 }
 
 #[starknet::component]
@@ -27,16 +27,16 @@ pub mod arcade_component {
     use ba_arcade::attempt::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::table::{ArcadeAttempt, ArcadeRound, AttackLastUsed};
     use ba_combat::combat::run_round;
+    use ba_combat::combatant::get_max_health_percent;
     use ba_combat::{CombatantState, Player};
     use ba_credit::arena_credit_consume;
-    use ba_loadout::ability::AbilitiesTrait;
     use ba_loadout::attack::IAttackDispatcher;
     use ba_loadout::get_loadout;
     use ba_utils::vrf::consume_randomness;
     use ba_utils::{Randomness, erc721_token_hash, uuid};
     use beacon_library::{ToriiTable, register_table_with_schema, set_entity, set_member};
     use core::cmp::min;
-    use core::num::traits::Zero;
+    use core::num::traits::{SaturatingAdd, Zero};
     use core::panic_with_const_felt252;
     use core::poseidon::poseidon_hash_span;
     use sai_core_utils::{poseidon_hash_three, poseidon_hash_two};
@@ -56,7 +56,7 @@ pub mod arcade_component {
         pub attempts: Map<felt252, AttemptNode>,
         pub max_respawns: u32,
         pub time_limit: u64,
-        pub health_regen_permille: u16,
+        pub health_regen_percent: u8,
         pub current_attempt: Map<felt252, felt252>,
         pub attack_address: ContractAddress,
         pub loadout_address: ContractAddress,
@@ -90,8 +90,8 @@ pub mod arcade_component {
             self.time_limit.read()
         }
 
-        fn health_regen_permille(self: @ComponentState<TContractState>) -> u16 {
-            self.health_regen_permille.read()
+        fn health_regen_percent(self: @ComponentState<TContractState>) -> u8 {
+            self.health_regen_percent.read()
         }
 
         fn credit_address(self: @ComponentState<TContractState>) -> ContractAddress {
@@ -111,12 +111,12 @@ pub mod arcade_component {
             self.get_contract().assert_caller_is_owner();
             self.time_limit.write(time_limit);
         }
-        fn set_health_regen_permille(
-            ref self: ComponentState<TContractState>, health_regen_permille: u16,
+        fn set_health_regen_percent(
+            ref self: ComponentState<TContractState>, health_regen_percent: u8,
         ) {
             self.get_contract().assert_caller_is_owner();
-            assert(health_regen_permille <= 1000, 'Health regen must be <= 1000');
-            self.health_regen_permille.write(health_regen_permille);
+            assert(health_regen_percent <= 100, 'Health regen must be <= 100');
+            self.health_regen_percent.write(health_regen_percent);
         }
 
         fn set_credit_address(
@@ -178,7 +178,7 @@ pub mod arcade_component {
                 attempt_id: felt252,
                 combat_n: u32,
                 opponent: Opponent,
-                health: Option<u16>,
+                health: Option<u8>,
             );
 
             fn set_phase(ref self: AttemptNodePath, attempt_id: felt252, phase: ArcadePhase);
@@ -229,17 +229,19 @@ pub mod arcade_component {
             assert(erc721_owner_of(collection_address, token_id) == player, 'Not Token Owner');
             let loadout_address = self.loadout_address.read();
 
-            let (abilities, attack_ids) = get_loadout(
+            let (attributes, attack_ids) = get_loadout(
                 loadout_address, collection_address, token_id, attack_slots,
             );
             let expiry = get_block_timestamp() + self.time_limit.read();
-            let health_regen = abilities.max_health_permille(self.health_regen_permille.read());
+            let health_regen = get_max_health_percent(
+                attributes.vitality, self.health_regen_percent.read(),
+            );
             let attempt = ArcadeAttempt {
                 player,
                 collection_address,
                 token_id,
                 expiry,
-                abilities,
+                attributes,
                 attacks: attack_ids.span(),
                 health_regen,
                 respawns: 0,
@@ -248,7 +250,7 @@ pub mod arcade_component {
             };
             set_entity(ATTEMPT_HASH, attempt_id, @attempt);
             attempt_ptr
-                .new_attempt(player, abilities, attack_ids, token_hash, health_regen, expiry);
+                .new_attempt(player, attributes, attack_ids, token_hash, health_regen, expiry);
             (attempt_ptr, attempt_id, loadout_address)
         }
 
@@ -374,16 +376,20 @@ pub mod arcade_component {
             attempt_id: felt252,
             combat_n: u32,
             opponent: Opponent,
-            health: Option<u16>,
+            health: Option<u8>,
         ) {
             let mut combat = attempt_ptr.combats.entry(combat_n);
-            let mut player_state: CombatantState = attempt_ptr.abilities.read().into();
+            let mut player_state: CombatantState = attempt_ptr.attributes.read().into();
             if let Some(health) = health {
                 player_state
-                    .health = min(player_state.health, health + attempt_ptr.health_regen.read());
+                    .health =
+                        min(
+                            health.saturating_add(attempt_ptr.health_regen.read()),
+                            player_state.health,
+                        );
             }
             let usable_attacks = opponent.attacks;
-            let opponent_state: CombatantState = opponent.abilities.into();
+            let opponent_state: CombatantState = opponent.attributes.into();
             combat.create_combat(player_state, opponent_state, usable_attacks);
             set_entity(
                 ROUND_HASH,

@@ -1,4 +1,4 @@
-use ba_loadout::ability::{Abilities, DAbilities};
+use ba_loadout::attributes::{Abilities, DAbilities};
 use ba_utils::{Randomness, RandomnessTrait};
 use core::cmp::min;
 use core::dict::Felt252Dict;
@@ -56,3 +56,4 @@ pub impl BarImpl = bar_impl::Bar<HASH>;
 fn something_else() {
     Foo {}.call();
 }
+

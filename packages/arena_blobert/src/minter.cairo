@@ -1,4 +1,4 @@
-use ba_blobert::{Seed, TokenAttributes};
+use ba_blobert::{Seed, TokenTraits};
 use ba_utils::{SeedProbability, felt252_to_u128};
 use starknet::ContractAddress;
 
@@ -22,7 +22,7 @@ trait IArcadeBlobertMinterAdmin<TState> {
 #[starknet::interface]
 trait IArenaBlobert<TState> {
     fn balance_of(self: @TState, account: ContractAddress) -> u256;
-    fn mint(ref self: TState, owner: ContractAddress, attributes: TokenAttributes) -> u256;
+    fn mint(ref self: TState, owner: ContractAddress, traits: TokenTraits) -> u256;
 }
 
 
@@ -51,7 +51,7 @@ struct LastMint {
 
 #[starknet::contract]
 mod arena_blobert_minter {
-    use ba_blobert::TokenAttributes;
+    use ba_blobert::TokenTraits;
     use ba_utils::uuid;
     use beacon_library::{ToriiTable, register_table_with_schema};
     use sai_ownable::{OwnableTrait, ownable_component};
@@ -122,9 +122,7 @@ mod arena_blobert_minter {
             self.last_mint.write(caller, timestamp);
             LastMintTable::set_entity(caller, @timestamp);
 
-            emit_return(
-                token_contract.mint(caller, TokenAttributes::Seed(generate_seed(randomness))),
-            )
+            emit_return(token_contract.mint(caller, TokenTraits::Seed(generate_seed(randomness))))
         }
     }
 

@@ -141,7 +141,7 @@ mod pvp {
             let mut combat = self.combats.entry(id);
             let mut lobby = self.lobbies.entry(id);
 
-            let (abilities, attack_ids) = get_loadout(
+            let (attributes, attack_ids) = get_loadout(
                 loadout_address, collection_address, token_id, attack_slots,
             );
 
@@ -150,7 +150,7 @@ mod pvp {
             combat.time_limit.write(time_limit);
             lobby.set_lobby_phase(id, LobbyPhase::Invited);
             lobby.loadout_address.write(loadout_address);
-            lobby.abilities_1.write(abilities);
+            lobby.attributes_1.write(attributes);
 
             CombatTable::set_schema(
                 id,
@@ -195,12 +195,12 @@ mod pvp {
             assert(attack_slots.len() <= 4, 'Too many attacks');
             assert(erc721_owner_of(collection_address, token_id) == caller, 'Not Token Owner');
 
-            let (abilities, attack_ids) = get_loadout(
+            let (attributes, attack_ids) = get_loadout(
                 lobby.loadout_address.read(), collection_address, token_id, attack_slots,
             );
 
             let attack_ids = pad_to_fixed(attack_ids);
-            lobby.combatant_2.write((abilities, attack_ids));
+            lobby.combatant_2.write((attributes, attack_ids));
             CombatTable::set_schema(
                 id,
                 @LobbyCombatRespondSchema {
@@ -250,9 +250,9 @@ mod pvp {
             assert(lobby.phase.read() == LobbyPhase::Responded, 'Lobby not responded');
             assert(combat.player_1.read() == caller, 'Not Callers Lobby');
 
-            let abilities_1 = lobby.abilities_1.read();
-            let (abilities_2, attack_ids_2) = lobby.combatant_2.read();
-            let states: [CombatantState; 2] = [abilities_1.into(), abilities_2.into()];
+            let attributes_1 = lobby.attributes_1.read();
+            let (attributes_2, attack_ids_2) = lobby.combatant_2.read();
+            let states: [CombatantState; 2] = [attributes_1.into(), attributes_2.into()];
             combat.player_states.write(states);
             for attack_id in attack_ids_2.span() {
                 combat.p2_attack_available.write(*attack_id, true);

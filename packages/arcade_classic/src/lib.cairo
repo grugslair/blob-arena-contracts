@@ -1,33 +1,33 @@
 use ba_arcade::Opponent;
 use ba_blobert::Seed;
-use ba_loadout::ability::Abilities;
+use ba_loadout::Attributes;
 use ba_loadout::attack::IdTagAttack;
 
 
 #[derive(Drop, Serde, Introspect)]
 struct OpponentTable {
-    attributes: Seed,
-    abilities: Abilities,
+    traits: Seed,
+    attributes: Attributes,
     attacks: Span<felt252>,
 }
 
 #[derive(Drop, Serde, starknet::Store)]
 struct ClassicOpponent {
-    abilities: Abilities,
+    attributes: Attributes,
     attacks: [felt252; 4],
 }
 
 impl ClassicOpponentIntoOpponent of Into<ClassicOpponent, Opponent> {
     fn into(self: ClassicOpponent) -> Opponent {
-        Opponent { abilities: self.abilities, attacks: self.attacks.span() }
+        Opponent { attributes: self.attributes, attacks: self.attacks.span() }
     }
 }
 
 
 #[derive(Drop, Serde)]
 struct OpponentInput {
-    attributes: Seed,
-    abilities: Abilities,
+    traits: Seed,
+    attributes: Attributes,
     attacks: [IdTagAttack; 4],
 }
 
@@ -186,12 +186,12 @@ mod arcade_classic {
             for (i, opponent) in opponents.into_iter().enumerate() {
                 let attack_ids = all_attack_ids.multi_pop_front::<4>().unwrap().unbox();
                 OpponentTable::set_entity(
-                    i, @(opponent.attributes, opponent.abilities, attack_ids.span()),
+                    i, @(opponent.traits, opponent.attributes, attack_ids.span()),
                 );
                 self
                     .opponents
                     .write(
-                        i, ClassicOpponent { abilities: opponent.abilities, attacks: attack_ids },
+                        i, ClassicOpponent { attributes: opponent.attributes, attacks: attack_ids },
                     );
             }
         }
@@ -206,7 +206,7 @@ mod arcade_classic {
             attempt_id: felt252,
             combat_n: u32,
             stage: u32,
-            health: Option<u16>,
+            health: Option<u8>,
         ) {
             ArcadeInternal::new_combat(
                 ref self.arcade,
