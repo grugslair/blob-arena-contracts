@@ -1,8 +1,6 @@
-use ba_loadout::attributes::{Abilities, DAbilities};
 use ba_utils::{Randomness, RandomnessTrait};
 use core::cmp::min;
 use core::dict::Felt252Dict;
-use sai_core_utils::SaturatingInto;
 
 pub fn random_selection(ref randomness: Randomness, range: u32, number: u32) -> Array<u32> {
     assert(number <= range, 'Number must be <= to range');
@@ -21,10 +19,6 @@ pub fn random_selection(ref randomness: Randomness, range: u32, number: u32) -> 
         values.append(dict.get((range - 1).into()) + 1);
     }
     values
-}
-
-pub fn get_stage_stats(stage: u32, fighter_stats: DAbilities) -> Abilities {
-    ((5_i16 * stage.saturating_into() + 5).into() + fighter_stats).saturating_into()
 }
 
 

@@ -22,6 +22,7 @@ trait IArcadeAmma<TState> {
         ref self: TState, fighter: u32, base: PartialAttributes, level: PartialAttributes,
     );
     fn set_opponents_attributes(ref self: TState, opponents: Array<OpponentAttributesInput>);
+    fn set_opponent_count(ref self: TState, count: u32);
 }
 
 #[starknet::contract]
@@ -29,11 +30,9 @@ mod arcade_amma {
     use ba_arcade::attempt::{ArcadePhase, AttemptNodeTrait};
     use ba_arcade::{IArcade, Opponent, arcade_component};
     use ba_loadout::PartialAttributes;
-    use ba_loadout::amma_contract::{
-        get_fighter_attacks, get_fighter_count, get_fighter_gen_loadout, get_fighter_loadout,
-    };
-    use ba_loadout::attributes::AttributesCalc;
-    use ba_utils::{Randomness, RandomnessTrait};
+    use ba_loadout::amma_contract::{get_fighter_attacks, get_fighter_count, get_fighter_loadout};
+    use ba_loadout::attributes::AttributesCalcTrait;
+    use ba_utils::{CapInto, Randomness, RandomnessTrait};
     use beacon_library::{ToriiTable, register_table_with_schema};
     use sai_core_utils::poseidon_hash_two;
     use sai_ownable::{OwnableTrait, ownable_component};
@@ -43,7 +42,7 @@ mod arcade_amma {
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
         StoragePointerWriteAccess,
     };
-    use crate::systems::{attack_slots, get_stage_stats, random_selection};
+    use crate::systems::{attack_slots, random_selection};
     use super::{IArcadeAmma, OpponentAttributesInput};
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
@@ -73,6 +72,7 @@ mod arcade_amma {
         collectable_address: ContractAddress,
         gen_stages: u32,
         opponents_attributes: Map<u32, (PartialAttributes, PartialAttributes)>,
+        opponent_count: u32,
         opponents: Map<felt252, u32>,
         bosses: Map<felt252, u32>,
     }
@@ -134,7 +134,7 @@ mod arcade_amma {
             );
             let mut randomness = ArcadeInternal::consume_randomness(ref self.arcade, attempt_id);
             let opponents = random_selection(
-                ref randomness, get_fighter_count(loadout_address), self.gen_stages.read(),
+                ref randomness, self.opponent_count.read(), self.gen_stages.read(),
             );
             ArcadeInternal::new_combat(
                 ref self.arcade,
@@ -242,6 +242,11 @@ mod arcade_amma {
                     );
             }
         }
+
+        fn set_opponent_count(ref self: ContractState, count: u32) {
+            self.assert_caller_is_owner();
+            self.opponent_count.write(count);
+        }
     }
 
 
@@ -273,9 +278,8 @@ mod arcade_amma {
         ) -> Opponent {
             let attacks = get_fighter_attacks(loadout_address, fighter, attack_slots());
             let (base, level) = self.opponents_attributes.read(fighter);
-            let [base, level]: [AttributesCalc; 2] = [base.into(), level.into()];
-
-            Opponent { abilities, attacks: attacks.span() }
+            let attributes = (level.into().mul(stage.cap_into(10)) + base.into()).finalize();
+            Opponent { attributes, attacks: attacks.span() }
         }
 
         fn gen_boss_opponent(
@@ -298,10 +302,10 @@ mod arcade_amma {
         fn boss_opponent(
             self: @ContractState, loadout_address: ContractAddress, fighter: u32,
         ) -> Opponent {
-            let (abilities, attacks) = get_fighter_loadout(
+            let (attributes, attacks) = get_fighter_loadout(
                 loadout_address, fighter, attack_slots(),
             );
-            Opponent { abilities, attacks: attacks.span() }
+            Opponent { attributes, attacks: attacks.span() }
         }
     }
 }

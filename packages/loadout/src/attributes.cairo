@@ -1,5 +1,6 @@
 use ba_utils::{CapInto, IntoRange};
 use core::num::traits::Zero;
+use core::ops::AddAssign;
 use sai_core_utils::SaturatingInto;
 use sai_packing::shifts::*;
 use sai_packing::{BytePacking, IntPacking, MaskDowncast, ShiftCast};
@@ -90,27 +91,65 @@ pub struct AttributesCalc {
     pub pierce_vulnerability: i32,
 }
 
-#[generate_trait]
-impl AttributesCalcImpl of AttributesCalcTrait {
-    fn add_item(ref self: AttributesCalc, item: PartialAttributes) {
-        self.strength += item.strength.into();
-        self.vitality += item.vitality.into();
-        self.dexterity += item.dexterity.into();
-        self.luck += item.luck.into();
+fn mul_resistance(value: u16, factor: u8) -> u16 {
+    if value.is_zero() || factor.is_zero() {
+        return 0;
+    }
+    let mul = 100_u16 - value.into();
+    let mut result = mul;
+    for _ in 1..factor {
+        result *= mul;
+        result /= 100;
+    }
+    100 - result
+}
+
+
+impl AddAttributesCalc of Add<AttributesCalc> {
+    fn add(lhs: AttributesCalc, rhs: AttributesCalc) -> AttributesCalc {
+        AttributesCalc {
+            strength: lhs.strength + rhs.strength,
+            vitality: lhs.vitality + rhs.vitality,
+            dexterity: lhs.dexterity + rhs.dexterity,
+            luck: lhs.luck + rhs.luck,
+            bludgeon_resistance: increase_resistance_calc(
+                lhs.bludgeon_resistance, rhs.bludgeon_resistance,
+            ),
+            magic_resistance: increase_resistance_calc(lhs.magic_resistance, rhs.magic_resistance),
+            pierce_resistance: increase_resistance_calc(
+                lhs.pierce_resistance, rhs.pierce_resistance,
+            ),
+            bludgeon_vulnerability: lhs.bludgeon_vulnerability + rhs.bludgeon_vulnerability,
+            magic_vulnerability: lhs.magic_vulnerability + rhs.magic_vulnerability,
+            pierce_vulnerability: lhs.pierce_vulnerability + rhs.pierce_vulnerability,
+        }
+    }
+}
+
+impl AddAssignAttributesCalc<Rhs, +Into<Rhs, AttributesCalc>> of AddAssign<AttributesCalc, Rhs> {
+    fn add_assign(ref self: AttributesCalc, rhs: Rhs) {
+        let rhs: AttributesCalc = rhs.into();
+        self.strength += rhs.strength;
+        self.vitality += rhs.vitality;
+        self.dexterity += rhs.dexterity;
+        self.luck += rhs.luck;
         self
             .bludgeon_resistance =
-                increase_resistance_calc(self.bludgeon_resistance, item.bludgeon_resistance);
+                increase_resistance_calc(self.bludgeon_resistance, rhs.bludgeon_resistance);
         self
             .magic_resistance =
-                increase_resistance_calc(self.magic_resistance, item.magic_resistance);
+                increase_resistance_calc(self.magic_resistance, rhs.magic_resistance);
         self
             .pierce_resistance =
-                increase_resistance_calc(self.pierce_resistance, item.pierce_resistance);
-        self.bludgeon_vulnerability += item.bludgeon_vulnerability.into();
-        self.magic_vulnerability += item.magic_vulnerability.into();
-        self.pierce_vulnerability += item.pierce_vulnerability.into();
+                increase_resistance_calc(self.pierce_resistance, rhs.pierce_resistance);
+        self.bludgeon_vulnerability += rhs.bludgeon_vulnerability;
+        self.magic_vulnerability += rhs.magic_vulnerability;
+        self.pierce_vulnerability += rhs.pierce_vulnerability;
     }
+}
 
+#[generate_trait]
+pub impl AttributesCalcImpl of AttributesCalcTrait {
     fn finalize(self: AttributesCalc) -> Attributes {
         Attributes {
             strength: self.strength.into_range(0, MAX_ABILITY_SCORE),
@@ -133,9 +172,9 @@ impl AttributesCalcImpl of AttributesCalcTrait {
             vitality: self.vitality * factor_i32,
             dexterity: self.dexterity * factor_i32,
             luck: self.luck * factor_i32,
-            bludgeon_resistance: self.bludgeon_resistance * factor.into(),
-            magic_resistance: self.magic_resistance * factor.into(),
-            pierce_resistance: self.pierce_resistance * factor.into(),
+            bludgeon_resistance: mul_resistance(self.bludgeon_resistance, factor),
+            magic_resistance: mul_resistance(self.magic_resistance, factor),
+            pierce_resistance: mul_resistance(self.pierce_resistance, factor),
             bludgeon_vulnerability: self.bludgeon_vulnerability * factor_i32,
             magic_vulnerability: self.magic_vulnerability * factor_i32,
             pierce_vulnerability: self.pierce_vulnerability * factor_i32,
@@ -198,20 +237,19 @@ impl PartialAttributesIntoAttributesCalc of Into<PartialAttributes, AttributesCa
 pub fn combine_partial_attributes(base: Attributes, items: Array<PartialAttributes>) -> Attributes {
     let mut calc = base.into();
     for item in items {
-        calc.add_item(item);
+        calc += item;
     }
     calc.finalize()
 }
 
 
-fn increase_resistance_calc(value: u16, change: u8) -> u16 {
+fn increase_resistance_calc(value: u16, change: u16) -> u16 {
     if change.is_zero() {
         return value;
     }
     if change == 100 || value == 100 {
         return 100;
     }
-    let change: u16 = change.into();
     (((value + change) * 100 - value * change) / 100).try_into().unwrap()
 }
 
