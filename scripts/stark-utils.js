@@ -17,6 +17,8 @@ import * as fs from "fs";
 import * as path from "path";
 import * as accounts from "web3-eth-accounts";
 import TOML from "smol-toml";
+import pkg from "case";
+const { pascal } = pkg;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = process.cwd();
@@ -75,17 +77,26 @@ export const getContract = async (provider, contractAddress) => {
   return new Contract(abi, contractAddress, provider);
 };
 
-export const makeCairoEnum = (option) => {
-  let [key, value] = parseEnumObject(option);
+export const makeCairoEnum = (option, defaultValue = null) => {
+  let [key, value] = parseEnumObject(option, defaultValue);
   return new CairoCustomEnum({ [key]: value });
 };
 
-export const parseEnumObject = (obj) => {
+export const parseEnumObject = (obj, defaultValue = null) => {
+  if (!obj) {
+    if (defaultValue !== null) {
+      return [defaultValue, {}];
+    } else {
+      throw new Error(
+        `Enum object is null or undefined and no default value set`
+      );
+    }
+  }
   if (["string"].includes(typeof obj)) {
     return [obj, {}];
   } else {
     for (const o in obj) {
-      return [o, obj[o]];
+      return [pascal(o), obj[o]];
     }
   }
 };

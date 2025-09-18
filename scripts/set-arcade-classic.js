@@ -1,6 +1,6 @@
 import { loadJson } from "./stark-utils.js";
 import { loadSai } from "./sai.js";
-import { parseIdTagAttackStructs } from "./attack.js";
+import { parseIdTagAttackStructs } from "./loadout.js";
 
 export const makeOpponentStruct = (opponent) => {
   for (let i = 0; i < 4 - opponent.attacks.length; i++) {

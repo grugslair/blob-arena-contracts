@@ -1,3 +1,75 @@
 {
-  "attacks": []
+  "attacks": [
+    {
+      "name": "Attack 1",
+      "speed": 5010,
+      "chance": 100,
+      "success": [
+        {
+          "target": "Attacker",
+          "Strength": 20,
+          "Luck": -10,
+          "Dexterity": 20,
+          "Vitality": 100,
+          "Block": 50,
+          "Resistances": {
+            "bludgeon": 100,
+            "magic": 50,
+            "pierce": 0
+          },
+          "PierceVulnerability": 50
+        },
+        {
+          "target": "Defender",
+          "Damage": {
+            "power": 10,
+            "critical": 0,
+            "damage_type": "bludgeon"
+          },
+          "Abilities": {
+            "strength": -100,
+            "vitality": 100,
+            "luck": 0
+          },
+          "Vulnerabilities": {
+            "bludgeon": 20,
+            "pierce": 1000
+          },
+          "Stun": 75,
+          "PierceResistance": -100
+        }
+      ],
+      "fail": [
+        {
+          "target": "Attacker",
+          "affect": {
+            "Stun": 10
+          }
+        },
+        {
+          "target": "Attacker",
+          "affects": {
+            "Damage": {
+              "power": 5
+            },
+            "Health": -20
+          }
+        }
+      ]
+    },
+    {
+      "name": "Attack 2",
+      "speed": 5010,
+      "chance": 100,
+      "success": {
+        "attacker": {
+          "damage": {
+            "power": 20,
+            "critical": 0,
+            "damage_type": "bludgeon"
+          }
+        }
+      }
+    }
+  ]
 }

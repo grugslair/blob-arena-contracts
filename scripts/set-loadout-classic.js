@@ -1,7 +1,7 @@
 import { loadJson, makeCairoEnum } from "./stark-utils.js";
 import { CairoCustomEnum } from "starknet";
 import { loadSai } from "./sai.js";
-import { parseIdTagAttackStructs } from "./attack.js";
+import { parseIdTagAttackStructs } from "./loadout.js";
 
 export const parseBlobertItemKey = (itemKey) => {
   const [key, value] = Object.entries(itemKey)[0];

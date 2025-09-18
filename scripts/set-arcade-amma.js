@@ -1,7 +1,7 @@
 import { loadJson } from "./stark-utils.js";
 import { loadSai } from "./sai.js";
 import { makeOpponentCall } from "./set-arcade-classic.js";
-import { parseIdTagAttackStructs } from "./attack.js";
+import { parseIdTagAttackStructs } from "./loadout.js";
 
 export const makeSetConfigCalls = (contract, config) => {};
 
