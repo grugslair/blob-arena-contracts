@@ -10,12 +10,12 @@ pub mod attack {
         IAttackDispatcher, IAttackDispatcherTrait, maybe_create_attacks,
     };
 }
-pub mod amma_contract;
 pub mod attributes;
+pub mod loadout_amma;
 pub use attributes::{Abilities, Attributes, AttributesTrait, PartialAttributes};
-pub mod classic_contract;
 
 pub mod interface;
+pub mod loadout_classic;
 pub use interface::get_loadout;
 
 #[cfg(test)]

@@ -1,12 +1,12 @@
 #[starknet::contract]
 mod attack {
     use ba_utils::storage::ShortArrayStore;
-    use beacon_library::{ToriiTable, register_table_with_schema};
+    use beacon_library::{ToriiTable, register_table, register_table_with_schema};
     use core::num::traits::Zero;
     use sai_access::{AccessTrait, access_component};
     use sai_core_utils::poseidon_serde::PoseidonSerde;
-    use starknet::ContractAddress;
     use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess};
+    use starknet::{ClassHash, ContractAddress};
     use crate::attack::attack::{
         EffectArrayStorageMapReadAccess, EffectArrayStorageMapWriteAccess, byte_array_to_tag,
     };
@@ -39,9 +39,11 @@ mod attack {
     }
 
     #[constructor]
-    fn constructor(ref self: ContractState, owner: ContractAddress) {
+    fn constructor(
+        ref self: ContractState, owner: ContractAddress, attack_model_class_hash: ClassHash,
+    ) {
         self.grant_owner(owner);
-        register_table_with_schema::<AttackWithName>("attack", "Attack");
+        register_table("attack", "Attack", attack_model_class_hash);
     }
 
     #[abi(embed_v0)]

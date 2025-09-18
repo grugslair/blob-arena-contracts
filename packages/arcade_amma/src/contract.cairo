@@ -30,8 +30,8 @@ mod arcade_amma {
     use ba_arcade::attempt::{ArcadePhase, AttemptNodeTrait};
     use ba_arcade::{IArcade, Opponent, arcade_component};
     use ba_loadout::PartialAttributes;
-    use ba_loadout::amma_contract::{get_fighter_attacks, get_fighter_count, get_fighter_loadout};
     use ba_loadout::attributes::AttributesCalcTrait;
+    use ba_loadout::loadout_amma::{get_fighter_attacks, get_fighter_count, get_fighter_loadout};
     use ba_utils::{CapInto, Randomness, RandomnessTrait};
     use beacon_library::{ToriiTable, register_table_with_schema};
     use sai_core_utils::poseidon_hash_two;

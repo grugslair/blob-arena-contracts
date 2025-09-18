@@ -2,26 +2,29 @@ import { loadJson, makeCairoEnum } from "./stark-utils.js";
 import { CairoCustomEnum } from "starknet";
 import { loadSai } from "./sai.js";
 import { parseIdTagAttackStructs } from "./loadout.js";
+import pkg from "case";
+const { pascal } = pkg;
 
-export const parseBlobertItemKey = (itemKey) => {
-  const [key, value] = Object.entries(itemKey)[0];
-  if (key == "Seed") {
-    return new CairoCustomEnum({
-      Seed: {
-        attribute: new CairoCustomEnum({ [value.attribute]: {} }),
-        attribute_id: value.attribute_id,
-      },
-    });
-  }
-  if (key == "Custom") {
-    return new CairoCustomEnum({ Custom: value });
-  }
-};
+// export const parseBlobertItemKey = (itemKey) => {
+//   const [key, value] = Object.entries(itemKey)[0];
+//   if (key == "Seed") {
+//     return new CairoCustomEnum({
+//       Seed: {
+//         attribute: new CairoCustomEnum({ [value.attribute]: {} }),
+//         attribute_id: value.attribute_id,
+//       },
+//     });
+//   }
+//   if (key == "Custom") {
+//     return new CairoCustomEnum({ Custom: value });
+//   }
+// };
 
 const makeSeedItemCallData = (trait, n, item) => {
-  const trait_str = trait.charAt(0).toUpperCase() + trait.slice(1);
+  const trait_str = pascal(trait);
   return {
-    key: makeCairoEnum({ [trait_str]: Number(n) }),
+    blobert_trait: makeCairoEnum({ [trait_str]: {} }),
+    index: BigInt(n),
     name: item.name,
     abilities: item.abilities,
     attacks: parseIdTagAttackStructs(item.attacks),

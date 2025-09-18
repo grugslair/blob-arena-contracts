@@ -15,8 +15,22 @@ const deployWithOwner = [
   "arena_credit",
 ];
 
-config.set();
-console.log(config);
+config.set("rpcVersion", "0.9.0");
+// config.set("resourceBoundsOverhead", {
+//   l1_gas: {
+//     max_amount: 200000000000000,
+//     max_price_per_unit: 2000000000000,
+//   },
+//   l2_gas: {
+//     max_amount: 2000000000000,
+//     max_price_per_unit: 2000000000000,
+//   },
+//   l1_data_gas: {
+//     max_amount: 100000000,
+//     max_price_per_unit: 100000000,
+//   },
+// });
+
 const sai = await loadSai();
 const owner = sai.account.address;
 

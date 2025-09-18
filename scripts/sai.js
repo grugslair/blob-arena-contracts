@@ -7,6 +7,7 @@ import {
   CallData,
   config,
   RPC,
+  legacyDeployer,
 } from "starknet";
 import {
   loadJson,
@@ -64,6 +65,7 @@ const loadAccount = async (account, cmdOptions) => {
     provider: { nodeUrl },
     address: accountAddress,
     signer: privateKey,
+    deployer: legacyDeployer,
   });
 };
 
