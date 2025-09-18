@@ -61,13 +61,15 @@
       "name": "Attack 2",
       "speed": 5010,
       "chance": 100,
+      "cooldown": 3,
       "success": {
         "attacker": {
           "damage": {
             "power": 20,
             "critical": 0,
             "damage_type": "bludgeon"
-          }
+          },
+          "stun": 12
         }
       }
     }
