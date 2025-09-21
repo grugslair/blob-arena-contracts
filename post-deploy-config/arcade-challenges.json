@@ -21,7 +21,8 @@
       "attacks": [
         { "tag": "Binary Bash" },
         { "tag": "Algorithm Assault" },
-        { "tag": "Algorithmic Overload" }
+        { "tag": "Algorithmic Overload" },
+        { "tag": "Woolen Guard" }
       ]
     },
     {
@@ -45,7 +46,8 @@
       "attacks": [
         { "tag": "Argent Assault" },
         { "tag": "Argent Crush" },
-        { "tag": "Two Factor Authentication" }
+        { "tag": "Two Factor Authentication" },
+        { "tag": "Cuddle Defense" }
       ]
     },
     {
@@ -69,7 +71,8 @@
       "attacks": [
         { "tag": "Noble Strike" },
         { "tag": "Noble Bash" },
-        { "tag": "Royal Whirlwind" }
+        { "tag": "Royal Whirlwind" },
+        { "tag": "King's Aegis" }
       ]
     },
     {
@@ -93,7 +96,8 @@
       "attacks": [
         { "tag": "Briq Bash" },
         { "tag": "Briq Breaker" },
-        { "tag": "Briq Avalanche" }
+        { "tag": "Briq Avalanche" },
+        { "tag": "Heavenly Aegis" }
       ]
     },
     {
@@ -117,7 +121,8 @@
       "attacks": [
         { "tag": "Hash Hit" },
         { "tag": "Calculated Crush" },
-        { "tag": "Quantum Singularity" }
+        { "tag": "Quantum Singularity" },
+        { "tag": "Focus Guard" }
       ]
     },
     {
@@ -141,7 +146,8 @@
       "attacks": [
         { "tag": "Code Crush" },
         { "tag": "Debug Destruction" },
-        { "tag": "Algorithm Overload" }
+        { "tag": "Algorithm Overload" },
+        { "tag": "Divine Protection" }
       ]
     },
     {
@@ -165,7 +171,8 @@
       "attacks": [
         { "tag": "Diamond Strike" },
         { "tag": "Diamond Destruction" },
-        { "tag": "Diamond Hand" }
+        { "tag": "Diamond Hand" },
+        { "tag": "Infernal Barrier" }
       ]
     },
     {
@@ -189,7 +196,8 @@
       "attacks": [
         { "tag": "Shield Bash" },
         { "tag": "Iron Wall" },
-        { "tag": "Cairo Blast" }
+        { "tag": "Cairo Blast" },
+        { "tag": "Heavenly Aegis" }
       ]
     },
     {
@@ -213,7 +221,8 @@
       "attacks": [
         { "tag": "Spectral Hit" },
         { "tag": "Phantom Pulse" },
-        { "tag": "Phantom Blast" }
+        { "tag": "Phantom Blast" },
+        { "tag": "Feral Dash" }
       ]
     },
     {
@@ -237,14 +246,15 @@
       "attacks": [
         { "tag": "Grug's Crush" },
         { "tag": "Grug's Smash" },
-        { "tag": "Giant Rock Uppercut Grapple" }
+        { "tag": "Giant Rock Uppercut Grapple" },
+        { "tag": "Bare Minimum Defense" }
       ]
     }
   ],
   "challenges": [
     {
-      "name": "Classic Guild Competition 1",
-      "health_recovery": 40,
+      "name": "Classic Guild Competition 2",
+      "health_recovery": 30,
       "opponents": [
         { "tag": "Byte Basher" },
         { "tag": "Cyber Crusher" },
