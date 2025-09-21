@@ -18,7 +18,18 @@
             {
               "target": "Player",
               "affect": {
-                "Health": 20
+                "Stats": {
+                  "strength": 0,
+                  "vitality": 0,
+                  "dexterity": -10,
+                  "luck": 30
+                }
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 50
               }
             }
           ],
@@ -47,15 +58,15 @@
                 "Stats": {
                   "strength": 0,
                   "vitality": 0,
-                  "dexterity": 15,
-                  "luck": 0
+                  "dexterity": 20,
+                  "luck": 20
                 }
               }
             },
             {
               "target": "Player",
               "affect": {
-                "Health": 10
+                "Health": 30
               }
             }
           ],
@@ -82,17 +93,17 @@
               "target": "Player",
               "affect": {
                 "Stats": {
-                  "strength": 10,
+                  "strength": 0,
                   "vitality": 0,
-                  "dexterity": 0,
-                  "luck": 0
+                  "dexterity": 30,
+                  "luck": -10
                 }
               }
             },
             {
               "target": "Player",
               "affect": {
-                "Health": 25
+                "Health": 50
               }
             }
           ],
@@ -118,7 +129,18 @@
             {
               "target": "Player",
               "affect": {
-                "Health": 30
+                "Stats": {
+                  "strength": 0,
+                  "vitality": 0,
+                  "dexterity": 0,
+                  "luck": 10
+                }
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 60
               }
             }
           ],
@@ -147,7 +169,7 @@
                 "Stats": {
                   "strength": 0,
                   "vitality": 0,
-                  "dexterity": 10,
+                  "dexterity": 30,
                   "luck": 0
                 }
               }
@@ -155,7 +177,7 @@
             {
               "target": "Player",
               "affect": {
-                "Health": 10
+                "Health": 40
               }
             }
           ],
@@ -181,7 +203,7 @@
             {
               "target": "Player",
               "affect": {
-                "Health": 40
+                "Health": 70
               }
             }
           ],
@@ -207,7 +229,18 @@
             {
               "target": "Player",
               "affect": {
-                "Health": 25
+                "Stats": {
+                  "strength": 30,
+                  "vitality": 0,
+                  "dexterity": 0,
+                  "luck": -10
+                }
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 50
               }
             }
           ],
@@ -234,9 +267,9 @@
               "target": "Player",
               "affect": {
                 "Stats": {
-                  "strength": 0,
+                  "strength": 10,
                   "vitality": 0,
-                  "dexterity": 5,
+                  "dexterity": 20,
                   "luck": 0
                 }
               }
@@ -244,7 +277,7 @@
             {
               "target": "Player",
               "affect": {
-                "Health": 15
+                "Health": 40
               }
             }
           ],
@@ -307,7 +340,18 @@
             {
               "target": "Player",
               "affect": {
-                "Health": 20
+                "Stats": {
+                  "strength": 0,
+                  "vitality": 0,
+                  "dexterity": 0,
+                  "luck": 30
+                }
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 40
               }
             }
           ],
@@ -334,7 +378,7 @@
               "target": "Player",
               "affect": {
                 "Stats": {
-                  "strength": 20,
+                  "strength": 10,
                   "vitality": 0,
                   "dexterity": 0,
                   "luck": 0
@@ -344,7 +388,7 @@
             {
               "target": "Player",
               "affect": {
-                "Health": 30
+                "Health": 60
               }
             }
           ],
@@ -371,17 +415,17 @@
               "target": "Player",
               "affect": {
                 "Stats": {
-                  "strength": 0,
+                  "strength": 10,
                   "vitality": 0,
-                  "dexterity": 10,
-                  "luck": 0
+                  "dexterity": 0,
+                  "luck": 20
                 }
               }
             },
             {
               "target": "Player",
               "affect": {
-                "Health": 15
+                "Health": 40
               }
             }
           ],
@@ -407,7 +451,18 @@
             {
               "target": "Player",
               "affect": {
-                "Health": 20
+                "Stats": {
+                  "strength": 10,
+                  "vitality": 0,
+                  "dexterity": 10,
+                  "luck": 0
+                }
+              }
+            },
+            {
+              "target": "Player",
+              "affect": {
+                "Health": 50
               }
             }
           ],
@@ -434,17 +489,17 @@
               "target": "Player",
               "affect": {
                 "Stats": {
-                  "strength": 0,
+                  "strength": 30,
                   "vitality": 0,
-                  "dexterity": 10,
-                  "luck": 0
+                  "dexterity": 0,
+                  "luck": 10
                 }
               }
             },
             {
               "target": "Player",
               "affect": {
-                "Health": 15
+                "Health": 30
               }
             }
           ],
@@ -471,17 +526,17 @@
               "target": "Player",
               "affect": {
                 "Stats": {
-                  "strength": 0,
+                  "strength": 20,
                   "vitality": 0,
-                  "dexterity": 20,
-                  "luck": 0
+                  "dexterity": 0,
+                  "luck": 20
                 }
               }
             },
             {
               "target": "Player",
               "affect": {
-                "Health": 10
+                "Health": 30
               }
             }
           ],
@@ -508,7 +563,7 @@
               "target": "Player",
               "affect": {
                 "Stats": {
-                  "strength": 0,
+                  "strength": 30,
                   "vitality": 0,
                   "dexterity": 10,
                   "luck": 0
@@ -518,7 +573,7 @@
             {
               "target": "Player",
               "affect": {
-                "Health": 10
+                "Health": 30
               }
             }
           ],
