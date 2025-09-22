@@ -1,13 +1,14 @@
 import { loadJson } from "./stark-utils.js";
 import { loadSai } from "./sai.js";
 import { parseAttributes, parseIdTagAttackStructs } from "./loadout.js";
+import { CairoCustomEnum } from "starknet";
 
 export const makeOpponentStruct = (opponent) => {
   for (let i = 0; i < 4 - opponent.attacks.length; i++) {
     opponent.attacks.push({ id: BigInt(0) });
   }
   return {
-    traits: opponent.traits,
+    traits: new CairoCustomEnum(opponent.traits),
     attributes: parseAttributes(opponent.attributes),
     attacks: parseIdTagAttackStructs(opponent.attacks),
   };

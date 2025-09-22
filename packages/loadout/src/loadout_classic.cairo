@@ -62,8 +62,7 @@ mod loadout_classic {
     use core::num::traits::Zero;
     use sai_core_utils::poseidon_serde::PoseidonSerde;
     use sai_ownable::{OwnableTrait, ownable_component};
-    use sai_packing::SHIFT_4B;
-    use sai_packing::byte::SHIFT_4B_FELT252;
+    use sai_packing::SHIFT_4B_FELT252;
     use starknet::ContractAddress;
     use starknet::storage::{
         Map, Mutable, StorageBase, StorageMapReadAccess, StorageMapWriteAccess,
@@ -191,46 +190,27 @@ mod loadout_classic {
             self.attributes.write(abilities_index, attributes);
 
             let attack_ids = self.attack_dispatcher.read().maybe_create_attacks(attacks);
-            let mut attacks_ptr = self.attack_slots;
-            let attack_slot_index = abilities_index * SHIFT_4B_FELT252;
-            attacks_ptr.clip_attack_slot_slots(attack_slot_index, attack_ids.len());
-            for (slot, attack_id) in attack_ids.into_iter().enumerate() {
-                let slot_id = attack_slot_index + slot.into();
-                AttackSlotTable::set_entity(slot_id, @(blobert_trait, index, slot, attack_id));
-                attacks_ptr.write(slot_id, attack_id);
-            }
-            AttributeTable::set_entity(abilities_index, @(blobert_trait, index, name, attributes));
+            self.set_item_loadout(blobert_trait, index, name, attributes, attack_ids);
         }
 
 
         fn set_loadouts(ref self: ContractState, loadouts: Array<LoadoutInput>) {
             self.assert_caller_is_owner();
-            let mut all_attacks: Array<IdTagAttack> = Default::default();
-            let mut indexes: Array<(BlobertTrait, u32, felt252, u32)> = Default::default();
-            let mut attacks_ptr = self.attack_slots;
-
-            for LoadoutInput { blobert_trait, index, name, attributes, attacks } in loadouts {
-                self.assert_caller_is_owner();
-                let abilities_index = blobert_trait.index(index);
-
-                self.attributes.write(abilities_index, attributes);
-                let slot_index = abilities_index * SHIFT_4B.into();
-                attacks_ptr.clip_attack_slot_slots(slot_index, attacks.len());
-                AttributeTable::set_entity(
-                    abilities_index, @(blobert_trait, index, name, attributes),
-                );
-                for (slot, attack) in attacks.into_iter().enumerate() {
-                    all_attacks.append(attack);
-                    indexes.append((blobert_trait, index, slot_index, slot));
-                }
+            let mut all_attacks: Array<Array<IdTagAttack>> = Default::default();
+            for loadout in loadouts.span() {
+                all_attacks.append(loadout.attacks.clone());
             }
-            let attack_ids = self.attack_dispatcher.read().maybe_create_attacks(all_attacks);
-            for (attack_id, (blobert_trait, index, slot_index, slot)) in attack_ids
-                .into_iter()
-                .zip(indexes) {
-                let slot_id = slot_index + slot.into();
-                AttackSlotTable::set_entity(slot_id, @(blobert_trait, index, slot, attack_id));
-                attacks_ptr.write(slot_id, attack_id);
+            let attack_dispatcher = self.attack_dispatcher.read();
+            let all_attack_ids = attack_dispatcher.maybe_create_attacks_array(all_attacks);
+            for (loadout, attack_ids) in loadouts.into_iter().zip(all_attack_ids) {
+                self
+                    .set_item_loadout(
+                        loadout.blobert_trait,
+                        loadout.index,
+                        loadout.name,
+                        loadout.attributes,
+                        attack_ids,
+                    );
             }
         }
     }
@@ -243,16 +223,40 @@ mod loadout_classic {
             );
         }
         fn clip_attack_slot_slots(
-            ref self: StorageBase<Mutable<Map<felt252, felt252>>>, hash: felt252, mut slots: u32,
+            self: StorageBase<Mutable<Map<felt252, felt252>>>, slot_index: felt252, slots: u32,
         ) {
+            let mut slots: felt252 = slots.into();
+            let mut slot_ids: Array<felt252> = Default::default();
             loop {
-                let slot_id = hash + slots.into();
+                let slot_id = slot_index + slots.into();
                 if self.read(slot_id).is_non_zero() {
                     self.write(slot_id, 0);
+                    slot_ids.append(slot_id);
                     slots += 1;
                 } else {
                     break;
                 }
+            }
+            AttackSlotTable::delete_entities(slot_ids);
+        }
+
+        fn set_item_loadout(
+            ref self: ContractState,
+            blobert_trait: BlobertTrait,
+            index: u32,
+            name: ByteArray,
+            attributes: PartialAttributes,
+            attacks: Array<felt252>,
+        ) {
+            let item_index = blobert_trait.index(index);
+            self.attributes.write(item_index, attributes);
+            AttributeTable::set_entity(item_index, @(blobert_trait, index, name, attributes));
+            let slot_index = item_index * SHIFT_4B_FELT252;
+            self.attack_slots.clip_attack_slot_slots(slot_index, attacks.len());
+            for (slot, attack_id) in attacks.into_iter().enumerate() {
+                let slot_id = slot_index + slot.into();
+                AttackSlotTable::set_entity(slot_id, @(blobert_trait, index, slot, attack_id));
+                self.attack_slots.write(slot_id, attack_id);
             }
         }
 

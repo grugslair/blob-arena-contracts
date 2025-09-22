@@ -116,3 +116,4 @@ pub impl ShortArrayStore<
     }
 }
 
+pub impl FeltArrayReadWrite = short_array::ShortArrayReadWrite<felt252>;

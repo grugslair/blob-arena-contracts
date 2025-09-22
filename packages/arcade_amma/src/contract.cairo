@@ -1,27 +1,34 @@
 use ba_loadout::PartialAttributes;
+use ba_loadout::attack::IdTagAttack;
+use ba_utils::storage::{FeltArrayReadWrite, ShortArrayStore};
 
 
 #[derive(Drop, Serde)]
-struct OpponentAttributesInput {
+struct AmmaOpponentInput {
     fighter: u32,
     base: PartialAttributes,
     level: PartialAttributes,
+    attacks: Array<IdTagAttack>,
 }
 
-#[derive(Drop, Introspect)]
-struct OpponentAttributesTable {
+#[derive(Drop, Serde, Introspect, starknet::Store)]
+struct AmmaOpponent {
     base: PartialAttributes,
     level: PartialAttributes,
+    attacks: Array<felt252>,
 }
-
 #[starknet::interface]
 trait IArcadeAmma<TState> {
     fn gen_stages(self: @TState) -> u32;
     fn set_gen_stages(ref self: TState, gen_stages: u32);
-    fn set_opponent_attributes(
-        ref self: TState, fighter: u32, base: PartialAttributes, level: PartialAttributes,
+    fn set_opponent(
+        ref self: TState,
+        fighter: u32,
+        base: PartialAttributes,
+        level: PartialAttributes,
+        attacks: Array<IdTagAttack>,
     );
-    fn set_opponents_attributes(ref self: TState, opponents: Array<OpponentAttributesInput>);
+    fn set_opponents(ref self: TState, opponents: Array<AmmaOpponentInput>);
     fn set_opponent_count(ref self: TState, count: u32);
 }
 
@@ -30,8 +37,10 @@ mod arcade_amma {
     use ba_arcade::attempt::{ArcadePhase, AttemptNodeTrait};
     use ba_arcade::{IArcade, Opponent, arcade_component};
     use ba_loadout::PartialAttributes;
+    use ba_loadout::attack::interface::maybe_create_attacks_array;
+    use ba_loadout::attack::maybe_create_attacks;
     use ba_loadout::attributes::AttributesCalcTrait;
-    use ba_loadout::loadout_amma::{get_fighter_attacks, get_fighter_count, get_fighter_loadout};
+    use ba_loadout::loadout_amma::{get_fighter_count, get_fighter_loadout};
     use ba_utils::{CapInto, Randomness, RandomnessTrait};
     use beacon_library::{ToriiTable, register_table_with_schema};
     use sai_core_utils::poseidon_hash_two;
@@ -43,7 +52,7 @@ mod arcade_amma {
         StoragePointerWriteAccess,
     };
     use crate::systems::{attack_slots, random_selection};
-    use super::{IArcadeAmma, OpponentAttributesInput};
+    use super::{AmmaOpponent, AmmaOpponentInput, IArcadeAmma, IdTagAttack};
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
     component!(path: arcade_component, storage: arcade, event: ArcadeEvents);
@@ -51,17 +60,15 @@ mod arcade_amma {
     const ROUND_HASH: felt252 = bytearrays_hash!("arcade_amma", "ArcadeRound");
     const ATTEMPT_HASH: felt252 = bytearrays_hash!("arcade_amma", "ArcadeAttempt");
     const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("arcade_amma", "AttackLastUsed");
-    const OPPONENTS_HASH: felt252 = bytearrays_hash!("arcade_amma", "Opponents");
-    const OPPONENTS_ATTRIBUTES_HASH: felt252 = bytearrays_hash!(
-        "arcade_amma", "OpponentAttributes",
-    );
+    const STAGE_OPPONENTS_HASH: felt252 = bytearrays_hash!("arcade_amma", "StageOpponents");
+    const OPPONENTS_HASH: felt252 = bytearrays_hash!("arcade_amma", "Opponent");
 
-    impl OpponentsTable = ToriiTable<OPPONENTS_HASH>;
+    impl StageOpponentsTable = ToriiTable<STAGE_OPPONENTS_HASH>;
     impl ArcadeInternal =
         arcade_component::ArcadeInternal<
             ContractState, ATTEMPT_HASH, ROUND_HASH, LAST_USED_ATTACK_HASH,
         >;
-    impl OpponentsAttributesTable = ToriiTable<OPPONENTS_ATTRIBUTES_HASH>;
+    impl OpponentTable = ToriiTable<OPPONENTS_HASH>;
 
     #[storage]
     struct Storage {
@@ -71,7 +78,7 @@ mod arcade_amma {
         arcade: arcade_component::Storage,
         collectable_address: ContractAddress,
         gen_stages: u32,
-        opponents_attributes: Map<u32, (PartialAttributes, PartialAttributes)>,
+        opponents_attributes: Map<u32, AmmaOpponent>,
         opponent_count: u32,
         opponents: Map<felt252, u32>,
         bosses: Map<felt252, u32>,
@@ -111,10 +118,8 @@ mod arcade_amma {
             credit_address,
             vrf_address,
         );
-        register_table_with_schema::<Opponents>("arcade_amma", "Opponents");
-        register_table_with_schema::<
-            super::OpponentAttributesTable,
-        >("arcade_amma", "OpponentAttributes");
+        register_table_with_schema::<Opponents>("arcade_amma", "StageOpponents");
+        register_table_with_schema::<AmmaOpponent>("arcade_amma", "Opponent");
         self.collectable_address.write(collectable_address);
     }
 
@@ -144,7 +149,7 @@ mod arcade_amma {
                 self.gen_opponent(loadout_address, *opponents[0], 0),
                 None,
             );
-            OpponentsTable::set_entity(attempt_id, @(opponents.span(), 0));
+            StageOpponentsTable::set_entity(attempt_id, @(opponents.span(), 0));
             for (i, opponent) in opponents.into_iter().enumerate() {
                 self.opponents.write(poseidon_hash_two(attempt_id, i), opponent);
             }
@@ -221,24 +226,31 @@ mod arcade_amma {
             self.gen_stages.write(gen_stages);
         }
 
-        fn set_opponent_attributes(
+        fn set_opponent(
             ref self: ContractState,
             fighter: u32,
             base: PartialAttributes,
             level: PartialAttributes,
+            attacks: Array<IdTagAttack>,
         ) {
             self.assert_caller_is_owner();
-            self.set_opponent_attributes_internal(fighter, base, level);
+            let attack_ids = maybe_create_attacks(self.arcade.attack_address.read(), attacks);
+            self.set_opponent_attributes_internal(fighter, base, level, attack_ids);
         }
 
-        fn set_opponents_attributes(
-            ref self: ContractState, opponents: Array<OpponentAttributesInput>,
-        ) {
+        fn set_opponents(ref self: ContractState, opponents: Array<AmmaOpponentInput>) {
             self.assert_caller_is_owner();
-            for opponent in opponents {
+            let mut all_attacks: Array<Array<IdTagAttack>> = Default::default();
+            for opponent in opponents.span() {
+                all_attacks.append(opponent.attacks.clone());
+            }
+            let all_attack_ids = maybe_create_attacks_array(
+                self.arcade.attack_address.read(), all_attacks,
+            );
+            for (opponent, attacks) in opponents.into_iter().zip(all_attack_ids) {
                 self
                     .set_opponent_attributes_internal(
-                        opponent.fighter, opponent.base, opponent.level,
+                        opponent.fighter, opponent.base, opponent.level, attacks,
                     );
             }
         }
@@ -268,16 +280,17 @@ mod arcade_amma {
             fighter: u32,
             base: PartialAttributes,
             level: PartialAttributes,
+            attacks: Array<felt252>,
         ) {
-            self.opponents_attributes.write(fighter, (base, level));
-            OpponentsAttributesTable::set_entity(fighter, @(base, level));
+            let opponent = AmmaOpponent { base, level, attacks };
+            OpponentTable::set_entity(fighter, @opponent);
+            self.opponents_attributes.write(fighter, opponent);
         }
 
         fn gen_opponent(
             self: @ContractState, loadout_address: ContractAddress, fighter: u32, stage: u32,
         ) -> Opponent {
-            let attacks = get_fighter_attacks(loadout_address, fighter, attack_slots());
-            let (base, level) = self.opponents_attributes.read(fighter);
+            let AmmaOpponent { base, level, attacks } = self.opponents_attributes.read(fighter);
             let attributes = (level.into().mul(stage.cap_into(10)) + base.into()).finalize();
             Opponent { attributes, attacks: attacks.span() }
         }
@@ -289,7 +302,7 @@ mod arcade_amma {
             let count = get_fighter_count(loadout_address);
             let fighter: u32 = randomness.final(count) + 1;
 
-            OpponentsTable::set_member(selector!("boss"), attempt_id, @fighter);
+            StageOpponentsTable::set_member(selector!("boss"), attempt_id, @fighter);
             self.bosses.write(attempt_id, fighter);
             self.boss_opponent(loadout_address, fighter)
         }

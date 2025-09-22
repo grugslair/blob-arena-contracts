@@ -45,10 +45,19 @@ pub trait IAttackAdmin<TContractState> {
     fn maybe_create_attacks(
         ref self: TContractState, attacks: Array<IdTagAttack>,
     ) -> Array<felt252>;
+    fn maybe_create_attacks_array(
+        ref self: TContractState, attacks: Array<Array<IdTagAttack>>,
+    ) -> Array<Array<felt252>>;
 }
 
 pub fn maybe_create_attacks(
     contract_address: ContractAddress, attacks: Array<IdTagAttack>,
 ) -> Array<felt252> {
     IAttackAdminDispatcher { contract_address }.maybe_create_attacks(attacks)
+}
+
+pub fn maybe_create_attacks_array(
+    contract_address: ContractAddress, attacks: Array<Array<IdTagAttack>>,
+) -> Array<Array<felt252>> {
+    IAttackAdminDispatcher { contract_address }.maybe_create_attacks_array(attacks)
 }

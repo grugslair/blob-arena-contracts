@@ -151,12 +151,12 @@ mod attack {
             }
             attack_ids
         }
-
         fn maybe_create_attacks(
             ref self: ContractState, attacks: Array<IdTagAttack>,
         ) -> Array<felt252> {
             self.assert_caller_is_writer();
             let mut attack_ids: Array<felt252> = Default::default();
+
             for maybe_attack in attacks {
                 let attack_id = match maybe_attack {
                     IdTagAttack::Id(attack_id) => { attack_id },
@@ -166,6 +166,25 @@ mod attack {
                 attack_ids.append(attack_id);
             }
             attack_ids
+        }
+        fn maybe_create_attacks_array(
+            ref self: ContractState, attacks: Array<Array<IdTagAttack>>,
+        ) -> Array<Array<felt252>> {
+            self.assert_caller_is_writer();
+            let mut all_attack_ids: Array<Array<felt252>> = Default::default();
+            for attack_array in attacks {
+                let mut attack_ids: Array<felt252> = Default::default();
+                for maybe_attack in attack_array {
+                    let attack_id = match maybe_attack {
+                        IdTagAttack::Id(attack_id) => { attack_id },
+                        IdTagAttack::Tag(tag) => { self.tags.read(byte_array_to_tag(@tag)) },
+                        IdTagAttack::Attack(attack) => { self._create_attack(attack) },
+                    };
+                    attack_ids.append(attack_id);
+                }
+                all_attack_ids.append(attack_ids);
+            }
+            all_attack_ids
         }
     }
 

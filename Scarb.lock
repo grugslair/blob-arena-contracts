@@ -395,12 +395,12 @@ dependencies = [
 [[package]]
 name = "sai_access"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#2b8a59d2ef48ac6c0bf10d5f12c446b4cfe2b6b5"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#aec86a5ea5b6afe6b947b0a96808f2dc04adffad"
 
 [[package]]
 name = "sai_address"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#2b8a59d2ef48ac6c0bf10d5f12c446b4cfe2b6b5"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#aec86a5ea5b6afe6b947b0a96808f2dc04adffad"
 dependencies = [
  "sai_core_utils",
 ]
@@ -408,12 +408,12 @@ dependencies = [
 [[package]]
 name = "sai_core_utils"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#2b8a59d2ef48ac6c0bf10d5f12c446b4cfe2b6b5"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#aec86a5ea5b6afe6b947b0a96808f2dc04adffad"
 
 [[package]]
 name = "sai_ownable"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#2b8a59d2ef48ac6c0bf10d5f12c446b4cfe2b6b5"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#aec86a5ea5b6afe6b947b0a96808f2dc04adffad"
 
 [[package]]
 name = "sai_packing"
@@ -422,12 +422,12 @@ version = "0.1.0"
 [[package]]
 name = "sai_return"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#2b8a59d2ef48ac6c0bf10d5f12c446b4cfe2b6b5"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#aec86a5ea5b6afe6b947b0a96808f2dc04adffad"
 
 [[package]]
 name = "sai_token"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#2b8a59d2ef48ac6c0bf10d5f12c446b4cfe2b6b5"
+source = "git+https://github.com/sai-starknet/cairo-utils?branch=cairo-2.11.4#aec86a5ea5b6afe6b947b0a96808f2dc04adffad"
 dependencies = [
  "openzeppelin_introspection",
  "openzeppelin_token",

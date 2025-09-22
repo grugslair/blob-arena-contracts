@@ -163,6 +163,8 @@ await sai.executeAndWait([
     writers: [
       sai.contracts["loadout_amma"].contract_address,
       sai.contracts["loadout_classic"].contract_address,
+      sai.contracts["arcade_classic"].contract_address,
+      sai.contracts["arcade_amma"].contract_address,
     ],
   }),
   (

@@ -62,6 +62,7 @@ mod loadout_amma {
     use core::num::traits::Zero;
     use sai_core_utils::poseidon_serde::PoseidonSerde;
     use sai_ownable::{OwnableTrait, ownable_component};
+    use sai_packing::shifts::SHIFT_4B_FELT252;
     use starknet::ContractAddress;
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
@@ -73,8 +74,8 @@ mod loadout_amma {
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
 
-    const ABILITY_TABLE_ID: felt252 = bytearrays_hash!("loadout_amma", "AmmaAbility");
-    const ATTACK_SLOT_TABLE_ID: felt252 = bytearrays_hash!("loadout_amma", "AmmaAttackSlot");
+    const ABILITY_TABLE_ID: felt252 = bytearrays_hash!("loadout_amma", "Attributes");
+    const ATTACK_SLOT_TABLE_ID: felt252 = bytearrays_hash!("loadout_amma", "AttackSlots");
 
     impl AbilityTable = ToriiTable<ABILITY_TABLE_ID>;
     impl AttackSlotTable = ToriiTable<ATTACK_SLOT_TABLE_ID>;
@@ -155,36 +156,19 @@ mod loadout_amma {
             assert(fighter > 0, 'Fighter must be greater than 0');
             let mut attack_dispatcher = self.attack_dispatcher.read();
             let attack_ids = attack_dispatcher.maybe_create_attacks(attacks);
-            self.attributes.write(fighter, attributes);
-            AbilityTable::set_entity(fighter, @attributes);
-            self.clip_attack_slot_slots(fighter, attack_ids.len());
-
-            for (slot, attack_id) in attack_ids.into_iter().enumerate() {
-                let slot_id = (fighter, slot).poseidon_hash();
-                AttackSlotTable::set_entity(slot_id, @(fighter, slot, attack_id));
-                self.attack_slots.write(slot_id, attack_id);
-            }
+            self.set_fighter_loadout(fighter, attributes, attack_ids);
         }
 
         fn set_fighters(ref self: ContractState, fighters: Array<FighterInput>) {
             self.assert_caller_is_owner();
-            let mut all_attacks: Array<IdTagAttack> = Default::default();
-            let mut indexes: Array<(u32, u32)> = Default::default();
-            for FighterInput { fighter, attributes, attacks } in fighters {
-                self.attributes.write(fighter, attributes);
-                AbilityTable::set_entity(fighter, @(attributes));
-                self.clip_attack_slot_slots(fighter, attacks.len());
-                for (i, attack) in attacks.into_iter().enumerate() {
-                    all_attacks.append(attack);
-                    indexes.append((fighter, i));
-                }
+            let mut all_attacks: Array<Array<IdTagAttack>> = Default::default();
+            for fighter in fighters.span() {
+                all_attacks.append(fighter.attacks.clone());
             }
-            let mut attack_dispatcher = self.attack_dispatcher.read();
-            let attack_ids = attack_dispatcher.maybe_create_attacks(all_attacks);
-            for (attack_id, (fighter, slot)) in attack_ids.into_iter().zip(indexes) {
-                let slot_id = (fighter, slot).poseidon_hash();
-                AttackSlotTable::set_entity(slot_id, @(fighter, slot, attack_id));
-                self.attack_slots.write(slot_id, attack_id);
+            let attack_dispatcher = self.attack_dispatcher.read();
+            let all_attack_ids = attack_dispatcher.maybe_create_attacks_array(all_attacks);
+            for (fighter, attack_ids) in fighters.into_iter().zip(all_attack_ids) {
+                self.set_fighter_loadout(fighter.fighter, fighter.attributes, attack_ids);
             }
         }
 
@@ -230,15 +214,34 @@ mod loadout_amma {
                 self.collection_addresses.read(collection_address), 'Invalid collection address',
             );
         }
-        fn clip_attack_slot_slots(ref self: ContractState, fighter: u32, mut slots: u32) {
+        fn clip_attack_slot_slots(ref self: ContractState, index: felt252, slots: u32) {
+            let mut slots: felt252 = slots.into();
+            let mut slot_ids: Array<felt252> = Default::default();
+
             loop {
-                let slot_id = (fighter, slots).poseidon_hash();
+                let slot_id = index + slots.into();
                 if self.attack_slots.read(slot_id).is_non_zero() {
                     self.attack_slots.write(slot_id, 0);
+                    slot_ids.append(slot_id);
                     slots += 1;
                 } else {
                     break;
                 }
+            }
+            AttackSlotTable::delete_entities(slot_ids);
+        }
+
+        fn set_fighter_loadout(
+            ref self: ContractState, fighter: u32, attributes: Attributes, attacks: Array<felt252>,
+        ) {
+            AbilityTable::set_entity(fighter, @attributes);
+            self.attributes.write(fighter, attributes);
+            let slot_index: felt252 = fighter.into() * SHIFT_4B_FELT252;
+            self.clip_attack_slot_slots(slot_index, attacks.len());
+            for (n, attack_id) in attacks.into_iter().enumerate() {
+                let slot_id = slot_index + n.into();
+                AttackSlotTable::set_entity(slot_id, @(fighter, n, attack_id));
+                self.attack_slots.write(slot_id, attack_id);
             }
         }
 
@@ -261,10 +264,8 @@ mod loadout_amma {
         fn fighter_attacks_internal(
             self: @ContractState, fighter: u32, slots: Array<Array<felt252>>,
         ) -> Array<felt252> {
-            slots
-                .into_iter()
-                .map(|s| self.attack_slots.read((fighter, *s[0]).poseidon_hash()))
-                .collect()
+            let slot_index: felt252 = fighter.into() * SHIFT_4B_FELT252;
+            slots.into_iter().map(|s| self.attack_slots.read(slot_index + *s[0])).collect()
         }
     }
 }

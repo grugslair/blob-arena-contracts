@@ -28,7 +28,7 @@ mod amma_blobert_soulbound {
     component!(path: UpgradeableComponent, storage: upgradeable, event: UpgradeableEvent);
     component!(path: access_component, storage: access, event: AccessEvents);
 
-    const TOKEN_TABLE_ID: felt252 = bytearrays_hash!("amma_blobert", "TokenFighterSoulbound");
+    const TOKEN_TABLE_ID: felt252 = bytearrays_hash!("amma_blobert_soulbound", "Fighter");
     impl TokenTable = ToriiTable<TOKEN_TABLE_ID>;
 
 
@@ -69,7 +69,7 @@ mod amma_blobert_soulbound {
         self.erc721.initializer_no_metadata();
         self.src5.register_interface(IERC721_METADATA_ID);
         self.grant_owner(owner);
-        register_table_with_schema::<TokenFighter>("amma_blobert", "TokenFighterSoulbound");
+        register_table_with_schema::<TokenFighter>("amma_blobert_soulbound", "Fighter");
     }
 
     #[abi(embed_v0)]

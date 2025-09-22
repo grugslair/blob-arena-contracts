@@ -2,26 +2,26 @@ use ba_arcade::Opponent;
 use ba_blobert::TokenTraits;
 use ba_loadout::Attributes;
 use ba_loadout::attack::IdTagAttack;
-
+use ba_utils::storage::{FeltArrayReadWrite, ShortArrayStore};
 
 #[derive(Drop, Serde, Introspect)]
 struct OpponentTable {
     traits: TokenTraits,
     attributes: Attributes,
-    attacks: Span<felt252>,
+    attacks: Array<felt252>,
 }
 
 #[derive(Drop, Serde)]
 struct OpponentInput {
     traits: TokenTraits,
     attributes: Attributes,
-    attacks: [IdTagAttack; 4],
+    attacks: Array<IdTagAttack>,
 }
 
 #[derive(Drop, Serde, starknet::Store)]
 struct ClassicOpponent {
     attributes: Attributes,
-    attacks: [felt252; 4],
+    attacks: Array<felt252>,
 }
 
 impl ClassicOpponentIntoOpponent of Into<ClassicOpponent, Opponent> {
@@ -45,7 +45,7 @@ trait IArcadeClassic<TState> {
 mod arcade_classic {
     use ba_arcade::attempt::{ArcadePhase, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::{IArcade, arcade_component};
-    use ba_loadout::attack::interface::maybe_create_attacks;
+    use ba_loadout::attack::interface::maybe_create_attacks_array;
     use beacon_library::{ToriiTable, register_table_with_schema};
     use sai_ownable::{OwnableTrait, ownable_component};
     use sai_return::emit_return;
@@ -174,24 +174,20 @@ mod arcade_classic {
         fn set_opponents(ref self: ContractState, opponents: Array<OpponentInput>) {
             self.assert_caller_is_owner();
             self.stages_len.write(opponents.len());
-            let mut attacks: Array<IdTagAttack> = Default::default();
+            let mut all_attacks: Array<Array<IdTagAttack>> = Default::default();
             for opponent in opponents.span() {
-                attacks.append_span(opponent.attacks.span());
+                all_attacks.append(opponent.attacks.clone());
             }
-            let mut all_attack_ids = maybe_create_attacks(
-                self.arcade.attack_address.read(), attacks,
-            )
-                .span();
-            for (i, opponent) in opponents.into_iter().enumerate() {
-                let attack_ids = all_attack_ids.multi_pop_front::<4>().unwrap().unbox();
+            let all_attack_ids = maybe_create_attacks_array(
+                self.arcade.attack_address.read(), all_attacks,
+            );
+            for (i, (opponent, attacks)) in opponents.into_iter().zip(all_attack_ids).enumerate() {
                 OpponentTable::set_entity(
-                    i, @(opponent.traits, opponent.attributes, attack_ids.span()),
+                    i, @(opponent.traits, opponent.attributes, attacks.span()),
                 );
                 self
                     .opponents
-                    .write(
-                        i, ClassicOpponent { attributes: opponent.attributes, attacks: attack_ids },
-                    );
+                    .write(i, ClassicOpponent { attributes: opponent.attributes, attacks });
             }
         }
     }

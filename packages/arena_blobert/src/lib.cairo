@@ -36,7 +36,7 @@ mod arena_blobert {
     component!(path: UpgradeableComponent, storage: upgradeable, event: UpgradeableEvent);
     component!(path: access_component, storage: access, event: AccessEvents);
 
-    const TOKEN_TABLE_ID: felt252 = bytearrays_hash!("arena_blobert", "TokenTraits");
+    const TOKEN_TABLE_ID: felt252 = bytearrays_hash!("arena_blobert", "Traits");
     impl TokenTable = ToriiTable<TOKEN_TABLE_ID>;
 
     #[derive(Copy, Drop, Serde, PartialEq, starknet::Store)]
@@ -86,7 +86,7 @@ mod arena_blobert {
         self.erc721.initializer_no_metadata();
         self.src5.register_interface(IERC721_METADATA_ID);
         self.grant_owner(owner);
-        register_table_with_schema::<ArenaBlobertToken>("arena_blobert", "TokenTraits");
+        register_table_with_schema::<ArenaBlobertToken>("arena_blobert", "Traits");
     }
 
     #[abi(embed_v0)]
