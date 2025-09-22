@@ -5,7 +5,9 @@
       "strength": 45,
       "vitality": 51,
       "dexterity": 46,
-      "luck": 45
+      "luck": 45,
+      "bludgeon_resistance": 20,
+      "pierce_resistance": 20
     },
     "generated_abilities": {
       "strength": 3,
@@ -16,76 +18,59 @@
     "attacks": [
       {
         "name": "Sword Slash",
-        "speed": 85,
+        "speed": 5085,
         "chance": 95,
         "cooldown": 0,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 30,
-                "critical": 20
-              }
-            }
+            "Damage": {
+              "power": 30,
+              "critical": 20,
+              "damage_type": "pierce"
+            },
+            "PierceVulnerability": 15
           }
         ],
         "fail": []
       },
       {
         "name": "Shield Punch",
-        "speed": 70,
+        "speed": 5070,
         "chance": 80,
         "cooldown": 1,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 40,
-                "critical": 0
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 40
-            }
+            "Damage": {
+              "power": 40,
+              "critical": 0,
+              "damage_type": "bludgeon"
+            },
+            "Stun": 40
           }
         ],
         "fail": []
       },
       {
         "name": "Grapple",
-        "speed": 65,
+        "speed": 5065,
         "chance": 90,
         "cooldown": 3,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 40,
-                "critical": 0
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 30
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Abilities": {
-                "strength": -20,
-                "vitality": 0,
-                "dexterity": 0,
-                "luck": 0
-              }
+            "Damage": {
+              "power": 40,
+              "critical": 0,
+              "damage_type": "bludgeon"
+            },
+            "Stun": 30,
+            "Abilities": {
+              "strength": -20,
+              "vitality": 0,
+              "dexterity": 0,
+              "luck": 0
             }
           }
         ],
@@ -93,24 +78,18 @@
       },
       {
         "name": "Osoto Gari",
-        "speed": 45,
+        "speed": 5045,
         "chance": 80,
         "cooldown": 5,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 80,
-                "critical": 0
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 40
-            }
+            "Damage": {
+              "power": 80,
+              "critical": 0,
+              "damage_type": "bludgeon"
+            },
+            "Stun": 40
           }
         ],
         "fail": []
@@ -123,7 +102,9 @@
       "strength": 44,
       "vitality": 52,
       "dexterity": 42,
-      "luck": 50
+      "luck": 50,
+      "bludgeon_resistance": 20,
+      "pierce_resistance": 20
     },
     "generated_abilities": {
       "strength": 3,
@@ -137,70 +118,58 @@
       },
       {
         "name": "Ground and Pound",
-        "speed": 65,
+        "speed": 5065,
         "chance": 80,
         "cooldown": 1,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 60,
-                "critical": 0
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 20
-            }
+            "Damage": {
+              "power": 60,
+              "critical": 0,
+              "damage_type": "bludgeon"
+            },
+            "Stun": 20
           }
         ],
         "fail": []
       },
       {
         "name": "Grind",
-        "speed": 45,
+        "speed": 5045,
         "chance": 80,
         "cooldown": 3,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 55,
-                "critical": 0
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Abilities": {
-                "strength": -25,
-                "vitality": 0,
-                "dexterity": 0,
-                "luck": 0
-              }
-            }
+            "Damage": {
+              "power": 55,
+              "critical": 0,
+              "damage_type": "bludgeon"
+            },
+            "Abilities": {
+              "strength": -25,
+              "vitality": 0,
+              "dexterity": 0,
+              "luck": 0
+            },
+            "PierceVulnerability": 20
           }
         ],
         "fail": []
       },
       {
         "name": "White Company",
-        "speed": 40,
+        "speed": 5040,
         "chance": 90,
         "cooldown": 5,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 90,
-                "critical": 0
-              }
+            "Damage": {
+              "power": 90,
+              "critical": 0,
+              "damage_type": "pierce"
             }
           }
         ],
@@ -214,7 +183,9 @@
       "strength": 46,
       "vitality": 49,
       "dexterity": 56,
-      "luck": 47
+      "luck": 47,
+      "bludgeon_resistance": 20,
+      "pierce_resistance": 20
     },
     "generated_abilities": {
       "strength": 4,
@@ -228,36 +199,30 @@
       },
       {
         "name": "Shield Block",
-        "speed": 60,
+        "speed": 8000,
         "chance": 100,
         "cooldown": 3,
         "success": [
           {
             "target": "Attacker",
-            "affect": {
-              "Abilities": {
-                "strength": 0,
-                "vitality": 30,
-                "dexterity": 0,
-                "luck": 0
-              }
-            }
-          },
-          {
-            "target": "Attacker",
-            "affect": {
-              "Health": 30
-            }
+            "Abilities": {
+              "strength": 0,
+              "vitality": 30,
+              "dexterity": 0,
+              "luck": 0
+            },
+            "Health": 30,
+            "Block": 75,
+            "bludgeon_resistance": 60,
+            "pierce_resistance": 60
           },
           {
             "target": "Defender",
-            "affect": {
-              "Abilities": {
-                "strength": -20,
-                "vitality": 0,
-                "dexterity": 0,
-                "luck": 0
-              }
+            "Abilities": {
+              "strength": -20,
+              "vitality": 0,
+              "dexterity": 0,
+              "luck": 0
             }
           }
         ],
@@ -265,28 +230,25 @@
       },
       {
         "name": "Sword Dance",
-        "speed": 85,
+        "speed": 5085,
         "chance": 90,
         "cooldown": 3,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 50,
-                "critical": 15
-              }
+            "Damage": {
+              "power": 50,
+              "critical": 15,
+              "damage_type": "pierce"
             }
           },
           {
             "target": "Attacker",
-            "affect": {
-              "Abilities": {
-                "strength": 20,
-                "vitality": 0,
-                "dexterity": 0,
-                "luck": 0
-              }
+            "Abilities": {
+              "strength": 20,
+              "vitality": 0,
+              "dexterity": 0,
+              "luck": 0
             }
           }
         ],
@@ -294,17 +256,16 @@
       },
       {
         "name": "Spin Attack",
-        "speed": 50,
+        "speed": 5050,
         "chance": 90,
         "cooldown": 5,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 70,
-                "critical": 20
-              }
+            "Damage": {
+              "power": 70,
+              "critical": 20,
+              "damage_type": "pierce"
             }
           }
         ],
@@ -318,7 +279,9 @@
       "strength": 56,
       "vitality": 61,
       "dexterity": 49,
-      "luck": 59
+      "luck": 59,
+      "bludgeon_resistance": 20,
+      "pierce_resistance": 20
     },
     "generated_abilities": {
       "strength": 3,
@@ -332,73 +295,67 @@
       },
       {
         "name": "Low Kick",
-        "speed": 75,
+        "speed": 5075,
         "chance": 100,
         "cooldown": 1,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 40,
-                "critical": 10
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Abilities": {
-                "strength": 0,
-                "vitality": 0,
-                "dexterity": -20,
-                "luck": -10
-              }
-            }
+            "Damage": {
+              "power": 40,
+              "critical": 10,
+              "damage_type": "bludgeon"
+            },
+            "Abilities": {
+              "strength": 0,
+              "vitality": 0,
+              "dexterity": -20,
+              "luck": -10
+            },
+            "bludgeon_vulnerability": 20
           }
         ],
         "fail": []
       },
       {
         "name": "Swag",
-        "speed": 65,
+        "speed": 5065,
         "chance": 100,
         "cooldown": 5,
         "success": [
           {
             "target": "Attacker",
-            "affect": {
-              "Abilities": {
-                "strength": 30,
-                "vitality": 0,
-                "dexterity": 30,
-                "luck": 30
-              }
-            }
+            "Abilities": {
+              "strength": 30,
+              "vitality": 0,
+              "dexterity": 30,
+              "luck": 30
+            },
+            "bludgeon_vulnerability": 10,
+            "pierce_vulnerability": 10
+          },
+          {
+            "target": "Defender",
+            "bludgeon_vulnerability": 30,
+            "pierce_vulnerability": 30
           }
         ],
         "fail": []
       },
       {
         "name": "Mega Shield Bash",
-        "speed": 50,
+        "speed": 5050,
         "chance": 80,
         "cooldown": 3,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 60,
-                "critical": 0
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 50
-            }
+            "Damage": {
+              "power": 60,
+              "critical": 0,
+              "damage_type": "bludgeon"
+            },
+            "Stun": 50
           }
         ],
         "fail": []
@@ -411,7 +368,9 @@
       "strength": 54,
       "vitality": 62,
       "dexterity": 43,
-      "luck": 53
+      "luck": 53,
+      "bludgeon_resistance": 20,
+      "pierce_resistance": 20
     },
     "generated_abilities": {
       "strength": 4,
@@ -422,17 +381,16 @@
     "attacks": [
       {
         "name": "Axe Attack",
-        "speed": 60,
+        "speed": 5060,
         "chance": 85,
         "cooldown": 0,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 40,
-                "critical": 10
-              }
+            "Damage": {
+              "power": 40,
+              "critical": 10,
+              "damage_type": "pierce"
             }
           }
         ],
@@ -446,41 +404,25 @@
       },
       {
         "name": "Reverse Throw",
-        "speed": 40,
+        "speed": 5040,
         "chance": 80,
         "cooldown": 3,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 60,
-                "critical": 0
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 30
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Health": -20
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Abilities": {
-                "strength": 0,
-                "vitality": -20,
-                "dexterity": -20,
-                "luck": 0
-              }
-            }
+            "Damage": {
+              "power": 60,
+              "critical": 0,
+              "damage_type": "bludgeon"
+            },
+            "Stun": 30,
+            "Abilities": {
+              "strength": 0,
+              "vitality": 0,
+              "dexterity": -20,
+              "luck": 0
+            },
+            "bludgeon_vulnerability": 30
           }
         ],
         "fail": []
@@ -493,7 +435,9 @@
       "strength": 45,
       "vitality": 46,
       "dexterity": 63,
-      "luck": 42
+      "luck": 42,
+      "bludgeon_resistance": 20,
+      "pierce_resistance": 20
     },
     "generated_abilities": {
       "strength": 1,
@@ -510,17 +454,16 @@
       },
       {
         "name": "Swift Attack",
-        "speed": 90,
+        "speed": 6090,
         "chance": 90,
         "cooldown": 1,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 60,
-                "critical": 10
-              }
+            "Damage": {
+              "power": 60,
+              "critical": 10,
+              "damage_type": "pierce"
             }
           }
         ],
@@ -528,15 +471,15 @@
       },
       {
         "name": "Comeback Kid",
-        "speed": 50,
+        "speed": 5050,
         "chance": 100,
         "cooldown": 5,
         "success": [
           {
             "target": "Attacker",
-            "affect": {
-              "Health": 80
-            }
+            "Health": 80,
+            "bludgeon_resistance": 25,
+            "pierce_resistance": 25
           }
         ],
         "fail": []
@@ -549,7 +492,9 @@
       "strength": 52,
       "vitality": 66,
       "dexterity": 58,
-      "luck": 68
+      "luck": 68,
+      "bludgeon_resistance": 20,
+      "pierce_resistance": 20
     },
     "generated_abilities": {
       "strength": 3,
@@ -563,17 +508,16 @@
       },
       {
         "name": "Weapon Master",
-        "speed": 40,
+        "speed": 5040,
         "chance": 90,
         "cooldown": 1,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 40,
-                "critical": 20
-              }
+            "Damage": {
+              "power": 40,
+              "critical": 20,
+              "damage_type": "pierce"
             }
           }
         ],
@@ -581,48 +525,36 @@
       },
       {
         "name": "Superman Shield Punch",
-        "speed": 60,
+        "speed": 5060,
         "chance": 80,
         "cooldown": 3,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 60,
-                "critical": 0
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 20
-            }
+            "Damage": {
+              "power": 60,
+              "critical": 0,
+              "damage_type": "bludgeon"
+            },
+            "Stun": 20
           }
         ],
         "fail": []
       },
       {
         "name": "People's Elbow",
-        "speed": 30,
+        "speed": 5030,
         "chance": 75,
         "cooldown": 5,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 80,
-                "critical": 0
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 40
-            }
+            "Damage": {
+              "power": 80,
+              "critical": 0,
+              "damage_type": "bludgeon"
+            },
+            "Stun": 40
           }
         ],
         "fail": []
@@ -635,7 +567,9 @@
       "strength": 63,
       "vitality": 58,
       "dexterity": 43,
-      "luck": 48
+      "luck": 48,
+      "bludgeon_resistance": 20,
+      "pierce_resistance": 20
     },
     "generated_abilities": {
       "strength": 4,
@@ -646,17 +580,16 @@
     "attacks": [
       {
         "name": "Two-Handed Slash",
-        "speed": 60,
+        "speed": 5060,
         "chance": 85,
         "cooldown": 0,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 40,
-                "critical": 10
-              }
+            "Damage": {
+              "power": 40,
+              "critical": 10,
+              "damage_type": "pierce"
             }
           }
         ],
@@ -664,17 +597,16 @@
       },
       {
         "name": "Sword Snipe",
-        "speed": 40,
+        "speed": 5040,
         "chance": 95,
         "cooldown": 1,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 40,
-                "critical": 30
-              }
+            "Damage": {
+              "power": 40,
+              "critical": 30,
+              "damage_type": "pierce"
             }
           }
         ],
@@ -682,911 +614,39 @@
       },
       {
         "name": "Multi Strike",
-        "speed": 70,
+        "speed": 5070,
         "chance": 75,
         "cooldown": 3,
         "success": [
           {
             "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 60,
-                "critical": 0
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 20
-            }
+            "Damage": {
+              "power": 60,
+              "critical": 0,
+              "damage_type": "pierce"
+            },
+            "Stun": 20
           }
         ],
         "fail": []
       },
       {
         "name": "Knight of Wakanda",
-        "speed": 80,
+        "speed": 5080,
         "chance": 100,
         "cooldown": 5,
         "success": [
           {
             "target": "Attacker",
-            "affect": {
-              "Abilities": {
-                "strength": 30,
-                "vitality": 30,
-                "dexterity": 30,
-                "luck": 30
-              }
-            }
-          },
-          {
-            "target": "Attacker",
-            "affect": {
-              "Health": 30
-            }
-          }
-        ],
-        "fail": []
-      }
-    ]
-  },
-  "9": {
-    "name": "AMMA 9",
-    "abilities": {
-      "strength": 54,
-      "vitality": 42,
-      "dexterity": 59,
-      "luck": 47
-    },
-    "generated_abilities": {
-      "strength": 3,
-      "vitality": 3,
-      "dexterity": 1,
-      "luck": 5
-    },
-    "attacks": [
-      {
-        "tag": "Axe Attack"
-      },
-      {
-        "name": "Buckler Tap",
-        "speed": 90,
-        "chance": 90,
-        "cooldown": 1,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 30,
-                "critical": 15
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 30
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Abilities": {
-                "strength": 0,
-                "vitality": 0,
-                "dexterity": -10,
-                "luck": 0
-              }
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Jujitsu Throw",
-        "speed": 60,
-        "chance": 75,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 60,
-                "critical": 10
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 20
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Health": -20
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Abilities": {
-                "strength": 0,
-                "vitality": -20,
-                "dexterity": -20,
-                "luck": -20
-              }
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Steal Weapon",
-        "speed": 80,
-        "chance": 65,
-        "cooldown": 5,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 30,
-                "critical": 0
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 100
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Abilities": {
-                "strength": -40,
-                "vitality": 0,
-                "dexterity": 0,
-                "luck": 0
-              }
-            }
-          }
-        ],
-        "fail": []
-      }
-    ]
-  },
-  "10": {
-    "name": "AMMA 10",
-    "abilities": {
-      "strength": 44,
-      "vitality": 45,
-      "dexterity": 66,
-      "luck": 48
-    },
-    "generated_abilities": {
-      "strength": 3,
-      "vitality": 2,
-      "dexterity": 5,
-      "luck": 4
-    },
-    "attacks": [
-      {
-        "name": "Quick Slash",
-        "speed": 95,
-        "chance": 90,
-        "cooldown": 0,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 30,
-                "critical": 15
-              }
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "tag": "Buckler Tap"
-      },
-      {
-        "name": "Steel Sonata",
-        "speed": 70,
-        "chance": 80,
-        "cooldown": 5,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 70,
-                "critical": 20
-              }
-            }
-          },
-          {
-            "target": "Attacker",
-            "affect": {
-              "Abilities": {
-                "strength": 30,
-                "vitality": 0,
-                "dexterity": 0,
-                "luck": 30
-              }
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Circle Out",
-        "speed": 90,
-        "chance": 90,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Attacker",
-            "affect": {
-              "Health": 50
-            }
-          },
-          {
-            "target": "Attacker",
-            "affect": {
-              "Abilities": {
-                "strength": 0,
-                "vitality": 0,
-                "dexterity": 20,
-                "luck": 0
-              }
-            }
-          }
-        ],
-        "fail": []
-      }
-    ]
-  },
-  "11": {
-    "name": "AMMA 11",
-    "abilities": {
-      "strength": 62,
-      "vitality": 67,
-      "dexterity": 43,
-      "luck": 38
-    },
-    "generated_abilities": {
-      "strength": 2,
-      "vitality": 4,
-      "dexterity": 1,
-      "luck": 5
-    },
-    "attacks": [
-      {
-        "tag": "Axe Attack"
-      },
-      {
-        "name": "Hammer Fist",
-        "speed": 70,
-        "chance": 80,
-        "cooldown": 1,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 45,
-                "critical": 0
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 30
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Spinning Axe",
-        "speed": 50,
-        "chance": 80,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 55,
-                "critical": 20
-              }
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "One Shot",
-        "speed": 40,
-        "chance": 60,
-        "cooldown": 5,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 100,
-                "critical": 10
-              }
-            }
-          }
-        ],
-        "fail": []
-      }
-    ]
-  },
-  "12": {
-    "name": "AMMA 12",
-    "abilities": {
-      "strength": 57,
-      "vitality": 46,
-      "dexterity": 53,
-      "luck": 58
-    },
-    "generated_abilities": {
-      "strength": 3,
-      "vitality": 1,
-      "dexterity": 4,
-      "luck": 3
-    },
-    "attacks": [
-      {
-        "tag": "Quick Slash"
-      },
-      {
-        "tag": "Shield Punch"
-      },
-      {
-        "name": "Power Arm",
-        "speed": 50,
-        "chance": 80,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 60,
-                "critical": 20
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 10
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Snap Shot",
-        "speed": 90,
-        "chance": 100,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Attacker",
-            "affect": {
-              "Abilities": {
-                "strength": 30,
-                "vitality": 0,
-                "dexterity": 0,
-                "luck": 30
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Abilities": {
-                "strength": -20,
-                "vitality": 0,
-                "dexterity": -20,
-                "luck": 0
-              }
-            }
-          }
-        ],
-        "fail": []
-      }
-    ]
-  },
-  "13": {
-    "name": "AMMA 13",
-    "abilities": {
-      "strength": 48,
-      "vitality": 46,
-      "dexterity": 61,
-      "luck": 63
-    },
-    "generated_abilities": {
-      "strength": 1,
-      "vitality": 2,
-      "dexterity": 4,
-      "luck": 3
-    },
-    "attacks": [
-      {
-        "tag": "Quick Slash"
-      },
-      {
-        "name": "Knee Check",
-        "speed": 80,
-        "chance": 90,
-        "cooldown": 1,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 40,
-                "critical": 0
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 15
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Abilities": {
-                "dexterity": -15,
-                "strength": 0,
-                "vitality": 0,
-                "luck": 0
-              }
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Headbutt",
-        "speed": 50,
-        "chance": 75,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 60,
-                "critical": 10
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 50
-            }
-          },
-          {
-            "target": "Attacker",
-            "affect": {
-              "Health": -20
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Final Judgement",
-        "speed": 40,
-        "chance": 95,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 75,
-                "critical": 20
-              }
-            }
-          }
-        ],
-        "fail": []
-      }
-    ]
-  },
-  "14": {
-    "name": "AMMA 14",
-    "abilities": {
-      "strength": 55,
-      "vitality": 68,
-      "dexterity": 40,
-      "luck": 35
-    },
-    "generated_abilities": {
-      "strength": 2,
-      "vitality": 5,
-      "dexterity": 2,
-      "luck": 3
-    },
-    "attacks": [
-      {
-        "tag": "Sword Slash"
-      },
-      {
-        "name": "Shield Check",
-        "speed": 55,
-        "chance": 80,
-        "cooldown": 1,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 45,
-                "critical": 0
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 30
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Hold The Line",
-        "speed": 60,
-        "chance": 100,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Attacker",
-            "affect": {
-              "Health": 60
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Seismic Toss",
-        "speed": 30,
-        "chance": 75,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 65,
-                "critical": 10
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 50
-            }
-          }
-        ],
-        "fail": []
-      }
-    ]
-  },
-  "15": {
-    "name": "AMMA 15",
-    "abilities": {
-      "strength": 60,
-      "vitality": 63,
-      "dexterity": 45,
-      "luck": 42
-    },
-    "generated_abilities": {
-      "strength": 2,
-      "vitality": 4,
-      "dexterity": 1,
-      "luck": 4
-    },
-    "attacks": [
-      {
-        "tag": "Axe Attack"
-      },
-      {
-        "tag": "Hammer Fist"
-      },
-      {
-        "name": "Axe Thrust",
-        "speed": 50,
-        "chance": 70,
-        "cooldown": 2,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 60,
-                "critical": 10
-              }
-            }
-          },
-          {
-            "target": "Attacker",
-            "affect": {
-              "Abilities": {
-                "dexterity": 0,
-                "strength": 0,
-                "vitality": 0,
-                "luck": 30
-              }
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Spartan Spear",
-        "speed": 70,
-        "chance": 80,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 70,
-                "critical": 20
-              }
-            }
-          }
-        ],
-        "fail": []
-      }
-    ]
-  },
-  "16": {
-    "name": "AMMA 16",
-    "abilities": {
-      "strength": 66,
-      "vitality": 50,
-      "dexterity": 46,
-      "luck": 50
-    },
-    "generated_abilities": {
-      "strength": 4,
-      "vitality": 2,
-      "dexterity": 4,
-      "luck": 2
-    },
-    "attacks": [
-      {
-        "name": "Sword Attack",
-        "speed": 75,
-        "chance": 90,
-        "cooldown": 0,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 40,
-                "critical": 10
-              }
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "tag": "Shield Check"
-      },
-      {
-        "name": "Karate Kick",
-        "speed": 75,
-        "chance": 80,
-        "cooldown": 2,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 50,
-                "critical": 20
-              }
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Throwing Hands",
-        "speed": 60,
-        "chance": 85,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 60,
-                "critical": 20
-              }
-            }
-          }
-        ],
-        "fail": []
-      }
-    ]
-  },
-  "17": {
-    "name": "AMMA 17",
-    "abilities": {
-      "strength": 42,
-      "vitality": 57,
-      "dexterity": 47,
-      "luck": 58
-    },
-    "generated_abilities": {
-      "strength": 1,
-      "vitality": 4,
-      "dexterity": 2,
-      "luck": 4
-    },
-    "attacks": [
-      {
-        "tag": "Sword Attack"
-      },
-      {
-        "tag": "Shield Check"
-      },
-      {
-        "name": "Meteor Shield",
-        "speed": 70,
-        "chance": 95,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Attacker",
-            "affect": {
-              "Abilities": {
-                "strength": 20,
-                "vitality": 20,
-                "dexterity": 0,
-                "luck": 0
-              }
-            }
-          },
-          {
-            "target": "Attacker",
-            "affect": {
-              "Health": 20
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Abilities": {
-                "strength": -20,
-                "vitality": 0,
-                "dexterity": -20,
-                "luck": 0
-              }
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Hip Throw",
-        "speed": 50,
-        "chance": 90,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 60,
-                "critical": 0
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 50
-            }
-          }
-        ],
-        "fail": []
-      }
-    ]
-  },
-  "18": {
-    "name": "AMMA 18",
-    "abilities": {
-      "strength": 46,
-      "vitality": 43,
-      "dexterity": 47,
-      "luck": 60
-    },
-    "generated_abilities": {
-      "strength": 1,
-      "vitality": 1,
-      "dexterity": 1,
-      "luck": 5
-    },
-    "attacks": [
-      {
-        "tag": "Sword Attack"
-      },
-      {
-        "tag": "Shield Punch"
-      },
-      {
-        "name": "Jumping Punch",
-        "speed": 70,
-        "chance": 75,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 60,
-                "critical": 0
-              }
-            }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 40
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Flying Hussar",
-        "speed": 40,
-        "chance": 70,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Defender",
-            "affect": {
-              "Damage": {
-                "power": 80,
-                "critical": 10
-              }
-            }
+            "Abilities": {
+              "strength": 30,
+              "vitality": 0,
+              "dexterity": 30,
+              "luck": 30
+            },
+            "Health": 30,
+            "bludgeon_resistance": 20,
+            "pierce_resistance": 20
           }
         ],
         "fail": []
