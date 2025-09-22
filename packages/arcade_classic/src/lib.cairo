@@ -1,14 +1,21 @@
 use ba_arcade::Opponent;
-use ba_blobert::Seed;
+use ba_blobert::TokenTraits;
 use ba_loadout::Attributes;
 use ba_loadout::attack::IdTagAttack;
 
 
 #[derive(Drop, Serde, Introspect)]
 struct OpponentTable {
-    traits: Seed,
+    traits: TokenTraits,
     attributes: Attributes,
     attacks: Span<felt252>,
+}
+
+#[derive(Drop, Serde)]
+struct OpponentInput {
+    traits: TokenTraits,
+    attributes: Attributes,
+    attacks: [IdTagAttack; 4],
 }
 
 #[derive(Drop, Serde, starknet::Store)]
@@ -21,14 +28,6 @@ impl ClassicOpponentIntoOpponent of Into<ClassicOpponent, Opponent> {
     fn into(self: ClassicOpponent) -> Opponent {
         Opponent { attributes: self.attributes, attacks: self.attacks.span() }
     }
-}
-
-
-#[derive(Drop, Serde)]
-struct OpponentInput {
-    traits: Seed,
-    attributes: Attributes,
-    attacks: [IdTagAttack; 4],
 }
 
 mod errors {

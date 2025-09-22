@@ -3,17 +3,19 @@
   "energy_cost": 28800,
   "credit_cost": 100,
   "time_limit": 7200,
-  "health_regen_percent": 400,
+  "health_regen_percent": 40,
   "opponents": [
     {
-      "attributes": {
-        "background": 0,
-        "armour": 0,
-        "jewelry": 0,
-        "mask": 0,
-        "weapon": 0
+      "traits": {
+        "Seed": {
+          "background": 0,
+          "armour": 0,
+          "jewelry": 0,
+          "mask": 0,
+          "weapon": 0
+        }
       },
-      "abilities": {
+      "attributes": {
         "strength": 15,
         "vitality": 15,
         "dexterity": 15,
@@ -26,14 +28,16 @@
       ]
     },
     {
-      "attributes": {
-        "background": 1,
-        "armour": 1,
-        "jewelry": 1,
-        "mask": 1,
-        "weapon": 1
+      "traits": {
+        "Seed": {
+          "background": 1,
+          "armour": 1,
+          "jewelry": 1,
+          "mask": 1,
+          "weapon": 1
+        }
       },
-      "abilities": {
+      "attributes": {
         "strength": 20,
         "vitality": 20,
         "dexterity": 20,
@@ -46,14 +50,16 @@
       ]
     },
     {
-      "attributes": {
-        "background": 9,
-        "armour": 10,
-        "jewelry": 6,
-        "mask": 20,
-        "weapon": 31
+      "traits": {
+        "Seed": {
+          "background": 9,
+          "armour": 10,
+          "jewelry": 6,
+          "mask": 20,
+          "weapon": 31
+        }
       },
-      "abilities": {
+      "attributes": {
         "strength": 25,
         "vitality": 25,
         "dexterity": 25,
@@ -66,14 +72,16 @@
       ]
     },
     {
-      "attributes": {
-        "background": 3,
-        "armour": 3,
-        "jewelry": 3,
-        "mask": 3,
-        "weapon": 21
+      "traits": {
+        "Seed": {
+          "background": 3,
+          "armour": 3,
+          "jewelry": 3,
+          "mask": 3,
+          "weapon": 21
+        }
       },
-      "abilities": {
+      "attributes": {
         "strength": 30,
         "vitality": 30,
         "dexterity": 30,
@@ -86,14 +94,16 @@
       ]
     },
     {
-      "attributes": {
-        "background": 4,
-        "armour": 4,
-        "jewelry": 4,
-        "mask": 4,
-        "weapon": 22
+      "traits": {
+        "Seed": {
+          "background": 4,
+          "armour": 4,
+          "jewelry": 4,
+          "mask": 4,
+          "weapon": 22
+        }
       },
-      "abilities": {
+      "attributes": {
         "strength": 35,
         "vitality": 35,
         "dexterity": 35,
@@ -106,14 +116,16 @@
       ]
     },
     {
-      "attributes": {
-        "background": 5,
-        "armour": 5,
-        "jewelry": 5,
-        "mask": 5,
-        "weapon": 23
+      "traits": {
+        "Seed": {
+          "background": 5,
+          "armour": 5,
+          "jewelry": 5,
+          "mask": 5,
+          "weapon": 23
+        }
       },
-      "abilities": {
+      "attributes": {
         "strength": 40,
         "vitality": 40,
         "dexterity": 40,
@@ -126,14 +138,16 @@
       ]
     },
     {
-      "attributes": {
-        "background": 6,
-        "armour": 6,
-        "jewelry": 6,
-        "mask": 6,
-        "weapon": 24
+      "traits": {
+        "Seed": {
+          "background": 6,
+          "armour": 6,
+          "jewelry": 6,
+          "mask": 6,
+          "weapon": 24
+        }
       },
-      "abilities": {
+      "attributes": {
         "strength": 45,
         "vitality": 45,
         "dexterity": 45,
@@ -146,14 +160,16 @@
       ]
     },
     {
-      "attributes": {
-        "background": 7,
-        "armour": 7,
-        "jewelry": 7,
-        "mask": 7,
-        "weapon": 25
+      "traits": {
+        "Seed": {
+          "background": 7,
+          "armour": 7,
+          "jewelry": 7,
+          "mask": 7,
+          "weapon": 25
+        }
       },
-      "abilities": {
+      "attributes": {
         "strength": 50,
         "vitality": 50,
         "dexterity": 50,
@@ -166,14 +182,16 @@
       ]
     },
     {
-      "attributes": {
-        "background": 8,
-        "armour": 8,
-        "jewelry": 0,
-        "mask": 8,
-        "weapon": 26
+      "traits": {
+        "Seed": {
+          "background": 8,
+          "armour": 8,
+          "jewelry": 0,
+          "mask": 8,
+          "weapon": 26
+        }
       },
-      "abilities": {
+      "attributes": {
         "strength": 55,
         "vitality": 55,
         "dexterity": 55,
@@ -186,14 +204,16 @@
       ]
     },
     {
-      "attributes": {
-        "background": 7,
-        "armour": 14,
-        "jewelry": 3,
-        "mask": 0,
-        "weapon": 28
+      "traits": {
+        "Seed": {
+          "background": 7,
+          "armour": 14,
+          "jewelry": 3,
+          "mask": 0,
+          "weapon": 28
+        }
       },
-      "abilities": {
+      "attributes": {
         "strength": 70,
         "vitality": 70,
         "dexterity": 70,

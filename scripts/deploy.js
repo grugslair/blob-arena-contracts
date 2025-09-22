@@ -182,7 +182,7 @@ await sai.executeAndWait(await makeLoadoutsClassic(sai));
 console.log("Setting amma loadouts...");
 await sai.executeAndWait(await makeLoadoutsAmma(sai));
 
-console.log("Setting arena blobert minter...");
+console.log("Setting arcade calls...");
 await sai.executeAndWait([
   ...(await makeArenaBlobertCalls(sai)),
   ...(await makeArcadeClassicCalls(sai)),

@@ -7,6 +7,7 @@ export const makeOpponentStruct = (opponent) => {
     opponent.attacks.push({ id: BigInt(0) });
   }
   return {
+    traits: opponent.traits,
     attributes: parseAttributes(opponent.attributes),
     attacks: parseIdTagAttackStructs(opponent.attacks),
   };
