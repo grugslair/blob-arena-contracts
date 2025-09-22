@@ -4,6 +4,24 @@
   "credit_cost": 100,
   "time_limit": 7200,
   "health_regen_percent": 40,
-
-  "generated_stages": 9
+  "generated_stages": 9,
+  "opponents": {
+    "1": {
+      "base": {
+        "strength": 15,
+        "vitality": 15,
+        "dexterity": 15,
+        "luck": 15,
+        "pierce_vulnerability": 40
+      },
+      "level": {
+        "strength": 15,
+        "vitality": 15,
+        "dexterity": 15,
+        "luck": 15,
+        "pierce_vulnerability": -4
+      },
+      "attacks": []
+    }
+  }
 }
