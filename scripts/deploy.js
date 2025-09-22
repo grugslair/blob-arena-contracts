@@ -11,25 +11,10 @@ const deployWithOwner = [
   "arena_blobert",
   "amma_blobert",
   "amma_blobert_soulbound",
-  "attack",
   "arena_credit",
 ];
 
 config.set("rpcVersion", "0.9.0");
-// config.set("resourceBoundsOverhead", {
-//   l1_gas: {
-//     max_amount: 200000000000000,
-//     max_price_per_unit: 2000000000000,
-//   },
-//   l2_gas: {
-//     max_amount: 2000000000000,
-//     max_price_per_unit: 2000000000000,
-//   },
-//   l1_data_gas: {
-//     max_amount: 100000000,
-//     max_price_per_unit: 100000000,
-//   },
-// });
 
 const sai = await loadSai();
 const owner = sai.account.address;
@@ -45,6 +30,14 @@ await sai.deployContract(
 );
 await sai.deployContract([
   {
+    tag: "attack",
+    unique: false,
+    calldata: {
+      owner,
+      attack_model_class_hash: sai.classes.attack_model.class_hash,
+    },
+  },
+  {
     tag: "arena_blobert_minter",
     unique: false,
     calldata: {
@@ -59,6 +52,16 @@ await sai.deployContract([
       token_address: sai.contracts["amma_blobert_soulbound"].contract_address,
     },
   },
+  {
+    tag: "arena_credit_purchase",
+    unique: false,
+    calldata: {
+      owner,
+      credit_address: sai.contracts["arena_credit"].contract_address,
+    },
+  },
+]);
+await sai.deployContract([
   {
     tag: "loadout_classic",
     unique: false,
@@ -81,14 +84,6 @@ await sai.deployContract([
         sai.contracts["amma_blobert"].contract_address,
         sai.contracts["amma_blobert_soulbound"].contract_address,
       ],
-    },
-  },
-  {
-    tag: "arena_credit_purchase",
-    unique: false,
-    calldata: {
-      owner,
-      credit_address: sai.contracts["arena_credit"].contract_address,
     },
   },
 ]);

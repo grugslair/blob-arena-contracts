@@ -145,6 +145,7 @@ export const parseAttributes = (attributes) => {
 };
 
 export const parsePartialAttributes = (attributes) => {
+  
   return {
     strength: parseI8(attributes.strength, "Strength"),
     vitality: parseI8(attributes.vitality, "Vitality"),

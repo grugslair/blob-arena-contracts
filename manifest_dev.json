@@ -1,18 +1,29 @@
 {
   "deployments": {
     "vrf": {
-      "contract_address": "0x5843a115c889aed489a9136f95849fc5bf6cd243b8644657cfb9dfc8caa244e",
+      "contract_address": "0x130910d40aebdb098cb359e53b92dc7b83da0ccbd6a51a2bd402eb785082152",
       "tag": "vrf",
       "class": "mock_vrf",
       "salt": "0x0",
       "unique": false,
       "once": true,
-      "class_hash": "0x2bfc603e703bb2a69855698a540cdd3f400479692efab16f94a94efce38e69e",
+      "class_hash": "0x534ec072889230c0f3aec75072549acca6f881263070575cb3c22877abe45c9",
+      "calldata": [],
+      "calldata_compiled": []
+    },
+    "attack_model": {
+      "contract_address": "0x17d74172eb09a02227a970ac259c989f55acf1cce1fd426970c3e2c9b8eac8d",
+      "tag": "attack_model",
+      "class": "attack_model",
+      "salt": "0x0",
+      "unique": false,
+      "once": true,
+      "class_hash": "0x5222c021521d5eba68520dcf98a6cd5b21975b8e5cf8a75b904f1a623d8e125",
       "calldata": [],
       "calldata_compiled": []
     },
     "arena_blobert": {
-      "contract_address": "0x6788392f660b51b8bcefeab0beb881a43d0a9a6895704f389aba7af5b9b67e",
+      "contract_address": "0x47339adea95d3dae134bd2c63781dfce884f94e53d9e5112a011a6b88b27b7d",
       "tag": "arena_blobert",
       "unique": false,
       "calldata": {
@@ -21,13 +32,13 @@
       "salt": "0x0",
       "once": true,
       "class": "arena_blobert",
-      "class_hash": "0x225d49fefa6bee6105c8b4a2a528764eb9057f8dc12c1534b09d27abc30c412",
+      "class_hash": "0x3f78bf107ac1a4d8bad55e3bdf87b86916e29a69aeb19c1585a66527ecd1b8c",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       ]
     },
     "amma_blobert": {
-      "contract_address": "0x7379b0bc12b06ac173e476c0cc58ffdd8621d24310bd189bea83325c9232156",
+      "contract_address": "0x7567e0944c8c2ba4324f444e05389cb6fe611f07379994e613a629505223d2e",
       "tag": "amma_blobert",
       "unique": false,
       "calldata": {
@@ -36,13 +47,13 @@
       "salt": "0x0",
       "once": true,
       "class": "amma_blobert",
-      "class_hash": "0xad67917de81c1665aa9ce7d293c94f3ae85c66906953205b6a755bab7027a6",
+      "class_hash": "0x5761cde86114a429820abebfdffd19092647fa838922e16bb83e4a71a51628a",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       ]
     },
     "amma_blobert_soulbound": {
-      "contract_address": "0x1dbe09df4d7aa57182ca4f0ef90893c9b7e27f71f5baed0998a6a7628489ed6",
+      "contract_address": "0x345bb4de7dd98f72ed87abb34543e5785290ed3f942d901644114d59c22df46",
       "tag": "amma_blobert_soulbound",
       "unique": false,
       "calldata": {
@@ -51,28 +62,13 @@
       "salt": "0x0",
       "once": true,
       "class": "amma_blobert_soulbound",
-      "class_hash": "0x2180fc2bcbdeea447ae0668796532c7a9de96b5492bdeb542e670287fec05fc",
-      "calldata_compiled": [
-        "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
-      ]
-    },
-    "attack": {
-      "contract_address": "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
-      "tag": "attack",
-      "unique": false,
-      "calldata": {
-        "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
-      },
-      "salt": "0x0",
-      "once": true,
-      "class": "attack",
-      "class_hash": "0x3d95b28de2037503f48fa20e25fb0eb5c55bf674447dd2e8b1d74cf99bb8d7d",
+      "class_hash": "0x7c60aa58c01dd9a3726b9cd01cf9f234670352808031dbcf6b24ee0ed213acc",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       ]
     },
     "arena_credit": {
-      "contract_address": "0x162a64c2694d546b84b1ce5b5e0a39e767a2e25cf6f7b941c41a6f91e047f3f",
+      "contract_address": "0x7c63927c75113a95fd9d8347769303a978b234fbeca5801c7c9f7a385eb2682",
       "tag": "arena_credit",
       "unique": false,
       "calldata": {
@@ -81,214 +77,234 @@
       "salt": "0x0",
       "once": true,
       "class": "arena_credit",
-      "class_hash": "0x77c63a38a07c175c101094a04727d42a33a4c9870689f9a6dfcd2d882c6515b",
+      "class_hash": "0x3629402fc66658f05d00b88b3a18ea315fbf367f0e02067d899603c66b11485",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       ]
     },
+    "attack": {
+      "contract_address": "0x1d16d21d0d9143d8f96a66cc3b1ffee2575a301d3b3b1fef1978ab0d9346643",
+      "tag": "attack",
+      "unique": false,
+      "calldata": {
+        "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
+        "attack_model_class_hash": "0x5222c021521d5eba68520dcf98a6cd5b21975b8e5cf8a75b904f1a623d8e125"
+      },
+      "salt": "0x0",
+      "once": true,
+      "class": "attack",
+      "class_hash": "0x38cbcb15ad4eb490959b4503dc1c94e865992a4cd4fcc1aaa93fe58a03f29bd",
+      "calldata_compiled": [
+        "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
+        "0x5222c021521d5eba68520dcf98a6cd5b21975b8e5cf8a75b904f1a623d8e125"
+      ]
+    },
     "arena_blobert_minter": {
-      "contract_address": "0x5245ea47bfea7cefd83369b378deac10b7f6781d21753242dc3024f7835c464",
+      "contract_address": "0x2423fadac67ddb29dabc598abb9ffb78e260cf2b321454679af610f36b8e945",
       "tag": "arena_blobert_minter",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "token_address": "0x6788392f660b51b8bcefeab0beb881a43d0a9a6895704f389aba7af5b9b67e"
+        "token_address": "0x47339adea95d3dae134bd2c63781dfce884f94e53d9e5112a011a6b88b27b7d"
       },
       "salt": "0x0",
       "once": true,
       "class": "arena_blobert_minter",
-      "class_hash": "0x7859e23b1ac4ccd5c7160d1d09e357753bb69ada7e2f8cf20d690a8cfcc28d3",
+      "class_hash": "0x6daa7b59c77a8c333ea78bb47f8afcbd838ee72042b8aa5f7a01cdc32a1a2ce",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x6788392f660b51b8bcefeab0beb881a43d0a9a6895704f389aba7af5b9b67e"
+        "0x47339adea95d3dae134bd2c63781dfce884f94e53d9e5112a011a6b88b27b7d"
       ]
     },
     "amma_blobert_minter": {
-      "contract_address": "0x6c94ca26e8ceeaa7f739ae63880ad1832d6d65a9ffca68e2aa878a2b80ef970",
+      "contract_address": "0x20f5cdb934446ed32a1f845d6f445f323a87d8bc5b04c8b824473498e74923a",
       "tag": "amma_blobert_minter",
       "unique": false,
       "calldata": {
-        "token_address": "0x1dbe09df4d7aa57182ca4f0ef90893c9b7e27f71f5baed0998a6a7628489ed6"
+        "token_address": "0x345bb4de7dd98f72ed87abb34543e5785290ed3f942d901644114d59c22df46"
       },
       "salt": "0x0",
       "once": true,
       "class": "amma_blobert_minter",
-      "class_hash": "0x5784a1c69e6d21c22c34deb680c685263912552ce12d92b731fceaa99e6c747",
+      "class_hash": "0x5ef0295ce178f5dc14efa177231777f859e3289d6c8bde490c1dc2123b8b071",
       "calldata_compiled": [
-        "0x1dbe09df4d7aa57182ca4f0ef90893c9b7e27f71f5baed0998a6a7628489ed6"
+        "0x345bb4de7dd98f72ed87abb34543e5785290ed3f942d901644114d59c22df46"
+      ]
+    },
+    "arena_credit_purchase": {
+      "contract_address": "0x788bd51e961b05d08cf4510604fffa416e7610adfe7cd61703f7a5056df10b1",
+      "tag": "arena_credit_purchase",
+      "unique": false,
+      "calldata": {
+        "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
+        "credit_address": "0x7c63927c75113a95fd9d8347769303a978b234fbeca5801c7c9f7a385eb2682"
+      },
+      "salt": "0x0",
+      "once": true,
+      "class": "arena_credit_purchase",
+      "class_hash": "0x2a4212f968b64453e80656a301090cbf2ad32cbc846044205f3186629d657ae",
+      "calldata_compiled": [
+        "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
+        "0x7c63927c75113a95fd9d8347769303a978b234fbeca5801c7c9f7a385eb2682"
       ]
     },
     "loadout_classic": {
-      "contract_address": "0x60c6418397f2be9a50d39845a4eda46865437b53db27458793b1fb9a0e7a90c",
+      "contract_address": "0x6ec413ad8fc5911f8d961266fa75392b8578d04908e09def8d28949ad9a7e68",
       "tag": "loadout_classic",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_dispatcher_address": "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
+        "attack_dispatcher_address": "0x1d16d21d0d9143d8f96a66cc3b1ffee2575a301d3b3b1fef1978ab0d9346643",
         "collection_addresses": [
-          "0x6788392f660b51b8bcefeab0beb881a43d0a9a6895704f389aba7af5b9b67e",
+          "0x47339adea95d3dae134bd2c63781dfce884f94e53d9e5112a011a6b88b27b7d",
           "0x0"
         ]
       },
       "salt": "0x0",
       "once": true,
       "class": "loadout_classic",
-      "class_hash": "0x2334a13d1112f6449e365b1c4766ab2dd25e28f2953cb2b246acb821da0b779",
+      "class_hash": "0x4f80ff74a885b948fd06f7bc89a34fe303c4368539ee900c6cd5028e35a798b",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
+        "0x1d16d21d0d9143d8f96a66cc3b1ffee2575a301d3b3b1fef1978ab0d9346643",
         "0x2",
-        "0x6788392f660b51b8bcefeab0beb881a43d0a9a6895704f389aba7af5b9b67e",
+        "0x47339adea95d3dae134bd2c63781dfce884f94e53d9e5112a011a6b88b27b7d",
         "0x0"
       ]
     },
     "loadout_amma": {
-      "contract_address": "0x61da40e441976fd46af5a9feafb724f10fa0110d45cc4ed6540ce98d69ce427",
+      "contract_address": "0x7afc1a4ce020ca79e8bbc91fb44f2e95eba6bf77fa881e36188876f524c638d",
       "tag": "loadout_amma",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_dispatcher_address": "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
+        "attack_dispatcher_address": "0x1d16d21d0d9143d8f96a66cc3b1ffee2575a301d3b3b1fef1978ab0d9346643",
         "collection_addresses": [
-          "0x7379b0bc12b06ac173e476c0cc58ffdd8621d24310bd189bea83325c9232156",
-          "0x1dbe09df4d7aa57182ca4f0ef90893c9b7e27f71f5baed0998a6a7628489ed6"
+          "0x7567e0944c8c2ba4324f444e05389cb6fe611f07379994e613a629505223d2e",
+          "0x345bb4de7dd98f72ed87abb34543e5785290ed3f942d901644114d59c22df46"
         ]
       },
       "salt": "0x0",
       "once": true,
       "class": "loadout_amma",
-      "class_hash": "0x17945a4c99b7cf4b25d70e38b72f45ddcb913a4ee65662a0549bc95b42aaa87",
+      "class_hash": "0x1d10daacb33e19edebc6bf6f293ac5d1dc556c6ae69e46374987660938b2bf1",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
+        "0x1d16d21d0d9143d8f96a66cc3b1ffee2575a301d3b3b1fef1978ab0d9346643",
         "0x2",
-        "0x7379b0bc12b06ac173e476c0cc58ffdd8621d24310bd189bea83325c9232156",
-        "0x1dbe09df4d7aa57182ca4f0ef90893c9b7e27f71f5baed0998a6a7628489ed6"
-      ]
-    },
-    "arena_credit_purchase": {
-      "contract_address": "0xa5ece9a4ec8c8fb8068f4e0935af1bc2a6dde3c5e415855683211ad0a6c64a",
-      "tag": "arena_credit_purchase",
-      "unique": false,
-      "calldata": {
-        "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "credit_address": "0x162a64c2694d546b84b1ce5b5e0a39e767a2e25cf6f7b941c41a6f91e047f3f"
-      },
-      "salt": "0x0",
-      "once": true,
-      "class": "arena_credit_purchase",
-      "class_hash": "0x5da10994723906575037e1103308003955000b72ee7ad7147dff4af4461dd24",
-      "calldata_compiled": [
-        "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x162a64c2694d546b84b1ce5b5e0a39e767a2e25cf6f7b941c41a6f91e047f3f"
+        "0x7567e0944c8c2ba4324f444e05389cb6fe611f07379994e613a629505223d2e",
+        "0x345bb4de7dd98f72ed87abb34543e5785290ed3f942d901644114d59c22df46"
       ]
     },
     "arcade_classic": {
-      "contract_address": "0x5d1591790a01582c6b602687c4dc81c4912cad888de5ccbe2cc7642c5935647",
+      "contract_address": "0x683e6aa958f2a79ae2a0cb375466bbfe451963f709130ad10d28280593b3690",
       "tag": "arcade_classic",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_address": "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
-        "loadout_address": "0x60c6418397f2be9a50d39845a4eda46865437b53db27458793b1fb9a0e7a90c",
-        "credit_address": "0x162a64c2694d546b84b1ce5b5e0a39e767a2e25cf6f7b941c41a6f91e047f3f",
-        "vrf_address": "0x5843a115c889aed489a9136f95849fc5bf6cd243b8644657cfb9dfc8caa244e"
+        "attack_address": "0x1d16d21d0d9143d8f96a66cc3b1ffee2575a301d3b3b1fef1978ab0d9346643",
+        "loadout_address": "0x6ec413ad8fc5911f8d961266fa75392b8578d04908e09def8d28949ad9a7e68",
+        "credit_address": "0x7c63927c75113a95fd9d8347769303a978b234fbeca5801c7c9f7a385eb2682",
+        "vrf_address": "0x130910d40aebdb098cb359e53b92dc7b83da0ccbd6a51a2bd402eb785082152"
       },
       "salt": "0x0",
       "once": true,
       "class": "arcade_classic",
-      "class_hash": "0x5ee34144445c6d810c3cf755b35be4a34e804e0a23ed6172d3c746e0504a1a0",
+      "class_hash": "0x2c594f7e0062c1ef4f770d871689c28cebdafaafacd5d8dba9c09322f3c8a44",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
-        "0x60c6418397f2be9a50d39845a4eda46865437b53db27458793b1fb9a0e7a90c",
-        "0x162a64c2694d546b84b1ce5b5e0a39e767a2e25cf6f7b941c41a6f91e047f3f",
-        "0x5843a115c889aed489a9136f95849fc5bf6cd243b8644657cfb9dfc8caa244e"
+        "0x1d16d21d0d9143d8f96a66cc3b1ffee2575a301d3b3b1fef1978ab0d9346643",
+        "0x6ec413ad8fc5911f8d961266fa75392b8578d04908e09def8d28949ad9a7e68",
+        "0x7c63927c75113a95fd9d8347769303a978b234fbeca5801c7c9f7a385eb2682",
+        "0x130910d40aebdb098cb359e53b92dc7b83da0ccbd6a51a2bd402eb785082152"
       ]
     },
     "arcade_amma": {
-      "contract_address": "0x79408b34e5571afeed6f5b09c9b178ab4720adfb8d5a3674a249300d78a534c",
+      "contract_address": "0x579f835d555e3a10c2072dd2b5e414e422a06b84d7df9cc72597e3914d1c0b8",
       "tag": "arcade_amma",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_address": "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
-        "loadout_address": "0x61da40e441976fd46af5a9feafb724f10fa0110d45cc4ed6540ce98d69ce427",
-        "credit_address": "0x162a64c2694d546b84b1ce5b5e0a39e767a2e25cf6f7b941c41a6f91e047f3f",
-        "vrf_address": "0x5843a115c889aed489a9136f95849fc5bf6cd243b8644657cfb9dfc8caa244e",
-        "collectable_address": "0x7379b0bc12b06ac173e476c0cc58ffdd8621d24310bd189bea83325c9232156"
+        "attack_address": "0x1d16d21d0d9143d8f96a66cc3b1ffee2575a301d3b3b1fef1978ab0d9346643",
+        "loadout_address": "0x7afc1a4ce020ca79e8bbc91fb44f2e95eba6bf77fa881e36188876f524c638d",
+        "credit_address": "0x7c63927c75113a95fd9d8347769303a978b234fbeca5801c7c9f7a385eb2682",
+        "vrf_address": "0x130910d40aebdb098cb359e53b92dc7b83da0ccbd6a51a2bd402eb785082152",
+        "collectable_address": "0x7567e0944c8c2ba4324f444e05389cb6fe611f07379994e613a629505223d2e"
       },
       "salt": "0x0",
       "once": true,
       "class": "arcade_amma",
-      "class_hash": "0x246564e9187bee635f4ca00ecaf1d64775459e1ab882b5c52068b3f500d7ecf",
+      "class_hash": "0x1803cb961e17cfeb654afede0b2c934906dcdd75b08332122392c377c44b115",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
-        "0x61da40e441976fd46af5a9feafb724f10fa0110d45cc4ed6540ce98d69ce427",
-        "0x162a64c2694d546b84b1ce5b5e0a39e767a2e25cf6f7b941c41a6f91e047f3f",
-        "0x5843a115c889aed489a9136f95849fc5bf6cd243b8644657cfb9dfc8caa244e",
-        "0x7379b0bc12b06ac173e476c0cc58ffdd8621d24310bd189bea83325c9232156"
+        "0x1d16d21d0d9143d8f96a66cc3b1ffee2575a301d3b3b1fef1978ab0d9346643",
+        "0x7afc1a4ce020ca79e8bbc91fb44f2e95eba6bf77fa881e36188876f524c638d",
+        "0x7c63927c75113a95fd9d8347769303a978b234fbeca5801c7c9f7a385eb2682",
+        "0x130910d40aebdb098cb359e53b92dc7b83da0ccbd6a51a2bd402eb785082152",
+        "0x7567e0944c8c2ba4324f444e05389cb6fe611f07379994e613a629505223d2e"
       ]
     },
     "pvp": {
-      "contract_address": "0x29a8a8581b7b220da8df417fc3bdf4780bf0bb1c7b33b0b57d1ec8d99d6bbaf",
+      "contract_address": "0x5c11c94c803e268b253d62836840ba346805992ad8734187bfe7b705a1dd455",
       "tag": "pvp",
       "unique": false,
       "calldata": {
-        "attack_address": "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432"
+        "attack_address": "0x1d16d21d0d9143d8f96a66cc3b1ffee2575a301d3b3b1fef1978ab0d9346643"
       },
       "salt": "0x0",
       "once": true,
       "class": "pvp",
-      "class_hash": "0x103e9546a0df25bc073dd6f6d210b955a288b5bb6f984ca72cb139fc1a1b4e0",
+      "class_hash": "0x5a22f475b11032c53d89580b9912edb7371d81f5ce693726bef01d5848c085e",
       "calldata_compiled": [
-        "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432"
+        "0x1d16d21d0d9143d8f96a66cc3b1ffee2575a301d3b3b1fef1978ab0d9346643"
       ]
     }
   },
   "classes": {
     "mock_vrf": {
-      "class_hash": "0x2bfc603e703bb2a69855698a540cdd3f400479692efab16f94a94efce38e69e"
+      "class_hash": "0x534ec072889230c0f3aec75072549acca6f881263070575cb3c22877abe45c9"
+    },
+    "attack_model": {
+      "class_hash": "0x5222c021521d5eba68520dcf98a6cd5b21975b8e5cf8a75b904f1a623d8e125"
     },
     "arena_blobert": {
-      "class_hash": "0x225d49fefa6bee6105c8b4a2a528764eb9057f8dc12c1534b09d27abc30c412"
+      "class_hash": "0x3f78bf107ac1a4d8bad55e3bdf87b86916e29a69aeb19c1585a66527ecd1b8c"
     },
     "arena_blobert_minter": {
-      "class_hash": "0x7859e23b1ac4ccd5c7160d1d09e357753bb69ada7e2f8cf20d690a8cfcc28d3"
+      "class_hash": "0x6daa7b59c77a8c333ea78bb47f8afcbd838ee72042b8aa5f7a01cdc32a1a2ce"
     },
     "amma_blobert": {
-      "class_hash": "0xad67917de81c1665aa9ce7d293c94f3ae85c66906953205b6a755bab7027a6"
+      "class_hash": "0x5761cde86114a429820abebfdffd19092647fa838922e16bb83e4a71a51628a"
     },
     "amma_blobert_soulbound": {
-      "class_hash": "0x2180fc2bcbdeea447ae0668796532c7a9de96b5492bdeb542e670287fec05fc"
+      "class_hash": "0x7c60aa58c01dd9a3726b9cd01cf9f234670352808031dbcf6b24ee0ed213acc"
     },
     "amma_blobert_minter": {
-      "class_hash": "0x5784a1c69e6d21c22c34deb680c685263912552ce12d92b731fceaa99e6c747"
+      "class_hash": "0x5ef0295ce178f5dc14efa177231777f859e3289d6c8bde490c1dc2123b8b071"
     },
     "attack": {
-      "class_hash": "0x3d95b28de2037503f48fa20e25fb0eb5c55bf674447dd2e8b1d74cf99bb8d7d"
+      "class_hash": "0x38cbcb15ad4eb490959b4503dc1c94e865992a4cd4fcc1aaa93fe58a03f29bd"
     },
     "loadout_classic": {
-      "class_hash": "0x2334a13d1112f6449e365b1c4766ab2dd25e28f2953cb2b246acb821da0b779"
+      "class_hash": "0x4f80ff74a885b948fd06f7bc89a34fe303c4368539ee900c6cd5028e35a798b"
     },
     "loadout_amma": {
-      "class_hash": "0x17945a4c99b7cf4b25d70e38b72f45ddcb913a4ee65662a0549bc95b42aaa87"
+      "class_hash": "0x1d10daacb33e19edebc6bf6f293ac5d1dc556c6ae69e46374987660938b2bf1"
     },
     "arena_credit": {
-      "class_hash": "0x77c63a38a07c175c101094a04727d42a33a4c9870689f9a6dfcd2d882c6515b"
+      "class_hash": "0x3629402fc66658f05d00b88b3a18ea315fbf367f0e02067d899603c66b11485"
     },
     "arena_credit_purchase": {
-      "class_hash": "0x5da10994723906575037e1103308003955000b72ee7ad7147dff4af4461dd24"
+      "class_hash": "0x2a4212f968b64453e80656a301090cbf2ad32cbc846044205f3186629d657ae"
     },
     "arcade_classic": {
-      "class_hash": "0x5ee34144445c6d810c3cf755b35be4a34e804e0a23ed6172d3c746e0504a1a0"
+      "class_hash": "0x2c594f7e0062c1ef4f770d871689c28cebdafaafacd5d8dba9c09322f3c8a44"
     },
     "arcade_amma": {
-      "class_hash": "0x246564e9187bee635f4ca00ecaf1d64775459e1ab882b5c52068b3f500d7ecf"
+      "class_hash": "0x1803cb961e17cfeb654afede0b2c934906dcdd75b08332122392c377c44b115"
     },
     "pvp": {
-      "class_hash": "0x103e9546a0df25bc073dd6f6d210b955a288b5bb6f984ca72cb139fc1a1b4e0"
+      "class_hash": "0x5a22f475b11032c53d89580b9912edb7371d81f5ce693726bef01d5848c085e"
     }
   },
   "contracts": {
@@ -299,79 +315,84 @@
       "contract_address": "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
     },
     "vrf": {
-      "contract_address": "0x5843a115c889aed489a9136f95849fc5bf6cd243b8644657cfb9dfc8caa244e",
-      "class_hash": "0x2bfc603e703bb2a69855698a540cdd3f400479692efab16f94a94efce38e69e",
+      "contract_address": "0x130910d40aebdb098cb359e53b92dc7b83da0ccbd6a51a2bd402eb785082152",
+      "class_hash": "0x534ec072889230c0f3aec75072549acca6f881263070575cb3c22877abe45c9",
       "class": "mock_vrf"
     },
+    "attack_model": {
+      "contract_address": "0x17d74172eb09a02227a970ac259c989f55acf1cce1fd426970c3e2c9b8eac8d",
+      "class_hash": "0x5222c021521d5eba68520dcf98a6cd5b21975b8e5cf8a75b904f1a623d8e125",
+      "class": "attack_model"
+    },
     "arena_blobert": {
-      "contract_address": "0x6788392f660b51b8bcefeab0beb881a43d0a9a6895704f389aba7af5b9b67e",
-      "class_hash": "0x225d49fefa6bee6105c8b4a2a528764eb9057f8dc12c1534b09d27abc30c412",
+      "contract_address": "0x47339adea95d3dae134bd2c63781dfce884f94e53d9e5112a011a6b88b27b7d",
+      "class_hash": "0x3f78bf107ac1a4d8bad55e3bdf87b86916e29a69aeb19c1585a66527ecd1b8c",
       "class": "arena_blobert"
     },
     "amma_blobert": {
-      "contract_address": "0x7379b0bc12b06ac173e476c0cc58ffdd8621d24310bd189bea83325c9232156",
-      "class_hash": "0xad67917de81c1665aa9ce7d293c94f3ae85c66906953205b6a755bab7027a6",
+      "contract_address": "0x7567e0944c8c2ba4324f444e05389cb6fe611f07379994e613a629505223d2e",
+      "class_hash": "0x5761cde86114a429820abebfdffd19092647fa838922e16bb83e4a71a51628a",
       "class": "amma_blobert"
     },
     "amma_blobert_soulbound": {
-      "contract_address": "0x1dbe09df4d7aa57182ca4f0ef90893c9b7e27f71f5baed0998a6a7628489ed6",
-      "class_hash": "0x2180fc2bcbdeea447ae0668796532c7a9de96b5492bdeb542e670287fec05fc",
+      "contract_address": "0x345bb4de7dd98f72ed87abb34543e5785290ed3f942d901644114d59c22df46",
+      "class_hash": "0x7c60aa58c01dd9a3726b9cd01cf9f234670352808031dbcf6b24ee0ed213acc",
       "class": "amma_blobert_soulbound"
     },
-    "attack": {
-      "contract_address": "0x1f82839254fbb808c690f8764da3b19f893b743110e5cc02b69f53b3343a432",
-      "class_hash": "0x3d95b28de2037503f48fa20e25fb0eb5c55bf674447dd2e8b1d74cf99bb8d7d",
-      "class": "attack"
-    },
     "arena_credit": {
-      "contract_address": "0x162a64c2694d546b84b1ce5b5e0a39e767a2e25cf6f7b941c41a6f91e047f3f",
-      "class_hash": "0x77c63a38a07c175c101094a04727d42a33a4c9870689f9a6dfcd2d882c6515b",
+      "contract_address": "0x7c63927c75113a95fd9d8347769303a978b234fbeca5801c7c9f7a385eb2682",
+      "class_hash": "0x3629402fc66658f05d00b88b3a18ea315fbf367f0e02067d899603c66b11485",
       "class": "arena_credit"
     },
+    "attack": {
+      "contract_address": "0x1d16d21d0d9143d8f96a66cc3b1ffee2575a301d3b3b1fef1978ab0d9346643",
+      "class_hash": "0x38cbcb15ad4eb490959b4503dc1c94e865992a4cd4fcc1aaa93fe58a03f29bd",
+      "class": "attack"
+    },
     "arena_blobert_minter": {
-      "contract_address": "0x5245ea47bfea7cefd83369b378deac10b7f6781d21753242dc3024f7835c464",
-      "class_hash": "0x7859e23b1ac4ccd5c7160d1d09e357753bb69ada7e2f8cf20d690a8cfcc28d3",
+      "contract_address": "0x2423fadac67ddb29dabc598abb9ffb78e260cf2b321454679af610f36b8e945",
+      "class_hash": "0x6daa7b59c77a8c333ea78bb47f8afcbd838ee72042b8aa5f7a01cdc32a1a2ce",
       "class": "arena_blobert_minter"
     },
     "amma_blobert_minter": {
-      "contract_address": "0x6c94ca26e8ceeaa7f739ae63880ad1832d6d65a9ffca68e2aa878a2b80ef970",
-      "class_hash": "0x5784a1c69e6d21c22c34deb680c685263912552ce12d92b731fceaa99e6c747",
+      "contract_address": "0x20f5cdb934446ed32a1f845d6f445f323a87d8bc5b04c8b824473498e74923a",
+      "class_hash": "0x5ef0295ce178f5dc14efa177231777f859e3289d6c8bde490c1dc2123b8b071",
       "class": "amma_blobert_minter"
     },
+    "arena_credit_purchase": {
+      "contract_address": "0x788bd51e961b05d08cf4510604fffa416e7610adfe7cd61703f7a5056df10b1",
+      "class_hash": "0x2a4212f968b64453e80656a301090cbf2ad32cbc846044205f3186629d657ae",
+      "class": "arena_credit_purchase"
+    },
     "loadout_classic": {
-      "contract_address": "0x60c6418397f2be9a50d39845a4eda46865437b53db27458793b1fb9a0e7a90c",
-      "class_hash": "0x2334a13d1112f6449e365b1c4766ab2dd25e28f2953cb2b246acb821da0b779",
+      "contract_address": "0x6ec413ad8fc5911f8d961266fa75392b8578d04908e09def8d28949ad9a7e68",
+      "class_hash": "0x4f80ff74a885b948fd06f7bc89a34fe303c4368539ee900c6cd5028e35a798b",
       "class": "loadout_classic"
     },
     "loadout_amma": {
-      "contract_address": "0x61da40e441976fd46af5a9feafb724f10fa0110d45cc4ed6540ce98d69ce427",
-      "class_hash": "0x17945a4c99b7cf4b25d70e38b72f45ddcb913a4ee65662a0549bc95b42aaa87",
+      "contract_address": "0x7afc1a4ce020ca79e8bbc91fb44f2e95eba6bf77fa881e36188876f524c638d",
+      "class_hash": "0x1d10daacb33e19edebc6bf6f293ac5d1dc556c6ae69e46374987660938b2bf1",
       "class": "loadout_amma"
     },
-    "arena_credit_purchase": {
-      "contract_address": "0xa5ece9a4ec8c8fb8068f4e0935af1bc2a6dde3c5e415855683211ad0a6c64a",
-      "class_hash": "0x5da10994723906575037e1103308003955000b72ee7ad7147dff4af4461dd24",
-      "class": "arena_credit_purchase"
-    },
     "arcade_classic": {
-      "contract_address": "0x5d1591790a01582c6b602687c4dc81c4912cad888de5ccbe2cc7642c5935647",
-      "class_hash": "0x5ee34144445c6d810c3cf755b35be4a34e804e0a23ed6172d3c746e0504a1a0",
+      "contract_address": "0x683e6aa958f2a79ae2a0cb375466bbfe451963f709130ad10d28280593b3690",
+      "class_hash": "0x2c594f7e0062c1ef4f770d871689c28cebdafaafacd5d8dba9c09322f3c8a44",
       "class": "arcade_classic"
     },
     "arcade_amma": {
-      "contract_address": "0x79408b34e5571afeed6f5b09c9b178ab4720adfb8d5a3674a249300d78a534c",
-      "class_hash": "0x246564e9187bee635f4ca00ecaf1d64775459e1ab882b5c52068b3f500d7ecf",
+      "contract_address": "0x579f835d555e3a10c2072dd2b5e414e422a06b84d7df9cc72597e3914d1c0b8",
+      "class_hash": "0x1803cb961e17cfeb654afede0b2c934906dcdd75b08332122392c377c44b115",
       "class": "arcade_amma"
     },
     "pvp": {
-      "contract_address": "0x29a8a8581b7b220da8df417fc3bdf4780bf0bb1c7b33b0b57d1ec8d99d6bbaf",
-      "class_hash": "0x103e9546a0df25bc073dd6f6d210b955a288b5bb6f984ca72cb139fc1a1b4e0",
+      "contract_address": "0x5c11c94c803e268b253d62836840ba346805992ad8734187bfe7b705a1dd455",
+      "class_hash": "0x5a22f475b11032c53d89580b9912edb7371d81f5ce693726bef01d5848c085e",
       "class": "pvp"
     }
   },
   "declarations": {},
   "abis": {
-    "0x225d49fefa6bee6105c8b4a2a528764eb9057f8dc12c1534b09d27abc30c412": [
+    "0x3f78bf107ac1a4d8bad55e3bdf87b86916e29a69aeb19c1585a66527ecd1b8c": [
       {
         "type": "impl",
         "name": "IArenaBlobertImpl",
@@ -419,7 +440,7 @@
       },
       {
         "type": "enum",
-        "name": "ba_blobert::TokenAttributes",
+        "name": "ba_blobert::TokenTraits",
         "variants": [
           {
             "name": "Seed",
@@ -458,7 +479,7 @@
             ],
             "outputs": [
               {
-                "type": "ba_blobert::TokenAttributes"
+                "type": "ba_blobert::TokenTraits"
               }
             ],
             "state_mutability": "view"
@@ -483,8 +504,8 @@
                 "type": "core::starknet::contract_address::ContractAddress"
               },
               {
-                "name": "attributes",
-                "type": "ba_blobert::TokenAttributes"
+                "name": "traits",
+                "type": "ba_blobert::TokenTraits"
               }
             ],
             "outputs": [
@@ -1304,7 +1325,7 @@
         ]
       }
     ],
-    "0xad67917de81c1665aa9ce7d293c94f3ae85c66906953205b6a755bab7027a6": [
+    "0x5761cde86114a429820abebfdffd19092647fa838922e16bb83e4a71a51628a": [
       {
         "type": "impl",
         "name": "IAmmaBlobertImpl",
@@ -2207,7 +2228,7 @@
         ]
       }
     ],
-    "0x2180fc2bcbdeea447ae0668796532c7a9de96b5492bdeb542e670287fec05fc": [
+    "0x7c60aa58c01dd9a3726b9cd01cf9f234670352808031dbcf6b24ee0ed213acc": [
       {
         "type": "impl",
         "name": "IAmmaBlobertImpl",
@@ -3077,863 +3098,7 @@
         ]
       }
     ],
-    "0x3d95b28de2037503f48fa20e25fb0eb5c55bf674447dd2e8b1d74cf99bb8d7d": [
-      {
-        "type": "impl",
-        "name": "IAttackImpl",
-        "interface_name": "ba_loadout::attack::interface::IAttack"
-      },
-      {
-        "type": "enum",
-        "name": "ba_loadout::attack::types::Target",
-        "variants": [
-          {
-            "name": "Player",
-            "type": "()"
-          },
-          {
-            "name": "Opponent",
-            "type": "()"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::ability::DAbilities",
-        "members": [
-          {
-            "name": "strength",
-            "type": "core::integer::i32"
-          },
-          {
-            "name": "vitality",
-            "type": "core::integer::i32"
-          },
-          {
-            "name": "dexterity",
-            "type": "core::integer::i32"
-          },
-          {
-            "name": "luck",
-            "type": "core::integer::i32"
-          }
-        ]
-      },
-      {
-        "type": "enum",
-        "name": "ba_loadout::ability::AbilityTypes",
-        "variants": [
-          {
-            "name": "Strength",
-            "type": "()"
-          },
-          {
-            "name": "Vitality",
-            "type": "()"
-          },
-          {
-            "name": "Dexterity",
-            "type": "()"
-          },
-          {
-            "name": "Luck",
-            "type": "()"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::attack::types::AbilityAffect",
-        "members": [
-          {
-            "name": "ability",
-            "type": "ba_loadout::ability::AbilityTypes"
-          },
-          {
-            "name": "amount",
-            "type": "core::integer::i32"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::attack::types::Damage",
-        "members": [
-          {
-            "name": "critical",
-            "type": "core::integer::u8"
-          },
-          {
-            "name": "power",
-            "type": "core::integer::u32"
-          }
-        ]
-      },
-      {
-        "type": "enum",
-        "name": "ba_loadout::attack::types::Affect",
-        "variants": [
-          {
-            "name": "Health",
-            "type": "core::integer::i32"
-          },
-          {
-            "name": "Abilities",
-            "type": "ba_loadout::ability::DAbilities"
-          },
-          {
-            "name": "Ability",
-            "type": "ba_loadout::attack::types::AbilityAffect"
-          },
-          {
-            "name": "Damage",
-            "type": "ba_loadout::attack::types::Damage"
-          },
-          {
-            "name": "Stun",
-            "type": "core::integer::u8"
-          },
-          {
-            "name": "Block",
-            "type": "core::integer::u8"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::attack::types::Effect",
-        "members": [
-          {
-            "name": "target",
-            "type": "ba_loadout::attack::types::Target"
-          },
-          {
-            "name": "affect",
-            "type": "ba_loadout::attack::types::Affect"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::attack::types::Attack",
-        "members": [
-          {
-            "name": "speed",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "chance",
-            "type": "core::integer::u8"
-          },
-          {
-            "name": "cooldown",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "success",
-            "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
-          },
-          {
-            "name": "fail",
-            "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "core::byte_array::ByteArray",
-        "members": [
-          {
-            "name": "data",
-            "type": "core::array::Array::<core::bytes_31::bytes31>"
-          },
-          {
-            "name": "pending_word",
-            "type": "core::felt252"
-          },
-          {
-            "name": "pending_word_len",
-            "type": "core::integer::u32"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::attack::types::AttackWithName",
-        "members": [
-          {
-            "name": "name",
-            "type": "core::byte_array::ByteArray"
-          },
-          {
-            "name": "speed",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "chance",
-            "type": "core::integer::u8"
-          },
-          {
-            "name": "cooldown",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "success",
-            "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
-          },
-          {
-            "name": "fail",
-            "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
-          }
-        ]
-      },
-      {
-        "type": "interface",
-        "name": "ba_loadout::attack::interface::IAttack",
-        "items": [
-          {
-            "type": "function",
-            "name": "attack",
-            "inputs": [
-              {
-                "name": "id",
-                "type": "core::felt252"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "ba_loadout::attack::types::Attack"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "attacks",
-            "inputs": [
-              {
-                "name": "ids",
-                "type": "core::array::Array::<core::felt252>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::array::Array::<ba_loadout::attack::types::Attack>"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "speed",
-            "inputs": [
-              {
-                "name": "id",
-                "type": "core::felt252"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::integer::u32"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "speeds",
-            "inputs": [
-              {
-                "name": "ids",
-                "type": "core::array::Array::<core::felt252>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::array::Array::<core::integer::u32>"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "chance",
-            "inputs": [
-              {
-                "name": "id",
-                "type": "core::felt252"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::integer::u8"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "chances",
-            "inputs": [
-              {
-                "name": "ids",
-                "type": "core::array::Array::<core::felt252>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::array::Array::<core::integer::u8>"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "cooldown",
-            "inputs": [
-              {
-                "name": "id",
-                "type": "core::felt252"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::integer::u32"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "cooldowns",
-            "inputs": [
-              {
-                "name": "ids",
-                "type": "core::array::Array::<core::felt252>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::array::Array::<core::integer::u32>"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "success",
-            "inputs": [
-              {
-                "name": "id",
-                "type": "core::felt252"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "successes",
-            "inputs": [
-              {
-                "name": "ids",
-                "type": "core::array::Array::<core::felt252>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::array::Array::<core::array::Array::<ba_loadout::attack::types::Effect>>"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "fail",
-            "inputs": [
-              {
-                "name": "id",
-                "type": "core::felt252"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "fails",
-            "inputs": [
-              {
-                "name": "ids",
-                "type": "core::array::Array::<core::felt252>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::array::Array::<core::array::Array::<ba_loadout::attack::types::Effect>>"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "attack_id",
-            "inputs": [
-              {
-                "name": "name",
-                "type": "core::byte_array::ByteArray"
-              },
-              {
-                "name": "speed",
-                "type": "core::integer::u32"
-              },
-              {
-                "name": "chance",
-                "type": "core::integer::u8"
-              },
-              {
-                "name": "cooldown",
-                "type": "core::integer::u32"
-              },
-              {
-                "name": "success",
-                "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
-              },
-              {
-                "name": "fail",
-                "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::felt252"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "attack_ids",
-            "inputs": [
-              {
-                "name": "attacks",
-                "type": "core::array::Array::<ba_loadout::attack::types::AttackWithName>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::array::Array::<core::felt252>"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "tag",
-            "inputs": [
-              {
-                "name": "tag",
-                "type": "core::felt252"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::felt252"
-              }
-            ],
-            "state_mutability": "view"
-          }
-        ]
-      },
-      {
-        "type": "impl",
-        "name": "IAttackAdminImpl",
-        "interface_name": "ba_loadout::attack::interface::IAttackAdmin"
-      },
-      {
-        "type": "enum",
-        "name": "ba_loadout::attack::types::IdTagAttack",
-        "variants": [
-          {
-            "name": "Id",
-            "type": "core::felt252"
-          },
-          {
-            "name": "Tag",
-            "type": "core::byte_array::ByteArray"
-          },
-          {
-            "name": "Attack",
-            "type": "ba_loadout::attack::types::AttackWithName"
-          }
-        ]
-      },
-      {
-        "type": "interface",
-        "name": "ba_loadout::attack::interface::IAttackAdmin",
-        "items": [
-          {
-            "type": "function",
-            "name": "create_attack",
-            "inputs": [
-              {
-                "name": "name",
-                "type": "core::byte_array::ByteArray"
-              },
-              {
-                "name": "speed",
-                "type": "core::integer::u32"
-              },
-              {
-                "name": "chance",
-                "type": "core::integer::u8"
-              },
-              {
-                "name": "cooldown",
-                "type": "core::integer::u32"
-              },
-              {
-                "name": "success",
-                "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
-              },
-              {
-                "name": "fail",
-                "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::felt252"
-              }
-            ],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "create_attacks",
-            "inputs": [
-              {
-                "name": "attacks",
-                "type": "core::array::Array::<ba_loadout::attack::types::AttackWithName>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::array::Array::<core::felt252>"
-              }
-            ],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "maybe_create_attacks",
-            "inputs": [
-              {
-                "name": "attacks",
-                "type": "core::array::Array::<ba_loadout::attack::types::IdTagAttack>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::array::Array::<core::felt252>"
-              }
-            ],
-            "state_mutability": "external"
-          }
-        ]
-      },
-      {
-        "type": "impl",
-        "name": "IAccessImpl",
-        "interface_name": "sai_access::IAccess"
-      },
-      {
-        "type": "enum",
-        "name": "core::bool",
-        "variants": [
-          {
-            "name": "False",
-            "type": "()"
-          },
-          {
-            "name": "True",
-            "type": "()"
-          }
-        ]
-      },
-      {
-        "type": "interface",
-        "name": "sai_access::IAccess",
-        "items": [
-          {
-            "type": "function",
-            "name": "contract_owner",
-            "inputs": [
-              {
-                "name": "owner",
-                "type": "core::starknet::contract_address::ContractAddress"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::bool"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "contract_writer",
-            "inputs": [
-              {
-                "name": "writer",
-                "type": "core::starknet::contract_address::ContractAddress"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::bool"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "set_contract_owner",
-            "inputs": [
-              {
-                "name": "owner",
-                "type": "core::starknet::contract_address::ContractAddress"
-              },
-              {
-                "name": "is_owner",
-                "type": "core::bool"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "set_contract_writer",
-            "inputs": [
-              {
-                "name": "writer",
-                "type": "core::starknet::contract_address::ContractAddress"
-              },
-              {
-                "name": "is_writer",
-                "type": "core::bool"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "grant_contract_owner",
-            "inputs": [
-              {
-                "name": "owner",
-                "type": "core::starknet::contract_address::ContractAddress"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "grant_contract_owners",
-            "inputs": [
-              {
-                "name": "owners",
-                "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "revoke_contract_owner",
-            "inputs": [
-              {
-                "name": "owner",
-                "type": "core::starknet::contract_address::ContractAddress"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "revoke_contract_owners",
-            "inputs": [
-              {
-                "name": "owners",
-                "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "grant_contract_writer",
-            "inputs": [
-              {
-                "name": "writer",
-                "type": "core::starknet::contract_address::ContractAddress"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "grant_contract_writers",
-            "inputs": [
-              {
-                "name": "writers",
-                "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "revoke_contract_writer",
-            "inputs": [
-              {
-                "name": "writer",
-                "type": "core::starknet::contract_address::ContractAddress"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "revoke_contract_writers",
-            "inputs": [
-              {
-                "name": "writers",
-                "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          }
-        ]
-      },
-      {
-        "type": "constructor",
-        "name": "constructor",
-        "inputs": [
-          {
-            "name": "owner",
-            "type": "core::starknet::contract_address::ContractAddress"
-          }
-        ]
-      },
-      {
-        "type": "event",
-        "name": "sai_access::access_component::GrantContractOwner",
-        "kind": "struct",
-        "members": [
-          {
-            "name": "user",
-            "type": "core::starknet::contract_address::ContractAddress",
-            "kind": "key"
-          }
-        ]
-      },
-      {
-        "type": "event",
-        "name": "sai_access::access_component::RevokeContractOwner",
-        "kind": "struct",
-        "members": [
-          {
-            "name": "user",
-            "type": "core::starknet::contract_address::ContractAddress",
-            "kind": "key"
-          }
-        ]
-      },
-      {
-        "type": "event",
-        "name": "sai_access::access_component::GrantContractWriter",
-        "kind": "struct",
-        "members": [
-          {
-            "name": "user",
-            "type": "core::starknet::contract_address::ContractAddress",
-            "kind": "key"
-          }
-        ]
-      },
-      {
-        "type": "event",
-        "name": "sai_access::access_component::RevokeContractWriter",
-        "kind": "struct",
-        "members": [
-          {
-            "name": "user",
-            "type": "core::starknet::contract_address::ContractAddress",
-            "kind": "key"
-          }
-        ]
-      },
-      {
-        "type": "event",
-        "name": "sai_access::access_component::Event",
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "GrantContractOwner",
-            "type": "sai_access::access_component::GrantContractOwner",
-            "kind": "nested"
-          },
-          {
-            "name": "RevokeContractOwner",
-            "type": "sai_access::access_component::RevokeContractOwner",
-            "kind": "nested"
-          },
-          {
-            "name": "GrantContractWriter",
-            "type": "sai_access::access_component::GrantContractWriter",
-            "kind": "nested"
-          },
-          {
-            "name": "RevokeContractWriter",
-            "type": "sai_access::access_component::RevokeContractWriter",
-            "kind": "nested"
-          }
-        ]
-      },
-      {
-        "type": "event",
-        "name": "ba_loadout::attack::contract::attack::Event",
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "AccessEvents",
-            "type": "sai_access::access_component::Event",
-            "kind": "flat"
-          }
-        ]
-      }
-    ],
-    "0x77c63a38a07c175c101094a04727d42a33a4c9870689f9a6dfcd2d882c6515b": [
+    "0x3629402fc66658f05d00b88b3a18ea315fbf367f0e02067d899603c66b11485": [
       {
         "type": "impl",
         "name": "IArenaCreditsImpl",
@@ -4415,7 +3580,945 @@
         ]
       }
     ],
-    "0x7859e23b1ac4ccd5c7160d1d09e357753bb69ada7e2f8cf20d690a8cfcc28d3": [
+    "0x38cbcb15ad4eb490959b4503dc1c94e865992a4cd4fcc1aaa93fe58a03f29bd": [
+      {
+        "type": "impl",
+        "name": "IAttackImpl",
+        "interface_name": "ba_loadout::attack::interface::IAttack"
+      },
+      {
+        "type": "enum",
+        "name": "ba_loadout::attack::effect::Target",
+        "variants": [
+          {
+            "name": "None",
+            "type": "()"
+          },
+          {
+            "name": "Attacker",
+            "type": "()"
+          },
+          {
+            "name": "Defender",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attributes::AbilityMods",
+        "members": [
+          {
+            "name": "strength",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "vitality",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "dexterity",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "luck",
+            "type": "core::integer::i8"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attributes::ResistanceMods",
+        "members": [
+          {
+            "name": "bludgeon",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "magic",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "pierce",
+            "type": "core::integer::i8"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attributes::VulnerabilityMods",
+        "members": [
+          {
+            "name": "bludgeon",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "magic",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "pierce",
+            "type": "core::integer::i16"
+          }
+        ]
+      },
+      {
+        "type": "enum",
+        "name": "ba_loadout::attack::effect::DamageType",
+        "variants": [
+          {
+            "name": "None",
+            "type": "()"
+          },
+          {
+            "name": "Bludgeon",
+            "type": "()"
+          },
+          {
+            "name": "Magic",
+            "type": "()"
+          },
+          {
+            "name": "Pierce",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attack::effect::Damage",
+        "members": [
+          {
+            "name": "critical",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "power",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "damage_type",
+            "type": "ba_loadout::attack::effect::DamageType"
+          }
+        ]
+      },
+      {
+        "type": "enum",
+        "name": "ba_loadout::attack::effect::Affect",
+        "variants": [
+          {
+            "name": "None",
+            "type": "()"
+          },
+          {
+            "name": "Strength",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "Vitality",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "Dexterity",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "Luck",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "BludgeonResistance",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "MagicResistance",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "PierceResistance",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "BludgeonVulnerability",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "MagicVulnerability",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "PierceVulnerability",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "Abilities",
+            "type": "ba_loadout::attributes::AbilityMods"
+          },
+          {
+            "name": "Resistances",
+            "type": "ba_loadout::attributes::ResistanceMods"
+          },
+          {
+            "name": "Vulnerabilities",
+            "type": "ba_loadout::attributes::VulnerabilityMods"
+          },
+          {
+            "name": "Damage",
+            "type": "ba_loadout::attack::effect::Damage"
+          },
+          {
+            "name": "Stun",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "Block",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "Health",
+            "type": "core::integer::i8"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attack::effect::Effect",
+        "members": [
+          {
+            "name": "target",
+            "type": "ba_loadout::attack::effect::Target"
+          },
+          {
+            "name": "affect",
+            "type": "ba_loadout::attack::effect::Affect"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attack::attack::Attack",
+        "members": [
+          {
+            "name": "speed",
+            "type": "core::integer::u16"
+          },
+          {
+            "name": "chance",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "cooldown",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "success",
+            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+          },
+          {
+            "name": "fail",
+            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "core::byte_array::ByteArray",
+        "members": [
+          {
+            "name": "data",
+            "type": "core::array::Array::<core::bytes_31::bytes31>"
+          },
+          {
+            "name": "pending_word",
+            "type": "core::felt252"
+          },
+          {
+            "name": "pending_word_len",
+            "type": "core::integer::u32"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attack::attack::AttackWithName",
+        "members": [
+          {
+            "name": "name",
+            "type": "core::byte_array::ByteArray"
+          },
+          {
+            "name": "speed",
+            "type": "core::integer::u16"
+          },
+          {
+            "name": "chance",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "cooldown",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "success",
+            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+          },
+          {
+            "name": "fail",
+            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+          }
+        ]
+      },
+      {
+        "type": "interface",
+        "name": "ba_loadout::attack::interface::IAttack",
+        "items": [
+          {
+            "type": "function",
+            "name": "attack",
+            "inputs": [
+              {
+                "name": "id",
+                "type": "core::felt252"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "ba_loadout::attack::attack::Attack"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "attacks",
+            "inputs": [
+              {
+                "name": "ids",
+                "type": "core::array::Array::<core::felt252>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::array::Array::<ba_loadout::attack::attack::Attack>"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "speed",
+            "inputs": [
+              {
+                "name": "id",
+                "type": "core::felt252"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::integer::u16"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "speeds",
+            "inputs": [
+              {
+                "name": "ids",
+                "type": "core::array::Array::<core::felt252>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::array::Array::<core::integer::u16>"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "chance",
+            "inputs": [
+              {
+                "name": "id",
+                "type": "core::felt252"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::integer::u8"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "chances",
+            "inputs": [
+              {
+                "name": "ids",
+                "type": "core::array::Array::<core::felt252>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::array::Array::<core::integer::u8>"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "cooldown",
+            "inputs": [
+              {
+                "name": "id",
+                "type": "core::felt252"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::integer::u32"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "cooldowns",
+            "inputs": [
+              {
+                "name": "ids",
+                "type": "core::array::Array::<core::felt252>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::array::Array::<core::integer::u32>"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "success",
+            "inputs": [
+              {
+                "name": "id",
+                "type": "core::felt252"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "successes",
+            "inputs": [
+              {
+                "name": "ids",
+                "type": "core::array::Array::<core::felt252>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::array::Array::<core::array::Array::<ba_loadout::attack::effect::Effect>>"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "fail",
+            "inputs": [
+              {
+                "name": "id",
+                "type": "core::felt252"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "fails",
+            "inputs": [
+              {
+                "name": "ids",
+                "type": "core::array::Array::<core::felt252>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::array::Array::<core::array::Array::<ba_loadout::attack::effect::Effect>>"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "attack_id",
+            "inputs": [
+              {
+                "name": "name",
+                "type": "core::byte_array::ByteArray"
+              },
+              {
+                "name": "speed",
+                "type": "core::integer::u16"
+              },
+              {
+                "name": "chance",
+                "type": "core::integer::u8"
+              },
+              {
+                "name": "cooldown",
+                "type": "core::integer::u32"
+              },
+              {
+                "name": "success",
+                "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+              },
+              {
+                "name": "fail",
+                "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::felt252"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "attack_ids",
+            "inputs": [
+              {
+                "name": "attacks",
+                "type": "core::array::Array::<ba_loadout::attack::attack::AttackWithName>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::array::Array::<core::felt252>"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "tag",
+            "inputs": [
+              {
+                "name": "tag",
+                "type": "core::felt252"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::felt252"
+              }
+            ],
+            "state_mutability": "view"
+          }
+        ]
+      },
+      {
+        "type": "impl",
+        "name": "IAttackAdminImpl",
+        "interface_name": "ba_loadout::attack::interface::IAttackAdmin"
+      },
+      {
+        "type": "enum",
+        "name": "ba_loadout::attack::attack::IdTagAttack",
+        "variants": [
+          {
+            "name": "Id",
+            "type": "core::felt252"
+          },
+          {
+            "name": "Tag",
+            "type": "core::byte_array::ByteArray"
+          },
+          {
+            "name": "Attack",
+            "type": "ba_loadout::attack::attack::AttackWithName"
+          }
+        ]
+      },
+      {
+        "type": "interface",
+        "name": "ba_loadout::attack::interface::IAttackAdmin",
+        "items": [
+          {
+            "type": "function",
+            "name": "create_attack",
+            "inputs": [
+              {
+                "name": "name",
+                "type": "core::byte_array::ByteArray"
+              },
+              {
+                "name": "speed",
+                "type": "core::integer::u16"
+              },
+              {
+                "name": "chance",
+                "type": "core::integer::u8"
+              },
+              {
+                "name": "cooldown",
+                "type": "core::integer::u32"
+              },
+              {
+                "name": "success",
+                "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+              },
+              {
+                "name": "fail",
+                "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::felt252"
+              }
+            ],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "create_attacks",
+            "inputs": [
+              {
+                "name": "attacks",
+                "type": "core::array::Array::<ba_loadout::attack::attack::AttackWithName>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::array::Array::<core::felt252>"
+              }
+            ],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "maybe_create_attacks",
+            "inputs": [
+              {
+                "name": "attacks",
+                "type": "core::array::Array::<ba_loadout::attack::attack::IdTagAttack>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::array::Array::<core::felt252>"
+              }
+            ],
+            "state_mutability": "external"
+          }
+        ]
+      },
+      {
+        "type": "impl",
+        "name": "IAccessImpl",
+        "interface_name": "sai_access::IAccess"
+      },
+      {
+        "type": "enum",
+        "name": "core::bool",
+        "variants": [
+          {
+            "name": "False",
+            "type": "()"
+          },
+          {
+            "name": "True",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "interface",
+        "name": "sai_access::IAccess",
+        "items": [
+          {
+            "type": "function",
+            "name": "contract_owner",
+            "inputs": [
+              {
+                "name": "owner",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::bool"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "contract_writer",
+            "inputs": [
+              {
+                "name": "writer",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::bool"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "set_contract_owner",
+            "inputs": [
+              {
+                "name": "owner",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "is_owner",
+                "type": "core::bool"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_contract_writer",
+            "inputs": [
+              {
+                "name": "writer",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "is_writer",
+                "type": "core::bool"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "grant_contract_owner",
+            "inputs": [
+              {
+                "name": "owner",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "grant_contract_owners",
+            "inputs": [
+              {
+                "name": "owners",
+                "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "revoke_contract_owner",
+            "inputs": [
+              {
+                "name": "owner",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "revoke_contract_owners",
+            "inputs": [
+              {
+                "name": "owners",
+                "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "grant_contract_writer",
+            "inputs": [
+              {
+                "name": "writer",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "grant_contract_writers",
+            "inputs": [
+              {
+                "name": "writers",
+                "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "revoke_contract_writer",
+            "inputs": [
+              {
+                "name": "writer",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "revoke_contract_writers",
+            "inputs": [
+              {
+                "name": "writers",
+                "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          }
+        ]
+      },
+      {
+        "type": "constructor",
+        "name": "constructor",
+        "inputs": [
+          {
+            "name": "owner",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "attack_model_class_hash",
+            "type": "core::starknet::class_hash::ClassHash"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "sai_access::access_component::GrantContractOwner",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "user",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "sai_access::access_component::RevokeContractOwner",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "user",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "sai_access::access_component::GrantContractWriter",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "user",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "sai_access::access_component::RevokeContractWriter",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "user",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "sai_access::access_component::Event",
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "GrantContractOwner",
+            "type": "sai_access::access_component::GrantContractOwner",
+            "kind": "nested"
+          },
+          {
+            "name": "RevokeContractOwner",
+            "type": "sai_access::access_component::RevokeContractOwner",
+            "kind": "nested"
+          },
+          {
+            "name": "GrantContractWriter",
+            "type": "sai_access::access_component::GrantContractWriter",
+            "kind": "nested"
+          },
+          {
+            "name": "RevokeContractWriter",
+            "type": "sai_access::access_component::RevokeContractWriter",
+            "kind": "nested"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "ba_loadout::attack::contract::attack::Event",
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "AccessEvents",
+            "type": "sai_access::access_component::Event",
+            "kind": "flat"
+          }
+        ]
+      }
+    ],
+    "0x6daa7b59c77a8c333ea78bb47f8afcbd838ee72042b8aa5f7a01cdc32a1a2ce": [
       {
         "type": "impl",
         "name": "IArcadeBlobertMinterImpl",
@@ -4660,7 +4763,7 @@
         ]
       }
     ],
-    "0x5784a1c69e6d21c22c34deb680c685263912552ce12d92b731fceaa99e6c747": [
+    "0x5ef0295ce178f5dc14efa177231777f859e3289d6c8bde490c1dc2123b8b071": [
       {
         "type": "impl",
         "name": "IAmmaBlobertMinterImpl",
@@ -4744,1272 +4847,7 @@
         "variants": []
       }
     ],
-    "0x2334a13d1112f6449e365b1c4766ab2dd25e28f2953cb2b246acb821da0b779": [
-      {
-        "type": "impl",
-        "name": "ILoadoutImpl",
-        "interface_name": "ba_loadout::interface::ILoadout"
-      },
-      {
-        "type": "struct",
-        "name": "core::integer::u256",
-        "members": [
-          {
-            "name": "low",
-            "type": "core::integer::u128"
-          },
-          {
-            "name": "high",
-            "type": "core::integer::u128"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::ability::Abilities",
-        "members": [
-          {
-            "name": "strength",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "vitality",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "dexterity",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "luck",
-            "type": "core::integer::u32"
-          }
-        ]
-      },
-      {
-        "type": "interface",
-        "name": "ba_loadout::interface::ILoadout",
-        "items": [
-          {
-            "type": "function",
-            "name": "abilities",
-            "inputs": [
-              {
-                "name": "collection_address",
-                "type": "core::starknet::contract_address::ContractAddress"
-              },
-              {
-                "name": "token_id",
-                "type": "core::integer::u256"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "ba_loadout::ability::Abilities"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "attacks",
-            "inputs": [
-              {
-                "name": "collection_address",
-                "type": "core::starknet::contract_address::ContractAddress"
-              },
-              {
-                "name": "token_id",
-                "type": "core::integer::u256"
-              },
-              {
-                "name": "slots",
-                "type": "core::array::Array::<core::array::Array::<core::felt252>>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::array::Array::<core::felt252>"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "loadout",
-            "inputs": [
-              {
-                "name": "collection_address",
-                "type": "core::starknet::contract_address::ContractAddress"
-              },
-              {
-                "name": "token_id",
-                "type": "core::integer::u256"
-              },
-              {
-                "name": "slots",
-                "type": "core::array::Array::<core::array::Array::<core::felt252>>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "(ba_loadout::ability::Abilities, core::array::Array::<core::felt252>)"
-              }
-            ],
-            "state_mutability": "view"
-          }
-        ]
-      },
-      {
-        "type": "impl",
-        "name": "IClassicLoadoutImpl",
-        "interface_name": "ba_loadout::classic_contract::IClassicLoadout"
-      },
-      {
-        "type": "enum",
-        "name": "ba_blobert::BlobertAttributeKey",
-        "variants": [
-          {
-            "name": "None",
-            "type": "()"
-          },
-          {
-            "name": "Background",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "Armour",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "Jewelry",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "Mask",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "Weapon",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "Custom",
-            "type": "core::integer::u32"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "core::byte_array::ByteArray",
-        "members": [
-          {
-            "name": "data",
-            "type": "core::array::Array::<core::bytes_31::bytes31>"
-          },
-          {
-            "name": "pending_word",
-            "type": "core::felt252"
-          },
-          {
-            "name": "pending_word_len",
-            "type": "core::integer::u32"
-          }
-        ]
-      },
-      {
-        "type": "enum",
-        "name": "ba_loadout::attack::types::Target",
-        "variants": [
-          {
-            "name": "Player",
-            "type": "()"
-          },
-          {
-            "name": "Opponent",
-            "type": "()"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::ability::DAbilities",
-        "members": [
-          {
-            "name": "strength",
-            "type": "core::integer::i32"
-          },
-          {
-            "name": "vitality",
-            "type": "core::integer::i32"
-          },
-          {
-            "name": "dexterity",
-            "type": "core::integer::i32"
-          },
-          {
-            "name": "luck",
-            "type": "core::integer::i32"
-          }
-        ]
-      },
-      {
-        "type": "enum",
-        "name": "ba_loadout::ability::AbilityTypes",
-        "variants": [
-          {
-            "name": "Strength",
-            "type": "()"
-          },
-          {
-            "name": "Vitality",
-            "type": "()"
-          },
-          {
-            "name": "Dexterity",
-            "type": "()"
-          },
-          {
-            "name": "Luck",
-            "type": "()"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::attack::types::AbilityAffect",
-        "members": [
-          {
-            "name": "ability",
-            "type": "ba_loadout::ability::AbilityTypes"
-          },
-          {
-            "name": "amount",
-            "type": "core::integer::i32"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::attack::types::Damage",
-        "members": [
-          {
-            "name": "critical",
-            "type": "core::integer::u8"
-          },
-          {
-            "name": "power",
-            "type": "core::integer::u32"
-          }
-        ]
-      },
-      {
-        "type": "enum",
-        "name": "ba_loadout::attack::types::Affect",
-        "variants": [
-          {
-            "name": "Health",
-            "type": "core::integer::i32"
-          },
-          {
-            "name": "Abilities",
-            "type": "ba_loadout::ability::DAbilities"
-          },
-          {
-            "name": "Ability",
-            "type": "ba_loadout::attack::types::AbilityAffect"
-          },
-          {
-            "name": "Damage",
-            "type": "ba_loadout::attack::types::Damage"
-          },
-          {
-            "name": "Stun",
-            "type": "core::integer::u8"
-          },
-          {
-            "name": "Block",
-            "type": "core::integer::u8"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::attack::types::Effect",
-        "members": [
-          {
-            "name": "target",
-            "type": "ba_loadout::attack::types::Target"
-          },
-          {
-            "name": "affect",
-            "type": "ba_loadout::attack::types::Affect"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::attack::types::AttackWithName",
-        "members": [
-          {
-            "name": "name",
-            "type": "core::byte_array::ByteArray"
-          },
-          {
-            "name": "speed",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "chance",
-            "type": "core::integer::u8"
-          },
-          {
-            "name": "cooldown",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "success",
-            "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
-          },
-          {
-            "name": "fail",
-            "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
-          }
-        ]
-      },
-      {
-        "type": "enum",
-        "name": "ba_loadout::attack::types::IdTagAttack",
-        "variants": [
-          {
-            "name": "Id",
-            "type": "core::felt252"
-          },
-          {
-            "name": "Tag",
-            "type": "core::byte_array::ByteArray"
-          },
-          {
-            "name": "Attack",
-            "type": "ba_loadout::attack::types::AttackWithName"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::classic_contract::LoadoutInput",
-        "members": [
-          {
-            "name": "key",
-            "type": "ba_blobert::BlobertAttributeKey"
-          },
-          {
-            "name": "name",
-            "type": "core::byte_array::ByteArray"
-          },
-          {
-            "name": "abilities",
-            "type": "ba_loadout::ability::Abilities"
-          },
-          {
-            "name": "attacks",
-            "type": "core::array::Array::<ba_loadout::attack::types::IdTagAttack>"
-          }
-        ]
-      },
-      {
-        "type": "interface",
-        "name": "ba_loadout::classic_contract::IClassicLoadout",
-        "items": [
-          {
-            "type": "function",
-            "name": "set_loadout",
-            "inputs": [
-              {
-                "name": "key",
-                "type": "ba_blobert::BlobertAttributeKey"
-              },
-              {
-                "name": "name",
-                "type": "core::byte_array::ByteArray"
-              },
-              {
-                "name": "abilities",
-                "type": "ba_loadout::ability::Abilities"
-              },
-              {
-                "name": "attacks",
-                "type": "core::array::Array::<ba_loadout::attack::types::IdTagAttack>"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "set_loadouts",
-            "inputs": [
-              {
-                "name": "loadouts",
-                "type": "core::array::Array::<ba_loadout::classic_contract::LoadoutInput>"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          }
-        ]
-      },
-      {
-        "type": "impl",
-        "name": "IOwnableImpl",
-        "interface_name": "sai_ownable::IOwnable"
-      },
-      {
-        "type": "enum",
-        "name": "core::bool",
-        "variants": [
-          {
-            "name": "False",
-            "type": "()"
-          },
-          {
-            "name": "True",
-            "type": "()"
-          }
-        ]
-      },
-      {
-        "type": "interface",
-        "name": "sai_ownable::IOwnable",
-        "items": [
-          {
-            "type": "function",
-            "name": "contract_owner",
-            "inputs": [
-              {
-                "name": "owner",
-                "type": "core::starknet::contract_address::ContractAddress"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::bool"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "set_contract_owner",
-            "inputs": [
-              {
-                "name": "owner",
-                "type": "core::starknet::contract_address::ContractAddress"
-              },
-              {
-                "name": "is_owner",
-                "type": "core::bool"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "grant_contract_owner",
-            "inputs": [
-              {
-                "name": "owner",
-                "type": "core::starknet::contract_address::ContractAddress"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "grant_contract_owners",
-            "inputs": [
-              {
-                "name": "owners",
-                "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "revoke_contract_owner",
-            "inputs": [
-              {
-                "name": "owner",
-                "type": "core::starknet::contract_address::ContractAddress"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "revoke_contract_owners",
-            "inputs": [
-              {
-                "name": "owners",
-                "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          }
-        ]
-      },
-      {
-        "type": "constructor",
-        "name": "constructor",
-        "inputs": [
-          {
-            "name": "owner",
-            "type": "core::starknet::contract_address::ContractAddress"
-          },
-          {
-            "name": "attack_dispatcher_address",
-            "type": "core::starknet::contract_address::ContractAddress"
-          },
-          {
-            "name": "collection_addresses",
-            "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
-          }
-        ]
-      },
-      {
-        "type": "event",
-        "name": "sai_ownable::ownable_component::GrantContractOwner",
-        "kind": "struct",
-        "members": [
-          {
-            "name": "user",
-            "type": "core::starknet::contract_address::ContractAddress",
-            "kind": "key"
-          }
-        ]
-      },
-      {
-        "type": "event",
-        "name": "sai_ownable::ownable_component::RevokeContractOwner",
-        "kind": "struct",
-        "members": [
-          {
-            "name": "user",
-            "type": "core::starknet::contract_address::ContractAddress",
-            "kind": "key"
-          }
-        ]
-      },
-      {
-        "type": "event",
-        "name": "sai_ownable::ownable_component::Event",
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "GrantContractOwner",
-            "type": "sai_ownable::ownable_component::GrantContractOwner",
-            "kind": "nested"
-          },
-          {
-            "name": "RevokeContractOwner",
-            "type": "sai_ownable::ownable_component::RevokeContractOwner",
-            "kind": "nested"
-          }
-        ]
-      },
-      {
-        "type": "event",
-        "name": "ba_loadout::classic_contract::loadout_classic::Event",
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "OwnableEvents",
-            "type": "sai_ownable::ownable_component::Event",
-            "kind": "flat"
-          }
-        ]
-      }
-    ],
-    "0x17945a4c99b7cf4b25d70e38b72f45ddcb913a4ee65662a0549bc95b42aaa87": [
-      {
-        "type": "impl",
-        "name": "ILoadoutImpl",
-        "interface_name": "ba_loadout::interface::ILoadout"
-      },
-      {
-        "type": "struct",
-        "name": "core::integer::u256",
-        "members": [
-          {
-            "name": "low",
-            "type": "core::integer::u128"
-          },
-          {
-            "name": "high",
-            "type": "core::integer::u128"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::ability::Abilities",
-        "members": [
-          {
-            "name": "strength",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "vitality",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "dexterity",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "luck",
-            "type": "core::integer::u32"
-          }
-        ]
-      },
-      {
-        "type": "interface",
-        "name": "ba_loadout::interface::ILoadout",
-        "items": [
-          {
-            "type": "function",
-            "name": "abilities",
-            "inputs": [
-              {
-                "name": "collection_address",
-                "type": "core::starknet::contract_address::ContractAddress"
-              },
-              {
-                "name": "token_id",
-                "type": "core::integer::u256"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "ba_loadout::ability::Abilities"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "attacks",
-            "inputs": [
-              {
-                "name": "collection_address",
-                "type": "core::starknet::contract_address::ContractAddress"
-              },
-              {
-                "name": "token_id",
-                "type": "core::integer::u256"
-              },
-              {
-                "name": "slots",
-                "type": "core::array::Array::<core::array::Array::<core::felt252>>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::array::Array::<core::felt252>"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "loadout",
-            "inputs": [
-              {
-                "name": "collection_address",
-                "type": "core::starknet::contract_address::ContractAddress"
-              },
-              {
-                "name": "token_id",
-                "type": "core::integer::u256"
-              },
-              {
-                "name": "slots",
-                "type": "core::array::Array::<core::array::Array::<core::felt252>>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "(ba_loadout::ability::Abilities, core::array::Array::<core::felt252>)"
-              }
-            ],
-            "state_mutability": "view"
-          }
-        ]
-      },
-      {
-        "type": "impl",
-        "name": "IAmmaLoadoutImpl",
-        "interface_name": "ba_loadout::amma_contract::IAmmaLoadout"
-      },
-      {
-        "type": "struct",
-        "name": "core::byte_array::ByteArray",
-        "members": [
-          {
-            "name": "data",
-            "type": "core::array::Array::<core::bytes_31::bytes31>"
-          },
-          {
-            "name": "pending_word",
-            "type": "core::felt252"
-          },
-          {
-            "name": "pending_word_len",
-            "type": "core::integer::u32"
-          }
-        ]
-      },
-      {
-        "type": "enum",
-        "name": "ba_loadout::attack::types::Target",
-        "variants": [
-          {
-            "name": "Player",
-            "type": "()"
-          },
-          {
-            "name": "Opponent",
-            "type": "()"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::ability::DAbilities",
-        "members": [
-          {
-            "name": "strength",
-            "type": "core::integer::i32"
-          },
-          {
-            "name": "vitality",
-            "type": "core::integer::i32"
-          },
-          {
-            "name": "dexterity",
-            "type": "core::integer::i32"
-          },
-          {
-            "name": "luck",
-            "type": "core::integer::i32"
-          }
-        ]
-      },
-      {
-        "type": "enum",
-        "name": "ba_loadout::ability::AbilityTypes",
-        "variants": [
-          {
-            "name": "Strength",
-            "type": "()"
-          },
-          {
-            "name": "Vitality",
-            "type": "()"
-          },
-          {
-            "name": "Dexterity",
-            "type": "()"
-          },
-          {
-            "name": "Luck",
-            "type": "()"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::attack::types::AbilityAffect",
-        "members": [
-          {
-            "name": "ability",
-            "type": "ba_loadout::ability::AbilityTypes"
-          },
-          {
-            "name": "amount",
-            "type": "core::integer::i32"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::attack::types::Damage",
-        "members": [
-          {
-            "name": "critical",
-            "type": "core::integer::u8"
-          },
-          {
-            "name": "power",
-            "type": "core::integer::u32"
-          }
-        ]
-      },
-      {
-        "type": "enum",
-        "name": "ba_loadout::attack::types::Affect",
-        "variants": [
-          {
-            "name": "Health",
-            "type": "core::integer::i32"
-          },
-          {
-            "name": "Abilities",
-            "type": "ba_loadout::ability::DAbilities"
-          },
-          {
-            "name": "Ability",
-            "type": "ba_loadout::attack::types::AbilityAffect"
-          },
-          {
-            "name": "Damage",
-            "type": "ba_loadout::attack::types::Damage"
-          },
-          {
-            "name": "Stun",
-            "type": "core::integer::u8"
-          },
-          {
-            "name": "Block",
-            "type": "core::integer::u8"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::attack::types::Effect",
-        "members": [
-          {
-            "name": "target",
-            "type": "ba_loadout::attack::types::Target"
-          },
-          {
-            "name": "affect",
-            "type": "ba_loadout::attack::types::Affect"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::attack::types::AttackWithName",
-        "members": [
-          {
-            "name": "name",
-            "type": "core::byte_array::ByteArray"
-          },
-          {
-            "name": "speed",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "chance",
-            "type": "core::integer::u8"
-          },
-          {
-            "name": "cooldown",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "success",
-            "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
-          },
-          {
-            "name": "fail",
-            "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
-          }
-        ]
-      },
-      {
-        "type": "enum",
-        "name": "ba_loadout::attack::types::IdTagAttack",
-        "variants": [
-          {
-            "name": "Id",
-            "type": "core::felt252"
-          },
-          {
-            "name": "Tag",
-            "type": "core::byte_array::ByteArray"
-          },
-          {
-            "name": "Attack",
-            "type": "ba_loadout::attack::types::AttackWithName"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::amma_contract::FighterInput",
-        "members": [
-          {
-            "name": "fighter",
-            "type": "core::integer::u32"
-          },
-          {
-            "name": "abilities",
-            "type": "ba_loadout::ability::Abilities"
-          },
-          {
-            "name": "gen_abilities",
-            "type": "ba_loadout::ability::Abilities"
-          },
-          {
-            "name": "attacks",
-            "type": "core::array::Array::<ba_loadout::attack::types::IdTagAttack>"
-          }
-        ]
-      },
-      {
-        "type": "interface",
-        "name": "ba_loadout::amma_contract::IAmmaLoadout",
-        "items": [
-          {
-            "type": "function",
-            "name": "set_fighter",
-            "inputs": [
-              {
-                "name": "fighter",
-                "type": "core::integer::u32"
-              },
-              {
-                "name": "abilities",
-                "type": "ba_loadout::ability::Abilities"
-              },
-              {
-                "name": "gen_abilities",
-                "type": "ba_loadout::ability::Abilities"
-              },
-              {
-                "name": "attacks",
-                "type": "core::array::Array::<ba_loadout::attack::types::IdTagAttack>"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "set_fighters",
-            "inputs": [
-              {
-                "name": "fighters",
-                "type": "core::array::Array::<ba_loadout::amma_contract::FighterInput>"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "set_fighter_count",
-            "inputs": [
-              {
-                "name": "count",
-                "type": "core::integer::u32"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "fighter_count",
-            "inputs": [],
-            "outputs": [
-              {
-                "type": "core::integer::u32"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "fighter_abilities",
-            "inputs": [
-              {
-                "name": "fighter",
-                "type": "core::integer::u32"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "ba_loadout::ability::Abilities"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "fighter_attacks",
-            "inputs": [
-              {
-                "name": "fighter",
-                "type": "core::integer::u32"
-              },
-              {
-                "name": "slots",
-                "type": "core::array::Array::<core::array::Array::<core::felt252>>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::array::Array::<core::felt252>"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "fighter_loadout",
-            "inputs": [
-              {
-                "name": "fighter",
-                "type": "core::integer::u32"
-              },
-              {
-                "name": "slots",
-                "type": "core::array::Array::<core::array::Array::<core::felt252>>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "(ba_loadout::ability::Abilities, core::array::Array::<core::felt252>)"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "fighter_gen_abilities",
-            "inputs": [
-              {
-                "name": "fighter",
-                "type": "core::integer::u32"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "ba_loadout::ability::Abilities"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "fighter_gen_loadout",
-            "inputs": [
-              {
-                "name": "fighter",
-                "type": "core::integer::u32"
-              },
-              {
-                "name": "slots",
-                "type": "core::array::Array::<core::array::Array::<core::felt252>>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "(ba_loadout::ability::Abilities, core::array::Array::<core::felt252>)"
-              }
-            ],
-            "state_mutability": "view"
-          }
-        ]
-      },
-      {
-        "type": "impl",
-        "name": "IOwnableImpl",
-        "interface_name": "sai_ownable::IOwnable"
-      },
-      {
-        "type": "enum",
-        "name": "core::bool",
-        "variants": [
-          {
-            "name": "False",
-            "type": "()"
-          },
-          {
-            "name": "True",
-            "type": "()"
-          }
-        ]
-      },
-      {
-        "type": "interface",
-        "name": "sai_ownable::IOwnable",
-        "items": [
-          {
-            "type": "function",
-            "name": "contract_owner",
-            "inputs": [
-              {
-                "name": "owner",
-                "type": "core::starknet::contract_address::ContractAddress"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::bool"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "set_contract_owner",
-            "inputs": [
-              {
-                "name": "owner",
-                "type": "core::starknet::contract_address::ContractAddress"
-              },
-              {
-                "name": "is_owner",
-                "type": "core::bool"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "grant_contract_owner",
-            "inputs": [
-              {
-                "name": "owner",
-                "type": "core::starknet::contract_address::ContractAddress"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "grant_contract_owners",
-            "inputs": [
-              {
-                "name": "owners",
-                "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "revoke_contract_owner",
-            "inputs": [
-              {
-                "name": "owner",
-                "type": "core::starknet::contract_address::ContractAddress"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "revoke_contract_owners",
-            "inputs": [
-              {
-                "name": "owners",
-                "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
-              }
-            ],
-            "outputs": [],
-            "state_mutability": "external"
-          }
-        ]
-      },
-      {
-        "type": "constructor",
-        "name": "constructor",
-        "inputs": [
-          {
-            "name": "owner",
-            "type": "core::starknet::contract_address::ContractAddress"
-          },
-          {
-            "name": "attack_dispatcher_address",
-            "type": "core::starknet::contract_address::ContractAddress"
-          },
-          {
-            "name": "collection_addresses",
-            "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
-          }
-        ]
-      },
-      {
-        "type": "event",
-        "name": "sai_ownable::ownable_component::GrantContractOwner",
-        "kind": "struct",
-        "members": [
-          {
-            "name": "user",
-            "type": "core::starknet::contract_address::ContractAddress",
-            "kind": "key"
-          }
-        ]
-      },
-      {
-        "type": "event",
-        "name": "sai_ownable::ownable_component::RevokeContractOwner",
-        "kind": "struct",
-        "members": [
-          {
-            "name": "user",
-            "type": "core::starknet::contract_address::ContractAddress",
-            "kind": "key"
-          }
-        ]
-      },
-      {
-        "type": "event",
-        "name": "sai_ownable::ownable_component::Event",
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "GrantContractOwner",
-            "type": "sai_ownable::ownable_component::GrantContractOwner",
-            "kind": "nested"
-          },
-          {
-            "name": "RevokeContractOwner",
-            "type": "sai_ownable::ownable_component::RevokeContractOwner",
-            "kind": "nested"
-          }
-        ]
-      },
-      {
-        "type": "event",
-        "name": "ba_loadout::amma_contract::loadout_amma::Event",
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "OwnableEvents",
-            "type": "sai_ownable::ownable_component::Event",
-            "kind": "flat"
-          }
-        ]
-      }
-    ],
-    "0x5da10994723906575037e1103308003955000b72ee7ad7147dff4af4461dd24": [
+    "0x2a4212f968b64453e80656a301090cbf2ad32cbc846044205f3186629d657ae": [
       {
         "type": "impl",
         "name": "IArcadeCreditPurchaseImpl",
@@ -6316,7 +5154,1498 @@
         ]
       }
     ],
-    "0x5ee34144445c6d810c3cf755b35be4a34e804e0a23ed6172d3c746e0504a1a0": [
+    "0x4f80ff74a885b948fd06f7bc89a34fe303c4368539ee900c6cd5028e35a798b": [
+      {
+        "type": "impl",
+        "name": "ILoadoutImpl",
+        "interface_name": "ba_loadout::interface::ILoadout"
+      },
+      {
+        "type": "struct",
+        "name": "core::integer::u256",
+        "members": [
+          {
+            "name": "low",
+            "type": "core::integer::u128"
+          },
+          {
+            "name": "high",
+            "type": "core::integer::u128"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attributes::Attributes",
+        "members": [
+          {
+            "name": "strength",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "vitality",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "dexterity",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "luck",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "bludgeon_resistance",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "magic_resistance",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "pierce_resistance",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "bludgeon_vulnerability",
+            "type": "core::integer::u16"
+          },
+          {
+            "name": "magic_vulnerability",
+            "type": "core::integer::u16"
+          },
+          {
+            "name": "pierce_vulnerability",
+            "type": "core::integer::u16"
+          }
+        ]
+      },
+      {
+        "type": "interface",
+        "name": "ba_loadout::interface::ILoadout",
+        "items": [
+          {
+            "type": "function",
+            "name": "attributes",
+            "inputs": [
+              {
+                "name": "collection_address",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "token_id",
+                "type": "core::integer::u256"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "ba_loadout::attributes::Attributes"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "attacks",
+            "inputs": [
+              {
+                "name": "collection_address",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "token_id",
+                "type": "core::integer::u256"
+              },
+              {
+                "name": "slots",
+                "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::array::Array::<core::felt252>"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "loadout",
+            "inputs": [
+              {
+                "name": "collection_address",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "token_id",
+                "type": "core::integer::u256"
+              },
+              {
+                "name": "slots",
+                "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "(ba_loadout::attributes::Attributes, core::array::Array::<core::felt252>)"
+              }
+            ],
+            "state_mutability": "view"
+          }
+        ]
+      },
+      {
+        "type": "impl",
+        "name": "IClassicLoadoutImpl",
+        "interface_name": "ba_loadout::loadout_classic::IClassicLoadout"
+      },
+      {
+        "type": "enum",
+        "name": "ba_blobert::BlobertTrait",
+        "variants": [
+          {
+            "name": "None",
+            "type": "()"
+          },
+          {
+            "name": "Background",
+            "type": "()"
+          },
+          {
+            "name": "Armour",
+            "type": "()"
+          },
+          {
+            "name": "Jewelry",
+            "type": "()"
+          },
+          {
+            "name": "Mask",
+            "type": "()"
+          },
+          {
+            "name": "Weapon",
+            "type": "()"
+          },
+          {
+            "name": "Custom",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "core::byte_array::ByteArray",
+        "members": [
+          {
+            "name": "data",
+            "type": "core::array::Array::<core::bytes_31::bytes31>"
+          },
+          {
+            "name": "pending_word",
+            "type": "core::felt252"
+          },
+          {
+            "name": "pending_word_len",
+            "type": "core::integer::u32"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attributes::PartialAttributes",
+        "members": [
+          {
+            "name": "strength",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "vitality",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "dexterity",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "luck",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "bludgeon_resistance",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "magic_resistance",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "pierce_resistance",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "bludgeon_vulnerability",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "magic_vulnerability",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "pierce_vulnerability",
+            "type": "core::integer::i16"
+          }
+        ]
+      },
+      {
+        "type": "enum",
+        "name": "ba_loadout::attack::effect::Target",
+        "variants": [
+          {
+            "name": "None",
+            "type": "()"
+          },
+          {
+            "name": "Attacker",
+            "type": "()"
+          },
+          {
+            "name": "Defender",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attributes::AbilityMods",
+        "members": [
+          {
+            "name": "strength",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "vitality",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "dexterity",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "luck",
+            "type": "core::integer::i8"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attributes::ResistanceMods",
+        "members": [
+          {
+            "name": "bludgeon",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "magic",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "pierce",
+            "type": "core::integer::i8"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attributes::VulnerabilityMods",
+        "members": [
+          {
+            "name": "bludgeon",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "magic",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "pierce",
+            "type": "core::integer::i16"
+          }
+        ]
+      },
+      {
+        "type": "enum",
+        "name": "ba_loadout::attack::effect::DamageType",
+        "variants": [
+          {
+            "name": "None",
+            "type": "()"
+          },
+          {
+            "name": "Bludgeon",
+            "type": "()"
+          },
+          {
+            "name": "Magic",
+            "type": "()"
+          },
+          {
+            "name": "Pierce",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attack::effect::Damage",
+        "members": [
+          {
+            "name": "critical",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "power",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "damage_type",
+            "type": "ba_loadout::attack::effect::DamageType"
+          }
+        ]
+      },
+      {
+        "type": "enum",
+        "name": "ba_loadout::attack::effect::Affect",
+        "variants": [
+          {
+            "name": "None",
+            "type": "()"
+          },
+          {
+            "name": "Strength",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "Vitality",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "Dexterity",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "Luck",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "BludgeonResistance",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "MagicResistance",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "PierceResistance",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "BludgeonVulnerability",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "MagicVulnerability",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "PierceVulnerability",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "Abilities",
+            "type": "ba_loadout::attributes::AbilityMods"
+          },
+          {
+            "name": "Resistances",
+            "type": "ba_loadout::attributes::ResistanceMods"
+          },
+          {
+            "name": "Vulnerabilities",
+            "type": "ba_loadout::attributes::VulnerabilityMods"
+          },
+          {
+            "name": "Damage",
+            "type": "ba_loadout::attack::effect::Damage"
+          },
+          {
+            "name": "Stun",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "Block",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "Health",
+            "type": "core::integer::i8"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attack::effect::Effect",
+        "members": [
+          {
+            "name": "target",
+            "type": "ba_loadout::attack::effect::Target"
+          },
+          {
+            "name": "affect",
+            "type": "ba_loadout::attack::effect::Affect"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attack::attack::AttackWithName",
+        "members": [
+          {
+            "name": "name",
+            "type": "core::byte_array::ByteArray"
+          },
+          {
+            "name": "speed",
+            "type": "core::integer::u16"
+          },
+          {
+            "name": "chance",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "cooldown",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "success",
+            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+          },
+          {
+            "name": "fail",
+            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+          }
+        ]
+      },
+      {
+        "type": "enum",
+        "name": "ba_loadout::attack::attack::IdTagAttack",
+        "variants": [
+          {
+            "name": "Id",
+            "type": "core::felt252"
+          },
+          {
+            "name": "Tag",
+            "type": "core::byte_array::ByteArray"
+          },
+          {
+            "name": "Attack",
+            "type": "ba_loadout::attack::attack::AttackWithName"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::loadout_classic::LoadoutInput",
+        "members": [
+          {
+            "name": "blobert_trait",
+            "type": "ba_blobert::BlobertTrait"
+          },
+          {
+            "name": "index",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "name",
+            "type": "core::byte_array::ByteArray"
+          },
+          {
+            "name": "attributes",
+            "type": "ba_loadout::attributes::PartialAttributes"
+          },
+          {
+            "name": "attacks",
+            "type": "core::array::Array::<ba_loadout::attack::attack::IdTagAttack>"
+          }
+        ]
+      },
+      {
+        "type": "interface",
+        "name": "ba_loadout::loadout_classic::IClassicLoadout",
+        "items": [
+          {
+            "type": "function",
+            "name": "set_base_attributes",
+            "inputs": [
+              {
+                "name": "attributes",
+                "type": "ba_loadout::attributes::Attributes"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_loadout",
+            "inputs": [
+              {
+                "name": "blobert_trait",
+                "type": "ba_blobert::BlobertTrait"
+              },
+              {
+                "name": "index",
+                "type": "core::integer::u32"
+              },
+              {
+                "name": "name",
+                "type": "core::byte_array::ByteArray"
+              },
+              {
+                "name": "attributes",
+                "type": "ba_loadout::attributes::PartialAttributes"
+              },
+              {
+                "name": "attacks",
+                "type": "core::array::Array::<ba_loadout::attack::attack::IdTagAttack>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_loadouts",
+            "inputs": [
+              {
+                "name": "loadouts",
+                "type": "core::array::Array::<ba_loadout::loadout_classic::LoadoutInput>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          }
+        ]
+      },
+      {
+        "type": "impl",
+        "name": "IOwnableImpl",
+        "interface_name": "sai_ownable::IOwnable"
+      },
+      {
+        "type": "enum",
+        "name": "core::bool",
+        "variants": [
+          {
+            "name": "False",
+            "type": "()"
+          },
+          {
+            "name": "True",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "interface",
+        "name": "sai_ownable::IOwnable",
+        "items": [
+          {
+            "type": "function",
+            "name": "contract_owner",
+            "inputs": [
+              {
+                "name": "owner",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::bool"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "set_contract_owner",
+            "inputs": [
+              {
+                "name": "owner",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "is_owner",
+                "type": "core::bool"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "grant_contract_owner",
+            "inputs": [
+              {
+                "name": "owner",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "grant_contract_owners",
+            "inputs": [
+              {
+                "name": "owners",
+                "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "revoke_contract_owner",
+            "inputs": [
+              {
+                "name": "owner",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "revoke_contract_owners",
+            "inputs": [
+              {
+                "name": "owners",
+                "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          }
+        ]
+      },
+      {
+        "type": "constructor",
+        "name": "constructor",
+        "inputs": [
+          {
+            "name": "owner",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "attack_dispatcher_address",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "collection_addresses",
+            "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "sai_ownable::ownable_component::GrantContractOwner",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "user",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "sai_ownable::ownable_component::RevokeContractOwner",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "user",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "sai_ownable::ownable_component::Event",
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "GrantContractOwner",
+            "type": "sai_ownable::ownable_component::GrantContractOwner",
+            "kind": "nested"
+          },
+          {
+            "name": "RevokeContractOwner",
+            "type": "sai_ownable::ownable_component::RevokeContractOwner",
+            "kind": "nested"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "ba_loadout::loadout_classic::loadout_classic::Event",
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "OwnableEvents",
+            "type": "sai_ownable::ownable_component::Event",
+            "kind": "flat"
+          }
+        ]
+      }
+    ],
+    "0x1d10daacb33e19edebc6bf6f293ac5d1dc556c6ae69e46374987660938b2bf1": [
+      {
+        "type": "impl",
+        "name": "ILoadoutImpl",
+        "interface_name": "ba_loadout::interface::ILoadout"
+      },
+      {
+        "type": "struct",
+        "name": "core::integer::u256",
+        "members": [
+          {
+            "name": "low",
+            "type": "core::integer::u128"
+          },
+          {
+            "name": "high",
+            "type": "core::integer::u128"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attributes::Attributes",
+        "members": [
+          {
+            "name": "strength",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "vitality",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "dexterity",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "luck",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "bludgeon_resistance",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "magic_resistance",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "pierce_resistance",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "bludgeon_vulnerability",
+            "type": "core::integer::u16"
+          },
+          {
+            "name": "magic_vulnerability",
+            "type": "core::integer::u16"
+          },
+          {
+            "name": "pierce_vulnerability",
+            "type": "core::integer::u16"
+          }
+        ]
+      },
+      {
+        "type": "interface",
+        "name": "ba_loadout::interface::ILoadout",
+        "items": [
+          {
+            "type": "function",
+            "name": "attributes",
+            "inputs": [
+              {
+                "name": "collection_address",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "token_id",
+                "type": "core::integer::u256"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "ba_loadout::attributes::Attributes"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "attacks",
+            "inputs": [
+              {
+                "name": "collection_address",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "token_id",
+                "type": "core::integer::u256"
+              },
+              {
+                "name": "slots",
+                "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::array::Array::<core::felt252>"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "loadout",
+            "inputs": [
+              {
+                "name": "collection_address",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "token_id",
+                "type": "core::integer::u256"
+              },
+              {
+                "name": "slots",
+                "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "(ba_loadout::attributes::Attributes, core::array::Array::<core::felt252>)"
+              }
+            ],
+            "state_mutability": "view"
+          }
+        ]
+      },
+      {
+        "type": "impl",
+        "name": "IAmmaLoadoutImpl",
+        "interface_name": "ba_loadout::loadout_amma::IAmmaLoadout"
+      },
+      {
+        "type": "struct",
+        "name": "core::byte_array::ByteArray",
+        "members": [
+          {
+            "name": "data",
+            "type": "core::array::Array::<core::bytes_31::bytes31>"
+          },
+          {
+            "name": "pending_word",
+            "type": "core::felt252"
+          },
+          {
+            "name": "pending_word_len",
+            "type": "core::integer::u32"
+          }
+        ]
+      },
+      {
+        "type": "enum",
+        "name": "ba_loadout::attack::effect::Target",
+        "variants": [
+          {
+            "name": "None",
+            "type": "()"
+          },
+          {
+            "name": "Attacker",
+            "type": "()"
+          },
+          {
+            "name": "Defender",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attributes::AbilityMods",
+        "members": [
+          {
+            "name": "strength",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "vitality",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "dexterity",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "luck",
+            "type": "core::integer::i8"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attributes::ResistanceMods",
+        "members": [
+          {
+            "name": "bludgeon",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "magic",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "pierce",
+            "type": "core::integer::i8"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attributes::VulnerabilityMods",
+        "members": [
+          {
+            "name": "bludgeon",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "magic",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "pierce",
+            "type": "core::integer::i16"
+          }
+        ]
+      },
+      {
+        "type": "enum",
+        "name": "ba_loadout::attack::effect::DamageType",
+        "variants": [
+          {
+            "name": "None",
+            "type": "()"
+          },
+          {
+            "name": "Bludgeon",
+            "type": "()"
+          },
+          {
+            "name": "Magic",
+            "type": "()"
+          },
+          {
+            "name": "Pierce",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attack::effect::Damage",
+        "members": [
+          {
+            "name": "critical",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "power",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "damage_type",
+            "type": "ba_loadout::attack::effect::DamageType"
+          }
+        ]
+      },
+      {
+        "type": "enum",
+        "name": "ba_loadout::attack::effect::Affect",
+        "variants": [
+          {
+            "name": "None",
+            "type": "()"
+          },
+          {
+            "name": "Strength",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "Vitality",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "Dexterity",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "Luck",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "BludgeonResistance",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "MagicResistance",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "PierceResistance",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "BludgeonVulnerability",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "MagicVulnerability",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "PierceVulnerability",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "Abilities",
+            "type": "ba_loadout::attributes::AbilityMods"
+          },
+          {
+            "name": "Resistances",
+            "type": "ba_loadout::attributes::ResistanceMods"
+          },
+          {
+            "name": "Vulnerabilities",
+            "type": "ba_loadout::attributes::VulnerabilityMods"
+          },
+          {
+            "name": "Damage",
+            "type": "ba_loadout::attack::effect::Damage"
+          },
+          {
+            "name": "Stun",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "Block",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "Health",
+            "type": "core::integer::i8"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attack::effect::Effect",
+        "members": [
+          {
+            "name": "target",
+            "type": "ba_loadout::attack::effect::Target"
+          },
+          {
+            "name": "affect",
+            "type": "ba_loadout::attack::effect::Affect"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attack::attack::AttackWithName",
+        "members": [
+          {
+            "name": "name",
+            "type": "core::byte_array::ByteArray"
+          },
+          {
+            "name": "speed",
+            "type": "core::integer::u16"
+          },
+          {
+            "name": "chance",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "cooldown",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "success",
+            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+          },
+          {
+            "name": "fail",
+            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+          }
+        ]
+      },
+      {
+        "type": "enum",
+        "name": "ba_loadout::attack::attack::IdTagAttack",
+        "variants": [
+          {
+            "name": "Id",
+            "type": "core::felt252"
+          },
+          {
+            "name": "Tag",
+            "type": "core::byte_array::ByteArray"
+          },
+          {
+            "name": "Attack",
+            "type": "ba_loadout::attack::attack::AttackWithName"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::loadout_amma::FighterInput",
+        "members": [
+          {
+            "name": "fighter",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "attributes",
+            "type": "ba_loadout::attributes::Attributes"
+          },
+          {
+            "name": "attacks",
+            "type": "core::array::Array::<ba_loadout::attack::attack::IdTagAttack>"
+          }
+        ]
+      },
+      {
+        "type": "interface",
+        "name": "ba_loadout::loadout_amma::IAmmaLoadout",
+        "items": [
+          {
+            "type": "function",
+            "name": "set_fighter",
+            "inputs": [
+              {
+                "name": "fighter",
+                "type": "core::integer::u32"
+              },
+              {
+                "name": "attributes",
+                "type": "ba_loadout::attributes::Attributes"
+              },
+              {
+                "name": "attacks",
+                "type": "core::array::Array::<ba_loadout::attack::attack::IdTagAttack>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_fighters",
+            "inputs": [
+              {
+                "name": "fighters",
+                "type": "core::array::Array::<ba_loadout::loadout_amma::FighterInput>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_fighter_count",
+            "inputs": [
+              {
+                "name": "count",
+                "type": "core::integer::u32"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "fighter_count",
+            "inputs": [],
+            "outputs": [
+              {
+                "type": "core::integer::u32"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "fighter_attributes",
+            "inputs": [
+              {
+                "name": "fighter",
+                "type": "core::integer::u32"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "ba_loadout::attributes::Attributes"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "fighter_attacks",
+            "inputs": [
+              {
+                "name": "fighter",
+                "type": "core::integer::u32"
+              },
+              {
+                "name": "slots",
+                "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::array::Array::<core::felt252>"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "fighter_loadout",
+            "inputs": [
+              {
+                "name": "fighter",
+                "type": "core::integer::u32"
+              },
+              {
+                "name": "slots",
+                "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "(ba_loadout::attributes::Attributes, core::array::Array::<core::felt252>)"
+              }
+            ],
+            "state_mutability": "view"
+          }
+        ]
+      },
+      {
+        "type": "impl",
+        "name": "IOwnableImpl",
+        "interface_name": "sai_ownable::IOwnable"
+      },
+      {
+        "type": "enum",
+        "name": "core::bool",
+        "variants": [
+          {
+            "name": "False",
+            "type": "()"
+          },
+          {
+            "name": "True",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "interface",
+        "name": "sai_ownable::IOwnable",
+        "items": [
+          {
+            "type": "function",
+            "name": "contract_owner",
+            "inputs": [
+              {
+                "name": "owner",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::bool"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "set_contract_owner",
+            "inputs": [
+              {
+                "name": "owner",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "is_owner",
+                "type": "core::bool"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "grant_contract_owner",
+            "inputs": [
+              {
+                "name": "owner",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "grant_contract_owners",
+            "inputs": [
+              {
+                "name": "owners",
+                "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "revoke_contract_owner",
+            "inputs": [
+              {
+                "name": "owner",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "revoke_contract_owners",
+            "inputs": [
+              {
+                "name": "owners",
+                "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          }
+        ]
+      },
+      {
+        "type": "constructor",
+        "name": "constructor",
+        "inputs": [
+          {
+            "name": "owner",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "attack_dispatcher_address",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "collection_addresses",
+            "type": "core::array::Array::<core::starknet::contract_address::ContractAddress>"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "sai_ownable::ownable_component::GrantContractOwner",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "user",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "sai_ownable::ownable_component::RevokeContractOwner",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "user",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "sai_ownable::ownable_component::Event",
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "GrantContractOwner",
+            "type": "sai_ownable::ownable_component::GrantContractOwner",
+            "kind": "nested"
+          },
+          {
+            "name": "RevokeContractOwner",
+            "type": "sai_ownable::ownable_component::RevokeContractOwner",
+            "kind": "nested"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "ba_loadout::loadout_amma::loadout_amma::Event",
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "OwnableEvents",
+            "type": "sai_ownable::ownable_component::Event",
+            "kind": "flat"
+          }
+        ]
+      }
+    ],
+    "0x2c594f7e0062c1ef4f770d871689c28cebdafaafacd5d8dba9c09322f3c8a44": [
       {
         "type": "impl",
         "name": "IArcadeImpl",
@@ -6439,23 +6768,47 @@
       },
       {
         "type": "struct",
-        "name": "ba_loadout::ability::Abilities",
+        "name": "ba_loadout::attributes::Attributes",
         "members": [
           {
             "name": "strength",
-            "type": "core::integer::u32"
+            "type": "core::integer::u8"
           },
           {
             "name": "vitality",
-            "type": "core::integer::u32"
+            "type": "core::integer::u8"
           },
           {
             "name": "dexterity",
-            "type": "core::integer::u32"
+            "type": "core::integer::u8"
           },
           {
             "name": "luck",
-            "type": "core::integer::u32"
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "bludgeon_resistance",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "magic_resistance",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "pierce_resistance",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "bludgeon_vulnerability",
+            "type": "core::integer::u16"
+          },
+          {
+            "name": "magic_vulnerability",
+            "type": "core::integer::u16"
+          },
+          {
+            "name": "pierce_vulnerability",
+            "type": "core::integer::u16"
           }
         ]
       },
@@ -6479,79 +6832,105 @@
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::types::Target",
+        "name": "ba_loadout::attack::effect::Target",
         "variants": [
           {
-            "name": "Player",
+            "name": "None",
             "type": "()"
           },
           {
-            "name": "Opponent",
+            "name": "Attacker",
+            "type": "()"
+          },
+          {
+            "name": "Defender",
             "type": "()"
           }
         ]
       },
       {
         "type": "struct",
-        "name": "ba_loadout::ability::DAbilities",
+        "name": "ba_loadout::attributes::AbilityMods",
         "members": [
           {
             "name": "strength",
-            "type": "core::integer::i32"
+            "type": "core::integer::i8"
           },
           {
             "name": "vitality",
-            "type": "core::integer::i32"
+            "type": "core::integer::i8"
           },
           {
             "name": "dexterity",
-            "type": "core::integer::i32"
+            "type": "core::integer::i8"
           },
           {
             "name": "luck",
-            "type": "core::integer::i32"
+            "type": "core::integer::i8"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attributes::ResistanceMods",
+        "members": [
+          {
+            "name": "bludgeon",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "magic",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "pierce",
+            "type": "core::integer::i8"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::attributes::VulnerabilityMods",
+        "members": [
+          {
+            "name": "bludgeon",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "magic",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "pierce",
+            "type": "core::integer::i16"
           }
         ]
       },
       {
         "type": "enum",
-        "name": "ba_loadout::ability::AbilityTypes",
+        "name": "ba_loadout::attack::effect::DamageType",
         "variants": [
           {
-            "name": "Strength",
+            "name": "None",
             "type": "()"
           },
           {
-            "name": "Vitality",
+            "name": "Bludgeon",
             "type": "()"
           },
           {
-            "name": "Dexterity",
+            "name": "Magic",
             "type": "()"
           },
           {
-            "name": "Luck",
+            "name": "Pierce",
             "type": "()"
           }
         ]
       },
       {
         "type": "struct",
-        "name": "ba_loadout::attack::types::AbilityAffect",
-        "members": [
-          {
-            "name": "ability",
-            "type": "ba_loadout::ability::AbilityTypes"
-          },
-          {
-            "name": "amount",
-            "type": "core::integer::i32"
-          }
-        ]
-      },
-      {
-        "type": "struct",
-        "name": "ba_loadout::attack::types::Damage",
+        "name": "ba_loadout::attack::effect::Damage",
         "members": [
           {
             "name": "critical",
@@ -6559,29 +6938,77 @@
           },
           {
             "name": "power",
-            "type": "core::integer::u32"
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "damage_type",
+            "type": "ba_loadout::attack::effect::DamageType"
           }
         ]
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::types::Affect",
+        "name": "ba_loadout::attack::effect::Affect",
         "variants": [
           {
-            "name": "Health",
-            "type": "core::integer::i32"
+            "name": "None",
+            "type": "()"
+          },
+          {
+            "name": "Strength",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "Vitality",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "Dexterity",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "Luck",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "BludgeonResistance",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "MagicResistance",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "PierceResistance",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "BludgeonVulnerability",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "MagicVulnerability",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "PierceVulnerability",
+            "type": "core::integer::i16"
           },
           {
             "name": "Abilities",
-            "type": "ba_loadout::ability::DAbilities"
+            "type": "ba_loadout::attributes::AbilityMods"
           },
           {
-            "name": "Ability",
-            "type": "ba_loadout::attack::types::AbilityAffect"
+            "name": "Resistances",
+            "type": "ba_loadout::attributes::ResistanceMods"
+          },
+          {
+            "name": "Vulnerabilities",
+            "type": "ba_loadout::attributes::VulnerabilityMods"
           },
           {
             "name": "Damage",
-            "type": "ba_loadout::attack::types::Damage"
+            "type": "ba_loadout::attack::effect::Damage"
           },
           {
             "name": "Stun",
@@ -6590,26 +7017,30 @@
           {
             "name": "Block",
             "type": "core::integer::u8"
+          },
+          {
+            "name": "Health",
+            "type": "core::integer::i8"
           }
         ]
       },
       {
         "type": "struct",
-        "name": "ba_loadout::attack::types::Effect",
+        "name": "ba_loadout::attack::effect::Effect",
         "members": [
           {
             "name": "target",
-            "type": "ba_loadout::attack::types::Target"
+            "type": "ba_loadout::attack::effect::Target"
           },
           {
             "name": "affect",
-            "type": "ba_loadout::attack::types::Affect"
+            "type": "ba_loadout::attack::effect::Affect"
           }
         ]
       },
       {
         "type": "struct",
-        "name": "ba_loadout::attack::types::AttackWithName",
+        "name": "ba_loadout::attack::attack::AttackWithName",
         "members": [
           {
             "name": "name",
@@ -6617,7 +7048,7 @@
           },
           {
             "name": "speed",
-            "type": "core::integer::u32"
+            "type": "core::integer::u16"
           },
           {
             "name": "chance",
@@ -6629,17 +7060,17 @@
           },
           {
             "name": "success",
-            "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
+            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
           },
           {
             "name": "fail",
-            "type": "core::array::Array::<ba_loadout::attack::types::Effect>"
+            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
           }
         ]
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::types::IdTagAttack",
+        "name": "ba_loadout::attack::attack::IdTagAttack",
         "variants": [
           {
             "name": "Id",
@@ -6651,7 +7082,7 @@
           },
           {
             "name": "Attack",
-            "type": "ba_loadout::attack::types::AttackWithName"
+            "type": "ba_loadout::attack::attack::AttackWithName"
           }
         ]
       },
@@ -6660,16 +7091,16 @@
         "name": "ba_arcade_classic::OpponentInput",
         "members": [
           {
-            "name": "attributes",
+            "name": "traits",
             "type": "ba_blobert::Seed"
           },
           {
-            "name": "abilities",
-            "type": "ba_loadout::ability::Abilities"
+            "name": "attributes",
+            "type": "ba_loadout::attributes::Attributes"
           },
           {
             "name": "attacks",
-            "type": "[ba_loadout::attack::types::IdTagAttack; 4]"
+            "type": "[ba_loadout::attack::attack::IdTagAttack; 4]"
           }
         ]
       },
@@ -6855,7 +7286,7 @@
             "inputs": [],
             "outputs": [
               {
-                "type": "core::integer::u32"
+                "type": "core::integer::u8"
               }
             ],
             "state_mutability": "view"
@@ -6912,7 +7343,7 @@
             "inputs": [
               {
                 "name": "health_regen_percent",
-                "type": "core::integer::u32"
+                "type": "core::integer::u8"
               }
             ],
             "outputs": [],
@@ -7051,7 +7482,7 @@
         ]
       }
     ],
-    "0x246564e9187bee635f4ca00ecaf1d64775459e1ab882b5c52068b3f500d7ecf": [
+    "0x1803cb961e17cfeb654afede0b2c934906dcdd75b08332122392c377c44b115": [
       {
         "type": "impl",
         "name": "IArcadeImpl",
@@ -7147,6 +7578,70 @@
         "interface_name": "ba_arcade_amma::contract::IArcadeAmma"
       },
       {
+        "type": "struct",
+        "name": "ba_loadout::attributes::PartialAttributes",
+        "members": [
+          {
+            "name": "strength",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "vitality",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "dexterity",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "luck",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "bludgeon_resistance",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "magic_resistance",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "pierce_resistance",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "bludgeon_vulnerability",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "magic_vulnerability",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "pierce_vulnerability",
+            "type": "core::integer::i16"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_arcade_amma::contract::OpponentAttributesInput",
+        "members": [
+          {
+            "name": "fighter",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "base",
+            "type": "ba_loadout::attributes::PartialAttributes"
+          },
+          {
+            "name": "level",
+            "type": "ba_loadout::attributes::PartialAttributes"
+          }
+        ]
+      },
+      {
         "type": "interface",
         "name": "ba_arcade_amma::contract::IArcadeAmma",
         "items": [
@@ -7167,6 +7662,50 @@
             "inputs": [
               {
                 "name": "gen_stages",
+                "type": "core::integer::u32"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_opponent_attributes",
+            "inputs": [
+              {
+                "name": "fighter",
+                "type": "core::integer::u32"
+              },
+              {
+                "name": "base",
+                "type": "ba_loadout::attributes::PartialAttributes"
+              },
+              {
+                "name": "level",
+                "type": "ba_loadout::attributes::PartialAttributes"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_opponents_attributes",
+            "inputs": [
+              {
+                "name": "opponents",
+                "type": "core::array::Array::<ba_arcade_amma::contract::OpponentAttributesInput>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_opponent_count",
+            "inputs": [
+              {
+                "name": "count",
                 "type": "core::integer::u32"
               }
             ],
@@ -7339,7 +7878,7 @@
             "inputs": [],
             "outputs": [
               {
-                "type": "core::integer::u32"
+                "type": "core::integer::u8"
               }
             ],
             "state_mutability": "view"
@@ -7396,7 +7935,7 @@
             "inputs": [
               {
                 "name": "health_regen_percent",
-                "type": "core::integer::u32"
+                "type": "core::integer::u8"
               }
             ],
             "outputs": [],
@@ -7539,7 +8078,7 @@
         ]
       }
     ],
-    "0x103e9546a0df25bc073dd6f6d210b955a288b5bb6f984ca72cb139fc1a1b4e0": [
+    "0x5a22f475b11032c53d89580b9912edb7371d81f5ce693726bef01d5848c085e": [
       {
         "type": "impl",
         "name": "IPvpImpl",

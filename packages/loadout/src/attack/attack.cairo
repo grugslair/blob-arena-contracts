@@ -157,6 +157,26 @@ pub fn byte_array_to_tag(array: @ByteArray) -> felt252 {
     }
 }
 
+#[starknet::contract]
+pub mod attack_model {
+    use super::AttackWithName;
+
+    #[storage]
+    struct Storage {}
+
+    #[derive(Drop, starknet::Event)]
+    struct Model {}
+
+    #[event]
+    #[derive(Drop, starknet::Event)]
+    enum Event {
+        Model: Model,
+    }
+
+    #[abi(embed_v0)]
+    impl AttackWithNameModelImpl =
+        beacon_entity::interface::ISaiModelImpl<ContractState, AttackWithName>;
+}
 
 #[cfg(test)]
 mod tests {

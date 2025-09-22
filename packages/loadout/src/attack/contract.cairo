@@ -1,7 +1,7 @@
 #[starknet::contract]
 mod attack {
     use ba_utils::storage::ShortArrayStore;
-    use beacon_library::{ToriiTable, register_table, register_table_with_schema};
+    use beacon_library::{ToriiTable, register_table};
     use core::num::traits::Zero;
     use sai_access::{AccessTrait, access_component};
     use sai_core_utils::poseidon_serde::PoseidonSerde;

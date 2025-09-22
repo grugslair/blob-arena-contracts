@@ -1420,12 +1420,6 @@
                 "critical": 20
               }
             }
-          },
-          {
-            "target": "Defender",
-            "affect": {
-              "Stun": 0
-            }
           }
         ],
         "fail": []

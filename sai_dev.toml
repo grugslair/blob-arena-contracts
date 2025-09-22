@@ -12,6 +12,7 @@ salt = "0x0"
 
 [declare]
 mock_vrf = {}
+attack_model = {}
 
 arena_blobert = {}
 arena_blobert_minter = {}
@@ -34,6 +35,7 @@ pvp = {}
 
 [deploy]
 vrf = { class = "mock_vrf" }
+attack_model = { class = "attack_model" }
 
 
 [variables]

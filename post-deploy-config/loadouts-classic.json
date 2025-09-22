@@ -34,7 +34,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -45,7 +45,7 @@
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": 20
               }
@@ -71,7 +71,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -82,7 +82,7 @@
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": 10
               }
@@ -108,7 +108,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": -10,
@@ -119,7 +119,7 @@
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": 25
               }
@@ -145,7 +145,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -156,7 +156,7 @@
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": 30
               }
@@ -182,7 +182,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -193,7 +193,7 @@
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": 10
               }
@@ -219,7 +219,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -230,7 +230,7 @@
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": 40
               }
@@ -256,7 +256,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -267,7 +267,7 @@
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": 25
               }
@@ -293,7 +293,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -304,7 +304,7 @@
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": 15
               }
@@ -330,13 +330,13 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": -10
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -367,7 +367,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -378,7 +378,7 @@
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": 20
               }
@@ -404,7 +404,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": -10,
@@ -415,7 +415,7 @@
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": 30
               }
@@ -441,7 +441,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -452,7 +452,7 @@
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": 15
               }
@@ -478,7 +478,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -489,7 +489,7 @@
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": 20
               }
@@ -515,7 +515,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -526,7 +526,7 @@
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": 15
               }
@@ -552,7 +552,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -563,7 +563,7 @@
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": 10
               }
@@ -589,7 +589,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -600,7 +600,7 @@
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": 10
               }
@@ -626,13 +626,13 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": -10
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 20,
@@ -787,7 +787,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 15,
@@ -818,7 +818,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -849,7 +849,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 20,
@@ -860,7 +860,7 @@
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": 20
               }
@@ -886,7 +886,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 20,
@@ -917,7 +917,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -928,7 +928,7 @@
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": 25
               }
@@ -954,7 +954,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 20,
@@ -985,7 +985,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -996,7 +996,7 @@
               }
             },
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Health": 10
               }
@@ -1022,7 +1022,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Player",
+              "target": "Attacker",
               "affect": {
                 "Abilities": {
                   "strength": 20,
@@ -1317,7 +1317,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 25,
@@ -1335,7 +1335,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 40,
@@ -1344,7 +1344,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -1359,7 +1359,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 80,
@@ -1368,7 +1368,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 15
               }
@@ -1394,7 +1394,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 20,
@@ -1412,7 +1412,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 35,
@@ -1421,7 +1421,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 15
               }
@@ -1436,7 +1436,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 45,
@@ -1445,7 +1445,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -1471,7 +1471,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 20,
@@ -1489,7 +1489,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 30,
@@ -1498,7 +1498,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 5
               }
@@ -1513,7 +1513,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 40,
@@ -1542,7 +1542,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 30,
@@ -1560,7 +1560,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 45,
@@ -1569,7 +1569,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 15
               }
@@ -1584,7 +1584,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 55,
@@ -1593,7 +1593,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 15
               }
@@ -1619,7 +1619,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 25,
@@ -1640,7 +1640,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 45,
@@ -1649,7 +1649,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 20
               }
@@ -1675,7 +1675,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 25,
@@ -1696,7 +1696,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 50,
@@ -1705,7 +1705,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -1731,7 +1731,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 20,
@@ -1752,7 +1752,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 55,
@@ -1761,7 +1761,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -1787,7 +1787,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 30,
@@ -1808,7 +1808,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 65,
@@ -1817,7 +1817,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 20
               }
@@ -1843,7 +1843,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 25,
@@ -1864,7 +1864,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 65,
@@ -1873,7 +1873,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 20
               }
@@ -1899,7 +1899,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 25,
@@ -1920,7 +1920,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 60,
@@ -1949,7 +1949,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 30,
@@ -1970,7 +1970,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 100,
@@ -1999,7 +1999,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 20,
@@ -2020,7 +2020,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 50,
@@ -2029,7 +2029,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 20
               }
@@ -2055,7 +2055,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 30,
@@ -2076,7 +2076,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 55,
@@ -2085,7 +2085,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 25
               }
@@ -2111,7 +2111,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 25,
@@ -2132,7 +2132,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 45,
@@ -2141,7 +2141,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -2167,7 +2167,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 20,
@@ -2188,7 +2188,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 60,
@@ -2197,7 +2197,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -2223,7 +2223,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 30,
@@ -2244,7 +2244,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 55,
@@ -2253,7 +2253,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -2279,7 +2279,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 25,
@@ -2300,7 +2300,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 60,
@@ -2309,7 +2309,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -2335,7 +2335,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 30,
@@ -2356,7 +2356,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 60,
@@ -2365,7 +2365,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 20
               }
@@ -2391,7 +2391,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 30,
@@ -2412,7 +2412,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 55,
@@ -2421,7 +2421,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -2447,7 +2447,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 25,
@@ -2468,7 +2468,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 45,
@@ -2477,7 +2477,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 20
               }
@@ -2503,7 +2503,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 25,
@@ -2524,7 +2524,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 50,
@@ -2533,7 +2533,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -2559,7 +2559,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 30,
@@ -2577,7 +2577,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 45,
@@ -2586,7 +2586,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 20
               }
@@ -2601,7 +2601,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 60,
@@ -2610,7 +2610,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 20
               }
@@ -2636,7 +2636,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 20,
@@ -2654,7 +2654,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 40,
@@ -2663,7 +2663,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -2678,7 +2678,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 60,
@@ -2687,7 +2687,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -2713,7 +2713,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 25,
@@ -2731,7 +2731,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 35,
@@ -2740,7 +2740,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -2755,7 +2755,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 55,
@@ -2764,7 +2764,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -2790,7 +2790,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 20,
@@ -2808,7 +2808,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 40,
@@ -2817,7 +2817,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -2832,7 +2832,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 60,
@@ -2841,7 +2841,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -2867,7 +2867,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 30,
@@ -2885,7 +2885,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 45,
@@ -2894,7 +2894,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 5
               }
@@ -2909,7 +2909,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 55,
@@ -2918,7 +2918,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 5
               }
@@ -2944,7 +2944,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 20,
@@ -2962,7 +2962,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 35,
@@ -2971,7 +2971,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -2986,7 +2986,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 50,
@@ -2995,7 +2995,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -3021,7 +3021,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 25,
@@ -3039,7 +3039,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 40,
@@ -3048,7 +3048,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -3063,7 +3063,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 60,
@@ -3072,7 +3072,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -3098,7 +3098,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 30,
@@ -3116,7 +3116,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 45,
@@ -3125,7 +3125,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 20
               }
@@ -3140,7 +3140,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 80,
@@ -3149,7 +3149,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 20
               }
@@ -3175,7 +3175,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 25,
@@ -3193,7 +3193,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 40,
@@ -3202,7 +3202,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -3217,7 +3217,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 55,
@@ -3226,7 +3226,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -3252,7 +3252,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 20,
@@ -3270,7 +3270,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 35,
@@ -3279,7 +3279,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 5
               }
@@ -3294,7 +3294,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 50,
@@ -3303,7 +3303,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 5
               }
@@ -3329,7 +3329,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 25,
@@ -3347,7 +3347,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 35,
@@ -3356,7 +3356,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -3371,7 +3371,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 55,
@@ -3380,7 +3380,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -3406,7 +3406,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 25,
@@ -3424,7 +3424,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 40,
@@ -3433,7 +3433,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -3448,7 +3448,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 60,
@@ -3457,7 +3457,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 15
               }
@@ -3483,7 +3483,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 20,
@@ -3501,7 +3501,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 35,
@@ -3510,7 +3510,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -3525,7 +3525,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 45,
@@ -3534,7 +3534,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -3560,7 +3560,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 25,
@@ -3578,7 +3578,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 40,
@@ -3587,7 +3587,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -3602,7 +3602,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 55,
@@ -3611,7 +3611,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -3637,7 +3637,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 25,
@@ -3655,7 +3655,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 35,
@@ -3664,7 +3664,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -3679,7 +3679,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 55,
@@ -3688,7 +3688,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -3714,7 +3714,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 20,
@@ -3732,7 +3732,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 40,
@@ -3741,7 +3741,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -3756,7 +3756,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 60,
@@ -3765,7 +3765,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 15
               }
@@ -3791,7 +3791,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 20,
@@ -3809,7 +3809,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 30,
@@ -3818,7 +3818,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 5
               }
@@ -3833,7 +3833,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 45,
@@ -3862,7 +3862,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 30,
@@ -3880,7 +3880,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 40,
@@ -3889,7 +3889,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -3904,7 +3904,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 60,
@@ -3913,7 +3913,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 20
               }
@@ -3939,7 +3939,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 25,
@@ -3957,7 +3957,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 45,
@@ -3966,7 +3966,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -3981,7 +3981,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 70,
@@ -3990,7 +3990,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -4016,7 +4016,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 20,
@@ -4034,7 +4034,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 35,
@@ -4043,7 +4043,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 10
               }
@@ -4058,7 +4058,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 50,
@@ -4067,7 +4067,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 20
               }
@@ -4093,7 +4093,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 30,
@@ -4111,7 +4111,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 45,
@@ -4120,7 +4120,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 20
               }
@@ -4135,7 +4135,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 60,
@@ -4144,7 +4144,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 25
               }
@@ -4170,7 +4170,7 @@
           "cooldown": 0,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 25,
@@ -4188,7 +4188,7 @@
           "cooldown": 1,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 50,
@@ -4197,7 +4197,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 15
               }
@@ -4212,7 +4212,7 @@
           "cooldown": 3,
           "success": [
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Damage": {
                   "power": 70,
@@ -4221,7 +4221,7 @@
               }
             },
             {
-              "target": "Opponent",
+              "target": "Defender",
               "affect": {
                 "Stun": 20
               }

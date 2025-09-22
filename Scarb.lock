@@ -200,6 +200,7 @@ dependencies = [
 [[package]]
 name = "beacon_entity"
 version = "1.7.0-rc.0"
+source = "git+https://github.com/sai-starknet/torii-beacon?tag=v1.7.1#7f4e0421d19d03f31cf3a0566fa263e1822b6f13"
 dependencies = [
  "beacon_schema",
  "dojo",
@@ -209,6 +210,7 @@ dependencies = [
 [[package]]
 name = "beacon_library"
 version = "1.7.0-rc.0"
+source = "git+https://github.com/sai-starknet/torii-beacon?tag=v1.7.1#7f4e0421d19d03f31cf3a0566fa263e1822b6f13"
 dependencies = [
  "beacon_schema",
  "dojo",
@@ -219,10 +221,12 @@ dependencies = [
 [[package]]
 name = "beacon_macros"
 version = "1.7.0-rc.0"
+source = "git+https://github.com/sai-starknet/torii-beacon?tag=v1.7.1#7f4e0421d19d03f31cf3a0566fa263e1822b6f13"
 
 [[package]]
 name = "beacon_schema"
 version = "1.7.0-rc.0"
+source = "git+https://github.com/sai-starknet/torii-beacon?tag=v1.7.1#7f4e0421d19d03f31cf3a0566fa263e1822b6f13"
 dependencies = [
  "sai_core_utils",
 ]

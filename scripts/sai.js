@@ -305,10 +305,10 @@ export class SaiProject {
   async deployContract(contracts, transactionDetails) {
     const contractList = Array.isArray(contracts) ? contracts : [contracts];
     const toDeploy = [];
+
     console.log("Deploying ");
     for (const data of contractList) {
       await this.parseDeployData(data);
-
       if (data.once) {
         const contract_address = calculateUDCContractAddressFromHash(
           this.account.address,
