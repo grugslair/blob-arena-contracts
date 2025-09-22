@@ -2,10 +2,10 @@
   "1": {
     "name": "AMMA 1",
     "stats": {
-      "strength": 45,
-      "vitality": 51,
-      "dexterity": 46,
-      "luck": 45
+      "strength": 50,
+      "vitality": 56,
+      "dexterity": 51,
+      "luck": 50
     },
     "generated_stats": {
       "strength": 3,
@@ -42,7 +42,7 @@
             "target": "Opponent",
             "affect": {
               "Damage": {
-                "power": 40,
+                "power": 45,
                 "critical": 0
               }
             }
@@ -66,7 +66,7 @@
             "target": "Opponent",
             "affect": {
               "Damage": {
-                "power": 40,
+                "power": 50,
                 "critical": 10
               }
             }
@@ -120,10 +120,10 @@
   "2": {
     "name": "AMMA 2",
     "stats": {
-      "strength": 44,
-      "vitality": 52,
-      "dexterity": 42,
-      "luck": 50
+      "strength": 49,
+      "vitality": 57,
+      "dexterity": 47,
+      "luck": 55
     },
     "generated_stats": {
       "strength": 3,
@@ -184,7 +184,7 @@
             "target": "Opponent",
             "affect": {
               "Stats": {
-                "strength": -20,
+                "strength": -30,
                 "vitality": 0,
                 "dexterity": 0,
                 "luck": 0
@@ -205,7 +205,7 @@
             "affect": {
               "Damage": {
                 "power": 90,
-                "critical": 0
+                "critical": 10
               }
             }
           }
@@ -217,10 +217,10 @@
   "3": {
     "name": "AMMA 3",
     "stats": {
-      "strength": 46,
-      "vitality": 49,
-      "dexterity": 56,
-      "luck": 47
+      "strength": 51,
+      "vitality": 54,
+      "dexterity": 61,
+      "luck": 52
     },
     "generated_stats": {
       "strength": 4,
@@ -241,18 +241,7 @@
           {
             "target": "Player",
             "affect": {
-              "Stats": {
-                "strength": 0,
-                "vitality": 30,
-                "dexterity": 0,
-                "luck": 0
-              }
-            }
-          },
-          {
-            "target": "Player",
-            "affect": {
-              "Health": 30
+              "Health": 40
             }
           },
           {
@@ -279,7 +268,7 @@
             "target": "Opponent",
             "affect": {
               "Damage": {
-                "power": 50,
+                "power": 55,
                 "critical": 15
               }
             }
@@ -308,7 +297,7 @@
             "target": "Opponent",
             "affect": {
               "Damage": {
-                "power": 70,
+                "power": 75,
                 "critical": 20
               }
             }
@@ -721,7 +710,7 @@
             "affect": {
               "Stats": {
                 "strength": 30,
-                "vitality": 30,
+                "vitality": 0,
                 "dexterity": 30,
                 "luck": 30
               }
@@ -730,7 +719,7 @@
           {
             "target": "Player",
             "affect": {
-              "Health": 30
+              "Health": 40
             }
           }
         ],
@@ -835,7 +824,7 @@
       {
         "name": "Steal Weapon",
         "speed": 80,
-        "accuracy": 65,
+        "accuracy": 55,
         "cooldown": 5,
         "hit": [
           {
@@ -1114,7 +1103,13 @@
                             "luck": 0
                         }
                     }
-                }
+                },
+                {
+                  "target": "Player",
+                  "affect": {
+                      "Health": 30
+                  }
+              }
             ],
             "miss": []
         }
@@ -1183,7 +1178,7 @@
                     "target": "Opponent",
                     "affect": {
                         "Damage": {
-                            "power": 50,
+                            "power": 60,
                             "critical": 10
                         }
                     }
@@ -1488,7 +1483,7 @@
                 "affect": {
                   "Stats": {
                     "strength": 20,
-                    "vitality": 20,
+                    "vitality": 0,
                     "dexterity": 0,
                     "luck": 0
                   }
@@ -1497,7 +1492,7 @@
               {
                 "target": "Player",
                 "affect": {
-                  "Health": 20
+                  "Health": 30
                 }
               },
               {
