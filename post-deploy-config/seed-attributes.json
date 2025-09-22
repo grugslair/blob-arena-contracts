@@ -1545,7 +1545,7 @@
         },
         {
           "name": "Banner Javelin",
-          "speed": 50,
+          "speed": 75,
           "accuracy": 80,
           "cooldown": 1,
           "hit": [
@@ -1553,7 +1553,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 40,
+                  "power": 45,
                   "critical": 10
                 }
               }
@@ -3520,7 +3520,7 @@
               "target": "Opponent",
               "affect": {
                 "Damage": {
-                  "power": 80,
+                  "power": 70,
                   "critical": 10
                 }
               }
@@ -4262,7 +4262,7 @@
               "affect": {
                 "Damage": {
                   "power": 65,
-                  "critical": 25
+                  "critical": 20
                 }
               }
             },
