@@ -318,7 +318,7 @@ mod arcade_amma {
                 .into_iter()
                 .zip(all_attack_ids)
                 .enumerate() {
-                self.set_opponent_internal(i + starting_count, base, level, attacks);
+                self.set_opponent_internal(i + starting_count + 1, base, level, attacks);
             }
         }
 

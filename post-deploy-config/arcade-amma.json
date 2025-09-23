@@ -5,8 +5,8 @@
   "time_limit": 7200,
   "health_regen_percent": 30,
   "generated_stages": 8,
-  "opponents": {
-    "1": {
+  "opponents": [
+    {
       "base": {
         "strength": 25,
         "vitality": 30,
@@ -24,13 +24,13 @@
         "bludgeon_resistance": 2
       },
       "attacks": [
-        {"tag": "Sword Slash"},
-        {"tag": "Shield Punch"},
-        {"tag": "Grapple"},
-        {"tag": "Osoto Gari"}
+        { "tag": "Sword Slash" },
+        { "tag": "Shield Punch" },
+        { "tag": "Grapple" },
+        { "tag": "Osoto Gari" }
       ]
     },
-    "2": {
+    {
       "base": {
         "strength": 28,
         "vitality": 25,
@@ -48,13 +48,13 @@
         "bludgeon_resistance": 2
       },
       "attacks": [
-        {"tag": "Sword Slash"},
-        {"tag": "Ground and Pound"},
-        {"tag": "Grind"},
-        {"tag": "White Company"}
+        { "tag": "Sword Slash" },
+        { "tag": "Ground and Pound" },
+        { "tag": "Grind" },
+        { "tag": "White Company" }
       ]
     },
-    "3": {
+    {
       "base": {
         "strength": 22,
         "vitality": 35,
@@ -72,13 +72,13 @@
         "bludgeon_resistance": 2
       },
       "attacks": [
-        {"tag": "Sword Slash"},
-        {"tag": "Shield Block"},
-        {"tag": "Sword Dance"},
-        {"tag": "Spin Attack"}
+        { "tag": "Sword Slash" },
+        { "tag": "Shield Block" },
+        { "tag": "Sword Dance" },
+        { "tag": "Spin Attack" }
       ]
     },
-    "4": {
+    {
       "base": {
         "strength": 35,
         "vitality": 28,
@@ -96,13 +96,13 @@
         "bludgeon_resistance": 2
       },
       "attacks": [
-        {"tag": "Sword Slash"},
-        {"tag": "Low Kick"},
-        {"tag": "Swag"},
-        {"tag": "Mega Shield Bash"}
+        { "tag": "Sword Slash" },
+        { "tag": "Low Kick" },
+        { "tag": "Swag" },
+        { "tag": "Mega Shield Bash" }
       ]
     },
-    "5": {
+    {
       "base": {
         "strength": 30,
         "vitality": 32,
@@ -120,13 +120,13 @@
         "bludgeon_resistance": 2
       },
       "attacks": [
-        {"tag": "Axe Attack"},
-        {"tag": "Shield Punch"},
-        {"tag": "Grind"},
-        {"tag": "Reverse Throw"}
+        { "tag": "Axe Attack" },
+        { "tag": "Shield Punch" },
+        { "tag": "Grind" },
+        { "tag": "Reverse Throw" }
       ]
     },
-    "6": {
+    {
       "base": {
         "strength": 18,
         "vitality": 26,
@@ -144,13 +144,13 @@
         "bludgeon_resistance": 2
       },
       "attacks": [
-        {"tag": "Sword Slash"},
-        {"tag": "Shield Punch"},
-        {"tag": "Swift Attack"},
-        {"tag": "Comeback Kid"}
+        { "tag": "Sword Slash" },
+        { "tag": "Shield Punch" },
+        { "tag": "Swift Attack" },
+        { "tag": "Comeback Kid" }
       ]
     },
-    "7": {
+    {
       "base": {
         "strength": 26,
         "vitality": 38,
@@ -168,13 +168,13 @@
         "bludgeon_resistance": 2
       },
       "attacks": [
-        {"tag": "Sword Slash"},
-        {"tag": "Weapon Master"},
-        {"tag": "Superman Shield Punch"},
-        {"tag": "People's Elbow"}
+        { "tag": "Sword Slash" },
+        { "tag": "Weapon Master" },
+        { "tag": "Superman Shield Punch" },
+        { "tag": "People's Elbow" }
       ]
     },
-    "8": {
+    {
       "base": {
         "strength": 40,
         "vitality": 22,
@@ -192,11 +192,11 @@
         "bludgeon_resistance": 2
       },
       "attacks": [
-        {"tag": "Two-Handed Slash"},
-        {"tag": "Sword Snipe"},
-        {"tag": "Multi Strike"},
-        {"tag": "Knight of Wakanda"}
+        { "tag": "Two-Handed Slash" },
+        { "tag": "Sword Snipe" },
+        { "tag": "Multi Strike" },
+        { "tag": "Knight of Wakanda" }
       ]
     }
-  }
+  ]
 }

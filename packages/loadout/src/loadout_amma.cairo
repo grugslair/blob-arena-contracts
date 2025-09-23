@@ -4,7 +4,6 @@ use crate::attributes::Attributes;
 
 #[derive(Drop, Serde)]
 struct FighterInput {
-    fighter: u32,
     attributes: Attributes,
     attacks: Array<IdTagAttack>,
 }
@@ -15,9 +14,13 @@ pub trait IAmmaLoadout<TContractState> {
         ref self: TContractState, fighter: u32, attributes: Attributes, attacks: Array<IdTagAttack>,
     );
 
+    fn add_fighter(
+        ref self: TContractState, attributes: Attributes, attacks: Array<IdTagAttack>,
+    ) -> u32;
+
     fn set_fighters(ref self: TContractState, fighters: Array<FighterInput>);
 
-    fn set_fighter_count(ref self: TContractState, count: u32);
+    fn add_fighters(ref self: TContractState, fighters: Array<FighterInput>) -> Array<u32>;
 
     fn fighter_count(self: @TContractState) -> u32;
 
@@ -154,32 +157,35 @@ mod loadout_amma {
         ) {
             self.assert_caller_is_owner();
             assert(fighter > 0, 'Fighter must be greater than 0');
+            assert(fighter <= self.count.read(), 'Fighter does not exist');
             let mut attack_dispatcher = self.attack_dispatcher.read();
             let attack_ids = attack_dispatcher.maybe_create_attacks(attacks);
-            self.set_fighter_loadout(fighter, attributes, attack_ids);
+            self.set_fighter_internal(fighter, attributes, attack_ids);
+        }
+
+        fn add_fighter(
+            ref self: ContractState, attributes: Attributes, attacks: Array<IdTagAttack>,
+        ) -> u32 {
+            self.assert_caller_is_owner();
+            let fighter = self.count.read() + 1;
+            let mut attack_dispatcher = self.attack_dispatcher.read();
+            let attack_ids = attack_dispatcher.maybe_create_attacks(attacks);
+            self.set_fighter_internal(fighter, attributes, attack_ids);
+            self.count.write(fighter);
+            fighter
         }
 
         fn set_fighters(ref self: ContractState, fighters: Array<FighterInput>) {
             self.assert_caller_is_owner();
-            let mut all_attacks: Array<Array<IdTagAttack>> = Default::default();
-            for fighter in fighters.span() {
-                all_attacks.append(fighter.attacks.clone());
-            }
-            let attack_dispatcher = self.attack_dispatcher.read();
-            let all_attack_ids = attack_dispatcher.maybe_create_attacks_array(all_attacks);
-            for (fighter, attack_ids) in fighters.into_iter().zip(all_attack_ids) {
-                self.set_fighter_loadout(fighter.fighter, fighter.attributes, attack_ids);
-            }
+            self.set_fighters_internal(self.count.read(), fighters);
         }
 
-        fn set_fighter_count(ref self: ContractState, count: u32) {
+        fn add_fighters(ref self: ContractState, fighters: Array<FighterInput>) -> Array<u32> {
             self.assert_caller_is_owner();
-            let current_count = self.count.read();
-            assert(count >= current_count, 'Fighter count cannot decrease');
-            if count > current_count {
-                self.count.write(count);
-            }
+            let count = self.count.read();
+            self.set_fighters_internal(count, fighters)
         }
+
 
         fn fighter_count(self: @ContractState) -> u32 {
             self.count.read()
@@ -231,7 +237,7 @@ mod loadout_amma {
             AttackSlotTable::delete_entities(slot_ids);
         }
 
-        fn set_fighter_loadout(
+        fn set_fighter_internal(
             ref self: ContractState, fighter: u32, attributes: Attributes, attacks: Array<felt252>,
         ) {
             AbilityTable::set_entity(fighter, @attributes);
@@ -243,6 +249,30 @@ mod loadout_amma {
                 AttackSlotTable::set_entity(slot_id, @(fighter, n, attack_id));
                 self.attack_slots.write(slot_id, attack_id);
             }
+        }
+
+        fn set_fighters_internal(
+            ref self: ContractState, starting_count: u32, fighters: Array<FighterInput>,
+        ) -> Array<u32> {
+            let mut all_attacks: Array<Array<IdTagAttack>> = Default::default();
+            let mut all_fighters: Array<Attributes> = Default::default();
+            self.count.write(fighters.len() + starting_count);
+            for FighterInput { attributes, attacks } in fighters {
+                all_attacks.append(attacks);
+                all_fighters.append(attributes);
+            }
+            let attack_dispatcher = self.attack_dispatcher.read();
+            let all_attack_ids = attack_dispatcher.maybe_create_attacks_array(all_attacks);
+            let mut ids: Array<u32> = Default::default();
+            for (i, (attributes, attacks)) in all_fighters
+                .into_iter()
+                .zip(all_attack_ids)
+                .enumerate() {
+                let id = i + starting_count + 1;
+                ids.append(id);
+                self.set_fighter_internal(id, attributes, attacks);
+            }
+            ids
         }
 
         fn fighter(

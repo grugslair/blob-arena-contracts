@@ -16,9 +16,7 @@ export const makeOpponentsCall = (contract, opponents) => {
   });
 };
 
-export const makeSetConfigCalls = async (sai) => {
-  const config = loadJson("./post-deploy-config/arcade-amma.json");
-  const contract = await sai.getContract("arcade_amma");
+export const makeSetConfigCalls = (contract, config) => {
   return [
     contract.populate("set_max_respawns", {
       max_respawns: BigInt(config.max_respawns),
