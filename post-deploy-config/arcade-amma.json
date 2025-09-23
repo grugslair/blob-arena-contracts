@@ -3,25 +3,200 @@
   "energy_cost": 28800,
   "credit_cost": 100,
   "time_limit": 7200,
-  "health_regen_percent": 40,
-  "generated_stages": 9,
+  "health_regen_percent": 30,
+  "generated_stages": 8,
   "opponents": {
     "1": {
       "base": {
-        "strength": 15,
-        "vitality": 15,
-        "dexterity": 15,
-        "luck": 15,
-        "pierce_vulnerability": 40
+        "strength": 25,
+        "vitality": 30,
+        "dexterity": 20,
+        "luck": 22,
+        "pierce_resistance": 3,
+        "bludgeon_resistance": 5
       },
       "level": {
-        "strength": 15,
-        "vitality": 15,
-        "dexterity": 15,
-        "luck": 15,
-        "pierce_vulnerability": -4
+        "strength": 3,
+        "vitality": 5,
+        "dexterity": 3,
+        "luck": 3,
+        "pierce_resistance": 2,
+        "bludgeon_resistance": 2
       },
-      "attacks": []
+      "attacks": [
+        {"tag": "Sword Slash"},
+        {"tag": "Shield Punch"},
+        {"tag": "Grapple"},
+        {"tag": "Osoto Gari"}
+      ]
+    },
+    "2": {
+      "base": {
+        "strength": 28,
+        "vitality": 25,
+        "dexterity": 32,
+        "luck": 18,
+        "pierce_resistance": 2,
+        "bludgeon_resistance": 4
+      },
+      "level": {
+        "strength": 4,
+        "vitality": 3,
+        "dexterity": 5,
+        "luck": 3,
+        "pierce_resistance": 2,
+        "bludgeon_resistance": 2
+      },
+      "attacks": [
+        {"tag": "Sword Slash"},
+        {"tag": "Ground and Pound"},
+        {"tag": "Grind"},
+        {"tag": "White Company"}
+      ]
+    },
+    "3": {
+      "base": {
+        "strength": 22,
+        "vitality": 35,
+        "dexterity": 28,
+        "luck": 26,
+        "pierce_resistance": 5,
+        "bludgeon_resistance": 3
+      },
+      "level": {
+        "strength": 3,
+        "vitality": 5,
+        "dexterity": 4,
+        "luck": 4,
+        "pierce_resistance": 2,
+        "bludgeon_resistance": 2
+      },
+      "attacks": [
+        {"tag": "Sword Slash"},
+        {"tag": "Shield Block"},
+        {"tag": "Sword Dance"},
+        {"tag": "Spin Attack"}
+      ]
+    },
+    "4": {
+      "base": {
+        "strength": 35,
+        "vitality": 28,
+        "dexterity": 15,
+        "luck": 30,
+        "pierce_resistance": 6,
+        "bludgeon_resistance": 8
+      },
+      "level": {
+        "strength": 5,
+        "vitality": 3,
+        "dexterity": 3,
+        "luck": 4,
+        "pierce_resistance": 2,
+        "bludgeon_resistance": 2
+      },
+      "attacks": [
+        {"tag": "Sword Slash"},
+        {"tag": "Low Kick"},
+        {"tag": "Swag"},
+        {"tag": "Mega Shield Bash"}
+      ]
+    },
+    "5": {
+      "base": {
+        "strength": 30,
+        "vitality": 32,
+        "dexterity": 25,
+        "luck": 20,
+        "pierce_resistance": 8,
+        "bludgeon_resistance": 2
+      },
+      "level": {
+        "strength": 4,
+        "vitality": 4,
+        "dexterity": 4,
+        "luck": 3,
+        "pierce_resistance": 2,
+        "bludgeon_resistance": 2
+      },
+      "attacks": [
+        {"tag": "Axe Attack"},
+        {"tag": "Shield Punch"},
+        {"tag": "Grind"},
+        {"tag": "Reverse Throw"}
+      ]
+    },
+    "6": {
+      "base": {
+        "strength": 18,
+        "vitality": 26,
+        "dexterity": 38,
+        "luck": 24,
+        "pierce_resistance": 5,
+        "bludgeon_resistance": 8
+      },
+      "level": {
+        "strength": 3,
+        "vitality": 3,
+        "dexterity": 5,
+        "luck": 4,
+        "pierce_resistance": 2,
+        "bludgeon_resistance": 2
+      },
+      "attacks": [
+        {"tag": "Sword Slash"},
+        {"tag": "Shield Punch"},
+        {"tag": "Swift Attack"},
+        {"tag": "Comeback Kid"}
+      ]
+    },
+    "7": {
+      "base": {
+        "strength": 26,
+        "vitality": 38,
+        "dexterity": 30,
+        "luck": 35,
+        "pierce_resistance": 8,
+        "bludgeon_resistance": 6
+      },
+      "level": {
+        "strength": 3,
+        "vitality": 4,
+        "dexterity": 4,
+        "luck": 5,
+        "pierce_resistance": 2,
+        "bludgeon_resistance": 2
+      },
+      "attacks": [
+        {"tag": "Sword Slash"},
+        {"tag": "Weapon Master"},
+        {"tag": "Superman Shield Punch"},
+        {"tag": "People's Elbow"}
+      ]
+    },
+    "8": {
+      "base": {
+        "strength": 40,
+        "vitality": 22,
+        "dexterity": 20,
+        "luck": 28,
+        "pierce_resistance": 6,
+        "bludgeon_resistance": 8
+      },
+      "level": {
+        "strength": 5,
+        "vitality": 3,
+        "dexterity": 3,
+        "luck": 4,
+        "pierce_resistance": 2,
+        "bludgeon_resistance": 2
+      },
+      "attacks": [
+        {"tag": "Two-Handed Slash"},
+        {"tag": "Sword Snipe"},
+        {"tag": "Multi Strike"},
+        {"tag": "Knight of Wakanda"}
+      ]
     }
   }
 }
