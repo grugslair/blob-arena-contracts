@@ -40,33 +40,33 @@ pub struct CombatantState {
 impl UAbilityStorePacking of StorePacking<CombatantState, u128> {
     fn pack(value: CombatantState) -> u128 {
         value.strength.into()
-            + ShiftCast::cast::<SHIFT_1B>(value.vitality)
-            + ShiftCast::cast::<SHIFT_2B>(value.dexterity)
-            + ShiftCast::cast::<SHIFT_3B>(value.luck)
-            + ShiftCast::cast::<SHIFT_4B>(value.bludgeon_resistance)
-            + ShiftCast::cast::<SHIFT_5B>(value.magic_resistance)
-            + ShiftCast::cast::<SHIFT_6B>(value.pierce_resistance)
-            + ShiftCast::cast::<SHIFT_7B>(value.bludgeon_vulnerability)
-            + ShiftCast::cast::<SHIFT_9B>(value.magic_vulnerability)
-            + ShiftCast::cast::<SHIFT_11B>(value.pierce_vulnerability)
-            + ShiftCast::cast::<SHIFT_13B>(value.health)
-            + ShiftCast::cast::<SHIFT_14B>(value.stun_chance)
+            + ShiftCast::const_cast::<SHIFT_1B>(value.vitality)
+            + ShiftCast::const_cast::<SHIFT_2B>(value.dexterity)
+            + ShiftCast::const_cast::<SHIFT_3B>(value.luck)
+            + ShiftCast::const_cast::<SHIFT_4B>(value.bludgeon_resistance)
+            + ShiftCast::const_cast::<SHIFT_5B>(value.magic_resistance)
+            + ShiftCast::const_cast::<SHIFT_6B>(value.pierce_resistance)
+            + ShiftCast::const_cast::<SHIFT_7B>(value.bludgeon_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_9B>(value.magic_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_11B>(value.pierce_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_13B>(value.health)
+            + ShiftCast::const_cast::<SHIFT_14B>(value.stun_chance)
     }
 
     fn unpack(value: u128) -> CombatantState {
         CombatantState {
             strength: MaskDowncast::cast(value),
-            vitality: ShiftCast::unpack::<SHIFT_1B>(value),
-            dexterity: ShiftCast::unpack::<SHIFT_2B>(value),
-            luck: ShiftCast::unpack::<SHIFT_3B>(value),
-            bludgeon_resistance: ShiftCast::unpack::<SHIFT_4B>(value),
-            magic_resistance: ShiftCast::unpack::<SHIFT_5B>(value),
-            pierce_resistance: ShiftCast::unpack::<SHIFT_6B>(value),
-            bludgeon_vulnerability: ShiftCast::unpack::<SHIFT_7B>(value),
-            magic_vulnerability: ShiftCast::unpack::<SHIFT_9B>(value),
-            pierce_vulnerability: ShiftCast::unpack::<SHIFT_11B>(value),
-            health: ShiftCast::unpack::<SHIFT_12B>(value),
-            stun_chance: ShiftCast::unpack::<SHIFT_13B>(value),
+            vitality: ShiftCast::const_unpack::<SHIFT_1B>(value),
+            dexterity: ShiftCast::const_unpack::<SHIFT_2B>(value),
+            luck: ShiftCast::const_unpack::<SHIFT_3B>(value),
+            bludgeon_resistance: ShiftCast::const_unpack::<SHIFT_4B>(value),
+            magic_resistance: ShiftCast::const_unpack::<SHIFT_5B>(value),
+            pierce_resistance: ShiftCast::const_unpack::<SHIFT_6B>(value),
+            bludgeon_vulnerability: ShiftCast::const_unpack::<SHIFT_7B>(value),
+            magic_vulnerability: ShiftCast::const_unpack::<SHIFT_9B>(value),
+            pierce_vulnerability: ShiftCast::const_unpack::<SHIFT_11B>(value),
+            health: ShiftCast::const_unpack::<SHIFT_12B>(value),
+            stun_chance: ShiftCast::const_unpack::<SHIFT_13B>(value),
             block: 0,
         }
     }

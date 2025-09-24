@@ -94,8 +94,8 @@ pub fn get_attack_id(
 ) -> felt252 {
     let mut serialized: Array<felt252> = Default::default();
     let value: u64 = cooldown.into()
-        + ShiftCast::cast::<SHIFT_4B>(speed)
-        + ShiftCast::cast::<SHIFT_6B>(chance);
+        + ShiftCast::const_cast::<SHIFT_4B>(speed)
+        + ShiftCast::const_cast::<SHIFT_6B>(chance);
 
     Serde::serialize(name, ref serialized);
     serialized.append(value.into());

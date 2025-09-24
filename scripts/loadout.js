@@ -22,11 +22,15 @@ const I16Affects = [
 
 const LE100Affects = ["Stun", "Block"];
 
+const parseDamageType = (damageType) => {
+  return makeCairoEnum(damageType, "None");
+};
+
 const parseDamage = (damage) => {
   return {
     power: parse1To100(damage.power, "Power"),
     critical: parse0To100(damage.critical, "Critical"),
-    damage_type: makeCairoEnum(damage.damage_type, "None"),
+    damage_type: parseDamageType(damage.damage_type),
   };
 };
 
@@ -145,7 +149,6 @@ export const parseAttributes = (attributes) => {
 };
 
 export const parsePartialAttributes = (attributes) => {
-  
   return {
     strength: parseI8(attributes.strength, "Strength"),
     vitality: parseI8(attributes.vitality, "Vitality"),
