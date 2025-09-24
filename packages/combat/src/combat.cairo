@@ -167,3 +167,4 @@ fn check_combat_phase(
         CombatProgress::Ended((switched == advantage).into())
     }
 }
+

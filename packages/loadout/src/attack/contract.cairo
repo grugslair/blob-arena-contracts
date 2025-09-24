@@ -6,10 +6,12 @@ mod attack {
     use sai_access::{AccessTrait, access_component};
     use sai_core_utils::poseidon_serde::PoseidonSerde;
     use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess};
+    use starknet::storage_access::StorePacking;
     use starknet::{ClassHash, ContractAddress};
     use crate::attack::attack::{
         EffectArrayStorageMapReadAccess, EffectArrayStorageMapWriteAccess, byte_array_to_tag,
     };
+    use crate::attack::effect::EffectArrayStorePacking;
     use crate::attack::{
         Attack, AttackWithName, AttackWithNameTrait, Effect, IAttack, IAttackAdmin, IdTagAttack,
     };
@@ -26,8 +28,8 @@ mod attack {
         speeds: Map<felt252, u16>,
         chances: Map<felt252, u8>,
         cooldowns: Map<felt252, u32>,
-        successes: Map<felt252, Array<Effect>>,
-        fails: Map<felt252, Array<Effect>>,
+        successes: Map<felt252, Array<felt252>>,
+        fails: Map<felt252, Array<felt252>>,
         tags: Map<felt252, felt252>,
     }
 
@@ -90,7 +92,7 @@ mod attack {
         }
 
         fn success(self: @ContractState, id: felt252) -> Array<Effect> {
-            self.successes.read(id).into()
+            StorePacking::unpack(self.successes.read(id))
         }
 
         fn successes(self: @ContractState, ids: Array<felt252>) -> Array<Array<Effect>> {
@@ -98,7 +100,7 @@ mod attack {
         }
 
         fn fail(self: @ContractState, id: felt252) -> Array<Effect> {
-            self.fails.read(id).into()
+            StorePacking::unpack(self.fails.read(id))
         }
 
         fn fails(self: @ContractState, ids: Array<felt252>) -> Array<Array<Effect>> {

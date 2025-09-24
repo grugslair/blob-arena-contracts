@@ -1,14 +1,22 @@
 use ba_utils::storage;
 use ba_utils::storage::ShortArrayStore;
-use sai_packing::shifts::{SHIFT_1B, SHIFT_2B_U32};
+use sai_packing::shifts::{
+    SHIFT_1B, SHIFT_20B_FELT252, SHIFT_22B_FELT252, SHIFT_2B_U32, SHIFT_4B, SHIFT_6B,
+};
 use sai_packing::{
     IntPacking, MaskDowncast, SHIFT_16B_FELT252, SHIFT_18B_FELT252, SHIFT_2B, ShiftCast,
 };
 use starknet::storage_access::StorePacking;
 use crate::attributes::{AbilityMods, ResistanceMods, VulnerabilityMods};
 
-const ATTACKER_N: u32 = 1;
-const DEFENDER_N: u32 = 2;
+
+const INSTANT_N: u32 = 0;
+const ROUND_N: u32 = 1;
+const ROUNDS_N: u32 = 2;
+const INFINITE_N: u32 = 3;
+
+const ATTACKER_N: u16 = 1;
+const DEFENDER_N: u16 = 2;
 
 const STRENGTH_N: u32 = 1;
 const VITALITY_N: u32 = 2;
@@ -31,6 +39,11 @@ const HEALTH_N: u32 = 17;
 const D_TYPE_BLUDGEON_N: u32 = 1;
 const D_TYPE_MAGIC_N: u32 = 2;
 const D_TYPE_PIERCE_N: u32 = 3;
+
+
+const ROUND_PACKING_BITS: felt252 = ROUND_N.into() * SHIFT_20B_FELT252;
+const ROUNDS_PACKING_BITS: felt252 = ROUNDS_N.into() * SHIFT_20B_FELT252;
+const INFINITE_PACKING_BITS: felt252 = INFINITE_N.into() * SHIFT_20B_FELT252;
 
 const ATTACKER_PACKING_BITS: felt252 = ATTACKER_N.into() * SHIFT_18B_FELT252;
 const DEFENDER_PACKING_BITS: felt252 = DEFENDER_N.into() * SHIFT_18B_FELT252;
@@ -88,6 +101,15 @@ pub enum Target {
     Defender,
 }
 
+#[derive(Drop, Serde, Copy, PartialEq, Introspect, Default)]
+pub enum Duration {
+    #[default]
+    Instant,
+    Round: u32,
+    Rounds: u32,
+    Infinite,
+}
+
 /// Represents an effect that can be applied during the game.
 ///
 /// # Arguments
@@ -97,6 +119,7 @@ pub enum Target {
 #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
 pub struct Effect {
     pub target: Target,
+    pub duration: Duration,
     pub affect: Affect,
 }
 
@@ -107,6 +130,12 @@ impl EffectStorePacking of StorePacking<Effect, felt252> {
                 Target::None => 0,
                 Target::Attacker => ATTACKER_PACKING_BITS,
                 Target::Defender => DEFENDER_PACKING_BITS,
+            }
+            + match value.duration {
+                Duration::Instant => 0,
+                Duration::Round(rounds) => rounds.into() * SHIFT_22B_FELT252 + ROUND_PACKING_BITS,
+                Duration::Rounds(rounds) => rounds.into() * SHIFT_22B_FELT252 + ROUNDS_PACKING_BITS,
+                Duration::Infinite => INFINITE_PACKING_BITS,
             }
     }
 
@@ -119,8 +148,15 @@ impl EffectStorePacking of StorePacking<Effect, felt252> {
             2_u16 => Target::Defender,
             _ => panic!("Invalid value for Target"),
         };
+        let duration = match ShiftCast::unpack::<SHIFT_4B>(high) {
+            0_u16 => Duration::Instant,
+            1_u16 => Duration::Round(ShiftCast::unpack::<SHIFT_6B>(high)),
+            2_u16 => Duration::Rounds(ShiftCast::unpack::<SHIFT_6B>(high)),
+            3_u16 => Duration::Infinite,
+            _ => panic!("Invalid value for Duration"),
+        };
 
-        Effect { target, affect: unpack_affect(variant, low) }
+        Effect { target, affect: unpack_affect(variant, low), duration }
     }
 }
 
@@ -244,8 +280,23 @@ impl DamageStorePacking of StorePacking<Damage, u32> {
     }
 }
 
-pub fn pack_effect_array(effects: @Array<Effect>) -> Span<felt252> {
-    effects.into_iter().map(|effect| EffectStorePacking::pack(*effect)).collect::<Array>().span()
+pub fn pack_effect_array(effects: Array<Effect>) -> Array<felt252> {
+    effects.into_iter().map(|effect| EffectStorePacking::pack(effect)).collect()
+}
+
+pub fn unpack_effect_array(data: Array<felt252>) -> Array<Effect> {
+    data.into_iter().map(|felt| EffectStorePacking::unpack(felt)).collect()
+}
+
+
+pub impl EffectArrayStorePacking of StorePacking<Array<Effect>, Array<felt252>> {
+    fn pack(value: Array<Effect>) -> Array<felt252> {
+        pack_effect_array(value)
+    }
+
+    fn unpack(value: Array<felt252>) -> Array<Effect> {
+        unpack_effect_array(value)
+    }
 }
 
 pub impl EffectArrayReadWrite = storage::short_array::ShortArrayReadWrite<Effect>;
