@@ -1,11 +1,11 @@
 import { loadJson } from "./stark-utils.js";
 import { loadSai } from "./sai.js";
-import { parseAttributes, parseIdTagAttackStructs } from "./loadout.js";
+import { parseIdTagAttackStructs, parsePartialAttributes } from "./loadout.js";
 
 export const makeOpponentStruct = (opponent) => {
   return {
-    base: parseAttributes(opponent.base),
-    level: parseAttributes(opponent.level),
+    base: parsePartialAttributes(opponent.base),
+    level: parsePartialAttributes(opponent.level),
     attacks: parseIdTagAttackStructs(opponent.attacks),
   };
 };
