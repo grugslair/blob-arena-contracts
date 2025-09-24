@@ -24,10 +24,10 @@
         "pierce_vulnerability": -1
       },
       "attacks": [
-        {"tag": "Sword Slash"},
-        {"tag": "Shield Punch"},
-        {"tag": "Grapple"},
-        {"tag": "Osoto Gari"}
+        { "tag": "Sword Slash" },
+        { "tag": "Shield Punch" },
+        { "tag": "Grapple" },
+        { "tag": "Osoto Gari" }
       ]
     },
     {
@@ -48,10 +48,10 @@
         "pierce_resistance": 2
       },
       "attacks": [
-        {"tag": "Sword Slash"},
-        {"tag": "Ground and Pound"},
-        {"tag": "Grind"},
-        {"tag": "White Company"}
+        { "tag": "Sword Slash" },
+        { "tag": "Ground and Pound" },
+        { "tag": "Grind" },
+        { "tag": "White Company" }
       ]
     },
     {
@@ -72,10 +72,10 @@
         "pierce_vulnerability": -1
       },
       "attacks": [
-        {"tag": "Sword Slash"},
-        {"tag": "Shield Block"},
-        {"tag": "Sword Dance"},
-        {"tag": "Spin Attack"}
+        { "tag": "Sword Slash" },
+        { "tag": "Shield Block" },
+        { "tag": "Sword Dance" },
+        { "tag": "Spin Attack" }
       ]
     },
     {
@@ -96,10 +96,10 @@
         "pierce_vulnerability": -1
       },
       "attacks": [
-        {"tag": "Sword Slash"},
-        {"tag": "Low Kick"},
-        {"tag": "Swag"},
-        {"tag": "Mega Shield Bash"}
+        { "tag": "Sword Slash" },
+        { "tag": "Low Kick" },
+        { "tag": "Swag" },
+        { "tag": "Mega Shield Bash" }
       ]
     },
     {
@@ -120,10 +120,10 @@
         "pierce_vulnerability": -1
       },
       "attacks": [
-        {"tag": "Axe Attack"},
-        {"tag": "Shield Punch"},
-        {"tag": "Grind"},
-        {"tag": "Reverse Throw"}
+        { "tag": "Axe Attack" },
+        { "tag": "Shield Punch" },
+        { "tag": "Grind" },
+        { "tag": "Reverse Throw" }
       ]
     },
     {
@@ -144,10 +144,10 @@
         "pierce_vulnerability": -1
       },
       "attacks": [
-        {"tag": "Sword Slash"},
-        {"tag": "Shield Punch"},
-        {"tag": "Swift Attack"},
-        {"tag": "Comeback Kid"}
+        { "tag": "Sword Slash" },
+        { "tag": "Shield Punch" },
+        { "tag": "Swift Attack" },
+        { "tag": "Comeback Kid" }
       ]
     },
     {
@@ -168,10 +168,10 @@
         "pierce_resistance": 2
       },
       "attacks": [
-        {"tag": "Sword Slash"},
-        {"tag": "Weapon Master"},
-        {"tag": "Superman Shield Punch"},
-        {"tag": "People's Elbow"}
+        { "tag": "Sword Slash" },
+        { "tag": "Weapon Master" },
+        { "tag": "Superman Shield Punch" },
+        { "tag": "People's Elbow" }
       ]
     },
     {
@@ -192,10 +192,10 @@
         "pierce_vulnerability": -1
       },
       "attacks": [
-        {"tag": "Two-Handed Slash"},
-        {"tag": "Sword Snipe"},
-        {"tag": "Multi Strike"},
-        {"tag": "Knight of Wakanda"}
+        { "tag": "Two-Handed Slash" },
+        { "tag": "Sword Snipe" },
+        { "tag": "Multi Strike" },
+        { "tag": "Knight of Wakanda" }
       ]
     },
     {

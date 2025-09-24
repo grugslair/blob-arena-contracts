@@ -1,4 +1,5 @@
 use ba_loadout::Attributes;
+use ba_utils::storage::{FeltArrayReadWrite, ShortArrayStore};
 use crate::attempt::ArcadePhase;
 
 mod errors {
@@ -7,10 +8,10 @@ mod errors {
     pub const MAX_RESPAWNS_REACHED: felt252 = 'Max respawns reached';
 }
 
-#[derive(Drop)]
+#[derive(Drop, starknet::Store)]
 pub struct Opponent {
     pub attributes: Attributes,
-    pub attacks: Span<felt252>,
+    pub attacks: Array<felt252>,
 }
 
 #[derive(Drop)]
@@ -388,9 +389,8 @@ pub mod arcade_component {
                             player_state.health,
                         );
             }
-            let usable_attacks = opponent.attacks;
             let opponent_state: CombatantState = opponent.attributes.into();
-            combat.create_combat(player_state, opponent_state, usable_attacks);
+            combat.create_combat(player_state, opponent_state, opponent.attacks);
             set_entity(
                 ROUND_HASH,
                 poseidon_hash_span([attempt_id, combat_n.into()].span()),

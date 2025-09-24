@@ -18,18 +18,6 @@ struct OpponentInput {
     attacks: Array<IdTagAttack>,
 }
 
-#[derive(Drop, Serde, starknet::Store)]
-struct ClassicOpponent {
-    attributes: Attributes,
-    attacks: Array<felt252>,
-}
-
-impl ClassicOpponentIntoOpponent of Into<ClassicOpponent, Opponent> {
-    fn into(self: ClassicOpponent) -> Opponent {
-        Opponent { attributes: self.attributes, attacks: self.attacks.span() }
-    }
-}
-
 mod errors {
     pub const RESPAWN_WHEN_NOT_LOST: felt252 = 'Cannot respawn, player not lost';
     pub const NOT_ACTIVE: felt252 = 'Combat is not active';
@@ -54,7 +42,8 @@ mod arcade_classic {
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
         StoragePointerWriteAccess,
     };
-    use super::{ClassicOpponent, IArcadeClassic, IdTagAttack, OpponentInput};
+    use crate::Opponent;
+    use super::{IArcadeClassic, IdTagAttack, OpponentInput};
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
     component!(path: arcade_component, storage: arcade, event: ArcadeEvents);
@@ -76,7 +65,7 @@ mod arcade_classic {
         ownable: ownable_component::Storage,
         #[substorage(v0)]
         arcade: arcade_component::Storage,
-        opponents: Map<u32, ClassicOpponent>,
+        opponents: Map<u32, Opponent>,
         stages_len: u32,
     }
 
@@ -185,9 +174,7 @@ mod arcade_classic {
                 OpponentTable::set_entity(
                     i, @(opponent.traits, opponent.attributes, attacks.span()),
                 );
-                self
-                    .opponents
-                    .write(i, ClassicOpponent { attributes: opponent.attributes, attacks });
+                self.opponents.write(i, Opponent { attributes: opponent.attributes, attacks });
             }
         }
     }

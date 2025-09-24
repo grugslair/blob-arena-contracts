@@ -26,10 +26,7 @@ export const makeLoadoutsAmma = async (sai) => {
       `Warning: Contract has ${count} fighters, but ${fighters.length} are being set.`
     );
   }
-  return [
-    contract.populate("set_fighters", { fighters }),
-    contract.populate("set_fighter_count", { count: BigInt(fighters.length) }),
-  ];
+  return [contract.populate("set_fighters", { fighters })];
 };
 
 const main = async () => {

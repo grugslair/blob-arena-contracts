@@ -5,7 +5,6 @@ use ba_utils::storage::{FeltArrayReadWrite, ShortArrayStore};
 
 #[derive(Drop, Serde)]
 struct AmmaOpponentInput {
-    fighter: u32,
     base: PartialAttributes,
     level: PartialAttributes,
     attacks: Array<IdTagAttack>,
@@ -17,10 +16,21 @@ struct AmmaOpponent {
     level: PartialAttributes,
     attacks: Array<felt252>,
 }
+
+impl AmmaOpponentInputIntoParts of Into<
+    AmmaOpponentInput, ([PartialAttributes; 2], Array<IdTagAttack>),
+> {
+    fn into(self: AmmaOpponentInput) -> ([PartialAttributes; 2], Array<IdTagAttack>) {
+        ([self.base, self.level], self.attacks)
+    }
+}
+
 #[starknet::interface]
 trait IArcadeAmma<TState> {
     fn gen_stages(self: @TState) -> u32;
     fn set_gen_stages(ref self: TState, gen_stages: u32);
+    fn opponent_count(self: @TState) -> u32;
+    fn opponent(self: @TState, fighter: u32) -> AmmaOpponent;
     fn set_opponent(
         ref self: TState,
         fighter: u32,
@@ -28,8 +38,14 @@ trait IArcadeAmma<TState> {
         level: PartialAttributes,
         attacks: Array<IdTagAttack>,
     );
+    fn add_opponent(
+        ref self: TState,
+        base: PartialAttributes,
+        level: PartialAttributes,
+        attacks: Array<IdTagAttack>,
+    );
     fn set_opponents(ref self: TState, opponents: Array<AmmaOpponentInput>);
-    fn set_opponent_count(ref self: TState, count: u32);
+    fn add_opponents(ref self: TState, opponents: Array<AmmaOpponentInput>);
 }
 
 #[starknet::contract]
@@ -78,9 +94,9 @@ mod arcade_amma {
         arcade: arcade_component::Storage,
         collectable_address: ContractAddress,
         gen_stages: u32,
-        opponents_attributes: Map<u32, AmmaOpponent>,
+        opponents: Map<u32, AmmaOpponent>,
         opponent_count: u32,
-        opponents: Map<felt252, u32>,
+        stage_opponents: Map<felt252, u32>,
         bosses: Map<felt252, u32>,
     }
 
@@ -94,7 +110,7 @@ mod arcade_amma {
     }
 
     #[derive(Drop, Serde, Introspect)]
-    struct Opponents {
+    struct StageOpponents {
         generated: Array<u32>,
         boss: u32,
     }
@@ -118,7 +134,7 @@ mod arcade_amma {
             credit_address,
             vrf_address,
         );
-        register_table_with_schema::<Opponents>("arcade_amma", "StageOpponents");
+        register_table_with_schema::<StageOpponents>("arcade_amma", "StageOpponents");
         register_table_with_schema::<AmmaOpponent>("arcade_amma", "Opponent");
         self.collectable_address.write(collectable_address);
     }
@@ -151,7 +167,7 @@ mod arcade_amma {
             );
             StageOpponentsTable::set_entity(attempt_id, @(opponents.span(), 0));
             for (i, opponent) in opponents.into_iter().enumerate() {
-                self.opponents.write(poseidon_hash_two(attempt_id, i), opponent);
+                self.stage_opponents.write(poseidon_hash_two(attempt_id, i), opponent);
             }
 
             emit_return(attempt_id)
@@ -226,6 +242,14 @@ mod arcade_amma {
             self.gen_stages.write(gen_stages);
         }
 
+        fn opponent_count(self: @ContractState) -> u32 {
+            self.opponent_count.read()
+        }
+
+        fn opponent(self: @ContractState, fighter: u32) -> AmmaOpponent {
+            self.opponents.read(fighter)
+        }
+
         fn set_opponent(
             ref self: ContractState,
             fighter: u32,
@@ -235,29 +259,30 @@ mod arcade_amma {
         ) {
             self.assert_caller_is_owner();
             let attack_ids = maybe_create_attacks(self.arcade.attack_address.read(), attacks);
-            self.set_opponent_attributes_internal(fighter, base, level, attack_ids);
+            self.set_opponent_internal(fighter, base, level, attack_ids);
+        }
+
+        fn add_opponent(
+            ref self: ContractState,
+            base: PartialAttributes,
+            level: PartialAttributes,
+            attacks: Array<IdTagAttack>,
+        ) {
+            self.assert_caller_is_owner();
+            let fighter = self.opponent_count.read();
+            let attack_ids = maybe_create_attacks(self.arcade.attack_address.read(), attacks);
+            self.set_opponent_internal(fighter, base, level, attack_ids);
+            self.opponent_count.write(fighter + 1);
         }
 
         fn set_opponents(ref self: ContractState, opponents: Array<AmmaOpponentInput>) {
             self.assert_caller_is_owner();
-            let mut all_attacks: Array<Array<IdTagAttack>> = Default::default();
-            for opponent in opponents.span() {
-                all_attacks.append(opponent.attacks.clone());
-            }
-            let all_attack_ids = maybe_create_attacks_array(
-                self.arcade.attack_address.read(), all_attacks,
-            );
-            for (opponent, attacks) in opponents.into_iter().zip(all_attack_ids) {
-                self
-                    .set_opponent_attributes_internal(
-                        opponent.fighter, opponent.base, opponent.level, attacks,
-                    );
-            }
+            self.set_opponents_internal(0, opponents);
         }
 
-        fn set_opponent_count(ref self: ContractState, count: u32) {
+        fn add_opponents(ref self: ContractState, opponents: Array<AmmaOpponentInput>) {
             self.assert_caller_is_owner();
-            self.opponent_count.write(count);
+            self.set_opponents_internal(self.opponent_count.read(), opponents);
         }
     }
 
@@ -270,12 +295,34 @@ mod arcade_amma {
             self
                 .gen_opponent(
                     loadout_address,
-                    self.opponents.read(poseidon_hash_two(attempt_id, stage)),
+                    self.stage_opponents.read(poseidon_hash_two(attempt_id, stage)),
                     stage,
                 )
         }
 
-        fn set_opponent_attributes_internal(
+        fn set_opponents_internal(
+            ref self: ContractState, starting_count: u32, opponents: Array<AmmaOpponentInput>,
+        ) {
+            let mut all_attacks: Array<Array<IdTagAttack>> = Default::default();
+            let mut attributes: Array<[PartialAttributes; 2]> = Default::default();
+            self.opponent_count.write(opponents.len() + starting_count);
+            for opponent in opponents {
+                let (attr, attacks) = opponent.into();
+                all_attacks.append(attacks);
+                attributes.append(attr);
+            }
+            let all_attack_ids = maybe_create_attacks_array(
+                self.arcade.attack_address.read(), all_attacks,
+            );
+            for (i, ([base, level], attacks)) in attributes
+                .into_iter()
+                .zip(all_attack_ids)
+                .enumerate() {
+                self.set_opponent_internal(i + starting_count + 1, base, level, attacks);
+            }
+        }
+
+        fn set_opponent_internal(
             ref self: ContractState,
             fighter: u32,
             base: PartialAttributes,
@@ -284,15 +331,15 @@ mod arcade_amma {
         ) {
             let opponent = AmmaOpponent { base, level, attacks };
             OpponentTable::set_entity(fighter, @opponent);
-            self.opponents_attributes.write(fighter, opponent);
+            self.opponents.write(fighter, opponent);
         }
 
         fn gen_opponent(
             self: @ContractState, loadout_address: ContractAddress, fighter: u32, stage: u32,
         ) -> Opponent {
-            let AmmaOpponent { base, level, attacks } = self.opponents_attributes.read(fighter);
+            let AmmaOpponent { base, level, attacks } = self.opponents.read(fighter);
             let attributes = (level.into().mul(stage.cap_into(10)) + base.into()).finalize();
-            Opponent { attributes, attacks: attacks.span() }
+            Opponent { attributes, attacks }
         }
 
         fn gen_boss_opponent(
@@ -318,7 +365,7 @@ mod arcade_amma {
             let (attributes, attacks) = get_fighter_loadout(
                 loadout_address, fighter, attack_slots(),
             );
-            Opponent { attributes, attacks: attacks.span() }
+            Opponent { attributes, attacks }
         }
     }
 }

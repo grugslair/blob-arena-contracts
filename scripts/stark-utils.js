@@ -93,7 +93,7 @@ export const parseEnumObject = (obj, defaultValue = null) => {
     }
   }
   if (["string"].includes(typeof obj)) {
-    return [obj, {}];
+    return [pascal(obj), {}];
   } else {
     for (const o in obj) {
       return [pascal(o), obj[o]];

@@ -1,23 +1,22 @@
 import { loadJson } from "./stark-utils.js";
 import { loadSai } from "./sai.js";
-import { makeOpponentCall } from "./set-arcade-classic.js";
-import { parseIdTagAttackStructs } from "./loadout.js";
-
-export const makeSetConfigCalls = (contract, config) => {};
+import { parseAttributes, parseIdTagAttackStructs } from "./loadout.js";
 
 export const makeOpponentStruct = (opponent) => {
-  for (let i = 0; i < 4 - opponent.attacks.length; i++) {
-    opponent.attacks.push({ id: BigInt(0) });
-  }
   return {
-    attributes: opponent.attributes,
+    base: parseAttributes(opponent.base),
+    level: parseAttributes(opponent.level),
     attacks: parseIdTagAttackStructs(opponent.attacks),
   };
 };
 
-export const makeArcadeAmmaCalls = async (sai) => {
-  const config = loadJson("./post-deploy-config/arcade-amma.json");
-  const contract = await sai.getContract("arcade_amma");
+export const makeOpponentsCall = (contract, opponents) => {
+  return contract.populate("set_opponents", {
+    opponents: opponents.map(makeOpponentStruct),
+  });
+};
+
+export const makeSetConfigCalls = (contract, config) => {
   return [
     contract.populate("set_max_respawns", {
       max_respawns: BigInt(config.max_respawns),
@@ -35,6 +34,15 @@ export const makeArcadeAmmaCalls = async (sai) => {
     contract.populate("set_gen_stages", {
       gen_stages: BigInt(config.generated_stages),
     }),
+  ];
+};
+
+export const makeArcadeAmmaCalls = async (sai) => {
+  const arcadeAmmaData = loadJson("./post-deploy-config/arcade-amma.json");
+  const contract = await sai.getContract("arcade_amma");
+  return [
+    makeOpponentsCall(contract, arcadeAmmaData.opponents),
+    ...makeSetConfigCalls(contract, arcadeAmmaData),
   ];
 };
 

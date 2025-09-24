@@ -4,9 +4,6 @@ import { parseAttributes, parseIdTagAttackStructs } from "./loadout.js";
 import { CairoCustomEnum } from "starknet";
 
 export const makeOpponentStruct = (opponent) => {
-  for (let i = 0; i < 4 - opponent.attacks.length; i++) {
-    opponent.attacks.push({ id: BigInt(0) });
-  }
   return {
     traits: new CairoCustomEnum(opponent.traits),
     attributes: parseAttributes(opponent.attributes),
@@ -14,7 +11,7 @@ export const makeOpponentStruct = (opponent) => {
   };
 };
 
-export const makeOpponentCall = (contract, opponents) => {
+export const makeOpponentsCall = (contract, opponents) => {
   return contract.populate("set_opponents", {
     opponents: opponents.map(makeOpponentStruct),
   });
@@ -44,7 +41,7 @@ export const makeArcadeClassicCalls = async (sai) => {
   );
   const contract = await sai.getContract("arcade_classic");
   return [
-    makeOpponentCall(contract, arcadeClassicData.opponents),
+    makeOpponentsCall(contract, arcadeClassicData.opponents),
     ...makeSetConfigCalls(contract, arcadeClassicData),
   ];
 };

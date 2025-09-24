@@ -116,7 +116,7 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
         ref self: StoragePath<Mutable<CombatNode>>,
         player_state: CombatantState,
         opponent_state: CombatantState,
-        opponent_attacks: Span<felt252>,
+        opponent_attacks: Array<felt252>,
     ) {
         self.player_state.write(player_state);
         self.opponent_state.write(opponent_state);
@@ -124,7 +124,7 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
         self.round.write(1);
         for attack in opponent_attacks {
             if attack.is_non_zero() {
-                self.opponent_attacks.push((*attack, 0));
+                self.opponent_attacks.push((attack, 0));
             }
         }
     }

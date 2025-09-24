@@ -173,7 +173,7 @@
       ]
     },
     "loadout_amma": {
-      "contract_address": "0x893ca1a9c656bd01796283134058f3bc1db2f0ff911532f3d4573988fc5bb9",
+      "contract_address": "0x5a5376a2083d337e15601b518c5b44147c4d9f5375b94d8098cd410180592be",
       "tag": "loadout_amma",
       "unique": false,
       "calldata": {
@@ -187,13 +187,61 @@
       "salt": "0x0",
       "once": true,
       "class": "loadout_amma",
-      "class_hash": "0x1767ebcdce8daba0eef76f6148fcee576a15319086e12e24f736097c5a7f9e4",
+      "class_hash": "0x8f5ee746688507dccfaee96ebcbf9c4ae33786e20a846cc15c2cc222779daf",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
         "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172",
         "0x2",
         "0xf4204b7ddfb3d25838dfc1964c1629a96042539a09377c24d72b1514ae1df4",
         "0x5ab367f35368c4eff47fdfcb33d2ba7980de23d1280c79cadcba176f5478dfb"
+      ]
+    },
+    "arcade_classic": {
+      "contract_address": "0x3a5fe589f7d922b2c9ed491d378176a134ba08b0283fd5e90338163332f2344",
+      "tag": "arcade_classic",
+      "unique": false,
+      "calldata": {
+        "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
+        "attack_address": "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172",
+        "loadout_address": "0x3524b6e1d8ed8fbfe974f12cc375123bf6789d74c18ff3bd4eb3645e1750df3",
+        "credit_address": "0x62d636127b2abba440f9ea34b93eef6e2f559ac4749eaf491e70bdd9537fa93",
+        "vrf_address": "0x130910d40aebdb098cb359e53b92dc7b83da0ccbd6a51a2bd402eb785082152"
+      },
+      "salt": "0x0",
+      "once": true,
+      "class": "arcade_classic",
+      "class_hash": "0x184e0073aaa885c0f539eaa6f2db7020172dd74fe5099ca5c52cc59e13b9eed",
+      "calldata_compiled": [
+        "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
+        "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172",
+        "0x3524b6e1d8ed8fbfe974f12cc375123bf6789d74c18ff3bd4eb3645e1750df3",
+        "0x62d636127b2abba440f9ea34b93eef6e2f559ac4749eaf491e70bdd9537fa93",
+        "0x130910d40aebdb098cb359e53b92dc7b83da0ccbd6a51a2bd402eb785082152"
+      ]
+    },
+    "arcade_amma": {
+      "contract_address": "0x74fa482ec1c745777df90ee600346613695d588fea1d15a9e4418dd48d545ce",
+      "tag": "arcade_amma",
+      "unique": false,
+      "calldata": {
+        "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
+        "attack_address": "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172",
+        "loadout_address": "0x5a5376a2083d337e15601b518c5b44147c4d9f5375b94d8098cd410180592be",
+        "credit_address": "0x62d636127b2abba440f9ea34b93eef6e2f559ac4749eaf491e70bdd9537fa93",
+        "vrf_address": "0x130910d40aebdb098cb359e53b92dc7b83da0ccbd6a51a2bd402eb785082152",
+        "collectable_address": "0xf4204b7ddfb3d25838dfc1964c1629a96042539a09377c24d72b1514ae1df4"
+      },
+      "salt": "0x0",
+      "once": true,
+      "class": "arcade_amma",
+      "class_hash": "0x9b63a3ec101b439223e51e5c09d213ead61c58b4720054a5bb041e744ba385",
+      "calldata_compiled": [
+        "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
+        "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172",
+        "0x5a5376a2083d337e15601b518c5b44147c4d9f5375b94d8098cd410180592be",
+        "0x62d636127b2abba440f9ea34b93eef6e2f559ac4749eaf491e70bdd9537fa93",
+        "0x130910d40aebdb098cb359e53b92dc7b83da0ccbd6a51a2bd402eb785082152",
+        "0xf4204b7ddfb3d25838dfc1964c1629a96042539a09377c24d72b1514ae1df4"
       ]
     },
     "pvp": {
@@ -209,54 +257,6 @@
       "class_hash": "0x5a22f475b11032c53d89580b9912edb7371d81f5ce693726bef01d5848c085e",
       "calldata_compiled": [
         "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172"
-      ]
-    },
-    "arcade_classic": {
-      "contract_address": "0x2d51525698c0367b771f3c36fc167a97ef51eb730e398376567c4c51f2f8c13",
-      "tag": "arcade_classic",
-      "unique": false,
-      "calldata": {
-        "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_address": "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172",
-        "loadout_address": "0x3524b6e1d8ed8fbfe974f12cc375123bf6789d74c18ff3bd4eb3645e1750df3",
-        "credit_address": "0x62d636127b2abba440f9ea34b93eef6e2f559ac4749eaf491e70bdd9537fa93",
-        "vrf_address": "0x130910d40aebdb098cb359e53b92dc7b83da0ccbd6a51a2bd402eb785082152"
-      },
-      "salt": "0x0",
-      "once": true,
-      "class": "arcade_classic",
-      "class_hash": "0x6e0131e7d6b5418cc79f56f8e0d87fbaaa33cc50ed1dd0fcae3d5c1b0ab7dd5",
-      "calldata_compiled": [
-        "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172",
-        "0x3524b6e1d8ed8fbfe974f12cc375123bf6789d74c18ff3bd4eb3645e1750df3",
-        "0x62d636127b2abba440f9ea34b93eef6e2f559ac4749eaf491e70bdd9537fa93",
-        "0x130910d40aebdb098cb359e53b92dc7b83da0ccbd6a51a2bd402eb785082152"
-      ]
-    },
-    "arcade_amma": {
-      "contract_address": "0x68872e227cc6d6fd848a3e10f3929a07bad4ec18c9f0cdccaf7f35b7c26b5dd",
-      "tag": "arcade_amma",
-      "unique": false,
-      "calldata": {
-        "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_address": "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172",
-        "loadout_address": "0x893ca1a9c656bd01796283134058f3bc1db2f0ff911532f3d4573988fc5bb9",
-        "credit_address": "0x62d636127b2abba440f9ea34b93eef6e2f559ac4749eaf491e70bdd9537fa93",
-        "vrf_address": "0x130910d40aebdb098cb359e53b92dc7b83da0ccbd6a51a2bd402eb785082152",
-        "collectable_address": "0xf4204b7ddfb3d25838dfc1964c1629a96042539a09377c24d72b1514ae1df4"
-      },
-      "salt": "0x0",
-      "once": true,
-      "class": "arcade_amma",
-      "class_hash": "0x5d66d5cb1021914e4d082f2f0f4b72399182ecc05254bfc983ffef7f8ddf239",
-      "calldata_compiled": [
-        "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172",
-        "0x893ca1a9c656bd01796283134058f3bc1db2f0ff911532f3d4573988fc5bb9",
-        "0x62d636127b2abba440f9ea34b93eef6e2f559ac4749eaf491e70bdd9537fa93",
-        "0x130910d40aebdb098cb359e53b92dc7b83da0ccbd6a51a2bd402eb785082152",
-        "0xf4204b7ddfb3d25838dfc1964c1629a96042539a09377c24d72b1514ae1df4"
       ]
     }
   },
@@ -289,7 +289,7 @@
       "class_hash": "0x7d6f4c01a93056cceb33501c96a41dab5394021cb5c5ea9438d33d869b7d41d"
     },
     "loadout_amma": {
-      "class_hash": "0x1767ebcdce8daba0eef76f6148fcee576a15319086e12e24f736097c5a7f9e4"
+      "class_hash": "0x8f5ee746688507dccfaee96ebcbf9c4ae33786e20a846cc15c2cc222779daf"
     },
     "arena_credit": {
       "class_hash": "0x33952da3ac71174251abfac5b441f5fbf0443bf025cd5b03014e1946e95144b"
@@ -298,10 +298,10 @@
       "class_hash": "0x68941c93fd685530ebe5382b0b989f7bbf4b4f8be9779fb003fa541ca752575"
     },
     "arcade_classic": {
-      "class_hash": "0x6e0131e7d6b5418cc79f56f8e0d87fbaaa33cc50ed1dd0fcae3d5c1b0ab7dd5"
+      "class_hash": "0x184e0073aaa885c0f539eaa6f2db7020172dd74fe5099ca5c52cc59e13b9eed"
     },
     "arcade_amma": {
-      "class_hash": "0x5d66d5cb1021914e4d082f2f0f4b72399182ecc05254bfc983ffef7f8ddf239"
+      "class_hash": "0x9b63a3ec101b439223e51e5c09d213ead61c58b4720054a5bb041e744ba385"
     },
     "pvp": {
       "class_hash": "0x5a22f475b11032c53d89580b9912edb7371d81f5ce693726bef01d5848c085e"
@@ -370,36 +370,27 @@
       "class": "loadout_classic"
     },
     "loadout_amma": {
-      "contract_address": "0x893ca1a9c656bd01796283134058f3bc1db2f0ff911532f3d4573988fc5bb9",
-      "class_hash": "0x1767ebcdce8daba0eef76f6148fcee576a15319086e12e24f736097c5a7f9e4",
+      "contract_address": "0x5a5376a2083d337e15601b518c5b44147c4d9f5375b94d8098cd410180592be",
+      "class_hash": "0x8f5ee746688507dccfaee96ebcbf9c4ae33786e20a846cc15c2cc222779daf",
       "class": "loadout_amma"
+    },
+    "arcade_classic": {
+      "contract_address": "0x3a5fe589f7d922b2c9ed491d378176a134ba08b0283fd5e90338163332f2344",
+      "class_hash": "0x184e0073aaa885c0f539eaa6f2db7020172dd74fe5099ca5c52cc59e13b9eed",
+      "class": "arcade_classic"
+    },
+    "arcade_amma": {
+      "contract_address": "0x74fa482ec1c745777df90ee600346613695d588fea1d15a9e4418dd48d545ce",
+      "class_hash": "0x9b63a3ec101b439223e51e5c09d213ead61c58b4720054a5bb041e744ba385",
+      "class": "arcade_amma"
     },
     "pvp": {
       "contract_address": "0x6f8c29d9a7e5408d3c5671fac76c1dbab1cd2e8809d75be9c97404242182f8d",
       "class_hash": "0x5a22f475b11032c53d89580b9912edb7371d81f5ce693726bef01d5848c085e",
       "class": "pvp"
-    },
-    "arcade_classic": {
-      "contract_address": "0x2d51525698c0367b771f3c36fc167a97ef51eb730e398376567c4c51f2f8c13",
-      "class_hash": "0x6e0131e7d6b5418cc79f56f8e0d87fbaaa33cc50ed1dd0fcae3d5c1b0ab7dd5",
-      "class": "arcade_classic"
-    },
-    "arcade_amma": {
-      "contract_address": "0x68872e227cc6d6fd848a3e10f3929a07bad4ec18c9f0cdccaf7f35b7c26b5dd",
-      "class_hash": "0x5d66d5cb1021914e4d082f2f0f4b72399182ecc05254bfc983ffef7f8ddf239",
-      "class": "arcade_amma"
     }
   },
-  "declarations": {
-    "loadout_classic": {
-      "class_hash": "0x7d6f4c01a93056cceb33501c96a41dab5394021cb5c5ea9438d33d869b7d41d",
-      "transaction_hash": "0x46971c6cbcc8aaaef6d7f3d34f4dd8e92ff23c03431f650e631995a76c2bd17"
-    },
-    "loadout_amma": {
-      "class_hash": "0x1767ebcdce8daba0eef76f6148fcee576a15319086e12e24f736097c5a7f9e4",
-      "transaction_hash": "0x2ea933bc8f1b623a8e0f2afec5498eff43c7dfd8b32c56621d8a1a4442241e2"
-    }
-  },
+  "declarations": {},
   "abis": {
     "0x3e4685faa079c4dc3fd7704287b1d1f958d02664facea37169e5b43f0d2644b": [
       {
@@ -5939,7 +5930,7 @@
         ]
       }
     ],
-    "0x1767ebcdce8daba0eef76f6148fcee576a15319086e12e24f736097c5a7f9e4": [
+    "0x8f5ee746688507dccfaee96ebcbf9c4ae33786e20a846cc15c2cc222779daf": [
       {
         "type": "impl",
         "name": "ILoadoutImpl",
@@ -6363,10 +6354,6 @@
         "name": "ba_loadout::loadout_amma::FighterInput",
         "members": [
           {
-            "name": "fighter",
-            "type": "core::integer::u32"
-          },
-          {
             "name": "attributes",
             "type": "ba_loadout::attributes::Attributes"
           },
@@ -6402,6 +6389,26 @@
           },
           {
             "type": "function",
+            "name": "add_fighter",
+            "inputs": [
+              {
+                "name": "attributes",
+                "type": "ba_loadout::attributes::Attributes"
+              },
+              {
+                "name": "attacks",
+                "type": "core::array::Array::<ba_loadout::attack::attack::IdTagAttack>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::integer::u32"
+              }
+            ],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
             "name": "set_fighters",
             "inputs": [
               {
@@ -6414,14 +6421,18 @@
           },
           {
             "type": "function",
-            "name": "set_fighter_count",
+            "name": "add_fighters",
             "inputs": [
               {
-                "name": "count",
-                "type": "core::integer::u32"
+                "name": "fighters",
+                "type": "core::array::Array::<ba_loadout::loadout_amma::FighterInput>"
               }
             ],
-            "outputs": [],
+            "outputs": [
+              {
+                "type": "core::array::Array::<core::integer::u32>"
+              }
+            ],
             "state_mutability": "external"
           },
           {
@@ -6670,7 +6681,7 @@
         ]
       }
     ],
-    "0x6e0131e7d6b5418cc79f56f8e0d87fbaaa33cc50ed1dd0fcae3d5c1b0ab7dd5": [
+    "0x184e0073aaa885c0f539eaa6f2db7020172dd74fe5099ca5c52cc59e13b9eed": [
       {
         "type": "impl",
         "name": "IArcadeImpl",
@@ -7521,7 +7532,7 @@
         ]
       }
     ],
-    "0x5d66d5cb1021914e4d082f2f0f4b72399182ecc05254bfc983ffef7f8ddf239": [
+    "0x9b63a3ec101b439223e51e5c09d213ead61c58b4720054a5bb041e744ba385": [
       {
         "type": "impl",
         "name": "IArcadeImpl",
@@ -7659,6 +7670,24 @@
           {
             "name": "pierce_vulnerability",
             "type": "core::integer::i16"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_arcade_amma::contract::AmmaOpponent",
+        "members": [
+          {
+            "name": "base",
+            "type": "ba_loadout::attributes::PartialAttributes"
+          },
+          {
+            "name": "level",
+            "type": "ba_loadout::attributes::PartialAttributes"
+          },
+          {
+            "name": "attacks",
+            "type": "core::array::Array::<core::felt252>"
           }
         ]
       },
@@ -7941,10 +7970,6 @@
         "name": "ba_arcade_amma::contract::AmmaOpponentInput",
         "members": [
           {
-            "name": "fighter",
-            "type": "core::integer::u32"
-          },
-          {
             "name": "base",
             "type": "ba_loadout::attributes::PartialAttributes"
           },
@@ -7987,12 +8012,59 @@
           },
           {
             "type": "function",
+            "name": "opponent_count",
+            "inputs": [],
+            "outputs": [
+              {
+                "type": "core::integer::u32"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "opponent",
+            "inputs": [
+              {
+                "name": "fighter",
+                "type": "core::integer::u32"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "ba_arcade_amma::contract::AmmaOpponent"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
             "name": "set_opponent",
             "inputs": [
               {
                 "name": "fighter",
                 "type": "core::integer::u32"
               },
+              {
+                "name": "base",
+                "type": "ba_loadout::attributes::PartialAttributes"
+              },
+              {
+                "name": "level",
+                "type": "ba_loadout::attributes::PartialAttributes"
+              },
+              {
+                "name": "attacks",
+                "type": "core::array::Array::<ba_loadout::attack::attack::IdTagAttack>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "add_opponent",
+            "inputs": [
               {
                 "name": "base",
                 "type": "ba_loadout::attributes::PartialAttributes"
@@ -8023,11 +8095,11 @@
           },
           {
             "type": "function",
-            "name": "set_opponent_count",
+            "name": "add_opponents",
             "inputs": [
               {
-                "name": "count",
-                "type": "core::integer::u32"
+                "name": "opponents",
+                "type": "core::array::Array::<ba_arcade_amma::contract::AmmaOpponentInput>"
               }
             ],
             "outputs": [],
