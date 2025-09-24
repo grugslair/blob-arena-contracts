@@ -1,10 +1,10 @@
 {
-  "max_respawns": 2,
+  "max_respawns": 5,
   "energy_cost": 28800,
   "credit_cost": 100,
   "time_limit": 7200,
   "health_regen_percent": 30,
-  "generated_stages": 8,
+  "generated_stages": 9,
   "opponents": {
     "1": {
       "base": {
@@ -12,16 +12,16 @@
         "vitality": 30,
         "dexterity": 20,
         "luck": 22,
-        "pierce_resistance": 3,
-        "bludgeon_resistance": 5
+        "bludgeon_resistance": 5,
+        "pierce_vulnerability": 15
       },
       "level": {
         "strength": 3,
         "vitality": 5,
         "dexterity": 3,
         "luck": 3,
-        "pierce_resistance": 2,
-        "bludgeon_resistance": 2
+        "bludgeon_resistance": 2,
+        "pierce_vulnerability": -1
       },
       "attacks": [
         {"tag": "Sword Slash"},
@@ -36,16 +36,16 @@
         "vitality": 25,
         "dexterity": 32,
         "luck": 18,
-        "pierce_resistance": 2,
-        "bludgeon_resistance": 4
+        "bludgeon_vulnerability": 10,
+        "pierce_resistance": 5
       },
       "level": {
         "strength": 4,
         "vitality": 3,
         "dexterity": 5,
         "luck": 3,
-        "pierce_resistance": 2,
-        "bludgeon_resistance": 2
+        "bludgeon_vulnerability": -1,
+        "pierce_resistance": 2
       },
       "attacks": [
         {"tag": "Sword Slash"},
@@ -60,16 +60,16 @@
         "vitality": 35,
         "dexterity": 28,
         "luck": 26,
-        "pierce_resistance": 5,
-        "bludgeon_resistance": 3
+        "bludgeon_resistance": 6,
+        "pierce_vulnerability": 12
       },
       "level": {
         "strength": 3,
         "vitality": 5,
         "dexterity": 4,
         "luck": 4,
-        "pierce_resistance": 2,
-        "bludgeon_resistance": 2
+        "bludgeon_resistance": 2,
+        "pierce_vulnerability": -1
       },
       "attacks": [
         {"tag": "Sword Slash"},
@@ -84,16 +84,16 @@
         "vitality": 28,
         "dexterity": 15,
         "luck": 30,
-        "pierce_resistance": 6,
-        "bludgeon_resistance": 8
+        "bludgeon_resistance": 5,
+        "pierce_vulnerability": 10
       },
       "level": {
         "strength": 5,
         "vitality": 3,
         "dexterity": 3,
         "luck": 4,
-        "pierce_resistance": 2,
-        "bludgeon_resistance": 2
+        "bludgeon_resistance": 2,
+        "pierce_vulnerability": -1
       },
       "attacks": [
         {"tag": "Sword Slash"},
@@ -108,16 +108,16 @@
         "vitality": 32,
         "dexterity": 25,
         "luck": 20,
-        "pierce_resistance": 8,
-        "bludgeon_resistance": 2
+        "bludgeon_resistance": 6,
+        "pierce_vulnerability": 12
       },
       "level": {
         "strength": 4,
         "vitality": 4,
         "dexterity": 4,
         "luck": 3,
-        "pierce_resistance": 2,
-        "bludgeon_resistance": 2
+        "bludgeon_resistance": 2,
+        "pierce_vulnerability": -1
       },
       "attacks": [
         {"tag": "Axe Attack"},
@@ -132,16 +132,16 @@
         "vitality": 26,
         "dexterity": 38,
         "luck": 24,
-        "pierce_resistance": 5,
-        "bludgeon_resistance": 8
+        "bludgeon_resistance": 5,
+        "pierce_vulnerability": 10
       },
       "level": {
         "strength": 3,
         "vitality": 3,
         "dexterity": 5,
         "luck": 4,
-        "pierce_resistance": 2,
-        "bludgeon_resistance": 2
+        "bludgeon_resistance": 2,
+        "pierce_vulnerability": -1
       },
       "attacks": [
         {"tag": "Sword Slash"},
@@ -156,16 +156,16 @@
         "vitality": 38,
         "dexterity": 30,
         "luck": 35,
-        "pierce_resistance": 8,
-        "bludgeon_resistance": 6
+        "bludgeon_resistance": 4,
+        "pierce_resistance": 4
       },
       "level": {
         "strength": 3,
         "vitality": 4,
         "dexterity": 4,
         "luck": 5,
-        "pierce_resistance": 2,
-        "bludgeon_resistance": 2
+        "bludgeon_resistance": 2,
+        "pierce_resistance": 2
       },
       "attacks": [
         {"tag": "Sword Slash"},
@@ -180,22 +180,262 @@
         "vitality": 22,
         "dexterity": 20,
         "luck": 28,
-        "pierce_resistance": 6,
-        "bludgeon_resistance": 8
+        "bludgeon_resistance": 6,
+        "pierce_vulnerability": 10
       },
       "level": {
         "strength": 5,
         "vitality": 3,
         "dexterity": 3,
         "luck": 4,
-        "pierce_resistance": 2,
-        "bludgeon_resistance": 2
+        "bludgeon_resistance": 2,
+        "pierce_vulnerability": -1
       },
       "attacks": [
         {"tag": "Two-Handed Slash"},
         {"tag": "Sword Snipe"},
         {"tag": "Multi Strike"},
         {"tag": "Knight of Wakanda"}
+      ]
+    },
+    "9": {
+      "base": {
+        "strength": 32,
+        "vitality": 20,
+        "dexterity": 35,
+        "luck": 25,
+        "bludgeon_resistance": 8,
+        "pierce_vulnerability": 15
+      },
+      "level": {
+        "strength": 4,
+        "vitality": 3,
+        "dexterity": 5,
+        "luck": 4,
+        "bludgeon_resistance": 2,
+        "pierce_vulnerability": -1
+      },
+      "attacks": [
+        {"tag": "Axe Attack"},
+        {"tag": "Buckler Tap"},
+        {"tag": "Jujitsu Throw"},
+        {"tag": "Steal Weapon"}
+      ]
+    },
+    "10": {
+      "base": {
+        "strength": 24,
+        "vitality": 28,
+        "dexterity": 42,
+        "luck": 22,
+        "bludgeon_resistance": 5,
+        "pierce_vulnerability": 10
+      },
+      "level": {
+        "strength": 3,
+        "vitality": 4,
+        "dexterity": 5,
+        "luck": 3,
+        "bludgeon_resistance": 2,
+        "pierce_vulnerability": -1
+      },
+      "attacks": [
+        {"tag": "Quick Slash"},
+        {"tag": "Buckler Tap"},
+        {"tag": "Steel Sonata"},
+        {"tag": "Circle Out"}
+      ]
+    },
+    "11": {
+      "base": {
+        "strength": 38,
+        "vitality": 40,
+        "dexterity": 18,
+        "luck": 15,
+        "bludgeon_vulnerability": 12,
+        "pierce_resistance": 6
+      },
+      "level": {
+        "strength": 4,
+        "vitality": 5,
+        "dexterity": 3,
+        "luck": 3,
+        "bludgeon_vulnerability": -1,
+        "pierce_resistance": 2
+      },
+      "attacks": [
+        {"tag": "Axe Attack"},
+        {"tag": "Hammer Fist"},
+        {"tag": "Spinning Axe"},
+        {"tag": "One Shot"}
+      ]
+    },
+    "12": {
+      "base": {
+        "strength": 33,
+        "vitality": 24,
+        "dexterity": 28,
+        "luck": 32,
+        "bludgeon_vulnerability": 11,
+        "pierce_resistance": 5
+      },
+      "level": {
+        "strength": 4,
+        "vitality": 3,
+        "dexterity": 4,
+        "luck": 5,
+        "bludgeon_vulnerability": -1,
+        "pierce_resistance": 2
+      },
+      "attacks": [
+        {"tag": "Quick Slash"},
+        {"tag": "Shield Punch"},
+        {"tag": "Power Arm"},
+        {"tag": "Snap Shot"}
+      ]
+    },
+    "13": {
+      "base": {
+        "strength": 26,
+        "vitality": 30,
+        "dexterity": 38,
+        "luck": 36,
+        "bludgeon_vulnerability": 11,
+        "pierce_resistance": 5
+      },
+      "level": {
+        "strength": 3,
+        "vitality": 3,
+        "dexterity": 5,
+        "luck": 5,
+        "bludgeon_vulnerability": -1,
+        "pierce_resistance": 2
+      },
+      "attacks": [
+        {"tag": "Quick Slash"},
+        {"tag": "Knee Check"},
+        {"tag": "Headbutt"},
+        {"tag": "Final Judgement"}
+      ]
+    },
+    "14": {
+      "base": {
+        "strength": 35,
+        "vitality": 42,
+        "dexterity": 16,
+        "luck": 20,
+        "bludgeon_resistance": 5,
+        "pierce_vulnerability": 10
+      },
+      "level": {
+        "strength": 4,
+        "vitality": 5,
+        "dexterity": 3,
+        "luck": 3,
+        "bludgeon_resistance": 2,
+        "pierce_vulnerability": -1
+      },
+      "attacks": [
+        {"tag": "Sword Slash"},
+        {"tag": "Shield Check"},
+        {"tag": "Hold The Line"},
+        {"tag": "Seismic Toss"}
+      ]
+    },
+    "15": {
+      "base": {
+        "strength": 40,
+        "vitality": 36,
+        "dexterity": 22,
+        "luck": 25,
+        "bludgeon_vulnerability": 11,
+        "pierce_resistance": 5
+      },
+      "level": {
+        "strength": 5,
+        "vitality": 4,
+        "dexterity": 3,
+        "luck": 4,
+        "bludgeon_vulnerability": -1,
+        "pierce_resistance": 2
+      },
+      "attacks": [
+        {"tag": "Axe Attack"},
+        {"tag": "Hammer Fist"},
+        {"tag": "Axe Thrust"},
+        {"tag": "Spartan Spear"}
+      ]
+    },
+    "16": {
+      "base": {
+        "strength": 45,
+        "vitality": 25,
+        "dexterity": 26,
+        "luck": 28,
+        "bludgeon_resistance": 6,
+        "pierce_vulnerability": 10
+      },
+      "level": {
+        "strength": 5,
+        "vitality": 3,
+        "dexterity": 4,
+        "luck": 4,
+        "bludgeon_resistance": 2,
+        "pierce_vulnerability": -1
+      },
+      "attacks": [
+        {"tag": "Sword Attack"},
+        {"tag": "Shield Check"},
+        {"tag": "Karate Kick"},
+        {"tag": "Throwing Hands"}
+      ]
+    },
+    "17": {
+      "base": {
+        "strength": 20,
+        "vitality": 32,
+        "dexterity": 28,
+        "luck": 34,
+        "bludgeon_resistance": 6,
+        "pierce_vulnerability": 12
+      },
+      "level": {
+        "strength": 3,
+        "vitality": 4,
+        "dexterity": 4,
+        "luck": 5,
+        "bludgeon_resistance": 2,
+        "pierce_vulnerability": -1
+      },
+      "attacks": [
+        {"tag": "Sword Attack"},
+        {"tag": "Shield Check"},
+        {"tag": "Meteor Shield"},
+        {"tag": "Hip Throw"}
+      ]
+    },
+    "18": {
+      "base": {
+        "strength": 28,
+        "vitality": 26,
+        "dexterity": 30,
+        "luck": 38,
+        "bludgeon_resistance": 8,
+        "pierce_vulnerability": 15
+      },
+      "level": {
+        "strength": 4,
+        "vitality": 3,
+        "dexterity": 4,
+        "luck": 5,
+        "bludgeon_resistance": 2,
+        "pierce_vulnerability": -1
+      },
+      "attacks": [
+        {"tag": "Sword Attack"},
+        {"tag": "Shield Punch"},
+        {"tag": "Jumping Punch"},
+        {"tag": "Flying Hussar"}
       ]
     }
   }
