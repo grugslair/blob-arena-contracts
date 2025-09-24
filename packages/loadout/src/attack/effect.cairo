@@ -87,6 +87,19 @@ pub enum Affect {
     Abilities: AbilityMods,
     Resistances: ResistanceMods,
     Vulnerabilities: VulnerabilityMods,
+    StrengthTemp: i8,
+    VitalityTemp: i8,
+    DexterityTemp: i8,
+    LuckTemp: i8,
+    BludgeonResistanceTemp: i8,
+    MagicResistanceTemp: i8,
+    PierceResistanceTemp: i8,
+    BludgeonVulnerabilityTemp: i16,
+    MagicVulnerabilityTemp: i16,
+    PierceVulnerabilityTemp: i16,
+    AbilitiesTemp: AbilityMods,
+    ResistancesTemp: ResistanceMods,
+    VulnerabilitiesTemp: VulnerabilityMods,
     Damage: Damage,
     Stun: u8,
     Block: u8,
@@ -142,16 +155,16 @@ impl EffectStorePacking of StorePacking<Effect, felt252> {
     fn unpack(value: felt252) -> Effect {
         let u256 { low, high } = value.into();
         let variant: u16 = MaskDowncast::cast(high);
-        let target = match ShiftCast::unpack::<SHIFT_2B>(high) {
+        let target = match ShiftCast::const_unpack::<SHIFT_2B>(high) {
             0_u16 => Target::None,
             1_u16 => Target::Attacker,
             2_u16 => Target::Defender,
             _ => panic!("Invalid value for Target"),
         };
-        let duration = match ShiftCast::unpack::<SHIFT_4B>(high) {
+        let duration = match ShiftCast::const_unpack::<SHIFT_4B>(high) {
             0_u16 => Duration::Instant,
-            1_u16 => Duration::Round(ShiftCast::unpack::<SHIFT_6B>(high)),
-            2_u16 => Duration::Rounds(ShiftCast::unpack::<SHIFT_6B>(high)),
+            1_u16 => Duration::Round(ShiftCast::const_unpack::<SHIFT_6B>(high)),
+            2_u16 => Duration::Rounds(ShiftCast::const_unpack::<SHIFT_6B>(high)),
             3_u16 => Duration::Infinite,
             _ => panic!("Invalid value for Duration"),
         };
@@ -161,7 +174,7 @@ impl EffectStorePacking of StorePacking<Effect, felt252> {
 }
 
 
-fn unpack_affect(variant: u16, data: u128) -> Affect {
+pub fn unpack_affect(variant: u16, data: u128) -> Affect {
     match variant {
         0 => Affect::None,
         1 => Affect::Strength(MaskDowncast::cast(data)),
@@ -257,7 +270,7 @@ pub struct Damage {
 impl DamageStorePacking of StorePacking<Damage, u32> {
     fn pack(value: Damage) -> u32 {
         value.critical.into()
-            + ShiftCast::cast::<SHIFT_1B>(value.power)
+            + ShiftCast::const_cast::<SHIFT_1B>(value.power)
             + match value.damage_type {
                 DamageType::None => 0,
                 DamageType::Bludgeon => D_TYPE_BLUDGEON_PACKING_BITS,
@@ -268,8 +281,8 @@ impl DamageStorePacking of StorePacking<Damage, u32> {
 
     fn unpack(value: u32) -> Damage {
         let critical: u8 = MaskDowncast::cast(value);
-        let power: u8 = ShiftCast::unpack::<SHIFT_1B>(value);
-        let damage_type = match ShiftCast::unpack::<SHIFT_2B_U32>(value) {
+        let power: u8 = ShiftCast::const_unpack::<SHIFT_1B>(value);
+        let damage_type = match ShiftCast::const_unpack::<SHIFT_2B_U32>(value) {
             0_u16 => DamageType::None,
             1_u16 => DamageType::Bludgeon,
             2_u16 => DamageType::Magic,

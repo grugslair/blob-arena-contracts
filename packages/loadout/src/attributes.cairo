@@ -273,15 +273,15 @@ impl PartialAttributesIntoAttributes of Into<PartialAttributes, Attributes> {
 impl AttributesStorePacking of StorePacking<Attributes, u128> {
     fn pack(value: Attributes) -> u128 {
         value.strength.into()
-            + ShiftCast::cast::<SHIFT_1B>(value.vitality)
-            + ShiftCast::cast::<SHIFT_2B>(value.dexterity)
-            + ShiftCast::cast::<SHIFT_3B>(value.luck)
-            + ShiftCast::cast::<SHIFT_4B>(value.bludgeon_resistance)
-            + ShiftCast::cast::<SHIFT_5B>(value.magic_resistance)
-            + ShiftCast::cast::<SHIFT_6B>(value.pierce_resistance)
-            + ShiftCast::cast::<SHIFT_7B>(value.bludgeon_vulnerability)
-            + ShiftCast::cast::<SHIFT_9B>(value.magic_vulnerability)
-            + ShiftCast::cast::<SHIFT_11B>(value.pierce_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_1B>(value.vitality)
+            + ShiftCast::const_cast::<SHIFT_2B>(value.dexterity)
+            + ShiftCast::const_cast::<SHIFT_3B>(value.luck)
+            + ShiftCast::const_cast::<SHIFT_4B>(value.bludgeon_resistance)
+            + ShiftCast::const_cast::<SHIFT_5B>(value.magic_resistance)
+            + ShiftCast::const_cast::<SHIFT_6B>(value.pierce_resistance)
+            + ShiftCast::const_cast::<SHIFT_7B>(value.bludgeon_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_9B>(value.magic_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_11B>(value.pierce_vulnerability)
     }
 
     fn unpack(value: u128) -> Attributes {
@@ -303,15 +303,15 @@ impl AttributesStorePacking of StorePacking<Attributes, u128> {
 impl PartialAttributesStorePacking of StorePacking<PartialAttributes, u128> {
     fn pack(value: PartialAttributes) -> u128 {
         IntPacking::pack(value.strength).into()
-            + ShiftCast::cast::<SHIFT_1B>(value.vitality)
-            + ShiftCast::cast::<SHIFT_2B>(value.dexterity)
-            + ShiftCast::cast::<SHIFT_3B>(value.luck)
-            + ShiftCast::cast::<SHIFT_4B>(value.bludgeon_resistance)
-            + ShiftCast::cast::<SHIFT_5B>(value.magic_resistance)
-            + ShiftCast::cast::<SHIFT_6B>(value.pierce_resistance)
-            + ShiftCast::cast::<SHIFT_7B>(value.bludgeon_vulnerability)
-            + ShiftCast::cast::<SHIFT_9B>(value.magic_vulnerability)
-            + ShiftCast::cast::<SHIFT_11B>(value.pierce_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_1B>(value.vitality)
+            + ShiftCast::const_cast::<SHIFT_2B>(value.dexterity)
+            + ShiftCast::const_cast::<SHIFT_3B>(value.luck)
+            + ShiftCast::const_cast::<SHIFT_4B>(value.bludgeon_resistance)
+            + ShiftCast::const_cast::<SHIFT_5B>(value.magic_resistance)
+            + ShiftCast::const_cast::<SHIFT_6B>(value.pierce_resistance)
+            + ShiftCast::const_cast::<SHIFT_7B>(value.bludgeon_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_9B>(value.magic_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_11B>(value.pierce_vulnerability)
     }
 
     fn unpack(value: u128) -> PartialAttributes {
@@ -373,8 +373,8 @@ impl AbilityModsStorePacking of StorePacking<AbilityMods, u32> {
 impl ResistanceModsStorePacking of StorePacking<ResistanceMods, u32> {
     fn pack(value: ResistanceMods) -> u32 {
         IntPacking::pack_into(value.bludgeon)
-            + ShiftCast::cast::<SHIFT_1B>(value.magic)
-            + ShiftCast::cast::<SHIFT_2B>(value.pierce)
+            + ShiftCast::const_cast::<SHIFT_1B>(value.magic)
+            + ShiftCast::const_cast::<SHIFT_2B>(value.pierce)
     }
 
     fn unpack(value: u32) -> ResistanceMods {
@@ -388,8 +388,8 @@ impl ResistanceModsStorePacking of StorePacking<ResistanceMods, u32> {
 impl VulnerabilityModsStorePacking of StorePacking<VulnerabilityMods, u64> {
     fn pack(value: VulnerabilityMods) -> u64 {
         IntPacking::pack_into(value.bludgeon)
-            + ShiftCast::cast::<SHIFT_2B>(value.magic)
-            + ShiftCast::cast::<SHIFT_4B>(value.pierce)
+            + ShiftCast::const_cast::<SHIFT_2B>(value.magic)
+            + ShiftCast::const_cast::<SHIFT_4B>(value.pierce)
     }
 
     fn unpack(value: u64) -> VulnerabilityMods {
