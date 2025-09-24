@@ -287,15 +287,15 @@ impl AttributesStorePacking of StorePacking<Attributes, u128> {
     fn unpack(value: u128) -> Attributes {
         Attributes {
             strength: MaskDowncast::cast(value),
-            vitality: ShiftCast::unpack::<SHIFT_1B>(value),
-            dexterity: ShiftCast::unpack::<SHIFT_2B>(value),
-            luck: ShiftCast::unpack::<SHIFT_3B>(value),
-            bludgeon_resistance: ShiftCast::unpack::<SHIFT_4B>(value),
-            magic_resistance: ShiftCast::unpack::<SHIFT_5B>(value),
-            pierce_resistance: ShiftCast::unpack::<SHIFT_6B>(value),
-            bludgeon_vulnerability: ShiftCast::unpack::<SHIFT_7B>(value),
-            magic_vulnerability: ShiftCast::unpack::<SHIFT_9B>(value),
-            pierce_vulnerability: ShiftCast::unpack::<SHIFT_11B>(value),
+            vitality: ShiftCast::const_unpack::<SHIFT_1B>(value),
+            dexterity: ShiftCast::const_unpack::<SHIFT_2B>(value),
+            luck: ShiftCast::const_unpack::<SHIFT_3B>(value),
+            bludgeon_resistance: ShiftCast::const_unpack::<SHIFT_4B>(value),
+            magic_resistance: ShiftCast::const_unpack::<SHIFT_5B>(value),
+            pierce_resistance: ShiftCast::const_unpack::<SHIFT_6B>(value),
+            bludgeon_vulnerability: ShiftCast::const_unpack::<SHIFT_7B>(value),
+            magic_vulnerability: ShiftCast::const_unpack::<SHIFT_9B>(value),
+            pierce_vulnerability: ShiftCast::const_unpack::<SHIFT_11B>(value),
         }
     }
 }
@@ -317,15 +317,15 @@ impl PartialAttributesStorePacking of StorePacking<PartialAttributes, u128> {
     fn unpack(value: u128) -> PartialAttributes {
         PartialAttributes {
             strength: MaskDowncast::cast(value),
-            vitality: ShiftCast::unpack::<SHIFT_1B>(value),
-            dexterity: ShiftCast::unpack::<SHIFT_2B>(value),
-            luck: ShiftCast::unpack::<SHIFT_3B>(value),
-            bludgeon_resistance: ShiftCast::unpack::<SHIFT_4B>(value),
-            magic_resistance: ShiftCast::unpack::<SHIFT_5B>(value),
-            pierce_resistance: ShiftCast::unpack::<SHIFT_6B>(value),
-            bludgeon_vulnerability: ShiftCast::unpack::<SHIFT_7B>(value),
-            magic_vulnerability: ShiftCast::unpack::<SHIFT_9B>(value),
-            pierce_vulnerability: ShiftCast::unpack::<SHIFT_11B>(value),
+            vitality: ShiftCast::const_unpack::<SHIFT_1B>(value),
+            dexterity: ShiftCast::const_unpack::<SHIFT_2B>(value),
+            luck: ShiftCast::const_unpack::<SHIFT_3B>(value),
+            bludgeon_resistance: ShiftCast::const_unpack::<SHIFT_4B>(value),
+            magic_resistance: ShiftCast::const_unpack::<SHIFT_5B>(value),
+            pierce_resistance: ShiftCast::const_unpack::<SHIFT_6B>(value),
+            bludgeon_vulnerability: ShiftCast::const_unpack::<SHIFT_7B>(value),
+            magic_vulnerability: ShiftCast::const_unpack::<SHIFT_9B>(value),
+            pierce_vulnerability: ShiftCast::const_unpack::<SHIFT_11B>(value),
         }
     }
 }
@@ -379,8 +379,8 @@ impl ResistanceModsStorePacking of StorePacking<ResistanceMods, u32> {
 
     fn unpack(value: u32) -> ResistanceMods {
         let bludgeon: i8 = MaskDowncast::cast(value);
-        let magic: i8 = ShiftCast::unpack::<SHIFT_1B>(value);
-        let pierce: i8 = ShiftCast::unpack::<SHIFT_2B>(value);
+        let magic: i8 = ShiftCast::const_unpack::<SHIFT_1B>(value);
+        let pierce: i8 = ShiftCast::const_unpack::<SHIFT_2B>(value);
         ResistanceMods { bludgeon, magic, pierce }
     }
 }
@@ -394,8 +394,8 @@ impl VulnerabilityModsStorePacking of StorePacking<VulnerabilityMods, u64> {
 
     fn unpack(value: u64) -> VulnerabilityMods {
         let bludgeon: i16 = MaskDowncast::cast(value);
-        let magic: i16 = ShiftCast::unpack::<SHIFT_2B>(value);
-        let pierce: i16 = ShiftCast::unpack::<SHIFT_4B>(value);
+        let magic: i16 = ShiftCast::const_unpack::<SHIFT_2B>(value);
+        let pierce: i16 = ShiftCast::const_unpack::<SHIFT_4B>(value);
         VulnerabilityMods { bludgeon, magic, pierce }
     }
 }
