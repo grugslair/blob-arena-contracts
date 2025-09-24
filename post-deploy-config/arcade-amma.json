@@ -5,8 +5,8 @@
   "time_limit": 7200,
   "health_regen_percent": 30,
   "generated_stages": 9,
-  "opponents": {
-    "1": {
+  "opponents": [
+    {
       "base": {
         "strength": 25,
         "vitality": 30,
@@ -30,7 +30,7 @@
         {"tag": "Osoto Gari"}
       ]
     },
-    "2": {
+    {
       "base": {
         "strength": 28,
         "vitality": 25,
@@ -54,7 +54,7 @@
         {"tag": "White Company"}
       ]
     },
-    "3": {
+    {
       "base": {
         "strength": 22,
         "vitality": 35,
@@ -78,7 +78,7 @@
         {"tag": "Spin Attack"}
       ]
     },
-    "4": {
+    {
       "base": {
         "strength": 35,
         "vitality": 28,
@@ -102,7 +102,7 @@
         {"tag": "Mega Shield Bash"}
       ]
     },
-    "5": {
+    {
       "base": {
         "strength": 30,
         "vitality": 32,
@@ -126,7 +126,7 @@
         {"tag": "Reverse Throw"}
       ]
     },
-    "6": {
+    {
       "base": {
         "strength": 18,
         "vitality": 26,
@@ -150,7 +150,7 @@
         {"tag": "Comeback Kid"}
       ]
     },
-    "7": {
+    {
       "base": {
         "strength": 26,
         "vitality": 38,
@@ -174,7 +174,7 @@
         {"tag": "People's Elbow"}
       ]
     },
-    "8": {
+    {
       "base": {
         "strength": 40,
         "vitality": 22,
@@ -198,21 +198,21 @@
         {"tag": "Knight of Wakanda"}
       ]
     },
-    "9": {
+    {
       "base": {
         "strength": 32,
         "vitality": 20,
         "dexterity": 35,
         "luck": 25,
         "bludgeon_resistance": 8,
-        "pierce_vulnerability": 15
+        "pierce_vulnerability": 12
       },
       "level": {
         "strength": 4,
         "vitality": 3,
         "dexterity": 5,
         "luck": 4,
-        "bludgeon_resistance": 2,
+        "bludgeon_resistance": 3,
         "pierce_vulnerability": -1
       },
       "attacks": [
@@ -222,7 +222,7 @@
         {"tag": "Steal Weapon"}
       ]
     },
-    "10": {
+    {
       "base": {
         "strength": 24,
         "vitality": 28,
@@ -236,7 +236,7 @@
         "vitality": 4,
         "dexterity": 5,
         "luck": 3,
-        "bludgeon_resistance": 2,
+        "bludgeon_resistance": 3,
         "pierce_vulnerability": -1
       },
       "attacks": [
@@ -246,7 +246,7 @@
         {"tag": "Circle Out"}
       ]
     },
-    "11": {
+    {
       "base": {
         "strength": 38,
         "vitality": 40,
@@ -261,7 +261,7 @@
         "dexterity": 3,
         "luck": 3,
         "bludgeon_vulnerability": -1,
-        "pierce_resistance": 2
+        "pierce_resistance": 3
       },
       "attacks": [
         {"tag": "Axe Attack"},
@@ -270,13 +270,13 @@
         {"tag": "One Shot"}
       ]
     },
-    "12": {
+    {
       "base": {
         "strength": 33,
         "vitality": 24,
         "dexterity": 28,
         "luck": 32,
-        "bludgeon_vulnerability": 11,
+        "bludgeon_vulnerability": 10,
         "pierce_resistance": 5
       },
       "level": {
@@ -285,7 +285,7 @@
         "dexterity": 4,
         "luck": 5,
         "bludgeon_vulnerability": -1,
-        "pierce_resistance": 2
+        "pierce_resistance": 3
       },
       "attacks": [
         {"tag": "Quick Slash"},
@@ -294,13 +294,13 @@
         {"tag": "Snap Shot"}
       ]
     },
-    "13": {
+    {
       "base": {
         "strength": 26,
         "vitality": 30,
         "dexterity": 38,
         "luck": 36,
-        "bludgeon_vulnerability": 11,
+        "bludgeon_vulnerability": 14,
         "pierce_resistance": 5
       },
       "level": {
@@ -309,7 +309,7 @@
         "dexterity": 5,
         "luck": 5,
         "bludgeon_vulnerability": -1,
-        "pierce_resistance": 2
+        "pierce_resistance": 3
       },
       "attacks": [
         {"tag": "Quick Slash"},
@@ -318,7 +318,7 @@
         {"tag": "Final Judgement"}
       ]
     },
-    "14": {
+    {
       "base": {
         "strength": 35,
         "vitality": 42,
@@ -332,7 +332,7 @@
         "vitality": 5,
         "dexterity": 3,
         "luck": 3,
-        "bludgeon_resistance": 2,
+        "bludgeon_resistance": 3,
         "pierce_vulnerability": -1
       },
       "attacks": [
@@ -342,13 +342,13 @@
         {"tag": "Seismic Toss"}
       ]
     },
-    "15": {
+    {
       "base": {
         "strength": 40,
         "vitality": 36,
         "dexterity": 22,
         "luck": 25,
-        "bludgeon_vulnerability": 11,
+        "bludgeon_vulnerability": 12,
         "pierce_resistance": 5
       },
       "level": {
@@ -357,7 +357,7 @@
         "dexterity": 3,
         "luck": 4,
         "bludgeon_vulnerability": -1,
-        "pierce_resistance": 2
+        "pierce_resistance": 3
       },
       "attacks": [
         {"tag": "Axe Attack"},
@@ -366,7 +366,7 @@
         {"tag": "Spartan Spear"}
       ]
     },
-    "16": {
+    {
       "base": {
         "strength": 45,
         "vitality": 25,
@@ -380,7 +380,7 @@
         "vitality": 3,
         "dexterity": 4,
         "luck": 4,
-        "bludgeon_resistance": 2,
+        "bludgeon_resistance": 3,
         "pierce_vulnerability": -1
       },
       "attacks": [
@@ -390,7 +390,7 @@
         {"tag": "Throwing Hands"}
       ]
     },
-    "17": {
+    {
       "base": {
         "strength": 20,
         "vitality": 32,
@@ -404,7 +404,7 @@
         "vitality": 4,
         "dexterity": 4,
         "luck": 5,
-        "bludgeon_resistance": 2,
+        "bludgeon_resistance": 3,
         "pierce_vulnerability": -1
       },
       "attacks": [
@@ -414,21 +414,21 @@
         {"tag": "Hip Throw"}
       ]
     },
-    "18": {
+    {
       "base": {
         "strength": 28,
         "vitality": 26,
         "dexterity": 30,
         "luck": 38,
         "bludgeon_resistance": 8,
-        "pierce_vulnerability": 15
+        "pierce_vulnerability": 16
       },
       "level": {
         "strength": 4,
         "vitality": 3,
         "dexterity": 4,
         "luck": 5,
-        "bludgeon_resistance": 2,
+        "bludgeon_resistance": 3,
         "pierce_vulnerability": -1
       },
       "attacks": [
@@ -438,5 +438,5 @@
         {"tag": "Flying Hussar"}
       ]
     }
-  }
+  ]
 }
