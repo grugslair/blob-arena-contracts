@@ -23,16 +23,15 @@ cubit = { git = "https://github.com/bengineer42/cubit", tag = "cairo--2.8.0" }
 pragma_lib = { git = "https://github.com/bengineer42/pragma-lib", branch = "v2.11.4" }
 # beacon_entity = { git = "https://github.com/sai-starknet/torii-beacon", branch = "1.7.0-rc.0" }
 # beacon_macros = { git = "https://github.com/sai-starknet/torii-beacon", branch = "1.7.0-rc.0" }
-beacon_entity = { git = "https://github.com/sai-starknet/torii-beacon", tag = "v1.7.1" }
-beacon_macros = { git = "https://github.com/sai-starknet/torii-beacon", tag = "v1.7.1" }
-beacon_library = { git = "https://github.com/sai-starknet/torii-beacon", tag = "v1.7.1" }
-sai_access = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
-sai_ownable = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
-sai_token = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
-sai_core_utils = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
-sai_return = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
-# sai_packing = { git = "https://github.com/sai-starknet/cairo-utils", branch = "cairo-2.11.4" }
-sai_packing = { path = "../../../sai/cairo-utils" }
+beacon_entity = { git = "https://github.com/sai-starknet/torii-beacon", tag = "v1.7.2" }
+beacon_macros = { git = "https://github.com/sai-starknet/torii-beacon", tag = "v1.7.2" }
+beacon_library = { git = "https://github.com/sai-starknet/torii-beacon", tag = "v1.7.2" }
+sai_access = { git = "https://github.com/sai-starknet/cairo-utils", tag = "v0.1.3" }
+sai_ownable = { git = "https://github.com/sai-starknet/cairo-utils", tag = "v0.1.3" }
+sai_token = { git = "https://github.com/sai-starknet/cairo-utils", tag = "v0.1.3" }
+sai_core_utils = { git = "https://github.com/sai-starknet/cairo-utils", tag = "v0.1.3" }
+sai_return = { git = "https://github.com/sai-starknet/cairo-utils", tag = "v0.1.3" }
+sai_packing = { git = "https://github.com/sai-starknet/cairo-utils", tag = "v0.1.3" }
 
 [workspace.tool.fmt]
 sort-module-level-items = true

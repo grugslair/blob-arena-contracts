@@ -637,7 +637,7 @@
           {
             "target": "Defender",
             "Damage": {
-              "power": 30
+              "power": 30,
               "damage_type": "bludgeon"
             },
             "Stun": 100,
