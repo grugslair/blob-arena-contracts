@@ -11,8 +11,8 @@ use sai_packing::{MaskDowncast, ShiftCast};
 use starknet::storage::StorageNodeDeref;
 use starknet::storage_access::StorePacking;
 use crate::calculations::{
-    apply_luck_modifier, combine_resistance, damage_calculation, did_critical, get_new_stun_chance,
-    increase_resistance,
+    apply_luck_modifier, combine_resistance, combine_resistance_temp, damage_calculation,
+    did_critical, get_new_stun_chance, increase_resistance,
 };
 use crate::result::{AffectResult, DamageResult};
 
@@ -34,6 +34,16 @@ pub struct CombatantState {
     pub bludgeon_vulnerability: u16,
     pub magic_vulnerability: u16,
     pub pierce_vulnerability: u16,
+    pub strength_temp: i8,
+    pub vitality_temp: i8,
+    pub dexterity_temp: i8,
+    pub luck_temp: i8,
+    pub bludgeon_resistance_temp: i8,
+    pub magic_resistance_temp: i8,
+    pub pierce_resistance_temp: i8,
+    pub bludgeon_vulnerability_temp: i16,
+    pub magic_vulnerability_temp: i16,
+    pub pierce_vulnerability_temp: i16,
 }
 
 
@@ -67,6 +77,16 @@ impl UAbilityStorePacking of StorePacking<CombatantState, u128> {
             pierce_vulnerability: ShiftCast::const_unpack::<SHIFT_11B>(value),
             health: ShiftCast::const_unpack::<SHIFT_12B>(value),
             stun_chance: ShiftCast::const_unpack::<SHIFT_13B>(value),
+            strength_temp: Zero::zero(),
+            vitality_temp: Zero::zero(),
+            dexterity_temp: Zero::zero(),
+            luck_temp: Zero::zero(),
+            bludgeon_resistance_temp: Zero::zero(),
+            magic_resistance_temp: Zero::zero(),
+            pierce_resistance_temp: Zero::zero(),
+            bludgeon_vulnerability_temp: Zero::zero(),
+            magic_vulnerability_temp: Zero::zero(),
+            pierce_vulnerability_temp: Zero::zero(),
             block: 0,
         }
     }
@@ -95,8 +115,18 @@ impl AbilitiesIntoCombatantState of Into<Attributes, CombatantState> {
             magic_vulnerability: self.magic_vulnerability,
             pierce_vulnerability: self.pierce_vulnerability,
             health: get_max_health(self.vitality),
-            stun_chance: 0,
-            block: 0,
+            strength_temp: Zero::zero(),
+            vitality_temp: Zero::zero(),
+            dexterity_temp: Zero::zero(),
+            luck_temp: Zero::zero(),
+            bludgeon_resistance_temp: Zero::zero(),
+            magic_resistance_temp: Zero::zero(),
+            pierce_resistance_temp: Zero::zero(),
+            bludgeon_vulnerability_temp: Zero::zero(),
+            magic_vulnerability_temp: Zero::zero(),
+            pierce_vulnerability_temp: Zero::zero(),
+            stun_chance: Zero::zero(),
+            block: Zero::zero(),
         }
     }
 }
@@ -109,6 +139,10 @@ fn modify_ability(ref current: u8, modifier: i8) -> i8 {
     let prev_value: i8 = current.try_into().unwrap();
     current = add_ability_modifier(current, modifier);
     (current.try_into().unwrap() - prev_value)
+}
+
+fn modify_resistance_temp<T, +Drop<T>, +Into<T, i16>>(ref value: i8, change: i8) {
+    value = combine_resistance_temp(value, change);
 }
 
 fn modify_resistance<T, +Drop<T>, +Into<T, i16>>(ref value: u8, change: T) {
@@ -209,6 +243,72 @@ pub impl CombatantStateImpl of CombatantStateTrait {
         self.modify_magic_vulnerability(mods.magic);
         self.modify_pierce_vulnerability(mods.pierce);
     }
+
+
+    fn modify_strength_temp(ref self: CombatantState, amount: i8) -> i8 {
+        modify_ability(ref self.strength, amount)
+    }
+
+    fn modify_vitality_temp(ref self: CombatantState, amount: i8) -> i8 {
+        let change = modify_ability(ref self.vitality, amount);
+        self.cap_health();
+        change
+    }
+
+    fn modify_dexterity_temp(ref self: CombatantState, amount: i8) -> i8 {
+        modify_ability(ref self.dexterity, amount)
+    }
+
+    fn modify_luck_temp(ref self: CombatantState, amount: i8) -> i8 {
+        modify_ability(ref self.luck, amount)
+    }
+
+    fn modify_abilities_temp(ref self: CombatantState, mods: AbilityMods) {
+        self.modify_strength(mods.strength);
+        self.modify_vitality(mods.vitality);
+        self.modify_dexterity(mods.dexterity);
+        self.modify_luck(mods.luck);
+    }
+
+    fn modify_bludgeon_resistance_temp(ref self: CombatantState, amount: i8) {
+        modify_resistance_temp(ref self.bludgeon_resistance_temp, amount);
+    }
+
+    fn modify_magic_resistance_temp(ref self: CombatantState, amount: i8) {
+        modify_resistance_temp(ref self.magic_resistance_temp, amount);
+    }
+
+    fn modify_pierce_resistance_temp(ref self: CombatantState, amount: i8) {
+        modify_resistance_temp(ref self.pierce_resistance_temp, amount);
+    }
+
+    fn modify_resistances_temp(ref self: CombatantState, mods: ResistanceMods) {
+        self.modify_bludgeon_resistance_temp(mods.bludgeon);
+        self.modify_magic_resistance_temp(mods.magic);
+        self.modify_pierce_resistance_temp(mods.pierce);
+    }
+
+    fn modify_bludgeon_vulnerability_temp(ref self: CombatantState, amount: i16) {
+        let new: i32 = self.bludgeon_resistance_temp.into() + amount.into();
+        self.bludgeon_vulnerability_temp = new.saturating_into();
+    }
+
+    fn modify_magic_vulnerability_temp(ref self: CombatantState, amount: i16) {
+        let new: i32 = self.magic_resistance_temp.into() + amount.into();
+        self.magic_vulnerability_temp = new.saturating_into();
+    }
+
+    fn modify_pierce_vulnerability_temp(ref self: CombatantState, amount: i16) {
+        let new: i32 = self.pierce_resistance_temp.into() + amount.into();
+        self.pierce_vulnerability_temp = new.saturating_into();
+    }
+
+    fn modify_vulnerabilities_temp(ref self: CombatantState, mods: VulnerabilityMods) {
+        self.modify_bludgeon_vulnerability_temp(mods.bludgeon);
+        self.modify_magic_vulnerability_temp(mods.magic);
+        self.modify_pierce_vulnerability_temp(mods.pierce);
+    }
+
 
     fn resistance(self: @CombatantState, damage_type: DamageType) -> u8 {
         let type_resistance = match damage_type {

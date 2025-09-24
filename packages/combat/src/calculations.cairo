@@ -66,11 +66,34 @@ pub fn get_new_stun_chance(current_stun: u8, attack_stun: u8) -> u8 {
         .saturating_into()
 }
 
-pub fn combine_resistance<T, +Drop<T>, +Into<T, i16>>(value: u8, change: T) -> u8 {
+pub fn combine_resistance_temp(value: i8, change: i8) -> i8 {
+    if value <= 0 {}
     let value: i16 = value.into();
     let change: i16 = change.into();
-    if change == 100 {
+    if change >= 100 {
         return 100;
+    }
+    let sum = value + change;
+    if sum <= Zero::zero() {
+        sum
+    } else if change < 0 {
+        sum * 100 / (100 + change)
+    } else {
+        (sum * 100 - value * change) / 100
+    }
+        .try_into()
+        .unwrap()
+}
+
+pub fn combine_resistance<
+    T, S, +Drop<T>, +Into<T, i16>, +Drop<S>, +Into<S, i16>, +TryInto<i16, T>, +Into<u8, T>,
+>(
+    value: T, change: S,
+) -> T {
+    let value: i16 = value.into();
+    let change: i16 = change.into();
+    if change >= 100 {
+        return 100_u8.into();
     }
     let sum = value + change;
     if sum <= Zero::zero() {
