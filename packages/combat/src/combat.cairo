@@ -1,16 +1,27 @@
 use ba_loadout::attack::{Effect, IAttackDispatcher, IAttackDispatcherTrait, Target};
 use ba_utils::{Randomness, RandomnessTrait};
 use core::num::traits::Zero;
-use sai_core_utils::BoolIntoBinary;
+use sai_core_utils::{BoolIntoBinary, poseidon_hash_two};
 use crate::result::{AffectResult, AttackOutcomes, EffectResult};
+use crate::round_effect::{RoundEffects, RoundEffectsTrait};
 use crate::{CombatantState, CombatantStateTrait};
-
 
 #[derive(Copy, Drop, PartialEq, Introspect, Serde, Default)]
 pub enum CombatProgress {
     #[default]
     Active,
     Ended: Player,
+}
+
+
+#[derive(PanicDestruct)]
+pub struct Combat {
+    pub combat_id: felt252,
+    pub state_1: CombatantState,
+    pub state_2: CombatantState,
+    pub effects: RoundEffects,
+    pub round: u32,
+    pub randomness: Randomness,
 }
 
 impl BoolIntoPLayer of Into<bool, Player> {
@@ -90,14 +101,29 @@ pub struct Round {
 }
 
 pub fn run_round(
-    p1_state: CombatantState,
-    p2_state: CombatantState,
+    mut p1_state: CombatantState,
+    mut p2_state: CombatantState,
     attacks: IAttackDispatcher,
     p1_attack: felt252,
     p2_attack: felt252,
     round: u32,
+    ref round_effects: RoundEffects,
     ref randomness: Randomness,
 ) -> Round {
+    let mut progress = run_round_effects(
+        ref p1_state, ref p2_state, ref round_effects, ref randomness,
+    );
+    if progress != CombatProgress::Active {
+        return Round {
+            round,
+            attacks: [p1_attack, p2_attack],
+            first: Player::Player1,
+            states: [p1_state, p2_state],
+            outcomes: ArrayTrait::new(),
+            progress,
+        };
+    }
+
     let switch_order = get_switch_order(
         @p1_state, @p2_state, attacks, p1_attack, p2_attack, ref randomness,
     );
@@ -106,13 +132,14 @@ pub fn run_round(
         true => (p2_state, p1_state, p2_attack, p1_attack),
     };
 
-    let mut progress = CombatProgress::Active;
-    let outcome = run_attack(ref state_1, ref state_2, attacks, attack_1, round, ref randomness);
+    let outcome = run_attack(
+        ref state_1, ref state_2, attacks, attack_1, round, ref round_effects, ref randomness,
+    );
     let mut outcomes = array![outcome];
     progress = check_combat_phase(@state_1, @state_2, switch_order, true);
     if progress == CombatProgress::Active {
         let outcome = run_attack(
-            ref state_2, ref state_1, attacks, attack_2, round, ref randomness,
+            ref state_2, ref state_1, attacks, attack_2, round, ref round_effects, ref randomness,
         );
         outcomes.append(outcome);
         progress = check_combat_phase(@state_1, @state_2, switch_order, false);
@@ -124,6 +151,30 @@ pub fn run_round(
     Round { round, attacks, first: switch_order.into(), states, outcomes, progress }
 }
 
+fn run_round_effects(
+    ref p1_state: CombatantState,
+    ref p2_state: CombatantState,
+    ref round_effects: RoundEffects,
+    ref randomness: Randomness,
+) -> CombatProgress {
+    let mut phase: CombatProgress = Default::default();
+    for effect in (@round_effects).into_iter() {
+        let (attacker, switch) = match effect.attacker {
+            Player::Player1 => (@p1_state, false),
+            Player::Player2 => (@p2_state, true),
+        };
+        match effect.defender {
+            Player::Player1 => { p1_state.apply_affect(effect.affect, attacker, ref randomness); },
+            Player::Player2 => { p2_state.apply_affect(effect.affect, attacker, ref randomness); },
+        }
+        phase = check_combat_phase(@p1_state, @p2_state, switch, true);
+        if phase != CombatProgress::Active {
+            return phase;
+        }
+    }
+    phase
+}
+
 
 fn run_attack(
     ref attacker_state: CombatantState,
@@ -131,6 +182,7 @@ fn run_attack(
     attacks: IAttackDispatcher,
     attack_id: felt252,
     round: u32,
+    ref round_effects: RoundEffects,
     ref randomness: Randomness,
 ) -> AttackOutcomes {
     if attack_id.is_zero() {

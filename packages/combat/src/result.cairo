@@ -1,5 +1,6 @@
 use ba_loadout::attack::Target;
 use sai_core_utils::BoolIntoBinary;
+use crate::Player;
 
 
 /// Represents the possible outcomes of an attack action in the game
@@ -42,11 +43,17 @@ pub enum AffectResult {
 }
 
 /// Represents the result of a damage calculation
-/// * `damage` - The amount of damage dealt
+/// * `hp` - The amount of damage dealt
 /// * `critical` - Whether the damage was a critical hit
 #[derive(Drop, Serde, PartialEq, Introspect)]
 pub struct DamageResult {
     pub hp: u8,
     pub critical: bool,
+}
+
+pub struct RoundEffectResult {
+    pub attacker: Player,
+    pub defender: Player,
+    pub affect: AffectResult,
 }
 
