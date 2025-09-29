@@ -35,6 +35,19 @@ const DAMAGE_N: u32 = 14;
 const STUN_N: u32 = 15;
 const BLOCK_N: u32 = 16;
 const HEALTH_N: u32 = 17;
+const STRENGTH_TEMP_N: u32 = 18;
+const VITALITY_TEMP_N: u32 = 19;
+const DEXTERITY_TEMP_N: u32 = 20;
+const LUCK_TEMP_N: u32 = 21;
+const BLUDGEON_RESISTANCE_TEMP_N: u32 = 22;
+const MAGIC_RESISTANCE_TEMP_N: u32 = 23;
+const PIERCE_RESISTANCE_TEMP_N: u32 = 24;
+const BLUDGEON_VULNERABILITY_TEMP_N: u32 = 25;
+const MAGIC_VULNERABILITY_TEMP_N: u32 = 26;
+const PIERCE_VULNERABILITY_TEMP_N: u32 = 27;
+const ABILITIES_TEMP_N: u32 = 28;
+const RESISTANCES_TEMP_N: u32 = 29;
+const VULNERABILITIES_TEMP_N: u32 = 30;
 
 const D_TYPE_BLUDGEON_N: u32 = 1;
 const D_TYPE_MAGIC_N: u32 = 2;
@@ -65,6 +78,26 @@ const DAMAGE_PACKING_BITS: felt252 = DAMAGE_N.into() * SHIFT_16B_FELT252;
 const STUN_PACKING_BITS: felt252 = STUN_N.into() * SHIFT_16B_FELT252;
 const BLOCK_PACKING_BITS: felt252 = BLOCK_N.into() * SHIFT_16B_FELT252;
 const HEALTH_PACKING_BITS: felt252 = HEALTH_N.into() * SHIFT_16B_FELT252;
+const STRENGTH_TEMP_PACKING_BITS: felt252 = STRENGTH_TEMP_N.into() * SHIFT_16B_FELT252;
+const VITALITY_TEMP_PACKING_BITS: felt252 = VITALITY_TEMP_N.into() * SHIFT_16B_FELT252;
+const DEXTERITY_TEMP_PACKING_BITS: felt252 = DEXTERITY_TEMP_N.into() * SHIFT_16B_FELT252;
+const LUCK_TEMP_PACKING_BITS: felt252 = LUCK_TEMP_N.into() * SHIFT_16B_FELT252;
+const BLUDGEON_RESISTANCE_TEMP_PACKING_BITS: felt252 = BLUDGEON_RESISTANCE_TEMP_N.into()
+    * SHIFT_16B_FELT252;
+const MAGIC_RESISTANCE_TEMP_PACKING_BITS: felt252 = MAGIC_RESISTANCE_TEMP_N.into()
+    * SHIFT_16B_FELT252;
+const PIERCE_RESISTANCE_TEMP_PACKING_BITS: felt252 = PIERCE_RESISTANCE_TEMP_N.into()
+    * SHIFT_16B_FELT252;
+const BLUDGEON_VULNERABILITY_TEMP_PACKING_BITS: felt252 = BLUDGEON_VULNERABILITY_TEMP_N.into()
+    * SHIFT_16B_FELT252;
+const MAGIC_VULNERABILITY_TEMP_PACKING_BITS: felt252 = MAGIC_VULNERABILITY_TEMP_N.into()
+    * SHIFT_16B_FELT252;
+const PIERCE_VULNERABILITY_TEMP_PACKING_BITS: felt252 = PIERCE_VULNERABILITY_TEMP_N.into()
+    * SHIFT_16B_FELT252;
+const ABILITIES_TEMP_PACKING_BITS: felt252 = ABILITIES_TEMP_N.into() * SHIFT_16B_FELT252;
+const RESISTANCES_TEMP_PACKING_BITS: felt252 = RESISTANCES_TEMP_N.into() * SHIFT_16B_FELT252;
+const VULNERABILITIES_TEMP_PACKING_BITS: felt252 = VULNERABILITIES_TEMP_N.into()
+    * SHIFT_16B_FELT252;
 
 const D_TYPE_BLUDGEON_PACKING_BITS: u32 = D_TYPE_BLUDGEON_N * SHIFT_2B_U32;
 const D_TYPE_MAGIC_PACKING_BITS: u32 = D_TYPE_MAGIC_N * SHIFT_2B_U32;
@@ -237,6 +270,43 @@ impl AffectStorePacking of StorePacking<Affect, felt252> {
             Affect::Stun(amount) => (amount.into(), STUN_PACKING_BITS),
             Affect::Block(amount) => (amount.into(), BLOCK_PACKING_BITS),
             Affect::Health(amount) => (IntPacking::pack_into(amount), HEALTH_PACKING_BITS),
+            Affect::StrengthTemp(amount) => (
+                IntPacking::pack_into(amount), STRENGTH_TEMP_PACKING_BITS,
+            ),
+            Affect::VitalityTemp(amount) => (
+                IntPacking::pack_into(amount), VITALITY_TEMP_PACKING_BITS,
+            ),
+            Affect::DexterityTemp(amount) => (
+                IntPacking::pack_into(amount), DEXTERITY_TEMP_PACKING_BITS,
+            ),
+            Affect::LuckTemp(amount) => (IntPacking::pack_into(amount), LUCK_TEMP_PACKING_BITS),
+            Affect::BludgeonResistanceTemp(amount) => (
+                IntPacking::pack_into(amount), BLUDGEON_RESISTANCE_TEMP_PACKING_BITS,
+            ),
+            Affect::MagicResistanceTemp(amount) => (
+                IntPacking::pack_into(amount), MAGIC_RESISTANCE_TEMP_PACKING_BITS,
+            ),
+            Affect::PierceResistanceTemp(amount) => (
+                IntPacking::pack_into(amount), PIERCE_RESISTANCE_TEMP_PACKING_BITS,
+            ),
+            Affect::BludgeonVulnerabilityTemp(amount) => (
+                IntPacking::pack_into(amount), BLUDGEON_VULNERABILITY_TEMP_PACKING_BITS,
+            ),
+            Affect::MagicVulnerabilityTemp(amount) => (
+                IntPacking::pack_into(amount), MAGIC_VULNERABILITY_TEMP_PACKING_BITS,
+            ),
+            Affect::PierceVulnerabilityTemp(amount) => (
+                IntPacking::pack_into(amount), PIERCE_VULNERABILITY_TEMP_PACKING_BITS,
+            ),
+            Affect::AbilitiesTemp(amount) => (
+                StorePacking::pack(amount).into(), ABILITIES_TEMP_PACKING_BITS,
+            ),
+            Affect::ResistancesTemp(amount) => (
+                StorePacking::pack(amount).into(), RESISTANCES_TEMP_PACKING_BITS,
+            ),
+            Affect::VulnerabilitiesTemp(amount) => (
+                StorePacking::pack(amount).into(), VULNERABILITIES_TEMP_PACKING_BITS,
+            ),
         };
         amount.into() + variant
     }

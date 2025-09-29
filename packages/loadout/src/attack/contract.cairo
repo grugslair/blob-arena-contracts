@@ -14,6 +14,7 @@ mod attack {
     use crate::attack::effect::EffectArrayStorePacking;
     use crate::attack::{
         Attack, AttackWithName, AttackWithNameTrait, Effect, IAttack, IAttackAdmin, IdTagAttack,
+        get_attack_id,
     };
 
     component!(path: access_component, storage: access, event: AccessEvents);
@@ -58,8 +59,8 @@ mod attack {
                 speed: self.speeds.read(id),
                 chance: self.chances.read(id),
                 cooldown: self.cooldowns.read(id),
-                success: self.successes.read(id),
-                fail: self.fails.read(id),
+                success: StorePacking::unpack(self.successes.read(id)),
+                fail: StorePacking::unpack(self.fails.read(id)),
             }
         }
 
@@ -194,22 +195,32 @@ mod attack {
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
         fn _create_attack(ref self: ContractState, attack: AttackWithName) -> felt252 {
-            let id = (@attack).attack_id();
-            self.tags.write(byte_array_to_tag(@attack.name), id);
+            let snapshot = @attack;
+            let success = StorePacking::pack(attack.success);
+            let fail = StorePacking::pack(attack.fail);
+            let attack_id = get_attack_id(
+                @attack.name,
+                attack.speed,
+                attack.chance,
+                attack.cooldown,
+                success.span(),
+                fail.span(),
+            );
+            self.tags.write(byte_array_to_tag(@attack.name), attack_id);
             // let attack: Attack = attack.into();
-            if self.chances.read(id).is_non_zero() {
-                return id; // Attack already exists
+            if self.chances.read(attack_id).is_non_zero() {
+                return attack_id; // Attack already exists
             }
             assert(0 < attack.chance && attack.chance <= 100, 'Chance must between 0 and 100');
 
-            AttackTable::set_entity(id, @attack);
-            self.speeds.write(id, attack.speed);
-            self.chances.write(id, attack.chance);
-            self.cooldowns.write(id, attack.cooldown);
-            self.successes.write(id, attack.success);
-            self.fails.write(id, attack.fail);
+            AttackTable::set_entity(attack_id, snapshot);
+            self.speeds.write(attack_id, attack.speed);
+            self.chances.write(attack_id, attack.chance);
+            self.cooldowns.write(attack_id, attack.cooldown);
+            self.successes.write(attack_id, success);
+            self.fails.write(attack_id, fail);
 
-            id
+            attack_id
         }
     }
 }

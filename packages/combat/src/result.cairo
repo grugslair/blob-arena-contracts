@@ -1,4 +1,5 @@
 use ba_loadout::attack::Target;
+use ba_loadout::attributes::{AbilityMods, ResistanceMods, VulnerabilityMods};
 use sai_core_utils::BoolIntoBinary;
 use crate::Player;
 
@@ -34,12 +35,39 @@ pub struct EffectResult {
 /// # Variants
 /// * `Applied` - The effect was successfully applied
 /// * `Damage` - A complex damage result containing damage type and amount
-#[derive(Drop, Serde, PartialEq, Default, Introspect)]
+#[derive(Drop, Serde, PartialEq, Introspect)]
 pub enum AffectResult {
-    #[default]
     None,
-    Applied,
+    Strength: i8,
+    Vitality: i8,
+    Dexterity: i8,
+    Luck: i8,
+    BludgeonResistance: i8,
+    MagicResistance: i8,
+    PierceResistance: i8,
+    BludgeonVulnerability: i16,
+    MagicVulnerability: i16,
+    PierceVulnerability: i16,
+    Abilities: AbilityMods,
+    Resistances: ResistanceMods,
+    Vulnerabilities: VulnerabilityMods,
+    StrengthTemp: i8,
+    VitalityTemp: i8,
+    DexterityTemp: i8,
+    LuckTemp: i8,
+    BludgeonResistanceTemp: i8,
+    MagicResistanceTemp: i8,
+    PierceResistanceTemp: i8,
+    BludgeonVulnerabilityTemp: i16,
+    MagicVulnerabilityTemp: i16,
+    PierceVulnerabilityTemp: i16,
+    AbilitiesTemp: AbilityMods,
+    ResistancesTemp: ResistanceMods,
+    VulnerabilitiesTemp: VulnerabilityMods,
     Damage: DamageResult,
+    Stun: u8,
+    Block: u8,
+    Health: i8,
 }
 
 /// Represents the result of a damage calculation

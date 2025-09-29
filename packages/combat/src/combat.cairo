@@ -19,9 +19,8 @@ pub struct Combat {
     pub combat_id: felt252,
     pub state_1: CombatantState,
     pub state_2: CombatantState,
-    pub effects: RoundEffects,
+    pub round_effects: RoundEffects,
     pub round: u32,
-    pub randomness: Randomness,
 }
 
 impl BoolIntoPLayer of Into<bool, Player> {
@@ -101,8 +100,8 @@ pub struct Round {
 }
 
 pub fn run_round(
-    mut p1_state: CombatantState,
-    mut p2_state: CombatantState,
+    ref p1_state: CombatantState,
+    ref p2_state: CombatantState,
     attacks: IAttackDispatcher,
     p1_attack: felt252,
     p2_attack: felt252,
