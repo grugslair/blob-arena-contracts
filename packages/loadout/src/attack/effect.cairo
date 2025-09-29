@@ -15,8 +15,8 @@ const ROUND_N: u32 = 1;
 const ROUNDS_N: u32 = 2;
 const INFINITE_N: u32 = 3;
 
-const ATTACKER_N: u16 = 1;
-const DEFENDER_N: u16 = 2;
+const ATTACKER_N: u16 = 0;
+const DEFENDER_N: u16 = 1;
 
 const STRENGTH_N: u32 = 1;
 const VITALITY_N: u32 = 2;
@@ -139,10 +139,8 @@ pub enum Affect {
     Health: i8,
 }
 
-#[derive(Drop, Serde, Copy, PartialEq, Introspect, Default)]
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
 pub enum Target {
-    #[default]
-    None,
     Attacker,
     Defender,
 }
@@ -173,7 +171,6 @@ impl EffectStorePacking of StorePacking<Effect, felt252> {
     fn pack(value: Effect) -> felt252 {
         StorePacking::pack(value.affect)
             + match value.target {
-                Target::None => 0,
                 Target::Attacker => ATTACKER_PACKING_BITS,
                 Target::Defender => DEFENDER_PACKING_BITS,
             }
@@ -189,9 +186,8 @@ impl EffectStorePacking of StorePacking<Effect, felt252> {
         let u256 { low, high } = value.into();
         let variant: u16 = MaskDowncast::cast(high);
         let target = match ShiftCast::const_unpack::<SHIFT_2B>(high) {
-            0_u16 => Target::None,
-            1_u16 => Target::Attacker,
-            2_u16 => Target::Defender,
+            0_u16 => Target::Attacker,
+            1_u16 => Target::Defender,
             _ => panic!("Invalid value for Target"),
         };
         let duration = match ShiftCast::const_unpack::<SHIFT_4B>(high) {

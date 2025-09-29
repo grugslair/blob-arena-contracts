@@ -1,4 +1,3 @@
-use ba_loadout::Abilities;
 use ba_loadout::attack::{Affect, Damage, DamageType};
 use ba_loadout::attributes::{
     AbilityMods, Attributes, MAX_ABILITY_SCORE, MAX_TEMP_ABILITY_SCORE, MIN_TEMP_ABILITY_SCORE,
@@ -17,11 +16,11 @@ use crate::calculations::{
     did_critical, get_new_stun_chance, increase_resistance,
 };
 use crate::result::{
-    AbilitiesResult, AffectResult, DamageResult, VitalityResult, VitalityTempResult,
+    AbilitiesResult, AbilitiesTempResult, AffectResult, DamageResult, VitalityResult,
+    VitalityTempResult,
 };
 
 const BASE_HEALTH: u8 = 100;
-
 
 #[derive(Drop, Copy, Serde, Schema, Introspect, Default)]
 pub struct CombatantState {
@@ -331,11 +330,14 @@ pub impl CombatantStateImpl of CombatantStateTrait {
         modify_ability_temp(ref self.luck_temp, amount)
     }
 
-    fn modify_abilities_temp(ref self: CombatantState, mods: AbilityMods) {
-        self.modify_strength(mods.strength);
-        self.modify_vitality(mods.vitality);
-        self.modify_dexterity(mods.dexterity);
-        self.modify_luck(mods.luck);
+    fn modify_abilities_temp(ref self: CombatantState, mods: AbilityMods) -> AbilitiesTempResult {
+        let strength = self.modify_strength_temp(mods.strength);
+        self.modify_vitality_temp(mods.vitality);
+        let dexterity = self.modify_dexterity_temp(mods.dexterity);
+        let luck = self.modify_luck_temp(mods.luck);
+        AbilitiesTempResult {
+            strength, vitality: self.vitality_temp, dexterity, luck, health: self.health,
+        }
     }
 
     fn modify_bludgeon_resistance_temp(ref self: CombatantState, amount: i8) {
@@ -419,8 +421,9 @@ pub impl CombatantStateImpl of CombatantStateTrait {
         self.stun_chance = get_new_stun_chance(self.stun_chance, stun)
     }
 
-    fn increase_block(ref self: CombatantState, block: u8) {
+    fn increase_block(ref self: CombatantState, block: u8) -> u8 {
         self.block = increase_resistance(self.block, block);
+        self.block
     }
 
     fn apply_affect(
@@ -465,34 +468,21 @@ pub impl CombatantStateImpl of CombatantStateTrait {
                 self.increase_stun(stun);
                 AffectResult::Stun(stun)
             },
-            Affect::Health(health) => {
-                self.modify_health(health);
-                AffectResult::Health(health)
-            },
-            Affect::Block(block) => {
-                self.increase_block(block);
-                AffectResult::Block(block)
-            },
-            Affect::StrengthTemp(amount) => {
-                self.modify_strength_temp(amount);
-                AffectResult::StrengthTemp(amount)
-            },
-            Affect::VitalityTemp(amount) => {
-                self.modify_vitality_temp(amount);
-                AffectResult::VitalityTemp(amount)
-            },
-            Affect::DexterityTemp(amount) => {
-                self.modify_dexterity_temp(amount);
-                AffectResult::DexterityTemp(amount)
-            },
-            Affect::LuckTemp(amount) => {
-                self.modify_luck_temp(amount);
-                AffectResult::LuckTemp(amount)
-            },
-            Affect::AbilitiesTemp(mods) => {
-                self.modify_abilities_temp(mods);
-                AffectResult::AbilitiesTemp(mods)
-            },
+            Affect::Health(health) => AffectResult::Health(self.modify_health(health)),
+            Affect::Block(block) => AffectResult::Block(self.increase_block(block)),
+            Affect::StrengthTemp(amount) => AffectResult::StrengthTemp(
+                self.modify_strength_temp(amount),
+            ),
+            Affect::VitalityTemp(amount) => AffectResult::VitalityTemp(
+                self.modify_vitality_temp(amount),
+            ),
+            Affect::DexterityTemp(amount) => AffectResult::DexterityTemp(
+                self.modify_dexterity_temp(amount),
+            ),
+            Affect::LuckTemp(amount) => AffectResult::LuckTemp(self.modify_luck_temp(amount)),
+            Affect::AbilitiesTemp(mods) => AffectResult::AbilitiesTemp(
+                self.modify_abilities_temp(mods),
+            ),
             Affect::BludgeonResistanceTemp(amount) => {
                 self.modify_bludgeon_resistance_temp(amount);
                 AffectResult::BludgeonResistanceTemp(amount)

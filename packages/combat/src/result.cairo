@@ -1,4 +1,3 @@
-use ba_loadout::attack::Target;
 use ba_loadout::attributes::{ResistanceMods, Resistances, Vulnerabilities, VulnerabilityMods};
 use sai_core_utils::BoolIntoBinary;
 use crate::Player;
@@ -11,7 +10,7 @@ use crate::Player;
 /// * `Miss` - The attack missed, contains array of effect results
 /// * `Hit` - The attack successfully hit, contains array of effect results
 #[derive(Drop, Serde, Introspect, Default)]
-pub enum AttackOutcomes {
+pub enum AttackResult {
     #[default]
     Failed,
     Stunned,
@@ -26,7 +25,7 @@ pub enum AttackOutcomes {
 /// * `affect` - The result of applying the effect to the target
 #[derive(Drop, Serde, PartialEq, Introspect)]
 pub struct EffectResult {
-    pub target: Target,
+    pub target: Player,
     pub affect: AffectResult,
 }
 
@@ -103,17 +102,17 @@ pub struct AbilitiesResult {
 
 #[derive(Drop, Serde, Copy, PartialEq, Introspect, Default)]
 pub struct AbilitiesTempResult {
-    strength: i8,
-    vitality: i8,
-    dexterity: i8,
-    luck: i8,
-    health: u8,
+    pub strength: i8,
+    pub vitality: i8,
+    pub dexterity: i8,
+    pub luck: i8,
+    pub health: u8,
 }
 
 #[derive(Drop, Serde, PartialEq, Introspect)]
 pub struct RoundEffectResult {
-    pub attacker: Player,
-    pub defender: Player,
+    pub source: Player,
+    pub target: Player,
     pub affect: AffectResult,
 }
 

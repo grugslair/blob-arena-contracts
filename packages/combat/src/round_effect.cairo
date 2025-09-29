@@ -18,21 +18,20 @@ const SHIFT_2B_NZ_U256: NonZero<u256> = 0x100;
 const SHIFT_1B_NZ_U16: NonZero<u16> = 0x100;
 
 #[derive(Drop)]
-struct RoundEffect {
-    pub attacker: Player,
-    pub defender: Player,
+pub struct RoundEffect {
+    pub source: Player,
+    pub target: Player,
     pub affect: Affect,
 }
-
 
 impl RoundEffectStorePacking of StorePacking<RoundEffect, felt252> {
     fn pack(value: RoundEffect) -> felt252 {
         StorePacking::pack(value.affect)
-            + match value.attacker {
+            + match value.source {
                 Player::Player1 => 0,
                 Player::Player2 => PLAYER_2_ATTACKER_PACKING_BITS,
             }
-            + match value.defender {
+            + match value.target {
                 Player::Player1 => 0,
                 Player::Player2 => PLAYER_2_DEFENDER_PACKING_BITS,
             }
@@ -40,7 +39,7 @@ impl RoundEffectStorePacking of StorePacking<RoundEffect, felt252> {
     fn unpack(value: felt252) -> RoundEffect {
         let u256 { low, high } = value.into();
         let variant: u16 = MaskDowncast::cast(high);
-        let (attacker, defender) = match ShiftCast::const_unpack::<SHIFT_2B>(high) {
+        let (source, target) = match ShiftCast::const_unpack::<SHIFT_2B>(high) {
             0_u8 => (Player::Player1, Player::Player1),
             1_u8 => (Player::Player2, Player::Player1),
             2_u8 => (Player::Player1, Player::Player2),
@@ -48,11 +47,11 @@ impl RoundEffectStorePacking of StorePacking<RoundEffect, felt252> {
             _ => panic!("Invalid value for Target"),
         };
 
-        RoundEffect { attacker, defender, affect: unpack_affect(variant, low) }
+        RoundEffect { source, target, affect: unpack_affect(variant, low) }
     }
 }
 
-#[derive(PanicDestruct)]
+#[derive(Destruct)]
 pub struct RoundEffects {
     pub base_hash: felt252,
     pub round: u32,
