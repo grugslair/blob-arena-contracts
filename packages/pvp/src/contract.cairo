@@ -88,19 +88,17 @@ mod pvp {
     use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
     use crate::components::{CombatPhase, LobbyNode, LobbyPhase, PvpNode, PvpNodeTrait};
     use crate::tables::{
-        Lobby, LobbyCombatInitSchema, LobbyCombatRespondSchema, LobbyCombatStartSchema,
+        LobbyCombatInitSchema, LobbyCombatRespondSchema, LobbyCombatStartSchema,
         PvpAttackLastUsedTable, PvpCombatTable, PvpFirstRoundSchema, PvpRoundTable,
         PvpRoundTableTrait, WinVia,
     };
     use crate::utils::pad_to_fixed;
     use super::{IPvp, Player};
 
-    const LOBBY_HASH: felt252 = bytearrays_hash!("pvp", "Lobby");
     const COMBAT_HASH: felt252 = bytearrays_hash!("pvp", "Combat");
     const ROUND_HASH: felt252 = bytearrays_hash!("pvp", "Round");
     const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("pvp", "AttackLastUsed");
 
-    impl LobbyTable = ToriiTable<LOBBY_HASH>;
     impl CombatTable = ToriiTable<COMBAT_HASH>;
     impl RoundTable = ToriiTable<ROUND_HASH>;
     impl LastUsedAttackTable = ToriiTable<LAST_USED_ATTACK_HASH>;
@@ -114,7 +112,6 @@ mod pvp {
 
     #[constructor]
     fn constructor(ref self: ContractState, attack_address: ContractAddress) {
-        register_table_with_schema::<Lobby>("pvp", "Lobby");
         register_table_with_schema::<PvpCombatTable>("pvp", "Combat");
         register_table_with_schema::<PvpRoundTable>("pvp", "Round");
         register_table_with_schema::<PvpAttackLastUsedTable>("pvp", "AttackLastUsed");
@@ -155,6 +152,7 @@ mod pvp {
             CombatTable::set_schema(
                 id,
                 @LobbyCombatInitSchema {
+                    lobby: LobbyPhase::Invited,
                     player_1: player,
                     player_2: receiver,
                     p1_loadout: loadout_address,
@@ -201,14 +199,15 @@ mod pvp {
 
             let attack_ids = pad_to_fixed(attack_ids);
             lobby.combatant_2.write((attributes, attack_ids));
+            lobby.phase.write(LobbyPhase::Responded);
             CombatTable::set_schema(
                 id,
                 @LobbyCombatRespondSchema {
-                    p2_token: (collection_address, token_id), p2_attacks: attack_ids.span(),
+                    lobby: LobbyPhase::Responded,
+                    p2_token: (collection_address, token_id),
+                    p2_attacks: attack_ids.span(),
                 },
             );
-
-            lobby.set_lobby_phase(id, LobbyPhase::Responded);
         }
 
         fn reject_invite(ref self: ContractState, id: felt252) {
@@ -258,10 +257,13 @@ mod pvp {
                 combat.p2_attack_available.write(*attack_id, true);
             }
             RoundTable::set_schema(
-                id, @PvpFirstRoundSchema { combat: id, round: 0, states: states.span() },
+                id,
+                @PvpFirstRoundSchema {
+                    lobby: LobbyPhase::Accepted, combat: id, round: 0, states: states.span(),
+                },
             );
             combat.set_next_round(id, 0);
-            lobby.set_lobby_phase(id, LobbyPhase::Accepted);
+            lobby.phase.write(LobbyPhase::Accepted);
         }
         fn commit(ref self: ContractState, id: felt252, player: Player, hash: felt252) {
             let mut combat = self.combats.entry(id);
@@ -360,7 +362,7 @@ mod pvp {
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
         fn set_lobby_phase(self: StoragePath<Mutable<LobbyNode>>, id: felt252, phase: LobbyPhase) {
-            LobbyTable::set_entity(id, @phase);
+            CombatTable::set_member(selector!("lobby"), id, @phase);
             self.phase.write(phase);
         }
 

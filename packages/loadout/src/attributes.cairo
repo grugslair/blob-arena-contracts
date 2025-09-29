@@ -7,8 +7,10 @@ use sai_packing::{BytePacking, IntPacking, MaskDowncast, ShiftCast};
 use starknet::storage_access::StorePacking;
 
 pub const MAX_ABILITY_SCORE: u8 = 100;
+pub const MAX_TEMP_ABILITY_SCORE: i8 = 100;
+pub const MIN_TEMP_ABILITY_SCORE: i8 = -100;
 
-#[derive(Copy, Drop, Serde, Default, Introspect)]
+#[derive(Copy, Drop, Serde, Default, PartialEq, Introspect)]
 pub struct Abilities {
     pub strength: u8,
     pub vitality: u8,
@@ -33,6 +35,21 @@ pub struct Affinities {
     pub magic_vulnerability: u16,
     pub pierce_vulnerability: u16,
 }
+
+#[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
+pub struct Resistances {
+    pub bludgeon: u8,
+    pub magic: u8,
+    pub pierce: u8,
+}
+
+#[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
+pub struct Vulnerabilities {
+    pub bludgeon: u16,
+    pub magic: u16,
+    pub pierce: u16,
+}
+
 
 #[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
 pub struct ResistanceMods {

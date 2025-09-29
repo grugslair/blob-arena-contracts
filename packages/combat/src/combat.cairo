@@ -1,9 +1,10 @@
+use ba_loadout::attack::effect::Duration;
 use ba_loadout::attack::{Effect, IAttackDispatcher, IAttackDispatcherTrait, Target};
 use ba_utils::{Randomness, RandomnessTrait};
 use core::num::traits::Zero;
-use sai_core_utils::{BoolIntoBinary, poseidon_hash_two};
-use crate::result::{AffectResult, AttackOutcomes, EffectResult};
-use crate::round_effect::{RoundEffects, RoundEffectsTrait};
+use sai_core_utils::BoolIntoBinary;
+use crate::result::{AttackOutcomes, EffectResult, InstantAffectResult};
+use crate::round_effect::RoundEffects;
 use crate::{CombatantState, CombatantStateTrait};
 
 #[derive(Copy, Drop, PartialEq, Introspect, Serde, Default)]
@@ -39,19 +40,37 @@ pub enum Player {
     Player2,
 }
 
+impl NotPlayer of Not<Player> {
+    fn not(a: Player) -> Player {
+        match a {
+            Player::Player1 => Player::Player2,
+            Player::Player2 => Player::Player1,
+        }
+    }
+}
+
 fn run_effect(
     ref attacker_state: CombatantState,
     ref defender_state: CombatantState,
+    player: Player,
     effect: Effect,
+    ref round_effects: RoundEffects,
     ref randomness: Randomness,
 ) -> EffectResult {
-    let mut result = match effect.target {
-        Target::None => AffectResult::None,
-        Target::Attacker => attacker_state
-            .apply_affect(effect.affect, @attacker_state, ref randomness),
-        Target::Defender => defender_state
-            .apply_affect(effect.affect, @attacker_state, ref randomness),
-    };
+    match effect.duration {
+        Duration::Instant => {
+            let mut result = match effect.target {
+                Target::None => InstantAffectResult::None,
+                Target::Attacker => attacker_state
+                    .apply_affect(effect.affect, @attacker_state, ref randomness),
+                Target::Defender => defender_state
+                    .apply_affect(effect.affect, @attacker_state, ref randomness),
+            };
+        },
+        Duration::Round(round) => {},
+        Duration::Rounds(count) => {},
+        Duration::Infinite => {},
+    }
 
     EffectResult { target: effect.target, affect: result }
 }
@@ -60,7 +79,9 @@ fn run_effect(
 pub fn run_effects(
     ref attacker_state: CombatantState,
     ref defender_state: CombatantState,
+    player: Player,
     effects: Array<Effect>,
+    ref round_effects: RoundEffects,
     ref randomness: Randomness,
 ) -> Array<EffectResult> {
     let mut results: Array<EffectResult> = ArrayTrait::new();

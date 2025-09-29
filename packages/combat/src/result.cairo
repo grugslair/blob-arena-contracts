@@ -1,5 +1,5 @@
 use ba_loadout::attack::Target;
-use ba_loadout::attributes::{AbilityMods, ResistanceMods, VulnerabilityMods};
+use ba_loadout::attributes::{ResistanceMods, Resistances, Vulnerabilities, VulnerabilityMods};
 use sai_core_utils::BoolIntoBinary;
 use crate::Player;
 
@@ -38,21 +38,22 @@ pub struct EffectResult {
 #[derive(Drop, Serde, PartialEq, Introspect)]
 pub enum AffectResult {
     None,
-    Strength: i8,
-    Vitality: i8,
-    Dexterity: i8,
-    Luck: i8,
-    BludgeonResistance: i8,
-    MagicResistance: i8,
-    PierceResistance: i8,
-    BludgeonVulnerability: i16,
-    MagicVulnerability: i16,
-    PierceVulnerability: i16,
-    Abilities: AbilityMods,
-    Resistances: ResistanceMods,
-    Vulnerabilities: VulnerabilityMods,
+    Applied,
+    Strength: u8,
+    Vitality: VitalityResult,
+    Dexterity: u8,
+    Luck: u8,
+    BludgeonResistance: u8,
+    MagicResistance: u8,
+    PierceResistance: u8,
+    BludgeonVulnerability: u16,
+    MagicVulnerability: u16,
+    PierceVulnerability: u16,
+    Abilities: AbilitiesResult,
+    Resistances: Resistances,
+    Vulnerabilities: Vulnerabilities,
     StrengthTemp: i8,
-    VitalityTemp: i8,
+    VitalityTemp: VitalityTempResult,
     DexterityTemp: i8,
     LuckTemp: i8,
     BludgeonResistanceTemp: i8,
@@ -61,13 +62,13 @@ pub enum AffectResult {
     BludgeonVulnerabilityTemp: i16,
     MagicVulnerabilityTemp: i16,
     PierceVulnerabilityTemp: i16,
-    AbilitiesTemp: AbilityMods,
+    AbilitiesTemp: AbilitiesTempResult,
     ResistancesTemp: ResistanceMods,
     VulnerabilitiesTemp: VulnerabilityMods,
     Damage: DamageResult,
     Stun: u8,
     Block: u8,
-    Health: i8,
+    Health: u8,
 }
 
 /// Represents the result of a damage calculation
@@ -79,6 +80,37 @@ pub struct DamageResult {
     pub critical: bool,
 }
 
+#[derive(Drop, Serde, Copy, PartialEq, Introspect, Default)]
+pub struct VitalityResult {
+    pub vitality: u8,
+    pub health: u8,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect, Default)]
+pub struct VitalityTempResult {
+    pub vitality: i8,
+    pub health: u8,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect, Default)]
+pub struct AbilitiesResult {
+    pub strength: u8,
+    pub vitality: u8,
+    pub dexterity: u8,
+    pub luck: u8,
+    pub health: u8,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect, Default)]
+pub struct AbilitiesTempResult {
+    strength: i8,
+    vitality: i8,
+    dexterity: i8,
+    luck: i8,
+    health: u8,
+}
+
+#[derive(Drop, Serde, PartialEq, Introspect)]
 pub struct RoundEffectResult {
     pub attacker: Player,
     pub defender: Player,

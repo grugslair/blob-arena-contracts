@@ -1,9 +1,11 @@
+use ba_loadout::Abilities;
 use ba_loadout::attack::{Affect, Damage, DamageType};
 use ba_loadout::attributes::{
-    AbilityMods, Attributes, MAX_ABILITY_SCORE, ResistanceMods, VulnerabilityMods,
+    AbilityMods, Attributes, MAX_ABILITY_SCORE, MAX_TEMP_ABILITY_SCORE, MIN_TEMP_ABILITY_SCORE,
+    ResistanceMods, Resistances, Vulnerabilities, VulnerabilityMods,
 };
 use ba_utils::{IntoRange, Randomness, RandomnessTrait};
-use core::cmp::min;
+use core::cmp::{max, min};
 use core::num::traits::{SaturatingAdd, SaturatingSub, WideMul, Zero};
 use sai_core_utils::SaturatingInto;
 use sai_packing::shifts::*;
@@ -14,7 +16,9 @@ use crate::calculations::{
     apply_luck_modifier, combine_resistance, combine_resistance_temp, damage_calculation,
     did_critical, get_new_stun_chance, increase_resistance,
 };
-use crate::result::{AffectResult, DamageResult};
+use crate::result::{
+    AbilitiesResult, AffectResult, DamageResult, VitalityResult, VitalityTempResult,
+};
 
 const BASE_HEALTH: u8 = 100;
 
@@ -135,18 +139,34 @@ fn add_ability_modifier(value: u8, modifier: i8) -> u8 {
     (Into::<_, i16>::into(value) + modifier.into()).into_range(0, MAX_ABILITY_SCORE)
 }
 
-fn modify_ability(ref current: u8, modifier: i8) -> i8 {
-    let prev_value: i8 = current.try_into().unwrap();
+fn add_ability_modifier_temp(value: i8, modifier: i8) -> i8 {
+    max(min(value.saturating_add(modifier), MIN_TEMP_ABILITY_SCORE), MAX_TEMP_ABILITY_SCORE)
+}
+
+fn modify_ability(ref current: u8, modifier: i8) -> u8 {
     current = add_ability_modifier(current, modifier);
-    (current.try_into().unwrap() - prev_value)
+    current
 }
 
-fn modify_resistance_temp(ref value: i8, change: i8) {
+fn modify_ability_temp(ref current: i8, modifier: i8) -> i8 {
+    current = add_ability_modifier_temp(current, modifier);
+    current
+}
+
+fn modify_resistance_temp(ref value: i8, change: i8) -> i8 {
     value = combine_resistance_temp(value, change);
+    value
 }
 
-fn modify_resistance<T, +Drop<T>, +Into<T, i16>>(ref value: u8, change: T) {
+fn modify_resistance<T, +Drop<T>, +Into<T, i16>>(ref value: u8, change: T) -> u8 {
     value = combine_resistance(value, change);
+    value
+}
+
+fn modify_vulnerability(ref value: u16, change: i16) -> u16 {
+    let new: i32 = value.into() + change.into();
+    value = new.saturating_into();
+    value
 }
 
 fn combine_temp(value: u8, temp: i8) -> u8 {
@@ -218,98 +238,97 @@ pub impl CombatantStateImpl of CombatantStateTrait {
     }
 
 
-    fn modify_health(ref self: CombatantState, health: i8) -> i16 {
-        let starting_health: i16 = self.health.into();
+    fn modify_health(ref self: CombatantState, change: i8) -> u8 {
+        let health: i16 = self.health.try_into().unwrap();
         self
             .health =
-                min(
-                    self.max_health(),
-                    self.health.try_into().unwrap().saturating_add(health).saturating_into(),
-                );
-        self.health.try_into().unwrap() - starting_health
+                min(self.max_health(), health.saturating_add(change.into()).saturating_into());
+        self.health
     }
 
-    fn modify_strength(ref self: CombatantState, amount: i8) -> i8 {
+    fn modify_strength(ref self: CombatantState, amount: i8) -> u8 {
         modify_ability(ref self.strength, amount)
     }
 
-    fn modify_vitality(ref self: CombatantState, amount: i8) -> i8 {
-        let change = modify_ability(ref self.vitality, amount);
+    fn modify_vitality(ref self: CombatantState, amount: i8) -> VitalityResult {
+        let vitality = modify_ability(ref self.vitality, amount);
         self.cap_health();
-        change
+        VitalityResult { vitality, health: self.health }
     }
 
-    fn modify_dexterity(ref self: CombatantState, amount: i8) -> i8 {
+    fn modify_dexterity(ref self: CombatantState, amount: i8) -> u8 {
         modify_ability(ref self.dexterity, amount)
     }
 
-    fn modify_luck(ref self: CombatantState, amount: i8) -> i8 {
+    fn modify_luck(ref self: CombatantState, amount: i8) -> u8 {
         modify_ability(ref self.luck, amount)
     }
 
-    fn modify_abilities(ref self: CombatantState, mods: AbilityMods) {
-        self.modify_strength(mods.strength);
+    fn modify_abilities(ref self: CombatantState, mods: AbilityMods) -> AbilitiesResult {
+        let strength = self.modify_strength(mods.strength);
         self.modify_vitality(mods.vitality);
-        self.modify_dexterity(mods.dexterity);
-        self.modify_luck(mods.luck);
+        let dexterity = self.modify_dexterity(mods.dexterity);
+        let luck = self.modify_luck(mods.luck);
+        AbilitiesResult { strength, vitality: self.vitality, dexterity, luck, health: self.health }
     }
 
-    fn modify_bludgeon_resistance(ref self: CombatantState, amount: i8) {
-        modify_resistance(ref self.bludgeon_resistance, amount);
+    fn modify_bludgeon_resistance(ref self: CombatantState, amount: i8) -> u8 {
+        modify_resistance(ref self.bludgeon_resistance, amount)
     }
 
-    fn modify_magic_resistance(ref self: CombatantState, amount: i8) {
-        modify_resistance(ref self.magic_resistance, amount);
+    fn modify_magic_resistance(ref self: CombatantState, amount: i8) -> u8 {
+        modify_resistance(ref self.magic_resistance, amount)
     }
 
-    fn modify_pierce_resistance(ref self: CombatantState, amount: i8) {
-        modify_resistance(ref self.pierce_resistance, amount);
+    fn modify_pierce_resistance(ref self: CombatantState, amount: i8) -> u8 {
+        modify_resistance(ref self.pierce_resistance, amount)
     }
 
-    fn modify_resistances(ref self: CombatantState, mods: ResistanceMods) {
-        self.modify_bludgeon_resistance(mods.bludgeon);
-        self.modify_magic_resistance(mods.magic);
-        self.modify_pierce_resistance(mods.pierce);
+    fn modify_resistances(ref self: CombatantState, mods: ResistanceMods) -> Resistances {
+        let bludgeon = self.modify_bludgeon_resistance(mods.bludgeon);
+        let magic = self.modify_magic_resistance(mods.magic);
+        let pierce = self.modify_pierce_resistance(mods.pierce);
+        Resistances { bludgeon, magic, pierce }
     }
 
-    fn modify_bludgeon_vulnerability(ref self: CombatantState, amount: i16) {
-        let new: i32 = self.bludgeon_resistance.into() + amount.into();
-        self.bludgeon_vulnerability = new.saturating_into();
+    fn modify_bludgeon_vulnerability(ref self: CombatantState, amount: i16) -> u16 {
+        modify_vulnerability(ref self.bludgeon_vulnerability, amount)
     }
 
-    fn modify_magic_vulnerability(ref self: CombatantState, amount: i16) {
-        let new: i32 = self.magic_resistance.into() + amount.into();
-        self.magic_vulnerability = new.saturating_into();
+    fn modify_magic_vulnerability(ref self: CombatantState, amount: i16) -> u16 {
+        modify_vulnerability(ref self.magic_vulnerability, amount)
     }
 
-    fn modify_pierce_vulnerability(ref self: CombatantState, amount: i16) {
-        let new: i32 = self.pierce_resistance.into() + amount.into();
-        self.pierce_vulnerability = new.saturating_into();
+    fn modify_pierce_vulnerability(ref self: CombatantState, amount: i16) -> u16 {
+        modify_vulnerability(ref self.pierce_vulnerability, amount)
     }
 
-    fn modify_vulnerabilities(ref self: CombatantState, mods: VulnerabilityMods) {
-        self.modify_bludgeon_vulnerability(mods.bludgeon);
-        self.modify_magic_vulnerability(mods.magic);
-        self.modify_pierce_vulnerability(mods.pierce);
+    fn modify_vulnerabilities(
+        ref self: CombatantState, mods: VulnerabilityMods,
+    ) -> Vulnerabilities {
+        let bludgeon = self.modify_bludgeon_vulnerability(mods.bludgeon);
+        let magic = self.modify_magic_vulnerability(mods.magic);
+        let pierce = self.modify_pierce_vulnerability(mods.pierce);
+        Vulnerabilities { bludgeon, magic, pierce }
     }
 
 
     fn modify_strength_temp(ref self: CombatantState, amount: i8) -> i8 {
-        modify_ability(ref self.strength, amount)
+        modify_ability_temp(ref self.strength_temp, amount)
     }
 
-    fn modify_vitality_temp(ref self: CombatantState, amount: i8) -> i8 {
-        let change = modify_ability(ref self.vitality, amount);
+    fn modify_vitality_temp(ref self: CombatantState, amount: i8) -> VitalityTempResult {
+        let vitality = modify_ability_temp(ref self.vitality_temp, amount);
         self.cap_health();
-        change
+        VitalityTempResult { vitality: vitality, health: self.health }
     }
 
     fn modify_dexterity_temp(ref self: CombatantState, amount: i8) -> i8 {
-        modify_ability(ref self.dexterity, amount)
+        modify_ability_temp(ref self.dexterity_temp, amount)
     }
 
     fn modify_luck_temp(ref self: CombatantState, amount: i8) -> i8 {
-        modify_ability(ref self.luck, amount)
+        modify_ability_temp(ref self.luck_temp, amount)
     }
 
     fn modify_abilities_temp(ref self: CombatantState, mods: AbilityMods) {
@@ -381,8 +400,9 @@ pub impl CombatantStateImpl of CombatantStateTrait {
         (100 + vulnerability - resistance - vulnerability * resistance / 100).saturating_into()
     }
 
-    fn cap_health(ref self: CombatantState) {
+    fn cap_health(ref self: CombatantState) -> u8 {
         self.health = min(self.max_health(), self.health);
+        self.health
     }
 
     fn max_health(self: @CombatantState) -> u8 {
@@ -411,124 +431,99 @@ pub impl CombatantStateImpl of CombatantStateTrait {
     ) -> AffectResult {
         match affect {
             Affect::None => AffectResult::None,
-            Affect::Strength(amount) => {
-                self.modify_strength(amount);
-                AffectResult::Applied
-            },
-            Affect::Vitality(amount) => {
-                self.modify_vitality(amount);
-                AffectResult::Applied
-            },
-            Affect::Dexterity(amount) => {
-                self.modify_dexterity(amount);
-                AffectResult::Applied
-            },
-            Affect::Luck(amount) => {
-                self.modify_luck(amount);
-                AffectResult::Applied
-            },
-            Affect::Abilities(mods) => {
-                self.modify_abilities(mods);
-                AffectResult::Applied
-            },
-            Affect::BludgeonResistance(amount) => {
-                self.modify_bludgeon_resistance(amount);
-                AffectResult::Applied
-            },
-            Affect::MagicResistance(amount) => {
-                self.modify_magic_resistance(amount);
-                AffectResult::Applied
-            },
-            Affect::PierceResistance(amount) => {
-                self.modify_pierce_resistance(amount);
-                AffectResult::Applied
-            },
-            Affect::Resistances(mods) => {
-                self.modify_resistances(mods);
-                AffectResult::Applied
-            },
-            Affect::BludgeonVulnerability(amount) => {
-                self.modify_bludgeon_vulnerability(amount);
-                AffectResult::Applied
-            },
-            Affect::MagicVulnerability(amount) => {
-                self.modify_magic_vulnerability(amount);
-                AffectResult::Applied
-            },
-            Affect::PierceVulnerability(amount) => {
-                self.modify_pierce_vulnerability(amount);
-                AffectResult::Applied
-            },
-            Affect::Vulnerabilities(mods) => {
-                self.modify_vulnerabilities(mods);
-                AffectResult::Applied
-            },
+            Affect::Strength(amount) => AffectResult::Strength(self.modify_strength(amount)),
+            Affect::Vitality(amount) => AffectResult::Vitality(self.modify_vitality(amount)),
+            Affect::Dexterity(amount) => AffectResult::Dexterity(self.modify_dexterity(amount)),
+            Affect::Luck(amount) => AffectResult::Luck(self.modify_luck(amount)),
+            Affect::Abilities(mods) => AffectResult::Abilities(self.modify_abilities(mods)),
+            Affect::BludgeonResistance(amount) => AffectResult::BludgeonResistance(
+                self.modify_bludgeon_resistance(amount),
+            ),
+            Affect::MagicResistance(amount) => AffectResult::MagicResistance(
+                self.modify_magic_resistance(amount),
+            ),
+            Affect::PierceResistance(amount) => AffectResult::PierceResistance(
+                self.modify_pierce_resistance(amount),
+            ),
+            Affect::Resistances(mods) => AffectResult::Resistances(self.modify_resistances(mods)),
+            Affect::BludgeonVulnerability(amount) => AffectResult::BludgeonVulnerability(
+                self.modify_bludgeon_vulnerability(amount),
+            ),
+            Affect::MagicVulnerability(amount) => AffectResult::MagicVulnerability(
+                self.modify_magic_vulnerability(amount),
+            ),
+            Affect::PierceVulnerability(amount) => AffectResult::PierceVulnerability(
+                self.modify_pierce_vulnerability(amount),
+            ),
+            Affect::Vulnerabilities(mods) => AffectResult::Vulnerabilities(
+                self.modify_vulnerabilities(mods),
+            ),
             Affect::Damage(damage) => {
                 AffectResult::Damage(self.apply_damage(damage, attacker_state, ref randomness))
             },
             Affect::Stun(stun) => {
                 self.increase_stun(stun);
-                AffectResult::Applied
+                AffectResult::Stun(stun)
             },
             Affect::Health(health) => {
                 self.modify_health(health);
-                AffectResult::Applied
+                AffectResult::Health(health)
             },
             Affect::Block(block) => {
                 self.increase_block(block);
-                AffectResult::Applied
+                AffectResult::Block(block)
             },
             Affect::StrengthTemp(amount) => {
                 self.modify_strength_temp(amount);
-                AffectResult::Applied
+                AffectResult::StrengthTemp(amount)
             },
             Affect::VitalityTemp(amount) => {
                 self.modify_vitality_temp(amount);
-                AffectResult::Applied
+                AffectResult::VitalityTemp(amount)
             },
             Affect::DexterityTemp(amount) => {
                 self.modify_dexterity_temp(amount);
-                AffectResult::Applied
+                AffectResult::DexterityTemp(amount)
             },
             Affect::LuckTemp(amount) => {
                 self.modify_luck_temp(amount);
-                AffectResult::Applied
+                AffectResult::LuckTemp(amount)
             },
             Affect::AbilitiesTemp(mods) => {
                 self.modify_abilities_temp(mods);
-                AffectResult::Applied
+                AffectResult::AbilitiesTemp(mods)
             },
             Affect::BludgeonResistanceTemp(amount) => {
                 self.modify_bludgeon_resistance_temp(amount);
-                AffectResult::Applied
+                AffectResult::BludgeonResistanceTemp(amount)
             },
             Affect::MagicResistanceTemp(amount) => {
                 self.modify_magic_resistance_temp(amount);
-                AffectResult::Applied
+                AffectResult::MagicResistanceTemp(amount)
             },
             Affect::PierceResistanceTemp(amount) => {
                 self.modify_pierce_resistance_temp(amount);
-                AffectResult::Applied
+                AffectResult::PierceResistanceTemp(amount)
             },
             Affect::ResistancesTemp(mods) => {
                 self.modify_resistances_temp(mods);
-                AffectResult::Applied
+                AffectResult::ResistancesTemp(mods)
             },
             Affect::BludgeonVulnerabilityTemp(amount) => {
                 self.modify_bludgeon_vulnerability_temp(amount);
-                AffectResult::Applied
+                AffectResult::BludgeonVulnerabilityTemp(amount)
             },
             Affect::MagicVulnerabilityTemp(amount) => {
                 self.modify_magic_vulnerability_temp(amount);
-                AffectResult::Applied
+                AffectResult::MagicVulnerabilityTemp(amount)
             },
             Affect::PierceVulnerabilityTemp(amount) => {
                 self.modify_pierce_vulnerability_temp(amount);
-                AffectResult::Applied
+                AffectResult::PierceVulnerabilityTemp(amount)
             },
             Affect::VulnerabilitiesTemp(mods) => {
                 self.modify_vulnerabilities_temp(mods);
-                AffectResult::Applied
+                AffectResult::VulnerabilitiesTemp(mods)
             },
         }
     }
