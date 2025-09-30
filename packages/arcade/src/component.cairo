@@ -1,6 +1,6 @@
 use ba_loadout::Attributes;
 use ba_utils::storage::{FeltArrayReadWrite, ShortArrayStore};
-use crate::attempt::ArcadePhase;
+use crate::attempt::ArcadeProgress;
 
 mod errors {
     pub const RESPAWN_WHEN_NOT_LOST: felt252 = 'Cannot respawn, player not lost';
@@ -16,7 +16,7 @@ pub struct Opponent {
 
 #[derive(Drop)]
 pub struct ArcadeAttackResult {
-    pub phase: ArcadePhase,
+    pub phase: ArcadeProgress,
     pub stage: u32,
     pub combat_n: u32,
     pub health: u8,
@@ -25,21 +25,21 @@ pub struct ArcadeAttackResult {
 #[starknet::component]
 pub mod arcade_component {
     use ba_arcade::IArcadeSetup;
-    use ba_arcade::attempt::{ArcadePhase, AttemptNode, AttemptNodePath, AttemptNodeTrait};
-    use ba_arcade::table::{ArcadeAttempt, ArcadeRound, AttackLastUsed};
-    use ba_combat::combat::run_round;
+    use ba_arcade::attempt::{ArcadeProgress, AttemptNode, AttemptNodePath, AttemptNodeTrait};
+    use ba_arcade::table::{ArcadeAttempt, AttackLastUsed};
     use ba_combat::combatant::get_max_health_percent;
-    use ba_combat::{CombatantState, Player};
+    use ba_combat::{CombatTrait, CombatantState, Player};
     use ba_credit::arena_credit_consume;
     use ba_loadout::attack::IAttackDispatcher;
     use ba_loadout::get_loadout;
     use ba_utils::vrf::consume_randomness;
     use ba_utils::{Randomness, erc721_token_hash, uuid};
-    use beacon_library::{ToriiTable, register_table_with_schema, set_entity, set_member};
+    use beacon_library::{
+        ToriiTable, register_table_with_schema, set_entity, set_member, set_schema,
+    };
     use core::cmp::min;
     use core::num::traits::{SaturatingAdd, Zero};
     use core::panic_with_const_felt252;
-    use core::poseidon::poseidon_hash_span;
     use sai_core_utils::{poseidon_hash_three, poseidon_hash_two};
     use sai_ownable::OwnableTrait;
     use sai_token::erc721::erc721_owner_of;
@@ -48,7 +48,7 @@ pub mod arcade_component {
         StoragePointerReadAccess, StoragePointerWriteAccess,
     };
     use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
-    use crate::table::AttemptRoundTrait;
+    use crate::table::{ArcadeRoundResult, ArcadeZeroRoundResult, AttemptRoundTrait};
     use super::{ArcadeAttackResult, Opponent, errors};
 
 
@@ -145,7 +145,7 @@ pub mod arcade_component {
         use ba_utils::Randomness;
         use starknet::ContractAddress;
         use crate::Opponent;
-        use super::{ArcadeAttackResult, ArcadePhase, AttemptNodePath};
+        use super::{ArcadeAttackResult, ArcadeProgress, AttemptNodePath};
 
         pub trait ArcadeInternalTrait<TState> {
             fn init(
@@ -182,7 +182,7 @@ pub mod arcade_component {
                 health: Option<u8>,
             );
 
-            fn set_phase(ref self: AttemptNodePath, attempt_id: felt252, phase: ArcadePhase);
+            fn set_phase(ref self: AttemptNodePath, attempt_id: felt252, phase: ArcadeProgress);
             fn set_loss(ref self: TState, ref attempt: AttemptNodePath, attempt_id: felt252);
             fn use_credit(ref self: TState, player: ContractAddress);
             fn consume_randomness(ref self: TState, salt: felt252) -> Randomness;
@@ -209,7 +209,7 @@ pub mod arcade_component {
             self.credit_address.write(credit_address);
             self.vrf_address.write(vrf_address);
             register_table_with_schema::<ArcadeAttempt>(namespace.clone(), "ArcadeAttempt");
-            register_table_with_schema::<ArcadeRound>(namespace.clone(), "ArcadeRound");
+            register_table_with_schema::<ArcadeRoundResult>(namespace.clone(), "ArcadeRound");
             register_table_with_schema::<AttackLastUsed>(namespace, "AttackLastUsed");
         }
 
@@ -247,7 +247,7 @@ pub mod arcade_component {
                 health_regen,
                 respawns: 0,
                 stage: 0,
-                phase: ArcadePhase::Active,
+                phase: ArcadeProgress::Active,
             };
             set_entity(ATTEMPT_HASH, attempt_id, @attempt);
             attempt_ptr
@@ -262,46 +262,48 @@ pub mod arcade_component {
 
             let stage = attempt_ptr.stage.read();
             let combat_n = stage + attempt_ptr.respawns.read();
+            let combat_id: felt252 = attempt_id + (combat_n.into());
 
             attempt_ptr.assert_caller_is_owner();
-            assert(attempt_ptr.phase.read() == ArcadePhase::Active, 'Game is not active');
+            assert(attempt_ptr.phase.read() == ArcadeProgress::Active, 'Game is not active');
             let attack_dispatcher = IAttackDispatcher {
                 contract_address: self.attack_address.read(),
             };
-            let mut combat = attempt_ptr.combats.entry(combat_n);
-            let round = combat.round.read();
+            let mut combat_node = attempt_ptr.combats.entry(combat_n);
+            let round = combat_node.round.read();
             let mut randomness = consume_randomness(
                 self.vrf_address.read(), poseidon_hash_three(attempt_id, combat_n, round),
             );
-
-            let opponent_attack = combat
-                .get_opponent_attack(attack_dispatcher, round, ref randomness);
-            let player_attack = match attempt_ptr.attacks_available.read(attack_id) {
-                false => 0x0,
-                true => combat.player_attack_cooldown(attack_dispatcher, attack_id, round),
-            };
-            let result = run_round(
-                combat.player_state.read(),
-                combat.opponent_state.read(),
-                attack_dispatcher,
-                player_attack,
-                opponent_attack,
+            let [player_state_ptr, opponent_state_ptr] = [
+                combat_node.player_state, combat_node.opponent_state,
+            ];
+            let mut combat = CombatTrait::new(
+                combat_id,
                 round,
-                ref randomness,
-            )
-                .to_round(attempt_id, combat_n);
-            combat.player_state.write(*result.states.at(0));
-            combat.opponent_state.write(*result.states.at(1));
-            if result.phase == ArcadePhase::Active {
-                combat.round.write(round + 1);
+                player_state_ptr.read(),
+                opponent_state_ptr.read(),
+                randomness,
+                attack_dispatcher,
+            );
+
+            let opponent_attack = combat_node
+                .get_opponent_attack(attack_dispatcher, round, ref randomness);
+            combat.set_attacks(attack_id, opponent_attack);
+            combat.run_attack_cooldown(Player::Player1);
+            combat.run_round();
+            let randomness = combat.randomness;
+            let result: ArcadeRoundResult = combat.to_arcade_round(attempt_id, combat_n);
+
+            if result.progress == ArcadeProgress::Active {
+                combat_node.round.write(round + 1);
             } else {
-                combat.phase.write(result.phase);
+                combat_node.phase.write(result.progress);
             }
             set_entity(ROUND_HASH, poseidon_hash_three(attempt_id, combat_n, round), @result);
-            if player_attack.is_non_zero() {
+            if result.player_attack.is_non_zero() {
                 set_entity(
                     LAST_USED_ATTACK_HASH,
-                    poseidon_hash_two(attempt_id, attack_id),
+                    poseidon_hash_two(combat_id, attack_id),
                     @AttackLastUsed {
                         attack: attack_id, attempt: attempt_id, combat: combat_n, round,
                     },
@@ -310,7 +312,7 @@ pub mod arcade_component {
             (
                 attempt_ptr,
                 ArcadeAttackResult {
-                    phase: result.phase, stage, combat_n, health: *result.states.at(0).health,
+                    phase: result.progress, stage, combat_n, health: result.player_state.health,
                 },
                 randomness,
             )
@@ -330,12 +332,12 @@ pub mod arcade_component {
 
             let combat_n = stage + respawns;
             match attempt_ptr.combats.entry(combat_n).phase.read() {
-                ArcadePhase::None => { panic_with_const_felt252::<errors::NOT_ACTIVE>(); },
-                ArcadePhase::PlayerWon |
-                ArcadePhase::Active => {
+                ArcadeProgress::None => { panic_with_const_felt252::<errors::NOT_ACTIVE>(); },
+                ArcadeProgress::PlayerWon |
+                ArcadeProgress::Active => {
                     panic_with_const_felt252::<errors::RESPAWN_WHEN_NOT_LOST>();
                 },
-                ArcadePhase::PlayerLost => {},
+                ArcadeProgress::PlayerLost => {},
             }
 
             attempt_ptr.respawns.write(respawns);
@@ -351,11 +353,11 @@ pub mod arcade_component {
         fn forfeit_attempt(ref self: ComponentState<TContractState>, attempt_id: felt252) {
             let mut attempt_ptr = self.attempts.entry(attempt_id);
             attempt_ptr.assert_caller_is_owner();
-            assert(attempt_ptr.phase.read() == ArcadePhase::Active, errors::NOT_ACTIVE);
+            assert(attempt_ptr.phase.read() == ArcadeProgress::Active, errors::NOT_ACTIVE);
             Self::set_loss(ref self, ref attempt_ptr, attempt_id);
         }
 
-        fn set_phase(ref self: AttemptNodePath, attempt_id: felt252, phase: ArcadePhase) {
+        fn set_phase(ref self: AttemptNodePath, attempt_id: felt252, phase: ArcadeProgress) {
             self.phase.write(phase);
             set_member(ATTEMPT_HASH, selector!("phase"), attempt_id, @phase);
         }
@@ -365,7 +367,7 @@ pub mod arcade_component {
             ref attempt: AttemptNodePath,
             attempt_id: felt252,
         ) {
-            Self::set_phase(ref attempt, attempt_id, ArcadePhase::PlayerLost);
+            Self::set_phase(ref attempt, attempt_id, ArcadeProgress::PlayerLost);
             let token_hash = attempt.token_hash.read();
             assert(self.current_attempt.read(token_hash) == attempt_id, 'Token not in Challenge');
             self.current_attempt.write(token_hash, 0x0);
@@ -391,18 +393,14 @@ pub mod arcade_component {
             }
             let opponent_state: CombatantState = opponent.attributes.into();
             combat.create_combat(player_state, opponent_state, opponent.attacks);
-            set_entity(
+            set_schema(
                 ROUND_HASH,
-                poseidon_hash_span([attempt_id, combat_n.into()].span()),
-                @ArcadeRound {
+                poseidon_hash_two(attempt_id, combat_n),
+                @ArcadeZeroRoundResult {
                     attempt: attempt_id,
                     combat: combat_n,
-                    round: 0,
-                    attacks: [].span(),
-                    states: [player_state, opponent_state].span(),
-                    first: Player::Player1,
-                    outcomes: [].span(),
-                    phase: ArcadePhase::Active,
+                    states: [player_state, opponent_state],
+                    progress: ArcadeProgress::Active,
                 },
             );
         }

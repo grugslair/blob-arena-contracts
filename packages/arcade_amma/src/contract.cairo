@@ -50,7 +50,7 @@ trait IArcadeAmma<TState> {
 
 #[starknet::contract]
 mod arcade_amma {
-    use ba_arcade::attempt::{ArcadePhase, AttemptNodeTrait};
+    use ba_arcade::attempt::{ArcadeProgress, AttemptNodeTrait};
     use ba_arcade::{IArcade, Opponent, arcade_component};
     use ba_loadout::PartialAttributes;
     use ba_loadout::attack::interface::maybe_create_attacks_array;
@@ -178,11 +178,13 @@ mod arcade_amma {
                 ref self.arcade, attempt_id, attack_id,
             );
 
-            if result.phase == ArcadePhase::PlayerWon {
+            if result.phase == ArcadeProgress::PlayerWon {
                 let next_stage = result.stage + 1;
                 let gen_stages = self.gen_stages.read();
                 if next_stage == gen_stages + 1 {
-                    ArcadeInternal::set_phase(ref attempt_ptr, attempt_id, ArcadePhase::PlayerWon);
+                    ArcadeInternal::set_phase(
+                        ref attempt_ptr, attempt_id, ArcadeProgress::PlayerWon,
+                    );
                 } else if attempt_ptr.is_not_expired() {
                     attempt_ptr.stage.write(next_stage);
                     let health = result.health;

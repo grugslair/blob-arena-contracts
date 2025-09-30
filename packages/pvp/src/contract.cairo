@@ -71,8 +71,8 @@ pub trait IPvp<TContractState> {
 
 #[starknet::contract]
 mod pvp {
-    use ba_combat::CombatantState;
-    use ba_combat::combat::CombatProgress;
+    use ba_combat::combat::{CombatProgress, RoundZeroResult, set_attacks_available};
+    use ba_combat::{CombatantState, RoundResult};
     use ba_loadout::attack::IAttackDispatcher;
     use ba_loadout::get_loadout;
     use ba_utils::uuid;
@@ -82,15 +82,14 @@ mod pvp {
     use sai_core_utils::poseidon_hash_two;
     use sai_token::erc721::erc721_owner_of;
     use starknet::storage::{
-        Map, Mutable, StorageMapWriteAccess, StoragePath, StoragePathEntry,
-        StoragePointerReadAccess, StoragePointerWriteAccess,
+        Map, Mutable, StoragePath, StoragePathEntry, StoragePointerReadAccess,
+        StoragePointerWriteAccess,
     };
     use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
     use crate::components::{CombatPhase, LobbyNode, LobbyPhase, PvpNode, PvpNodeTrait};
     use crate::tables::{
         LobbyCombatInitSchema, LobbyCombatRespondSchema, LobbyCombatStartSchema,
-        PvpAttackLastUsedTable, PvpCombatTable, PvpFirstRoundSchema, PvpRoundTable,
-        PvpRoundTableTrait, WinVia,
+        PvpAttackLastUsedTable, PvpCombatTable, WinVia,
     };
     use crate::utils::pad_to_fixed;
     use super::{IPvp, Player};
@@ -113,7 +112,7 @@ mod pvp {
     #[constructor]
     fn constructor(ref self: ContractState, attack_address: ContractAddress) {
         register_table_with_schema::<PvpCombatTable>("pvp", "Combat");
-        register_table_with_schema::<PvpRoundTable>("pvp", "Round");
+        register_table_with_schema::<RoundResult>("pvp", "Round");
         register_table_with_schema::<PvpAttackLastUsedTable>("pvp", "AttackLastUsed");
         self.attack_dispatcher.write(IAttackDispatcher { contract_address: attack_address });
     }
@@ -162,9 +161,7 @@ mod pvp {
                     time_limit,
                 },
             );
-            for attack_id in attack_ids {
-                combat.p1_attack_available.write(attack_id, true);
-            }
+            set_attacks_available(id, Player::Player1, attack_ids.span());
             id
         }
 
@@ -253,14 +250,9 @@ mod pvp {
             let (attributes_2, attack_ids_2) = lobby.combatant_2.read();
             let states: [CombatantState; 2] = [attributes_1.into(), attributes_2.into()];
             combat.player_states.write(states);
-            for attack_id in attack_ids_2.span() {
-                combat.p2_attack_available.write(*attack_id, true);
-            }
+            set_attacks_available(id, Player::Player2, attack_ids_2.span());
             RoundTable::set_schema(
-                id,
-                @PvpFirstRoundSchema {
-                    lobby: LobbyPhase::Accepted, combat: id, round: 0, states: states.span(),
-                },
+                id, @RoundZeroResult { combat: id, states, progress: CombatProgress::Active },
             );
             combat.set_next_round(id, 0);
             lobby.phase.write(LobbyPhase::Accepted);
@@ -301,20 +293,18 @@ mod pvp {
                 combat.reveal.write([attack, salt]);
                 combat.set_combat_phase_and_time(id, next_phase);
             } else if combat.commit.read() == poseidon_hash_two(attack, salt) {
-                let result = combat.run_round(self.attack_dispatcher.read(), phase, attack, salt);
+                let result = combat
+                    .run_round(id, self.attack_dispatcher.read(), phase, attack, salt);
                 match result.progress {
                     CombatProgress::Active => combat.set_next_round(id, result.round),
-                    CombatProgress::Ended(winner) => match winner {
-                        Player::Player1 => combat
-                            .set_win_phase(id, CombatPhase::WinnerPlayer1, WinVia::Combat),
-                        Player::Player2 => combat
-                            .set_win_phase(id, CombatPhase::WinnerPlayer2, WinVia::Combat),
-                    },
+                    CombatProgress::Ended(Player::Player1) => combat
+                        .set_win_phase(id, CombatPhase::WinnerPlayer1, WinVia::Combat),
+                    CombatProgress::Ended(Player::Player2) => combat
+                        .set_win_phase(id, CombatPhase::WinnerPlayer2, WinVia::Combat),
+                    CombatProgress::None => panic_with_felt252('Invalid combat progress'),
                 }
                 combat.player_states.write(result.states);
-                RoundTable::set_entity(
-                    poseidon_hash_two(id, result.round), @result.to_pvp_round(id),
-                );
+                RoundTable::set_entity(id + result.round.into(), @result);
             } else {
                 combat.set_win_phase(id, next_phase, WinVia::IncorrectReveal);
             }

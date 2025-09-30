@@ -31,7 +31,7 @@ trait IArcadeClassic<TState> {
 
 #[starknet::contract]
 mod arcade_classic {
-    use ba_arcade::attempt::{ArcadePhase, AttemptNodePath, AttemptNodeTrait};
+    use ba_arcade::attempt::{ArcadeProgress, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::{IArcade, arcade_component};
     use ba_loadout::attack::interface::maybe_create_attacks_array;
     use beacon_library::{ToriiTable, register_table_with_schema};
@@ -122,10 +122,12 @@ mod arcade_classic {
             let (mut attempt_ptr, result, _) = ArcadeInternal::attack_attempt(
                 ref self.arcade, attempt_id, attack_id,
             );
-            if result.phase == ArcadePhase::PlayerWon {
+            if result.phase == ArcadeProgress::PlayerWon {
                 let next_stage = result.stage + 1;
                 if next_stage == self.stages_len.read() {
-                    ArcadeInternal::set_phase(ref attempt_ptr, attempt_id, ArcadePhase::PlayerWon);
+                    ArcadeInternal::set_phase(
+                        ref attempt_ptr, attempt_id, ArcadeProgress::PlayerWon,
+                    );
                 } else if attempt_ptr.is_not_expired() {
                     attempt_ptr.stage.write(next_stage);
                     let health = result.health;
