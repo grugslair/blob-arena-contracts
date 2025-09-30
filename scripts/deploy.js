@@ -3,7 +3,7 @@ import { makeArenaBlobertCalls } from "./set-arena-token.js";
 import { makeArcadeClassicCalls } from "./set-arcade-classic.js";
 import { makeLoadoutsClassic } from "./set-loadout-classic.js";
 import { makeLoadoutsAmma } from "./set-loadout-amma.js";
-import { stark, config } from "starknet";
+import { config } from "starknet";
 import { dumpToml, loadToml } from "./stark-utils.js";
 import { makeArcadeAmmaCalls } from "./set-arcade-amma.js";
 import { makeArenaCreditCalls } from "./set-arena-credits.js";
