@@ -69,6 +69,16 @@ pub impl AttemptRoundImpl of AttemptRoundTrait {
     }
 }
 
+#[starknet::contract]
+pub mod arcade_round_result_model {
+    use super::ArcadeRoundResult;
+    #[storage]
+    struct Storage {}
+    #[abi(embed_v0)]
+    impl ArcadeRoundResultModelImpl =
+        beacon_entity::interface::ISaiModelImpl<ContractState, ArcadeRoundResult>;
+}
+
 #[cfg(test)]
 mod tests {
     use beacon_entity::get_schema_size;

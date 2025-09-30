@@ -62,11 +62,11 @@ mod arcade_amma {
     use sai_core_utils::poseidon_hash_two;
     use sai_ownable::{OwnableTrait, ownable_component};
     use sai_return::emit_return;
-    use starknet::ContractAddress;
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
         StoragePointerWriteAccess,
     };
+    use starknet::{ClassHash, ContractAddress};
     use crate::systems::{attack_slots, random_selection};
     use super::{AmmaOpponent, AmmaOpponentInput, IArcadeAmma, IdTagAttack};
 
@@ -119,6 +119,7 @@ mod arcade_amma {
     fn constructor(
         ref self: ContractState,
         owner: ContractAddress,
+        arcade_round_result_class_hash: ClassHash,
         attack_address: ContractAddress,
         loadout_address: ContractAddress,
         credit_address: ContractAddress,
@@ -129,6 +130,7 @@ mod arcade_amma {
         ArcadeInternal::init(
             ref self.arcade,
             "arcade_amma",
+            arcade_round_result_class_hash,
             attack_address,
             loadout_address,
             credit_address,

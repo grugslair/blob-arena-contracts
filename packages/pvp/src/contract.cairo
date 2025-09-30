@@ -76,7 +76,7 @@ mod pvp {
     use ba_loadout::attack::IAttackDispatcher;
     use ba_loadout::get_loadout;
     use ba_utils::uuid;
-    use beacon_library::{ToriiTable, register_table_with_schema};
+    use beacon_library::{ToriiTable, register_table, register_table_with_schema};
     use core::num::traits::Zero;
     use core::{panic_with_const_felt252, panic_with_felt252};
     use sai_core_utils::poseidon_hash_two;
@@ -85,7 +85,7 @@ mod pvp {
         Map, Mutable, StoragePath, StoragePathEntry, StoragePointerReadAccess,
         StoragePointerWriteAccess,
     };
-    use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
+    use starknet::{ClassHash, ContractAddress, get_block_timestamp, get_caller_address};
     use crate::components::{CombatPhase, LobbyNode, LobbyPhase, PvpNode, PvpNodeTrait};
     use crate::tables::{
         LobbyCombatInitSchema, LobbyCombatRespondSchema, LobbyCombatStartSchema,
@@ -110,10 +110,14 @@ mod pvp {
     }
 
     #[constructor]
-    fn constructor(ref self: ContractState, attack_address: ContractAddress) {
+    fn constructor(
+        ref self: ContractState,
+        round_result_class_hash: ClassHash,
+        attack_address: ContractAddress,
+    ) {
         register_table_with_schema::<PvpCombatTable>("pvp", "Combat");
-        register_table_with_schema::<RoundResult>("pvp", "Round");
         register_table_with_schema::<PvpAttackLastUsedTable>("pvp", "AttackLastUsed");
+        register_table("pvp", "Round", round_result_class_hash);
         self.attack_dispatcher.write(IAttackDispatcher { contract_address: attack_address });
     }
 

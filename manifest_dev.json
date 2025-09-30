@@ -12,13 +12,35 @@
       "calldata_compiled": []
     },
     "attack_model": {
-      "contract_address": "0x17d74172eb09a02227a970ac259c989f55acf1cce1fd426970c3e2c9b8eac8d",
+      "contract_address": "0x5112629a79f777d78f44394aa1f5c2acc36974687a3519d389ae6dde0118e8a",
       "tag": "attack_model",
-      "class": "attack_model",
       "salt": "0x0",
       "unique": false,
       "once": true,
-      "class_hash": "0x5222c021521d5eba68520dcf98a6cd5b21975b8e5cf8a75b904f1a623d8e125",
+      "class": "attack_model",
+      "class_hash": "0x1c3e4990eeaed52a18760af335ffe0610ce8a7837ab1ceffde9c92854c294ac",
+      "calldata": [],
+      "calldata_compiled": []
+    },
+    "round_result_model": {
+      "contract_address": "0x3e242633ce889fb635baee33146334e8728137874e7345139c1a2faf9ab01e",
+      "tag": "round_result_model",
+      "salt": "0x0",
+      "unique": false,
+      "once": true,
+      "class": "round_result_model",
+      "class_hash": "0x5d70de5a8e2be4038053fcd1e1d0cb658cc62e29649edd8c2461fa79f1c6bf4",
+      "calldata": [],
+      "calldata_compiled": []
+    },
+    "arcade_round_result_model": {
+      "contract_address": "0x51cfb195a66eeddd704b3f6698ad1d9d6e634f87158130d31b6c6768bee1431",
+      "tag": "arcade_round_result_model",
+      "salt": "0x0",
+      "unique": false,
+      "once": true,
+      "class": "arcade_round_result_model",
+      "class_hash": "0x27b08efc24a717e906b677d852e32fcd8b55222cb24ce6a6758308e6bb12268",
       "calldata": [],
       "calldata_compiled": []
     },
@@ -83,24 +105,24 @@
       ]
     },
     "attack": {
-      "contract_address": "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172",
+      "contract_address": "0x77432e0ce80697457744d8773bb41590444e4a12c89129d50a34f5947fb09f4",
       "tag": "attack",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_model_class_hash": "0x5222c021521d5eba68520dcf98a6cd5b21975b8e5cf8a75b904f1a623d8e125"
+        "attack_model_class_hash": "0x1c3e4990eeaed52a18760af335ffe0610ce8a7837ab1ceffde9c92854c294ac"
       },
       "salt": "0x0",
       "once": true,
       "class": "attack",
-      "class_hash": "0x7a39f38b0fc287b9987219bfed4dd8cbc9f860d91ddaad454934b51fc18a193",
+      "class_hash": "0x6f5ff962de59403c48a1b75f2561ea8f6753815b3751ac33b330db2cba26435",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x5222c021521d5eba68520dcf98a6cd5b21975b8e5cf8a75b904f1a623d8e125"
+        "0x1c3e4990eeaed52a18760af335ffe0610ce8a7837ab1ceffde9c92854c294ac"
       ]
     },
     "arena_blobert_minter": {
-      "contract_address": "0x522582cc30196bae502d7ed9301d6054212005e1b0f50459a1e4d5a29aa16b8",
+      "contract_address": "0x464289e72335943b9e893f6eb179b3e46f451066ca4ed1d8e8ab70a3492b66d",
       "tag": "arena_blobert_minter",
       "unique": false,
       "calldata": {
@@ -110,7 +132,7 @@
       "salt": "0x0",
       "once": true,
       "class": "arena_blobert_minter",
-      "class_hash": "0x46784778c311a8eb1a18cdd8ee005acb5fc6e7d7396751ceef9b7ff0a3ddf03",
+      "class_hash": "0xc4527c7688848c233521507e0fcea71e6990865e3229933d9b0302cda07a5e",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
         "0x47f2b6867e38ecd346d7bb148dd55400a92e81da91eccf875c050c5c7f1c2a2"
@@ -149,12 +171,12 @@
       ]
     },
     "loadout_classic": {
-      "contract_address": "0x3524b6e1d8ed8fbfe974f12cc375123bf6789d74c18ff3bd4eb3645e1750df3",
+      "contract_address": "0x12cd29457a6d12b99a80b8b2f07ffd680c87f2aad9b3561f19dc223c549ccd0",
       "tag": "loadout_classic",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_dispatcher_address": "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172",
+        "attack_dispatcher_address": "0x77432e0ce80697457744d8773bb41590444e4a12c89129d50a34f5947fb09f4",
         "collection_addresses": [
           "0x47f2b6867e38ecd346d7bb148dd55400a92e81da91eccf875c050c5c7f1c2a2",
           "0x0"
@@ -163,22 +185,22 @@
       "salt": "0x0",
       "once": true,
       "class": "loadout_classic",
-      "class_hash": "0x7d6f4c01a93056cceb33501c96a41dab5394021cb5c5ea9438d33d869b7d41d",
+      "class_hash": "0x6da512f7378d6bd72f503cbe04f16c3cbdfdf7296c7141ba1cef47322f9f3df",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172",
+        "0x77432e0ce80697457744d8773bb41590444e4a12c89129d50a34f5947fb09f4",
         "0x2",
         "0x47f2b6867e38ecd346d7bb148dd55400a92e81da91eccf875c050c5c7f1c2a2",
         "0x0"
       ]
     },
     "loadout_amma": {
-      "contract_address": "0x5a5376a2083d337e15601b518c5b44147c4d9f5375b94d8098cd410180592be",
+      "contract_address": "0x2f5d623168dbe3c2800a8048a0171177d8024e4ff85a289483d4a5c58bedc02",
       "tag": "loadout_amma",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_dispatcher_address": "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172",
+        "attack_dispatcher_address": "0x77432e0ce80697457744d8773bb41590444e4a12c89129d50a34f5947fb09f4",
         "collection_addresses": [
           "0xf4204b7ddfb3d25838dfc1964c1629a96042539a09377c24d72b1514ae1df4",
           "0x5ab367f35368c4eff47fdfcb33d2ba7980de23d1280c79cadcba176f5478dfb"
@@ -187,46 +209,49 @@
       "salt": "0x0",
       "once": true,
       "class": "loadout_amma",
-      "class_hash": "0x8f5ee746688507dccfaee96ebcbf9c4ae33786e20a846cc15c2cc222779daf",
+      "class_hash": "0x79c1284ca9f94aa33e5a425575b3834de4997fed2f0b3c75d59529eb550a612",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172",
+        "0x77432e0ce80697457744d8773bb41590444e4a12c89129d50a34f5947fb09f4",
         "0x2",
         "0xf4204b7ddfb3d25838dfc1964c1629a96042539a09377c24d72b1514ae1df4",
         "0x5ab367f35368c4eff47fdfcb33d2ba7980de23d1280c79cadcba176f5478dfb"
       ]
     },
     "arcade_classic": {
-      "contract_address": "0x3a5fe589f7d922b2c9ed491d378176a134ba08b0283fd5e90338163332f2344",
+      "contract_address": "0x61c8c1720754317a527eb103e27f1a9a5f1acdbb8a7868c1e48262fc362bbd8",
       "tag": "arcade_classic",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_address": "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172",
-        "loadout_address": "0x3524b6e1d8ed8fbfe974f12cc375123bf6789d74c18ff3bd4eb3645e1750df3",
+        "arcade_round_result_class_hash": "0x27b08efc24a717e906b677d852e32fcd8b55222cb24ce6a6758308e6bb12268",
+        "attack_address": "0x77432e0ce80697457744d8773bb41590444e4a12c89129d50a34f5947fb09f4",
+        "loadout_address": "0x12cd29457a6d12b99a80b8b2f07ffd680c87f2aad9b3561f19dc223c549ccd0",
         "credit_address": "0x62d636127b2abba440f9ea34b93eef6e2f559ac4749eaf491e70bdd9537fa93",
         "vrf_address": "0x130910d40aebdb098cb359e53b92dc7b83da0ccbd6a51a2bd402eb785082152"
       },
       "salt": "0x0",
       "once": true,
       "class": "arcade_classic",
-      "class_hash": "0x184e0073aaa885c0f539eaa6f2db7020172dd74fe5099ca5c52cc59e13b9eed",
+      "class_hash": "0x16c270b66e53ca452e3a4b3ee8c49ad8c54d7c5ff90622fedf188017aa4a40c",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172",
-        "0x3524b6e1d8ed8fbfe974f12cc375123bf6789d74c18ff3bd4eb3645e1750df3",
+        "0x27b08efc24a717e906b677d852e32fcd8b55222cb24ce6a6758308e6bb12268",
+        "0x77432e0ce80697457744d8773bb41590444e4a12c89129d50a34f5947fb09f4",
+        "0x12cd29457a6d12b99a80b8b2f07ffd680c87f2aad9b3561f19dc223c549ccd0",
         "0x62d636127b2abba440f9ea34b93eef6e2f559ac4749eaf491e70bdd9537fa93",
         "0x130910d40aebdb098cb359e53b92dc7b83da0ccbd6a51a2bd402eb785082152"
       ]
     },
     "arcade_amma": {
-      "contract_address": "0x74fa482ec1c745777df90ee600346613695d588fea1d15a9e4418dd48d545ce",
+      "contract_address": "0x3e46100ed3955f5cdb604704c479b3d38ad0b9124b4d2cd5f10c0476ff93b5b",
       "tag": "arcade_amma",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_address": "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172",
-        "loadout_address": "0x5a5376a2083d337e15601b518c5b44147c4d9f5375b94d8098cd410180592be",
+        "arcade_round_result_class_hash": "0x27b08efc24a717e906b677d852e32fcd8b55222cb24ce6a6758308e6bb12268",
+        "attack_address": "0x77432e0ce80697457744d8773bb41590444e4a12c89129d50a34f5947fb09f4",
+        "loadout_address": "0x2f5d623168dbe3c2800a8048a0171177d8024e4ff85a289483d4a5c58bedc02",
         "credit_address": "0x62d636127b2abba440f9ea34b93eef6e2f559ac4749eaf491e70bdd9537fa93",
         "vrf_address": "0x130910d40aebdb098cb359e53b92dc7b83da0ccbd6a51a2bd402eb785082152",
         "collectable_address": "0xf4204b7ddfb3d25838dfc1964c1629a96042539a09377c24d72b1514ae1df4"
@@ -234,29 +259,32 @@
       "salt": "0x0",
       "once": true,
       "class": "arcade_amma",
-      "class_hash": "0x9b63a3ec101b439223e51e5c09d213ead61c58b4720054a5bb041e744ba385",
+      "class_hash": "0x256c2b1efc00c67b83701734fe3eee3975fec92d58cdd99bcdd3dcd6a491b92",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172",
-        "0x5a5376a2083d337e15601b518c5b44147c4d9f5375b94d8098cd410180592be",
+        "0x27b08efc24a717e906b677d852e32fcd8b55222cb24ce6a6758308e6bb12268",
+        "0x77432e0ce80697457744d8773bb41590444e4a12c89129d50a34f5947fb09f4",
+        "0x2f5d623168dbe3c2800a8048a0171177d8024e4ff85a289483d4a5c58bedc02",
         "0x62d636127b2abba440f9ea34b93eef6e2f559ac4749eaf491e70bdd9537fa93",
         "0x130910d40aebdb098cb359e53b92dc7b83da0ccbd6a51a2bd402eb785082152",
         "0xf4204b7ddfb3d25838dfc1964c1629a96042539a09377c24d72b1514ae1df4"
       ]
     },
     "pvp": {
-      "contract_address": "0x6f8c29d9a7e5408d3c5671fac76c1dbab1cd2e8809d75be9c97404242182f8d",
+      "contract_address": "0x2f091db86212a8c7e4fc1405d64319f20d64a4a20699ed74f081258389a5002",
       "tag": "pvp",
       "unique": false,
       "calldata": {
-        "attack_address": "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172"
+        "round_result_class_hash": "0x5d70de5a8e2be4038053fcd1e1d0cb658cc62e29649edd8c2461fa79f1c6bf4",
+        "attack_address": "0x77432e0ce80697457744d8773bb41590444e4a12c89129d50a34f5947fb09f4"
       },
       "salt": "0x0",
       "once": true,
       "class": "pvp",
-      "class_hash": "0x5a22f475b11032c53d89580b9912edb7371d81f5ce693726bef01d5848c085e",
+      "class_hash": "0x5ea17b86ad2f11fef43184a77efb143d7fbd7247424faa8edc6136b20e2ec54",
       "calldata_compiled": [
-        "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172"
+        "0x5d70de5a8e2be4038053fcd1e1d0cb658cc62e29649edd8c2461fa79f1c6bf4",
+        "0x77432e0ce80697457744d8773bb41590444e4a12c89129d50a34f5947fb09f4"
       ]
     }
   },
@@ -265,13 +293,19 @@
       "class_hash": "0x534ec072889230c0f3aec75072549acca6f881263070575cb3c22877abe45c9"
     },
     "attack_model": {
-      "class_hash": "0x5222c021521d5eba68520dcf98a6cd5b21975b8e5cf8a75b904f1a623d8e125"
+      "class_hash": "0x1c3e4990eeaed52a18760af335ffe0610ce8a7837ab1ceffde9c92854c294ac"
+    },
+    "round_result_model": {
+      "class_hash": "0x5d70de5a8e2be4038053fcd1e1d0cb658cc62e29649edd8c2461fa79f1c6bf4"
+    },
+    "arcade_round_result_model": {
+      "class_hash": "0x27b08efc24a717e906b677d852e32fcd8b55222cb24ce6a6758308e6bb12268"
     },
     "arena_blobert": {
       "class_hash": "0x3e4685faa079c4dc3fd7704287b1d1f958d02664facea37169e5b43f0d2644b"
     },
     "arena_blobert_minter": {
-      "class_hash": "0x46784778c311a8eb1a18cdd8ee005acb5fc6e7d7396751ceef9b7ff0a3ddf03"
+      "class_hash": "0xc4527c7688848c233521507e0fcea71e6990865e3229933d9b0302cda07a5e"
     },
     "amma_blobert": {
       "class_hash": "0x3fc0ee1eb0ec3a5d9e3deb26592c6f5faac0b914fe6076b57862d3d4ccda088"
@@ -283,13 +317,13 @@
       "class_hash": "0x5ef0295ce178f5dc14efa177231777f859e3289d6c8bde490c1dc2123b8b071"
     },
     "attack": {
-      "class_hash": "0x7a39f38b0fc287b9987219bfed4dd8cbc9f860d91ddaad454934b51fc18a193"
+      "class_hash": "0x6f5ff962de59403c48a1b75f2561ea8f6753815b3751ac33b330db2cba26435"
     },
     "loadout_classic": {
-      "class_hash": "0x7d6f4c01a93056cceb33501c96a41dab5394021cb5c5ea9438d33d869b7d41d"
+      "class_hash": "0x6da512f7378d6bd72f503cbe04f16c3cbdfdf7296c7141ba1cef47322f9f3df"
     },
     "loadout_amma": {
-      "class_hash": "0x8f5ee746688507dccfaee96ebcbf9c4ae33786e20a846cc15c2cc222779daf"
+      "class_hash": "0x79c1284ca9f94aa33e5a425575b3834de4997fed2f0b3c75d59529eb550a612"
     },
     "arena_credit": {
       "class_hash": "0x33952da3ac71174251abfac5b441f5fbf0443bf025cd5b03014e1946e95144b"
@@ -298,13 +332,13 @@
       "class_hash": "0x68941c93fd685530ebe5382b0b989f7bbf4b4f8be9779fb003fa541ca752575"
     },
     "arcade_classic": {
-      "class_hash": "0x184e0073aaa885c0f539eaa6f2db7020172dd74fe5099ca5c52cc59e13b9eed"
+      "class_hash": "0x16c270b66e53ca452e3a4b3ee8c49ad8c54d7c5ff90622fedf188017aa4a40c"
     },
     "arcade_amma": {
-      "class_hash": "0x9b63a3ec101b439223e51e5c09d213ead61c58b4720054a5bb041e744ba385"
+      "class_hash": "0x256c2b1efc00c67b83701734fe3eee3975fec92d58cdd99bcdd3dcd6a491b92"
     },
     "pvp": {
-      "class_hash": "0x5a22f475b11032c53d89580b9912edb7371d81f5ce693726bef01d5848c085e"
+      "class_hash": "0x5ea17b86ad2f11fef43184a77efb143d7fbd7247424faa8edc6136b20e2ec54"
     }
   },
   "contracts": {
@@ -320,9 +354,19 @@
       "class": "mock_vrf"
     },
     "attack_model": {
-      "contract_address": "0x17d74172eb09a02227a970ac259c989f55acf1cce1fd426970c3e2c9b8eac8d",
-      "class_hash": "0x5222c021521d5eba68520dcf98a6cd5b21975b8e5cf8a75b904f1a623d8e125",
+      "contract_address": "0x5112629a79f777d78f44394aa1f5c2acc36974687a3519d389ae6dde0118e8a",
+      "class_hash": "0x1c3e4990eeaed52a18760af335ffe0610ce8a7837ab1ceffde9c92854c294ac",
       "class": "attack_model"
+    },
+    "round_result_model": {
+      "contract_address": "0x3e242633ce889fb635baee33146334e8728137874e7345139c1a2faf9ab01e",
+      "class_hash": "0x5d70de5a8e2be4038053fcd1e1d0cb658cc62e29649edd8c2461fa79f1c6bf4",
+      "class": "round_result_model"
+    },
+    "arcade_round_result_model": {
+      "contract_address": "0x51cfb195a66eeddd704b3f6698ad1d9d6e634f87158130d31b6c6768bee1431",
+      "class_hash": "0x27b08efc24a717e906b677d852e32fcd8b55222cb24ce6a6758308e6bb12268",
+      "class": "arcade_round_result_model"
     },
     "arena_blobert": {
       "contract_address": "0x47f2b6867e38ecd346d7bb148dd55400a92e81da91eccf875c050c5c7f1c2a2",
@@ -345,13 +389,13 @@
       "class": "arena_credit"
     },
     "attack": {
-      "contract_address": "0x6d7347c487d21a4214903d1890e8784b4dc64ca0058c5cb03dda3d1e558d172",
-      "class_hash": "0x7a39f38b0fc287b9987219bfed4dd8cbc9f860d91ddaad454934b51fc18a193",
+      "contract_address": "0x77432e0ce80697457744d8773bb41590444e4a12c89129d50a34f5947fb09f4",
+      "class_hash": "0x6f5ff962de59403c48a1b75f2561ea8f6753815b3751ac33b330db2cba26435",
       "class": "attack"
     },
     "arena_blobert_minter": {
-      "contract_address": "0x522582cc30196bae502d7ed9301d6054212005e1b0f50459a1e4d5a29aa16b8",
-      "class_hash": "0x46784778c311a8eb1a18cdd8ee005acb5fc6e7d7396751ceef9b7ff0a3ddf03",
+      "contract_address": "0x464289e72335943b9e893f6eb179b3e46f451066ca4ed1d8e8ab70a3492b66d",
+      "class_hash": "0xc4527c7688848c233521507e0fcea71e6990865e3229933d9b0302cda07a5e",
       "class": "arena_blobert_minter"
     },
     "amma_blobert_minter": {
@@ -365,28 +409,28 @@
       "class": "arena_credit_purchase"
     },
     "loadout_classic": {
-      "contract_address": "0x3524b6e1d8ed8fbfe974f12cc375123bf6789d74c18ff3bd4eb3645e1750df3",
-      "class_hash": "0x7d6f4c01a93056cceb33501c96a41dab5394021cb5c5ea9438d33d869b7d41d",
+      "contract_address": "0x12cd29457a6d12b99a80b8b2f07ffd680c87f2aad9b3561f19dc223c549ccd0",
+      "class_hash": "0x6da512f7378d6bd72f503cbe04f16c3cbdfdf7296c7141ba1cef47322f9f3df",
       "class": "loadout_classic"
     },
     "loadout_amma": {
-      "contract_address": "0x5a5376a2083d337e15601b518c5b44147c4d9f5375b94d8098cd410180592be",
-      "class_hash": "0x8f5ee746688507dccfaee96ebcbf9c4ae33786e20a846cc15c2cc222779daf",
+      "contract_address": "0x2f5d623168dbe3c2800a8048a0171177d8024e4ff85a289483d4a5c58bedc02",
+      "class_hash": "0x79c1284ca9f94aa33e5a425575b3834de4997fed2f0b3c75d59529eb550a612",
       "class": "loadout_amma"
     },
     "arcade_classic": {
-      "contract_address": "0x3a5fe589f7d922b2c9ed491d378176a134ba08b0283fd5e90338163332f2344",
-      "class_hash": "0x184e0073aaa885c0f539eaa6f2db7020172dd74fe5099ca5c52cc59e13b9eed",
+      "contract_address": "0x61c8c1720754317a527eb103e27f1a9a5f1acdbb8a7868c1e48262fc362bbd8",
+      "class_hash": "0x16c270b66e53ca452e3a4b3ee8c49ad8c54d7c5ff90622fedf188017aa4a40c",
       "class": "arcade_classic"
     },
     "arcade_amma": {
-      "contract_address": "0x74fa482ec1c745777df90ee600346613695d588fea1d15a9e4418dd48d545ce",
-      "class_hash": "0x9b63a3ec101b439223e51e5c09d213ead61c58b4720054a5bb041e744ba385",
+      "contract_address": "0x3e46100ed3955f5cdb604704c479b3d38ad0b9124b4d2cd5f10c0476ff93b5b",
+      "class_hash": "0x256c2b1efc00c67b83701734fe3eee3975fec92d58cdd99bcdd3dcd6a491b92",
       "class": "arcade_amma"
     },
     "pvp": {
-      "contract_address": "0x6f8c29d9a7e5408d3c5671fac76c1dbab1cd2e8809d75be9c97404242182f8d",
-      "class_hash": "0x5a22f475b11032c53d89580b9912edb7371d81f5ce693726bef01d5848c085e",
+      "contract_address": "0x2f091db86212a8c7e4fc1405d64319f20d64a4a20699ed74f081258389a5002",
+      "class_hash": "0x5ea17b86ad2f11fef43184a77efb143d7fbd7247424faa8edc6136b20e2ec54",
       "class": "pvp"
     }
   },
@@ -3580,7 +3624,7 @@
         ]
       }
     ],
-    "0x7a39f38b0fc287b9987219bfed4dd8cbc9f860d91ddaad454934b51fc18a193": [
+    "0x6f5ff962de59403c48a1b75f2561ea8f6753815b3751ac33b330db2cba26435": [
       {
         "type": "impl",
         "name": "IAttackImpl",
@@ -3591,15 +3635,33 @@
         "name": "ba_loadout::attack::effect::Target",
         "variants": [
           {
-            "name": "None",
-            "type": "()"
-          },
-          {
             "name": "Attacker",
             "type": "()"
           },
           {
             "name": "Defender",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "enum",
+        "name": "ba_loadout::attack::effect::Duration",
+        "variants": [
+          {
+            "name": "Instant",
+            "type": "()"
+          },
+          {
+            "name": "Round",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "Rounds",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "Infinite",
             "type": "()"
           }
         ]
@@ -3763,6 +3825,58 @@
             "type": "ba_loadout::attributes::VulnerabilityMods"
           },
           {
+            "name": "StrengthTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "VitalityTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "DexterityTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "LuckTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "BludgeonResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "MagicResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "PierceResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "BludgeonVulnerabilityTemp",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "MagicVulnerabilityTemp",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "PierceVulnerabilityTemp",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "AbilitiesTemp",
+            "type": "ba_loadout::attributes::AbilityMods"
+          },
+          {
+            "name": "ResistancesTemp",
+            "type": "ba_loadout::attributes::ResistanceMods"
+          },
+          {
+            "name": "VulnerabilitiesTemp",
+            "type": "ba_loadout::attributes::VulnerabilityMods"
+          },
+          {
             "name": "Damage",
             "type": "ba_loadout::attack::effect::Damage"
           },
@@ -3787,6 +3901,10 @@
           {
             "name": "target",
             "type": "ba_loadout::attack::effect::Target"
+          },
+          {
+            "name": "duration",
+            "type": "ba_loadout::attack::effect::Duration"
           },
           {
             "name": "affect",
@@ -4534,7 +4652,7 @@
         ]
       }
     ],
-    "0x46784778c311a8eb1a18cdd8ee005acb5fc6e7d7396751ceef9b7ff0a3ddf03": [
+    "0xc4527c7688848c233521507e0fcea71e6990865e3229933d9b0302cda07a5e": [
       {
         "type": "impl",
         "name": "IArcadeBlobertMinterImpl",
@@ -5170,7 +5288,7 @@
         ]
       }
     ],
-    "0x7d6f4c01a93056cceb33501c96a41dab5394021cb5c5ea9438d33d869b7d41d": [
+    "0x6da512f7378d6bd72f503cbe04f16c3cbdfdf7296c7141ba1cef47322f9f3df": [
       {
         "type": "impl",
         "name": "ILoadoutImpl",
@@ -5418,15 +5536,33 @@
         "name": "ba_loadout::attack::effect::Target",
         "variants": [
           {
-            "name": "None",
-            "type": "()"
-          },
-          {
             "name": "Attacker",
             "type": "()"
           },
           {
             "name": "Defender",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "enum",
+        "name": "ba_loadout::attack::effect::Duration",
+        "variants": [
+          {
+            "name": "Instant",
+            "type": "()"
+          },
+          {
+            "name": "Round",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "Rounds",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "Infinite",
             "type": "()"
           }
         ]
@@ -5590,6 +5726,58 @@
             "type": "ba_loadout::attributes::VulnerabilityMods"
           },
           {
+            "name": "StrengthTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "VitalityTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "DexterityTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "LuckTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "BludgeonResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "MagicResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "PierceResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "BludgeonVulnerabilityTemp",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "MagicVulnerabilityTemp",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "PierceVulnerabilityTemp",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "AbilitiesTemp",
+            "type": "ba_loadout::attributes::AbilityMods"
+          },
+          {
+            "name": "ResistancesTemp",
+            "type": "ba_loadout::attributes::ResistanceMods"
+          },
+          {
+            "name": "VulnerabilitiesTemp",
+            "type": "ba_loadout::attributes::VulnerabilityMods"
+          },
+          {
             "name": "Damage",
             "type": "ba_loadout::attack::effect::Damage"
           },
@@ -5614,6 +5802,10 @@
           {
             "name": "target",
             "type": "ba_loadout::attack::effect::Target"
+          },
+          {
+            "name": "duration",
+            "type": "ba_loadout::attack::effect::Duration"
           },
           {
             "name": "affect",
@@ -5930,7 +6122,7 @@
         ]
       }
     ],
-    "0x8f5ee746688507dccfaee96ebcbf9c4ae33786e20a846cc15c2cc222779daf": [
+    "0x79c1284ca9f94aa33e5a425575b3834de4997fed2f0b3c75d59529eb550a612": [
       {
         "type": "impl",
         "name": "ILoadoutImpl",
@@ -6098,15 +6290,33 @@
         "name": "ba_loadout::attack::effect::Target",
         "variants": [
           {
-            "name": "None",
-            "type": "()"
-          },
-          {
             "name": "Attacker",
             "type": "()"
           },
           {
             "name": "Defender",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "enum",
+        "name": "ba_loadout::attack::effect::Duration",
+        "variants": [
+          {
+            "name": "Instant",
+            "type": "()"
+          },
+          {
+            "name": "Round",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "Rounds",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "Infinite",
             "type": "()"
           }
         ]
@@ -6270,6 +6480,58 @@
             "type": "ba_loadout::attributes::VulnerabilityMods"
           },
           {
+            "name": "StrengthTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "VitalityTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "DexterityTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "LuckTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "BludgeonResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "MagicResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "PierceResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "BludgeonVulnerabilityTemp",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "MagicVulnerabilityTemp",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "PierceVulnerabilityTemp",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "AbilitiesTemp",
+            "type": "ba_loadout::attributes::AbilityMods"
+          },
+          {
+            "name": "ResistancesTemp",
+            "type": "ba_loadout::attributes::ResistanceMods"
+          },
+          {
+            "name": "VulnerabilitiesTemp",
+            "type": "ba_loadout::attributes::VulnerabilityMods"
+          },
+          {
             "name": "Damage",
             "type": "ba_loadout::attack::effect::Damage"
           },
@@ -6294,6 +6556,10 @@
           {
             "name": "target",
             "type": "ba_loadout::attack::effect::Target"
+          },
+          {
+            "name": "duration",
+            "type": "ba_loadout::attack::effect::Duration"
           },
           {
             "name": "affect",
@@ -6681,7 +6947,7 @@
         ]
       }
     ],
-    "0x184e0073aaa885c0f539eaa6f2db7020172dd74fe5099ca5c52cc59e13b9eed": [
+    "0x16c270b66e53ca452e3a4b3ee8c49ad8c54d7c5ff90622fedf188017aa4a40c": [
       {
         "type": "impl",
         "name": "IArcadeImpl",
@@ -6885,15 +7151,33 @@
         "name": "ba_loadout::attack::effect::Target",
         "variants": [
           {
-            "name": "None",
-            "type": "()"
-          },
-          {
             "name": "Attacker",
             "type": "()"
           },
           {
             "name": "Defender",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "enum",
+        "name": "ba_loadout::attack::effect::Duration",
+        "variants": [
+          {
+            "name": "Instant",
+            "type": "()"
+          },
+          {
+            "name": "Round",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "Rounds",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "Infinite",
             "type": "()"
           }
         ]
@@ -7057,6 +7341,58 @@
             "type": "ba_loadout::attributes::VulnerabilityMods"
           },
           {
+            "name": "StrengthTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "VitalityTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "DexterityTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "LuckTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "BludgeonResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "MagicResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "PierceResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "BludgeonVulnerabilityTemp",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "MagicVulnerabilityTemp",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "PierceVulnerabilityTemp",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "AbilitiesTemp",
+            "type": "ba_loadout::attributes::AbilityMods"
+          },
+          {
+            "name": "ResistancesTemp",
+            "type": "ba_loadout::attributes::ResistanceMods"
+          },
+          {
+            "name": "VulnerabilitiesTemp",
+            "type": "ba_loadout::attributes::VulnerabilityMods"
+          },
+          {
             "name": "Damage",
             "type": "ba_loadout::attack::effect::Damage"
           },
@@ -7081,6 +7417,10 @@
           {
             "name": "target",
             "type": "ba_loadout::attack::effect::Target"
+          },
+          {
+            "name": "duration",
+            "type": "ba_loadout::attack::effect::Duration"
           },
           {
             "name": "affect",
@@ -7450,6 +7790,10 @@
             "type": "core::starknet::contract_address::ContractAddress"
           },
           {
+            "name": "arcade_round_result_class_hash",
+            "type": "core::starknet::class_hash::ClassHash"
+          },
+          {
             "name": "attack_address",
             "type": "core::starknet::contract_address::ContractAddress"
           },
@@ -7532,7 +7876,7 @@
         ]
       }
     ],
-    "0x9b63a3ec101b439223e51e5c09d213ead61c58b4720054a5bb041e744ba385": [
+    "0x256c2b1efc00c67b83701734fe3eee3975fec92d58cdd99bcdd3dcd6a491b92": [
       {
         "type": "impl",
         "name": "IArcadeImpl",
@@ -7714,15 +8058,33 @@
         "name": "ba_loadout::attack::effect::Target",
         "variants": [
           {
-            "name": "None",
-            "type": "()"
-          },
-          {
             "name": "Attacker",
             "type": "()"
           },
           {
             "name": "Defender",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "enum",
+        "name": "ba_loadout::attack::effect::Duration",
+        "variants": [
+          {
+            "name": "Instant",
+            "type": "()"
+          },
+          {
+            "name": "Round",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "Rounds",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "Infinite",
             "type": "()"
           }
         ]
@@ -7886,6 +8248,58 @@
             "type": "ba_loadout::attributes::VulnerabilityMods"
           },
           {
+            "name": "StrengthTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "VitalityTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "DexterityTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "LuckTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "BludgeonResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "MagicResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "PierceResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "BludgeonVulnerabilityTemp",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "MagicVulnerabilityTemp",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "PierceVulnerabilityTemp",
+            "type": "core::integer::i16"
+          },
+          {
+            "name": "AbilitiesTemp",
+            "type": "ba_loadout::attributes::AbilityMods"
+          },
+          {
+            "name": "ResistancesTemp",
+            "type": "ba_loadout::attributes::ResistanceMods"
+          },
+          {
+            "name": "VulnerabilitiesTemp",
+            "type": "ba_loadout::attributes::VulnerabilityMods"
+          },
+          {
             "name": "Damage",
             "type": "ba_loadout::attack::effect::Damage"
           },
@@ -7910,6 +8324,10 @@
           {
             "name": "target",
             "type": "ba_loadout::attack::effect::Target"
+          },
+          {
+            "name": "duration",
+            "type": "ba_loadout::attack::effect::Duration"
           },
           {
             "name": "affect",
@@ -8385,6 +8803,10 @@
             "type": "core::starknet::contract_address::ContractAddress"
           },
           {
+            "name": "arcade_round_result_class_hash",
+            "type": "core::starknet::class_hash::ClassHash"
+          },
+          {
             "name": "attack_address",
             "type": "core::starknet::contract_address::ContractAddress"
           },
@@ -8471,7 +8893,7 @@
         ]
       }
     ],
-    "0x5a22f475b11032c53d89580b9912edb7371d81f5ce693726bef01d5848c085e": [
+    "0x5ea17b86ad2f11fef43184a77efb143d7fbd7247424faa8edc6136b20e2ec54": [
       {
         "type": "impl",
         "name": "IPvpImpl",
@@ -8707,6 +9129,10 @@
         "type": "constructor",
         "name": "constructor",
         "inputs": [
+          {
+            "name": "round_result_class_hash",
+            "type": "core::starknet::class_hash::ClassHash"
+          },
           {
             "name": "attack_address",
             "type": "core::starknet::contract_address::ContractAddress"

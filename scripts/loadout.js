@@ -1,7 +1,6 @@
 import { makeCairoEnum, parseEnumObject } from "./stark-utils.js";
 import { CairoCustomEnum } from "starknet";
 import pkg from "case";
-import { parse } from "yargs";
 const { pascal } = pkg;
 
 const B100ToN100Affects = [
@@ -22,6 +21,15 @@ const I16Affects = [
 ];
 
 const LE100Affects = ["Stun", "Block"];
+
+const TargetAndDurationsKeys = [
+  "duration",
+  "target",
+  "instant",
+  "round",
+  "rounds",
+  "infinite",
+];
 
 const parseDamageType = (damageType) => {
   return makeCairoEnum(damageType, "None");
@@ -97,33 +105,23 @@ const getDuration = (effect) => {
   }
 };
 
-const parseEffects = (target, affects, duration) => {
+const parseEffects = (target, duration, affects) => {
   if (duration == null) {
     duration = getDuration(affects);
   }
   if (typeof affects === "object") {
     if ("affects" in affects) {
-      return parseEffects(target, affects.affects, duration);
+      return parseEffects(target, duration, affects.affects);
     }
     if ("affect" in affects) {
-      return makeEffect(target, affects.affect, duration);
+      return makeEffect(target, duration, affects.affect);
     }
     return Object.entries(affects)
-      .filter(
-        ([k, _]) =>
-          ![
-            "duration",
-            "target",
-            "instant",
-            "round",
-            "rounds",
-            "infinite",
-          ].includes(k.toLowerCase())
-      )
-      .flatMap(([k, v]) => makeEffect(target, { [k]: v }, duration));
+      .filter(([k, _]) => !TargetAndDurationsKeys.includes(k.toLowerCase()))
+      .flatMap(([k, v]) => makeEffect(target, duration, { [k]: v }));
   }
   if (Array.isArray(affects)) {
-    return affects.flatMap((affect) => makeEffect(target, affect, duration));
+    return affects.flatMap((affect) => makeEffect(target, duration, affect));
   }
 };
 
@@ -155,14 +153,16 @@ const parseDuration = (duration) => {
   if (key === "Permanent") {
     return new CairoCustomEnum({ Permanent: {} });
   }
-  throw new Error(`Unknown effect duration: ${key}`);
+  throw Error(`Unknown effect duration: ${key}`);
 };
 
 const parseEffectsArray = (effects) => {
   if (Array.isArray(effects)) {
-    return effects.flatMap((effect) => parseEffects(effect.target, effect));
+    return effects.flatMap((effect) =>
+      parseEffects(effect.target, null, effect)
+    );
   }
-  return Object.entries(effects).flatMap(([k, v]) => parseEffects(k, v));
+  return Object.entries(effects).flatMap(([k, v]) => parseEffects(k, null, v));
 };
 
 export const parseAttributes = (attributes) => {

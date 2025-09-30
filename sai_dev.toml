@@ -13,6 +13,8 @@ salt = "0x0"
 [declare]
 mock_vrf = {}
 attack_model = {}
+round_result_model = {}
+arcade_round_result_model = {}
 
 arena_blobert = {}
 arena_blobert_minter = {}
@@ -33,9 +35,11 @@ arcade_amma = {}
 pvp = {}
 
 
-[deploy]
-vrf = { class = "mock_vrf" }
-attack_model = { class = "attack_model" }
+[deploy.vrf]
+class = "mock_vrf"
+[deploy.attack_model]
+[deploy.round_result_model]
+[deploy.arcade_round_result_model]
 
 
 [variables]

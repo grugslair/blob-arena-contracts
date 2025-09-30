@@ -35,7 +35,7 @@ pub mod arcade_component {
     use ba_utils::vrf::consume_randomness;
     use ba_utils::{Randomness, erc721_token_hash, uuid};
     use beacon_library::{
-        ToriiTable, register_table_with_schema, set_entity, set_member, set_schema,
+        ToriiTable, register_table, register_table_with_schema, set_entity, set_member, set_schema,
     };
     use core::cmp::min;
     use core::num::traits::{SaturatingAdd, Zero};
@@ -47,7 +47,7 @@ pub mod arcade_component {
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePathEntry,
         StoragePointerReadAccess, StoragePointerWriteAccess,
     };
-    use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
+    use starknet::{ClassHash, ContractAddress, get_block_timestamp, get_caller_address};
     use crate::table::{ArcadeRoundResult, ArcadeZeroRoundResult, AttemptRoundTrait};
     use super::{ArcadeAttackResult, Opponent, errors};
 
@@ -143,7 +143,7 @@ pub mod arcade_component {
 
     mod internal_trait {
         use ba_utils::Randomness;
-        use starknet::ContractAddress;
+        use starknet::{ClassHash, ContractAddress};
         use crate::Opponent;
         use super::{ArcadeAttackResult, ArcadeProgress, AttemptNodePath};
 
@@ -151,6 +151,7 @@ pub mod arcade_component {
             fn init(
                 ref self: TState,
                 namespace: ByteArray,
+                arcade_round_result_class_hash: ClassHash,
                 attack_address: ContractAddress,
                 loadout_address: ContractAddress,
                 credit_address: ContractAddress,
@@ -199,6 +200,7 @@ pub mod arcade_component {
         fn init(
             ref self: ComponentState<TContractState>,
             namespace: ByteArray,
+            arcade_round_result_class_hash: ClassHash,
             attack_address: ContractAddress,
             loadout_address: ContractAddress,
             credit_address: ContractAddress,
@@ -208,8 +210,8 @@ pub mod arcade_component {
             self.loadout_address.write(loadout_address);
             self.credit_address.write(credit_address);
             self.vrf_address.write(vrf_address);
-            register_table_with_schema::<ArcadeAttempt>(namespace.clone(), "ArcadeAttempt");
-            register_table_with_schema::<ArcadeRoundResult>(namespace.clone(), "ArcadeRound");
+            register_table_with_schema::<ArcadeAttempt>(namespace.clone(), "Attempt");
+            register_table(namespace.clone(), "Round", arcade_round_result_class_hash);
             register_table_with_schema::<AttackLastUsed>(namespace, "AttackLastUsed");
         }
 

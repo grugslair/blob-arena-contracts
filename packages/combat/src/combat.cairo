@@ -431,3 +431,30 @@ pub struct RoundZeroResult {
     pub states: [CombatantState; 2],
     pub progress: CombatProgress,
 }
+
+
+#[starknet::contract]
+pub mod round_result_model {
+    use super::RoundResult;
+    #[storage]
+    struct Storage {}
+    #[abi(embed_v0)]
+    impl RoundResultModelImpl =
+        beacon_entity::interface::ISaiModelImpl<ContractState, RoundResult>;
+}
+
+
+#[cfg(test)]
+mod tests {
+    use beacon_entity::get_schema_size;
+    use super::*;
+
+    #[derive(Drop, Serde, Introspect)]
+    struct AnAffect {
+        affect: Affect,
+    }
+    #[test]
+    fn table_size_test() {
+        println!("RoundResult size: {}", get_schema_size::<RoundResult>());
+    }
+}

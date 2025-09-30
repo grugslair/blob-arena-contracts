@@ -37,11 +37,11 @@ mod arcade_classic {
     use beacon_library::{ToriiTable, register_table_with_schema};
     use sai_ownable::{OwnableTrait, ownable_component};
     use sai_return::emit_return;
-    use starknet::ContractAddress;
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
         StoragePointerWriteAccess,
     };
+    use starknet::{ClassHash, ContractAddress};
     use crate::Opponent;
     use super::{IArcadeClassic, IdTagAttack, OpponentInput};
 
@@ -82,6 +82,7 @@ mod arcade_classic {
     fn constructor(
         ref self: ContractState,
         owner: ContractAddress,
+        arcade_round_result_class_hash: ClassHash,
         attack_address: ContractAddress,
         loadout_address: ContractAddress,
         credit_address: ContractAddress,
@@ -91,6 +92,7 @@ mod arcade_classic {
         ArcadeInternal::init(
             ref self.arcade,
             "arcade_classic",
+            arcade_round_result_class_hash,
             attack_address,
             loadout_address,
             credit_address,
