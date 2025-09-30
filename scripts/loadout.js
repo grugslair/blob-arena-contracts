@@ -1,6 +1,7 @@
 import { makeCairoEnum, parseEnumObject } from "./stark-utils.js";
 import { CairoCustomEnum } from "starknet";
 import pkg from "case";
+import { parse } from "yargs";
 const { pascal } = pkg;
 
 const B100ToN100Affects = [
@@ -57,8 +58,9 @@ const parseAffectStruct = (affectInput) => {
   }
   return new CairoCustomEnum({ [key]: affect[key] });
 };
-const makeEffect = (target, affect) => ({
+const makeEffect = (target, duration, affect) => ({
   target: parseTarget(target),
+  duration: parseDuration(duration),
   affect: parseAffectStruct(affect),
 });
 
@@ -82,20 +84,46 @@ const makeEffect = (target, affect) => ({
 //     });
 // };
 
-const parseEffects = (target, affects) => {
+const getDuration = (effect) => {
+  if ("duration" in effect) {
+    return effect.duration;
+  }
+  for (const key of Object.keys(effect)) {
+    if (
+      ["instant", "round", "rounds", "infinite"].includes(key.toLowerCase())
+    ) {
+      return effect[key];
+    }
+  }
+};
+
+const parseEffects = (target, affects, duration) => {
+  if (duration == null) {
+    duration = getDuration(affects);
+  }
   if (typeof affects === "object") {
     if ("affects" in affects) {
-      return parseEffects(target, affects.affects);
+      return parseEffects(target, affects.affects, duration);
     }
     if ("affect" in affects) {
-      return makeEffect(target, affects.affect);
+      return makeEffect(target, affects.affect, duration);
     }
     return Object.entries(affects)
-      .filter(([k, _]) => k.toLowerCase() !== "target")
-      .flatMap(([k, v]) => makeEffect(target, { [k]: v }));
+      .filter(
+        ([k, _]) =>
+          ![
+            "duration",
+            "target",
+            "instant",
+            "round",
+            "rounds",
+            "infinite",
+          ].includes(k.toLowerCase())
+      )
+      .flatMap(([k, v]) => makeEffect(target, { [k]: v }, duration));
   }
   if (Array.isArray(affects)) {
-    return affects.flatMap((affect) => makeEffect(target, affect));
+    return affects.flatMap((affect) => makeEffect(target, affect, duration));
   }
 };
 
@@ -106,6 +134,28 @@ const parseTarget = (target) => {
     return new CairoCustomEnum({ [key]: {} });
   }
   throw new Error(`Unknown effect target: ${key}`);
+};
+
+const parseRound = (round) => {
+  return parseValueInRange(round, "round", 0n, 30n);
+};
+
+const parseDuration = (duration) => {
+  let [key, value] = parseEnumObject(duration, "Instant");
+  key = pascal(key);
+  if (key === "Instant") {
+    return new CairoCustomEnum({ Instant: {} });
+  }
+  if (key === "Round") {
+    return new CairoCustomEnum({ Round: parseRound(value) });
+  }
+  if (key === "Rounds") {
+    return new CairoCustomEnum({ Rounds: parseRound(value) });
+  }
+  if (key === "Permanent") {
+    return new CairoCustomEnum({ Permanent: {} });
+  }
+  throw new Error(`Unknown effect duration: ${key}`);
 };
 
 const parseEffectsArray = (effects) => {
