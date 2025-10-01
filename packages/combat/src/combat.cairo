@@ -176,6 +176,8 @@ pub impl CombatImpl of CombatTrait {
         round: u32,
         state_1: CombatantState,
         state_2: CombatantState,
+        attack_1: felt252,
+        attack_2: felt252,
         randomness: Randomness,
         attack_dispatcher: IAttackDispatcher,
     ) -> Combat {
@@ -186,8 +188,8 @@ pub impl CombatImpl of CombatTrait {
             first: None,
             round_effects: RoundEffectsTrait::new(id, round),
             round,
-            attack_1: 0,
-            attack_2: 0,
+            attack_1,
+            attack_2,
             progress: CombatProgress::Active,
             randomness,
             attack_dispatcher,
@@ -393,14 +395,36 @@ pub impl CombatImpl of CombatTrait {
             attacks: [self.attack_1, self.attack_2],
             first: self.first.into(),
             states: [self.state_1, self.state_2],
-            round_effects_results: self.round_effect_results,
+            round_effect_results: self.round_effect_results,
             attack_results: self.attack_results,
             progress: self.progress,
         }
     }
 
-    fn run_round(ref self: Combat) {
+    fn to_round_and_randomness(self: Combat) -> (RoundResult, Randomness) {
+        (
+            RoundResult {
+                combat: self.id,
+                round: self.round,
+                attacks: [self.attack_1, self.attack_2],
+                first: self.first.into(),
+                states: [self.state_1, self.state_2],
+                round_effect_results: self.round_effect_results,
+                attack_results: self.attack_results,
+                progress: self.progress,
+            },
+            self.randomness,
+        )
+    }
+
+    fn run_round(ref self: Combat, run_cooldown_1: bool, run_cooldown_2: bool) {
         self.run_round_effects();
+        if run_cooldown_1 {
+            self.run_attack_cooldown(Player::Player1);
+        }
+        if run_cooldown_2 {
+            self.run_attack_cooldown(Player::Player2);
+        }
         if self.progress == CombatProgress::Active {
             self.get_first_player();
             let first = self.first.unwrap();
@@ -420,7 +444,7 @@ pub struct RoundResult {
     pub states: [CombatantState; 2],
     pub attacks: [felt252; 2],
     pub first: PlayerOrNone,
-    pub round_effects_results: Array<RoundEffectResult>,
+    pub round_effect_results: Array<RoundEffectResult>,
     pub attack_results: Array<AttackResult>,
     pub progress: CombatProgress,
 }

@@ -1,3 +1,4 @@
+pub use calls::ExternalCalls;
 use core::hash::HashStateTrait;
 use core::integer::u128_safe_divmod;
 use core::num::traits::Zero;
@@ -6,6 +7,7 @@ use sai_core_utils::{poseidon_hash_single, poseidon_hash_two};
 use starknet::syscalls::{storage_read_syscall, storage_write_syscall};
 use starknet::{ContractAddress, StorageAddress, SyscallResultTrait, get_contract_address};
 pub mod bytes;
+pub mod calls;
 pub mod storage;
 pub mod vrf;
 const UUID_STORAGE_ADDRESS_FELT: felt252 = selector!("__uuid__");
@@ -39,7 +41,7 @@ pub fn felt252_to_u128(value: felt252) -> u128 {
     Into::<felt252, u256>::into(value).low
 }
 
-#[derive(Copy, Drop)]
+#[derive(Copy, Drop, Serde)]
 pub struct Randomness {
     seed: felt252,
     randomness: u256,

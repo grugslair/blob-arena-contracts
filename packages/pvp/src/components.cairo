@@ -74,12 +74,21 @@ pub impl PvpNodeImpl of PvpNodeTrait {
     fn combat(
         self: @PvpNodePath,
         combat_id: felt252,
+        attack_1: felt252,
+        attack_2: felt252,
         randomness: Randomness,
         attack_dispatcher: IAttackDispatcher,
     ) -> Combat {
         let [state_1, state_2] = self.player_states.read();
         CombatTrait::new(
-            combat_id, self.round.read(), state_1, state_2, randomness, attack_dispatcher,
+            combat_id,
+            self.round.read(),
+            state_1,
+            state_2,
+            attack_1,
+            attack_2,
+            randomness,
+            attack_dispatcher,
         )
     }
 
@@ -97,10 +106,8 @@ pub impl PvpNodeImpl of PvpNodeTrait {
             _ => panic_with_felt252('Invalid combat phase'),
         };
         let randomness = RandomnessTrait::new(poseidon_hash_two(salt_1, salt_2));
-        let mut combat = self.combat(combat_id, randomness, attack_dispatcher);
-        combat.set_attacks(attack_1, attack_2);
-        combat.run_attack_cooldowns();
-        combat.run_round();
+        let mut combat = self.combat(combat_id, attack_1, attack_2, randomness, attack_dispatcher);
+        combat.run_round(true, true);
         combat.to_round()
     }
 }

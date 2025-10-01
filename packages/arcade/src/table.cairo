@@ -1,5 +1,5 @@
 use ba_combat::combat::PlayerOrNone;
-use ba_combat::{AttackResult, Combat, CombatantState, RoundEffectResult};
+use ba_combat::{AttackResult, Combat, CombatantState, RoundEffectResult, RoundResult};
 use ba_loadout::attributes::Attributes;
 use starknet::ContractAddress;
 use crate::attempt::ArcadeProgress;
@@ -50,8 +50,13 @@ pub struct AttackLastUsed {
     pub round: u32,
 }
 
-#[generate_trait]
-pub impl AttemptRoundImpl of AttemptRoundTrait {
+
+pub trait AttemptRoundTrait<T> {
+    fn to_arcade_round(self: T, attempt: felt252, combat: u32) -> ArcadeRoundResult;
+}
+
+
+impl CombatToAttemptRoundImpl of AttemptRoundTrait<Combat> {
     fn to_arcade_round(self: Combat, attempt: felt252, combat: u32) -> ArcadeRoundResult {
         ArcadeRoundResult {
             attempt: attempt,
@@ -68,6 +73,27 @@ pub impl AttemptRoundImpl of AttemptRoundTrait {
         }
     }
 }
+
+impl RoundResultToAttemptRoundImpl of AttemptRoundTrait<RoundResult> {
+    fn to_arcade_round(self: RoundResult, attempt: felt252, combat: u32) -> ArcadeRoundResult {
+        let [opponent_state, player_state] = self.states;
+        let [player_attack, opponent_attack] = self.attacks;
+        ArcadeRoundResult {
+            attempt: attempt,
+            combat: combat,
+            round: self.round,
+            player_state,
+            opponent_state,
+            player_attack,
+            opponent_attack,
+            first: self.first.into(),
+            round_effect_results: self.round_effect_results,
+            attack_results: self.attack_results,
+            progress: self.progress.into(),
+        }
+    }
+}
+
 
 #[starknet::contract]
 pub mod arcade_round_result_model {

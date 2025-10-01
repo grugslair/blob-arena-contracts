@@ -15,6 +15,7 @@ mock_vrf = {}
 attack_model = {}
 round_result_model = {}
 arcade_round_result_model = {}
+combat = {}
 
 arena_blobert = {}
 arena_blobert_minter = {}

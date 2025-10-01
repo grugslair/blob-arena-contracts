@@ -8,9 +8,13 @@ blobert = { contract_address = "0x032cb9f30629268612ffb6060e40dfc669849c7d72539d
 vrf = { contract_address = "0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f" }
 
 [defaults]
-salt = "0xde7"
+salt = "0xde8"
 
 [declare]
+attack_model = {}
+round_result_model = {}
+arcade_round_result_model = {}
+
 arena_blobert = {}
 arena_blobert_minter = {}
 amma_blobert = {}
@@ -24,10 +28,15 @@ loadout_amma = {}
 arena_credit = {}
 arena_credit_purchase = {}
 
-arcade_classic = {}
-arcade_amma = {}
-
 pvp = {}
+
+arcade_classic = {}
+# arcade_amma = {}
+
+
+[deploy.attack_model]
+[deploy.round_result_model]
+[deploy.arcade_round_result_model]
 
 [variables]
 arena_contracts = []
@@ -52,4 +61,4 @@ loadout_classic = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f0
 loadout_amma = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
 
 arcade_classic = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
-arcade_amma = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+# arcade_amma = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"

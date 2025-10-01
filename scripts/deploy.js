@@ -96,6 +96,7 @@ await sai.deployContract([
       owner,
       arcade_round_result_class_hash:
         sai.classes.arcade_round_result_model.class_hash,
+      combat_class_hash: sai.classes.combat.class_hash,
       attack_address: sai.contracts["attack"].contract_address,
       loadout_address: sai.contracts["loadout_classic"].contract_address,
       credit_address: sai.contracts["arena_credit"].contract_address,
@@ -109,6 +110,7 @@ await sai.deployContract([
       owner,
       arcade_round_result_class_hash:
         sai.classes.arcade_round_result_model.class_hash,
+      combat_class_hash: sai.classes.combat.class_hash,
       attack_address: sai.contracts["attack"].contract_address,
       loadout_address: sai.contracts["loadout_amma"].contract_address,
       credit_address: sai.contracts["arena_credit"].contract_address,

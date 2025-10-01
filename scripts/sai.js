@@ -69,64 +69,6 @@ const loadAccount = async (account, cmdOptions) => {
   });
 };
 
-const declareContracts = async (
-  account,
-  targetPath,
-  projectName,
-  contracts
-) => {
-  let declarations = {};
-  for (const { tag, contract_name } of contracts) {
-    const name = contract_name || tag;
-    const contractPath = `${targetPath}/${projectName}_${name}.contract_class.json`;
-    const casmPath = `${targetPath}/${projectName}_${name}.compiled_contract_class.json`;
-    declarations[tag] = await declareContract(account, contractPath, casmPath);
-  }
-  return declarations;
-};
-
-const parseDeployContractData = (data) => {};
-
-const deployContracts = async (account, declarations, contracts) => {
-  let deployed = {};
-  for (const { tag, contract_tag, salt, unique, calldata } of contracts) {
-    const { classHash, abi } = declarations[contract_tag];
-
-    const contractAddress = calculateUDCContractAddressFromHash(
-      account.address,
-      classHash,
-      salt,
-      unique,
-      calldata
-    );
-
-    try {
-      deployed[tag] = {
-        tag,
-        contract_tag,
-        ...(await deployContract(account, classHash, calldata, salt, unique)),
-      };
-    } catch (e) {
-      console.error(e);
-      deployed[tag] = {
-        tag,
-        contract_tag,
-        salt,
-        unique,
-        calldata,
-        contract_address: calculateUDCContractAddressFromHash(
-          account.address,
-          classHash,
-          salt,
-          unique,
-          calldata
-        ),
-      };
-    }
-  }
-  return deployed;
-};
-
 export class SaiConfig {
   constructor(profile, contracts, name, account) {
     this.contracts = contracts;

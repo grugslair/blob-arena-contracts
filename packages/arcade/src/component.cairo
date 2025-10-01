@@ -28,7 +28,7 @@ pub mod arcade_component {
     use ba_arcade::attempt::{ArcadeProgress, AttemptNode, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::table::{ArcadeAttempt, AttackLastUsed};
     use ba_combat::combatant::get_max_health_percent;
-    use ba_combat::{CombatTrait, CombatantState, Player};
+    use ba_combat::{CombatantState, library_run_round};
     use ba_credit::arena_credit_consume;
     use ba_loadout::attack::IAttackDispatcher;
     use ba_loadout::get_loadout;
@@ -65,6 +65,7 @@ pub mod arcade_component {
         pub credit_cost: u128,
         pub energy_cost: u64,
         pub vrf_address: ContractAddress,
+        pub combat_class_hash: ClassHash,
     }
 
     #[event]
@@ -152,6 +153,7 @@ pub mod arcade_component {
                 ref self: TState,
                 namespace: ByteArray,
                 arcade_round_result_class_hash: ClassHash,
+                combat_class_hash: ClassHash,
                 attack_address: ContractAddress,
                 loadout_address: ContractAddress,
                 credit_address: ContractAddress,
@@ -201,6 +203,7 @@ pub mod arcade_component {
             ref self: ComponentState<TContractState>,
             namespace: ByteArray,
             arcade_round_result_class_hash: ClassHash,
+            combat_class_hash: ClassHash,
             attack_address: ContractAddress,
             loadout_address: ContractAddress,
             credit_address: ContractAddress,
@@ -210,6 +213,7 @@ pub mod arcade_component {
             self.loadout_address.write(loadout_address);
             self.credit_address.write(credit_address);
             self.vrf_address.write(vrf_address);
+            self.combat_class_hash.write(combat_class_hash);
             register_table_with_schema::<ArcadeAttempt>(namespace.clone(), "Attempt");
             register_table(namespace.clone(), "Round", arcade_round_result_class_hash);
             register_table_with_schema::<AttackLastUsed>(namespace, "AttackLastUsed");
@@ -279,22 +283,23 @@ pub mod arcade_component {
             let [player_state_ptr, opponent_state_ptr] = [
                 combat_node.player_state, combat_node.opponent_state,
             ];
-            let mut combat = CombatTrait::new(
+            let opponent_attack = combat_node
+                .get_opponent_attack(attack_dispatcher, round, ref randomness);
+            let (result, mut randomness) = library_run_round(
+                self.combat_class_hash.read(),
                 combat_id,
                 round,
                 player_state_ptr.read(),
                 opponent_state_ptr.read(),
-                randomness,
+                attack_id,
+                opponent_attack,
+                true,
+                false,
                 attack_dispatcher,
+                randomness,
             );
 
-            let opponent_attack = combat_node
-                .get_opponent_attack(attack_dispatcher, round, ref randomness);
-            combat.set_attacks(attack_id, opponent_attack);
-            combat.run_attack_cooldown(Player::Player1);
-            combat.run_round();
-            let randomness = combat.randomness;
-            let result: ArcadeRoundResult = combat.to_arcade_round(attempt_id, combat_n);
+            let result: ArcadeRoundResult = result.to_arcade_round(attempt_id, combat_n);
 
             if result.progress == ArcadeProgress::Active {
                 combat_node.round.write(round + 1);
