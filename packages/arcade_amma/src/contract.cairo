@@ -52,6 +52,7 @@ trait IArcadeAmma<TState> {
 mod arcade_amma {
     use ba_arcade::attempt::{ArcadeProgress, AttemptNodeTrait};
     use ba_arcade::{IArcade, Opponent, arcade_component};
+    use ba_combat::systems::get_attack_dispatcher_address;
     use ba_loadout::PartialAttributes;
     use ba_loadout::attack::interface::maybe_create_attacks_array;
     use ba_loadout::attack::maybe_create_attacks;
@@ -120,7 +121,6 @@ mod arcade_amma {
         ref self: ContractState,
         owner: ContractAddress,
         arcade_round_result_class_hash: ClassHash,
-        combat_class_hash: ClassHash,
         attack_address: ContractAddress,
         loadout_address: ContractAddress,
         credit_address: ContractAddress,
@@ -132,7 +132,6 @@ mod arcade_amma {
             ref self.arcade,
             "arcade_amma",
             arcade_round_result_class_hash,
-            combat_class_hash,
             attack_address,
             loadout_address,
             credit_address,
@@ -264,7 +263,7 @@ mod arcade_amma {
             attacks: Array<IdTagAttack>,
         ) {
             self.assert_caller_is_owner();
-            let attack_ids = maybe_create_attacks(self.arcade.attack_address.read(), attacks);
+            let attack_ids = maybe_create_attacks(get_attack_dispatcher_address(), attacks);
             self.set_opponent_internal(fighter, base, level, attack_ids);
         }
 
@@ -276,7 +275,7 @@ mod arcade_amma {
         ) {
             self.assert_caller_is_owner();
             let fighter = self.opponent_count.read();
-            let attack_ids = maybe_create_attacks(self.arcade.attack_address.read(), attacks);
+            let attack_ids = maybe_create_attacks(get_attack_dispatcher_address(), attacks);
             self.set_opponent_internal(fighter, base, level, attack_ids);
             self.opponent_count.write(fighter + 1);
         }
@@ -318,7 +317,7 @@ mod arcade_amma {
                 attributes.append(attr);
             }
             let all_attack_ids = maybe_create_attacks_array(
-                self.arcade.attack_address.read(), all_attacks,
+                get_attack_dispatcher_address(), all_attacks,
             );
             for (i, ([base, level], attacks)) in attributes
                 .into_iter()

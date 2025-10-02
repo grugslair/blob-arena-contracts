@@ -1,5 +1,5 @@
 use ba_combat::Player;
-use starknet::ContractAddress;
+use starknet::{ClassHash, ContractAddress};
 
 #[starknet::interface]
 pub trait IPvp<TContractState> {
@@ -68,31 +68,39 @@ pub trait IPvp<TContractState> {
     fn kick_player(ref self: TContractState, id: felt252);
 }
 
+#[starknet::interface]
+pub trait IPvpAdmin<TContractState> {
+    fn set_combat_class_hash(ref self: TContractState, class_hash: ClassHash);
+}
+
 
 #[starknet::contract]
 mod pvp {
     use ba_combat::combat::{CombatProgress, RoundZeroResult, set_attacks_available};
-    use ba_combat::{CombatantState, RoundResult};
-    use ba_loadout::attack::IAttackDispatcher;
+    use ba_combat::systems::{get_attack_dispatcher, set_attack_dispatcher_address};
+    use ba_combat::{CombatantState, RoundResult, library_run_round};
     use ba_loadout::get_loadout;
-    use ba_utils::uuid;
+    use ba_utils::{RandomnessTrait, uuid};
     use beacon_library::{ToriiTable, register_table, register_table_with_schema};
     use core::num::traits::Zero;
     use core::{panic_with_const_felt252, panic_with_felt252};
     use sai_core_utils::poseidon_hash_two;
+    use sai_ownable::{OwnableTrait, ownable_component};
     use sai_token::erc721::erc721_owner_of;
     use starknet::storage::{
         Map, Mutable, StoragePath, StoragePathEntry, StoragePointerReadAccess,
         StoragePointerWriteAccess,
     };
     use starknet::{ClassHash, ContractAddress, get_block_timestamp, get_caller_address};
-    use crate::components::{CombatPhase, LobbyNode, LobbyPhase, PvpNode, PvpNodeTrait};
+    use crate::components::{CombatPhase, LobbyNode, LobbyPhase, PvpNode, PvpNodePath, PvpNodeTrait};
     use crate::tables::{
         LobbyCombatInitSchema, LobbyCombatRespondSchema, LobbyCombatStartSchema,
         PvpAttackLastUsedTable, PvpCombatTable, WinVia,
     };
     use crate::utils::pad_to_fixed;
-    use super::{IPvp, Player};
+    use super::{IPvp, IPvpAdmin, Player};
+
+    component!(path: ownable_component, storage: ownable, event: OwnableEvents);
 
     const COMBAT_HASH: felt252 = bytearrays_hash!("pvp", "Combat");
     const ROUND_HASH: felt252 = bytearrays_hash!("pvp", "Round");
@@ -104,23 +112,42 @@ mod pvp {
 
     #[storage]
     struct Storage {
+        #[substorage(v0)]
+        ownable: ownable_component::Storage,
         lobbies: Map<felt252, LobbyNode>,
         combats: Map<felt252, PvpNode>,
-        attack_dispatcher: IAttackDispatcher,
+        combat_class_hash: ClassHash,
     }
+
+    #[event]
+    #[derive(Drop, starknet::Event)]
+    enum Event {
+        #[flat]
+        OwnableEvents: ownable_component::Event,
+    }
+
 
     #[constructor]
     fn constructor(
         ref self: ContractState,
+        owner: ContractAddress,
         round_result_class_hash: ClassHash,
         attack_address: ContractAddress,
     ) {
+        self.grant_owner(owner);
         register_table_with_schema::<PvpCombatTable>("pvp", "Combat");
         register_table_with_schema::<PvpAttackLastUsedTable>("pvp", "AttackLastUsed");
         register_table("pvp", "Round", round_result_class_hash);
-        self.attack_dispatcher.write(IAttackDispatcher { contract_address: attack_address });
+        set_attack_dispatcher_address(attack_address);
     }
 
+    #[abi(embed_v0)]
+    impl IPvpAdminImpl of IPvpAdmin<ContractState> {
+        fn set_combat_class_hash(ref self: ContractState, class_hash: ClassHash) {
+            self.assert_caller_is_owner();
+            self.combat_class_hash.write(class_hash);
+        }
+    }
 
     #[abi(embed_v0)]
     impl IPvpImpl of IPvp<ContractState> {
@@ -297,8 +324,7 @@ mod pvp {
                 combat.reveal.write([attack, salt]);
                 combat.set_combat_phase_and_time(id, next_phase);
             } else if combat.commit.read() == poseidon_hash_two(attack, salt) {
-                let result = combat
-                    .run_round(id, self.attack_dispatcher.read(), phase, attack, salt);
+                let result = self.run_round(combat, id, next_phase, attack, salt);
                 match result.progress {
                     CombatProgress::Active => combat.set_next_round(id, result.round),
                     CombatProgress::Ended(Player::Player1) => combat
@@ -355,6 +381,38 @@ mod pvp {
 
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
+        fn run_round(
+            ref self: ContractState,
+            node: PvpNodePath,
+            combat_id: felt252,
+            phase: CombatPhase,
+            attack: felt252,
+            salt: felt252,
+        ) -> RoundResult {
+            let [[attack_1, salt_1], [attack_2, salt_2]] = match phase {
+                CombatPhase::Player1Revealed => [node.reveal.read(), [attack, salt]],
+                CombatPhase::Player2Revealed => [[attack, salt], node.reveal.read()],
+                _ => panic_with_felt252('Invalid combat phase'),
+            };
+            let [state_1, state_2] = node.player_states.read();
+            let randomness = RandomnessTrait::new(poseidon_hash_two(salt_1, salt_2));
+
+            let (result, _) = library_run_round(
+                self.combat_class_hash.read(),
+                combat_id,
+                node.round.read(),
+                state_1,
+                state_2,
+                attack_1,
+                attack_2,
+                true,
+                true,
+                get_attack_dispatcher(),
+                randomness,
+            );
+            result
+        }
+
         fn set_lobby_phase(self: StoragePath<Mutable<LobbyNode>>, id: felt252, phase: LobbyPhase) {
             CombatTable::set_member(selector!("lobby"), id, @phase);
             self.phase.write(phase);

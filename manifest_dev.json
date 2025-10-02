@@ -219,13 +219,12 @@
       ]
     },
     "arcade_classic": {
-      "contract_address": "0xd252811dade9dc361c5cd1685e1be244ddd9200c0d285e203a4090434e93c",
+      "contract_address": "0x231f27a6846d16747374af6d4b0fd94cea94fee1f1f1f47504d94bb0cc0473a",
       "tag": "arcade_classic",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
         "arcade_round_result_class_hash": "0x36488621dd3a45c943672b366cf432d825f09e399de5ed4b3bdd268fd789b8f",
-        "combat_class_hash": "0x2d17fba544231b2f8be18cb9db234a08eda090ad6cbef92c2439e640d9d1e78",
         "attack_address": "0x639c59ff5f0cffef51fb73bca339c5b177f2f6d92567e33842e76e8d8c8589d",
         "loadout_address": "0x570e8fc5488887323fce57ed36c975bcd1ae31b8a6fc70eec34a2740834fa0",
         "credit_address": "0x7e111d03984dc4c532b9df331d54ecef7c15fe18a6cc329e9c2c668bddc5f8a",
@@ -234,11 +233,10 @@
       "salt": "0x0",
       "once": true,
       "class": "arcade_classic",
-      "class_hash": "0x507e871fd68000272cc3b1db94d8f594efdce0a5aec6e505ecbdcb9bf91a012",
+      "class_hash": "0x7182ece8e2a37279c43510c5e7d176fda4d8823fbcc76fdf77d2bb198bb7b4",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
         "0x36488621dd3a45c943672b366cf432d825f09e399de5ed4b3bdd268fd789b8f",
-        "0x2d17fba544231b2f8be18cb9db234a08eda090ad6cbef92c2439e640d9d1e78",
         "0x639c59ff5f0cffef51fb73bca339c5b177f2f6d92567e33842e76e8d8c8589d",
         "0x570e8fc5488887323fce57ed36c975bcd1ae31b8a6fc70eec34a2740834fa0",
         "0x7e111d03984dc4c532b9df331d54ecef7c15fe18a6cc329e9c2c668bddc5f8a",
@@ -246,13 +244,12 @@
       ]
     },
     "arcade_amma": {
-      "contract_address": "0x5c2e6a1c3ff271a66bceb8b260c840928e098aa103718b053e6a460b4232171",
+      "contract_address": "0x30ead7017e655fbcc532a6f5ba9680440e51f89b826762c57a6c4ed8ff510d7",
       "tag": "arcade_amma",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
         "arcade_round_result_class_hash": "0x36488621dd3a45c943672b366cf432d825f09e399de5ed4b3bdd268fd789b8f",
-        "combat_class_hash": "0x2d17fba544231b2f8be18cb9db234a08eda090ad6cbef92c2439e640d9d1e78",
         "attack_address": "0x639c59ff5f0cffef51fb73bca339c5b177f2f6d92567e33842e76e8d8c8589d",
         "loadout_address": "0x5767d181cc2f38d080467513ad42d1e6072b7785c15fe3c680d69bea056241d",
         "credit_address": "0x7e111d03984dc4c532b9df331d54ecef7c15fe18a6cc329e9c2c668bddc5f8a",
@@ -262,11 +259,10 @@
       "salt": "0x0",
       "once": true,
       "class": "arcade_amma",
-      "class_hash": "0x54cb5840b098a1486b0c9ef83e47d73adad9c9accde57b6685c7dd2ed806ae5",
+      "class_hash": "0x175863950e84e691b47d5452207702c8cf6415060ee5dc011b35628289e75b0",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
         "0x36488621dd3a45c943672b366cf432d825f09e399de5ed4b3bdd268fd789b8f",
-        "0x2d17fba544231b2f8be18cb9db234a08eda090ad6cbef92c2439e640d9d1e78",
         "0x639c59ff5f0cffef51fb73bca339c5b177f2f6d92567e33842e76e8d8c8589d",
         "0x5767d181cc2f38d080467513ad42d1e6072b7785c15fe3c680d69bea056241d",
         "0x7e111d03984dc4c532b9df331d54ecef7c15fe18a6cc329e9c2c668bddc5f8a",
@@ -275,18 +271,20 @@
       ]
     },
     "pvp": {
-      "contract_address": "0x793166596a6066d36d2e6757b3a1a540ac096495ee9593df6886258913a6575",
+      "contract_address": "0x8bc64064af112f2d77195fa2a308ffc8516eb841d63ac54cb4879eb8911db5",
       "tag": "pvp",
       "unique": false,
       "calldata": {
+        "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
         "round_result_class_hash": "0x754632248c3b3c81adb60f4dcf833a3bbb7f7be65653cf55e403b72f4cab7e9",
         "attack_address": "0x639c59ff5f0cffef51fb73bca339c5b177f2f6d92567e33842e76e8d8c8589d"
       },
       "salt": "0x0",
       "once": true,
       "class": "pvp",
-      "class_hash": "0x724ec045ec24044aa7b4afe78f284a22481e2eef9bf847f2a17b0460351c516",
+      "class_hash": "0x15ca2ba21a809d771a4f9b4a6fb112192bb931f0fbc1c04c976a83e61dbd174",
       "calldata_compiled": [
+        "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
         "0x754632248c3b3c81adb60f4dcf833a3bbb7f7be65653cf55e403b72f4cab7e9",
         "0x639c59ff5f0cffef51fb73bca339c5b177f2f6d92567e33842e76e8d8c8589d"
       ]
@@ -339,13 +337,13 @@
       "class_hash": "0x4be30835b6c7e9bc04c7cb119eab8670da3f168c58ebe718b8e4fb5c7aeb799"
     },
     "arcade_classic": {
-      "class_hash": "0x507e871fd68000272cc3b1db94d8f594efdce0a5aec6e505ecbdcb9bf91a012"
+      "class_hash": "0x7182ece8e2a37279c43510c5e7d176fda4d8823fbcc76fdf77d2bb198bb7b4"
     },
     "arcade_amma": {
-      "class_hash": "0x54cb5840b098a1486b0c9ef83e47d73adad9c9accde57b6685c7dd2ed806ae5"
+      "class_hash": "0x175863950e84e691b47d5452207702c8cf6415060ee5dc011b35628289e75b0"
     },
     "pvp": {
-      "class_hash": "0x724ec045ec24044aa7b4afe78f284a22481e2eef9bf847f2a17b0460351c516"
+      "class_hash": "0x15ca2ba21a809d771a4f9b4a6fb112192bb931f0fbc1c04c976a83e61dbd174"
     }
   },
   "contracts": {
@@ -426,25 +424,25 @@
       "class": "loadout_amma"
     },
     "arcade_classic": {
-      "contract_address": "0xd252811dade9dc361c5cd1685e1be244ddd9200c0d285e203a4090434e93c",
-      "class_hash": "0x507e871fd68000272cc3b1db94d8f594efdce0a5aec6e505ecbdcb9bf91a012",
+      "contract_address": "0x231f27a6846d16747374af6d4b0fd94cea94fee1f1f1f47504d94bb0cc0473a",
+      "class_hash": "0x7182ece8e2a37279c43510c5e7d176fda4d8823fbcc76fdf77d2bb198bb7b4",
       "class": "arcade_classic"
     },
     "arcade_amma": {
-      "contract_address": "0x5c2e6a1c3ff271a66bceb8b260c840928e098aa103718b053e6a460b4232171",
-      "class_hash": "0x54cb5840b098a1486b0c9ef83e47d73adad9c9accde57b6685c7dd2ed806ae5",
+      "contract_address": "0x30ead7017e655fbcc532a6f5ba9680440e51f89b826762c57a6c4ed8ff510d7",
+      "class_hash": "0x175863950e84e691b47d5452207702c8cf6415060ee5dc011b35628289e75b0",
       "class": "arcade_amma"
     },
     "pvp": {
-      "contract_address": "0x793166596a6066d36d2e6757b3a1a540ac096495ee9593df6886258913a6575",
-      "class_hash": "0x724ec045ec24044aa7b4afe78f284a22481e2eef9bf847f2a17b0460351c516",
+      "contract_address": "0x8bc64064af112f2d77195fa2a308ffc8516eb841d63ac54cb4879eb8911db5",
+      "class_hash": "0x15ca2ba21a809d771a4f9b4a6fb112192bb931f0fbc1c04c976a83e61dbd174",
       "class": "pvp"
     }
   },
   "declarations": {
-    "combat": {
-      "class_hash": "0x2d17fba544231b2f8be18cb9db234a08eda090ad6cbef92c2439e640d9d1e78",
-      "transaction_hash": "0x607c024e415b49641b5754e0480903eeb2007699ced508212736feea48f7cca"
+    "pvp": {
+      "class_hash": "0x15ca2ba21a809d771a4f9b4a6fb112192bb931f0fbc1c04c976a83e61dbd174",
+      "transaction_hash": "0x47e81a5e59584408941f44c69e7280587f20ee0a3912cd9f45998eaebb28525"
     }
   },
   "abis": {
@@ -6959,7 +6957,7 @@
         ]
       }
     ],
-    "0x507e871fd68000272cc3b1db94d8f594efdce0a5aec6e505ecbdcb9bf91a012": [
+    "0x7182ece8e2a37279c43510c5e7d176fda4d8823fbcc76fdf77d2bb198bb7b4": [
       {
         "type": "impl",
         "name": "IArcadeImpl",
@@ -7717,6 +7715,17 @@
           },
           {
             "type": "function",
+            "name": "combat_class_hash",
+            "inputs": [],
+            "outputs": [
+              {
+                "type": "core::starknet::class_hash::ClassHash"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
             "name": "set_max_respawns",
             "inputs": [
               {
@@ -7790,6 +7799,18 @@
             ],
             "outputs": [],
             "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_combat_class_hash",
+            "inputs": [
+              {
+                "name": "class_hash",
+                "type": "core::starknet::class_hash::ClassHash"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
           }
         ]
       },
@@ -7803,10 +7824,6 @@
           },
           {
             "name": "arcade_round_result_class_hash",
-            "type": "core::starknet::class_hash::ClassHash"
-          },
-          {
-            "name": "combat_class_hash",
             "type": "core::starknet::class_hash::ClassHash"
           },
           {
@@ -7892,7 +7909,7 @@
         ]
       }
     ],
-    "0x54cb5840b098a1486b0c9ef83e47d73adad9c9accde57b6685c7dd2ed806ae5": [
+    "0x175863950e84e691b47d5452207702c8cf6415060ee5dc011b35628289e75b0": [
       {
         "type": "impl",
         "name": "IArcadeImpl",
@@ -8734,6 +8751,17 @@
           },
           {
             "type": "function",
+            "name": "combat_class_hash",
+            "inputs": [],
+            "outputs": [
+              {
+                "type": "core::starknet::class_hash::ClassHash"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
             "name": "set_max_respawns",
             "inputs": [
               {
@@ -8807,6 +8835,18 @@
             ],
             "outputs": [],
             "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_combat_class_hash",
+            "inputs": [
+              {
+                "name": "class_hash",
+                "type": "core::starknet::class_hash::ClassHash"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
           }
         ]
       },
@@ -8820,10 +8860,6 @@
           },
           {
             "name": "arcade_round_result_class_hash",
-            "type": "core::starknet::class_hash::ClassHash"
-          },
-          {
-            "name": "combat_class_hash",
             "type": "core::starknet::class_hash::ClassHash"
           },
           {
@@ -8913,7 +8949,30 @@
         ]
       }
     ],
-    "0x724ec045ec24044aa7b4afe78f284a22481e2eef9bf847f2a17b0460351c516": [
+    "0x15ca2ba21a809d771a4f9b4a6fb112192bb931f0fbc1c04c976a83e61dbd174": [
+      {
+        "type": "impl",
+        "name": "IPvpAdminImpl",
+        "interface_name": "ba_pvp::contract::IPvpAdmin"
+      },
+      {
+        "type": "interface",
+        "name": "ba_pvp::contract::IPvpAdmin",
+        "items": [
+          {
+            "type": "function",
+            "name": "set_combat_class_hash",
+            "inputs": [
+              {
+                "name": "class_hash",
+                "type": "core::starknet::class_hash::ClassHash"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          }
+        ]
+      },
       {
         "type": "impl",
         "name": "IPvpImpl",
@@ -9150,6 +9209,10 @@
         "name": "constructor",
         "inputs": [
           {
+            "name": "owner",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
             "name": "round_result_class_hash",
             "type": "core::starknet::class_hash::ClassHash"
           },
@@ -9161,9 +9224,56 @@
       },
       {
         "type": "event",
+        "name": "sai_ownable::ownable_component::GrantContractOwner",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "user",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "sai_ownable::ownable_component::RevokeContractOwner",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "user",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "sai_ownable::ownable_component::Event",
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "GrantContractOwner",
+            "type": "sai_ownable::ownable_component::GrantContractOwner",
+            "kind": "nested"
+          },
+          {
+            "name": "RevokeContractOwner",
+            "type": "sai_ownable::ownable_component::RevokeContractOwner",
+            "kind": "nested"
+          }
+        ]
+      },
+      {
+        "type": "event",
         "name": "ba_pvp::contract::pvp::Event",
         "kind": "enum",
-        "variants": []
+        "variants": [
+          {
+            "name": "OwnableEvents",
+            "type": "sai_ownable::ownable_component::Event",
+            "kind": "flat"
+          }
+        ]
       }
     ]
   }

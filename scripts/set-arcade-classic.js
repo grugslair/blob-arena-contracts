@@ -2,6 +2,7 @@ import { loadJson } from "./stark-utils.js";
 import { loadSai } from "./sai.js";
 import { parseAttributes, parseIdTagAttackStructs } from "./loadout.js";
 import { CairoCustomEnum } from "starknet";
+import { makeSetCombatClassHashCall } from "./combat.js";
 
 export const makeOpponentStruct = (opponent) => {
   return {
@@ -41,6 +42,7 @@ export const makeArcadeClassicCalls = async (sai) => {
   );
   const contract = await sai.getContract("arcade_classic");
   return [
+    makeSetCombatClassHashCall(contract, sai.classes.combat.class_hash),
     makeOpponentsCall(contract, arcadeClassicData.opponents),
     ...makeSetConfigCalls(contract, arcadeClassicData),
   ];

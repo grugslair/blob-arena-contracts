@@ -28,9 +28,9 @@ pub mod arcade_component {
     use ba_arcade::attempt::{ArcadeProgress, AttemptNode, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::table::{ArcadeAttempt, AttackLastUsed};
     use ba_combat::combatant::get_max_health_percent;
+    use ba_combat::systems::{get_attack_dispatcher, set_attack_dispatcher_address};
     use ba_combat::{CombatantState, library_run_round};
     use ba_credit::arena_credit_consume;
-    use ba_loadout::attack::IAttackDispatcher;
     use ba_loadout::get_loadout;
     use ba_utils::vrf::consume_randomness;
     use ba_utils::{Randomness, erc721_token_hash, uuid};
@@ -59,7 +59,6 @@ pub mod arcade_component {
         pub time_limit: u64,
         pub health_regen_percent: u8,
         pub current_attempt: Map<felt252, felt252>,
-        pub attack_address: ContractAddress,
         pub loadout_address: ContractAddress,
         pub credit_address: ContractAddress,
         pub credit_cost: u128,
@@ -104,6 +103,10 @@ pub mod arcade_component {
             self.vrf_address.read()
         }
 
+        fn combat_class_hash(self: @ComponentState<TContractState>) -> ClassHash {
+            self.combat_class_hash.read()
+        }
+
         fn set_max_respawns(ref self: ComponentState<TContractState>, max_respawns: u32) {
             self.get_contract().assert_caller_is_owner();
             self.max_respawns.write(max_respawns);
@@ -140,6 +143,11 @@ pub mod arcade_component {
             self.get_contract().assert_caller_is_owner();
             self.vrf_address.write(contract_address);
         }
+
+        fn set_combat_class_hash(ref self: ComponentState<TContractState>, class_hash: ClassHash) {
+            self.get_contract().assert_caller_is_owner();
+            self.combat_class_hash.write(class_hash);
+        }
     }
 
     mod internal_trait {
@@ -153,7 +161,6 @@ pub mod arcade_component {
                 ref self: TState,
                 namespace: ByteArray,
                 arcade_round_result_class_hash: ClassHash,
-                combat_class_hash: ClassHash,
                 attack_address: ContractAddress,
                 loadout_address: ContractAddress,
                 credit_address: ContractAddress,
@@ -203,17 +210,15 @@ pub mod arcade_component {
             ref self: ComponentState<TContractState>,
             namespace: ByteArray,
             arcade_round_result_class_hash: ClassHash,
-            combat_class_hash: ClassHash,
             attack_address: ContractAddress,
             loadout_address: ContractAddress,
             credit_address: ContractAddress,
             vrf_address: ContractAddress,
         ) {
-            self.attack_address.write(attack_address);
+            set_attack_dispatcher_address(attack_address);
             self.loadout_address.write(loadout_address);
             self.credit_address.write(credit_address);
             self.vrf_address.write(vrf_address);
-            self.combat_class_hash.write(combat_class_hash);
             register_table_with_schema::<ArcadeAttempt>(namespace.clone(), "Attempt");
             register_table(namespace.clone(), "Round", arcade_round_result_class_hash);
             register_table_with_schema::<AttackLastUsed>(namespace, "AttackLastUsed");
@@ -272,9 +277,7 @@ pub mod arcade_component {
 
             attempt_ptr.assert_caller_is_owner();
             assert(attempt_ptr.phase.read() == ArcadeProgress::Active, 'Game is not active');
-            let attack_dispatcher = IAttackDispatcher {
-                contract_address: self.attack_address.read(),
-            };
+            let attack_dispatcher = get_attack_dispatcher();
             let mut combat_node = attempt_ptr.combats.entry(combat_n);
             let round = combat_node.round.read();
             let mut randomness = consume_randomness(

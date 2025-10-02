@@ -33,6 +33,7 @@ trait IArcadeClassic<TState> {
 mod arcade_classic {
     use ba_arcade::attempt::{ArcadeProgress, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::{IArcade, arcade_component};
+    use ba_combat::systems::get_attack_dispatcher_address;
     use ba_loadout::attack::interface::maybe_create_attacks_array;
     use beacon_library::{ToriiTable, register_table_with_schema};
     use sai_ownable::{OwnableTrait, ownable_component};
@@ -83,7 +84,6 @@ mod arcade_classic {
         ref self: ContractState,
         owner: ContractAddress,
         arcade_round_result_class_hash: ClassHash,
-        combat_class_hash: ClassHash,
         attack_address: ContractAddress,
         loadout_address: ContractAddress,
         credit_address: ContractAddress,
@@ -94,7 +94,6 @@ mod arcade_classic {
             ref self.arcade,
             "arcade_classic",
             arcade_round_result_class_hash,
-            combat_class_hash,
             attack_address,
             loadout_address,
             credit_address,
@@ -174,7 +173,7 @@ mod arcade_classic {
                 all_attacks.append(opponent.attacks.clone());
             }
             let all_attack_ids = maybe_create_attacks_array(
-                self.arcade.attack_address.read(), all_attacks,
+                get_attack_dispatcher_address(), all_attacks,
             );
             for (i, (opponent, attacks)) in opponents.into_iter().zip(all_attack_ids).enumerate() {
                 OpponentTable::set_entity(

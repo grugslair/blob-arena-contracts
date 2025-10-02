@@ -7,6 +7,7 @@ import { config } from "starknet";
 import { dumpToml, loadToml } from "./stark-utils.js";
 import { makeArcadeAmmaCalls } from "./set-arcade-amma.js";
 import { makeArenaCreditCalls } from "./set-arena-credits.js";
+import { makePvpCalls } from "./set-pvp.js";
 const deployWithOwner = [
   "arena_blobert",
   "amma_blobert",
@@ -96,7 +97,6 @@ await sai.deployContract([
       owner,
       arcade_round_result_class_hash:
         sai.classes.arcade_round_result_model.class_hash,
-      combat_class_hash: sai.classes.combat.class_hash,
       attack_address: sai.contracts["attack"].contract_address,
       loadout_address: sai.contracts["loadout_classic"].contract_address,
       credit_address: sai.contracts["arena_credit"].contract_address,
@@ -110,7 +110,6 @@ await sai.deployContract([
       owner,
       arcade_round_result_class_hash:
         sai.classes.arcade_round_result_model.class_hash,
-      combat_class_hash: sai.classes.combat.class_hash,
       attack_address: sai.contracts["attack"].contract_address,
       loadout_address: sai.contracts["loadout_amma"].contract_address,
       credit_address: sai.contracts["arena_credit"].contract_address,
@@ -122,6 +121,7 @@ await sai.deployContract([
     tag: "pvp",
     unique: false,
     calldata: {
+      owner,
       round_result_class_hash: sai.classes.round_result_model.class_hash,
       attack_address: sai.contracts["attack"].contract_address,
     },
@@ -196,6 +196,7 @@ await sai.executeAndWait([
   ...(await makeArenaBlobertCalls(sai)),
   ...(await makeArcadeClassicCalls(sai)),
   ...(await makeArcadeAmmaCalls(sai)),
+  ...(await makePvpCalls(sai)),
   ...(await makeArenaCreditCalls(sai)),
 ]);
 

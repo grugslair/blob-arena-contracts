@@ -9,7 +9,10 @@ pub fn set_attack_dispatcher_address(contract_address: ContractAddress) {
 }
 
 pub fn get_attack_dispatcher() -> IAttackDispatcher {
-    IAttackDispatcher {
-        contract_address: read_at_felt252(ATTACK_DISPATCHER_STORAGE_ADDRESS).try_into().unwrap(),
-    }
+    IAttackDispatcher { contract_address: get_attack_dispatcher_address() }
+}
+
+
+pub fn get_attack_dispatcher_address() -> ContractAddress {
+    read_at_felt252(ATTACK_DISPATCHER_STORAGE_ADDRESS).try_into().unwrap()
 }

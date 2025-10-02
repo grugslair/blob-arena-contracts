@@ -5,7 +5,7 @@ use ba_utils::{Randomness, RandomnessTrait};
 use core::panic_with_felt252;
 use sai_core_utils::poseidon_hash_two;
 use starknet::storage::{Map, Mutable, StoragePath, StoragePointerReadAccess};
-use starknet::{ContractAddress, get_caller_address};
+use starknet::{ClassHash, ContractAddress, get_caller_address};
 
 pub type PvpNodePath = StoragePath<Mutable<PvpNode>>;
 
@@ -94,6 +94,7 @@ pub impl PvpNodeImpl of PvpNodeTrait {
 
     fn run_round(
         ref self: PvpNodePath,
+        combat_class_hash: ClassHash,
         combat_id: felt252,
         attack_dispatcher: IAttackDispatcher,
         phase: CombatPhase,
@@ -106,6 +107,7 @@ pub impl PvpNodeImpl of PvpNodeTrait {
             _ => panic_with_felt252('Invalid combat phase'),
         };
         let randomness = RandomnessTrait::new(poseidon_hash_two(salt_1, salt_2));
+
         let mut combat = self.combat(combat_id, attack_1, attack_2, randomness, attack_dispatcher);
         combat.run_round(true, true);
         combat.to_round()

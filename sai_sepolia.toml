@@ -14,6 +14,7 @@ salt = "0xde8"
 attack_model = {}
 round_result_model = {}
 arcade_round_result_model = {}
+combat = {}
 
 arena_blobert = {}
 arena_blobert_minter = {}
@@ -28,10 +29,9 @@ loadout_amma = {}
 arena_credit = {}
 arena_credit_purchase = {}
 
-pvp = {}
-
 arcade_classic = {}
-# arcade_amma = {}
+arcade_amma = {}
+pvp = {}
 
 
 [deploy.attack_model]
