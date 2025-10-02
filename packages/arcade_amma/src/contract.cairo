@@ -74,8 +74,8 @@ mod arcade_amma {
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
     component!(path: arcade_component, storage: arcade, event: ArcadeEvents);
 
-    const ROUND_HASH: felt252 = bytearrays_hash!("arcade_amma", "ArcadeRound");
-    const ATTEMPT_HASH: felt252 = bytearrays_hash!("arcade_amma", "ArcadeAttempt");
+    const ROUND_HASH: felt252 = bytearrays_hash!("arcade_amma", "Round");
+    const ATTEMPT_HASH: felt252 = bytearrays_hash!("arcade_amma", "Attempt");
     const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("arcade_amma", "AttackLastUsed");
     const STAGE_OPPONENTS_HASH: felt252 = bytearrays_hash!("arcade_amma", "StageOpponents");
     const OPPONENTS_HASH: felt252 = bytearrays_hash!("arcade_amma", "Opponent");

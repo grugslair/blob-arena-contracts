@@ -151,7 +151,7 @@ const toriiConfigPath = `torii_${sai.profile}.toml`;
 const torii = loadToml(toriiConfigPath);
 torii.indexing.contracts = toriiContract;
 dumpToml(torii, toriiConfigPath);
-
+console.log("Contracts Deployed");
 await sai.executeAndWait([
   (
     await sai.getContract("arena_blobert")

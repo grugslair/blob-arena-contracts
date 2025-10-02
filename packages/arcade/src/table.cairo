@@ -38,7 +38,8 @@ pub struct ArcadeRoundResult {
 pub struct ArcadeZeroRoundResult {
     pub attempt: felt252,
     pub combat: u32,
-    pub states: [CombatantState; 2],
+    pub player_state: CombatantState,
+    pub opponent_state: CombatantState,
     pub progress: ArcadeProgress,
 }
 
@@ -76,7 +77,7 @@ impl CombatToAttemptRoundImpl of AttemptRoundTrait<Combat> {
 
 impl RoundResultToAttemptRoundImpl of AttemptRoundTrait<RoundResult> {
     fn to_arcade_round(self: RoundResult, attempt: felt252, combat: u32) -> ArcadeRoundResult {
-        let [opponent_state, player_state] = self.states;
+        let [player_state, opponent_state] = self.states;
         let [player_attack, opponent_attack] = self.attacks;
         ArcadeRoundResult {
             attempt: attempt,

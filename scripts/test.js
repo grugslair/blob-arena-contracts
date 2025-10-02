@@ -6,19 +6,16 @@ sai.loadManifest();
 
 const classicToken = 0x12edn;
 const ammaToken = 0x1n;
-const ammaAttackId =
-  0x075e55f19968d78a969bacc2718b55d7272fde924c096f198d4da77d79b3d5c2n;
 
 const arcadeClassicContract = await sai.getContract("arcade_classic");
 const arcadeAmmaContract = await sai.getContract("arcade_amma");
+const arenaCreditContract = await sai.getContract("arena_credit");
+const loadoutAmmaContract = await sai.getContract("loadout_amma");
+const loadoutClassicContract = await sai.getContract("loadout_classic");
 const purchaseContract = await sai.getContract("arena_credit_purchase");
 const starkContract = await sai.getContract("stark_token");
 
-// console.log({
-//   spender: purchaseContract.address,
-//   amount: 1_000_000_000_000_000_000_000_000_000n,
-// });
-
+// console.log(starkContract.abi);
 // console.log(
 //   starkContract.populate("approve", {
 //     spender: purchaseContract.address,
@@ -54,20 +51,42 @@ const starkContract = await sai.getContract("stark_token");
 //   })
 // );
 
-await sai.executeWithReturn(
-  (await sai.getContract("arena_blobert_minter")).populate("mint")
-);
 await sai.executeAndWait(
-  (await sai.getContract("amma_blobert_minter")).populate("claim")
+  arenaCreditContract.populate("add_credits", {
+    user: sai.account.address,
+    amount: 200,
+  })
 );
+console.log("Adding credits");
+
+// await sai.executeWithReturn(
+//   (await sai.getContract("arena_blobert_minter")).populate("mint")
+// );
+// console.log("Minted Arena Blobert");
+
+// await sai.executeAndWait(
+//   (await sai.getContract("amma_blobert_minter")).populate("claim")
+// );
+// console.log("Minted Amma Blobert");
+
+const ammaAttackId = (
+  await loadoutAmmaContract.attacks(
+    sai.contracts.amma_blobert_soulbound.contract_address,
+    ammaToken,
+    [[0]]
+  )
+)[0];
+console.log("Amma Attack ID:", ammaAttackId);
 
 const classicAttackId = (
-  await (
-    await sai.getContract("loadout_classic")
-  ).attacks(sai.contracts.arena_blobert.contract_address, classicToken, [
-    [1, 0],
-  ])
+  await loadoutClassicContract.attacks(
+    sai.contracts.arena_blobert.contract_address,
+    classicToken,
+    [[1, 0]]
+  )
 )[0];
+
+console.log("Classic Attack ID:", classicAttackId);
 const classicAttemptId = (
   await sai.executeWithReturn(
     arcadeClassicContract.populate("start", {
@@ -82,7 +101,7 @@ const classicAttemptId = (
     })
   )
 )[0].data[0];
-
+console.log("Classic Attempt ID:", classicAttemptId);
 const ammaAttemptId = (
   await sai.executeWithReturn(
     arcadeAmmaContract.populate("start", {
@@ -93,16 +112,40 @@ const ammaAttemptId = (
     })
   )
 )[0].data[0];
-await sai.account.execute(
-  arcadeClassicContract.populate("attack", {
-    attempt_id: classicAttemptId,
-    attack_id: classicAttackId,
-  })
-);
+console.log("Amma Attempt ID:", ammaAttemptId);
 
-await sai.account.execute(
-  arcadeAmmaContract.populate("attack", {
-    attempt_id: ammaAttemptId,
-    attack_id: ammaAttackId,
-  })
-);
+let n = 1;
+while (true) {
+  try {
+    await sai.executeAndWait(
+      arcadeAmmaContract.populate("attack", {
+        attempt_id: ammaAttemptId,
+        attack_id: ammaAttackId,
+      })
+    );
+    console.log(`Amma attack ${n} executed`);
+    n++;
+  } catch (e) {
+    console.error("Error during amma attack:", e);
+    break;
+  }
+}
+
+console.log("Amma attack executed");
+n = 1;
+while (true) {
+  try {
+    await sai.executeAndWait(
+      arcadeClassicContract.populate("attack", {
+        attempt_id: classicAttemptId,
+        attack_id: classicAttackId,
+      })
+    );
+    console.log(`Classic attack ${n} executed`);
+    n++;
+  } catch (e) {
+    console.error("Error during classic attack:", e);
+    break;
+  }
+}
+console.log("Classic attack executed");

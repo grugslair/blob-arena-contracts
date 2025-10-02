@@ -13,8 +13,6 @@ import {
   loadJson,
   loadToml,
   resolvePath,
-  declareContract,
-  deployContract,
   calculateUDCContractAddressFromHash,
   dumpJson,
   getReturns,

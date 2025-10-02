@@ -1,11 +1,7 @@
-use ba_combat::{Combat, CombatTrait, CombatantState, Player, RoundResult};
+use ba_combat::{CombatantState, Player};
 use ba_loadout::Attributes;
-use ba_loadout::attack::IAttackDispatcher;
-use ba_utils::{Randomness, RandomnessTrait};
-use core::panic_with_felt252;
-use sai_core_utils::poseidon_hash_two;
 use starknet::storage::{Map, Mutable, StoragePath, StoragePointerReadAccess};
-use starknet::{ClassHash, ContractAddress, get_caller_address};
+use starknet::{ContractAddress, get_caller_address};
 
 pub type PvpNodePath = StoragePath<Mutable<PvpNode>>;
 
@@ -69,48 +65,6 @@ pub impl PvpNodeImpl of PvpNodeTrait {
             'Caller not player',
         );
         caller
-    }
-
-    fn combat(
-        self: @PvpNodePath,
-        combat_id: felt252,
-        attack_1: felt252,
-        attack_2: felt252,
-        randomness: Randomness,
-        attack_dispatcher: IAttackDispatcher,
-    ) -> Combat {
-        let [state_1, state_2] = self.player_states.read();
-        CombatTrait::new(
-            combat_id,
-            self.round.read(),
-            state_1,
-            state_2,
-            attack_1,
-            attack_2,
-            randomness,
-            attack_dispatcher,
-        )
-    }
-
-    fn run_round(
-        ref self: PvpNodePath,
-        combat_class_hash: ClassHash,
-        combat_id: felt252,
-        attack_dispatcher: IAttackDispatcher,
-        phase: CombatPhase,
-        attack: felt252,
-        salt: felt252,
-    ) -> RoundResult {
-        let [[attack_1, salt_1], [attack_2, salt_2]] = match phase {
-            CombatPhase::Player1Revealed => [self.reveal.read(), [attack, salt]],
-            CombatPhase::Player2Revealed => [[attack, salt], self.reveal.read()],
-            _ => panic_with_felt252('Invalid combat phase'),
-        };
-        let randomness = RandomnessTrait::new(poseidon_hash_two(salt_1, salt_2));
-
-        let mut combat = self.combat(combat_id, attack_1, attack_2, randomness, attack_dispatcher);
-        combat.run_round(true, true);
-        combat.to_round()
     }
 }
 

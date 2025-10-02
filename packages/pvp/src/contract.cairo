@@ -76,7 +76,7 @@ pub trait IPvpAdmin<TContractState> {
 
 #[starknet::contract]
 mod pvp {
-    use ba_combat::combat::{CombatProgress, RoundZeroResult, set_attacks_available};
+    use ba_combat::combat::{AttackCheck, CombatProgress, RoundZeroResult, set_attacks_available};
     use ba_combat::systems::{get_attack_dispatcher, set_attack_dispatcher_address};
     use ba_combat::{CombatantState, RoundResult, library_run_round};
     use ba_loadout::get_loadout;
@@ -405,8 +405,8 @@ mod pvp {
                 state_2,
                 attack_1,
                 attack_2,
-                true,
-                true,
+                AttackCheck::All,
+                AttackCheck::All,
                 get_attack_dispatcher(),
                 randomness,
             );

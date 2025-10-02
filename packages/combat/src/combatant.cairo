@@ -52,34 +52,34 @@ pub struct CombatantState {
 
 impl UAbilityStorePacking of StorePacking<CombatantState, u128> {
     fn pack(value: CombatantState) -> u128 {
-        value.strength.into()
-            + ShiftCast::const_cast::<SHIFT_1B>(value.vitality)
-            + ShiftCast::const_cast::<SHIFT_2B>(value.dexterity)
-            + ShiftCast::const_cast::<SHIFT_3B>(value.luck)
-            + ShiftCast::const_cast::<SHIFT_4B>(value.bludgeon_resistance)
-            + ShiftCast::const_cast::<SHIFT_5B>(value.magic_resistance)
-            + ShiftCast::const_cast::<SHIFT_6B>(value.pierce_resistance)
-            + ShiftCast::const_cast::<SHIFT_7B>(value.bludgeon_vulnerability)
-            + ShiftCast::const_cast::<SHIFT_9B>(value.magic_vulnerability)
-            + ShiftCast::const_cast::<SHIFT_11B>(value.pierce_vulnerability)
-            + ShiftCast::const_cast::<SHIFT_13B>(value.health)
-            + ShiftCast::const_cast::<SHIFT_14B>(value.stun_chance)
+        value.health.into()
+            + ShiftCast::const_cast::<SHIFT_1B>(value.stun_chance)
+            + ShiftCast::const_cast::<SHIFT_2B>(value.strength)
+            + ShiftCast::const_cast::<SHIFT_3B>(value.vitality)
+            + ShiftCast::const_cast::<SHIFT_4B>(value.dexterity)
+            + ShiftCast::const_cast::<SHIFT_5B>(value.luck)
+            + ShiftCast::const_cast::<SHIFT_6B>(value.bludgeon_resistance)
+            + ShiftCast::const_cast::<SHIFT_7B>(value.magic_resistance)
+            + ShiftCast::const_cast::<SHIFT_8B>(value.pierce_resistance)
+            + ShiftCast::const_cast::<SHIFT_9B>(value.bludgeon_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_11B>(value.magic_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_13B>(value.pierce_vulnerability)
     }
 
     fn unpack(value: u128) -> CombatantState {
         CombatantState {
-            strength: MaskDowncast::cast(value),
-            vitality: ShiftCast::const_unpack::<SHIFT_1B>(value),
-            dexterity: ShiftCast::const_unpack::<SHIFT_2B>(value),
-            luck: ShiftCast::const_unpack::<SHIFT_3B>(value),
-            bludgeon_resistance: ShiftCast::const_unpack::<SHIFT_4B>(value),
-            magic_resistance: ShiftCast::const_unpack::<SHIFT_5B>(value),
-            pierce_resistance: ShiftCast::const_unpack::<SHIFT_6B>(value),
-            bludgeon_vulnerability: ShiftCast::const_unpack::<SHIFT_7B>(value),
-            magic_vulnerability: ShiftCast::const_unpack::<SHIFT_9B>(value),
-            pierce_vulnerability: ShiftCast::const_unpack::<SHIFT_11B>(value),
-            health: ShiftCast::const_unpack::<SHIFT_12B>(value),
-            stun_chance: ShiftCast::const_unpack::<SHIFT_13B>(value),
+            health: MaskDowncast::cast(value),
+            stun_chance: ShiftCast::const_unpack::<SHIFT_1B>(value),
+            strength: ShiftCast::const_unpack::<SHIFT_2B>(value),
+            vitality: ShiftCast::const_unpack::<SHIFT_3B>(value),
+            dexterity: ShiftCast::const_unpack::<SHIFT_4B>(value),
+            luck: ShiftCast::const_unpack::<SHIFT_5B>(value),
+            bludgeon_resistance: ShiftCast::const_unpack::<SHIFT_6B>(value),
+            magic_resistance: ShiftCast::const_unpack::<SHIFT_7B>(value),
+            pierce_resistance: ShiftCast::const_unpack::<SHIFT_8B>(value),
+            bludgeon_vulnerability: ShiftCast::const_unpack::<SHIFT_9B>(value),
+            magic_vulnerability: ShiftCast::const_unpack::<SHIFT_11B>(value),
+            pierce_vulnerability: ShiftCast::const_unpack::<SHIFT_13B>(value),
             strength_temp: Zero::zero(),
             vitality_temp: Zero::zero(),
             dexterity_temp: Zero::zero(),
@@ -90,7 +90,7 @@ impl UAbilityStorePacking of StorePacking<CombatantState, u128> {
             bludgeon_vulnerability_temp: Zero::zero(),
             magic_vulnerability_temp: Zero::zero(),
             pierce_vulnerability_temp: Zero::zero(),
-            block: 0,
+            block: Zero::zero(),
         }
     }
 }
@@ -101,7 +101,7 @@ pub fn get_max_health(vitality: u8) -> u8 {
 }
 
 pub fn get_max_health_percent(vitality: u8, percent: u8) -> u8 {
-    (percent * get_max_health(vitality).into() / 100).saturating_into()
+    (percent.wide_mul(get_max_health(vitality).into()) / 100).saturating_into()
 }
 
 impl AbilitiesIntoCombatantState of Into<Attributes, CombatantState> {

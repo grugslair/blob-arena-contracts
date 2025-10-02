@@ -27,6 +27,7 @@ pub mod arcade_component {
     use ba_arcade::IArcadeSetup;
     use ba_arcade::attempt::{ArcadeProgress, AttemptNode, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::table::{ArcadeAttempt, AttackLastUsed};
+    use ba_combat::combat::AttackCheck;
     use ba_combat::combatant::get_max_health_percent;
     use ba_combat::systems::{get_attack_dispatcher, set_attack_dispatcher_address};
     use ba_combat::{CombatantState, library_run_round};
@@ -279,13 +280,15 @@ pub mod arcade_component {
             assert(attempt_ptr.phase.read() == ArcadeProgress::Active, 'Game is not active');
             let attack_dispatcher = get_attack_dispatcher();
             let mut combat_node = attempt_ptr.combats.entry(combat_n);
+            assert(combat_node.phase.read() == ArcadeProgress::Active, errors::NOT_ACTIVE);
             let round = combat_node.round.read();
-            let mut randomness = consume_randomness(
-                self.vrf_address.read(), poseidon_hash_three(attempt_id, combat_n, round),
+            let mut randomness = Self::consume_randomness(
+                ref self, poseidon_hash_three(attempt_id, combat_n, round),
             );
-            let [player_state_ptr, opponent_state_ptr] = [
-                combat_node.player_state, combat_node.opponent_state,
-            ];
+
+            let player_state_ptr = combat_node.player_state;
+            let opponent_state_ptr = combat_node.opponent_state;
+
             let opponent_attack = combat_node
                 .get_opponent_attack(attack_dispatcher, round, ref randomness);
             let (result, mut randomness) = library_run_round(
@@ -296,14 +299,15 @@ pub mod arcade_component {
                 opponent_state_ptr.read(),
                 attack_id,
                 opponent_attack,
-                true,
-                false,
+                AttackCheck::Cooldown(attempt_ptr.attacks_available.read(attack_id)),
+                AttackCheck::None,
                 attack_dispatcher,
                 randomness,
             );
 
-            let result: ArcadeRoundResult = result.to_arcade_round(attempt_id, combat_n);
-
+            let mut result: ArcadeRoundResult = result.to_arcade_round(attempt_id, combat_n);
+            player_state_ptr.write(result.player_state);
+            opponent_state_ptr.write(result.opponent_state);
             if result.progress == ArcadeProgress::Active {
                 combat_node.round.write(round + 1);
             } else {
@@ -409,7 +413,8 @@ pub mod arcade_component {
                 @ArcadeZeroRoundResult {
                     attempt: attempt_id,
                     combat: combat_n,
-                    states: [player_state, opponent_state],
+                    player_state,
+                    opponent_state,
                     progress: ArcadeProgress::Active,
                 },
             );

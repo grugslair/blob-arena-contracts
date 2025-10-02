@@ -49,8 +49,8 @@ mod arcade_classic {
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
     component!(path: arcade_component, storage: arcade, event: ArcadeEvents);
 
-    const ATTEMPT_HASH: felt252 = bytearrays_hash!("arcade_classic", "ArcadeAttempt");
-    const ROUND_HASH: felt252 = bytearrays_hash!("arcade_classic", "ArcadeRound");
+    const ATTEMPT_HASH: felt252 = bytearrays_hash!("arcade_classic", "Attempt");
+    const ROUND_HASH: felt252 = bytearrays_hash!("arcade_classic", "Round");
     const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("arcade_classic", "AttackLastUsed");
     const OPPONENT_HASH: felt252 = bytearrays_hash!("arcade_classic", "Opponent");
 

@@ -18,36 +18,37 @@ const INFINITE_N: u32 = 3;
 const ATTACKER_N: u16 = 0;
 const DEFENDER_N: u16 = 1;
 
-const STRENGTH_N: u32 = 1;
-const VITALITY_N: u32 = 2;
-const DEXTERITY_N: u32 = 3;
-const LUCK_N: u32 = 4;
-const BLUDGEON_RES_N: u32 = 5;
-const MAGIC_RES_N: u32 = 6;
-const PIERCE_RES_N: u32 = 7;
-const BLUDGEON_VUL_N: u32 = 8;
-const MAGIC_VUL_N: u32 = 9;
-const PIERCE_VUL_N: u32 = 10;
-const ABILITIES_N: u32 = 11;
-const RESISTANCES_N: u32 = 12;
-const VULNERABILITIES_N: u32 = 13;
-const DAMAGE_N: u32 = 14;
-const STUN_N: u32 = 15;
-const BLOCK_N: u32 = 16;
-const HEALTH_N: u32 = 17;
-const STRENGTH_TEMP_N: u32 = 18;
-const VITALITY_TEMP_N: u32 = 19;
-const DEXTERITY_TEMP_N: u32 = 20;
-const LUCK_TEMP_N: u32 = 21;
-const BLUDGEON_RESISTANCE_TEMP_N: u32 = 22;
-const MAGIC_RESISTANCE_TEMP_N: u32 = 23;
-const PIERCE_RESISTANCE_TEMP_N: u32 = 24;
-const BLUDGEON_VULNERABILITY_TEMP_N: u32 = 25;
-const MAGIC_VULNERABILITY_TEMP_N: u32 = 26;
-const PIERCE_VULNERABILITY_TEMP_N: u32 = 27;
-const ABILITIES_TEMP_N: u32 = 28;
-const RESISTANCES_TEMP_N: u32 = 29;
-const VULNERABILITIES_TEMP_N: u32 = 30;
+const HEALTH_N: u32 = 1;
+const STUN_N: u32 = 2;
+const BLOCK_N: u32 = 3;
+const STRENGTH_N: u32 = 4;
+const VITALITY_N: u32 = 5;
+const DEXTERITY_N: u32 = 6;
+const LUCK_N: u32 = 7;
+const BLUDGEON_RES_N: u32 = 8;
+const MAGIC_RES_N: u32 = 9;
+const PIERCE_RES_N: u32 = 10;
+const BLUDGEON_VUL_N: u32 = 11;
+const MAGIC_VUL_N: u32 = 12;
+const PIERCE_VUL_N: u32 = 13;
+const ABILITIES_N: u32 = 14;
+const RESISTANCES_N: u32 = 15;
+const VULNERABILITIES_N: u32 = 16;
+const STRENGTH_TEMP_N: u32 = 17;
+const VITALITY_TEMP_N: u32 = 18;
+const DEXTERITY_TEMP_N: u32 = 19;
+const LUCK_TEMP_N: u32 = 20;
+const BLUDGEON_RESISTANCE_TEMP_N: u32 = 21;
+const MAGIC_RESISTANCE_TEMP_N: u32 = 22;
+const PIERCE_RESISTANCE_TEMP_N: u32 = 23;
+const BLUDGEON_VULNERABILITY_TEMP_N: u32 = 24;
+const MAGIC_VULNERABILITY_TEMP_N: u32 = 25;
+const PIERCE_VULNERABILITY_TEMP_N: u32 = 26;
+const ABILITIES_TEMP_N: u32 = 27;
+const RESISTANCES_TEMP_N: u32 = 28;
+const VULNERABILITIES_TEMP_N: u32 = 29;
+const DAMAGE_N: u32 = 30;
+
 
 const D_TYPE_BLUDGEON_N: u32 = 1;
 const D_TYPE_MAGIC_N: u32 = 2;
@@ -107,6 +108,9 @@ const D_TYPE_PIERCE_PACKING_BITS: u32 = D_TYPE_PIERCE_N * SHIFT_2B_U32;
 pub enum Affect {
     #[default]
     None,
+    Health: i8,
+    Stun: u8,
+    Block: u8,
     Strength: i8,
     Vitality: i8,
     Dexterity: i8,
@@ -134,9 +138,6 @@ pub enum Affect {
     ResistancesTemp: ResistanceMods,
     VulnerabilitiesTemp: VulnerabilityMods,
     Damage: Damage,
-    Stun: u8,
-    Block: u8,
-    Health: i8,
 }
 
 #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
@@ -206,23 +207,36 @@ impl EffectStorePacking of StorePacking<Effect, felt252> {
 pub fn unpack_affect(variant: u16, data: u128) -> Affect {
     match variant {
         0 => Affect::None,
-        1 => Affect::Strength(MaskDowncast::cast(data)),
-        2 => Affect::Vitality(MaskDowncast::cast(data)),
-        3 => Affect::Dexterity(MaskDowncast::cast(data)),
-        4 => Affect::Luck(MaskDowncast::cast(data)),
-        5 => Affect::BludgeonResistance(MaskDowncast::cast(data)),
-        6 => Affect::MagicResistance(MaskDowncast::cast(data)),
-        7 => Affect::PierceResistance(MaskDowncast::cast(data)),
-        8 => Affect::BludgeonVulnerability(MaskDowncast::cast(data)),
-        9 => Affect::MagicVulnerability(MaskDowncast::cast(data)),
-        10 => Affect::PierceVulnerability(MaskDowncast::cast(data)),
-        11 => Affect::Abilities(StorePacking::unpack(MaskDowncast::cast(data))),
-        12 => Affect::Resistances(StorePacking::unpack(MaskDowncast::cast(data))),
-        13 => Affect::Vulnerabilities(StorePacking::unpack(MaskDowncast::cast(data))),
-        14 => Affect::Damage(StorePacking::unpack(MaskDowncast::cast(data))),
-        15 => Affect::Stun(MaskDowncast::cast(data)),
-        16 => Affect::Block(MaskDowncast::cast(data)),
-        17 => Affect::Health(MaskDowncast::cast(data)),
+        1 => Affect::Health(MaskDowncast::cast(data)),
+        2 => Affect::Stun(MaskDowncast::cast(data)),
+        3 => Affect::Block(MaskDowncast::cast(data)),
+        4 => Affect::Strength(MaskDowncast::cast(data)),
+        5 => Affect::Vitality(MaskDowncast::cast(data)),
+        6 => Affect::Dexterity(MaskDowncast::cast(data)),
+        7 => Affect::Luck(MaskDowncast::cast(data)),
+        8 => Affect::BludgeonResistance(MaskDowncast::cast(data)),
+        9 => Affect::MagicResistance(MaskDowncast::cast(data)),
+        10 => Affect::PierceResistance(MaskDowncast::cast(data)),
+        11 => Affect::BludgeonVulnerability(MaskDowncast::cast(data)),
+        12 => Affect::MagicVulnerability(MaskDowncast::cast(data)),
+        13 => Affect::PierceVulnerability(MaskDowncast::cast(data)),
+        14 => Affect::Abilities(StorePacking::unpack(MaskDowncast::cast(data))),
+        15 => Affect::Resistances(StorePacking::unpack(MaskDowncast::cast(data))),
+        16 => Affect::Vulnerabilities(StorePacking::unpack(MaskDowncast::cast(data))),
+        17 => Affect::StrengthTemp(MaskDowncast::cast(data)),
+        18 => Affect::VitalityTemp(MaskDowncast::cast(data)),
+        19 => Affect::DexterityTemp(MaskDowncast::cast(data)),
+        20 => Affect::LuckTemp(MaskDowncast::cast(data)),
+        21 => Affect::BludgeonResistanceTemp(MaskDowncast::cast(data)),
+        22 => Affect::MagicResistanceTemp(MaskDowncast::cast(data)),
+        23 => Affect::PierceResistanceTemp(MaskDowncast::cast(data)),
+        24 => Affect::BludgeonVulnerabilityTemp(MaskDowncast::cast(data)),
+        25 => Affect::MagicVulnerabilityTemp(MaskDowncast::cast(data)),
+        26 => Affect::PierceVulnerabilityTemp(MaskDowncast::cast(data)),
+        27 => Affect::AbilitiesTemp(StorePacking::unpack(MaskDowncast::cast(data))),
+        28 => Affect::ResistancesTemp(StorePacking::unpack(MaskDowncast::cast(data))),
+        29 => Affect::VulnerabilitiesTemp(StorePacking::unpack(MaskDowncast::cast(data))),
+        30 => Affect::Damage(DamageStorePacking::unpack(MaskDowncast::cast(data))),
         _ => panic!("Invalid value for Affect"),
     }
 }
@@ -231,6 +245,9 @@ impl AffectStorePacking of StorePacking<Affect, felt252> {
     fn pack(value: Affect) -> felt252 {
         let (amount, variant): (u128, felt252) = match value {
             Affect::None => { return 0; },
+            Affect::Health(amount) => (IntPacking::pack_into(amount), HEALTH_PACKING_BITS),
+            Affect::Stun(amount) => (amount.into(), STUN_PACKING_BITS),
+            Affect::Block(amount) => (amount.into(), BLOCK_PACKING_BITS),
             Affect::Strength(amount) => (IntPacking::pack_into(amount), STRENGTH_PACKING_BITS),
             Affect::Vitality(amount) => (IntPacking::pack_into(amount), VITALITY_PACKING_BITS),
             Affect::Dexterity(amount) => (IntPacking::pack_into(amount), DEXTERITY_PACKING_BITS),
@@ -262,10 +279,6 @@ impl AffectStorePacking of StorePacking<Affect, felt252> {
             Affect::Vulnerabilities(amount) => (
                 StorePacking::pack(amount).into(), VULNERABILITIES_PACKING_BITS,
             ),
-            Affect::Damage(amount) => (StorePacking::pack(amount).into(), DAMAGE_PACKING_BITS),
-            Affect::Stun(amount) => (amount.into(), STUN_PACKING_BITS),
-            Affect::Block(amount) => (amount.into(), BLOCK_PACKING_BITS),
-            Affect::Health(amount) => (IntPacking::pack_into(amount), HEALTH_PACKING_BITS),
             Affect::StrengthTemp(amount) => (
                 IntPacking::pack_into(amount), STRENGTH_TEMP_PACKING_BITS,
             ),
@@ -303,6 +316,7 @@ impl AffectStorePacking of StorePacking<Affect, felt252> {
             Affect::VulnerabilitiesTemp(amount) => (
                 StorePacking::pack(amount).into(), VULNERABILITIES_TEMP_PACKING_BITS,
             ),
+            Affect::Damage(amount) => (StorePacking::pack(amount).into(), DAMAGE_PACKING_BITS),
         };
         amount.into() + variant
     }
