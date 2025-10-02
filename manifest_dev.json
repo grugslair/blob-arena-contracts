@@ -439,12 +439,7 @@
       "class": "pvp"
     }
   },
-  "declarations": {
-    "pvp": {
-      "class_hash": "0x15ca2ba21a809d771a4f9b4a6fb112192bb931f0fbc1c04c976a83e61dbd174",
-      "transaction_hash": "0x47e81a5e59584408941f44c69e7280587f20ee0a3912cd9f45998eaebb28525"
-    }
-  },
+  "declarations": {},
   "abis": {
     "0x68e1a185162ca428cf897e00150e80c19595c33ea56e1e4965c5dcbce6f84a6": [
       {

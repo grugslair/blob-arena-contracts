@@ -1,5 +1,5 @@
 [account]
-rpc_url = "https://starknet-sepolia.public.blastapi.io/rpc/v0_8"
+rpc_url = "https://api.cartridge.gg/x/starknet/sepolia/rpc/v0_9"
 account_address = "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d2194723B5bd"
 keystore_path = "/home/ben/sn-accounts/0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd-keystore.json"
 
@@ -34,9 +34,10 @@ arcade_amma = {}
 pvp = {}
 
 
-[deploy.attack_model]
-[deploy.round_result_model]
-[deploy.arcade_round_result_model]
+[deploy]
+attack_model.salt = "0x0"
+round_result_model.salt = "0x0"
+arcade_round_result_model.salt = "0x0"
 
 [variables]
 arena_contracts = []

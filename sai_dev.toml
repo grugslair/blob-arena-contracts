@@ -37,9 +37,9 @@ pvp = {}
 
 [deploy.vrf]
 class = "mock_vrf"
-[deploy.attack_model]
-[deploy.round_result_model]
-[deploy.arcade_round_result_model]
+attack_model.salt = "0x0"
+round_result_model.salt = "0x0"
+arcade_round_result_model.salt = "0x0"
 
 
 [variables]
