@@ -12,44 +12,12 @@ const arcadeAmmaContract = await sai.getContract("arcade_amma");
 const arenaCreditContract = await sai.getContract("arena_credit");
 const loadoutAmmaContract = await sai.getContract("loadout_amma");
 const loadoutClassicContract = await sai.getContract("loadout_classic");
+const ammaBlobertContract = await sai.getContract("amma_blobert_soulbound");
+const arenaBlobertContract = await sai.getContract("arena_blobert");
+const ammaBlobertMinter = await sai.getContract("amma_blobert_minter");
+const arenaBlobertMinter = await sai.getContract("arena_blobert_minter");
 const purchaseContract = await sai.getContract("arena_credit_purchase");
 const starkContract = await sai.getContract("stark_token");
-
-// console.log(starkContract.abi);
-// console.log(
-//   starkContract.populate("approve", {
-//     spender: purchaseContract.address,
-//     amount: 1_000_000_000_000_000_000_000_000_000n,
-//   })
-// );
-// console.log({
-//   contractAddress: starkContract.address,
-//   entrypoint: "approve",
-//   calldata: CallData.compile([
-//     purchaseContract.address,
-//     1_000_000_000_000_000_000_000_000_000n,
-//     0,
-//   ]),
-// });
-// await sai.executeAndWait([
-//   {
-//     contractAddress: starkContract.address,
-//     entrypoint: "approve",
-//     calldata: CallData.compile([
-//       purchaseContract.address,
-//       1_000_000_000_000_000_000_000_000_000n,
-//       0,
-//     ]),
-//   },
-// ]);
-
-// await sai.executeAndWait(
-//   purchaseContract.populate("purchase", {
-//     erc20_address: starkContract.address,
-//     receiver: 0x0,
-//     amount: 200,
-//   })
-// );
 
 await sai.executeAndWait(
   arenaCreditContract.populate("add_credits", {
@@ -57,18 +25,29 @@ await sai.executeAndWait(
     amount: 200,
   })
 );
-console.log("Adding credits");
+console.log("Added credits");
 
-// await sai.executeWithReturn(
-//   (await sai.getContract("arena_blobert_minter")).populate("mint")
-// );
-// console.log("Minted Arena Blobert");
+await ammaBlobertContract.owner_of(ammaToken);
 
-// await sai.executeAndWait(
-//   (await sai.getContract("amma_blobert_minter")).populate("claim")
-// );
-// console.log("Minted Amma Blobert");
+try {
+  const maybeOwner = await ammaBlobertContract.owner_of(ammaToken);
+  if (!maybeOwner) {
+    throw Error("No owner");
+  }
+} catch (e) {
+  await sai.executeAndWait(ammaBlobertMinter.populate("claim"));
+  console.log("Minted Amma Blobert");
+}
 
+try {
+  const maybeOwner = await arenaBlobertContract.owner_of(classicToken);
+  if (!maybeOwner) {
+    throw Error("No owner");
+  }
+} catch (e) {
+  await sai.executeWithReturn(arenaBlobertMinter.populate("mint"));
+  console.log("Minted Arena Blobert");
+}
 const ammaAttackId = (
   await loadoutAmmaContract.attacks(
     sai.contracts.amma_blobert_soulbound.contract_address,
