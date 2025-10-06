@@ -16,8 +16,6 @@ const ammaBlobertContract = await sai.getContract("amma_blobert_soulbound");
 const arenaBlobertContract = await sai.getContract("arena_blobert");
 const ammaBlobertMinter = await sai.getContract("amma_blobert_minter");
 const arenaBlobertMinter = await sai.getContract("arena_blobert_minter");
-const purchaseContract = await sai.getContract("arena_credit_purchase");
-const starkContract = await sai.getContract("stark_token");
 
 await sai.executeAndWait(
   arenaCreditContract.populate("add_credits", {

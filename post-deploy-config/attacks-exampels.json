@@ -72,6 +72,33 @@
           "stun": 12
         }
       }
+    },
+    {
+      "name": "Charged Attack",
+      "speed": 10000,
+      "chance": 100,
+      "cooldown": 255,
+      "success": {
+        "defender": [
+          {
+            "damage": {
+              "power": 50,
+              "critical": 0,
+              "damage_type": "magic"
+            },
+            "stun": 25
+          },
+          {
+            "damage": {
+              "power": 75,
+              "critical": 25,
+              "damage_type": "pierce"
+            },
+            "stun": 50,
+            "Rounds": 3
+          }
+        ]
+      }
     }
   ]
 }
