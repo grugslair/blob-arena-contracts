@@ -12,8 +12,8 @@ use sai_packing::{MaskDowncast, ShiftCast};
 use starknet::storage::StorageNodeDeref;
 use starknet::storage_access::StorePacking;
 use crate::calculations::{
-    apply_luck_modifier, combine_resistance, combine_resistance_temp, damage_calculation,
-    did_critical, get_new_stun_chance, increase_resistance,
+    combine_resistance, combine_resistance_temp, damage_calculation, did_critical,
+    get_new_stun_chance, increase_resistance,
 };
 use crate::result::{
     AbilitiesResult, AbilitiesTempResult, AffectResult, DamageResult, VitalityResult,
@@ -31,6 +31,7 @@ pub struct CombatantState {
     pub vitality: u8,
     pub dexterity: u8,
     pub luck: u8,
+    pub stun_resistance: u8,
     pub bludgeon_resistance: u8,
     pub magic_resistance: u8,
     pub pierce_resistance: u8,
@@ -41,6 +42,7 @@ pub struct CombatantState {
     pub vitality_temp: i8,
     pub dexterity_temp: i8,
     pub luck_temp: i8,
+    pub stun_resistance_temp: i8,
     pub bludgeon_resistance_temp: i8,
     pub magic_resistance_temp: i8,
     pub pierce_resistance_temp: i8,
@@ -58,12 +60,13 @@ impl UAbilityStorePacking of StorePacking<CombatantState, u128> {
             + ShiftCast::const_cast::<SHIFT_3B>(value.vitality)
             + ShiftCast::const_cast::<SHIFT_4B>(value.dexterity)
             + ShiftCast::const_cast::<SHIFT_5B>(value.luck)
-            + ShiftCast::const_cast::<SHIFT_6B>(value.bludgeon_resistance)
-            + ShiftCast::const_cast::<SHIFT_7B>(value.magic_resistance)
-            + ShiftCast::const_cast::<SHIFT_8B>(value.pierce_resistance)
-            + ShiftCast::const_cast::<SHIFT_9B>(value.bludgeon_vulnerability)
-            + ShiftCast::const_cast::<SHIFT_11B>(value.magic_vulnerability)
-            + ShiftCast::const_cast::<SHIFT_13B>(value.pierce_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_6B>(value.stun_resistance)
+            + ShiftCast::const_cast::<SHIFT_7B>(value.bludgeon_resistance)
+            + ShiftCast::const_cast::<SHIFT_8B>(value.magic_resistance)
+            + ShiftCast::const_cast::<SHIFT_9B>(value.pierce_resistance)
+            + ShiftCast::const_cast::<SHIFT_10B>(value.bludgeon_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_12B>(value.magic_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_14B>(value.pierce_vulnerability)
     }
 
     fn unpack(value: u128) -> CombatantState {
@@ -74,16 +77,18 @@ impl UAbilityStorePacking of StorePacking<CombatantState, u128> {
             vitality: ShiftCast::const_unpack::<SHIFT_3B>(value),
             dexterity: ShiftCast::const_unpack::<SHIFT_4B>(value),
             luck: ShiftCast::const_unpack::<SHIFT_5B>(value),
-            bludgeon_resistance: ShiftCast::const_unpack::<SHIFT_6B>(value),
-            magic_resistance: ShiftCast::const_unpack::<SHIFT_7B>(value),
-            pierce_resistance: ShiftCast::const_unpack::<SHIFT_8B>(value),
-            bludgeon_vulnerability: ShiftCast::const_unpack::<SHIFT_9B>(value),
-            magic_vulnerability: ShiftCast::const_unpack::<SHIFT_11B>(value),
-            pierce_vulnerability: ShiftCast::const_unpack::<SHIFT_13B>(value),
+            stun_resistance: ShiftCast::const_unpack::<SHIFT_6B>(value),
+            bludgeon_resistance: ShiftCast::const_unpack::<SHIFT_7B>(value),
+            magic_resistance: ShiftCast::const_unpack::<SHIFT_8B>(value),
+            pierce_resistance: ShiftCast::const_unpack::<SHIFT_9B>(value),
+            bludgeon_vulnerability: ShiftCast::const_unpack::<SHIFT_10B>(value),
+            magic_vulnerability: ShiftCast::const_unpack::<SHIFT_12B>(value),
+            pierce_vulnerability: ShiftCast::const_unpack::<SHIFT_14B>(value),
             strength_temp: Zero::zero(),
             vitality_temp: Zero::zero(),
             dexterity_temp: Zero::zero(),
             luck_temp: Zero::zero(),
+            stun_resistance_temp: Zero::zero(),
             bludgeon_resistance_temp: Zero::zero(),
             magic_resistance_temp: Zero::zero(),
             pierce_resistance_temp: Zero::zero(),
@@ -111,6 +116,7 @@ impl AbilitiesIntoCombatantState of Into<Attributes, CombatantState> {
             vitality: self.vitality,
             dexterity: self.dexterity,
             luck: self.luck,
+            stun_resistance: self.stun_resistance,
             bludgeon_resistance: self.bludgeon_resistance,
             magic_resistance: self.magic_resistance,
             pierce_resistance: self.pierce_resistance,
@@ -122,6 +128,7 @@ impl AbilitiesIntoCombatantState of Into<Attributes, CombatantState> {
             vitality_temp: Zero::zero(),
             dexterity_temp: Zero::zero(),
             luck_temp: Zero::zero(),
+            stun_resistance_temp: Zero::zero(),
             bludgeon_resistance_temp: Zero::zero(),
             magic_resistance_temp: Zero::zero(),
             pierce_resistance_temp: Zero::zero(),
@@ -204,6 +211,10 @@ pub impl CombatantStateImpl of CombatantStateTrait {
         combine_temp(*self.luck, *self.luck_temp)
     }
 
+    fn stun_resistance(self: @CombatantState) -> u8 {
+        combine_resistance(*self.stun_resistance, *self.stun_resistance_temp)
+    }
+
     fn bludgeon_resistance(self: @CombatantState) -> u8 {
         combine_resistance(*self.bludgeon_resistance, *self.bludgeon_resistance_temp)
     }
@@ -247,11 +258,9 @@ pub impl CombatantStateImpl of CombatantStateTrait {
     }
 
 
-    fn modify_health(ref self: CombatantState, change: i8) -> u8 {
+    fn modify_health(ref self: CombatantState, change: i16) -> u8 {
         let health: i16 = self.health.try_into().unwrap();
-        self
-            .health =
-                min(self.max_health(), health.saturating_add(change.into()).saturating_into());
+        self.health = min(self.max_health(), health.saturating_add(change).saturating_into());
         self.health
     }
 
@@ -281,6 +290,10 @@ pub impl CombatantStateImpl of CombatantStateTrait {
         AbilitiesResult { strength, vitality: self.vitality, dexterity, luck, health: self.health }
     }
 
+    fn modify_stun_resistance(ref self: CombatantState, amount: i8) -> u8 {
+        modify_resistance(ref self.stun_resistance, amount)
+    }
+
     fn modify_bludgeon_resistance(ref self: CombatantState, amount: i8) -> u8 {
         modify_resistance(ref self.bludgeon_resistance, amount)
     }
@@ -294,10 +307,11 @@ pub impl CombatantStateImpl of CombatantStateTrait {
     }
 
     fn modify_resistances(ref self: CombatantState, mods: ResistanceMods) -> Resistances {
+        let stun = self.modify_stun_resistance(mods.stun);
         let bludgeon = self.modify_bludgeon_resistance(mods.bludgeon);
         let magic = self.modify_magic_resistance(mods.magic);
         let pierce = self.modify_pierce_resistance(mods.pierce);
-        Resistances { bludgeon, magic, pierce }
+        Resistances { stun, bludgeon, magic, pierce }
     }
 
     fn modify_bludgeon_vulnerability(ref self: CombatantState, amount: i16) -> u16 {
@@ -348,6 +362,9 @@ pub impl CombatantStateImpl of CombatantStateTrait {
             strength, vitality: self.vitality_temp, dexterity, luck, health: self.health,
         }
     }
+    fn modify_stun_resistance_temp(ref self: CombatantState, amount: i8) -> i8 {
+        modify_resistance_temp(ref self.stun_resistance_temp, amount)
+    }
 
     fn modify_bludgeon_resistance_temp(ref self: CombatantState, amount: i8) -> i8 {
         modify_resistance_temp(ref self.bludgeon_resistance_temp, amount)
@@ -363,6 +380,7 @@ pub impl CombatantStateImpl of CombatantStateTrait {
 
     fn modify_resistances_temp(ref self: CombatantState, mods: ResistanceMods) -> ResistanceMods {
         ResistanceMods {
+            stun: self.modify_stun_resistance_temp(mods.stun),
             bludgeon: self.modify_bludgeon_resistance_temp(mods.bludgeon),
             magic: self.modify_magic_resistance_temp(mods.magic),
             pierce: self.modify_pierce_resistance_temp(mods.pierce),
@@ -461,9 +479,11 @@ pub impl CombatantStateImpl of CombatantStateTrait {
     }
 
     fn run_stun(ref self: CombatantState, ref randomness: Randomness) -> bool {
-        let stun_chance: u8 = apply_luck_modifier(self.stun_chance, 100 - self.luck);
+        let stun_chance: u8 = (self.stun_chance.wide_mul(100 - self.stun_resistance()) / 100)
+            .try_into()
+            .unwrap();
         self.stun_chance = 0;
-        randomness.get(255) < stun_chance
+        randomness.get(100) < stun_chance
     }
 
     fn increase_stun(ref self: CombatantState, stun: u8) {
@@ -488,6 +508,9 @@ pub impl CombatantStateImpl of CombatantStateTrait {
             Affect::Dexterity(amount) => AffectResult::Dexterity(self.modify_dexterity(amount)),
             Affect::Luck(amount) => AffectResult::Luck(self.modify_luck(amount)),
             Affect::Abilities(mods) => AffectResult::Abilities(self.modify_abilities(mods)),
+            Affect::StunResistance(amount) => AffectResult::StunResistance(
+                self.modify_stun_resistance(amount),
+            ),
             Affect::BludgeonResistance(amount) => AffectResult::BludgeonResistance(
                 self.modify_bludgeon_resistance(amount),
             ),
@@ -532,6 +555,9 @@ pub impl CombatantStateImpl of CombatantStateTrait {
             Affect::AbilitiesTemp(mods) => AffectResult::AbilitiesTemp(
                 self.modify_abilities_temp(mods),
             ),
+            Affect::StunResistanceTemp(amount) => AffectResult::StunResistanceTemp(
+                self.modify_stun_resistance_temp(amount),
+            ),
             Affect::BludgeonResistanceTemp(amount) => {
                 AffectResult::BludgeonResistanceTemp(self.modify_bludgeon_resistance_temp(amount))
             },
@@ -561,17 +587,17 @@ pub impl CombatantStateImpl of CombatantStateTrait {
             Affect::SetHealth(health) => AffectResult::SetHealth(self.set_health(health)),
             Affect::FloorHealth(health) => AffectResult::FloorHealth(self.floor_health(health)),
             Affect::CeilHealth(health) => AffectResult::CeilHealth(self.ceil_health(health)),
-            Affect::HealthPercent(percent) => {
-                AffectResult::HealthPercent(self.modify_health_percent(percent.into()))
+            Affect::HealthPercentMax(percent) => {
+                AffectResult::HealthPercentMax(self.modify_health_percent(percent.into()))
             },
-            Affect::SetHealthPercent(percent) => {
-                AffectResult::SetHealthPercent(self.set_health_percent(percent))
+            Affect::SetHealthPercentMax(percent) => {
+                AffectResult::SetHealthPercentMax(self.set_health_percent(percent))
             },
-            Affect::FloorHealthPercent(percent) => {
-                AffectResult::FloorHealthPercent(self.floor_health_percent(percent))
+            Affect::FloorHealthPercentMax(percent) => {
+                AffectResult::FloorHealthPercentMax(self.floor_health_percent(percent))
             },
-            Affect::CeilHealthPercent(percent) => {
-                AffectResult::CeilHealthPercent(self.ceil_health_percent(percent))
+            Affect::CeilHealthPercentMax(percent) => {
+                AffectResult::CeilHealthPercentMax(self.ceil_health_percent(percent))
             },
         }
     }

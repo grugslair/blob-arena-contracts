@@ -45,6 +45,7 @@ pub enum AffectResult {
     Vitality: VitalityResult,
     Dexterity: u8,
     Luck: u8,
+    StunResistance: u8,
     BludgeonResistance: u8,
     MagicResistance: u8,
     PierceResistance: u8,
@@ -58,6 +59,7 @@ pub enum AffectResult {
     VitalityTemp: VitalityTempResult,
     DexterityTemp: i8,
     LuckTemp: i8,
+    StunResistanceTemp: i8,
     BludgeonResistanceTemp: i8,
     MagicResistanceTemp: i8,
     PierceResistanceTemp: i8,
@@ -71,10 +73,10 @@ pub enum AffectResult {
     SetHealth: u8,
     FloorHealth: u8,
     CeilHealth: u8,
-    HealthPercent: u8,
-    SetHealthPercent: u8,
-    FloorHealthPercent: u8,
-    CeilHealthPercent: u8,
+    HealthPercentMax: u8,
+    SetHealthPercentMax: u8,
+    FloorHealthPercentMax: u8,
+    CeilHealthPercentMax: u8,
 }
 
 /// Represents the result of a damage calculation

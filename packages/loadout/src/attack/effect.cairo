@@ -19,42 +19,44 @@ const ATTACKER_N: u16 = 0;
 const DEFENDER_N: u16 = 1;
 
 const HEALTH_N: u32 = 1;
-const STUN_N: u32 = 2;
-const BLOCK_N: u32 = 3;
-const STRENGTH_N: u32 = 4;
-const VITALITY_N: u32 = 5;
-const DEXTERITY_N: u32 = 6;
-const LUCK_N: u32 = 7;
-const BLUDGEON_RES_N: u32 = 8;
-const MAGIC_RES_N: u32 = 9;
-const PIERCE_RES_N: u32 = 10;
-const BLUDGEON_VUL_N: u32 = 11;
-const MAGIC_VUL_N: u32 = 12;
-const PIERCE_VUL_N: u32 = 13;
-const ABILITIES_N: u32 = 14;
-const RESISTANCES_N: u32 = 15;
-const VULNERABILITIES_N: u32 = 16;
-const STRENGTH_TEMP_N: u32 = 17;
-const VITALITY_TEMP_N: u32 = 18;
-const DEXTERITY_TEMP_N: u32 = 19;
-const LUCK_TEMP_N: u32 = 20;
-const BLUDGEON_RESISTANCE_TEMP_N: u32 = 21;
-const MAGIC_RESISTANCE_TEMP_N: u32 = 22;
-const PIERCE_RESISTANCE_TEMP_N: u32 = 23;
-const BLUDGEON_VULNERABILITY_TEMP_N: u32 = 24;
-const MAGIC_VULNERABILITY_TEMP_N: u32 = 25;
-const PIERCE_VULNERABILITY_TEMP_N: u32 = 26;
-const ABILITIES_TEMP_N: u32 = 27;
-const RESISTANCES_TEMP_N: u32 = 28;
-const VULNERABILITIES_TEMP_N: u32 = 29;
-const DAMAGE_N: u32 = 30;
-const SET_HEALTH_N: u32 = 31;
-const FLOOR_HEALTH_N: u32 = 32;
-const CEIL_HEALTH_N: u32 = 33;
-const HEALTH_PERCENT_N: u32 = 34;
-const SET_HEALTH_PERCENT_N: u32 = 35;
-const FLOOR_HEALTH_PERCENT_N: u32 = 36;
-const CEIL_HEALTH_PERCENT_N: u32 = 37;
+const STUN_N: u32 = HEALTH_N + 1;
+const BLOCK_N: u32 = STUN_N + 1;
+const STRENGTH_N: u32 = BLOCK_N + 1;
+const VITALITY_N: u32 = STRENGTH_N + 1;
+const DEXTERITY_N: u32 = VITALITY_N + 1;
+const LUCK_N: u32 = DEXTERITY_N + 1;
+const STUN_RES_N: u32 = LUCK_N + 1;
+const BLUDGEON_RES_N: u32 = STUN_RES_N + 1;
+const MAGIC_RES_N: u32 = BLUDGEON_RES_N + 1;
+const PIERCE_RES_N: u32 = MAGIC_RES_N + 1;
+const BLUDGEON_VUL_N: u32 = PIERCE_RES_N + 1;
+const MAGIC_VUL_N: u32 = BLUDGEON_VUL_N + 1;
+const PIERCE_VUL_N: u32 = MAGIC_VUL_N + 1;
+const ABILITIES_N: u32 = PIERCE_VUL_N + 1;
+const RESISTANCES_N: u32 = ABILITIES_N + 1;
+const VULNERABILITIES_N: u32 = RESISTANCES_N + 1;
+const STRENGTH_TEMP_N: u32 = VULNERABILITIES_N + 1;
+const VITALITY_TEMP_N: u32 = STRENGTH_TEMP_N + 1;
+const DEXTERITY_TEMP_N: u32 = VITALITY_TEMP_N + 1;
+const LUCK_TEMP_N: u32 = DEXTERITY_TEMP_N + 1;
+const STUN_RESISTANCE_TEMP_N: u32 = LUCK_TEMP_N + 1;
+const BLUDGEON_RESISTANCE_TEMP_N: u32 = STUN_RESISTANCE_TEMP_N + 1;
+const MAGIC_RESISTANCE_TEMP_N: u32 = BLUDGEON_RESISTANCE_TEMP_N + 1;
+const PIERCE_RESISTANCE_TEMP_N: u32 = MAGIC_RESISTANCE_TEMP_N + 1;
+const BLUDGEON_VULNERABILITY_TEMP_N: u32 = PIERCE_RESISTANCE_TEMP_N + 1;
+const MAGIC_VULNERABILITY_TEMP_N: u32 = BLUDGEON_VULNERABILITY_TEMP_N + 1;
+const PIERCE_VULNERABILITY_TEMP_N: u32 = MAGIC_VULNERABILITY_TEMP_N + 1;
+const ABILITIES_TEMP_N: u32 = PIERCE_VULNERABILITY_TEMP_N + 1;
+const RESISTANCES_TEMP_N: u32 = ABILITIES_TEMP_N + 1;
+const VULNERABILITIES_TEMP_N: u32 = RESISTANCES_TEMP_N + 1;
+const DAMAGE_N: u32 = VULNERABILITIES_TEMP_N + 1;
+const SET_HEALTH_N: u32 = DAMAGE_N + 1;
+const FLOOR_HEALTH_N: u32 = SET_HEALTH_N + 1;
+const CEIL_HEALTH_N: u32 = FLOOR_HEALTH_N + 1;
+const HEALTH_PERCENT_N: u32 = CEIL_HEALTH_N + 1;
+const SET_HEALTH_PERCENT_N: u32 = HEALTH_PERCENT_N + 1;
+const FLOOR_HEALTH_PERCENT_N: u32 = SET_HEALTH_PERCENT_N + 1;
+const CEIL_HEALTH_PERCENT_N: u32 = FLOOR_HEALTH_PERCENT_N + 1;
 
 
 const D_TYPE_BLUDGEON_N: u32 = 1;
@@ -73,6 +75,7 @@ const STRENGTH_PACKING_BITS: felt252 = STRENGTH_N.into() * SHIFT_16B_FELT252;
 const VITALITY_PACKING_BITS: felt252 = VITALITY_N.into() * SHIFT_16B_FELT252;
 const DEXTERITY_PACKING_BITS: felt252 = DEXTERITY_N.into() * SHIFT_16B_FELT252;
 const LUCK_PACKING_BITS: felt252 = LUCK_N.into() * SHIFT_16B_FELT252;
+const STUN_RES_PACKING_BITS: felt252 = STUN_RES_N.into() * SHIFT_16B_FELT252;
 const BLUDGEON_RES_PACKING_BITS: felt252 = BLUDGEON_RES_N.into() * SHIFT_16B_FELT252;
 const MAGIC_RES_PACKING_BITS: felt252 = MAGIC_RES_N.into() * SHIFT_16B_FELT252;
 const PIERCE_RES_PACKING_BITS: felt252 = PIERCE_RES_N.into() * SHIFT_16B_FELT252;
@@ -90,6 +93,8 @@ const STRENGTH_TEMP_PACKING_BITS: felt252 = STRENGTH_TEMP_N.into() * SHIFT_16B_F
 const VITALITY_TEMP_PACKING_BITS: felt252 = VITALITY_TEMP_N.into() * SHIFT_16B_FELT252;
 const DEXTERITY_TEMP_PACKING_BITS: felt252 = DEXTERITY_TEMP_N.into() * SHIFT_16B_FELT252;
 const LUCK_TEMP_PACKING_BITS: felt252 = LUCK_TEMP_N.into() * SHIFT_16B_FELT252;
+const STUN_RESISTANCE_TEMP_PACKING_BITS: felt252 = STUN_RESISTANCE_TEMP_N.into()
+    * SHIFT_16B_FELT252;
 const BLUDGEON_RESISTANCE_TEMP_PACKING_BITS: felt252 = BLUDGEON_RESISTANCE_TEMP_N.into()
     * SHIFT_16B_FELT252;
 const MAGIC_RESISTANCE_TEMP_PACKING_BITS: felt252 = MAGIC_RESISTANCE_TEMP_N.into()
@@ -130,6 +135,7 @@ pub enum Affect {
     Vitality: i8,
     Dexterity: i8,
     Luck: i8,
+    StunResistance: i8,
     BludgeonResistance: i8,
     MagicResistance: i8,
     PierceResistance: i8,
@@ -143,6 +149,7 @@ pub enum Affect {
     VitalityTemp: i8,
     DexterityTemp: i8,
     LuckTemp: i8,
+    StunResistanceTemp: i8,
     BludgeonResistanceTemp: i8,
     MagicResistanceTemp: i8,
     PierceResistanceTemp: i8,
@@ -156,10 +163,10 @@ pub enum Affect {
     SetHealth: u8,
     FloorHealth: u8,
     CeilHealth: u8,
-    HealthPercent: i8,
-    SetHealthPercent: u8,
-    FloorHealthPercent: u8,
-    CeilHealthPercent: u8,
+    HealthPercentMax: i8,
+    SetHealthPercentMax: u8,
+    FloorHealthPercentMax: u8,
+    CeilHealthPercentMax: u8,
 }
 
 #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
@@ -236,36 +243,38 @@ pub fn unpack_affect(variant: u16, data: u128) -> Affect {
         5 => Affect::Vitality(MaskDowncast::cast(data)),
         6 => Affect::Dexterity(MaskDowncast::cast(data)),
         7 => Affect::Luck(MaskDowncast::cast(data)),
-        8 => Affect::BludgeonResistance(MaskDowncast::cast(data)),
-        9 => Affect::MagicResistance(MaskDowncast::cast(data)),
-        10 => Affect::PierceResistance(MaskDowncast::cast(data)),
-        11 => Affect::BludgeonVulnerability(MaskDowncast::cast(data)),
-        12 => Affect::MagicVulnerability(MaskDowncast::cast(data)),
-        13 => Affect::PierceVulnerability(MaskDowncast::cast(data)),
-        14 => Affect::Abilities(StorePacking::unpack(MaskDowncast::cast(data))),
-        15 => Affect::Resistances(StorePacking::unpack(MaskDowncast::cast(data))),
-        16 => Affect::Vulnerabilities(StorePacking::unpack(MaskDowncast::cast(data))),
-        17 => Affect::StrengthTemp(MaskDowncast::cast(data)),
-        18 => Affect::VitalityTemp(MaskDowncast::cast(data)),
-        19 => Affect::DexterityTemp(MaskDowncast::cast(data)),
-        20 => Affect::LuckTemp(MaskDowncast::cast(data)),
-        21 => Affect::BludgeonResistanceTemp(MaskDowncast::cast(data)),
-        22 => Affect::MagicResistanceTemp(MaskDowncast::cast(data)),
-        23 => Affect::PierceResistanceTemp(MaskDowncast::cast(data)),
-        24 => Affect::BludgeonVulnerabilityTemp(MaskDowncast::cast(data)),
-        25 => Affect::MagicVulnerabilityTemp(MaskDowncast::cast(data)),
-        26 => Affect::PierceVulnerabilityTemp(MaskDowncast::cast(data)),
-        27 => Affect::AbilitiesTemp(StorePacking::unpack(MaskDowncast::cast(data))),
-        28 => Affect::ResistancesTemp(StorePacking::unpack(MaskDowncast::cast(data))),
-        29 => Affect::VulnerabilitiesTemp(StorePacking::unpack(MaskDowncast::cast(data))),
-        30 => Affect::Damage(DamageStorePacking::unpack(MaskDowncast::cast(data))),
-        31 => Affect::SetHealth(MaskDowncast::cast(data)),
-        32 => Affect::FloorHealth(MaskDowncast::cast(data)),
-        33 => Affect::CeilHealth(MaskDowncast::cast(data)),
-        34 => Affect::HealthPercent(MaskDowncast::cast(data)),
-        35 => Affect::SetHealthPercent(MaskDowncast::cast(data)),
-        36 => Affect::FloorHealthPercent(MaskDowncast::cast(data)),
-        37 => Affect::CeilHealthPercent(MaskDowncast::cast(data)),
+        8 => Affect::StunResistance(MaskDowncast::cast(data)),
+        9 => Affect::BludgeonResistance(MaskDowncast::cast(data)),
+        10 => Affect::MagicResistance(MaskDowncast::cast(data)),
+        11 => Affect::PierceResistance(MaskDowncast::cast(data)),
+        12 => Affect::BludgeonVulnerability(MaskDowncast::cast(data)),
+        13 => Affect::MagicVulnerability(MaskDowncast::cast(data)),
+        14 => Affect::PierceVulnerability(MaskDowncast::cast(data)),
+        15 => Affect::Abilities(StorePacking::unpack(MaskDowncast::cast(data))),
+        16 => Affect::Resistances(StorePacking::unpack(MaskDowncast::cast(data))),
+        17 => Affect::Vulnerabilities(StorePacking::unpack(MaskDowncast::cast(data))),
+        18 => Affect::StrengthTemp(MaskDowncast::cast(data)),
+        19 => Affect::VitalityTemp(MaskDowncast::cast(data)),
+        20 => Affect::DexterityTemp(MaskDowncast::cast(data)),
+        21 => Affect::LuckTemp(MaskDowncast::cast(data)),
+        22 => Affect::StunResistanceTemp(MaskDowncast::cast(data)),
+        23 => Affect::BludgeonResistanceTemp(MaskDowncast::cast(data)),
+        24 => Affect::MagicResistanceTemp(MaskDowncast::cast(data)),
+        25 => Affect::PierceResistanceTemp(MaskDowncast::cast(data)),
+        26 => Affect::BludgeonVulnerabilityTemp(MaskDowncast::cast(data)),
+        27 => Affect::MagicVulnerabilityTemp(MaskDowncast::cast(data)),
+        28 => Affect::PierceVulnerabilityTemp(MaskDowncast::cast(data)),
+        29 => Affect::AbilitiesTemp(StorePacking::unpack(MaskDowncast::cast(data))),
+        30 => Affect::ResistancesTemp(StorePacking::unpack(MaskDowncast::cast(data))),
+        31 => Affect::VulnerabilitiesTemp(StorePacking::unpack(MaskDowncast::cast(data))),
+        32 => Affect::Damage(DamageStorePacking::unpack(MaskDowncast::cast(data))),
+        33 => Affect::SetHealth(MaskDowncast::cast(data)),
+        34 => Affect::FloorHealth(MaskDowncast::cast(data)),
+        35 => Affect::CeilHealth(MaskDowncast::cast(data)),
+        36 => Affect::HealthPercentMax(MaskDowncast::cast(data)),
+        37 => Affect::SetHealthPercentMax(MaskDowncast::cast(data)),
+        38 => Affect::FloorHealthPercentMax(MaskDowncast::cast(data)),
+        39 => Affect::CeilHealthPercentMax(MaskDowncast::cast(data)),
         _ => panic!("Invalid value for Affect"),
     }
 }
@@ -281,6 +290,9 @@ impl AffectStorePacking of StorePacking<Affect, felt252> {
             Affect::Vitality(amount) => (IntPacking::pack_into(amount), VITALITY_PACKING_BITS),
             Affect::Dexterity(amount) => (IntPacking::pack_into(amount), DEXTERITY_PACKING_BITS),
             Affect::Luck(amount) => (IntPacking::pack_into(amount), LUCK_PACKING_BITS),
+            Affect::StunResistance(amount) => (
+                IntPacking::pack_into(amount), STUN_RES_PACKING_BITS,
+            ),
             Affect::BludgeonResistance(amount) => (
                 IntPacking::pack_into(amount), BLUDGEON_RES_PACKING_BITS,
             ),
@@ -318,6 +330,9 @@ impl AffectStorePacking of StorePacking<Affect, felt252> {
                 IntPacking::pack_into(amount), DEXTERITY_TEMP_PACKING_BITS,
             ),
             Affect::LuckTemp(amount) => (IntPacking::pack_into(amount), LUCK_TEMP_PACKING_BITS),
+            Affect::StunResistanceTemp(amount) => (
+                IntPacking::pack_into(amount), STUN_RESISTANCE_TEMP_PACKING_BITS,
+            ),
             Affect::BludgeonResistanceTemp(amount) => (
                 IntPacking::pack_into(amount), BLUDGEON_RESISTANCE_TEMP_PACKING_BITS,
             ),
@@ -349,14 +364,16 @@ impl AffectStorePacking of StorePacking<Affect, felt252> {
             Affect::SetHealth(amount) => (amount.into(), SET_HEALTH_PACKING_BITS),
             Affect::FloorHealth(amount) => (amount.into(), FLOOR_HEALTH_PACKING_BITS),
             Affect::CeilHealth(amount) => (amount.into(), CEIL_HEALTH_PACKING_BITS),
-            Affect::HealthPercent(amount) => (
+            Affect::HealthPercentMax(amount) => (
                 IntPacking::pack_into(amount), HEALTH_PERCENT_PACKING_BITS,
             ),
-            Affect::SetHealthPercent(amount) => (amount.into(), SET_HEALTH_PERCENT_PACKING_BITS),
-            Affect::FloorHealthPercent(amount) => (
+            Affect::SetHealthPercentMax(amount) => (amount.into(), SET_HEALTH_PERCENT_PACKING_BITS),
+            Affect::FloorHealthPercentMax(amount) => (
                 amount.into(), FLOOR_HEALTH_PERCENT_PACKING_BITS,
             ),
-            Affect::CeilHealthPercent(amount) => (amount.into(), CEIL_HEALTH_PERCENT_PACKING_BITS),
+            Affect::CeilHealthPercentMax(amount) => (
+                amount.into(), CEIL_HEALTH_PERCENT_PACKING_BITS,
+            ),
         };
         amount.into() + variant
     }

@@ -38,6 +38,7 @@ pub struct Affinities {
 
 #[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
 pub struct Resistances {
+    pub stun: u8,
     pub bludgeon: u8,
     pub magic: u8,
     pub pierce: u8,
@@ -53,6 +54,7 @@ pub struct Vulnerabilities {
 
 #[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
 pub struct ResistanceMods {
+    pub stun: i8,
     pub bludgeon: i8,
     pub magic: i8,
     pub pierce: i8,
@@ -71,6 +73,7 @@ pub struct Attributes {
     pub vitality: u8,
     pub dexterity: u8,
     pub luck: u8,
+    pub stun_resistance: u8,
     pub bludgeon_resistance: u8,
     pub magic_resistance: u8,
     pub pierce_resistance: u8,
@@ -86,6 +89,7 @@ pub struct PartialAttributes {
     pub vitality: i8,
     pub dexterity: i8,
     pub luck: i8,
+    pub stun_resistance: u8,
     pub bludgeon_resistance: u8,
     pub magic_resistance: u8,
     pub pierce_resistance: u8,
@@ -100,6 +104,7 @@ pub struct AttributesCalc {
     pub vitality: i32,
     pub dexterity: i32,
     pub luck: i32,
+    pub stun_resistance: u16,
     pub bludgeon_resistance: u16,
     pub magic_resistance: u16,
     pub pierce_resistance: u16,
@@ -129,6 +134,7 @@ impl AddAttributesCalc of Add<AttributesCalc> {
             vitality: lhs.vitality + rhs.vitality,
             dexterity: lhs.dexterity + rhs.dexterity,
             luck: lhs.luck + rhs.luck,
+            stun_resistance: increase_resistance_calc(lhs.stun_resistance, rhs.stun_resistance),
             bludgeon_resistance: increase_resistance_calc(
                 lhs.bludgeon_resistance, rhs.bludgeon_resistance,
             ),
@@ -173,6 +179,7 @@ pub impl AttributesCalcImpl of AttributesCalcTrait {
             vitality: self.vitality.into_range(0, MAX_ABILITY_SCORE),
             dexterity: self.dexterity.into_range(0, MAX_ABILITY_SCORE),
             luck: self.luck.into_range(0, MAX_ABILITY_SCORE),
+            stun_resistance: self.stun_resistance.cap_into(100),
             bludgeon_resistance: self.bludgeon_resistance.cap_into(100),
             magic_resistance: self.magic_resistance.cap_into(100),
             pierce_resistance: self.pierce_resistance.cap_into(100),
@@ -189,6 +196,7 @@ pub impl AttributesCalcImpl of AttributesCalcTrait {
             vitality: self.vitality * factor_i32,
             dexterity: self.dexterity * factor_i32,
             luck: self.luck * factor_i32,
+            stun_resistance: mul_resistance(self.stun_resistance, factor),
             bludgeon_resistance: mul_resistance(self.bludgeon_resistance, factor),
             magic_resistance: mul_resistance(self.magic_resistance, factor),
             pierce_resistance: mul_resistance(self.pierce_resistance, factor),
@@ -223,6 +231,7 @@ impl AttributesIntoAttributesCalc of Into<Attributes, AttributesCalc> {
             vitality: self.vitality.into(),
             dexterity: self.dexterity.into(),
             luck: self.luck.into(),
+            stun_resistance: self.stun_resistance.into(),
             bludgeon_resistance: self.bludgeon_resistance.into(),
             magic_resistance: self.magic_resistance.into(),
             pierce_resistance: self.pierce_resistance.into(),
@@ -240,6 +249,7 @@ impl PartialAttributesIntoAttributesCalc of Into<PartialAttributes, AttributesCa
             vitality: self.vitality.into(),
             dexterity: self.dexterity.into(),
             luck: self.luck.into(),
+            stun_resistance: self.stun_resistance.into(),
             bludgeon_resistance: self.bludgeon_resistance.into(),
             magic_resistance: self.magic_resistance.into(),
             pierce_resistance: self.pierce_resistance.into(),
@@ -277,6 +287,7 @@ impl PartialAttributesIntoAttributes of Into<PartialAttributes, Attributes> {
             vitality: self.vitality.saturating_into(),
             dexterity: self.dexterity.saturating_into(),
             luck: self.luck.saturating_into(),
+            stun_resistance: self.stun_resistance,
             bludgeon_resistance: self.bludgeon_resistance,
             magic_resistance: self.magic_resistance,
             pierce_resistance: self.pierce_resistance,
@@ -293,12 +304,13 @@ impl AttributesStorePacking of StorePacking<Attributes, u128> {
             + ShiftCast::const_cast::<SHIFT_1B>(value.vitality)
             + ShiftCast::const_cast::<SHIFT_2B>(value.dexterity)
             + ShiftCast::const_cast::<SHIFT_3B>(value.luck)
-            + ShiftCast::const_cast::<SHIFT_4B>(value.bludgeon_resistance)
-            + ShiftCast::const_cast::<SHIFT_5B>(value.magic_resistance)
-            + ShiftCast::const_cast::<SHIFT_6B>(value.pierce_resistance)
-            + ShiftCast::const_cast::<SHIFT_7B>(value.bludgeon_vulnerability)
-            + ShiftCast::const_cast::<SHIFT_9B>(value.magic_vulnerability)
-            + ShiftCast::const_cast::<SHIFT_11B>(value.pierce_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_4B>(value.stun_resistance)
+            + ShiftCast::const_cast::<SHIFT_5B>(value.bludgeon_resistance)
+            + ShiftCast::const_cast::<SHIFT_6B>(value.magic_resistance)
+            + ShiftCast::const_cast::<SHIFT_7B>(value.pierce_resistance)
+            + ShiftCast::const_cast::<SHIFT_8B>(value.bludgeon_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_10B>(value.magic_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_12B>(value.pierce_vulnerability)
     }
 
     fn unpack(value: u128) -> Attributes {
@@ -307,12 +319,13 @@ impl AttributesStorePacking of StorePacking<Attributes, u128> {
             vitality: ShiftCast::const_unpack::<SHIFT_1B>(value),
             dexterity: ShiftCast::const_unpack::<SHIFT_2B>(value),
             luck: ShiftCast::const_unpack::<SHIFT_3B>(value),
-            bludgeon_resistance: ShiftCast::const_unpack::<SHIFT_4B>(value),
-            magic_resistance: ShiftCast::const_unpack::<SHIFT_5B>(value),
-            pierce_resistance: ShiftCast::const_unpack::<SHIFT_6B>(value),
-            bludgeon_vulnerability: ShiftCast::const_unpack::<SHIFT_7B>(value),
-            magic_vulnerability: ShiftCast::const_unpack::<SHIFT_9B>(value),
-            pierce_vulnerability: ShiftCast::const_unpack::<SHIFT_11B>(value),
+            stun_resistance: ShiftCast::const_unpack::<SHIFT_4B>(value),
+            bludgeon_resistance: ShiftCast::const_unpack::<SHIFT_5B>(value),
+            magic_resistance: ShiftCast::const_unpack::<SHIFT_6B>(value),
+            pierce_resistance: ShiftCast::const_unpack::<SHIFT_7B>(value),
+            bludgeon_vulnerability: ShiftCast::const_unpack::<SHIFT_8B>(value),
+            magic_vulnerability: ShiftCast::const_unpack::<SHIFT_10B>(value),
+            pierce_vulnerability: ShiftCast::const_unpack::<SHIFT_12B>(value),
         }
     }
 }
@@ -323,12 +336,13 @@ impl PartialAttributesStorePacking of StorePacking<PartialAttributes, u128> {
             + ShiftCast::const_cast::<SHIFT_1B>(value.vitality)
             + ShiftCast::const_cast::<SHIFT_2B>(value.dexterity)
             + ShiftCast::const_cast::<SHIFT_3B>(value.luck)
-            + ShiftCast::const_cast::<SHIFT_4B>(value.bludgeon_resistance)
-            + ShiftCast::const_cast::<SHIFT_5B>(value.magic_resistance)
-            + ShiftCast::const_cast::<SHIFT_6B>(value.pierce_resistance)
-            + ShiftCast::const_cast::<SHIFT_7B>(value.bludgeon_vulnerability)
-            + ShiftCast::const_cast::<SHIFT_9B>(value.magic_vulnerability)
-            + ShiftCast::const_cast::<SHIFT_11B>(value.pierce_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_4B>(value.stun_resistance)
+            + ShiftCast::const_cast::<SHIFT_5B>(value.bludgeon_resistance)
+            + ShiftCast::const_cast::<SHIFT_6B>(value.magic_resistance)
+            + ShiftCast::const_cast::<SHIFT_7B>(value.pierce_resistance)
+            + ShiftCast::const_cast::<SHIFT_8B>(value.bludgeon_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_10B>(value.magic_vulnerability)
+            + ShiftCast::const_cast::<SHIFT_12B>(value.pierce_vulnerability)
     }
 
     fn unpack(value: u128) -> PartialAttributes {
@@ -337,12 +351,13 @@ impl PartialAttributesStorePacking of StorePacking<PartialAttributes, u128> {
             vitality: ShiftCast::const_unpack::<SHIFT_1B>(value),
             dexterity: ShiftCast::const_unpack::<SHIFT_2B>(value),
             luck: ShiftCast::const_unpack::<SHIFT_3B>(value),
-            bludgeon_resistance: ShiftCast::const_unpack::<SHIFT_4B>(value),
-            magic_resistance: ShiftCast::const_unpack::<SHIFT_5B>(value),
-            pierce_resistance: ShiftCast::const_unpack::<SHIFT_6B>(value),
-            bludgeon_vulnerability: ShiftCast::const_unpack::<SHIFT_7B>(value),
-            magic_vulnerability: ShiftCast::const_unpack::<SHIFT_9B>(value),
-            pierce_vulnerability: ShiftCast::const_unpack::<SHIFT_11B>(value),
+            stun_resistance: ShiftCast::const_unpack::<SHIFT_4B>(value),
+            bludgeon_resistance: ShiftCast::const_unpack::<SHIFT_5B>(value),
+            magic_resistance: ShiftCast::const_unpack::<SHIFT_6B>(value),
+            pierce_resistance: ShiftCast::const_unpack::<SHIFT_7B>(value),
+            bludgeon_vulnerability: ShiftCast::const_unpack::<SHIFT_8B>(value),
+            magic_vulnerability: ShiftCast::const_unpack::<SHIFT_10B>(value),
+            pierce_vulnerability: ShiftCast::const_unpack::<SHIFT_12B>(value),
         }
     }
 }
@@ -355,6 +370,7 @@ impl AbilitiesIntoAttributes of Into<Abilities, Attributes> {
             vitality: self.vitality,
             dexterity: self.dexterity,
             luck: self.luck,
+            stun_resistance: 0,
             bludgeon_resistance: 0,
             magic_resistance: 0,
             pierce_resistance: 0,
@@ -389,16 +405,12 @@ impl AbilityModsStorePacking of StorePacking<AbilityMods, u32> {
 
 impl ResistanceModsStorePacking of StorePacking<ResistanceMods, u32> {
     fn pack(value: ResistanceMods) -> u32 {
-        IntPacking::pack_into(value.bludgeon)
-            + ShiftCast::const_cast::<SHIFT_1B>(value.magic)
-            + ShiftCast::const_cast::<SHIFT_2B>(value.pierce)
+        BytePacking::pack([value.stun, value.bludgeon, value.magic, value.pierce])
     }
 
     fn unpack(value: u32) -> ResistanceMods {
-        let bludgeon: i8 = MaskDowncast::cast(value);
-        let magic: i8 = ShiftCast::const_unpack::<SHIFT_1B>(value);
-        let pierce: i8 = ShiftCast::const_unpack::<SHIFT_2B>(value);
-        ResistanceMods { bludgeon, magic, pierce }
+        let [stun, bludgeon, magic, pierce] = BytePacking::unpack(value);
+        ResistanceMods { stun, bludgeon, magic, pierce }
     }
 }
 
