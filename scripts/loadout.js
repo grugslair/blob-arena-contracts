@@ -6,9 +6,9 @@ const { pascal } = pkg;
 const LE100Affects = [
   "Stun",
   "Block",
-  "SetHealthPercent",
-  "FloorHealthPercent",
-  "CeilHealthPercent",
+  "SetHealthPercentMax",
+  "FloorHealthPercentMax",
+  "CeilHealthPercentMax",
 ];
 
 const B100ToN100Affects = [
@@ -20,13 +20,15 @@ const B100ToN100Affects = [
   "VitalityTemp",
   "DexterityTemp",
   "LuckTemp",
+  "StunResistance",
   "BludgeonResistance",
   "MagicResistance",
   "PierceResistance",
+  "StunResistanceTemp",
   "BludgeonResistanceTemp",
   "MagicResistanceTemp",
   "PierceResistanceTemp",
-  "HealthPercent",
+  "HealthPercentMax",
 ];
 
 const LE200Affects = ["Health", "SetHealth", "FloorHealth", "CeilHealth"];
