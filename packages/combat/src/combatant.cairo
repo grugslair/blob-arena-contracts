@@ -168,6 +168,12 @@ fn modify_vulnerability(ref value: u16, change: i16) -> u16 {
     value
 }
 
+fn modify_vulnerability_temp(ref value: i16, change: i16) -> i16 {
+    let new: i32 = value.into() + change.into();
+    value = new.saturating_into();
+    value
+}
+
 fn combine_temp(value: u8, temp: i8) -> u8 {
     min((value.saturating_into() + temp).saturating_into(), MAX_ABILITY_SCORE)
 }
@@ -178,6 +184,10 @@ fn combine_vulnerability(value: u16, temp: i16) -> u16 {
 
 #[generate_trait]
 pub impl CombatantStateImpl of CombatantStateTrait {
+    fn cap_health(ref self: CombatantState) {
+        self.health = min(self.health, self.max_health());
+    }
+
     fn strength(self: @CombatantState) -> u8 {
         combine_temp(*self.strength, *self.strength_temp)
     }
@@ -311,7 +321,6 @@ pub impl CombatantStateImpl of CombatantStateTrait {
         Vulnerabilities { bludgeon, magic, pierce }
     }
 
-
     fn modify_strength_temp(ref self: CombatantState, amount: i8) -> i8 {
         modify_ability_temp(ref self.strength_temp, amount)
     }
@@ -340,43 +349,47 @@ pub impl CombatantStateImpl of CombatantStateTrait {
         }
     }
 
-    fn modify_bludgeon_resistance_temp(ref self: CombatantState, amount: i8) {
-        modify_resistance_temp(ref self.bludgeon_resistance_temp, amount);
+    fn modify_bludgeon_resistance_temp(ref self: CombatantState, amount: i8) -> i8 {
+        modify_resistance_temp(ref self.bludgeon_resistance_temp, amount)
     }
 
-    fn modify_magic_resistance_temp(ref self: CombatantState, amount: i8) {
-        modify_resistance_temp(ref self.magic_resistance_temp, amount);
+    fn modify_magic_resistance_temp(ref self: CombatantState, amount: i8) -> i8 {
+        modify_resistance_temp(ref self.magic_resistance_temp, amount)
     }
 
-    fn modify_pierce_resistance_temp(ref self: CombatantState, amount: i8) {
-        modify_resistance_temp(ref self.pierce_resistance_temp, amount);
+    fn modify_pierce_resistance_temp(ref self: CombatantState, amount: i8) -> i8 {
+        modify_resistance_temp(ref self.pierce_resistance_temp, amount)
     }
 
-    fn modify_resistances_temp(ref self: CombatantState, mods: ResistanceMods) {
-        self.modify_bludgeon_resistance_temp(mods.bludgeon);
-        self.modify_magic_resistance_temp(mods.magic);
-        self.modify_pierce_resistance_temp(mods.pierce);
+    fn modify_resistances_temp(ref self: CombatantState, mods: ResistanceMods) -> ResistanceMods {
+        ResistanceMods {
+            bludgeon: self.modify_bludgeon_resistance_temp(mods.bludgeon),
+            magic: self.modify_magic_resistance_temp(mods.magic),
+            pierce: self.modify_pierce_resistance_temp(mods.pierce),
+        }
     }
 
-    fn modify_bludgeon_vulnerability_temp(ref self: CombatantState, amount: i16) {
-        let new: i32 = self.bludgeon_resistance_temp.into() + amount.into();
-        self.bludgeon_vulnerability_temp = new.saturating_into();
+    fn modify_bludgeon_vulnerability_temp(ref self: CombatantState, amount: i16) -> i16 {
+        modify_vulnerability_temp(ref self.bludgeon_vulnerability_temp, amount)
     }
 
-    fn modify_magic_vulnerability_temp(ref self: CombatantState, amount: i16) {
-        let new: i32 = self.magic_resistance_temp.into() + amount.into();
-        self.magic_vulnerability_temp = new.saturating_into();
+    fn modify_magic_vulnerability_temp(ref self: CombatantState, amount: i16) -> i16 {
+        modify_vulnerability_temp(ref self.magic_vulnerability_temp, amount)
     }
 
-    fn modify_pierce_vulnerability_temp(ref self: CombatantState, amount: i16) {
-        let new: i32 = self.pierce_resistance_temp.into() + amount.into();
-        self.pierce_vulnerability_temp = new.saturating_into();
+    fn modify_pierce_vulnerability_temp(ref self: CombatantState, amount: i16) -> i16 {
+        modify_vulnerability_temp(ref self.pierce_vulnerability_temp, amount)
     }
 
-    fn modify_vulnerabilities_temp(ref self: CombatantState, mods: VulnerabilityMods) {
-        self.modify_bludgeon_vulnerability_temp(mods.bludgeon);
-        self.modify_magic_vulnerability_temp(mods.magic);
-        self.modify_pierce_vulnerability_temp(mods.pierce);
+
+    fn modify_vulnerabilities_temp(
+        ref self: CombatantState, mods: VulnerabilityMods,
+    ) -> VulnerabilityMods {
+        VulnerabilityMods {
+            bludgeon: self.modify_bludgeon_vulnerability_temp(mods.bludgeon),
+            magic: self.modify_magic_vulnerability_temp(mods.magic),
+            pierce: self.modify_pierce_vulnerability_temp(mods.pierce),
+        }
     }
 
 
@@ -402,13 +415,49 @@ pub impl CombatantStateImpl of CombatantStateTrait {
         (100 + vulnerability - resistance - vulnerability * resistance / 100).saturating_into()
     }
 
-    fn cap_health(ref self: CombatantState) -> u8 {
-        self.health = min(self.max_health(), self.health);
+    fn max_health(self: @CombatantState) -> u8 {
+        get_max_health(*self.vitality)
+    }
+
+    fn set_health(ref self: CombatantState, health: u8) -> u8 {
+        self.health = health;
         self.health
     }
 
-    fn max_health(self: @CombatantState) -> u8 {
-        get_max_health(*self.vitality)
+    fn floor_health(ref self: CombatantState, health: u8) -> u8 {
+        self.set_health(max(self.health, health))
+    }
+
+    fn ceil_health(ref self: CombatantState, health: u8) -> u8 {
+        self.set_health(min(self.health, health))
+    }
+
+    fn percentage_of_max_health(self: @CombatantState, percent: u8) -> u8 {
+        (self.max_health().wide_mul(percent) / 100).saturating_into()
+    }
+
+    fn signed_percentage_of_max_health(self: @CombatantState, percent: i8) -> i16 {
+        (self.max_health().into() * percent.into() / 100)
+    }
+
+    fn modify_health_percent(ref self: CombatantState, percent: i8) -> u8 {
+        self
+            .set_health(
+                (self.health.into() + self.signed_percentage_of_max_health(percent))
+                    .saturating_into(),
+            )
+    }
+
+    fn floor_health_percent(ref self: CombatantState, percent: u8) -> u8 {
+        self.floor_health(self.percentage_of_max_health(percent))
+    }
+
+    fn ceil_health_percent(ref self: CombatantState, percent: u8) -> u8 {
+        self.ceil_health(self.percentage_of_max_health(percent))
+    }
+
+    fn set_health_percent(ref self: CombatantState, percent: u8) -> u8 {
+        self.set_health(self.percentage_of_max_health(percent))
     }
 
     fn run_stun(ref self: CombatantState, ref randomness: Randomness) -> bool {
@@ -484,36 +533,45 @@ pub impl CombatantStateImpl of CombatantStateTrait {
                 self.modify_abilities_temp(mods),
             ),
             Affect::BludgeonResistanceTemp(amount) => {
-                self.modify_bludgeon_resistance_temp(amount);
-                AffectResult::BludgeonResistanceTemp(amount)
+                AffectResult::BludgeonResistanceTemp(self.modify_bludgeon_resistance_temp(amount))
             },
             Affect::MagicResistanceTemp(amount) => {
-                self.modify_magic_resistance_temp(amount);
-                AffectResult::MagicResistanceTemp(amount)
+                AffectResult::MagicResistanceTemp(self.modify_magic_resistance_temp(amount))
             },
             Affect::PierceResistanceTemp(amount) => {
-                self.modify_pierce_resistance_temp(amount);
-                AffectResult::PierceResistanceTemp(amount)
+                AffectResult::PierceResistanceTemp(self.modify_pierce_resistance_temp(amount))
             },
             Affect::ResistancesTemp(mods) => {
-                self.modify_resistances_temp(mods);
-                AffectResult::ResistancesTemp(mods)
+                AffectResult::ResistancesTemp(self.modify_resistances_temp(mods))
             },
             Affect::BludgeonVulnerabilityTemp(amount) => {
-                self.modify_bludgeon_vulnerability_temp(amount);
-                AffectResult::BludgeonVulnerabilityTemp(amount)
+                AffectResult::BludgeonVulnerabilityTemp(
+                    self.modify_bludgeon_vulnerability_temp(amount),
+                )
             },
             Affect::MagicVulnerabilityTemp(amount) => {
-                self.modify_magic_vulnerability_temp(amount);
-                AffectResult::MagicVulnerabilityTemp(amount)
+                AffectResult::MagicVulnerabilityTemp(self.modify_magic_vulnerability_temp(amount))
             },
             Affect::PierceVulnerabilityTemp(amount) => {
-                self.modify_pierce_vulnerability_temp(amount);
-                AffectResult::PierceVulnerabilityTemp(amount)
+                AffectResult::PierceVulnerabilityTemp(self.modify_pierce_vulnerability_temp(amount))
             },
             Affect::VulnerabilitiesTemp(mods) => {
-                self.modify_vulnerabilities_temp(mods);
-                AffectResult::VulnerabilitiesTemp(mods)
+                AffectResult::VulnerabilitiesTemp(self.modify_vulnerabilities_temp(mods))
+            },
+            Affect::SetHealth(health) => AffectResult::SetHealth(self.set_health(health)),
+            Affect::FloorHealth(health) => AffectResult::FloorHealth(self.floor_health(health)),
+            Affect::CeilHealth(health) => AffectResult::CeilHealth(self.ceil_health(health)),
+            Affect::HealthPercent(percent) => {
+                AffectResult::HealthPercent(self.modify_health_percent(percent.into()))
+            },
+            Affect::SetHealthPercent(percent) => {
+                AffectResult::SetHealthPercent(self.set_health_percent(percent))
+            },
+            Affect::FloorHealthPercent(percent) => {
+                AffectResult::FloorHealthPercent(self.floor_health_percent(percent))
+            },
+            Affect::CeilHealthPercent(percent) => {
+                AffectResult::CeilHealthPercent(self.ceil_health_percent(percent))
             },
         }
     }

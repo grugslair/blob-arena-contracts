@@ -3,24 +3,43 @@ import { CairoCustomEnum } from "starknet";
 import pkg from "case";
 const { pascal } = pkg;
 
+const LE100Affects = [
+  "Stun",
+  "Block",
+  "SetHealthPercent",
+  "FloorHealthPercent",
+  "CeilHealthPercent",
+];
+
 const B100ToN100Affects = [
   "Strength",
   "Vitality",
   "Dexterity",
   "Luck",
+  "StrengthTemp",
+  "VitalityTemp",
+  "DexterityTemp",
+  "LuckTemp",
   "BludgeonResistance",
   "MagicResistance",
   "PierceResistance",
-  "Health",
+  "BludgeonResistanceTemp",
+  "MagicResistanceTemp",
+  "PierceResistanceTemp",
+  "HealthPercent",
 ];
 
+const LE200Affects = ["Health", "SetHealth", "FloorHealth", "CeilHealth"];
+
+const B200toN200Affects = ["Health"];
 const I16Affects = [
   "BludgeonVulnerability",
   "MagicVulnerability",
   "PierceVulnerability",
+  "BludgeonVulnerabilityTemp",
+  "MagicVulnerabilityTemp",
+  "PierceVulnerabilityTemp",
 ];
-
-const LE100Affects = ["Stun", "Block"];
 
 const TargetAndDurationsKeys = [
   "duration",
@@ -47,20 +66,24 @@ const parseAffectStruct = (affectInput) => {
   let [key, affect] = parseEnumObject(affectInput);
   key = pascal(key);
 
-  if (B100ToN100Affects.includes(key)) {
+  if (LE100Affects.includes(key)) {
+    affect = { [key]: parse1To100(affect, key) };
+  } else if (B100ToN100Affects.includes(key)) {
     affect = { [key]: parseN100To100Ne0(affect, key) };
+  } else if (LE200Affects.includes(key)) {
+    affect = { [key]: parse0To200(affect, key) };
+  } else if (B200toN200Affects.includes(key)) {
+    affect = { [key]: parseN200To200Ne0(affect, key) };
   } else if (I16Affects.includes(key)) {
     affect = { [key]: parseI16Ne0(affect, key) };
   } else if (key === "Damage") {
     affect = { Damage: parseDamage(affect) };
-  } else if (LE100Affects.includes(key)) {
-    affect = { [key]: parse1To100(affect, key) };
-  } else if (key === "Abilities") {
-    affect = { Abilities: parseAbilityMods(affect) };
-  } else if (key === "Resistances") {
-    affect = { Resistances: parseResistanceMods(affect) };
-  } else if (key === "Vulnerabilities") {
-    affect = { Vulnerabilities: parseVulnerabilityMods(affect) };
+  } else if (["Abilities", "AbilitiesTemp"].includes(key)) {
+    affect = { [key]: parseAbilityMods(affect) };
+  } else if (["Resistances", "ResistancesTemp"].includes(key)) {
+    affect = { [key]: parseResistanceMods(affect) };
+  } else if (["Vulnerabilities", "VulnerabilitiesTemp"].includes(key)) {
+    affect = { [key]: parseVulnerabilityMods(affect) };
   } else {
     throw new Error(`Unknown effect affect: ${key}`);
   }
@@ -310,6 +333,10 @@ const parse0To100 = (value, name) => {
   return parseValueInRange(value, name, 0n, 100n);
 };
 
+const parse0To200 = (value, name) => {
+  return parseValueInRange(value, name, 0n, 200n);
+};
+
 const parse1To100 = (value, name) => {
   return parseValueInRange(value, name, 1n, 100n);
 };
@@ -324,6 +351,14 @@ const parseN100To100Ne0 = (value, name) => {
     throw new Error(`${name}: value ${value} cannot be zero`);
   }
   return parseValueInRange(value, name, -100n, 100n);
+};
+
+const parseN200To200Ne0 = (value, name) => {
+  value = BigInt(value || 0n);
+  if (value === 0n) {
+    throw new Error(`${name}: value ${value} cannot be zero`);
+  }
+  return parseValueInRange(value, name, -200n, 200n);
 };
 
 export const parseNewAttack = (attack) => {

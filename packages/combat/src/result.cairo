@@ -38,6 +38,9 @@ pub struct EffectResult {
 pub enum AffectResult {
     None,
     Applied,
+    Stun: u8,
+    Block: u8,
+    Health: u8,
     Strength: u8,
     Vitality: VitalityResult,
     Dexterity: u8,
@@ -65,9 +68,13 @@ pub enum AffectResult {
     ResistancesTemp: ResistanceMods,
     VulnerabilitiesTemp: VulnerabilityMods,
     Damage: DamageResult,
-    Stun: u8,
-    Block: u8,
-    Health: u8,
+    SetHealth: u8,
+    FloorHealth: u8,
+    CeilHealth: u8,
+    HealthPercent: u8,
+    SetHealthPercent: u8,
+    FloorHealthPercent: u8,
+    CeilHealthPercent: u8,
 }
 
 /// Represents the result of a damage calculation

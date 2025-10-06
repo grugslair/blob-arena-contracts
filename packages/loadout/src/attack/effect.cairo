@@ -48,6 +48,13 @@ const ABILITIES_TEMP_N: u32 = 27;
 const RESISTANCES_TEMP_N: u32 = 28;
 const VULNERABILITIES_TEMP_N: u32 = 29;
 const DAMAGE_N: u32 = 30;
+const SET_HEALTH_N: u32 = 31;
+const FLOOR_HEALTH_N: u32 = 32;
+const CEIL_HEALTH_N: u32 = 33;
+const HEALTH_PERCENT_N: u32 = 34;
+const SET_HEALTH_PERCENT_N: u32 = 35;
+const FLOOR_HEALTH_PERCENT_N: u32 = 36;
+const CEIL_HEALTH_PERCENT_N: u32 = 37;
 
 
 const D_TYPE_BLUDGEON_N: u32 = 1;
@@ -99,6 +106,14 @@ const ABILITIES_TEMP_PACKING_BITS: felt252 = ABILITIES_TEMP_N.into() * SHIFT_16B
 const RESISTANCES_TEMP_PACKING_BITS: felt252 = RESISTANCES_TEMP_N.into() * SHIFT_16B_FELT252;
 const VULNERABILITIES_TEMP_PACKING_BITS: felt252 = VULNERABILITIES_TEMP_N.into()
     * SHIFT_16B_FELT252;
+const SET_HEALTH_PACKING_BITS: felt252 = SET_HEALTH_N.into() * SHIFT_16B_FELT252;
+const FLOOR_HEALTH_PACKING_BITS: felt252 = FLOOR_HEALTH_N.into() * SHIFT_16B_FELT252;
+const CEIL_HEALTH_PACKING_BITS: felt252 = CEIL_HEALTH_N.into() * SHIFT_16B_FELT252;
+const HEALTH_PERCENT_PACKING_BITS: felt252 = HEALTH_PERCENT_N.into() * SHIFT_16B_FELT252;
+const SET_HEALTH_PERCENT_PACKING_BITS: felt252 = SET_HEALTH_PERCENT_N.into() * SHIFT_16B_FELT252;
+const FLOOR_HEALTH_PERCENT_PACKING_BITS: felt252 = FLOOR_HEALTH_PERCENT_N.into()
+    * SHIFT_16B_FELT252;
+const CEIL_HEALTH_PERCENT_PACKING_BITS: felt252 = CEIL_HEALTH_PERCENT_N.into() * SHIFT_16B_FELT252;
 
 const D_TYPE_BLUDGEON_PACKING_BITS: u32 = D_TYPE_BLUDGEON_N * SHIFT_2B_U32;
 const D_TYPE_MAGIC_PACKING_BITS: u32 = D_TYPE_MAGIC_N * SHIFT_2B_U32;
@@ -108,7 +123,7 @@ const D_TYPE_PIERCE_PACKING_BITS: u32 = D_TYPE_PIERCE_N * SHIFT_2B_U32;
 pub enum Affect {
     #[default]
     None,
-    Health: i8,
+    Health: i16,
     Stun: u8,
     Block: u8,
     Strength: i8,
@@ -138,6 +153,13 @@ pub enum Affect {
     ResistancesTemp: ResistanceMods,
     VulnerabilitiesTemp: VulnerabilityMods,
     Damage: Damage,
+    SetHealth: u8,
+    FloorHealth: u8,
+    CeilHealth: u8,
+    HealthPercent: i8,
+    SetHealthPercent: u8,
+    FloorHealthPercent: u8,
+    CeilHealthPercent: u8,
 }
 
 #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
@@ -237,6 +259,13 @@ pub fn unpack_affect(variant: u16, data: u128) -> Affect {
         28 => Affect::ResistancesTemp(StorePacking::unpack(MaskDowncast::cast(data))),
         29 => Affect::VulnerabilitiesTemp(StorePacking::unpack(MaskDowncast::cast(data))),
         30 => Affect::Damage(DamageStorePacking::unpack(MaskDowncast::cast(data))),
+        31 => Affect::SetHealth(MaskDowncast::cast(data)),
+        32 => Affect::FloorHealth(MaskDowncast::cast(data)),
+        33 => Affect::CeilHealth(MaskDowncast::cast(data)),
+        34 => Affect::HealthPercent(MaskDowncast::cast(data)),
+        35 => Affect::SetHealthPercent(MaskDowncast::cast(data)),
+        36 => Affect::FloorHealthPercent(MaskDowncast::cast(data)),
+        37 => Affect::CeilHealthPercent(MaskDowncast::cast(data)),
         _ => panic!("Invalid value for Affect"),
     }
 }
@@ -317,6 +346,17 @@ impl AffectStorePacking of StorePacking<Affect, felt252> {
                 StorePacking::pack(amount).into(), VULNERABILITIES_TEMP_PACKING_BITS,
             ),
             Affect::Damage(amount) => (StorePacking::pack(amount).into(), DAMAGE_PACKING_BITS),
+            Affect::SetHealth(amount) => (amount.into(), SET_HEALTH_PACKING_BITS),
+            Affect::FloorHealth(amount) => (amount.into(), FLOOR_HEALTH_PACKING_BITS),
+            Affect::CeilHealth(amount) => (amount.into(), CEIL_HEALTH_PACKING_BITS),
+            Affect::HealthPercent(amount) => (
+                IntPacking::pack_into(amount), HEALTH_PERCENT_PACKING_BITS,
+            ),
+            Affect::SetHealthPercent(amount) => (amount.into(), SET_HEALTH_PERCENT_PACKING_BITS),
+            Affect::FloorHealthPercent(amount) => (
+                amount.into(), FLOOR_HEALTH_PERCENT_PACKING_BITS,
+            ),
+            Affect::CeilHealthPercent(amount) => (amount.into(), CEIL_HEALTH_PERCENT_PACKING_BITS),
         };
         amount.into() + variant
     }
