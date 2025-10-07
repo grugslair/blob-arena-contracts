@@ -55,6 +55,7 @@ pub struct AttackWithName {
     pub fail: Array<Effect>,
 }
 
+
 impl AttackWithNameIntoAttack of Into<AttackWithName, Attack> {
     fn into(self: AttackWithName) -> Attack {
         Attack {
@@ -78,8 +79,15 @@ pub enum IdTagAttack {
 
 #[generate_trait]
 pub impl AttackWithNameImpl of AttackWithNameTrait {
-    fn attack_id(self: @AttackWithName) -> felt252 {
-        get_attack_id(self.name, *self.speed, *self.chance, *self.cooldown, self.success, self.fail)
+    fn attack_id(self: AttackWithName) -> felt252 {
+        get_attack_id(
+            @self.name,
+            self.speed,
+            self.chance,
+            self.cooldown,
+            pack_effect_array(self.success).span(),
+            pack_effect_array(self.fail).span(),
+        )
     }
 }
 
@@ -89,8 +97,8 @@ pub fn get_attack_id(
     speed: u16,
     chance: u8,
     cooldown: u32,
-    success: @Array<Effect>,
-    fail: @Array<Effect>,
+    success: Span<felt252>,
+    fail: Span<felt252>,
 ) -> felt252 {
     let mut serialized: Array<felt252> = Default::default();
     let value: u64 = cooldown.into()
@@ -100,9 +108,9 @@ pub fn get_attack_id(
     Serde::serialize(name, ref serialized);
     serialized.append(value.into());
     serialized.append(success.len().into());
-    serialized.append_span(pack_effect_array(success));
+    serialized.append_span(success);
     serialized.append(fail.len().into());
-    serialized.append_span(pack_effect_array(fail));
+    serialized.append_span(fail);
     poseidon_hash_span(serialized.span())
 }
 

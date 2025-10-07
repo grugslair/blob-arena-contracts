@@ -50,8 +50,9 @@ trait IArcadeAmma<TState> {
 
 #[starknet::contract]
 mod arcade_amma {
-    use ba_arcade::attempt::{ArcadePhase, AttemptNodeTrait};
+    use ba_arcade::attempt::{ArcadeProgress, AttemptNodeTrait};
     use ba_arcade::{IArcade, Opponent, arcade_component};
+    use ba_combat::systems::get_attack_dispatcher_address;
     use ba_loadout::PartialAttributes;
     use ba_loadout::attack::interface::maybe_create_attacks_array;
     use ba_loadout::attack::maybe_create_attacks;
@@ -62,19 +63,19 @@ mod arcade_amma {
     use sai_core_utils::poseidon_hash_two;
     use sai_ownable::{OwnableTrait, ownable_component};
     use sai_return::emit_return;
-    use starknet::ContractAddress;
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
         StoragePointerWriteAccess,
     };
+    use starknet::{ClassHash, ContractAddress};
     use crate::systems::{attack_slots, random_selection};
     use super::{AmmaOpponent, AmmaOpponentInput, IArcadeAmma, IdTagAttack};
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
     component!(path: arcade_component, storage: arcade, event: ArcadeEvents);
 
-    const ROUND_HASH: felt252 = bytearrays_hash!("arcade_amma", "ArcadeRound");
-    const ATTEMPT_HASH: felt252 = bytearrays_hash!("arcade_amma", "ArcadeAttempt");
+    const ROUND_HASH: felt252 = bytearrays_hash!("arcade_amma", "Round");
+    const ATTEMPT_HASH: felt252 = bytearrays_hash!("arcade_amma", "Attempt");
     const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("arcade_amma", "AttackLastUsed");
     const STAGE_OPPONENTS_HASH: felt252 = bytearrays_hash!("arcade_amma", "StageOpponents");
     const OPPONENTS_HASH: felt252 = bytearrays_hash!("arcade_amma", "Opponent");
@@ -119,6 +120,7 @@ mod arcade_amma {
     fn constructor(
         ref self: ContractState,
         owner: ContractAddress,
+        arcade_round_result_class_hash: ClassHash,
         attack_address: ContractAddress,
         loadout_address: ContractAddress,
         credit_address: ContractAddress,
@@ -129,6 +131,7 @@ mod arcade_amma {
         ArcadeInternal::init(
             ref self.arcade,
             "arcade_amma",
+            arcade_round_result_class_hash,
             attack_address,
             loadout_address,
             credit_address,
@@ -178,11 +181,13 @@ mod arcade_amma {
                 ref self.arcade, attempt_id, attack_id,
             );
 
-            if result.phase == ArcadePhase::PlayerWon {
+            if result.phase == ArcadeProgress::PlayerWon {
                 let next_stage = result.stage + 1;
                 let gen_stages = self.gen_stages.read();
                 if next_stage == gen_stages + 1 {
-                    ArcadeInternal::set_phase(ref attempt_ptr, attempt_id, ArcadePhase::PlayerWon);
+                    ArcadeInternal::set_phase(
+                        ref attempt_ptr, attempt_id, ArcadeProgress::PlayerWon,
+                    );
                 } else if attempt_ptr.is_not_expired() {
                     attempt_ptr.stage.write(next_stage);
                     let health = result.health;
@@ -258,7 +263,7 @@ mod arcade_amma {
             attacks: Array<IdTagAttack>,
         ) {
             self.assert_caller_is_owner();
-            let attack_ids = maybe_create_attacks(self.arcade.attack_address.read(), attacks);
+            let attack_ids = maybe_create_attacks(get_attack_dispatcher_address(), attacks);
             self.set_opponent_internal(fighter, base, level, attack_ids);
         }
 
@@ -270,7 +275,7 @@ mod arcade_amma {
         ) {
             self.assert_caller_is_owner();
             let fighter = self.opponent_count.read();
-            let attack_ids = maybe_create_attacks(self.arcade.attack_address.read(), attacks);
+            let attack_ids = maybe_create_attacks(get_attack_dispatcher_address(), attacks);
             self.set_opponent_internal(fighter, base, level, attack_ids);
             self.opponent_count.write(fighter + 1);
         }
@@ -312,7 +317,7 @@ mod arcade_amma {
                 attributes.append(attr);
             }
             let all_attack_ids = maybe_create_attacks_array(
-                self.arcade.attack_address.read(), all_attacks,
+                get_attack_dispatcher_address(), all_attacks,
             );
             for (i, ([base, level], attacks)) in attributes
                 .into_iter()

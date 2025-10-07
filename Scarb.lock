@@ -395,12 +395,12 @@ dependencies = [
 [[package]]
 name = "sai_access"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?tag=v0.1.3#539554f12530b7c3112adfdc1ff76f59fca76fad"
+source = "git+https://github.com/sai-starknet/cairo-utils?tag=v0.1.3#3d2a82712cfebbfefde42524fedfee533461f5ea"
 
 [[package]]
 name = "sai_address"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?tag=v0.1.3#539554f12530b7c3112adfdc1ff76f59fca76fad"
+source = "git+https://github.com/sai-starknet/cairo-utils?tag=v0.1.3#3d2a82712cfebbfefde42524fedfee533461f5ea"
 dependencies = [
  "sai_core_utils",
 ]
@@ -408,27 +408,27 @@ dependencies = [
 [[package]]
 name = "sai_core_utils"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?tag=v0.1.3#539554f12530b7c3112adfdc1ff76f59fca76fad"
+source = "git+https://github.com/sai-starknet/cairo-utils?tag=v0.1.3#3d2a82712cfebbfefde42524fedfee533461f5ea"
 
 [[package]]
 name = "sai_ownable"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?tag=v0.1.3#539554f12530b7c3112adfdc1ff76f59fca76fad"
+source = "git+https://github.com/sai-starknet/cairo-utils?tag=v0.1.3#3d2a82712cfebbfefde42524fedfee533461f5ea"
 
 [[package]]
 name = "sai_packing"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?tag=v0.1.3#539554f12530b7c3112adfdc1ff76f59fca76fad"
+source = "git+https://github.com/sai-starknet/cairo-utils?tag=v0.1.3#3d2a82712cfebbfefde42524fedfee533461f5ea"
 
 [[package]]
 name = "sai_return"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?tag=v0.1.3#539554f12530b7c3112adfdc1ff76f59fca76fad"
+source = "git+https://github.com/sai-starknet/cairo-utils?tag=v0.1.3#3d2a82712cfebbfefde42524fedfee533461f5ea"
 
 [[package]]
 name = "sai_token"
 version = "0.1.0"
-source = "git+https://github.com/sai-starknet/cairo-utils?tag=v0.1.3#539554f12530b7c3112adfdc1ff76f59fca76fad"
+source = "git+https://github.com/sai-starknet/cairo-utils?tag=v0.1.3#3d2a82712cfebbfefde42524fedfee533461f5ea"
 dependencies = [
  "openzeppelin_introspection",
  "openzeppelin_token",

@@ -3,24 +3,54 @@ import { CairoCustomEnum } from "starknet";
 import pkg from "case";
 const { pascal } = pkg;
 
+const LE100Affects = [
+  "Stun",
+  "Block",
+  "SetHealthPercentMax",
+  "FloorHealthPercentMax",
+  "CeilHealthPercentMax",
+];
+
 const B100ToN100Affects = [
   "Strength",
   "Vitality",
   "Dexterity",
   "Luck",
+  "StrengthTemp",
+  "VitalityTemp",
+  "DexterityTemp",
+  "LuckTemp",
+  "StunResistance",
   "BludgeonResistance",
   "MagicResistance",
   "PierceResistance",
-  "Health",
+  "StunResistanceTemp",
+  "BludgeonResistanceTemp",
+  "MagicResistanceTemp",
+  "PierceResistanceTemp",
+  "HealthPercentMax",
 ];
 
+const LE200Affects = ["Health", "SetHealth", "FloorHealth", "CeilHealth"];
+
+const B200toN200Affects = ["Health"];
 const I16Affects = [
   "BludgeonVulnerability",
   "MagicVulnerability",
   "PierceVulnerability",
+  "BludgeonVulnerabilityTemp",
+  "MagicVulnerabilityTemp",
+  "PierceVulnerabilityTemp",
 ];
 
-const LE100Affects = ["Stun", "Block"];
+const TargetAndDurationsKeys = [
+  "duration",
+  "target",
+  "instant",
+  "round",
+  "rounds",
+  "infinite",
+];
 
 const parseDamageType = (damageType) => {
   return makeCairoEnum(damageType, "None");
@@ -38,27 +68,32 @@ const parseAffectStruct = (affectInput) => {
   let [key, affect] = parseEnumObject(affectInput);
   key = pascal(key);
 
-  if (B100ToN100Affects.includes(key)) {
+  if (LE100Affects.includes(key)) {
+    affect = { [key]: parse1To100(affect, key) };
+  } else if (B100ToN100Affects.includes(key)) {
     affect = { [key]: parseN100To100Ne0(affect, key) };
+  } else if (LE200Affects.includes(key)) {
+    affect = { [key]: parse0To200(affect, key) };
+  } else if (B200toN200Affects.includes(key)) {
+    affect = { [key]: parseN200To200Ne0(affect, key) };
   } else if (I16Affects.includes(key)) {
     affect = { [key]: parseI16Ne0(affect, key) };
   } else if (key === "Damage") {
     affect = { Damage: parseDamage(affect) };
-  } else if (LE100Affects.includes(key)) {
-    affect = { [key]: parse1To100(affect, key) };
-  } else if (key === "Abilities") {
-    affect = { Abilities: parseAbilityMods(affect) };
-  } else if (key === "Resistances") {
-    affect = { Resistances: parseResistanceMods(affect) };
-  } else if (key === "Vulnerabilities") {
-    affect = { Vulnerabilities: parseVulnerabilityMods(affect) };
+  } else if (["Abilities", "AbilitiesTemp"].includes(key)) {
+    affect = { [key]: parseAbilityMods(affect) };
+  } else if (["Resistances", "ResistancesTemp"].includes(key)) {
+    affect = { [key]: parseResistanceMods(affect) };
+  } else if (["Vulnerabilities", "VulnerabilitiesTemp"].includes(key)) {
+    affect = { [key]: parseVulnerabilityMods(affect) };
   } else {
     throw new Error(`Unknown effect affect: ${key}`);
   }
   return new CairoCustomEnum({ [key]: affect[key] });
 };
-const makeEffect = (target, affect) => ({
+const makeEffect = (target, duration, affect) => ({
   target: parseTarget(target),
+  duration: parseDuration(duration),
   affect: parseAffectStruct(affect),
 });
 
@@ -82,20 +117,36 @@ const makeEffect = (target, affect) => ({
 //     });
 // };
 
-const parseEffects = (target, affects) => {
+const getDuration = (effect) => {
+  if ("duration" in effect) {
+    return effect.duration;
+  }
+  for (const key of Object.keys(effect)) {
+    if (
+      ["instant", "round", "rounds", "infinite"].includes(key.toLowerCase())
+    ) {
+      return effect[key];
+    }
+  }
+};
+
+const parseEffects = (target, duration, affects) => {
+  if (duration == null) {
+    duration = getDuration(affects);
+  }
   if (typeof affects === "object") {
     if ("affects" in affects) {
-      return parseEffects(target, affects.affects);
+      return parseEffects(target, duration, affects.affects);
     }
     if ("affect" in affects) {
-      return makeEffect(target, affects.affect);
+      return makeEffect(target, duration, affects.affect);
     }
     return Object.entries(affects)
-      .filter(([k, _]) => k.toLowerCase() !== "target")
-      .flatMap(([k, v]) => makeEffect(target, { [k]: v }));
+      .filter(([k, _]) => !TargetAndDurationsKeys.includes(k.toLowerCase()))
+      .flatMap(([k, v]) => makeEffect(target, duration, { [k]: v }));
   }
   if (Array.isArray(affects)) {
-    return affects.flatMap((affect) => makeEffect(target, affect));
+    return affects.flatMap((affect) => makeEffect(target, duration, affect));
   }
 };
 
@@ -108,11 +159,35 @@ const parseTarget = (target) => {
   throw new Error(`Unknown effect target: ${key}`);
 };
 
+const parseRound = (round) => {
+  return parseValueInRange(round, "round", 0n, 30n);
+};
+
+const parseDuration = (duration) => {
+  let [key, value] = parseEnumObject(duration, "Instant");
+  key = pascal(key);
+  if (key === "Instant") {
+    return new CairoCustomEnum({ Instant: {} });
+  }
+  if (key === "Round") {
+    return new CairoCustomEnum({ Round: parseRound(value) });
+  }
+  if (key === "Rounds") {
+    return new CairoCustomEnum({ Rounds: parseRound(value) });
+  }
+  if (key === "Permanent") {
+    return new CairoCustomEnum({ Permanent: {} });
+  }
+  throw Error(`Unknown effect duration: ${key}`);
+};
+
 const parseEffectsArray = (effects) => {
   if (Array.isArray(effects)) {
-    return effects.flatMap((effect) => parseEffects(effect.target, effect));
+    return effects.flatMap((effect) =>
+      parseEffects(effect.target, null, effect)
+    );
   }
-  return Object.entries(effects).flatMap(([k, v]) => parseEffects(k, v));
+  return Object.entries(effects).flatMap(([k, v]) => parseEffects(k, null, v));
 };
 
 export const parseAttributes = (attributes) => {
@@ -260,6 +335,10 @@ const parse0To100 = (value, name) => {
   return parseValueInRange(value, name, 0n, 100n);
 };
 
+const parse0To200 = (value, name) => {
+  return parseValueInRange(value, name, 0n, 200n);
+};
+
 const parse1To100 = (value, name) => {
   return parseValueInRange(value, name, 1n, 100n);
 };
@@ -274,6 +353,14 @@ const parseN100To100Ne0 = (value, name) => {
     throw new Error(`${name}: value ${value} cannot be zero`);
   }
   return parseValueInRange(value, name, -100n, 100n);
+};
+
+const parseN200To200Ne0 = (value, name) => {
+  value = BigInt(value || 0n);
+  if (value === 0n) {
+    throw new Error(`${name}: value ${value} cannot be zero`);
+  }
+  return parseValueInRange(value, name, -200n, 200n);
 };
 
 export const parseNewAttack = (attack) => {

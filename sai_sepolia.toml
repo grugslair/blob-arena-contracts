@@ -1,5 +1,5 @@
 [account]
-rpc_url = "https://starknet-sepolia.public.blastapi.io/rpc/v0_8"
+rpc_url = "https://api.cartridge.gg/x/starknet/sepolia/rpc/v0_9"
 account_address = "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d2194723B5bd"
 keystore_path = "/home/ben/sn-accounts/0x058e3b49d870f08c96a02f794c82b5f6c868c074deadd6ba04e8d2194723b5bd-keystore.json"
 
@@ -8,9 +8,14 @@ blobert = { contract_address = "0x032cb9f30629268612ffb6060e40dfc669849c7d72539d
 vrf = { contract_address = "0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f" }
 
 [defaults]
-salt = "0xde7"
+salt = "0xde9"
 
 [declare]
+attack_model = {}
+round_result_model = {}
+arcade_round_result_model = {}
+combat = {}
+
 arena_blobert = {}
 arena_blobert_minter = {}
 amma_blobert = {}
@@ -26,8 +31,13 @@ arena_credit_purchase = {}
 
 arcade_classic = {}
 arcade_amma = {}
-
 pvp = {}
+
+
+[deploy]
+attack_model.salt = "0x0"
+round_result_model.salt = "0x0"
+arcade_round_result_model.salt = "0x0"
 
 [variables]
 arena_contracts = []
@@ -52,4 +62,4 @@ loadout_classic = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f0
 loadout_amma = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
 
 arcade_classic = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
-arcade_amma = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+# arcade_amma = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"

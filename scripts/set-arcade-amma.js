@@ -1,6 +1,7 @@
 import { loadJson } from "./stark-utils.js";
 import { loadSai } from "./sai.js";
 import { parseIdTagAttackStructs, parsePartialAttributes } from "./loadout.js";
+import { makeSetCombatClassHashCall } from "./combat.js";
 
 export const makeOpponentStruct = (opponent) => {
   return {
@@ -41,6 +42,7 @@ export const makeArcadeAmmaCalls = async (sai) => {
   const arcadeAmmaData = loadJson("./post-deploy-config/arcade-amma.json");
   const contract = await sai.getContract("arcade_amma");
   return [
+    makeSetCombatClassHashCall(contract, sai.classes.combat.class_hash),
     makeOpponentsCall(contract, arcadeAmmaData.opponents),
     ...makeSetConfigCalls(contract, arcadeAmmaData),
   ];

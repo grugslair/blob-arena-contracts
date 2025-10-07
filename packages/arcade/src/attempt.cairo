@@ -16,7 +16,7 @@ pub type AttemptNodePath = StoragePath<Mutable<AttemptNode>>;
 
 
 #[derive(Drop, Copy, Introspect, PartialEq, Serde, starknet::Store, Default)]
-pub enum ArcadePhase {
+pub enum ArcadeProgress {
     #[default]
     None,
     Active,
@@ -24,13 +24,14 @@ pub enum ArcadePhase {
     PlayerLost,
 }
 
-impl CombatProgressIntoArcadePhase of Into<CombatProgress, ArcadePhase> {
-    fn into(self: CombatProgress) -> ArcadePhase {
+impl CombatProgressIntoArcadePhase of Into<CombatProgress, ArcadeProgress> {
+    fn into(self: CombatProgress) -> ArcadeProgress {
         match self {
-            CombatProgress::Active => ArcadePhase::Active,
+            CombatProgress::None => ArcadeProgress::None,
+            CombatProgress::Active => ArcadeProgress::Active,
             CombatProgress::Ended(player) => match player {
-                Player::Player1 => ArcadePhase::PlayerWon,
-                Player::Player2 => ArcadePhase::PlayerLost,
+                Player::Player1 => ArcadeProgress::PlayerWon,
+                Player::Player2 => ArcadeProgress::PlayerLost,
             },
         }
     }
@@ -44,7 +45,7 @@ pub struct Attempt {
     pub token_hash: felt252,
     pub health_regen: u32,
     pub expiry: u64,
-    pub phase: ArcadePhase,
+    pub phase: ArcadeProgress,
     pub stage: u32,
     pub respawns: u32,
 }
@@ -58,7 +59,7 @@ pub struct AttemptNode {
     pub attacks_available: Map<felt252, bool>,
     pub combats: Map<u32, CombatNode>,
     pub expiry: u64,
-    pub phase: ArcadePhase,
+    pub phase: ArcadeProgress,
     pub stage: u32,
     pub respawns: u32,
 }
@@ -70,7 +71,7 @@ pub struct CombatNode {
     pub attack_last_used: Map<felt252, u32>,
     pub opponent_attacks: Vec<(felt252, u32)>,
     pub round: u32,
-    pub phase: ArcadePhase,
+    pub phase: ArcadeProgress,
 }
 
 
@@ -90,7 +91,7 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
         get_block_timestamp() <= self.expiry.read()
     }
     fn assert_active(ref self: AttemptNodePath) {
-        assert(self.phase.read() == ArcadePhase::Active, 'Attempt is not active');
+        assert(self.phase.read() == ArcadeProgress::Active, 'Attempt is not active');
     }
     fn new_attempt(
         ref self: AttemptNodePath,
@@ -109,7 +110,7 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
         for attack in attacks {
             self.attacks_available.write(attack, true);
         }
-        self.phase.write(ArcadePhase::Active);
+        self.phase.write(ArcadeProgress::Active);
     }
 
     fn create_combat(
@@ -120,7 +121,7 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
     ) {
         self.player_state.write(player_state);
         self.opponent_state.write(opponent_state);
-        self.phase.write(ArcadePhase::Active);
+        self.phase.write(ArcadeProgress::Active);
         self.round.write(1);
         for attack in opponent_attacks {
             if attack.is_non_zero() {

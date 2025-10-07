@@ -1,8 +1,8 @@
 [workspace.package]
 version = "0.15.0"
 edition = "2024_07"
-cairo-version = "2.12.1"
-scarb-version = "2.12.1"
+cairo-version = "2.12.2"
+scarb-version = "2.12.2"
 
 
 [workspace]
@@ -11,7 +11,7 @@ members = ["packages/*"]
 
 [workspace.dependencies]
 alexandria_macros = { git = "https://github.com/keep-starknet-strange/alexandria/", tag = "v0.6.1" }
-starknet = "2.12.1"
+starknet = "2.12.2"
 openzeppelin_token = "2.0.0"
 openzeppelin_account = "2.0.0"
 openzeppelin_introspection = "2.0.0"
@@ -80,6 +80,9 @@ build-external-contracts = [
     "ba_loadout::attack::attack::attack_model",
     "ba_loadout::loadout_amma::loadout_amma",
     "ba_loadout::loadout_classic::loadout_classic",
+    "ba_combat::combat::round_result_model",
+    "ba_combat::contract::combat",
+    "ba_arcade::table::arcade_round_result_model",
     "ba_credit::credit::arena_credit",
     "ba_credit::purchase::arena_credit_purchase",
     "ba_arcade_classic::arcade_classic",

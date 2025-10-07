@@ -1,19 +1,81 @@
-use ba_loadout::attack::{Effect, IAttackDispatcher, IAttackDispatcherTrait, Target};
+use ba_loadout::attack::effect::Duration;
+use ba_loadout::attack::{Affect, Effect, IAttackDispatcher, IAttackDispatcherTrait, Target};
+use ba_utils::storage::{read_at_address, write_at_address};
 use ba_utils::{Randomness, RandomnessTrait};
 use core::num::traits::Zero;
-use sai_core_utils::BoolIntoBinary;
-use crate::result::{AffectResult, AttackOutcomes, EffectResult};
+use cubit::f64::ops::round;
+use sai_core_utils::poseidon_hash_three;
+use sai_packing::shifts::{SHIFT_4B, SHIFT_4B_FELT252};
+use sai_packing::{MaskDowncast, ShiftCast};
+use starknet::StorageAddress;
+use starknet::storage_access::StorePacking;
+use crate::result::{AffectResult, AttackResult, EffectResult, RoundEffectResult};
+use crate::round_effect::{RoundEffect, RoundEffects, RoundEffectsTrait};
 use crate::{CombatantState, CombatantStateTrait};
 
-
-#[derive(Copy, Drop, PartialEq, Introspect, Serde, Default)]
+#[derive(Copy, Drop, PartialEq, Introspect, Serde, Default, starknet::Store)]
 pub enum CombatProgress {
     #[default]
+    None,
     Active,
     Ended: Player,
 }
 
-impl BoolIntoPLayer of Into<bool, Player> {
+const PLAYER_1_ATTACK_STORAGE_ADDRESS: felt252 = selector!("player-1-attacks");
+const PLAYER_2_ATTACK_STORAGE_ADDRESS: felt252 = selector!("player-2-attacks");
+const ATTACK_AVAILABLE_BIT: felt252 = SHIFT_4B_FELT252;
+
+// const PLAYER_1_PACKING_BITS: u64 = SHIFT_4B_U64 * 1;
+// const PLAYER_2_PACKING_BITS: u64 = SHIFT_4B_U64 * 2;
+
+// #[derive(Drop, PartialEq, Introspect, Default)]
+// struct CombatState {
+//     pub round: u32,
+//     pub progress: CombatProgress,
+// }
+
+// impl CombatStateStoragePacking of StorePacking<CombatState, u64> {
+//     fn pack(value: CombatState) -> u64 {
+//         value.round.into()
+//             + match value.progress {
+//                 CombatProgress::Active => 0_u64,
+//                 CombatProgress::Ended(Player::Player1) => PLAYER_1_PACKING_BITS,
+//                 CombatProgress::Ended(Player::Player2) => PLAYER_2_PACKING_BITS,
+//             }
+//     }
+
+//     fn unpack(value: u64) -> CombatState {
+//         let round: u32 = MaskDowncast::cast(value);
+//         let progress = match ShiftCast::const_unpack::<SHIFT_4B>(value) {
+//             0_u8 => CombatProgress::Active,
+//             1_u8 => CombatProgress::Ended(Player::Player1),
+//             2_u8 => CombatProgress::Ended(Player::Player2),
+//             _ => panic!("Invalid value for CombatProgress"),
+//         };
+//         CombatState { round, progress }
+//     }
+// }
+
+#[derive(Destruct)]
+pub struct Combat {
+    pub id: felt252,
+    pub first: Option<Player>,
+    pub state_1: CombatantState,
+    pub state_2: CombatantState,
+    pub round_effects: RoundEffects,
+    pub round: u32,
+    pub progress: CombatProgress,
+    pub randomness: Randomness,
+    pub attack_1: felt252,
+    pub attack_2: felt252,
+    pub attach_check_1: AttackCheck,
+    pub attach_check_2: AttackCheck,
+    pub attack_dispatcher: IAttackDispatcher,
+    pub attack_results: Array<AttackResult>,
+    pub round_effect_results: Array<RoundEffectResult>,
+}
+
+impl BoolIntoPlayer of Into<bool, Player> {
     fn into(self: bool) -> Player {
         match self {
             false => Player::Player1,
@@ -22,148 +84,432 @@ impl BoolIntoPLayer of Into<bool, Player> {
     }
 }
 
-#[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
+#[allow(starknet::store_no_default_variant)]
+#[derive(Copy, Drop, Serde, PartialEq, Introspect, starknet::Store)]
 pub enum Player {
-    #[default]
     Player1,
     Player2,
 }
 
-fn run_effect(
-    ref attacker_state: CombatantState,
-    ref defender_state: CombatantState,
-    effect: Effect,
-    ref randomness: Randomness,
-) -> EffectResult {
-    let mut result = match effect.target {
-        Target::None => AffectResult::None,
-        Target::Attacker => attacker_state
-            .apply_affect(effect.affect, @attacker_state, ref randomness),
-        Target::Defender => defender_state
-            .apply_affect(effect.affect, @attacker_state, ref randomness),
+#[derive(Copy, Drop, Serde, PartialEq, Introspect, starknet::Store)]
+pub enum PlayerOrNone {
+    #[default]
+    None,
+    Player1,
+    Player2,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq)]
+pub enum AttackCheck {
+    None,
+    Cooldown: bool,
+    Available: bool,
+    All,
+}
+
+impl OptionPlayerStoragePacking of StorePacking<Option<Player>, u32> {
+    fn pack(value: Option<Player>) -> u32 {
+        match value {
+            None => 0_u32,
+            Some(Player::Player1) => 1_u32,
+            Some(Player::Player2) => 2_u32,
+        }
+    }
+
+    fn unpack(value: u32) -> Option<Player> {
+        match value {
+            0 => None,
+            1 => Some(Player::Player1),
+            2 => Some(Player::Player2),
+            _ => panic!("Invalid value for Option<Player>"),
+        }
+    }
+}
+
+
+impl OptionPlayerIntoPlayerOrNone of Into<Option<Player>, PlayerOrNone> {
+    fn into(self: Option<Player>) -> PlayerOrNone {
+        match self {
+            None => PlayerOrNone::None,
+            Some(player) => player.into(),
+        }
+    }
+}
+
+impl PlayerIntoPlayerOrNone of Into<Player, PlayerOrNone> {
+    fn into(self: Player) -> PlayerOrNone {
+        match self {
+            Player::Player1 => PlayerOrNone::Player1,
+            Player::Player2 => PlayerOrNone::Player2,
+        }
+    }
+}
+
+#[generate_trait]
+impl PlayerImpl of PlayerTrait {
+    fn target(self: Player, target: Target) -> Player {
+        match target {
+            Target::Attacker => self,
+            Target::Defender => !self,
+        }
+    }
+}
+
+impl NotPlayer of Not<Player> {
+    fn not(a: Player) -> Player {
+        match a {
+            Player::Player1 => Player::Player2,
+            Player::Player2 => Player::Player1,
+        }
+    }
+}
+
+pub fn set_attacks_available(combat_id: felt252, player: Player, attacks: Span<felt252>) {
+    let attack_storage = match player {
+        Player::Player1 => PLAYER_1_ATTACK_STORAGE_ADDRESS,
+        Player::Player2 => PLAYER_2_ATTACK_STORAGE_ADDRESS,
     };
-
-    EffectResult { target: effect.target, affect: result }
-}
-
-
-pub fn run_effects(
-    ref attacker_state: CombatantState,
-    ref defender_state: CombatantState,
-    effects: Array<Effect>,
-    ref randomness: Randomness,
-) -> Array<EffectResult> {
-    let mut results: Array<EffectResult> = ArrayTrait::new();
-    for effect in effects {
-        results.append(run_effect(ref attacker_state, ref defender_state, effect, ref randomness));
-    }
-    results
-}
-
-
-fn get_switch_order(
-    state_1: @CombatantState,
-    state_2: @CombatantState,
-    attacks: IAttackDispatcher,
-    attack_1: felt252,
-    attack_2: felt252,
-    ref randomness: Randomness,
-) -> bool {
-    let speed_1 = attacks.speed(attack_1) + (*state_1.dexterity).into();
-    let speed_2 = attacks.speed(attack_2) + (*state_2.dexterity).into();
-    if speed_1 == speed_2 {
-        randomness.get_bool()
-    } else {
-        speed_1 < speed_2
+    for attack_id in attacks {
+        let storage_address: StorageAddress = poseidon_hash_three(
+            combat_id, attack_storage, *attack_id,
+        )
+            .try_into()
+            .unwrap();
+        write_at_address(storage_address, ATTACK_AVAILABLE_BIT);
     }
 }
 
+#[generate_trait]
+pub impl CombatImpl of CombatTrait {
+    fn new(
+        id: felt252,
+        round: u32,
+        state_1: CombatantState,
+        state_2: CombatantState,
+        attack_1: felt252,
+        attack_2: felt252,
+        attach_check_1: AttackCheck,
+        attach_check_2: AttackCheck,
+        randomness: Randomness,
+        attack_dispatcher: IAttackDispatcher,
+    ) -> Combat {
+        Combat {
+            id,
+            state_1,
+            state_2,
+            first: None,
+            round_effects: RoundEffectsTrait::new(id, round),
+            round,
+            attack_1,
+            attack_2,
+            attach_check_1,
+            attach_check_2,
+            progress: CombatProgress::Active,
+            randomness,
+            attack_dispatcher,
+            attack_results: Default::default(),
+            round_effect_results: Default::default(),
+        }
+    }
 
-#[derive(Drop, Serde)]
-pub struct Round {
+
+    fn apply_affect(
+        ref self: Combat, source: Player, target: Player, affect: Affect,
+    ) -> EffectResult {
+        let attacker_state = self.get_attacker_state(source);
+        let affect = match target {
+            Player::Player1 => self
+                .state_1
+                .apply_affect(affect, attacker_state, ref self.randomness),
+            Player::Player2 => self
+                .state_2
+                .apply_affect(affect, attacker_state, ref self.randomness),
+        };
+        EffectResult { target, affect }
+    }
+
+    fn get_attacker_state(self: @Combat, player: Player) -> @CombatantState {
+        match player {
+            Player::Player1 => self.state_1,
+            Player::Player2 => self.state_2,
+        }
+    }
+
+    fn apply_round_effect(
+        ref self: Combat, source: Player, target: Player, affect: Affect, round: u32,
+    ) {
+        self.round_effects.add_effect(RoundEffect { source, target, affect }, round)
+    }
+
+    fn apply_infinite_effect(ref self: Combat, source: Player, target: Player, affect: Affect) {
+        self.round_effects.add_infinite_effect(RoundEffect { source, target, affect })
+    }
+
+    fn set_attacks(ref self: Combat, attack_1: felt252, attack_2: felt252) {
+        self.attack_1 = attack_1;
+        self.attack_2 = attack_2;
+    }
+
+    fn apply_effect(ref self: Combat, source: Player, effect: Effect) -> EffectResult {
+        let Effect { duration, target, affect } = effect;
+        let target = source.target(target);
+        match duration {
+            Duration::Instant => self.apply_affect(source, target, affect),
+            Duration::Round(round) => {
+                self.apply_round_effect(source, target, affect, round);
+                EffectResult { target, affect: AffectResult::Applied }
+            },
+            Duration::Rounds(count) => {
+                for round in 1..(count + 1) {
+                    self.apply_round_effect(source, target, affect, round);
+                }
+                EffectResult { target, affect: AffectResult::Applied }
+            },
+            Duration::Infinite => {
+                self.apply_infinite_effect(source, target, affect);
+                EffectResult { target, affect: AffectResult::Applied }
+            },
+        }
+    }
+
+    fn apply_effects(
+        ref self: Combat, source: Player, effects: Array<Effect>,
+    ) -> Array<EffectResult> {
+        let mut results: Array<EffectResult> = ArrayTrait::new();
+        for effect in effects {
+            results.append(self.apply_effect(source, effect));
+        }
+        results
+    }
+
+    fn attack_dispatcher(self: @Combat) -> @IAttackDispatcher {
+        self.attack_dispatcher
+    }
+
+    fn get_attack_id_and_storage(self: @Combat, player: Player) -> (felt252, StorageAddress) {
+        let (attack_id, attack_storage) = match player {
+            Player::Player1 => (*self.attack_1, PLAYER_1_ATTACK_STORAGE_ADDRESS),
+            Player::Player2 => (*self.attack_2, PLAYER_2_ATTACK_STORAGE_ADDRESS),
+        };
+        let storage_address: StorageAddress = poseidon_hash_three(
+            *self.id, attack_storage, attack_id,
+        )
+            .try_into()
+            .unwrap();
+        (attack_id, storage_address)
+    }
+    fn check_attack_available(self: @Combat, player: Player) -> felt252 {
+        let (attack_id, storage_address) = self.get_attack_id_and_storage(player);
+        ShiftCast::<u64>::const_unpack::<SHIFT_4B>(read_at_address(storage_address)).into()
+            * attack_id
+    }
+    fn run_attack_cooldown(ref self: Combat, player: Player, available: bool) -> felt252 {
+        let (attack_id, storage_address) = self.get_attack_id_and_storage(player);
+        let round_available = read_at_address(storage_address);
+        let last_used: u32 = MaskDowncast::cast(round_available);
+        if available || ShiftCast::<u8>::const_unpack::<SHIFT_4B>(round_available).is_non_zero() {
+            let round = self.round;
+            let cooldown = self.attack_dispatcher().cooldown(attack_id);
+            if cooldown.is_zero() {
+                return attack_id;
+            } else if last_used.is_zero() || ((cooldown.into() + last_used) < round) {
+                write_at_address(storage_address, round.into() + ATTACK_AVAILABLE_BIT);
+                return attack_id;
+            }
+        }
+        return 0;
+    }
+    fn attack_id(self: @Combat, player: Player) -> felt252 {
+        match player {
+            Player::Player1 => *self.attack_1,
+            Player::Player2 => *self.attack_2,
+        }
+    }
+    fn attack_check(self: @Combat, player: Player) -> AttackCheck {
+        match player {
+            Player::Player1 => *self.attach_check_1,
+            Player::Player2 => *self.attach_check_2,
+        }
+    }
+    fn run_attack_check(ref self: Combat, player: Player) -> felt252 {
+        let attack_check = self.attack_check(player);
+        match attack_check {
+            AttackCheck::None => self.attack_id(player),
+            AttackCheck::Cooldown(available) => match available {
+                true => self.run_attack_cooldown(player, true),
+                false => 0x0,
+            },
+            AttackCheck::Available(cooldown) => match cooldown {
+                true => self.check_attack_available(player),
+                false => 0x0,
+            },
+            AttackCheck::All => { self.run_attack_cooldown(player, false) },
+        }
+    }
+
+    fn run_stun(ref self: Combat, player: Player) -> bool {
+        match player {
+            Player::Player1 => self.state_1.run_stun(ref self.randomness),
+            Player::Player2 => self.state_2.run_stun(ref self.randomness),
+        }
+    }
+
+    fn get_attack(self: @Combat, player: Player) -> felt252 {
+        match player {
+            Player::Player1 => *self.attack_1,
+            Player::Player2 => *self.attack_2,
+        }
+    }
+
+    fn run_attack(ref self: Combat, source: Player) {
+        let attack_id = self.run_attack_check(source);
+        let result = if attack_id.is_zero() {
+            AttackResult::Failed
+        } else if self.run_stun(source) {
+            AttackResult::Stunned
+        } else if self.randomness.get(100) < self.attack_dispatcher.chance(attack_id) {
+            AttackResult::Success(
+                self.apply_effects(source, self.attack_dispatcher.success(attack_id)),
+            )
+        } else {
+            AttackResult::Fail(self.apply_effects(source, self.attack_dispatcher.fail(attack_id)))
+        };
+        self.attack_results.append(result);
+        self.check_progress(!source);
+    }
+
+    fn check_progress(ref self: Combat, advantage: Player) {
+        self
+            .progress =
+                if self.state_1.health.is_non_zero() && self.state_2.health.is_non_zero() {
+                    CombatProgress::Active
+                } else if self.state_1.health.is_non_zero() {
+                    CombatProgress::Ended(Player::Player1)
+                } else if self.state_2.health.is_non_zero() {
+                    CombatProgress::Ended(Player::Player2)
+                } else {
+                    CombatProgress::Ended(advantage) // Both dead, Player 1 wins by default
+                };
+    }
+
+    fn get_first_player(ref self: Combat) -> Option<Player> {
+        let speed_1 = self.attack_dispatcher.speed(self.attack_1) + (self.state_1.dexterity).into();
+        let speed_2 = self.attack_dispatcher.speed(self.attack_2) + (self.state_2.dexterity).into();
+        self
+            .first =
+                Some(
+                    if speed_1 == speed_2 {
+                        self.randomness.get_bool()
+                    } else {
+                        speed_1 < speed_2
+                    }
+                        .into(),
+                );
+        self.first
+    }
+
+    fn run_round_effects(ref self: Combat) -> CombatProgress {
+        let mut phase: CombatProgress = Default::default();
+        for effect in (@self.round_effects).into_iter() {
+            self.apply_affect(effect.source, effect.target, effect.affect);
+            self.check_progress(!effect.source);
+            if self.progress != CombatProgress::Active {
+                return phase;
+            }
+        }
+        phase
+    }
+
+    fn states(self: @Combat) -> [CombatantState; 2] {
+        [*self.state_1, *self.state_2]
+    }
+
+
+    fn to_round(self: Combat) -> RoundResult {
+        RoundResult {
+            combat: self.id,
+            round: self.round,
+            attacks: [self.attack_1, self.attack_2],
+            first: self.first.into(),
+            states: [self.state_1, self.state_2],
+            round_effect_results: self.round_effect_results,
+            attack_results: self.attack_results,
+            progress: self.progress,
+        }
+    }
+
+    fn to_round_and_randomness(self: Combat) -> (RoundResult, Randomness) {
+        (
+            RoundResult {
+                combat: self.id,
+                round: self.round,
+                attacks: [self.attack_1, self.attack_2],
+                first: self.first.into(),
+                states: [self.state_1, self.state_2],
+                round_effect_results: self.round_effect_results,
+                attack_results: self.attack_results,
+                progress: self.progress,
+            },
+            self.randomness,
+        )
+    }
+
+    fn run_round(ref self: Combat) {
+        self.run_round_effects();
+
+        if self.progress == CombatProgress::Active {
+            let first = self.get_first_player().unwrap();
+            self.run_attack(first);
+            if self.progress == CombatProgress::Active {
+                self.run_attack(!first);
+            }
+        }
+    }
+}
+
+
+#[derive(Drop, Serde, Introspect)]
+pub struct RoundResult {
+    pub combat: felt252,
     pub round: u32,
     pub states: [CombatantState; 2],
     pub attacks: [felt252; 2],
-    pub first: Player,
-    pub outcomes: Array<AttackOutcomes>,
+    pub first: PlayerOrNone,
+    pub round_effect_results: Array<RoundEffectResult>,
+    pub attack_results: Array<AttackResult>,
     pub progress: CombatProgress,
 }
 
-pub fn run_round(
-    p1_state: CombatantState,
-    p2_state: CombatantState,
-    attacks: IAttackDispatcher,
-    p1_attack: felt252,
-    p2_attack: felt252,
-    round: u32,
-    ref randomness: Randomness,
-) -> Round {
-    let switch_order = get_switch_order(
-        @p1_state, @p2_state, attacks, p1_attack, p2_attack, ref randomness,
-    );
-    let (mut state_1, mut state_2, attack_1, attack_2) = match switch_order {
-        false => (p1_state, p2_state, p1_attack, p2_attack),
-        true => (p2_state, p1_state, p2_attack, p1_attack),
-    };
-
-    let mut progress = CombatProgress::Active;
-    let outcome = run_attack(ref state_1, ref state_2, attacks, attack_1, round, ref randomness);
-    let mut outcomes = array![outcome];
-    progress = check_combat_phase(@state_1, @state_2, switch_order, true);
-    if progress == CombatProgress::Active {
-        let outcome = run_attack(
-            ref state_2, ref state_1, attacks, attack_2, round, ref randomness,
-        );
-        outcomes.append(outcome);
-        progress = check_combat_phase(@state_1, @state_2, switch_order, false);
-    }
-    let (states, attacks) = match switch_order {
-        false => ([state_1, state_2], [p1_attack, p2_attack]),
-        true => ([state_2, state_1], [p2_attack, p1_attack]),
-    };
-    Round { round, attacks, first: switch_order.into(), states, outcomes, progress }
+#[derive(Drop, Serde, Schema)]
+pub struct RoundZeroResult {
+    pub combat: felt252,
+    pub states: [CombatantState; 2],
+    pub progress: CombatProgress,
 }
 
 
-fn run_attack(
-    ref attacker_state: CombatantState,
-    ref defender_state: CombatantState,
-    attacks: IAttackDispatcher,
-    attack_id: felt252,
-    round: u32,
-    ref randomness: Randomness,
-) -> AttackOutcomes {
-    if attack_id.is_zero() {
-        AttackOutcomes::Failed
-    } else if attacker_state.run_stun(ref randomness) {
-        AttackOutcomes::Stunned
-    } else if randomness.get(100) < attacks.chance(attack_id) {
-        let result = run_effects(
-            ref attacker_state, ref defender_state, attacks.success(attack_id), ref randomness,
-        );
-        AttackOutcomes::Success(result)
-    } else {
-        let result = run_effects(
-            ref attacker_state, ref defender_state, attacks.fail(attack_id), ref randomness,
-        );
-        AttackOutcomes::Fail(result)
-    }
+#[starknet::contract]
+pub mod round_result_model {
+    use super::RoundResult;
+    #[storage]
+    struct Storage {}
+    #[abi(embed_v0)]
+    impl RoundResultModelImpl =
+        beacon_entity::interface::ISaiModelImpl<ContractState, RoundResult>;
 }
 
-fn check_combat_phase(
-    state_1: @CombatantState, state_2: @CombatantState, switched: bool, advantage: bool,
-) -> CombatProgress {
-    let (player_1, player_2) = match switched {
-        false => (state_1, state_2),
-        true => (state_2, state_1),
-    };
-    if player_1.health.is_non_zero() && player_2.health.is_non_zero() {
-        CombatProgress::Active
-    } else if player_1.health.is_non_zero() {
-        CombatProgress::Ended(Player::Player1)
-    } else if player_2.health.is_non_zero() {
-        CombatProgress::Ended(Player::Player2)
-    } else {
-        CombatProgress::Ended((switched == advantage).into())
+
+#[cfg(test)]
+mod tests {
+    use beacon_entity::get_schema_size;
+    use super::*;
+
+    #[derive(Drop, Serde, Introspect)]
+    struct AnAffect {
+        affect: Affect,
+    }
+    #[test]
+    fn table_size_test() {
+        println!("RoundResult size: {}", get_schema_size::<RoundResult>());
     }
 }

@@ -4,7 +4,7 @@ use starknet::storage_access::{
     storage_address_from_base_and_offset, storage_base_address_from_felt252,
 };
 use starknet::syscalls::{storage_read_syscall, storage_write_syscall};
-use starknet::{StorageAddress, SyscallResult};
+use starknet::{StorageAddress, SyscallResult, SyscallResultTrait};
 // pub fn read_short_array_from_address<T, impl TStore: Store<T>, +Drop<T>>(
 //     address: StorageAddress,
 // ) -> SyscallResult<Array<T>> {
@@ -117,3 +117,37 @@ pub impl ShortArrayStore<
 }
 
 pub impl FeltArrayReadWrite = short_array::ShortArrayReadWrite<felt252>;
+
+
+pub fn read_at_felt252(address: felt252) -> felt252 {
+    storage_read_syscall(0, address.try_into().unwrap()).unwrap_syscall()
+}
+
+pub fn write_at_felt252(address: felt252, value: felt252) {
+    storage_write_syscall(0, address.try_into().unwrap(), value).unwrap_syscall();
+}
+
+pub fn read_at_address(address: StorageAddress) -> felt252 {
+    storage_read_syscall(0, address).unwrap_syscall()
+}
+
+pub fn write_at_address(address: StorageAddress, value: felt252) {
+    storage_write_syscall(0, address, value).unwrap_syscall();
+}
+
+pub fn read_at_base_address(base: StorageBaseAddress) -> felt252 {
+    storage_read_syscall(0, storage_address_from_base(base)).unwrap_syscall()
+}
+
+pub fn write_at_base_address(base: StorageBaseAddress, value: felt252) {
+    storage_write_syscall(0, storage_address_from_base(base), value).unwrap_syscall();
+}
+
+pub fn read_at_base_offset(base: StorageBaseAddress, offset: u8) -> felt252 {
+    storage_read_syscall(0, storage_address_from_base_and_offset(base, offset)).unwrap_syscall()
+}
+
+pub fn write_at_base_offset(base: StorageBaseAddress, offset: u8, value: felt252) {
+    storage_write_syscall(0, storage_address_from_base_and_offset(base, offset), value)
+        .unwrap_syscall();
+}

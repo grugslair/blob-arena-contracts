@@ -31,25 +31,26 @@ trait IArcadeClassic<TState> {
 
 #[starknet::contract]
 mod arcade_classic {
-    use ba_arcade::attempt::{ArcadePhase, AttemptNodePath, AttemptNodeTrait};
+    use ba_arcade::attempt::{ArcadeProgress, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::{IArcade, arcade_component};
+    use ba_combat::systems::get_attack_dispatcher_address;
     use ba_loadout::attack::interface::maybe_create_attacks_array;
     use beacon_library::{ToriiTable, register_table_with_schema};
     use sai_ownable::{OwnableTrait, ownable_component};
     use sai_return::emit_return;
-    use starknet::ContractAddress;
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
         StoragePointerWriteAccess,
     };
+    use starknet::{ClassHash, ContractAddress};
     use crate::Opponent;
     use super::{IArcadeClassic, IdTagAttack, OpponentInput};
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
     component!(path: arcade_component, storage: arcade, event: ArcadeEvents);
 
-    const ATTEMPT_HASH: felt252 = bytearrays_hash!("arcade_classic", "ArcadeAttempt");
-    const ROUND_HASH: felt252 = bytearrays_hash!("arcade_classic", "ArcadeRound");
+    const ATTEMPT_HASH: felt252 = bytearrays_hash!("arcade_classic", "Attempt");
+    const ROUND_HASH: felt252 = bytearrays_hash!("arcade_classic", "Round");
     const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("arcade_classic", "AttackLastUsed");
     const OPPONENT_HASH: felt252 = bytearrays_hash!("arcade_classic", "Opponent");
 
@@ -82,6 +83,7 @@ mod arcade_classic {
     fn constructor(
         ref self: ContractState,
         owner: ContractAddress,
+        arcade_round_result_class_hash: ClassHash,
         attack_address: ContractAddress,
         loadout_address: ContractAddress,
         credit_address: ContractAddress,
@@ -91,6 +93,7 @@ mod arcade_classic {
         ArcadeInternal::init(
             ref self.arcade,
             "arcade_classic",
+            arcade_round_result_class_hash,
             attack_address,
             loadout_address,
             credit_address,
@@ -122,10 +125,12 @@ mod arcade_classic {
             let (mut attempt_ptr, result, _) = ArcadeInternal::attack_attempt(
                 ref self.arcade, attempt_id, attack_id,
             );
-            if result.phase == ArcadePhase::PlayerWon {
+            if result.phase == ArcadeProgress::PlayerWon {
                 let next_stage = result.stage + 1;
                 if next_stage == self.stages_len.read() {
-                    ArcadeInternal::set_phase(ref attempt_ptr, attempt_id, ArcadePhase::PlayerWon);
+                    ArcadeInternal::set_phase(
+                        ref attempt_ptr, attempt_id, ArcadeProgress::PlayerWon,
+                    );
                 } else if attempt_ptr.is_not_expired() {
                     attempt_ptr.stage.write(next_stage);
                     let health = result.health;
@@ -168,7 +173,7 @@ mod arcade_classic {
                 all_attacks.append(opponent.attacks.clone());
             }
             let all_attack_ids = maybe_create_attacks_array(
-                self.arcade.attack_address.read(), all_attacks,
+                get_attack_dispatcher_address(), all_attacks,
             );
             for (i, (opponent, attacks)) in opponents.into_iter().zip(all_attack_ids).enumerate() {
                 OpponentTable::set_entity(

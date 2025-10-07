@@ -1,4 +1,4 @@
-use starknet::ContractAddress;
+use starknet::{ClassHash, ContractAddress};
 
 #[starknet::interface]
 pub trait IArcade<TState> {
@@ -21,6 +21,7 @@ pub trait IArcadeSetup<TState> {
     fn health_regen_percent(self: @TState) -> u8;
     fn credit_address(self: @TState) -> ContractAddress;
     fn vrf_address(self: @TState) -> ContractAddress;
+    fn combat_class_hash(self: @TState) -> ClassHash;
 
     fn set_max_respawns(ref self: TState, max_respawns: u32);
     fn set_time_limit(ref self: TState, time_limit: u64);
@@ -28,4 +29,5 @@ pub trait IArcadeSetup<TState> {
     fn set_credit_address(ref self: TState, contract_address: ContractAddress);
     fn set_cost(ref self: TState, energy: u64, credit: u128);
     fn set_vrf_address(ref self: TState, contract_address: ContractAddress);
+    fn set_combat_class_hash(ref self: TState, class_hash: ClassHash);
 }

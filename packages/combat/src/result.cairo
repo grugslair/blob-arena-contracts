@@ -1,5 +1,6 @@
-use ba_loadout::attack::Target;
+use ba_loadout::attributes::{ResistanceMods, Resistances, Vulnerabilities, VulnerabilityMods};
 use sai_core_utils::BoolIntoBinary;
+use crate::Player;
 
 
 /// Represents the possible outcomes of an attack action in the game
@@ -9,7 +10,7 @@ use sai_core_utils::BoolIntoBinary;
 /// * `Miss` - The attack missed, contains array of effect results
 /// * `Hit` - The attack successfully hit, contains array of effect results
 #[derive(Drop, Serde, Introspect, Default)]
-pub enum AttackOutcomes {
+pub enum AttackResult {
     #[default]
     Failed,
     Stunned,
@@ -24,7 +25,7 @@ pub enum AttackOutcomes {
 /// * `affect` - The result of applying the effect to the target
 #[derive(Drop, Serde, PartialEq, Introspect)]
 pub struct EffectResult {
-    pub target: Target,
+    pub target: Player,
     pub affect: AffectResult,
 }
 
@@ -33,20 +34,94 @@ pub struct EffectResult {
 /// # Variants
 /// * `Applied` - The effect was successfully applied
 /// * `Damage` - A complex damage result containing damage type and amount
-#[derive(Drop, Serde, PartialEq, Default, Introspect)]
+#[derive(Drop, Serde, PartialEq, Introspect)]
 pub enum AffectResult {
-    #[default]
     None,
     Applied,
+    Stun: u8,
+    Block: u8,
+    Health: u8,
+    Strength: u8,
+    Vitality: VitalityResult,
+    Dexterity: u8,
+    Luck: u8,
+    StunResistance: u8,
+    BludgeonResistance: u8,
+    MagicResistance: u8,
+    PierceResistance: u8,
+    BludgeonVulnerability: u16,
+    MagicVulnerability: u16,
+    PierceVulnerability: u16,
+    Abilities: AbilitiesResult,
+    Resistances: Resistances,
+    Vulnerabilities: Vulnerabilities,
+    StrengthTemp: i8,
+    VitalityTemp: VitalityTempResult,
+    DexterityTemp: i8,
+    LuckTemp: i8,
+    StunResistanceTemp: i8,
+    BludgeonResistanceTemp: i8,
+    MagicResistanceTemp: i8,
+    PierceResistanceTemp: i8,
+    BludgeonVulnerabilityTemp: i16,
+    MagicVulnerabilityTemp: i16,
+    PierceVulnerabilityTemp: i16,
+    AbilitiesTemp: AbilitiesTempResult,
+    ResistancesTemp: ResistanceMods,
+    VulnerabilitiesTemp: VulnerabilityMods,
     Damage: DamageResult,
+    SetHealth: u8,
+    FloorHealth: u8,
+    CeilHealth: u8,
+    HealthPercentMax: u8,
+    SetHealthPercentMax: u8,
+    FloorHealthPercentMax: u8,
+    CeilHealthPercentMax: u8,
 }
 
 /// Represents the result of a damage calculation
-/// * `damage` - The amount of damage dealt
+/// * `hp` - The amount of damage dealt
 /// * `critical` - Whether the damage was a critical hit
 #[derive(Drop, Serde, PartialEq, Introspect)]
 pub struct DamageResult {
     pub hp: u8,
     pub critical: bool,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect, Default)]
+pub struct VitalityResult {
+    pub vitality: u8,
+    pub health: u8,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect, Default)]
+pub struct VitalityTempResult {
+    pub vitality: i8,
+    pub health: u8,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect, Default)]
+pub struct AbilitiesResult {
+    pub strength: u8,
+    pub vitality: u8,
+    pub dexterity: u8,
+    pub luck: u8,
+    pub health: u8,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect, Default)]
+pub struct AbilitiesTempResult {
+    pub strength: i8,
+    pub vitality: i8,
+    pub dexterity: i8,
+    pub luck: i8,
+    pub health: u8,
+}
+
+#[derive(Drop, Serde, PartialEq, Introspect)]
+pub struct RoundEffectResult {
+    pub source: Player,
+    pub target: Player,
+    pub affect: AffectResult,
 }
 
