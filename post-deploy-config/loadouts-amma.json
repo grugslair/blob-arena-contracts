@@ -29,9 +29,9 @@
         "fail": []
       },
       {
-        "name": "Shield Punch",
-        "speed": 5070,
-        "chance": 80,
+        "name": "Lifesteal",
+        "speed": 5000,
+        "chance": 100,
         "cooldown": 1,
         "success": [
           {
@@ -40,42 +40,219 @@
               "power": 40,
               "damage_type": "bludgeon"
             },
-            "Stun": 40
+            "stun": 40
+          },
+          {
+            "target": "Attacker",
+            "health": 30
           }
         ],
         "fail": []
       },
       {
-        "name": "Grapple",
-        "speed": 5065,
-        "chance": 90,
-        "cooldown": 3,
+        "name": "DoT Hit",
+        "speed": 5000,
+        "chance": 100,
+        "cooldown": 1,
         "success": [
           {
             "target": "Defender",
-            "Damage": {
+            "damage": {
+              "power": 40,
+              "damage_type": "bludgeon"
+            }
+          },
+          {
+            "target": "Defender",
+            "damage": {
               "power": 40,
               "damage_type": "bludgeon"
             },
-            "Stun": 30,
-            "Strength": -20
+            "rounds": 3
           }
         ],
         "fail": []
       },
       {
-        "name": "Osoto Gari",
-        "speed": 5045,
-        "chance": 80,
-        "cooldown": 5,
+        "name": "DoT Hit",
+        "speed": 5000,
+        "chance": 100,
+        "cooldown": 1,
         "success": [
           {
             "target": "Defender",
-            "Damage": {
-              "power": 80,
+            "damage": {
+              "power": 40,
+              "damage_type": "bludgeon"
+            }
+          },
+          {
+            "target": "Defender",
+            "damage": {
+              "power": 40,
               "damage_type": "bludgeon"
             },
-            "Stun": 40
+            "rounds": 3
+          }
+        ],
+        "fail": []
+      },
+      {
+        "name": "Regen",
+        "speed": 5000,
+        "chance": 100,
+        "cooldown": 1,
+        "success": [
+          {
+            "target": "Attacker",
+            "health": 50
+          },
+          {
+            "target": "Attacker",
+            "health": 30,
+            "rounds": 2
+          }
+        ],
+        "fail": []
+      },
+      {
+        "name": "Regen Max HP",
+        "speed": 5000,
+        "chance": 100,
+        "cooldown": 1,
+        "success": [
+          {
+            "target": "Attacker",
+            "percentage_of_max_health": 30
+          },
+          {
+            "target": "Attacker",
+            "percentage_of_max_health": 10,
+            "rounds": 2
+          }
+        ],
+        "fail": []
+      },
+      {
+        "name": "DoT Percent Health",
+        "speed": 5000,
+        "chance": 100,
+        "cooldown": 1,
+        "success": [
+          {
+            "target": "Defender",
+            "health_percent": -30,
+            "rounds": 2
+          }
+        ],
+        "fail": []
+      },
+      {
+        "name": "Beast Mode",
+        "speed": 5000,
+        "chance": 100,
+        "cooldown": 1,
+        "success": [
+          {
+            "target": "Attacker",
+            "Strength": 50 
+          },
+          {
+            "target": "Defender",
+            "damage": {
+              "power": 100,
+              "damage_type": "bludgeon"
+            }
+          },
+          {
+            "target": "Attacker",
+            "ceil_health_percent": 10
+          }
+        ],
+        "fail": []
+      },
+      {
+        "name": "Charged Attack",
+        "speed": 5000,
+        "chance": 100,
+        "cooldown": 1,
+        "success": [
+          {
+            "target": "Attacker",
+            "Strength": 80,
+            "round": 1
+          }
+        ],
+        "fail": []
+      },
+      {
+        "name": "Max HP Damage",
+        "speed": 5000,
+        "chance": 100,
+        "cooldown": 1,
+        "success": [
+          {
+            "target": "Defender",
+            "health_percent": -50
+          }
+        ],
+        "fail": []
+      },
+      {
+        "name": "2 Turn Buff",
+        "speed": 5000,
+        "chance": 100,
+        "cooldown": 1,
+        "success": [
+          {
+              "target": "Attacker",
+              "affect": {
+                "Abilities": {
+                  "strength": 30,
+                  "dexterity": 30,
+                  "bludgeon_resistance": 10,
+                  "pierce_vulnerability": 10
+                }
+              },
+              "rounds": 2
+          }
+        ],
+        "fail": []
+      },
+      {
+        "name": "2 Turn Debuff",
+        "speed": 5000,
+        "chance": 100,
+        "cooldown": 1,
+        "success": [
+          {
+              "target": "Defender",
+              "affect": {
+                "Abilities": {
+                  "strength": -30,
+                  "dexterity": -30,
+                  "bludgeon_vulnerability": 10,
+                  "pierce_vulnerability": 10
+                }
+              },
+              "rounds": 2
+          }
+        ],
+        "fail": []
+      },
+      {
+        "name": "Both Max Health",
+        "speed": 5000,
+        "chance": 100,
+        "cooldown": 1,
+        "success": [
+          {
+              "target": "Attacker",
+              "set_health_percent": 100
+          },
+          {
+              "target": "Defender",
+              "set_health_percent": 100
           }
         ],
         "fail": []
