@@ -2,6 +2,13 @@ use starknet::ContractAddress;
 
 #[starknet::interface]
 pub trait IAmmaBlobertSoulboundAdmin<TContractState> {
+    /// Mints a new Amma Blobert Soulbound NFT to the specified owner with the given fighter ID
+    /// (only for contracts with write access)
+    /// # Arguments
+    /// * `owner` - The address of the new owner of the minted Blobert Soulbound
+    /// * `fighter` - The ID of the fighter to associate with the new Blobert Soulbound
+    /// # Returns
+    /// * `u256` - The token ID of the newly minted Blobert Soulbound NFT
     fn mint(ref self: TContractState, owner: ContractAddress, fighter: u32) -> u256;
 }
 

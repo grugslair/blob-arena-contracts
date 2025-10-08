@@ -1,8 +1,30 @@
 use starknet::ContractAddress;
 
+/// Interface for the Amma Blobert NFT minting contract
+///
+/// Provides functionality for users to claim their free Amma Blobert NFTs.
+/// Each user can only claim once, receiving two NFTs (indexes 1 and 2).
 #[starknet::interface]
 trait IAmmaBlobertMinter<TState> {
+    /// Checks if a user has already claimed their free Amma Blobert NFTs
+    ///
+    /// # Arguments
+    /// * `user` - The wallet address to check claim status for
+    ///
+    /// # Returns
+    /// * `bool` - True if the user has already claimed, false otherwise
     fn claimed(self: @TState, user: ContractAddress) -> bool;
+
+    /// Claims free Amma Blobert NFTs for the caller
+    ///
+    /// Mints two Amma Blobert NFTs (with indexes 1 and 2) to the caller's address.
+    /// Can only be called once per address.
+    ///
+    /// # Returns
+    /// * `Array<u256>` - Array containing the token IDs of the newly minted NFTs
+    ///
+    /// # Panics
+    /// * If the caller has already claimed their NFTs
     fn claim(ref self: TState) -> Array<u256>;
 }
 

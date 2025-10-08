@@ -17,6 +17,13 @@ const PLAYER_2_DEFENDER_PACKING_BITS: felt252 = SHIFT_18B_FELT252 * 2;
 const SHIFT_2B_NZ_U256: NonZero<u256> = 0x100;
 const SHIFT_1B_NZ_U16: NonZero<u16> = 0x100;
 
+/// A struct representing an effect that occurs during a combat round.
+///
+/// # Fields
+/// * `source` - The player who is the source of the effect
+/// * `target` - The player who is the target of the effect
+/// * `affect` - The specific effect being applied
+
 #[derive(Drop)]
 pub struct RoundEffect {
     pub source: Player,

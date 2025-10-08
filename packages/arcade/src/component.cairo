@@ -26,7 +26,7 @@ pub struct ArcadeAttackResult {
 pub mod arcade_component {
     use ba_arcade::IArcadeSetup;
     use ba_arcade::attempt::{ArcadeProgress, AttemptNode, AttemptNodePath, AttemptNodeTrait};
-    use ba_arcade::table::{ArcadeAttempt, AttackLastUsed};
+    use ba_arcade::table::{ArcadeAttemptTable, AttackLastUsed};
     use ba_combat::combat::AttackCheck;
     use ba_combat::combatant::get_max_health_percent;
     use ba_combat::systems::{get_attack_dispatcher, set_attack_dispatcher_address};
@@ -36,7 +36,7 @@ pub mod arcade_component {
     use ba_utils::vrf::consume_randomness;
     use ba_utils::{Randomness, erc721_token_hash, uuid};
     use beacon_library::{
-        ToriiTable, register_table, register_table_with_schema, set_entity, set_member, set_schema,
+        ToriiTable, register_table, register_table_with_schema, set_entity, set_member,
     };
     use core::cmp::min;
     use core::num::traits::{SaturatingAdd, Zero};
@@ -49,7 +49,7 @@ pub mod arcade_component {
         StoragePointerReadAccess, StoragePointerWriteAccess,
     };
     use starknet::{ClassHash, ContractAddress, get_block_timestamp, get_caller_address};
-    use crate::table::{ArcadeRoundResult, ArcadeZeroRoundResult, AttemptRoundTrait};
+    use crate::table::{ArcadeRoundTable, AttemptRoundTrait, CombatTable};
     use super::{ArcadeAttackResult, Opponent, errors};
 
 
@@ -189,6 +189,7 @@ pub mod arcade_component {
                 ref attempt_ptr: AttemptNodePath,
                 attempt_id: felt252,
                 combat_n: u32,
+                stage: u32,
                 opponent: Opponent,
                 health: Option<u8>,
             );
@@ -204,6 +205,7 @@ pub mod arcade_component {
     pub impl ArcadeInternal<
         TContractState,
         const ATTEMPT_HASH: felt252,
+        const COMBAT_HASH: felt252,
         const ROUND_HASH: felt252,
         const LAST_USED_ATTACK_HASH: felt252,
     > of internal_trait::ArcadeInternalTrait<ComponentState<TContractState>> {
@@ -220,7 +222,8 @@ pub mod arcade_component {
             self.loadout_address.write(loadout_address);
             self.credit_address.write(credit_address);
             self.vrf_address.write(vrf_address);
-            register_table_with_schema::<ArcadeAttempt>(namespace.clone(), "Attempt");
+            register_table_with_schema::<ArcadeAttemptTable>(namespace.clone(), "Attempt");
+            register_table_with_schema::<CombatTable>(namespace.clone(), "Combat");
             register_table(namespace.clone(), "Round", arcade_round_result_class_hash);
             register_table_with_schema::<AttackLastUsed>(namespace, "AttackLastUsed");
         }
@@ -249,7 +252,7 @@ pub mod arcade_component {
             let health_regen = get_max_health_percent(
                 attributes.vitality, self.health_regen_percent.read(),
             );
-            let attempt = ArcadeAttempt {
+            let attempt = ArcadeAttemptTable {
                 player,
                 collection_address,
                 token_id,
@@ -305,7 +308,7 @@ pub mod arcade_component {
                 randomness,
             );
 
-            let mut result: ArcadeRoundResult = result.to_arcade_round(attempt_id, combat_n);
+            let mut result: ArcadeRoundTable = result.to_arcade_round(attempt_id, combat_n);
             player_state_ptr.write(result.player_state);
             opponent_state_ptr.write(result.opponent_state);
             if result.progress == ArcadeProgress::Active {
@@ -392,6 +395,7 @@ pub mod arcade_component {
             ref attempt_ptr: AttemptNodePath,
             attempt_id: felt252,
             combat_n: u32,
+            stage: u32,
             opponent: Opponent,
             health: Option<u8>,
         ) {
@@ -407,15 +411,15 @@ pub mod arcade_component {
             }
             let opponent_state: CombatantState = opponent.attributes.into();
             combat.create_combat(player_state, opponent_state, opponent.attacks);
-            set_schema(
-                ROUND_HASH,
+            set_entity(
+                COMBAT_HASH,
                 poseidon_hash_two(attempt_id, combat_n),
-                @ArcadeZeroRoundResult {
+                @CombatTable {
                     attempt: attempt_id,
                     combat: combat_n,
-                    player_state,
-                    opponent_state,
-                    progress: ArcadeProgress::Active,
+                    stage,
+                    starting_player_health: player_state.health,
+                    starting_opponent_attributes: opponent.attributes,
                 },
             );
         }

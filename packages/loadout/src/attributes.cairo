@@ -6,10 +6,20 @@ use sai_packing::shifts::*;
 use sai_packing::{BytePacking, IntPacking, MaskDowncast, ShiftCast};
 use starknet::storage_access::StorePacking;
 
+/// Maximum value for permanent ability scores
 pub const MAX_ABILITY_SCORE: u8 = 100;
+/// Maximum positive value for temporary ability score modifiers
 pub const MAX_TEMP_ABILITY_SCORE: i8 = 100;
+/// Maximum negative value for temporary ability score modifiers
 pub const MIN_TEMP_ABILITY_SCORE: i8 = -100;
 
+/// Represents the four core ability scores of a combatant
+///
+/// # Fields
+/// * `strength` - Physical power, affects damage dealt (0-100)
+/// * `vitality` - Health and endurance, affects maximum health (0-100)
+/// * `dexterity` - Speed and agility, affects initiative and dodge (0-100)
+/// * `luck` - Fortune and chance, affects critical hits and random events (0-100)
 #[derive(Copy, Drop, Serde, Default, PartialEq, Introspect)]
 pub struct Abilities {
     pub strength: u8,
@@ -18,6 +28,13 @@ pub struct Abilities {
     pub luck: u8,
 }
 
+/// Represents modifiers to the four core ability scores
+///
+/// # Fields
+/// * `strength` - Strength modifier (can be positive or negative)
+/// * `vitality` - Vitality modifier (can be positive or negative)
+/// * `dexterity` - Dexterity modifier (can be positive or negative)
+/// * `luck` - Luck modifier (can be positive or negative)
 #[derive(Copy, Drop, Serde, Default, PartialEq, Introspect)]
 pub struct AbilityMods {
     pub strength: i8,
@@ -26,6 +43,15 @@ pub struct AbilityMods {
     pub luck: i8,
 }
 
+/// Represents damage resistances and vulnerabilities (legacy struct)
+///
+/// # Fields
+/// * `bludgeon_resistance` - Resistance to bludgeon damage (0-100%)
+/// * `magic_resistance` - Resistance to magic damage (0-100%)
+/// * `pierce_resistance` - Resistance to pierce damage (0-100%)
+/// * `bludgeon_vulnerability` - Additional vulnerability to bludgeon damage
+/// * `magic_vulnerability` - Additional vulnerability to magic damage
+/// * `pierce_vulnerability` - Additional vulnerability to pierce damage
 #[derive(Copy, Drop, Serde, Default, PartialEq, Introspect)]
 pub struct Affinities {
     pub bludgeon_resistance: u8,
@@ -36,6 +62,13 @@ pub struct Affinities {
     pub pierce_vulnerability: u16,
 }
 
+/// Represents resistances to various damage types and effects
+///
+/// # Fields
+/// * `stun` - Resistance to stun effects (0-100%)
+/// * `bludgeon` - Resistance to bludgeon damage (0-100%)
+/// * `magic` - Resistance to magic damage (0-100%)
+/// * `pierce` - Resistance to pierce damage (0-100%)
 #[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
 pub struct Resistances {
     pub stun: u8,
@@ -44,6 +77,12 @@ pub struct Resistances {
     pub pierce: u8,
 }
 
+/// Represents vulnerabilities to various damage types
+///
+/// # Fields
+/// * `bludgeon` - Additional vulnerability to bludgeon damage
+/// * `magic` - Additional vulnerability to magic damage
+/// * `pierce` - Additional vulnerability to pierce damage
 #[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
 pub struct Vulnerabilities {
     pub bludgeon: u16,
@@ -52,6 +91,13 @@ pub struct Vulnerabilities {
 }
 
 
+/// Represents modifiers to resistance values
+///
+/// # Fields
+/// * `stun` - Stun resistance modifier (can be positive or negative)
+/// * `bludgeon` - Bludgeon resistance modifier (can be positive or negative)
+/// * `magic` - Magic resistance modifier (can be positive or negative)
+/// * `pierce` - Pierce resistance modifier (can be positive or negative)
 #[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
 pub struct ResistanceMods {
     pub stun: i8,
@@ -60,6 +106,12 @@ pub struct ResistanceMods {
     pub pierce: i8,
 }
 
+/// Represents modifiers to vulnerability values
+///
+/// # Fields
+/// * `bludgeon` - Bludgeon vulnerability modifier (can be positive or negative)
+/// * `magic` - Magic vulnerability modifier (can be positive or negative)
+/// * `pierce` - Pierce vulnerability modifier (can be positive or negative)
 #[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
 pub struct VulnerabilityMods {
     pub bludgeon: i16,
@@ -67,6 +119,23 @@ pub struct VulnerabilityMods {
     pub pierce: i16,
 }
 
+/// Represents the complete set of attributes for a combatant
+///
+/// # Fields
+/// ## Core Abilities
+/// * `strength` - Physical power (0-100)
+/// * `vitality` - Health and endurance (0-100)
+/// * `dexterity` - Speed and agility (0-100)
+/// * `luck` - Fortune and chance (0-100)
+/// ## Resistances
+/// * `stun_resistance` - Resistance to stun effects (0-100%)
+/// * `bludgeon_resistance` - Resistance to bludgeon damage (0-100%)
+/// * `magic_resistance` - Resistance to magic damage (0-100%)
+/// * `pierce_resistance` - Resistance to pierce damage (0-100%)
+/// ## Vulnerabilities
+/// * `bludgeon_vulnerability` - Additional vulnerability to bludgeon damage
+/// * `magic_vulnerability` - Additional vulnerability to magic damage
+/// * `pierce_vulnerability` - Additional vulnerability to pierce damage
 #[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
 pub struct Attributes {
     pub strength: u8,
@@ -82,7 +151,23 @@ pub struct Attributes {
     pub pierce_vulnerability: u16,
 }
 
-
+/// Represents partial attribute modifications that can be combined with base attributes
+///
+/// # Fields
+/// ## Core Abilities (can be negative)
+/// * `strength` - Strength modifier
+/// * `vitality` - Vitality modifier
+/// * `dexterity` - Dexterity modifier
+/// * `luck` - Luck modifier
+/// ## Resistances (additive)
+/// * `stun_resistance` - Stun resistance bonus (0-100)
+/// * `bludgeon_resistance` - Bludgeon resistance bonus (0-100)
+/// * `magic_resistance` - Magic resistance bonus (0-100)
+/// * `pierce_resistance` - Pierce resistance bonus (0-100)
+/// ## Vulnerabilities (can be negative)
+/// * `bludgeon_vulnerability` - Bludgeon vulnerability modifier
+/// * `magic_vulnerability` - Magic vulnerability modifier
+/// * `pierce_vulnerability` - Pierce vulnerability modifier
 #[derive(Copy, Drop, Serde, Default, PartialEq, Introspect)]
 pub struct PartialAttributes {
     pub strength: i8,
@@ -98,6 +183,23 @@ pub struct PartialAttributes {
     pub pierce_vulnerability: i16,
 }
 
+/// Internal calculation struct for combining and processing attributes
+///
+/// Uses wider integer types to prevent overflow during calculations.
+/// Should be finalized to Attributes before use.
+///
+/// # Fields
+/// * `strength` - Strength value during calculation (i32 for overflow safety)
+/// * `vitality` - Vitality value during calculation (i32 for overflow safety)
+/// * `dexterity` - Dexterity value during calculation (i32 for overflow safety)
+/// * `luck` - Luck value during calculation (i32 for overflow safety)
+/// * `stun_resistance` - Stun resistance during calculation (u16 for intermediate values)
+/// * `bludgeon_resistance` - Bludgeon resistance during calculation (u16 for intermediate values)
+/// * `magic_resistance` - Magic resistance during calculation (u16 for intermediate values)
+/// * `pierce_resistance` - Pierce resistance during calculation (u16 for intermediate values)
+/// * `bludgeon_vulnerability` - Bludgeon vulnerability during calculation (i32 for overflow safety)
+/// * `magic_vulnerability` - Magic vulnerability during calculation (i32 for overflow safety)
+/// * `pierce_vulnerability` - Pierce vulnerability during calculation (i32 for overflow safety)
 #[derive(Copy, Drop, Default)]
 pub struct AttributesCalc {
     pub strength: i32,

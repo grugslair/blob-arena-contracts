@@ -18,8 +18,8 @@ const ATTACK_TAG_GROUP: felt252 = 'attacks';
 /// A struct representing an attack in the game.
 ///
 /// # Fields
-/// * `id` - Unique identifier for the attack
-/// * `speed` - The speed of the attack (0-100)
+/// * `name` - The name of the attack. (For off chain use)
+/// * `speed` - The speed of the attack (0 to 10000)
 /// * `chance` - The chance of the attack (0-100)
 /// * `cooldown` - The cooldown period of the attack in rounds
 /// * `success` - Array of effects that occur when the attack succeeds
@@ -32,18 +32,6 @@ pub struct Attack {
     pub success: Array<Effect>,
     pub fail: Array<Effect>,
 }
-/// A component representing an attack or input of attack in the game.
-///
-/// # Attributes
-///
-/// * `id` - A unique identifier for the attack.
-/// * `speed` - The speed of the attack, represented as a value between 0 and 255.
-/// * `chance` - The likelihood of the attack successting its target, represented as a value
-/// between 0 and 100.
-/// * `cooldown` - The number of turns required before the attack can be used again.
-/// * `success` - An array of effects that are applied when the attack successfully successs.
-/// * `fail` - An array of effects that are applied when the attack failes.
-/// * `name` - The name of the attack. (For off chain use)
 
 #[derive(Drop, Serde, Clone, Introspect)]
 pub struct AttackWithName {
@@ -69,6 +57,7 @@ impl AttackWithNameIntoAttack of Into<AttackWithName, Attack> {
 }
 
 
+/// A struct that combines an ID, a tag, or an attack.
 #[derive(Drop, Serde, Clone)]
 pub enum IdTagAttack {
     Id: felt252,

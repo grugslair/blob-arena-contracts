@@ -4,6 +4,15 @@ use ba_loadout::Attributes;
 use ba_loadout::attack::IdTagAttack;
 use ba_utils::storage::{FeltArrayReadWrite, ShortArrayStore};
 
+/// Storage and query structure for classic arcade opponents
+///
+/// Represents a fully configured opponent stored in the contract state for classic arcade mode.
+/// Contains resolved attack IDs and complete attribute sets for immediate use in combat.
+///
+/// # Fields
+/// * `traits` - Token traits that define the opponent's visual and thematic characteristics
+/// * `attributes` - Complete attribute set including abilities, resistances, and vulnerabilities
+/// * `attacks` - Array of resolved attack IDs available to this opponent
 #[derive(Drop, Serde, Introspect)]
 struct OpponentTable {
     traits: TokenTraits,
@@ -11,6 +20,15 @@ struct OpponentTable {
     attacks: Array<felt252>,
 }
 
+/// Input structure for configuring classic arcade opponents
+///
+/// Used when setting up the fixed opponent sequence for classic arcade mode.
+/// Contains raw attack definitions that will be processed into attack IDs during setup.
+///
+/// # Fields
+/// * `traits` - Token traits for the opponent's appearance and characteristics
+/// * `attributes` - Complete attribute configuration for this opponent
+/// * `attacks` - Array of attack definitions that will be resolved to attack IDs
 #[derive(Drop, Serde)]
 struct OpponentInput {
     traits: TokenTraits,
@@ -26,6 +44,13 @@ mod errors {
 
 #[starknet::interface]
 trait IArcadeClassic<TState> {
+    /// Sets the complete opponent sequence for the classic arcade
+    ///
+    /// Replaces the entire opponent roster with a new fixed sequence.
+    /// The number of opponents determines the total number of stages in the arcade.
+    ///
+    /// # Arguments
+    /// * `opponents` - Array of opponent configurations in stage order
     fn set_opponents(ref self: TState, opponents: Array<OpponentInput>);
 }
 
@@ -50,6 +75,7 @@ mod arcade_classic {
     component!(path: arcade_component, storage: arcade, event: ArcadeEvents);
 
     const ATTEMPT_HASH: felt252 = bytearrays_hash!("arcade_classic", "Attempt");
+    const COMBAT_HASH: felt252 = bytearrays_hash!("arcade_classic", "Combat");
     const ROUND_HASH: felt252 = bytearrays_hash!("arcade_classic", "Round");
     const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("arcade_classic", "AttackLastUsed");
     const OPPONENT_HASH: felt252 = bytearrays_hash!("arcade_classic", "Opponent");
@@ -58,7 +84,7 @@ mod arcade_classic {
 
     impl ArcadeInternal =
         arcade_component::ArcadeInternal<
-            ContractState, ATTEMPT_HASH, ROUND_HASH, LAST_USED_ATTACK_HASH,
+            ContractState, ATTEMPT_HASH, COMBAT_HASH, ROUND_HASH, LAST_USED_ATTACK_HASH,
         >;
     #[storage]
     struct Storage {
@@ -200,6 +226,7 @@ mod arcade_classic {
                 ref attempt_ptr,
                 attempt_id,
                 combat_n,
+                stage,
                 self.opponents.read(stage).into(),
                 health,
             );

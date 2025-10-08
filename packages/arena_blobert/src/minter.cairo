@@ -8,20 +8,76 @@ const JEWELRY_COUNT: u128 = 8;
 const WEAPON_COUNT: u128 = 8;
 const MASK_COUNT: u128 = 8;
 
+/// Main interface for Arena Blobert minting functionality
+///
+/// Provides public minting capabilities with rate limiting and supply controls.
+/// Users can mint randomly generated Arena Blobert NFTs subject to time and quantity restrictions.
 #[starknet::interface]
 trait IArcadeBlobertMinter<TState> {
+    /// Mints a new randomly generated Arena Blobert NFT for the caller
+    ///
+    /// Creates a new Arena Blobert with procedurally generated traits based on randomness.
+    /// The NFT is minted directly to the caller's address with rate limiting and supply controls.
+    ///
+    /// # Returns
+    /// * `u256` - The token ID of the newly minted Arena Blobert
     fn mint(ref self: TState) -> u256;
 }
 
+/// Administrative interface for Arena Blobert minter configuration
+///
+/// Provides owner-only functions to configure minting parameters and restrictions.
+/// Controls the rate limiting and supply management for public minting.
 #[starknet::interface]
 trait IArcadeBlobertMinterAdmin<TState> {
+    /// Sets the minimum time between mints for each address
+    ///
+    /// Configures the cooldown period that must elapse before an address
+    /// can mint another Arena Blobert NFT.
+    ///
+    /// # Arguments
+    /// * `min_mint_time` - Cooldown period in seconds between mints
+    ///
+    /// # Access Control
+    /// * Requires owner permissions
     fn set_min_mint_time(ref self: TState, min_mint_time: u64);
+
+    /// Sets the maximum number of bloberts each address can own
+    ///
+    /// Configures the supply limit per address to prevent hoarding
+    /// and ensure fair distribution of Arena Blobert NFTs.
+    ///
+    /// # Arguments
+    /// * `max_bloberts` - Maximum number of bloberts per address
+    ///
+    /// # Access Control
+    /// * Requires owner permissions
     fn set_max_bloberts(ref self: TState, max_bloberts: u32);
 }
 
+/// External interface for Arena Blobert NFT contract interaction
+///
+/// Defines the required functions that the minter needs from the main
+/// Arena Blobert NFT contract to perform minting operations.
 #[starknet::interface]
 trait IArenaBlobert<TState> {
+    /// Gets the number of Arena Blobert NFTs owned by an address
+    ///
+    /// # Arguments
+    /// * `account` - The address to check the balance for
+    ///
+    /// # Returns
+    /// * `u256` - Number of NFTs owned by the account
     fn balance_of(self: @TState, account: ContractAddress) -> u256;
+
+    /// Mints a new Arena Blobert NFT with specified traits
+    ///
+    /// # Arguments
+    /// * `owner` - The address to receive the newly minted NFT
+    /// * `traits` - The trait configuration for the new NFT
+    ///
+    /// # Returns
+    /// * `u256` - The token ID of the newly minted NFT
     fn mint(ref self: TState, owner: ContractAddress, traits: TokenTraits) -> u256;
 }
 

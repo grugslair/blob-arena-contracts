@@ -11,6 +11,13 @@ pub trait IAmmaBlobert<TContractState> {
 
 #[starknet::interface]
 pub trait IAmmaBlobertAdmin<TContractState> {
+    /// Mints a new Amma Blobert NFT to the specified owner with the given fighter ID (only for
+    /// contracts with write access)
+    /// # Arguments
+    /// * `owner` - The address of the new owner of the minted Blobert
+    /// * `fighter` - The ID of the fighter to associate with the new Blobert
+    /// # Returns
+    /// * `u256` - The token ID of the newly minted Blobert NFT
     fn mint(ref self: TContractState, owner: ContractAddress, fighter: u32) -> u256;
 }
 
@@ -22,6 +29,7 @@ pub fn mint_fighter(collection: ContractAddress, owner: ContractAddress, fighter
     IAmmaBlobertAdminDispatcher { contract_address: collection }.mint(owner, fighter)
 }
 
+/// Token id to fighter mapping entity
 #[derive(Drop, Serde, Introspect)]
 pub struct TokenFighter {
     fighter: u32,

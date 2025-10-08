@@ -31,7 +31,7 @@ const B100ToN100Affects = [
   "HealthPercentMax",
 ];
 
-const LE200Affects = ["Health", "SetHealth", "FloorHealth", "CeilHealth"];
+const LE200Affects = ["SetHealth", "FloorHealth", "CeilHealth"];
 
 const B200toN200Affects = ["Health"];
 const I16Affects = [
@@ -196,6 +196,7 @@ export const parseAttributes = (attributes) => {
     vitality: parse0To100(attributes.vitality, "Vitality"),
     dexterity: parse0To100(attributes.dexterity, "Dexterity"),
     luck: parse0To100(attributes.luck, "Luck"),
+    stun_resistance: parse0To100(attributes.stun_resistance, "Stun Resistance"),
     bludgeon_resistance: parse0To100(
       attributes.bludgeon_resistance,
       "Bludgeon Resistance"
@@ -229,6 +230,7 @@ export const parsePartialAttributes = (attributes) => {
     vitality: parseI8(attributes.vitality, "Vitality"),
     dexterity: parseI8(attributes.dexterity, "Dexterity"),
     luck: parseI8(attributes.luck, "Luck"),
+    stun_resistance: parse0To100(attributes.stun_resistance, "Stun Resistance"),
     bludgeon_resistance: parse0To100(
       attributes.bludgeon_resistance,
       "Bludgeon Resistance"
@@ -267,6 +269,10 @@ export const parseAbilityMods = (abilityMods) => {
 
 export const parseResistanceMods = (resistances) => {
   return {
+    stun_resistance: parseN100To100(
+      resistances.stun_resistance,
+      "Stun Resistance"
+    ),
     bludgeon_resistance: parseN100To100(
       resistances.bludgeon_resistance,
       "Bludgeon Resistance"

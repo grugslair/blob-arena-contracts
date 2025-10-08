@@ -15,6 +15,11 @@ pub type CombatNodePath = StoragePath<Mutable<CombatNode>>;
 pub type AttemptNodePath = StoragePath<Mutable<AttemptNode>>;
 
 
+/// Represents the current phase of an arcade attempt.
+//// * `None` - The attempt has not started.
+/// * `Active` - The attempt is currently active.
+/// * `PlayerWon` - The player has won the attempt.
+/// * `PlayerLost` - The player has lost the attempt.
 #[derive(Drop, Copy, Introspect, PartialEq, Serde, starknet::Store, Default)]
 pub enum ArcadeProgress {
     #[default]
@@ -38,12 +43,22 @@ impl CombatProgressIntoArcadePhase of Into<CombatProgress, ArcadeProgress> {
 }
 
 
+/// Represents an arcade attempt by a player.
+//// # Fields
+/// * `player` - The address of the player making the attempt.
+/// * `abilities` - The abilities of the player during the attempt.
+/// * `token_hash` - A hash representing the player's token.
+/// * `health_regen` - The health regeneration amount.
+/// * `expiry` - The timestamp when the attempt expires.
+/// * `phase` - The current phase of the arcade attempt.
+/// * `stage` - The current stage of the attempt.
+/// * `respawns` - The number of respawns the player has used.
 #[derive(Drop, Serde)]
 pub struct Attempt {
     pub player: ContractAddress,
     pub abilities: Abilities,
     pub token_hash: felt252,
-    pub health_regen: u32,
+    pub health_regen: u8,
     pub expiry: u64,
     pub phase: ArcadeProgress,
     pub stage: u32,

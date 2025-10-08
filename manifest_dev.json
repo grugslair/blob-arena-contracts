@@ -12,35 +12,35 @@
       "calldata_compiled": []
     },
     "attack_model": {
-      "contract_address": "0xa5c301b7dd2af26afae664f32ed5eddb9070e4e4f8c5be67ff9d4a09b9e40f",
+      "contract_address": "0x5bd64e5f58dbe9954c5c558b7c45c725f5a3607c2bc2ba6d546b53565cdcf9d",
       "tag": "attack_model",
       "salt": "0x0",
       "unique": false,
       "once": true,
       "class": "attack_model",
-      "class_hash": "0x3c99f02b51064ebeedc0e9a7f40986218252ac4189cea3d9f5c510241374c3f",
+      "class_hash": "0x1e053e8df220cc146da92f3fcbac4cabdfffd46d99b524e2785226988425bc3",
       "calldata": [],
       "calldata_compiled": []
     },
     "round_result_model": {
-      "contract_address": "0x14d8b6d0b5e42ff57fa520c4fa7e051771a75f6d2f6dbab7a39d48d434fb66c",
+      "contract_address": "0x10e78ee257f09b0e9854c5d6e313e5a34e14ea011e4a6723ea218770c393ab3",
       "tag": "round_result_model",
       "salt": "0x0",
       "unique": false,
       "once": true,
       "class": "round_result_model",
-      "class_hash": "0x754632248c3b3c81adb60f4dcf833a3bbb7f7be65653cf55e403b72f4cab7e9",
+      "class_hash": "0x17647f84236bfd3f45094f74214919db024ffce34d165df4fb7138269bb681e",
       "calldata": [],
       "calldata_compiled": []
     },
     "arcade_round_result_model": {
-      "contract_address": "0x295ec8465ba3c72ed7848ead403e8dfeb7a72c88109b11096066d21559747f4",
+      "contract_address": "0x2d3d7eb3ed777d977d32336f126ec1261daedf1030b617a5f07b0c520158874",
       "tag": "arcade_round_result_model",
       "salt": "0x0",
       "unique": false,
       "once": true,
       "class": "arcade_round_result_model",
-      "class_hash": "0x36488621dd3a45c943672b366cf432d825f09e399de5ed4b3bdd268fd789b8f",
+      "class_hash": "0x133290439bb99be00f1d8a3dd729ad655f45d45a4c9e7f4c077ce6b2f6c0a6d",
       "calldata": [],
       "calldata_compiled": []
     },
@@ -90,7 +90,7 @@
       ]
     },
     "arena_credit": {
-      "contract_address": "0x7e111d03984dc4c532b9df331d54ecef7c15fe18a6cc329e9c2c668bddc5f8a",
+      "contract_address": "0x2f0483f13b47aaf1d9f3b20f1e36a90e84379b636eb7dbf50239f4905879ead",
       "tag": "arena_credit",
       "unique": false,
       "calldata": {
@@ -99,26 +99,26 @@
       "salt": "0x0",
       "once": true,
       "class": "arena_credit",
-      "class_hash": "0x26b5d0a6d692430dacf366aff536309a33bfbc4fc6d0b2f958182da528262b5",
+      "class_hash": "0x23309217115f95725c77df06dad219b3542072f118214ce17791f2d590bd506",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       ]
     },
     "attack": {
-      "contract_address": "0x34f53baf3082eda36c26d18bc795fca40ad0fb54dda2340d3e604d7a27db83c",
+      "contract_address": "0x7fd9705fbbc27683af6cbde557a236287d3671196876b971d552ec692dd5bcf",
       "tag": "attack",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_model_class_hash": "0x3c99f02b51064ebeedc0e9a7f40986218252ac4189cea3d9f5c510241374c3f"
+        "attack_model_class_hash": "0x1e053e8df220cc146da92f3fcbac4cabdfffd46d99b524e2785226988425bc3"
       },
       "salt": "0x0",
       "once": true,
       "class": "attack",
-      "class_hash": "0x33663fd6ad48136c4e2c7762a761184b8a0c8017683146a27dd265632c26cde",
+      "class_hash": "0x79bd5d5d83b661e48eba43731ae599c7d2d1c30dddfd75afa7ca481895e92b0",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x3c99f02b51064ebeedc0e9a7f40986218252ac4189cea3d9f5c510241374c3f"
+        "0x1e053e8df220cc146da92f3fcbac4cabdfffd46d99b524e2785226988425bc3"
       ]
     },
     "arena_blobert_minter": {
@@ -154,12 +154,12 @@
       ]
     },
     "arena_credit_purchase": {
-      "contract_address": "0x832837ca1e2a70597f54876944d9e1755b4434c2d514282941b8366660e3bd",
+      "contract_address": "0x1170fce0c715710b0d8233213c9f62354c8d9170b2a4c28ae555c3bb53c2c51",
       "tag": "arena_credit_purchase",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "credit_address": "0x7e111d03984dc4c532b9df331d54ecef7c15fe18a6cc329e9c2c668bddc5f8a"
+        "credit_address": "0x2f0483f13b47aaf1d9f3b20f1e36a90e84379b636eb7dbf50239f4905879ead"
       },
       "salt": "0x0",
       "once": true,
@@ -167,16 +167,16 @@
       "class_hash": "0x4be30835b6c7e9bc04c7cb119eab8670da3f168c58ebe718b8e4fb5c7aeb799",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x7e111d03984dc4c532b9df331d54ecef7c15fe18a6cc329e9c2c668bddc5f8a"
+        "0x2f0483f13b47aaf1d9f3b20f1e36a90e84379b636eb7dbf50239f4905879ead"
       ]
     },
     "loadout_classic": {
-      "contract_address": "0x47583d7615c5a15cf826f650995056147fe814aaed7bf1b9230811309024268",
+      "contract_address": "0x22157199325f8f4566a554dc9797b5c09c011a744c40627332630c2aa68798b",
       "tag": "loadout_classic",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_dispatcher_address": "0x34f53baf3082eda36c26d18bc795fca40ad0fb54dda2340d3e604d7a27db83c",
+        "attack_dispatcher_address": "0x7fd9705fbbc27683af6cbde557a236287d3671196876b971d552ec692dd5bcf",
         "collection_addresses": [
           "0x1334ae48fdead3cc46eaa26a10a4f015a7304768e1741d28d84cf3e4eb88624",
           "0x0"
@@ -185,22 +185,22 @@
       "salt": "0x0",
       "once": true,
       "class": "loadout_classic",
-      "class_hash": "0xc7c2103e72c4c6133977748f8fe0e0670e2c85c1bfd93c9c9d982d85216a05",
+      "class_hash": "0x69c47f18c8a64325247537144ccbdf1823f8f984e2d644aca1a21b48bdffa19",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x34f53baf3082eda36c26d18bc795fca40ad0fb54dda2340d3e604d7a27db83c",
+        "0x7fd9705fbbc27683af6cbde557a236287d3671196876b971d552ec692dd5bcf",
         "0x2",
         "0x1334ae48fdead3cc46eaa26a10a4f015a7304768e1741d28d84cf3e4eb88624",
         "0x0"
       ]
     },
     "loadout_amma": {
-      "contract_address": "0x50cad6ac8b4a16f3e121dd9beeefee2906c3d042ffe316233332f7d3782a5d3",
+      "contract_address": "0x139bd7f13bd57df444562c284c76a0c5dc27c421e8c0bdcc28fa6674c914c0d",
       "tag": "loadout_amma",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_dispatcher_address": "0x34f53baf3082eda36c26d18bc795fca40ad0fb54dda2340d3e604d7a27db83c",
+        "attack_dispatcher_address": "0x7fd9705fbbc27683af6cbde557a236287d3671196876b971d552ec692dd5bcf",
         "collection_addresses": [
           "0x3e7e8feeffcce273f2a08b4616d5442adf52d1937f4c243dbe8534fd0372c56",
           "0x1e2b4b72dbc5206682e6ee3823a83e6634c80eac934c5711edbc60fb186c2e7"
@@ -209,84 +209,84 @@
       "salt": "0x0",
       "once": true,
       "class": "loadout_amma",
-      "class_hash": "0x77a01154286fd510bbbf6fb1da20cf23d3a78778fe5746df6fb5fd54ace8411",
+      "class_hash": "0x2b0d31def92fbac25fed6f1553c5dae56ff942fc2f37f5dd895224cf989f11b",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x34f53baf3082eda36c26d18bc795fca40ad0fb54dda2340d3e604d7a27db83c",
+        "0x7fd9705fbbc27683af6cbde557a236287d3671196876b971d552ec692dd5bcf",
         "0x2",
         "0x3e7e8feeffcce273f2a08b4616d5442adf52d1937f4c243dbe8534fd0372c56",
         "0x1e2b4b72dbc5206682e6ee3823a83e6634c80eac934c5711edbc60fb186c2e7"
       ]
     },
     "arcade_classic": {
-      "contract_address": "0x45142755ac9af8401b6e666ef621a9611b54901061d2c1dd1e110faf3765516",
+      "contract_address": "0x3e476d986e4c8ac3a71ecd7ebc1f564963d245e9017062c0370acab5210dc61",
       "tag": "arcade_classic",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "arcade_round_result_class_hash": "0x36488621dd3a45c943672b366cf432d825f09e399de5ed4b3bdd268fd789b8f",
-        "attack_address": "0x34f53baf3082eda36c26d18bc795fca40ad0fb54dda2340d3e604d7a27db83c",
-        "loadout_address": "0x47583d7615c5a15cf826f650995056147fe814aaed7bf1b9230811309024268",
-        "credit_address": "0x7e111d03984dc4c532b9df331d54ecef7c15fe18a6cc329e9c2c668bddc5f8a",
+        "arcade_round_result_class_hash": "0x133290439bb99be00f1d8a3dd729ad655f45d45a4c9e7f4c077ce6b2f6c0a6d",
+        "attack_address": "0x7fd9705fbbc27683af6cbde557a236287d3671196876b971d552ec692dd5bcf",
+        "loadout_address": "0x22157199325f8f4566a554dc9797b5c09c011a744c40627332630c2aa68798b",
+        "credit_address": "0x2f0483f13b47aaf1d9f3b20f1e36a90e84379b636eb7dbf50239f4905879ead",
         "vrf_address": "0xfecdf41fef591731e3c01fba9649be760ac5d6f5bc4cde4a2bfde58503970a"
       },
       "salt": "0x0",
       "once": true,
       "class": "arcade_classic",
-      "class_hash": "0x2536ec1f6cacb5b01a9dd4b287f115fd925287a8940b20c5d41a71155b03447",
+      "class_hash": "0x2d92afcfc4b1dba0eec349df981afc89e52149b93ec9c723dce1fc3d56e990b",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x36488621dd3a45c943672b366cf432d825f09e399de5ed4b3bdd268fd789b8f",
-        "0x34f53baf3082eda36c26d18bc795fca40ad0fb54dda2340d3e604d7a27db83c",
-        "0x47583d7615c5a15cf826f650995056147fe814aaed7bf1b9230811309024268",
-        "0x7e111d03984dc4c532b9df331d54ecef7c15fe18a6cc329e9c2c668bddc5f8a",
+        "0x133290439bb99be00f1d8a3dd729ad655f45d45a4c9e7f4c077ce6b2f6c0a6d",
+        "0x7fd9705fbbc27683af6cbde557a236287d3671196876b971d552ec692dd5bcf",
+        "0x22157199325f8f4566a554dc9797b5c09c011a744c40627332630c2aa68798b",
+        "0x2f0483f13b47aaf1d9f3b20f1e36a90e84379b636eb7dbf50239f4905879ead",
         "0xfecdf41fef591731e3c01fba9649be760ac5d6f5bc4cde4a2bfde58503970a"
       ]
     },
     "arcade_amma": {
-      "contract_address": "0x755ddd8d645ce0af01b85e1c62480715b54b04db391b45ea42172240a65ca13",
+      "contract_address": "0x17aac8e4d2431f56dffa643db2885edf040b40e43d75ede80a76e742a6996af",
       "tag": "arcade_amma",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "arcade_round_result_class_hash": "0x36488621dd3a45c943672b366cf432d825f09e399de5ed4b3bdd268fd789b8f",
-        "attack_address": "0x34f53baf3082eda36c26d18bc795fca40ad0fb54dda2340d3e604d7a27db83c",
-        "loadout_address": "0x50cad6ac8b4a16f3e121dd9beeefee2906c3d042ffe316233332f7d3782a5d3",
-        "credit_address": "0x7e111d03984dc4c532b9df331d54ecef7c15fe18a6cc329e9c2c668bddc5f8a",
+        "arcade_round_result_class_hash": "0x133290439bb99be00f1d8a3dd729ad655f45d45a4c9e7f4c077ce6b2f6c0a6d",
+        "attack_address": "0x7fd9705fbbc27683af6cbde557a236287d3671196876b971d552ec692dd5bcf",
+        "loadout_address": "0x139bd7f13bd57df444562c284c76a0c5dc27c421e8c0bdcc28fa6674c914c0d",
+        "credit_address": "0x2f0483f13b47aaf1d9f3b20f1e36a90e84379b636eb7dbf50239f4905879ead",
         "vrf_address": "0xfecdf41fef591731e3c01fba9649be760ac5d6f5bc4cde4a2bfde58503970a",
         "collectable_address": "0x3e7e8feeffcce273f2a08b4616d5442adf52d1937f4c243dbe8534fd0372c56"
       },
       "salt": "0x0",
       "once": true,
       "class": "arcade_amma",
-      "class_hash": "0x149d51a46eafa082ecddb0b000bb11ee63e0d6a98548f5794130138f951a590",
+      "class_hash": "0xeb516cbe17bff5b6c96d51942cc718fdea65cdffb5467bcb0cf52d9d16a7d6",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x36488621dd3a45c943672b366cf432d825f09e399de5ed4b3bdd268fd789b8f",
-        "0x34f53baf3082eda36c26d18bc795fca40ad0fb54dda2340d3e604d7a27db83c",
-        "0x50cad6ac8b4a16f3e121dd9beeefee2906c3d042ffe316233332f7d3782a5d3",
-        "0x7e111d03984dc4c532b9df331d54ecef7c15fe18a6cc329e9c2c668bddc5f8a",
+        "0x133290439bb99be00f1d8a3dd729ad655f45d45a4c9e7f4c077ce6b2f6c0a6d",
+        "0x7fd9705fbbc27683af6cbde557a236287d3671196876b971d552ec692dd5bcf",
+        "0x139bd7f13bd57df444562c284c76a0c5dc27c421e8c0bdcc28fa6674c914c0d",
+        "0x2f0483f13b47aaf1d9f3b20f1e36a90e84379b636eb7dbf50239f4905879ead",
         "0xfecdf41fef591731e3c01fba9649be760ac5d6f5bc4cde4a2bfde58503970a",
         "0x3e7e8feeffcce273f2a08b4616d5442adf52d1937f4c243dbe8534fd0372c56"
       ]
     },
     "pvp": {
-      "contract_address": "0x62462e6472fe0493cebbe41e1f6eaf20d6743bfa162da26a5b8c7433884a00d",
+      "contract_address": "0x4c7aebdb417b8a3fb25e801e3fad2a5739cc0d3704342c64b6b5c7ef22d8cdc",
       "tag": "pvp",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "round_result_class_hash": "0x754632248c3b3c81adb60f4dcf833a3bbb7f7be65653cf55e403b72f4cab7e9",
-        "attack_address": "0x34f53baf3082eda36c26d18bc795fca40ad0fb54dda2340d3e604d7a27db83c"
+        "round_result_class_hash": "0x17647f84236bfd3f45094f74214919db024ffce34d165df4fb7138269bb681e",
+        "attack_address": "0x7fd9705fbbc27683af6cbde557a236287d3671196876b971d552ec692dd5bcf"
       },
       "salt": "0x0",
       "once": true,
       "class": "pvp",
-      "class_hash": "0x72b6ebf65ea9b34e472ff748a39ad3960ae9e8642f36b8fa8e36fba9845d9f7",
+      "class_hash": "0x2fc217811e4aca2e27ea2b72ac6547286df84f9e6764e227ca7de7028ea67a9",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x754632248c3b3c81adb60f4dcf833a3bbb7f7be65653cf55e403b72f4cab7e9",
-        "0x34f53baf3082eda36c26d18bc795fca40ad0fb54dda2340d3e604d7a27db83c"
+        "0x17647f84236bfd3f45094f74214919db024ffce34d165df4fb7138269bb681e",
+        "0x7fd9705fbbc27683af6cbde557a236287d3671196876b971d552ec692dd5bcf"
       ]
     }
   },
@@ -295,16 +295,16 @@
       "class_hash": "0x301acbd969fe41d1dd0a3349a17db0e779d78644aa21d4ff6ef3f0d0498479f"
     },
     "attack_model": {
-      "class_hash": "0x3c99f02b51064ebeedc0e9a7f40986218252ac4189cea3d9f5c510241374c3f"
+      "class_hash": "0x1e053e8df220cc146da92f3fcbac4cabdfffd46d99b524e2785226988425bc3"
     },
     "round_result_model": {
-      "class_hash": "0x754632248c3b3c81adb60f4dcf833a3bbb7f7be65653cf55e403b72f4cab7e9"
+      "class_hash": "0x17647f84236bfd3f45094f74214919db024ffce34d165df4fb7138269bb681e"
     },
     "arcade_round_result_model": {
-      "class_hash": "0x36488621dd3a45c943672b366cf432d825f09e399de5ed4b3bdd268fd789b8f"
+      "class_hash": "0x133290439bb99be00f1d8a3dd729ad655f45d45a4c9e7f4c077ce6b2f6c0a6d"
     },
     "combat": {
-      "class_hash": "0x1b9bfeb05a5c4c74dc995c4f783d704c3902cd6493ed418b13a59cab65440c8"
+      "class_hash": "0x40791cfa5599204cffb231ccf04ac9b3fe8ddeded35ca7ede42d99f81dfc24f"
     },
     "arena_blobert": {
       "class_hash": "0x68e1a185162ca428cf897e00150e80c19595c33ea56e1e4965c5dcbce6f84a6"
@@ -322,28 +322,28 @@
       "class_hash": "0x4bbd4269e9fc9b370a01bfc3a7cf8bc72eeee7206505ee10d9f593cd9e429f"
     },
     "attack": {
-      "class_hash": "0x33663fd6ad48136c4e2c7762a761184b8a0c8017683146a27dd265632c26cde"
+      "class_hash": "0x79bd5d5d83b661e48eba43731ae599c7d2d1c30dddfd75afa7ca481895e92b0"
     },
     "loadout_classic": {
-      "class_hash": "0xc7c2103e72c4c6133977748f8fe0e0670e2c85c1bfd93c9c9d982d85216a05"
+      "class_hash": "0x69c47f18c8a64325247537144ccbdf1823f8f984e2d644aca1a21b48bdffa19"
     },
     "loadout_amma": {
-      "class_hash": "0x77a01154286fd510bbbf6fb1da20cf23d3a78778fe5746df6fb5fd54ace8411"
+      "class_hash": "0x2b0d31def92fbac25fed6f1553c5dae56ff942fc2f37f5dd895224cf989f11b"
     },
     "arena_credit": {
-      "class_hash": "0x26b5d0a6d692430dacf366aff536309a33bfbc4fc6d0b2f958182da528262b5"
+      "class_hash": "0x23309217115f95725c77df06dad219b3542072f118214ce17791f2d590bd506"
     },
     "arena_credit_purchase": {
       "class_hash": "0x4be30835b6c7e9bc04c7cb119eab8670da3f168c58ebe718b8e4fb5c7aeb799"
     },
     "arcade_classic": {
-      "class_hash": "0x2536ec1f6cacb5b01a9dd4b287f115fd925287a8940b20c5d41a71155b03447"
+      "class_hash": "0x2d92afcfc4b1dba0eec349df981afc89e52149b93ec9c723dce1fc3d56e990b"
     },
     "arcade_amma": {
-      "class_hash": "0x149d51a46eafa082ecddb0b000bb11ee63e0d6a98548f5794130138f951a590"
+      "class_hash": "0xeb516cbe17bff5b6c96d51942cc718fdea65cdffb5467bcb0cf52d9d16a7d6"
     },
     "pvp": {
-      "class_hash": "0x72b6ebf65ea9b34e472ff748a39ad3960ae9e8642f36b8fa8e36fba9845d9f7"
+      "class_hash": "0x2fc217811e4aca2e27ea2b72ac6547286df84f9e6764e227ca7de7028ea67a9"
     }
   },
   "contracts": {
@@ -359,18 +359,18 @@
       "class": "mock_vrf"
     },
     "attack_model": {
-      "contract_address": "0xa5c301b7dd2af26afae664f32ed5eddb9070e4e4f8c5be67ff9d4a09b9e40f",
-      "class_hash": "0x3c99f02b51064ebeedc0e9a7f40986218252ac4189cea3d9f5c510241374c3f",
+      "contract_address": "0x5bd64e5f58dbe9954c5c558b7c45c725f5a3607c2bc2ba6d546b53565cdcf9d",
+      "class_hash": "0x1e053e8df220cc146da92f3fcbac4cabdfffd46d99b524e2785226988425bc3",
       "class": "attack_model"
     },
     "round_result_model": {
-      "contract_address": "0x14d8b6d0b5e42ff57fa520c4fa7e051771a75f6d2f6dbab7a39d48d434fb66c",
-      "class_hash": "0x754632248c3b3c81adb60f4dcf833a3bbb7f7be65653cf55e403b72f4cab7e9",
+      "contract_address": "0x10e78ee257f09b0e9854c5d6e313e5a34e14ea011e4a6723ea218770c393ab3",
+      "class_hash": "0x17647f84236bfd3f45094f74214919db024ffce34d165df4fb7138269bb681e",
       "class": "round_result_model"
     },
     "arcade_round_result_model": {
-      "contract_address": "0x295ec8465ba3c72ed7848ead403e8dfeb7a72c88109b11096066d21559747f4",
-      "class_hash": "0x36488621dd3a45c943672b366cf432d825f09e399de5ed4b3bdd268fd789b8f",
+      "contract_address": "0x2d3d7eb3ed777d977d32336f126ec1261daedf1030b617a5f07b0c520158874",
+      "class_hash": "0x133290439bb99be00f1d8a3dd729ad655f45d45a4c9e7f4c077ce6b2f6c0a6d",
       "class": "arcade_round_result_model"
     },
     "arena_blobert": {
@@ -389,13 +389,13 @@
       "class": "amma_blobert_soulbound"
     },
     "arena_credit": {
-      "contract_address": "0x7e111d03984dc4c532b9df331d54ecef7c15fe18a6cc329e9c2c668bddc5f8a",
-      "class_hash": "0x26b5d0a6d692430dacf366aff536309a33bfbc4fc6d0b2f958182da528262b5",
+      "contract_address": "0x2f0483f13b47aaf1d9f3b20f1e36a90e84379b636eb7dbf50239f4905879ead",
+      "class_hash": "0x23309217115f95725c77df06dad219b3542072f118214ce17791f2d590bd506",
       "class": "arena_credit"
     },
     "attack": {
-      "contract_address": "0x34f53baf3082eda36c26d18bc795fca40ad0fb54dda2340d3e604d7a27db83c",
-      "class_hash": "0x33663fd6ad48136c4e2c7762a761184b8a0c8017683146a27dd265632c26cde",
+      "contract_address": "0x7fd9705fbbc27683af6cbde557a236287d3671196876b971d552ec692dd5bcf",
+      "class_hash": "0x79bd5d5d83b661e48eba43731ae599c7d2d1c30dddfd75afa7ca481895e92b0",
       "class": "attack"
     },
     "arena_blobert_minter": {
@@ -409,110 +409,37 @@
       "class": "amma_blobert_minter"
     },
     "arena_credit_purchase": {
-      "contract_address": "0x832837ca1e2a70597f54876944d9e1755b4434c2d514282941b8366660e3bd",
+      "contract_address": "0x1170fce0c715710b0d8233213c9f62354c8d9170b2a4c28ae555c3bb53c2c51",
       "class_hash": "0x4be30835b6c7e9bc04c7cb119eab8670da3f168c58ebe718b8e4fb5c7aeb799",
       "class": "arena_credit_purchase"
     },
     "loadout_classic": {
-      "contract_address": "0x47583d7615c5a15cf826f650995056147fe814aaed7bf1b9230811309024268",
-      "class_hash": "0xc7c2103e72c4c6133977748f8fe0e0670e2c85c1bfd93c9c9d982d85216a05",
+      "contract_address": "0x22157199325f8f4566a554dc9797b5c09c011a744c40627332630c2aa68798b",
+      "class_hash": "0x69c47f18c8a64325247537144ccbdf1823f8f984e2d644aca1a21b48bdffa19",
       "class": "loadout_classic"
     },
     "loadout_amma": {
-      "contract_address": "0x50cad6ac8b4a16f3e121dd9beeefee2906c3d042ffe316233332f7d3782a5d3",
-      "class_hash": "0x77a01154286fd510bbbf6fb1da20cf23d3a78778fe5746df6fb5fd54ace8411",
+      "contract_address": "0x139bd7f13bd57df444562c284c76a0c5dc27c421e8c0bdcc28fa6674c914c0d",
+      "class_hash": "0x2b0d31def92fbac25fed6f1553c5dae56ff942fc2f37f5dd895224cf989f11b",
       "class": "loadout_amma"
     },
     "arcade_classic": {
-      "contract_address": "0x45142755ac9af8401b6e666ef621a9611b54901061d2c1dd1e110faf3765516",
-      "class_hash": "0x2536ec1f6cacb5b01a9dd4b287f115fd925287a8940b20c5d41a71155b03447",
+      "contract_address": "0x3e476d986e4c8ac3a71ecd7ebc1f564963d245e9017062c0370acab5210dc61",
+      "class_hash": "0x2d92afcfc4b1dba0eec349df981afc89e52149b93ec9c723dce1fc3d56e990b",
       "class": "arcade_classic"
     },
     "arcade_amma": {
-      "contract_address": "0x755ddd8d645ce0af01b85e1c62480715b54b04db391b45ea42172240a65ca13",
-      "class_hash": "0x149d51a46eafa082ecddb0b000bb11ee63e0d6a98548f5794130138f951a590",
+      "contract_address": "0x17aac8e4d2431f56dffa643db2885edf040b40e43d75ede80a76e742a6996af",
+      "class_hash": "0xeb516cbe17bff5b6c96d51942cc718fdea65cdffb5467bcb0cf52d9d16a7d6",
       "class": "arcade_amma"
     },
     "pvp": {
-      "contract_address": "0x62462e6472fe0493cebbe41e1f6eaf20d6743bfa162da26a5b8c7433884a00d",
-      "class_hash": "0x72b6ebf65ea9b34e472ff748a39ad3960ae9e8642f36b8fa8e36fba9845d9f7",
+      "contract_address": "0x4c7aebdb417b8a3fb25e801e3fad2a5739cc0d3704342c64b6b5c7ef22d8cdc",
+      "class_hash": "0x2fc217811e4aca2e27ea2b72ac6547286df84f9e6764e227ca7de7028ea67a9",
       "class": "pvp"
     }
   },
-  "declarations": {
-    "mock_vrf": {
-      "class_hash": "0x301acbd969fe41d1dd0a3349a17db0e779d78644aa21d4ff6ef3f0d0498479f",
-      "transaction_hash": "0x434ca03ae9c228ada9a96d52037abf6a1323be8a7ee38acaf8e532c48abb681"
-    },
-    "attack_model": {
-      "class_hash": "0x3c99f02b51064ebeedc0e9a7f40986218252ac4189cea3d9f5c510241374c3f",
-      "transaction_hash": "0x5d1606db03c68edfe09c6b6ff7ed4fd6daccef52340d756085c393a92944d2a"
-    },
-    "round_result_model": {
-      "class_hash": "0x754632248c3b3c81adb60f4dcf833a3bbb7f7be65653cf55e403b72f4cab7e9",
-      "transaction_hash": "0x71b3df87dd0a11a60f18a5fa048a40968eb53228bd12f9d0dd6e752975c033a"
-    },
-    "arcade_round_result_model": {
-      "class_hash": "0x36488621dd3a45c943672b366cf432d825f09e399de5ed4b3bdd268fd789b8f",
-      "transaction_hash": "0x6ef2f2f8f43da33e16d3b692d42bb9cd477026aba898e78509b4a2a8d63696c"
-    },
-    "combat": {
-      "class_hash": "0x1b9bfeb05a5c4c74dc995c4f783d704c3902cd6493ed418b13a59cab65440c8",
-      "transaction_hash": "0x25ba4405f2427183d71e35e9732e165c3650ecb51bb5df1a76f8d9b74d0f5e4"
-    },
-    "arena_blobert": {
-      "class_hash": "0x68e1a185162ca428cf897e00150e80c19595c33ea56e1e4965c5dcbce6f84a6",
-      "transaction_hash": "0x6d50d546ab92fc89a60d0684fead924235e2be0993c98058a484c9d61fd31f0"
-    },
-    "arena_blobert_minter": {
-      "class_hash": "0x554878c5bfdc65e4b0fdc96583919df39e731c2ad5722fdb5a004801f739b9a",
-      "transaction_hash": "0x7d1566ee37063c290f217abb1a4ee6ce0cee5754cca264b2b06ac29bc027316"
-    },
-    "amma_blobert": {
-      "class_hash": "0x749e21e185194a71ebc027e805cd74490a735d7cddf4c8a59cd261ab2ba2357",
-      "transaction_hash": "0x53479f2752eec5e7af65bac06ce5688c59f8999ca9f52de4fce5573685e1d29"
-    },
-    "amma_blobert_soulbound": {
-      "class_hash": "0x4a66fa4bc436256252dd23e97bdba0d4e10163ea644b2eb3ce9d7b70010af44",
-      "transaction_hash": "0x7f2ab1e3452f4789e53c701452f625dd7c34de6f51db5a701181295b9d69839"
-    },
-    "amma_blobert_minter": {
-      "class_hash": "0x4bbd4269e9fc9b370a01bfc3a7cf8bc72eeee7206505ee10d9f593cd9e429f",
-      "transaction_hash": "0xffb504c2377290f19f7b98d4bbc81281f39cd2353c11a9e8367a984db0a47"
-    },
-    "attack": {
-      "class_hash": "0x33663fd6ad48136c4e2c7762a761184b8a0c8017683146a27dd265632c26cde",
-      "transaction_hash": "0x41da2ef136353c5f1b6639619689540d83a622edebe436d76f0a4c41c638c1c"
-    },
-    "loadout_classic": {
-      "class_hash": "0xc7c2103e72c4c6133977748f8fe0e0670e2c85c1bfd93c9c9d982d85216a05",
-      "transaction_hash": "0x6398f5ac8c45864c796891616c53d9966371045bc2ed09818f649783d556393"
-    },
-    "loadout_amma": {
-      "class_hash": "0x77a01154286fd510bbbf6fb1da20cf23d3a78778fe5746df6fb5fd54ace8411",
-      "transaction_hash": "0x2e4eae839a457342a48f1b58507684cee1c73fd5c007095f7ef6d08891531c2"
-    },
-    "arena_credit": {
-      "class_hash": "0x26b5d0a6d692430dacf366aff536309a33bfbc4fc6d0b2f958182da528262b5",
-      "transaction_hash": "0x37f6ed9a59c501d9dbe00181f28510cdeb01089f2f43345fdc309bc04d5aa35"
-    },
-    "arena_credit_purchase": {
-      "class_hash": "0x4be30835b6c7e9bc04c7cb119eab8670da3f168c58ebe718b8e4fb5c7aeb799",
-      "transaction_hash": "0x3ed2961de7cad3a2380d84d502616ea19742e6fc5f1b5449c222a2e44c13117"
-    },
-    "arcade_classic": {
-      "class_hash": "0x2536ec1f6cacb5b01a9dd4b287f115fd925287a8940b20c5d41a71155b03447",
-      "transaction_hash": "0x1c9bf5d6fefa1d2471da0abb3c76adc73654a1256718fe58a6d6df37bdd52a"
-    },
-    "arcade_amma": {
-      "class_hash": "0x149d51a46eafa082ecddb0b000bb11ee63e0d6a98548f5794130138f951a590",
-      "transaction_hash": "0x66f26c55d1278777a0b485ec9ecb2190221dfaee976161b6af1daabffa1f853"
-    },
-    "pvp": {
-      "class_hash": "0x72b6ebf65ea9b34e472ff748a39ad3960ae9e8642f36b8fa8e36fba9845d9f7",
-      "transaction_hash": "0x6219bab1cf625136be3e493a2971d7bfb10e8b29fca078e08ae13ebe5461635"
-    }
-  },
+  "declarations": {},
   "abis": {
     "0x68e1a185162ca428cf897e00150e80c19595c33ea56e1e4965c5dcbce6f84a6": [
       {
@@ -3220,7 +3147,7 @@
         ]
       }
     ],
-    "0x26b5d0a6d692430dacf366aff536309a33bfbc4fc6d0b2f958182da528262b5": [
+    "0x23309217115f95725c77df06dad219b3542072f118214ce17791f2d590bd506": [
       {
         "type": "impl",
         "name": "IArenaCreditsImpl",
@@ -3702,7 +3629,7 @@
         ]
       }
     ],
-    "0x33663fd6ad48136c4e2c7762a761184b8a0c8017683146a27dd265632c26cde": [
+    "0x79bd5d5d83b661e48eba43731ae599c7d2d1c30dddfd75afa7ca481895e92b0": [
       {
         "type": "impl",
         "name": "IAttackImpl",
@@ -3770,6 +3697,10 @@
         "type": "struct",
         "name": "ba_loadout::attributes::ResistanceMods",
         "members": [
+          {
+            "name": "stun",
+            "type": "core::integer::i8"
+          },
           {
             "name": "bludgeon",
             "type": "core::integer::i8"
@@ -3852,7 +3783,7 @@
           },
           {
             "name": "Health",
-            "type": "core::integer::i8"
+            "type": "core::integer::i16"
           },
           {
             "name": "Stun",
@@ -3876,6 +3807,10 @@
           },
           {
             "name": "Luck",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "StunResistance",
             "type": "core::integer::i8"
           },
           {
@@ -3931,6 +3866,10 @@
             "type": "core::integer::i8"
           },
           {
+            "name": "StunResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
             "name": "BludgeonResistanceTemp",
             "type": "core::integer::i8"
           },
@@ -3969,6 +3908,34 @@
           {
             "name": "Damage",
             "type": "ba_loadout::attack::effect::Damage"
+          },
+          {
+            "name": "SetHealth",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "FloorHealth",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "CeilHealth",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "HealthPercentMax",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "SetHealthPercentMax",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "FloorHealthPercentMax",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "CeilHealthPercentMax",
+            "type": "core::integer::u8"
           }
         ]
       },
@@ -5366,7 +5333,7 @@
         ]
       }
     ],
-    "0xc7c2103e72c4c6133977748f8fe0e0670e2c85c1bfd93c9c9d982d85216a05": [
+    "0x69c47f18c8a64325247537144ccbdf1823f8f984e2d644aca1a21b48bdffa19": [
       {
         "type": "impl",
         "name": "ILoadoutImpl",
@@ -5404,6 +5371,10 @@
           },
           {
             "name": "luck",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "stun_resistance",
             "type": "core::integer::u8"
           },
           {
@@ -5584,6 +5555,10 @@
             "type": "core::integer::i8"
           },
           {
+            "name": "stun_resistance",
+            "type": "core::integer::u8"
+          },
+          {
             "name": "bludgeon_resistance",
             "type": "core::integer::u8"
           },
@@ -5672,6 +5647,10 @@
         "name": "ba_loadout::attributes::ResistanceMods",
         "members": [
           {
+            "name": "stun",
+            "type": "core::integer::i8"
+          },
+          {
             "name": "bludgeon",
             "type": "core::integer::i8"
           },
@@ -5753,7 +5732,7 @@
           },
           {
             "name": "Health",
-            "type": "core::integer::i8"
+            "type": "core::integer::i16"
           },
           {
             "name": "Stun",
@@ -5777,6 +5756,10 @@
           },
           {
             "name": "Luck",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "StunResistance",
             "type": "core::integer::i8"
           },
           {
@@ -5832,6 +5815,10 @@
             "type": "core::integer::i8"
           },
           {
+            "name": "StunResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
             "name": "BludgeonResistanceTemp",
             "type": "core::integer::i8"
           },
@@ -5870,6 +5857,34 @@
           {
             "name": "Damage",
             "type": "ba_loadout::attack::effect::Damage"
+          },
+          {
+            "name": "SetHealth",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "FloorHealth",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "CeilHealth",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "HealthPercentMax",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "SetHealthPercentMax",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "FloorHealthPercentMax",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "CeilHealthPercentMax",
+            "type": "core::integer::u8"
           }
         ]
       },
@@ -6200,7 +6215,7 @@
         ]
       }
     ],
-    "0x77a01154286fd510bbbf6fb1da20cf23d3a78778fe5746df6fb5fd54ace8411": [
+    "0x2b0d31def92fbac25fed6f1553c5dae56ff942fc2f37f5dd895224cf989f11b": [
       {
         "type": "impl",
         "name": "ILoadoutImpl",
@@ -6238,6 +6253,10 @@
           },
           {
             "name": "luck",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "stun_resistance",
             "type": "core::integer::u8"
           },
           {
@@ -6426,6 +6445,10 @@
         "name": "ba_loadout::attributes::ResistanceMods",
         "members": [
           {
+            "name": "stun",
+            "type": "core::integer::i8"
+          },
+          {
             "name": "bludgeon",
             "type": "core::integer::i8"
           },
@@ -6507,7 +6530,7 @@
           },
           {
             "name": "Health",
-            "type": "core::integer::i8"
+            "type": "core::integer::i16"
           },
           {
             "name": "Stun",
@@ -6531,6 +6554,10 @@
           },
           {
             "name": "Luck",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "StunResistance",
             "type": "core::integer::i8"
           },
           {
@@ -6586,6 +6613,10 @@
             "type": "core::integer::i8"
           },
           {
+            "name": "StunResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
             "name": "BludgeonResistanceTemp",
             "type": "core::integer::i8"
           },
@@ -6624,6 +6655,34 @@
           {
             "name": "Damage",
             "type": "ba_loadout::attack::effect::Damage"
+          },
+          {
+            "name": "SetHealth",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "FloorHealth",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "CeilHealth",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "HealthPercentMax",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "SetHealthPercentMax",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "FloorHealthPercentMax",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "CeilHealthPercentMax",
+            "type": "core::integer::u8"
           }
         ]
       },
@@ -7025,7 +7084,7 @@
         ]
       }
     ],
-    "0x2536ec1f6cacb5b01a9dd4b287f115fd925287a8940b20c5d41a71155b03447": [
+    "0x2d92afcfc4b1dba0eec349df981afc89e52149b93ec9c723dce1fc3d56e990b": [
       {
         "type": "impl",
         "name": "IArcadeImpl",
@@ -7181,6 +7240,10 @@
             "type": "core::integer::u8"
           },
           {
+            "name": "stun_resistance",
+            "type": "core::integer::u8"
+          },
+          {
             "name": "bludgeon_resistance",
             "type": "core::integer::u8"
           },
@@ -7287,6 +7350,10 @@
         "name": "ba_loadout::attributes::ResistanceMods",
         "members": [
           {
+            "name": "stun",
+            "type": "core::integer::i8"
+          },
+          {
             "name": "bludgeon",
             "type": "core::integer::i8"
           },
@@ -7368,7 +7435,7 @@
           },
           {
             "name": "Health",
-            "type": "core::integer::i8"
+            "type": "core::integer::i16"
           },
           {
             "name": "Stun",
@@ -7392,6 +7459,10 @@
           },
           {
             "name": "Luck",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "StunResistance",
             "type": "core::integer::i8"
           },
           {
@@ -7447,6 +7518,10 @@
             "type": "core::integer::i8"
           },
           {
+            "name": "StunResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
             "name": "BludgeonResistanceTemp",
             "type": "core::integer::i8"
           },
@@ -7485,6 +7560,34 @@
           {
             "name": "Damage",
             "type": "ba_loadout::attack::effect::Damage"
+          },
+          {
+            "name": "SetHealth",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "FloorHealth",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "CeilHealth",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "HealthPercentMax",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "SetHealthPercentMax",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "FloorHealthPercentMax",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "CeilHealthPercentMax",
+            "type": "core::integer::u8"
           }
         ]
       },
@@ -7977,7 +8080,7 @@
         ]
       }
     ],
-    "0x149d51a46eafa082ecddb0b000bb11ee63e0d6a98548f5794130138f951a590": [
+    "0xeb516cbe17bff5b6c96d51942cc718fdea65cdffb5467bcb0cf52d9d16a7d6": [
       {
         "type": "impl",
         "name": "IArcadeImpl",
@@ -8091,6 +8194,10 @@
           {
             "name": "luck",
             "type": "core::integer::i8"
+          },
+          {
+            "name": "stun_resistance",
+            "type": "core::integer::u8"
           },
           {
             "name": "bludgeon_resistance",
@@ -8217,6 +8324,10 @@
         "name": "ba_loadout::attributes::ResistanceMods",
         "members": [
           {
+            "name": "stun",
+            "type": "core::integer::i8"
+          },
+          {
             "name": "bludgeon",
             "type": "core::integer::i8"
           },
@@ -8298,7 +8409,7 @@
           },
           {
             "name": "Health",
-            "type": "core::integer::i8"
+            "type": "core::integer::i16"
           },
           {
             "name": "Stun",
@@ -8322,6 +8433,10 @@
           },
           {
             "name": "Luck",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "StunResistance",
             "type": "core::integer::i8"
           },
           {
@@ -8377,6 +8492,10 @@
             "type": "core::integer::i8"
           },
           {
+            "name": "StunResistanceTemp",
+            "type": "core::integer::i8"
+          },
+          {
             "name": "BludgeonResistanceTemp",
             "type": "core::integer::i8"
           },
@@ -8415,6 +8534,34 @@
           {
             "name": "Damage",
             "type": "ba_loadout::attack::effect::Damage"
+          },
+          {
+            "name": "SetHealth",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "FloorHealth",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "CeilHealth",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "HealthPercentMax",
+            "type": "core::integer::i8"
+          },
+          {
+            "name": "SetHealthPercentMax",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "FloorHealthPercentMax",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "CeilHealthPercentMax",
+            "type": "core::integer::u8"
           }
         ]
       },
@@ -9017,7 +9164,7 @@
         ]
       }
     ],
-    "0x72b6ebf65ea9b34e472ff748a39ad3960ae9e8642f36b8fa8e36fba9845d9f7": [
+    "0x2fc217811e4aca2e27ea2b72ac6547286df84f9e6764e227ca7de7028ea67a9": [
       {
         "type": "impl",
         "name": "IPvpAdminImpl",

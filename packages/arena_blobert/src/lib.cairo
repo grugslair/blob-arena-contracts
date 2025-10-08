@@ -2,15 +2,56 @@ mod minter;
 use ba_blobert::TokenTraits;
 use starknet::ContractAddress;
 
+/// Main interface for Arena Blobert NFT holders
+///
+/// Provides core functionality for NFT owners to interact with their Arena Blobert tokens.
+/// These are soulbound NFTs used in the Blob Arena game system.
 #[starknet::interface]
 pub trait IArenaBlobert<TContractState> {
+    /// Burns an Arena Blobert NFT permanently
+    ///
+    /// Destroys the specified NFT, removing it from circulation permanently.
+    /// Only the token owner or someone approved can burn an NFT.
+    ///
+    /// # Arguments
+    /// * `token_id` - The unique identifier of the NFT to burn
     fn burn(ref self: TContractState, token_id: u256);
+
+    /// Retrieves the traits configuration for a specific Arena Blobert
+    ///
+    /// Returns the complete trait information that defines the NFT's characteristics,
+    /// including visual appearance and game mechanics properties.
+    ///
+    /// # Arguments
+    /// * `token_id` - The unique identifier of the NFT to query
+    ///
+    /// # Returns
+    /// * `TokenTraits` - Complete trait configuration (Seed or Custom variant)
     fn traits(self: @TContractState, token_id: u256) -> TokenTraits;
 }
 
 #[starknet::interface]
 trait IArenaBlobertAdmin<TContractState> {
+    /// Mints a new Arena Blobert NFT with specified traits
+    ///
+    /// Creates a new Arena Blobert NFT and assigns it to the specified owner.
+    /// The traits determine the NFT's visual appearance and game mechanics.
+    ///
+    /// # Arguments
+    /// * `owner` - The address that will receive the newly minted NFT
+    /// * `traits` - The trait configuration for the new NFT (Seed or Custom)
+    ///
+    /// # Returns
+    /// * `u256` - The token ID of the newly minted NFT
     fn mint(ref self: TContractState, owner: ContractAddress, traits: TokenTraits) -> u256;
+
+    /// Gets the total number of Arena Blobert NFTs that have been minted
+    ///
+    /// Returns the cumulative count of all NFTs created since contract deployment.
+    /// This count includes burned NFTs and represents total lifetime minting.
+    ///
+    /// # Returns
+    /// * `u256` - Total number of NFTs minted (including burned ones)
     fn total_minted(self: @TContractState) -> u256;
 }
 
