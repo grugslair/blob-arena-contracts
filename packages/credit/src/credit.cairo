@@ -165,6 +165,13 @@ pub fn arena_credit_consume(
 }
 
 
+pub fn arena_credit_consume_credits(
+    contract_address: ContractAddress, user: ContractAddress, credits: u128,
+) {
+    IArenaCreditsDispatcher { contract_address }.consume_credits(user, credits);
+}
+
+
 #[derive(Drop, Serde, Introspect)]
 struct ArenaCredit {
     energy: Energy,

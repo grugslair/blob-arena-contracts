@@ -60,6 +60,7 @@ mod arcade_classic {
     use ba_arcade::{IArcade, arcade_component};
     use ba_combat::systems::get_attack_dispatcher_address;
     use ba_loadout::attack::interface::maybe_create_attacks_array;
+    use ba_utils::vrf::vrf_component;
     use beacon_library::{ToriiTable, register_table_with_schema};
     use sai_ownable::{OwnableTrait, ownable_component};
     use sai_return::emit_return;
@@ -73,6 +74,7 @@ mod arcade_classic {
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
     component!(path: arcade_component, storage: arcade, event: ArcadeEvents);
+    component!(path: vrf_component, storage: vrf, event: VrfEvents);
 
     const ATTEMPT_HASH: felt252 = bytearrays_hash!("arcade_classic", "Attempt");
     const COMBAT_HASH: felt252 = bytearrays_hash!("arcade_classic", "Combat");
@@ -92,6 +94,8 @@ mod arcade_classic {
         ownable: ownable_component::Storage,
         #[substorage(v0)]
         arcade: arcade_component::Storage,
+        #[substorage(v0)]
+        vrf: vrf_component::Storage,
         opponents: Map<u32, Opponent>,
         stages_len: u32,
     }
@@ -103,6 +107,8 @@ mod arcade_classic {
         OwnableEvents: ownable_component::Event,
         #[flat]
         ArcadeEvents: arcade_component::Event,
+        #[flat]
+        VrfEvents: vrf_component::Event,
     }
 
     #[constructor]
@@ -112,8 +118,6 @@ mod arcade_classic {
         arcade_round_result_class_hash: ClassHash,
         attack_address: ContractAddress,
         loadout_address: ContractAddress,
-        credit_address: ContractAddress,
-        vrf_address: ContractAddress,
     ) {
         self.grant_owner(owner);
         ArcadeInternal::init(
@@ -122,14 +126,15 @@ mod arcade_classic {
             arcade_round_result_class_hash,
             attack_address,
             loadout_address,
-            credit_address,
-            vrf_address,
         );
         register_table_with_schema::<super::OpponentTable>("arcade_classic", "Opponent");
     }
 
     #[abi(embed_v0)]
     impl IOwnableImpl = ownable_component::OwnableImpl<ContractState>;
+
+    #[abi(embed_v0)]
+    impl IVrfImpl = vrf_component::VrfImpl<ContractState>;
 
     #[abi(embed_v0)]
     impl IArcadeImpl of IArcade<ContractState> {

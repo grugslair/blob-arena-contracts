@@ -124,6 +124,7 @@ mod arcade_amma {
     use ba_loadout::attack::maybe_create_attacks;
     use ba_loadout::attributes::AttributesCalcTrait;
     use ba_loadout::loadout_amma::{get_fighter_count, get_fighter_loadout};
+    use ba_utils::vrf::vrf_component;
     use ba_utils::{CapInto, Randomness, RandomnessTrait};
     use beacon_library::{ToriiTable, register_table_with_schema};
     use sai_core_utils::poseidon_hash_two;
@@ -139,6 +140,8 @@ mod arcade_amma {
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
     component!(path: arcade_component, storage: arcade, event: ArcadeEvents);
+    component!(path: vrf_component, storage: vrf, event: VrfEvents);
+
 
     const ROUND_HASH: felt252 = bytearrays_hash!("arcade_amma", "Round");
     const ATTEMPT_HASH: felt252 = bytearrays_hash!("arcade_amma", "Attempt");
@@ -160,6 +163,8 @@ mod arcade_amma {
         ownable: ownable_component::Storage,
         #[substorage(v0)]
         arcade: arcade_component::Storage,
+        #[substorage(v0)]
+        vrf: vrf_component::Storage,
         collectable_address: ContractAddress,
         gen_stages: u32,
         opponents: Map<u32, AmmaOpponent>,
@@ -175,6 +180,8 @@ mod arcade_amma {
         OwnableEvents: ownable_component::Event,
         #[flat]
         ArcadeEvents: arcade_component::Event,
+        #[flat]
+        VrfEvents: vrf_component::Event,
     }
 
     #[derive(Drop, Serde, Introspect)]
@@ -190,8 +197,6 @@ mod arcade_amma {
         arcade_round_result_class_hash: ClassHash,
         attack_address: ContractAddress,
         loadout_address: ContractAddress,
-        credit_address: ContractAddress,
-        vrf_address: ContractAddress,
         collectable_address: ContractAddress,
     ) {
         self.grant_owner(owner);
@@ -201,8 +206,6 @@ mod arcade_amma {
             arcade_round_result_class_hash,
             attack_address,
             loadout_address,
-            credit_address,
-            vrf_address,
         );
         register_table_with_schema::<StageOpponents>("arcade_amma", "StageOpponents");
         register_table_with_schema::<AmmaOpponent>("arcade_amma", "Opponent");
@@ -211,6 +214,9 @@ mod arcade_amma {
 
     #[abi(embed_v0)]
     impl IOwnableImpl = ownable_component::OwnableImpl<ContractState>;
+
+    #[abi(embed_v0)]
+    impl IVrfImpl = vrf_component::VrfImpl<ContractState>;
 
     #[abi(embed_v0)]
     impl IArcadeImpl of IArcade<ContractState> {

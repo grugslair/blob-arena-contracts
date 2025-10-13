@@ -41,6 +41,7 @@ try {
     throw Error("No owner");
   }
 } catch (e) {
+  await sai.executeAndWait(arenaBlobertMinter.populate("claim_free_tokens"));
   await sai.executeAndWait(arenaBlobertMinter.populate("mint"));
   console.log("Minted Arena Blobert");
 }

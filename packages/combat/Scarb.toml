@@ -22,8 +22,8 @@ dojo.workspace = true
 cubit.workspace = true
 beacon_entity.workspace = true
 beacon_macros.workspace = true
-ba_loadout = { path = "../loadout" }
-ba_utils = { path = "../utils" }
+ba_loadout.workspace = true
+ba_utils.workspace = true
 
 
 [[target.starknet-contract]]

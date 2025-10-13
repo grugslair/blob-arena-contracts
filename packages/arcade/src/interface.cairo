@@ -95,12 +95,6 @@ pub trait IArcadeSetup<TState> {
     /// * `ContractAddress` - Address of the credit/currency contract
     fn credit_address(self: @TState) -> ContractAddress;
 
-    /// Gets the address of the VRF (Verifiable Random Function) contract
-    ///
-    /// # Returns
-    /// * `ContractAddress` - Address of the VRF contract for randomness
-    fn vrf_address(self: @TState) -> ContractAddress;
-
     /// Gets the class hash of the combat contract used for battles
     ///
     /// # Returns
@@ -137,12 +131,6 @@ pub trait IArcadeSetup<TState> {
     /// * `energy` - New energy cost per attempt
     /// * `credit` - New credit cost per attempt
     fn set_cost(ref self: TState, energy: u64, credit: u128);
-
-    /// Sets the address of the VRF contract for randomness
-    ///
-    /// # Arguments
-    /// * `contract_address` - Address of the new VRF contract
-    fn set_vrf_address(ref self: TState, contract_address: ContractAddress);
 
     /// Sets the class hash of the combat contract implementation
     ///
