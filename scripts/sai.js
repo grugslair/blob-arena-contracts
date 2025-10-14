@@ -8,6 +8,8 @@ import {
   config,
   RPC,
   legacyDeployer,
+  selector,
+  events,
 } from "starknet";
 import {
   loadJson,
@@ -34,6 +36,11 @@ export const cmdOptions = [
 
 const successStates = ["RECEIVED", "ACCEPTED_ON_L2", "ACCEPTED_ON_L1"];
 
+const grantOwnerSelector = selector.getSelector("GrantContractOwner"); // 0x14d600693def062f67e727517605ba2b9a4acbc44deecc0a9b2b25cc2abee08
+const revokeOwnerSelector = selector.getSelector("RevokeContractOwner"); // 0x14f852a9e2a25e2cd101582cd0ca9f9904d36bf7ab5e8e07da20c57c2e6590d
+const grantWriterSelector = selector.getSelector("GrantContractWriter"); // 0x1042574016370d3278e2015c3d44515159afa8ad199ddec95bdd4c6222a41b0
+const revokeWriterSelector = selector.getSelector("RevokeContractWriter"); // 0x2cb500e28aa81a0df3d7e3993fbef9a3468045dcc9e7e888cec7f8864c7e8cb
+
 const valueIsSet = (val) =>
   val !== null && val !== undefined && val !== false && val !== "";
 const valueIfSet = (val, defaultValue) =>
@@ -48,6 +55,14 @@ export const readKeystorePK = async (
   let data = loadJson(keystorePath);
   data.address = accountAddress;
   return (await accounts.decrypt(data, password)).privateKey;
+};
+
+const getGrantRevokeCalls = (current, desired) => {
+  const desired_set = new Set(desired);
+  const current_set = new Set(current);
+  let toGrant = Array.from(desired_set.difference(current_set));
+  let toRevoke = Array.from(current_set.difference(desired_set));
+  return { toGrant, toRevoke };
 };
 
 const loadAccount = async (account, cmdOptions) => {
@@ -380,6 +395,67 @@ export class SaiProject {
         }
       )
     );
+  }
+
+  async getWritersInner(contractAddress) {
+    const permissions = {};
+    const events = await this.account.getEvents({
+      address: contractAddress,
+      keys: [[grantWriterSelector, revokeWriterSelector]],
+      chunk_size: 1000,
+    });
+    events.events.forEach(({ keys: [id, address] }) => {
+      if (id === grantWriterSelector) {
+        permissions[address] = true;
+      } else if (id === revokeWriterSelector) {
+        permissions[address] = false;
+      }
+    });
+    return new Set(
+      Object.entries(permissions)
+        .filter(([_, has]) => has)
+        .map(([address, _]) => address)
+    );
+  }
+
+  async getWriters(tags) {
+    return new Map(
+      (
+        await Promise.all(
+          tags.map((tag) =>
+            this.getWritersInner(this.contracts[tag].contract_address)
+          )
+        )
+      ).map((permissions, i) => [tags[i], permissions])
+    );
+  }
+
+  async setOnlyWritersCalls(permissionsMap) {
+    const currentWritersMap = await this.getWriters(
+      Object.keys(permissionsMap)
+    );
+    let calls = [];
+    for (const [tag, desiredWriters] of Object.entries(permissionsMap)) {
+      const currentWriters = currentWritersMap[tag] || [];
+      const { toGrant, toRevoke } = getGrantRevokeCalls(
+        currentWriters,
+        desiredWriters
+      );
+      let contract = await this.getContract(tag);
+      if (toGrant.length)
+        calls.push(
+          contract.populate("grant_contract_writers", {
+            writers: toGrant,
+          })
+        );
+      if (toRevoke.length)
+        calls.push(
+          contract.populate("revoke_contract_writers", {
+            writers: toRevoke,
+          })
+        );
+    }
+    return calls;
   }
 
   async grantOwnersCalls() {

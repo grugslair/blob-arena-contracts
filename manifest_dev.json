@@ -431,7 +431,80 @@
       "class": "pvp"
     }
   },
-  "declarations": {},
+  "declarations": {
+    "mock_vrf": {
+      "class_hash": "0x301acbd969fe41d1dd0a3349a17db0e779d78644aa21d4ff6ef3f0d0498479f",
+      "transaction_hash": "0x434ca03ae9c228ada9a96d52037abf6a1323be8a7ee38acaf8e532c48abb681"
+    },
+    "attack_model": {
+      "class_hash": "0x1e053e8df220cc146da92f3fcbac4cabdfffd46d99b524e2785226988425bc3",
+      "transaction_hash": "0x542430c55ddf424bcd6bb394e4e5b0e1c18518dcaa3aa7eb433f6314b0dd4c1"
+    },
+    "round_result_model": {
+      "class_hash": "0x17647f84236bfd3f45094f74214919db024ffce34d165df4fb7138269bb681e",
+      "transaction_hash": "0x57e83badd0967a405d5612dc82d92365a1436e7d388d34278994d1478dcd0fc"
+    },
+    "arcade_round_result_model": {
+      "class_hash": "0x133290439bb99be00f1d8a3dd729ad655f45d45a4c9e7f4c077ce6b2f6c0a6d",
+      "transaction_hash": "0x4c65c45a3d49bb200f5c2caec763e693908e0b101fe03d60533047ff2d02418"
+    },
+    "combat": {
+      "class_hash": "0x40791cfa5599204cffb231ccf04ac9b3fe8ddeded35ca7ede42d99f81dfc24f",
+      "transaction_hash": "0x49f4cbec316ec466f08925415c3d1deb30fff0d248c5aa2c5fcb8df40eecad8"
+    },
+    "arena_blobert": {
+      "class_hash": "0x2dce1d083c36359770cea55d1bc35548d254c4c0d2190f37ccdd0b154ef930d",
+      "transaction_hash": "0x7e6755489e77e2e5ac62c6f4cb315217cfe626e6deaf14b2af417651920bbb2"
+    },
+    "arena_blobert_minter": {
+      "class_hash": "0x764dd0b7161c25158d46ca66b95ff9398cb0adc7492b4b2ba89533f39e0ce7a",
+      "transaction_hash": "0x5e45657747277996a90649d92010f327ca0674fe19c2a219db42fb5c4cd200d"
+    },
+    "amma_blobert": {
+      "class_hash": "0x3c86b3ad9417d38323b25ca39a82075fc6d0172392785b5115613651388dcfc",
+      "transaction_hash": "0x9b727df587dc0fd76e06620f367b750515d2071fa865f712ea3d3002d77688"
+    },
+    "amma_blobert_soulbound": {
+      "class_hash": "0x736a2629969bf47f5ffb418673c0a963a2bd5b76be1c3d3b087cbecb4dec6fa",
+      "transaction_hash": "0x578caa17c2782aed6be368ad83dd80eab5972dd58e1167cdb654e8e39c0a68"
+    },
+    "amma_blobert_minter": {
+      "class_hash": "0x4bbd4269e9fc9b370a01bfc3a7cf8bc72eeee7206505ee10d9f593cd9e429f",
+      "transaction_hash": "0xffb504c2377290f19f7b98d4bbc81281f39cd2353c11a9e8367a984db0a47"
+    },
+    "attack": {
+      "class_hash": "0x49b467ec1c20108e5ef0f6b3e6faf84bc9a24fee9c1a7eb1d6b1ee58d90e8e7",
+      "transaction_hash": "0x47944801e521c6acbaed189b2f9c1cc59a203203bf94b46fc73194568b0c9f5"
+    },
+    "loadout_classic": {
+      "class_hash": "0x69c47f18c8a64325247537144ccbdf1823f8f984e2d644aca1a21b48bdffa19",
+      "transaction_hash": "0x5ccf9574548901993b27b16eca75461c89f3e24223cb357a5985980e42386d7"
+    },
+    "loadout_amma": {
+      "class_hash": "0x2b0d31def92fbac25fed6f1553c5dae56ff942fc2f37f5dd895224cf989f11b",
+      "transaction_hash": "0x66db6483ff26961f8f79b7a3b3c7cae698216322fc6e84e4e1dcd4e4ee15b64"
+    },
+    "arena_credit": {
+      "class_hash": "0x29eb7b4a082ebcef9bc97a5fcc6e109414975c4cc5d5db1e31de82d52a94cc0",
+      "transaction_hash": "0x7576e67d568b22d7ca1f929c802af9a1bda17912bf2c4199061a921a3d994ac"
+    },
+    "arena_credit_purchase": {
+      "class_hash": "0x4be30835b6c7e9bc04c7cb119eab8670da3f168c58ebe718b8e4fb5c7aeb799",
+      "transaction_hash": "0x3ed2961de7cad3a2380d84d502616ea19742e6fc5f1b5449c222a2e44c13117"
+    },
+    "arcade_classic": {
+      "class_hash": "0x32251ca0e36e8c2da90f82ad1110d9d1d1578b376a2c0bb5f7ba95d5909a857",
+      "transaction_hash": "0x34723c2d90e56bce7bad7b8704982ff99fc8a05c80097ae93f49c486bf1b1ec"
+    },
+    "arcade_amma": {
+      "class_hash": "0x2a1c451c03e2385ebcf7949a8d2c3095c8ad486e0533a57603af0a709616689",
+      "transaction_hash": "0x6ac6b6ea8869e8ae9d07850da183c2641aefe9ce05213237bb763aad952fea5"
+    },
+    "pvp": {
+      "class_hash": "0x2fc217811e4aca2e27ea2b72ac6547286df84f9e6764e227ca7de7028ea67a9",
+      "transaction_hash": "0x3214d7409d4912841e1333680fca809349aa8584c3950fea21ff56a1c359ed1"
+    }
+  },
   "abis": {
     "0x2dce1d083c36359770cea55d1bc35548d254c4c0d2190f37ccdd0b154ef930d": [
       {
