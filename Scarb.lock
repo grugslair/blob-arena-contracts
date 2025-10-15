@@ -54,6 +54,7 @@ dependencies = [
  "ba_combat",
  "ba_credit",
  "ba_loadout",
+ "ba_orbs",
  "ba_utils",
  "beacon_entity",
  "beacon_library",
@@ -174,6 +175,7 @@ dependencies = [
 name = "ba_orbs"
 version = "0.15.0"
 dependencies = [
+ "ba_utils",
  "beacon_entity",
  "beacon_library",
  "beacon_macros",
@@ -182,9 +184,6 @@ dependencies = [
  "openzeppelin_access",
  "openzeppelin_introspection",
  "openzeppelin_token",
- "openzeppelin_upgrades",
- "sai_access",
- "sai_return",
  "sai_token",
 ]
 
@@ -264,6 +263,7 @@ dependencies = [
  "ba_combat",
  "ba_credit",
  "ba_loadout",
+ "ba_orbs",
  "ba_pvp",
  "ba_utils",
 ]

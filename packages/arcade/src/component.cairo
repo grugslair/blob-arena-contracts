@@ -30,9 +30,10 @@ pub mod arcade_component {
     use ba_combat::combat::AttackCheck;
     use ba_combat::combatant::get_max_health_percent;
     use ba_combat::systems::{get_attack_dispatcher, set_attack_dispatcher_address};
-    use ba_combat::{CombatantState, library_run_round};
+    use ba_combat::{Action, CombatantState, library_run_round};
     use ba_credit::arena_credit_consume;
     use ba_loadout::get_loadout;
+    use ba_orbs::OrbTrait;
     use ba_utils::vrf::{HasVrfComponent, VrfTrait};
     use ba_utils::{Randomness, erc721_token_hash, uuid};
     use beacon_library::{
@@ -60,6 +61,7 @@ pub mod arcade_component {
         pub health_regen_percent: u8,
         pub current_attempt: Map<felt252, felt252>,
         pub loadout_address: ContractAddress,
+        pub orb_address: ContractAddress,
         pub credit_address: ContractAddress,
         pub credit_cost: u128,
         pub energy_cost: u64,
@@ -142,6 +144,7 @@ pub mod arcade_component {
     }
 
     mod internal_trait {
+        use ba_combat::Action;
         use ba_utils::Randomness;
         use starknet::{ClassHash, ContractAddress};
         use crate::Opponent;
@@ -162,8 +165,8 @@ pub mod arcade_component {
                 attack_slots: Array<Array<felt252>>,
             ) -> (AttemptNodePath, felt252, ContractAddress);
 
-            fn attack_attempt(
-                ref self: TState, attempt_id: felt252, attack_id: felt252,
+            fn act_attempt(
+                ref self: TState, attempt_id: felt252, action: Action,
             ) -> (AttemptNodePath, ArcadeAttackResult, Randomness);
 
             fn respawn_attempt(
@@ -257,8 +260,8 @@ pub mod arcade_component {
             (attempt_ptr, attempt_id, loadout_address)
         }
 
-        fn attack_attempt(
-            ref self: ComponentState<TContractState>, attempt_id: felt252, attack_id: felt252,
+        fn act_attempt(
+            ref self: ComponentState<TContractState>, attempt_id: felt252, action: Action,
         ) -> (AttemptNodePath, ArcadeAttackResult, Randomness) {
             let mut attempt_ptr = self.attempts.entry(attempt_id);
 
@@ -279,6 +282,23 @@ pub mod arcade_component {
             let player_state_ptr = combat_node.player_state;
             let opponent_state_ptr = combat_node.opponent_state;
 
+            let (attack_id, check) = match action {
+                Action::None => (0, AttackCheck::None),
+                Action::Attack(attack_id) => (
+                    attack_id, AttackCheck::Cooldown(attempt_ptr.attacks_available.read(attack_id)),
+                ),
+                Action::Orb(orb_id) => (
+                    self
+                        .orb_address
+                        .read()
+                        .try_use_owners_charge_cost(
+                            attempt_ptr.player.read(), orb_id.try_into().unwrap(),
+                        )
+                        .unwrap_or(0),
+                    AttackCheck::None,
+                ),
+            };
+
             let opponent_attack = combat_node
                 .get_opponent_attack(attack_dispatcher, round, ref randomness);
             let (result, mut randomness) = library_run_round(
@@ -289,7 +309,7 @@ pub mod arcade_component {
                 opponent_state_ptr.read(),
                 attack_id,
                 opponent_attack,
-                AttackCheck::Cooldown(attempt_ptr.attacks_available.read(attack_id)),
+                check,
                 AttackCheck::None,
                 attack_dispatcher,
                 randomness,

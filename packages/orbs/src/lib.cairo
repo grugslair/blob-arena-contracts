@@ -1,20 +1,21 @@
 use core::num::traits::Zero;
+use openzeppelin_token::erc721::{ERC721ABIDispatcher, ERC721ABIDispatcherTrait};
 use starknet::ContractAddress;
+mod minter;
 
 #[derive(Drop, Copy, Serde, Introspect, PartialEq, Default, starknet::Store)]
-enum Rarity {
+pub enum Rarity {
     #[default]
     None,
     Common,
     Rare,
     Epic,
     Legendary,
-    Chaotic,
 }
 
 
 #[derive(Drop, Copy, Serde, Introspect, PartialEq)]
-enum Role {
+pub enum Role {
     Owner,
     Minter,
     Charger,
@@ -41,21 +42,40 @@ pub trait IOrbAdmin<TContractState> {
     ) -> u256;
     fn add_charge_cost(ref self: TContractState, token_id: u256);
     fn add_charge_amount(ref self: TContractState, token_id: u256, amount: u128);
-    fn try_use_charge_cost(ref self: TContractState, token_id: u256) -> bool;
-    fn try_use_charge_amount(ref self: TContractState, token_id: u256, amount: u128) -> bool;
+    fn try_use_charge_cost(ref self: TContractState, token_id: u256) -> Option<felt252>;
+    fn try_use_charge_amount(
+        ref self: TContractState, token_id: u256, amount: u128,
+    ) -> Option<felt252>;
     fn grant_role(ref self: TContractState, user: ContractAddress, role: Role);
     fn revoke_role(ref self: TContractState, user: ContractAddress, role: Role);
     fn has_role(self: @TContractState, user: ContractAddress, role: Role) -> bool;
 }
 
+#[generate_trait]
+pub impl OrbImpl of OrbTrait {
+    fn try_use_owners_charge_cost(
+        self: ContractAddress, user: ContractAddress, token_id: u256,
+    ) -> Option<felt252> {
+        if (ERC721ABIDispatcher { contract_address: self }.owner_of(token_id) == user) {
+            IOrbAdminDispatcher { contract_address: self }.try_use_charge_cost(token_id)
+        } else {
+            None
+        }
+    }
 
-#[derive(Drop, Serde, Introspect)]
-pub struct Orb {
-    attack: felt252,
-    charge: u128,
-    rarity: Rarity,
-    charge_cost: u128,
+    fn mint(
+        self: ContractAddress,
+        owner: ContractAddress,
+        attack: felt252,
+        charge: u128,
+        charge_cost: u128,
+        rarity: Rarity,
+    ) -> u256 {
+        IOrbAdminDispatcher { contract_address: self }
+            .mint(owner, attack, charge, charge_cost, rarity)
+    }
 }
+
 
 pub fn downcast_id(id: u256) -> felt252 {
     assert(id.is_non_zero(), 'ID cannot be zero');
@@ -63,7 +83,7 @@ pub fn downcast_id(id: u256) -> felt252 {
 }
 
 #[starknet::contract]
-mod orbs {
+pub mod orbs {
     use beacon_library::{ToriiTable, register_table_with_schema};
     use core::num::traits::Zero;
     use openzeppelin_introspection::src5::SRC5Component;
@@ -76,7 +96,7 @@ mod orbs {
     };
     use starknet::{ContractAddress, get_caller_address};
     use crate::Role;
-    use super::{IOrb, IOrbAdmin, Orb, Rarity, downcast_id};
+    use super::{IOrb, IOrbAdmin, Rarity, downcast_id};
 
     component!(path: ERC721Component, storage: erc721, event: ERC721Event);
     component!(path: SRC5Component, storage: src5, event: SRC5Event);
@@ -98,6 +118,15 @@ mod orbs {
         #[key]
         user: ContractAddress,
     }
+
+    #[derive(Drop, Serde, Introspect)]
+    pub struct Orb {
+        attack: felt252,
+        charge: u128,
+        rarity: Rarity,
+        charge_cost: u128,
+    }
+
 
     #[storage]
     struct Storage {
@@ -192,16 +221,17 @@ mod orbs {
             self.increase_token_charge(downcast_id(token_id), amount);
         }
 
-        fn try_use_charge_cost(ref self: ContractState, token_id: u256) -> bool {
+        fn try_use_charge_cost(ref self: ContractState, token_id: u256) -> Option<felt252> {
             self.assert_caller_has_role(Role::Consumer);
             let token_id = downcast_id(token_id);
-            self.decrease_token_charge(token_id, self.charge_costs.read(token_id))
+            self.try_use_charge(token_id, self.charge_costs.read(token_id))
         }
 
-        fn try_use_charge_amount(ref self: ContractState, token_id: u256, amount: u128) -> bool {
+        fn try_use_charge_amount(
+            ref self: ContractState, token_id: u256, amount: u128,
+        ) -> Option<felt252> {
             self.assert_caller_has_role(Role::Consumer);
-            let token_id = downcast_id(token_id);
-            self.decrease_token_charge(token_id, amount)
+            self.try_use_charge(downcast_id(token_id), amount)
         }
 
         fn grant_role(ref self: ContractState, user: ContractAddress, role: Role) {
@@ -321,6 +351,16 @@ mod orbs {
                 token_charge.write(new_charge);
                 OrbTable::set_member(selector!("charge"), token_id, @new_charge);
                 true
+            }
+        }
+
+        fn try_use_charge(
+            ref self: ContractState, token_id: felt252, amount: u128,
+        ) -> Option<felt252> {
+            if self.decrease_token_charge(token_id, amount) {
+                Some(self.attacks.read(token_id))
+            } else {
+                None
             }
         }
     }
