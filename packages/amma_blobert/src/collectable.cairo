@@ -42,7 +42,6 @@ mod amma_blobert {
     use openzeppelin_introspection::src5::SRC5Component;
     use openzeppelin_token::erc721::interface::IERC721_METADATA_ID;
     use openzeppelin_token::erc721::{ERC721Component, ERC721HooksEmptyImpl};
-    use openzeppelin_upgrades::UpgradeableComponent;
     use sai_access::{AccessTrait, access_component};
     use sai_token::erc721::{ERC721MetadataInfo, metadata_impl};
     use starknet::ContractAddress;
@@ -54,7 +53,6 @@ mod amma_blobert {
 
     component!(path: ERC721Component, storage: erc721, event: ERC721Event);
     component!(path: SRC5Component, storage: src5, event: SRC5Event);
-    component!(path: UpgradeableComponent, storage: upgradeable, event: UpgradeableEvent);
     component!(path: access_component, storage: access, event: AccessEvents);
 
     const TOKEN_TABLE_ID: felt252 = bytearrays_hash!("amma_blobert", "Fighter");
@@ -68,8 +66,6 @@ mod amma_blobert {
         #[substorage(v0)]
         src5: SRC5Component::Storage,
         #[substorage(v0)]
-        upgradeable: UpgradeableComponent::Storage,
-        #[substorage(v0)]
         access: access_component::Storage,
         token_fighters: Map<u128, u32>,
         tokens_minted: u128,
@@ -82,8 +78,6 @@ mod amma_blobert {
         ERC721Event: ERC721Component::Event,
         #[flat]
         SRC5Event: SRC5Component::Event,
-        #[flat]
-        UpgradeableEvent: UpgradeableComponent::Event,
         #[flat]
         AccessEvents: access_component::Event,
     }
@@ -145,7 +139,6 @@ mod amma_blobert {
 
 
     impl ERC721InternalImpl = ERC721Component::InternalImpl<ContractState>;
-    impl UpgradeableInternalImpl = UpgradeableComponent::InternalImpl<ContractState>;
     impl SRC5InternalImpl = SRC5Component::InternalImpl<ContractState>;
 
 

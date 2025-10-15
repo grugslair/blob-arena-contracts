@@ -1,0 +1,40 @@
+[package]
+name = "ba_orbs"
+version.workspace = true
+edition.workspace = true
+cairo-version.workspace = true
+scarb-version.workspace = true
+experimental-features = ["associated_item_constraints"]
+
+
+[tool]
+fmt.workspace = true
+scarb.workspace = true
+
+[cairo]
+sierra-replace-ids = true
+
+[dependencies]
+dojo_macros.workspace = true
+dojo.workspace = true
+openzeppelin_access.workspace = true
+openzeppelin_introspection.workspace = true
+openzeppelin_token.workspace = true
+openzeppelin_upgrades.workspace = true
+sai_access.workspace = true
+sai_token.workspace = true
+sai_return.workspace = true
+starknet.workspace = true
+beacon_macros.workspace = true
+beacon_library.workspace = true
+beacon_entity.workspace = true
+
+[[target.starknet-contract]]
+allowed-libfuncs-list.name = "experimental"
+sierra = true
+casm = true
+
+[dev-dependencies]
+# dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.6.0-alpha.2" }
+
+[lib]
