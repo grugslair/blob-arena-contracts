@@ -106,11 +106,11 @@ export class AccountManifest {
       this.dojo_toml.env.account_address,
       password
     );
-    this.account = new Account(
-      { nodeUrl: this.dojo_toml.env.rpc_url },
-      this.dojo_toml.env.account_address,
-      privateKey
-    );
+    this.account = new Account({
+      provider: { nodeUrl: this.dojo_toml.env.rpc_url },
+      address: this.dojo_toml.env.account_address,
+      signer: privateKey,
+    });
   }
 
   getContract(tag) {
@@ -118,12 +118,13 @@ export class AccountManifest {
       return this.contracts[tag];
     } else {
       const data = getContractFromManifest(this.manifest, tag);
+      console.log(data);
       if (data) {
-        this.contracts[tag] = new Contract(
-          data.abi,
-          data.address,
-          this.account
-        );
+        this.contracts[tag] = new Contract({
+          abi: data.abi,
+          address: data.address,
+          providerOrAccount: this.account,
+        });
         return this.contracts[tag];
       } else {
         throw new Error(`Contract ${tag} not found in manifest`);

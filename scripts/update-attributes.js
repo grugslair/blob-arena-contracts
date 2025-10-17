@@ -202,10 +202,9 @@ export const makeAmmaBlobertCalls = async (account_manifest) => {
 
 const main = async () => {
   const account_manifest = await loadAccountManifestFromCmdArgs();
-
   const calls_metas = [
-    ...(await makeClassicBlobertSeedCalls(account_manifest)),
-    ...(await makeClassicBlobertCustomCalls(account_manifest)),
+    // ...(await makeClassicBlobertSeedCalls(account_manifest)),
+    // ...(await makeClassicBlobertCustomCalls(account_manifest)),
     ...(await makeAmmaBlobertCalls(account_manifest)),
   ];
   for (const calls_metas_batch of batchCalls(calls_metas, 70)) {
