@@ -62,9 +62,27 @@ pub trait IPvp<TContractState> {
     ///
     fn reject_response(ref self: TContractState, id: felt252);
 
+    /// ## commit
+    /// Commits to an action for the current round (Only 1 player commits per round)
+    /// * `id` - ID of the PvP combat
+    /// * `player` - Player committing the action
+    /// * `hash` - Hash of the action and salt [salt, action...]
     fn commit(ref self: TContractState, id: felt252, player: Player, hash: felt252);
+    /// ## reveal
+    /// Reveals the committed action for the current round
+    ///     Player that did not commit reveals first, then the committing player
+    /// * `id` - ID of the PvP combat
+    /// * `player` - Player revealing the action
+    /// * `action` - The action being revealed
+    /// * `salt` - The salt used in the original hash
     fn reveal(ref self: TContractState, id: felt252, player: Player, action: Action, salt: felt252);
+    /// ## forfeit
+    ///  Forfeits the current PvP combat, conceding victory to the opponent
+    /// * `id` - ID of the PvP combat
+    /// * `player` - Player forfeiting the combat
     fn forfeit(ref self: TContractState, id: felt252, player: Player);
+    /// ## kick_player
+    /// Kicks a player for inactivity after timeout, conceding victory to the opponent
     fn kick_player(ref self: TContractState, id: felt252);
 }
 
