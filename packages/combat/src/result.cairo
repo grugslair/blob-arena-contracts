@@ -4,15 +4,17 @@ use crate::Player;
 
 
 /// Represents the possible outcomes of an attack action in the game
+///
 /// # Variants
-/// * `Failed` - The attack attempt failed completely (attack not available or cooled down)
-/// * `Stunned` - The attacker was stunned and couldn't complete the attack
-/// * `Miss` - The attack missed, contains array of effect results
-/// * `Hit` - The attack successfully hit, contains array of effect results
+/// * `NotAvailable` - The attack is not available (e.g., on cooldown, invalid selection)
+/// * `Stunned` - The attacker was stunned and couldn't execute the attack
+/// * `Success` - The attack succeeded, contains array of effect results from the attack
+/// * `Fail` - The attack failed, contains array of effect results from the attack
+/// results
 #[derive(Drop, Serde, Introspect, Default)]
 pub enum AttackResult {
     #[default]
-    Failed,
+    NotAvailable,
     Stunned,
     Success: Array<EffectResult>,
     Fail: Array<EffectResult>,
@@ -30,10 +32,62 @@ pub struct EffectResult {
 }
 
 
-/// Represents the possible outcomes or effects of an action in the game.
+/// Represents the possible outcomes or effects of an action in the game
+///
 /// # Variants
-/// * `Applied` - The effect was successfully applied
-/// * `Damage` - A complex damage result containing damage type and amount
+/// ## Basic Results
+/// * `None` - No effect was applied
+/// * `Applied` - A generic effect was successfully applied such as a DoT effect
+/// * `Damage` - Damage was dealt, contains damage calculation details
+///
+/// ## Permanent Attribute Changes
+
+/// * `Strength` - Strength was permanently modified
+/// * `Vitality` - Vitality was permanently modified, includes health changes
+/// * `Dexterity` - Dexterity was permanently modified
+/// * `Luck` - Luck was permanently modified
+/// * `Abilities` - All the abilities were modified
+///
+/// ## Resistance/Vulnerability Changes
+/// * `StunResistance` - Stun resistance was permanently modified
+/// * `BludgeonResistance` - Bludgeon resistance was permanently modified
+/// * `MagicResistance` - Magic resistance was permanently modified
+/// * `PierceResistance` - Pierce resistance was permanently modified
+/// * `BludgeonVulnerability` - Bludgeon vulnerability was permanently modified
+/// * `MagicVulnerability` - Magic vulnerability was permanently modified
+/// * `PierceVulnerability` - Pierce vulnerability was permanently modified
+/// * `Resistances` - Multiple resistances were modified
+/// * `Vulnerabilities` - Multiple vulnerabilities were modified
+///
+/// ## Temporary Modifiers
+/// * `StrengthTemp` - Temporary strength modifier applied
+/// * `VitalityTemp` - Temporary vitality modifier applied, includes health changes
+/// * `DexterityTemp` - Temporary dexterity modifier applied
+/// * `LuckTemp` - Temporary luck modifier applied
+/// * `StunResistanceTemp` - Temporary stun resistance modifier applied
+/// * `BludgeonResistanceTemp` - Temporary bludgeon resistance modifier applied
+/// * `MagicResistanceTemp` - Temporary magic resistance modifier applied
+/// * `PierceResistanceTemp` - Temporary pierce resistance modifier applied
+/// * `BludgeonVulnerabilityTemp` - Temporary bludgeon vulnerability modifier applied
+/// * `MagicVulnerabilityTemp` - Temporary magic vulnerability modifier applied
+/// * `PierceVulnerabilityTemp` - Temporary pierce vulnerability modifier applied
+/// * `AbilitiesTemp` - Multiple temporary ability modifiers applied
+/// * `ResistancesTemp` - Multiple temporary resistance modifiers applied
+/// * `VulnerabilitiesTemp` - Multiple temporary vulnerability modifiers applied
+///
+/// ## Special Effects
+/// * `Stun` - Stun chance effect was applied
+/// * `Block` - Block effect applied with specified strength
+///
+/// ## Health Manipulation
+/// * `Health` - Health was permanently modified
+/// * `SetHealth` - Health was set to a specific value
+/// * `FloorHealth` - Health was set to minimum of current or specified value
+/// * `CeilHealth` - Health was set to maximum of current or specified value
+/// * `HealthPercentMax` - Health was modified by percentage of max health
+/// * `SetHealthPercentMax` - Health was set to percentage of max health
+/// * `FloorHealthPercentMax` - Health floored to percentage of max health
+/// * `CeilHealthPercentMax` - Health capped to percentage of max health
 #[derive(Drop, Serde, PartialEq, Introspect)]
 pub enum AffectResult {
     None,
@@ -80,6 +134,8 @@ pub enum AffectResult {
 }
 
 /// Represents the result of a damage calculation
+///
+/// # Fields
 /// * `hp` - The amount of damage dealt
 /// * `critical` - Whether the damage was a critical hit
 #[derive(Drop, Serde, PartialEq, Introspect)]
@@ -88,18 +144,36 @@ pub struct DamageResult {
     pub critical: bool,
 }
 
+/// Represents the result of applying a vitality effect
+///
+/// # Fields
+/// * `vitality` - The new vitality value after effect application
+/// * `health` - The health change resulting from the vitality modification
 #[derive(Drop, Serde, Copy, PartialEq, Introspect, Default)]
 pub struct VitalityResult {
     pub vitality: u8,
     pub health: u8,
 }
 
+/// Represents the result of applying a temporary vitality modifier
+///
+/// # Fields
+/// * `vitality` - The temporary vitality modifier applied (can be negative)
+/// * `health` - The health change resulting from the temporary vitality modification
 #[derive(Drop, Serde, Copy, PartialEq, Introspect, Default)]
 pub struct VitalityTempResult {
     pub vitality: i8,
     pub health: u8,
 }
 
+/// Represents the result of applying permanent ability score changes
+///
+/// # Fields
+/// * `strength` - The new strength value after effect application
+/// * `vitality` - The new vitality value after effect application
+/// * `dexterity` - The new dexterity value after effect application
+/// * `luck` - The new luck value after effect application
+/// * `health` - The health change resulting from ability modifications
 #[derive(Drop, Serde, Copy, PartialEq, Introspect, Default)]
 pub struct AbilitiesResult {
     pub strength: u8,
@@ -109,6 +183,14 @@ pub struct AbilitiesResult {
     pub health: u8,
 }
 
+/// Represents the result of applying temporary ability score modifiers
+///
+/// # Fields
+/// * `strength` - The temporary strength modifier applied (can be negative)
+/// * `vitality` - The temporary vitality modifier applied (can be negative)
+/// * `dexterity` - The temporary dexterity modifier applied (can be negative)
+/// * `luck` - The temporary luck modifier applied (can be negative)
+/// * `health` - The health change resulting from temporary ability modifications
 #[derive(Drop, Serde, Copy, PartialEq, Introspect, Default)]
 pub struct AbilitiesTempResult {
     pub strength: i8,
@@ -118,6 +200,12 @@ pub struct AbilitiesTempResult {
     pub health: u8,
 }
 
+/// Represents the result of a round effect application
+///
+/// # Fields
+/// * `source` - The player who initiated the effect
+/// * `target` - The player who received the effect
+/// * `affect` - The result of applying the effect
 #[derive(Drop, Serde, PartialEq, Introspect)]
 pub struct RoundEffectResult {
     pub source: Player,

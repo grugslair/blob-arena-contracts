@@ -26,10 +26,11 @@ dojo.workspace = true
 beacon_library.workspace = true
 beacon_macros.workspace = true
 beacon_entity.workspace = true
-ba_loadout = { path = "../loadout" }
-ba_combat = { path = "../combat" }
-ba_utils = { path = "../utils" }
-ba_credit = { path = "../credit" }
+ba_loadout.workspace = true
+ba_combat.workspace = true
+ba_utils.workspace = true
+ba_credit.workspace = true
+ba_orbs.workspace = true
 
 [[target.starknet-contract]]
 allowed-libfuncs-list.name = "experimental"

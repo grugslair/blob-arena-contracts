@@ -25,8 +25,6 @@ await sai.executeAndWait(
 );
 console.log("Added credits");
 
-await ammaBlobertContract.owner_of(ammaToken);
-
 try {
   const maybeOwner = await ammaBlobertContract.owner_of(ammaToken);
   if (!maybeOwner) {
@@ -43,7 +41,8 @@ try {
     throw Error("No owner");
   }
 } catch (e) {
-  await sai.executeWithReturn(arenaBlobertMinter.populate("mint"));
+  await sai.executeAndWait(arenaBlobertMinter.populate("claim_free_tokens"));
+  await sai.executeAndWait(arenaBlobertMinter.populate("mint"));
   console.log("Minted Arena Blobert");
 }
 const ammaAttackId = (
@@ -103,7 +102,7 @@ while (true) {
     console.log(`Amma attack ${n} executed`);
     n++;
   } catch (e) {
-    console.error("Error during amma attack:", e);
+    console.error("Error during amma attack:");
     break;
   }
 }
@@ -121,7 +120,7 @@ while (true) {
     console.log(`Classic attack ${n} executed`);
     n++;
   } catch (e) {
-    console.error("Error during classic attack:", e);
+    console.error("Error during classic attack:");
     break;
   }
 }

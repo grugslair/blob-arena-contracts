@@ -124,6 +124,60 @@ const D_TYPE_BLUDGEON_PACKING_BITS: u32 = D_TYPE_BLUDGEON_N * SHIFT_2B_U32;
 const D_TYPE_MAGIC_PACKING_BITS: u32 = D_TYPE_MAGIC_N * SHIFT_2B_U32;
 const D_TYPE_PIERCE_PACKING_BITS: u32 = D_TYPE_PIERCE_N * SHIFT_2B_U32;
 
+/// Represents the different types of effects that can be applied to combatants
+///
+/// # Variants
+/// ## Basic Effects
+/// * `None` - No effect is applied
+/// * `Health` - Modifies health by the specified amount (positive for healing, negative for damage)
+/// * `Stun` - Applies stun effect for the specified number of turns
+/// * `Block` - Applies block effect with the specified strength
+/// * `Damage` - Deals damage with specified power, critical chance, and damage type
+///
+/// ## Permanent Attribute Modifications
+/// * `Strength` - Permanently modifies strength attribute
+/// * `Vitality` - Permanently modifies vitality attribute
+/// * `Dexterity` - Permanently modifies dexterity attribute
+/// * `Luck` - Permanently modifies luck attribute
+/// * `Abilities` - Modifies multiple ability scores simultaneously
+///
+/// ## Permanent Resistance/Vulnerability Modifications
+/// * `StunResistance` - Permanently modifies stun resistance
+/// * `BludgeonResistance` - Permanently modifies bludgeon damage resistance
+/// * `MagicResistance` - Permanently modifies magic damage resistance
+/// * `PierceResistance` - Permanently modifies pierce damage resistance
+/// * `BludgeonVulnerability` - Permanently modifies bludgeon damage vulnerability
+/// * `MagicVulnerability` - Permanently modifies magic damage vulnerability
+/// * `PierceVulnerability` - Permanently modifies pierce damage vulnerability
+/// * `Resistances` - Modifies multiple resistances simultaneously
+/// * `Vulnerabilities` - Modifies multiple vulnerabilities simultaneously
+///
+/// ## Temporary Attribute Modifications (Duration-based)
+/// * `StrengthTemp` - Temporarily modifies strength attribute
+/// * `VitalityTemp` - Temporarily modifies vitality attribute
+/// * `DexterityTemp` - Temporarily modifies dexterity attribute
+/// * `LuckTemp` - Temporarily modifies luck attribute
+/// * `AbilitiesTemp` - Temporarily modifies multiple ability scores
+///
+/// ## Temporary Resistance/Vulnerability Modifications (Duration-based)
+/// * `StunResistanceTemp` - Temporarily modifies stun resistance
+/// * `BludgeonResistanceTemp` - Temporarily modifies bludgeon resistance
+/// * `MagicResistanceTemp` - Temporarily modifies magic resistance
+/// * `PierceResistanceTemp` - Temporarily modifies pierce resistance
+/// * `BludgeonVulnerabilityTemp` - Temporarily modifies bludgeon vulnerability
+/// * `MagicVulnerabilityTemp` - Temporarily modifies magic vulnerability
+/// * `PierceVulnerabilityTemp` - Temporarily modifies pierce vulnerability
+/// * `ResistancesTemp` - Temporarily modifies multiple resistances
+/// * `VulnerabilitiesTemp` - Temporarily modifies multiple vulnerabilities
+///
+/// ## Health Manipulation Effects
+/// * `SetHealth` - Sets health to a specific value
+/// * `FloorHealth` - Sets health to minimum of current or specified value
+/// * `CeilHealth` - Sets health to maximum of current or specified value
+/// * `HealthPercentMax` - Modifies health by percentage of max health (can be negative)
+/// * `SetHealthPercentMax` - Sets health to percentage of max health
+/// * `FloorHealthPercentMax` - Sets health to minimum of current or percentage of max
+/// * `CeilHealthPercentMax` - Sets health to maximum of current or percentage of max
 #[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
 pub enum Affect {
     #[default]
@@ -169,12 +223,24 @@ pub enum Affect {
     CeilHealthPercentMax: u8,
 }
 
+/// Specifies the target of an effect
+///
+/// # Variants
+/// * `Attacker` - The effect targets the entity that initiated the action
+/// * `Defender` - The effect targets the entity that is receiving the action
 #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
 pub enum Target {
     Attacker,
     Defender,
 }
 
+/// Defines how long an effect lasts
+///
+/// # Variants
+/// * `Instant` - The effect is applied immediately and has no duration
+/// * `Round` - The effect happens on a specific round (number after the current round)
+/// * `Rounds` - The effect lasts for a specific number of rounds starting next round
+/// * `Infinite` - The effect lasts for the entire duration of the combat
 #[derive(Drop, Serde, Copy, PartialEq, Introspect, Default)]
 pub enum Duration {
     #[default]
@@ -184,12 +250,12 @@ pub enum Duration {
     Infinite,
 }
 
-/// Represents an effect that can be applied during the game.
+/// Represents an effect that can be applied during combat
 ///
-/// # Arguments
-/// * `target` - Specifies who receives the effect (Player or Opponent)
-/// * `affect` - The type of effect to be applied
-
+/// # Fields
+/// * `target` - Specifies who receives the effect (Attacker or Defender)
+/// * `duration` - How long the effect lasts (Instant, Round(s), or Infinite)
+/// * `affect` - The specific type of effect to be applied and its parameters
 #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
 pub struct Effect {
     pub target: Target,
@@ -385,6 +451,13 @@ impl AffectStorePacking of StorePacking<Affect, felt252> {
 }
 
 
+/// Represents the different types of damage that can be dealt
+///
+/// # Variants
+/// * `None` - No specific damage type (pure damage)
+/// * `Bludgeon` - Physical blunt force damage (affected by bludgeon resistance/vulnerability)
+/// * `Magic` - Magical damage (affected by magic resistance/vulnerability)
+/// * `Pierce` - Piercing physical damage (affected by pierce resistance/vulnerability)
 #[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
 pub enum DamageType {
     #[default]
@@ -394,9 +467,12 @@ pub enum DamageType {
     Pierce,
 }
 
-/// Represents damage traits of an attack.
-/// * `critical` - Critical success chance value between 0-100
-/// * `power` - Attack power value between 0-100
+/// Represents the damage characteristics of an attack
+///
+/// # Fields
+/// * `critical` - Critical hit chance as a percentage (0-100)
+/// * `power` - Base damage power as a percentage (0-100)
+/// * `damage_type` - The type of damage being dealt (affects resistance calculations)
 #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
 pub struct Damage {
     pub critical: u8,

@@ -1,5 +1,5 @@
 import { loadSai } from "./sai.js";
-import { makeArenaBlobertCalls } from "./set-arena-token.js";
+import { makeArenaBlobertMinterCalls } from "./set-arena-blobert-minter.js";
 import { makeArcadeClassicCalls } from "./set-arcade-classic.js";
 import { makeLoadoutsClassic } from "./set-loadout-classic.js";
 import { makeLoadoutsAmma } from "./set-loadout-amma.js";
@@ -99,8 +99,6 @@ await sai.deployContract([
         sai.classes.arcade_round_result_model.class_hash,
       attack_address: sai.contracts["attack"].contract_address,
       loadout_address: sai.contracts["loadout_classic"].contract_address,
-      credit_address: sai.contracts["arena_credit"].contract_address,
-      vrf_address: sai.contracts["vrf"].contract_address,
     },
   },
   {
@@ -112,8 +110,6 @@ await sai.deployContract([
         sai.classes.arcade_round_result_model.class_hash,
       attack_address: sai.contracts["attack"].contract_address,
       loadout_address: sai.contracts["loadout_amma"].contract_address,
-      credit_address: sai.contracts["arena_credit"].contract_address,
-      vrf_address: sai.contracts["vrf"].contract_address,
       collectable_address: sai.contracts["amma_blobert"].contract_address,
     },
   },
@@ -152,38 +148,25 @@ const torii = loadToml(toriiConfigPath);
 torii.indexing.contracts = toriiContract;
 dumpToml(torii, toriiConfigPath);
 console.log("Contracts Deployed");
-await sai.executeAndWait([
-  (
-    await sai.getContract("arena_blobert")
-  ).populate("grant_contract_writer", {
-    writer: sai.contracts["arena_blobert_minter"].contract_address,
-  }),
-  (
-    await sai.getContract("amma_blobert_soulbound")
-  ).populate("grant_contract_writer", {
-    writer: sai.contracts["amma_blobert_minter"].contract_address,
-  }),
+const writersCalls = await sai.setOnlyWritersCalls({
+  arena_blobert: [sai.contracts.arena_blobert_minter.contract_address],
+  amma_blobert_soulbound: [sai.contracts.amma_blobert_minter.contract_address],
+  attack: [
+    sai.contracts.loadout_amma.contract_address,
+    sai.contracts.loadout_classic.contract_address,
+    sai.contracts.arcade_classic.contract_address,
+    sai.contracts.arcade_amma.contract_address,
+  ],
+  arena_credit: [
+    sai.contracts.arcade_classic.contract_address,
+    sai.contracts.arcade_amma.contract_address,
+    sai.contracts.arena_credit_purchase.contract_address,
+    sai.contracts.arena_blobert_minter.contract_address,
+  ],
+});
 
-  (
-    await sai.getContract("attack")
-  ).populate("grant_contract_writers", {
-    writers: [
-      sai.contracts["loadout_amma"].contract_address,
-      sai.contracts["loadout_classic"].contract_address,
-      sai.contracts["arcade_classic"].contract_address,
-      sai.contracts["arcade_amma"].contract_address,
-    ],
-  }),
-  (
-    await sai.getContract("arena_credit")
-  ).populate("grant_contract_writers", {
-    writers: [
-      sai.contracts["arcade_classic"].contract_address,
-      sai.contracts["arcade_amma"].contract_address,
-      sai.contracts["arena_credit_purchase"].contract_address,
-    ],
-  }),
-]);
+console.log("Setting writers...");
+await sai.executeAndWait(writersCalls);
 
 console.log("Setting classic loadouts...");
 await sai.executeAndWait(await makeLoadoutsClassic(sai));
@@ -193,7 +176,7 @@ await sai.executeAndWait(await makeLoadoutsAmma(sai));
 
 console.log("Setting arcade calls...");
 await sai.executeAndWait([
-  ...(await makeArenaBlobertCalls(sai)),
+  ...(await makeArenaBlobertMinterCalls(sai)),
   ...(await makeArcadeClassicCalls(sai)),
   ...(await makeArcadeAmmaCalls(sai)),
   ...(await makePvpCalls(sai)),

@@ -21,6 +21,7 @@ sierra-replace-ids = true
 starknet.workspace = true
 sai_core_utils.workspace = true
 sai_packing.workspace = true
+sai_ownable.workspace = true
 
 [[target.starknet-contract]]
 allowed-libfuncs-list.name = "experimental"

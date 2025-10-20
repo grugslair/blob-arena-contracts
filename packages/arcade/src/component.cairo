@@ -26,17 +26,18 @@ pub struct ArcadeAttackResult {
 pub mod arcade_component {
     use ba_arcade::IArcadeSetup;
     use ba_arcade::attempt::{ArcadeProgress, AttemptNode, AttemptNodePath, AttemptNodeTrait};
-    use ba_arcade::table::{ArcadeAttempt, AttackLastUsed};
+    use ba_arcade::table::{ArcadeAttemptTable, AttackLastUsed};
     use ba_combat::combat::AttackCheck;
     use ba_combat::combatant::get_max_health_percent;
     use ba_combat::systems::{get_attack_dispatcher, set_attack_dispatcher_address};
-    use ba_combat::{CombatantState, library_run_round};
+    use ba_combat::{Action, CombatantState, library_run_round};
     use ba_credit::arena_credit_consume;
     use ba_loadout::get_loadout;
-    use ba_utils::vrf::consume_randomness;
+    use ba_orbs::OrbTrait;
+    use ba_utils::vrf::{HasVrfComponent, VrfTrait};
     use ba_utils::{Randomness, erc721_token_hash, uuid};
     use beacon_library::{
-        ToriiTable, register_table, register_table_with_schema, set_entity, set_member, set_schema,
+        ToriiTable, register_table, register_table_with_schema, set_entity, set_member,
     };
     use core::cmp::min;
     use core::num::traits::{SaturatingAdd, Zero};
@@ -49,9 +50,8 @@ pub mod arcade_component {
         StoragePointerReadAccess, StoragePointerWriteAccess,
     };
     use starknet::{ClassHash, ContractAddress, get_block_timestamp, get_caller_address};
-    use crate::table::{ArcadeRoundResult, ArcadeZeroRoundResult, AttemptRoundTrait};
+    use crate::table::{ArcadeRoundTable, AttemptRoundTrait, CombatTable};
     use super::{ArcadeAttackResult, Opponent, errors};
-
 
     #[storage]
     pub struct Storage {
@@ -61,10 +61,10 @@ pub mod arcade_component {
         pub health_regen_percent: u8,
         pub current_attempt: Map<felt252, felt252>,
         pub loadout_address: ContractAddress,
+        pub orb_address: ContractAddress,
         pub credit_address: ContractAddress,
         pub credit_cost: u128,
         pub energy_cost: u64,
-        pub vrf_address: ContractAddress,
         pub combat_class_hash: ClassHash,
     }
 
@@ -74,7 +74,10 @@ pub mod arcade_component {
 
     #[embeddable_as(ArcadeSettingsImpl)]
     impl IArcadeImpl<
-        TContractState, +HasComponent<TContractState>, +OwnableTrait<TContractState>,
+        TContractState,
+        +HasComponent<TContractState>,
+        +HasVrfComponent<TContractState>,
+        +OwnableTrait<TContractState>,
     > of IArcadeSetup<ComponentState<TContractState>> {
         fn energy_cost(self: @ComponentState<TContractState>) -> u64 {
             self.energy_cost.read()
@@ -98,10 +101,6 @@ pub mod arcade_component {
 
         fn credit_address(self: @ComponentState<TContractState>) -> ContractAddress {
             self.credit_address.read()
-        }
-
-        fn vrf_address(self: @ComponentState<TContractState>) -> ContractAddress {
-            self.vrf_address.read()
         }
 
         fn combat_class_hash(self: @ComponentState<TContractState>) -> ClassHash {
@@ -138,13 +137,6 @@ pub mod arcade_component {
             self.credit_cost.write(credit);
         }
 
-        fn set_vrf_address(
-            ref self: ComponentState<TContractState>, contract_address: ContractAddress,
-        ) {
-            self.get_contract().assert_caller_is_owner();
-            self.vrf_address.write(contract_address);
-        }
-
         fn set_combat_class_hash(ref self: ComponentState<TContractState>, class_hash: ClassHash) {
             self.get_contract().assert_caller_is_owner();
             self.combat_class_hash.write(class_hash);
@@ -152,6 +144,7 @@ pub mod arcade_component {
     }
 
     mod internal_trait {
+        use ba_combat::Action;
         use ba_utils::Randomness;
         use starknet::{ClassHash, ContractAddress};
         use crate::Opponent;
@@ -164,8 +157,6 @@ pub mod arcade_component {
                 arcade_round_result_class_hash: ClassHash,
                 attack_address: ContractAddress,
                 loadout_address: ContractAddress,
-                credit_address: ContractAddress,
-                vrf_address: ContractAddress,
             );
             fn start_attempt(
                 ref self: TState,
@@ -174,8 +165,8 @@ pub mod arcade_component {
                 attack_slots: Array<Array<felt252>>,
             ) -> (AttemptNodePath, felt252, ContractAddress);
 
-            fn attack_attempt(
-                ref self: TState, attempt_id: felt252, attack_id: felt252,
+            fn act_attempt(
+                ref self: TState, attempt_id: felt252, action: Action,
             ) -> (AttemptNodePath, ArcadeAttackResult, Randomness);
 
             fn respawn_attempt(
@@ -189,6 +180,7 @@ pub mod arcade_component {
                 ref attempt_ptr: AttemptNodePath,
                 attempt_id: felt252,
                 combat_n: u32,
+                stage: u32,
                 opponent: Opponent,
                 health: Option<u8>,
             );
@@ -204,8 +196,12 @@ pub mod arcade_component {
     pub impl ArcadeInternal<
         TContractState,
         const ATTEMPT_HASH: felt252,
+        const COMBAT_HASH: felt252,
         const ROUND_HASH: felt252,
         const LAST_USED_ATTACK_HASH: felt252,
+        +HasComponent<TContractState>,
+        +HasVrfComponent<TContractState>,
+        +Drop<TContractState>,
     > of internal_trait::ArcadeInternalTrait<ComponentState<TContractState>> {
         fn init(
             ref self: ComponentState<TContractState>,
@@ -213,14 +209,11 @@ pub mod arcade_component {
             arcade_round_result_class_hash: ClassHash,
             attack_address: ContractAddress,
             loadout_address: ContractAddress,
-            credit_address: ContractAddress,
-            vrf_address: ContractAddress,
         ) {
             set_attack_dispatcher_address(attack_address);
             self.loadout_address.write(loadout_address);
-            self.credit_address.write(credit_address);
-            self.vrf_address.write(vrf_address);
-            register_table_with_schema::<ArcadeAttempt>(namespace.clone(), "Attempt");
+            register_table_with_schema::<ArcadeAttemptTable>(namespace.clone(), "Attempt");
+            register_table_with_schema::<CombatTable>(namespace.clone(), "Combat");
             register_table(namespace.clone(), "Round", arcade_round_result_class_hash);
             register_table_with_schema::<AttackLastUsed>(namespace, "AttackLastUsed");
         }
@@ -249,7 +242,7 @@ pub mod arcade_component {
             let health_regen = get_max_health_percent(
                 attributes.vitality, self.health_regen_percent.read(),
             );
-            let attempt = ArcadeAttempt {
+            let attempt = ArcadeAttemptTable {
                 player,
                 collection_address,
                 token_id,
@@ -267,8 +260,8 @@ pub mod arcade_component {
             (attempt_ptr, attempt_id, loadout_address)
         }
 
-        fn attack_attempt(
-            ref self: ComponentState<TContractState>, attempt_id: felt252, attack_id: felt252,
+        fn act_attempt(
+            ref self: ComponentState<TContractState>, attempt_id: felt252, action: Action,
         ) -> (AttemptNodePath, ArcadeAttackResult, Randomness) {
             let mut attempt_ptr = self.attempts.entry(attempt_id);
 
@@ -289,6 +282,21 @@ pub mod arcade_component {
             let player_state_ptr = combat_node.player_state;
             let opponent_state_ptr = combat_node.opponent_state;
 
+            let (attack_id, check) = match action {
+                Action::None => (0, AttackCheck::None),
+                Action::Attack(attack_id) => (
+                    attack_id, AttackCheck::Cooldown(attempt_ptr.attacks_available.read(attack_id)),
+                ),
+                Action::Orb(orb_id) => (
+                    self
+                        .orb_address
+                        .read()
+                        .try_use_owners_charge_cost(attempt_ptr.player.read(), orb_id)
+                        .unwrap_or(0),
+                    AttackCheck::None,
+                ),
+            };
+
             let opponent_attack = combat_node
                 .get_opponent_attack(attack_dispatcher, round, ref randomness);
             let (result, mut randomness) = library_run_round(
@@ -299,13 +307,13 @@ pub mod arcade_component {
                 opponent_state_ptr.read(),
                 attack_id,
                 opponent_attack,
-                AttackCheck::Cooldown(attempt_ptr.attacks_available.read(attack_id)),
+                check,
                 AttackCheck::None,
                 attack_dispatcher,
                 randomness,
             );
 
-            let mut result: ArcadeRoundResult = result.to_arcade_round(attempt_id, combat_n);
+            let mut result: ArcadeRoundTable = result.to_arcade_round(attempt_id, combat_n);
             player_state_ptr.write(result.player_state);
             opponent_state_ptr.write(result.opponent_state);
             if result.progress == ArcadeProgress::Active {
@@ -392,6 +400,7 @@ pub mod arcade_component {
             ref attempt_ptr: AttemptNodePath,
             attempt_id: felt252,
             combat_n: u32,
+            stage: u32,
             opponent: Opponent,
             health: Option<u8>,
         ) {
@@ -407,15 +416,15 @@ pub mod arcade_component {
             }
             let opponent_state: CombatantState = opponent.attributes.into();
             combat.create_combat(player_state, opponent_state, opponent.attacks);
-            set_schema(
-                ROUND_HASH,
+            set_entity(
+                COMBAT_HASH,
                 poseidon_hash_two(attempt_id, combat_n),
-                @ArcadeZeroRoundResult {
+                @CombatTable {
                     attempt: attempt_id,
                     combat: combat_n,
-                    player_state,
-                    opponent_state,
-                    progress: ArcadeProgress::Active,
+                    stage,
+                    starting_player_health: player_state.health,
+                    starting_opponent_attributes: opponent.attributes,
                 },
             );
         }
@@ -432,7 +441,10 @@ pub mod arcade_component {
         fn consume_randomness(
             ref self: ComponentState<TContractState>, salt: felt252,
         ) -> Randomness {
-            consume_randomness(self.vrf_address.read(), salt)
+            let mut contract = self.get_contract_mut();
+            let mut component = HasVrfComponent::get_component_mut(ref contract);
+
+            component.get_salt_randomness(salt)
         }
     }
 }

@@ -2,7 +2,15 @@ use ba_loadout::PartialAttributes;
 use ba_loadout::attack::IdTagAttack;
 use ba_utils::storage::{FeltArrayReadWrite, ShortArrayStore};
 
-
+/// Input structure for configuring Amma arcade opponents
+///
+/// Used when setting up or adding opponents to the arcade opponent pool.
+/// Contains the raw attack definitions that will be processed into attack IDs.
+///
+/// # Fields
+/// * `base` - Base attribute modifiers applied to the opponent regardless of stage
+/// * `level` - Per-level attribute scaling modifiers (multiplied by stage number, capped at 10)
+/// * `attacks` - Array of attack definitions that will be created/resolved to attack IDs
 #[derive(Drop, Serde)]
 struct AmmaOpponentInput {
     base: PartialAttributes,
@@ -25,12 +33,46 @@ impl AmmaOpponentInputIntoParts of Into<
     }
 }
 
+/// Interface for managing Amma-specific arcade configuration and opponents
+///
+/// Provides functionality to configure the arcade stages, manage opponent pools,
+/// and set up the procedurally generated opponents that players will face.
 #[starknet::interface]
 trait IArcadeAmma<TState> {
+    /// Gets the number of procedurally generated stages in the arcade
+    ///
+    /// # Returns
+    /// * `u32` - Number of generated stages before the boss stage
     fn gen_stages(self: @TState) -> u32;
+
+    /// Sets the number of procedurally generated stages in the arcade
+    ///
+    /// # Arguments
+    /// * `gen_stages` - Number of generated stages (boss stage is additional)
     fn set_gen_stages(ref self: TState, gen_stages: u32);
+
+    /// Gets the total number of opponents available in the opponent pool
+    ///
+    /// # Returns
+    /// * `u32` - Total count of configured opponents
     fn opponent_count(self: @TState) -> u32;
+
+    /// Retrieves a specific opponent configuration by fighter ID
+    ///
+    /// # Arguments
+    /// * `fighter` - Unique identifier of the opponent to retrieve
+    ///
+    /// # Returns
+    /// * `AmmaOpponent` - Complete opponent configuration including attributes and attacks
     fn opponent(self: @TState, fighter: u32) -> AmmaOpponent;
+
+    /// Sets or updates a specific opponent in the opponent pool
+    ///
+    /// # Arguments
+    /// * `fighter` - Unique identifier for this opponent
+    /// * `base` - Base attribute modifiers for this opponent
+    /// * `level` - Per-level attribute scaling modifiers
+    /// * `attacks` - Array of attacks available to this opponent
     fn set_opponent(
         ref self: TState,
         fighter: u32,
@@ -38,13 +80,37 @@ trait IArcadeAmma<TState> {
         level: PartialAttributes,
         attacks: Array<IdTagAttack>,
     );
+
+    /// Adds a new opponent to the opponent pool
+    ///
+    /// Creates a new opponent with the next available fighter ID and increments
+    /// the opponent count.
+    ///
+    /// # Arguments
+    /// * `base` - Base attribute modifiers for this opponent
+    /// * `level` - Per-level attribute scaling modifiers
+    /// * `attacks` - Array of attacks available to this opponent
     fn add_opponent(
         ref self: TState,
         base: PartialAttributes,
         level: PartialAttributes,
         attacks: Array<IdTagAttack>,
     );
+
+    /// Replaces the entire opponent pool with new opponents
+    ///
+    /// Clears existing opponents and sets up new ones starting from fighter ID 0.
+    ///
+    /// # Arguments
+    /// * `opponents` - Array of opponent configurations to set as the new pool
     fn set_opponents(ref self: TState, opponents: Array<AmmaOpponentInput>);
+
+    /// Adds multiple new opponents to the existing opponent pool
+    ///
+    /// Appends new opponents to the current pool, maintaining existing opponents.
+    ///
+    /// # Arguments
+    /// * `opponents` - Array of opponent configurations to add to the pool
     fn add_opponents(ref self: TState, opponents: Array<AmmaOpponentInput>);
 }
 
@@ -52,12 +118,14 @@ trait IArcadeAmma<TState> {
 mod arcade_amma {
     use ba_arcade::attempt::{ArcadeProgress, AttemptNodeTrait};
     use ba_arcade::{IArcade, Opponent, arcade_component};
+    use ba_combat::Action;
     use ba_combat::systems::get_attack_dispatcher_address;
     use ba_loadout::PartialAttributes;
     use ba_loadout::attack::interface::maybe_create_attacks_array;
     use ba_loadout::attack::maybe_create_attacks;
     use ba_loadout::attributes::AttributesCalcTrait;
     use ba_loadout::loadout_amma::{get_fighter_count, get_fighter_loadout};
+    use ba_utils::vrf::vrf_component;
     use ba_utils::{CapInto, Randomness, RandomnessTrait};
     use beacon_library::{ToriiTable, register_table_with_schema};
     use sai_core_utils::poseidon_hash_two;
@@ -73,9 +141,12 @@ mod arcade_amma {
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
     component!(path: arcade_component, storage: arcade, event: ArcadeEvents);
+    component!(path: vrf_component, storage: vrf, event: VrfEvents);
+
 
     const ROUND_HASH: felt252 = bytearrays_hash!("arcade_amma", "Round");
     const ATTEMPT_HASH: felt252 = bytearrays_hash!("arcade_amma", "Attempt");
+    const COMBAT_HASH: felt252 = bytearrays_hash!("arcade_amma", "Combat");
     const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("arcade_amma", "AttackLastUsed");
     const STAGE_OPPONENTS_HASH: felt252 = bytearrays_hash!("arcade_amma", "StageOpponents");
     const OPPONENTS_HASH: felt252 = bytearrays_hash!("arcade_amma", "Opponent");
@@ -83,7 +154,7 @@ mod arcade_amma {
     impl StageOpponentsTable = ToriiTable<STAGE_OPPONENTS_HASH>;
     impl ArcadeInternal =
         arcade_component::ArcadeInternal<
-            ContractState, ATTEMPT_HASH, ROUND_HASH, LAST_USED_ATTACK_HASH,
+            ContractState, ATTEMPT_HASH, COMBAT_HASH, ROUND_HASH, LAST_USED_ATTACK_HASH,
         >;
     impl OpponentTable = ToriiTable<OPPONENTS_HASH>;
 
@@ -93,6 +164,8 @@ mod arcade_amma {
         ownable: ownable_component::Storage,
         #[substorage(v0)]
         arcade: arcade_component::Storage,
+        #[substorage(v0)]
+        vrf: vrf_component::Storage,
         collectable_address: ContractAddress,
         gen_stages: u32,
         opponents: Map<u32, AmmaOpponent>,
@@ -108,6 +181,8 @@ mod arcade_amma {
         OwnableEvents: ownable_component::Event,
         #[flat]
         ArcadeEvents: arcade_component::Event,
+        #[flat]
+        VrfEvents: vrf_component::Event,
     }
 
     #[derive(Drop, Serde, Introspect)]
@@ -123,8 +198,6 @@ mod arcade_amma {
         arcade_round_result_class_hash: ClassHash,
         attack_address: ContractAddress,
         loadout_address: ContractAddress,
-        credit_address: ContractAddress,
-        vrf_address: ContractAddress,
         collectable_address: ContractAddress,
     ) {
         self.grant_owner(owner);
@@ -134,8 +207,6 @@ mod arcade_amma {
             arcade_round_result_class_hash,
             attack_address,
             loadout_address,
-            credit_address,
-            vrf_address,
         );
         register_table_with_schema::<StageOpponents>("arcade_amma", "StageOpponents");
         register_table_with_schema::<AmmaOpponent>("arcade_amma", "Opponent");
@@ -144,6 +215,9 @@ mod arcade_amma {
 
     #[abi(embed_v0)]
     impl IOwnableImpl = ownable_component::OwnableImpl<ContractState>;
+
+    #[abi(embed_v0)]
+    impl IVrfImpl = vrf_component::VrfImpl<ContractState>;
 
     #[abi(embed_v0)]
     impl IArcadeImpl of IArcade<ContractState> {
@@ -165,6 +239,7 @@ mod arcade_amma {
                 ref attempt_ptr,
                 attempt_id,
                 0,
+                0,
                 self.gen_opponent(loadout_address, *opponents[0], 0),
                 None,
             );
@@ -176,9 +251,9 @@ mod arcade_amma {
             emit_return(attempt_id)
         }
 
-        fn attack(ref self: ContractState, attempt_id: felt252, attack_id: felt252) {
-            let (mut attempt_ptr, result, mut randomness) = ArcadeInternal::attack_attempt(
-                ref self.arcade, attempt_id, attack_id,
+        fn act(ref self: ContractState, attempt_id: felt252, action: Action) {
+            let (mut attempt_ptr, result, mut randomness) = ArcadeInternal::act_attempt(
+                ref self.arcade, attempt_id, action,
             );
 
             if result.phase == ArcadeProgress::PlayerWon {
@@ -202,6 +277,7 @@ mod arcade_amma {
                         ref attempt_ptr,
                         attempt_id,
                         result.combat_n + 1,
+                        next_stage,
                         opponent,
                         Some(health),
                     );
@@ -223,7 +299,13 @@ mod arcade_amma {
             };
 
             ArcadeInternal::new_combat(
-                ref self.arcade, ref attempt_ptr, attempt_id, combat_n + 1, opponent, None,
+                ref self.arcade,
+                ref attempt_ptr,
+                attempt_id,
+                combat_n + 1,
+                stage + 1,
+                opponent,
+                None,
             );
         }
 

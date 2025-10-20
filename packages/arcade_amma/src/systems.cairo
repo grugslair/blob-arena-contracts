@@ -26,28 +26,3 @@ pub fn attack_slots() -> Array<Array<felt252>> {
     array![array![0, 1, 2, 3]]
 }
 
-
-#[derive(Drop)]
-struct Foo {}
-
-pub trait BarTrait {
-    fn call(self: Foo);
-}
-
-mod bar_impl {
-    use super::{BarTrait, Foo};
-
-    pub impl Bar<const HASH: felt252> of BarTrait {
-        fn call(self: Foo) { // Do stuff.
-            let _x = HASH + 1;
-        }
-    }
-}
-const HASH: felt252 = 42;
-pub impl BarImpl = bar_impl::Bar<HASH>;
-
-
-fn something_else() {
-    Foo {}.call();
-}
-

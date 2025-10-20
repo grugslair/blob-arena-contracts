@@ -1,6 +1,7 @@
-use ba_combat::{CombatantState, Player};
+use ba_combat::{Action, CombatantState, Player};
 use ba_loadout::Attributes;
-use starknet::storage::{Map, Mutable, StoragePath, StoragePointerReadAccess};
+use core::metaprogramming::TypeEqual;
+use starknet::storage::{Mutable, PendingStoragePath, StoragePath, StoragePointerReadAccess};
 use starknet::{ContractAddress, get_caller_address};
 
 pub type PvpNodePath = StoragePath<Mutable<PvpNode>>;
@@ -44,13 +45,65 @@ pub struct PvpNode {
     pub player_1: ContractAddress,
     pub player_2: ContractAddress,
     pub commit: felt252,
-    pub reveal: [felt252; 2],
+    pub reveal: (Action, felt252),
     pub player_states: [CombatantState; 2],
-    pub p1_attack_used: Map<felt252, u32>,
-    pub p2_attack_used: Map<felt252, u32>,
+    pub orb_1: felt252,
+    pub orb_2: felt252,
     pub phase: CombatPhase,
     pub round: u32,
     pub timestamp: u64,
+}
+
+
+#[derive(Drop)]
+pub enum AddressOrPtr<P> {
+    Address: ContractAddress,
+    Ptr: P,
+}
+
+
+pub trait AddressOrPtrTrait<P> {
+    fn read(ref self: AddressOrPtr<P>) -> ContractAddress;
+    fn final_read(self: @AddressOrPtr<P>) -> ContractAddress;
+}
+
+impl AddressOrPtrImpl<
+    P,
+    +Drop<P>,
+    +StoragePointerReadAccess<P>,
+    +TypeEqual<ContractAddress, StoragePointerReadAccess::<P>::Value>,
+> of AddressOrPtrTrait<P> {
+    fn read(ref self: AddressOrPtr<P>) -> ContractAddress {
+        match @self {
+            AddressOrPtr::Address(addr) => *addr,
+            AddressOrPtr::Ptr(ptr) => {
+                let address = ptr.read();
+                self = AddressOrPtr::Address(address);
+                address
+            },
+        }
+    }
+
+    fn final_read(self: @AddressOrPtr<P>) -> ContractAddress {
+        match self {
+            AddressOrPtr::Address(addr) => *addr,
+            AddressOrPtr::Ptr(ptr) => { ptr.read() },
+        }
+    }
+}
+
+#[derive(Drop)]
+pub struct MaybePlayers<P> {
+    pub player1: AddressOrPtr<P>,
+    pub player2: AddressOrPtr<P>,
+}
+
+
+#[generate_trait]
+impl MaybePlayersImpl<P> of MaybePlayersTrait<P> {
+    fn new(player1: AddressOrPtr<P>, player2: AddressOrPtr<P>) -> MaybePlayers<P> {
+        MaybePlayers { player1, player2 }
+    }
 }
 
 #[generate_trait]
@@ -65,6 +118,26 @@ pub impl PvpNodeImpl of PvpNodeTrait {
             'Caller not player',
         );
         caller
+    }
+
+    fn assert_caller_is_player_return_maybe(
+        self: @PvpNodePath, player: Player,
+    ) -> MaybePlayers<PendingStoragePath<Mutable<ContractAddress>>> {
+        let caller = get_caller_address();
+        match player {
+            Player::Player1 => {
+                assert(caller == self.player_1.read(), 'Caller not player 1');
+                MaybePlayersTrait::new(
+                    AddressOrPtr::Ptr(self.player_1), AddressOrPtr::Address(caller),
+                )
+            },
+            Player::Player2 => {
+                assert(caller == self.player_2.read(), 'Caller not player 2');
+                MaybePlayersTrait::new(
+                    AddressOrPtr::Address(caller), AddressOrPtr::Ptr(self.player_2),
+                )
+            },
+        }
     }
 }
 

@@ -1,7 +1,8 @@
-pub use calls::ExternalCalls;
+use calls::ExternalCalls;
 use core::hash::HashStateTrait;
 use core::integer::u128_safe_divmod;
-use core::num::traits::Zero;
+use core::num::traits::{DivRem, Zero};
+pub use core::ops::DivAssign;
 use core::poseidon::{HashState, poseidon_hash_span};
 use sai_core_utils::{poseidon_hash_single, poseidon_hash_two};
 use starknet::syscalls::{storage_read_syscall, storage_write_syscall};
@@ -17,7 +18,7 @@ pub impl SeedProbabilityImpl of SeedProbability {
     fn get_outcome<T, +Into<T, u128>, +Drop<T>>(
         ref self: u128, scale: u128, probability: T,
     ) -> bool {
-        let (seed, value) = u128_safe_divmod(self, scale.try_into().unwrap());
+        let (seed, value) = self.div_rem(scale.try_into().unwrap());
         self = seed;
         value < probability.into()
     }
@@ -26,12 +27,12 @@ pub impl SeedProbabilityImpl of SeedProbability {
             None => { return Zero::zero(); },
             Some(s) => s,
         };
-        let (seed, value) = u128_safe_divmod(self, scale);
+        let (seed, value) = self.div_rem(scale);
         self = seed;
         value.try_into().unwrap()
     }
     fn get_final_value<T, +Into<T, u128>, +TryInto<u128, T>>(self: u128, scale: T) -> T {
-        let (_, value) = u128_safe_divmod(self, Into::<T, u128>::into(scale).try_into().unwrap());
+        let (_, value) = self.div_rem(Into::<T, u128>::into(scale).try_into().unwrap());
 
         value.try_into().unwrap()
     }

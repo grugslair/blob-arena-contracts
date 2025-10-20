@@ -27,11 +27,11 @@ dojo.workspace = true
 beacon_library.workspace = true
 beacon_macros.workspace = true
 beacon_entity.workspace = true
-ba_blobert = { path = "../blobert" }
-ba_loadout = { path = "../loadout" }
-ba_combat = { path = "../combat" }
-ba_utils = { path = "../utils" }
-ba_arcade = { path = "../arcade" }
+ba_blobert.workspace = true
+ba_loadout.workspace = true
+ba_combat.workspace = true
+ba_utils.workspace = true
+ba_arcade.workspace = true
 
 
 [[target.starknet-contract]]

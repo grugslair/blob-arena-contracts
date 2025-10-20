@@ -4,10 +4,8 @@ edition = "2024_07"
 cairo-version = "2.12.2"
 scarb-version = "2.12.2"
 
-
 [workspace]
 members = ["packages/*"]
-
 
 [workspace.dependencies]
 alexandria_macros = { git = "https://github.com/keep-starknet-strange/alexandria/", tag = "v0.6.1" }
@@ -21,17 +19,28 @@ dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.7.0-alpha.2" }
 dojo_macros = { git = "https://github.com/dojoengine/dojo", tag = "v1.7.0-alpha.2" }
 cubit = { git = "https://github.com/bengineer42/cubit", tag = "cairo--2.8.0" }
 pragma_lib = { git = "https://github.com/bengineer42/pragma-lib", branch = "v2.11.4" }
-# beacon_entity = { git = "https://github.com/sai-starknet/torii-beacon", branch = "1.7.0-rc.0" }
-# beacon_macros = { git = "https://github.com/sai-starknet/torii-beacon", branch = "1.7.0-rc.0" }
-beacon_entity = { git = "https://github.com/sai-starknet/torii-beacon", tag = "v1.7.2" }
-beacon_macros = { git = "https://github.com/sai-starknet/torii-beacon", tag = "v1.7.2" }
-beacon_library = { git = "https://github.com/sai-starknet/torii-beacon", tag = "v1.7.2" }
-sai_access = { git = "https://github.com/sai-starknet/cairo-utils", tag = "v0.1.3" }
-sai_ownable = { git = "https://github.com/sai-starknet/cairo-utils", tag = "v0.1.3" }
-sai_token = { git = "https://github.com/sai-starknet/cairo-utils", tag = "v0.1.3" }
-sai_core_utils = { git = "https://github.com/sai-starknet/cairo-utils", tag = "v0.1.3" }
-sai_return = { git = "https://github.com/sai-starknet/cairo-utils", tag = "v0.1.3" }
-sai_packing = { git = "https://github.com/sai-starknet/cairo-utils", tag = "v0.1.3" }
+beacon_entity = { git = "https://github.com/sai-starknet/torii-beacon", tag = "v1.7.3" }
+beacon_macros = { git = "https://github.com/sai-starknet/torii-beacon", tag = "v1.7.3" }
+beacon_library = { git = "https://github.com/sai-starknet/torii-beacon", tag = "v1.7.3" }
+sai_access = { git = "https://github.com/sai-starknet/cairo-utils", tag = "v0.1.4" }
+sai_ownable = { git = "https://github.com/sai-starknet/cairo-utils", tag = "v0.1.4" }
+sai_token = { git = "https://github.com/sai-starknet/cairo-utils", tag = "v0.1.4" }
+sai_core_utils = { git = "https://github.com/sai-starknet/cairo-utils", tag = "v0.1.4" }
+sai_return = { git = "https://github.com/sai-starknet/cairo-utils", tag = "v0.1.4" }
+sai_packing = { git = "https://github.com/sai-starknet/cairo-utils", tag = "v0.1.4" }
+
+amma_blobert = { path = "packages/amma_blobert" }
+arena_blobert = { path = "packages/arena_blobert" }
+ba_blobert = { path = "packages/blobert" }
+ba_utils = { path = "packages/utils" }
+ba_loadout = { path = "packages/loadout" }
+ba_combat = { path = "packages/combat" }
+ba_arcade = { path = "packages/arcade" }
+ba_arcade_classic = { path = "packages/arcade_classic" }
+ba_arcade_amma = { path = "packages/arcade_amma" }
+ba_credit = { path = "packages/credit" }
+ba_pvp = { path = "packages/pvp" }
+ba_orbs = { path = "packages/orbs" }
 
 [workspace.tool.fmt]
 sort-module-level-items = true
@@ -48,18 +57,18 @@ edition.workspace = true
 
 [dependencies]
 starknet.workspace = true
-amma_blobert.path = "packages/amma_blobert"
-arena_blobert.path = "packages/arena_blobert"
-ba_blobert.path = "packages/blobert"
-ba_loadout.path = "packages/loadout"
-ba_combat.path = "packages/combat"
-ba_arcade.path = "packages/arcade"
-ba_utils.path = "packages/utils"
-ba_arcade_classic.path = "packages/arcade_classic"
-ba_arcade_amma.path = "packages/arcade_amma"
-ba_credit.path = "packages/credit"
-ba_pvp.path = "packages/pvp"
-
+amma_blobert.workspace = true
+arena_blobert.workspace = true
+ba_blobert.workspace = true
+ba_loadout.workspace = true
+ba_combat.workspace = true
+ba_arcade.workspace = true
+ba_utils.workspace = true
+ba_arcade_classic.workspace = true
+ba_arcade_amma.workspace = true
+ba_credit.workspace = true
+ba_pvp.workspace = true
+ba_orbs.workspace = true
 
 [dev-dependencies]
 # dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.6.0-alpha.2" }
@@ -89,6 +98,7 @@ build-external-contracts = [
     "ba_arcade_amma::contract::arcade_amma",
     "ba_pvp::contract::pvp",
     "ba_utils::vrf::mock_vrf",
+    "ba_orbs::orbs",
 ]
 
 [tool]

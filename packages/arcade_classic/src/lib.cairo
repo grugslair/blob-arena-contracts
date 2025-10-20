@@ -4,6 +4,15 @@ use ba_loadout::Attributes;
 use ba_loadout::attack::IdTagAttack;
 use ba_utils::storage::{FeltArrayReadWrite, ShortArrayStore};
 
+/// Storage and query structure for classic arcade opponents
+///
+/// Represents a fully configured opponent stored in the contract state for classic arcade mode.
+/// Contains resolved attack IDs and complete attribute sets for immediate use in combat.
+///
+/// # Fields
+/// * `traits` - Token traits that define the opponent's visual and thematic characteristics
+/// * `attributes` - Complete attribute set including abilities, resistances, and vulnerabilities
+/// * `attacks` - Array of resolved attack IDs available to this opponent
 #[derive(Drop, Serde, Introspect)]
 struct OpponentTable {
     traits: TokenTraits,
@@ -11,6 +20,15 @@ struct OpponentTable {
     attacks: Array<felt252>,
 }
 
+/// Input structure for configuring classic arcade opponents
+///
+/// Used when setting up the fixed opponent sequence for classic arcade mode.
+/// Contains raw attack definitions that will be processed into attack IDs during setup.
+///
+/// # Fields
+/// * `traits` - Token traits for the opponent's appearance and characteristics
+/// * `attributes` - Complete attribute configuration for this opponent
+/// * `attacks` - Array of attack definitions that will be resolved to attack IDs
 #[derive(Drop, Serde)]
 struct OpponentInput {
     traits: TokenTraits,
@@ -26,6 +44,13 @@ mod errors {
 
 #[starknet::interface]
 trait IArcadeClassic<TState> {
+    /// Sets the complete opponent sequence for the classic arcade
+    ///
+    /// Replaces the entire opponent roster with a new fixed sequence.
+    /// The number of opponents determines the total number of stages in the arcade.
+    ///
+    /// # Arguments
+    /// * `opponents` - Array of opponent configurations in stage order
     fn set_opponents(ref self: TState, opponents: Array<OpponentInput>);
 }
 
@@ -33,8 +58,10 @@ trait IArcadeClassic<TState> {
 mod arcade_classic {
     use ba_arcade::attempt::{ArcadeProgress, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::{IArcade, arcade_component};
+    use ba_combat::Action;
     use ba_combat::systems::get_attack_dispatcher_address;
     use ba_loadout::attack::interface::maybe_create_attacks_array;
+    use ba_utils::vrf::vrf_component;
     use beacon_library::{ToriiTable, register_table_with_schema};
     use sai_ownable::{OwnableTrait, ownable_component};
     use sai_return::emit_return;
@@ -48,8 +75,10 @@ mod arcade_classic {
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
     component!(path: arcade_component, storage: arcade, event: ArcadeEvents);
+    component!(path: vrf_component, storage: vrf, event: VrfEvents);
 
     const ATTEMPT_HASH: felt252 = bytearrays_hash!("arcade_classic", "Attempt");
+    const COMBAT_HASH: felt252 = bytearrays_hash!("arcade_classic", "Combat");
     const ROUND_HASH: felt252 = bytearrays_hash!("arcade_classic", "Round");
     const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("arcade_classic", "AttackLastUsed");
     const OPPONENT_HASH: felt252 = bytearrays_hash!("arcade_classic", "Opponent");
@@ -58,7 +87,7 @@ mod arcade_classic {
 
     impl ArcadeInternal =
         arcade_component::ArcadeInternal<
-            ContractState, ATTEMPT_HASH, ROUND_HASH, LAST_USED_ATTACK_HASH,
+            ContractState, ATTEMPT_HASH, COMBAT_HASH, ROUND_HASH, LAST_USED_ATTACK_HASH,
         >;
     #[storage]
     struct Storage {
@@ -66,6 +95,8 @@ mod arcade_classic {
         ownable: ownable_component::Storage,
         #[substorage(v0)]
         arcade: arcade_component::Storage,
+        #[substorage(v0)]
+        vrf: vrf_component::Storage,
         opponents: Map<u32, Opponent>,
         stages_len: u32,
     }
@@ -77,6 +108,8 @@ mod arcade_classic {
         OwnableEvents: ownable_component::Event,
         #[flat]
         ArcadeEvents: arcade_component::Event,
+        #[flat]
+        VrfEvents: vrf_component::Event,
     }
 
     #[constructor]
@@ -86,8 +119,6 @@ mod arcade_classic {
         arcade_round_result_class_hash: ClassHash,
         attack_address: ContractAddress,
         loadout_address: ContractAddress,
-        credit_address: ContractAddress,
-        vrf_address: ContractAddress,
     ) {
         self.grant_owner(owner);
         ArcadeInternal::init(
@@ -96,14 +127,15 @@ mod arcade_classic {
             arcade_round_result_class_hash,
             attack_address,
             loadout_address,
-            credit_address,
-            vrf_address,
         );
         register_table_with_schema::<super::OpponentTable>("arcade_classic", "Opponent");
     }
 
     #[abi(embed_v0)]
     impl IOwnableImpl = ownable_component::OwnableImpl<ContractState>;
+
+    #[abi(embed_v0)]
+    impl IVrfImpl = vrf_component::VrfImpl<ContractState>;
 
     #[abi(embed_v0)]
     impl IArcadeImpl of IArcade<ContractState> {
@@ -121,9 +153,9 @@ mod arcade_classic {
             emit_return(attempt_id)
         }
 
-        fn attack(ref self: ContractState, attempt_id: felt252, attack_id: felt252) {
-            let (mut attempt_ptr, result, _) = ArcadeInternal::attack_attempt(
-                ref self.arcade, attempt_id, attack_id,
+        fn act(ref self: ContractState, attempt_id: felt252, action: Action) {
+            let (mut attempt_ptr, result, _) = ArcadeInternal::act_attempt(
+                ref self.arcade, attempt_id, action,
             );
             if result.phase == ArcadeProgress::PlayerWon {
                 let next_stage = result.stage + 1;
@@ -200,6 +232,7 @@ mod arcade_classic {
                 ref attempt_ptr,
                 attempt_id,
                 combat_n,
+                stage,
                 self.opponents.read(stage).into(),
                 health,
             );

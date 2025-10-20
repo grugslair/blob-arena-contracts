@@ -25,36 +25,6 @@ const PLAYER_1_ATTACK_STORAGE_ADDRESS: felt252 = selector!("player-1-attacks");
 const PLAYER_2_ATTACK_STORAGE_ADDRESS: felt252 = selector!("player-2-attacks");
 const ATTACK_AVAILABLE_BIT: felt252 = SHIFT_4B_FELT252;
 
-// const PLAYER_1_PACKING_BITS: u64 = SHIFT_4B_U64 * 1;
-// const PLAYER_2_PACKING_BITS: u64 = SHIFT_4B_U64 * 2;
-
-// #[derive(Drop, PartialEq, Introspect, Default)]
-// struct CombatState {
-//     pub round: u32,
-//     pub progress: CombatProgress,
-// }
-
-// impl CombatStateStoragePacking of StorePacking<CombatState, u64> {
-//     fn pack(value: CombatState) -> u64 {
-//         value.round.into()
-//             + match value.progress {
-//                 CombatProgress::Active => 0_u64,
-//                 CombatProgress::Ended(Player::Player1) => PLAYER_1_PACKING_BITS,
-//                 CombatProgress::Ended(Player::Player2) => PLAYER_2_PACKING_BITS,
-//             }
-//     }
-
-//     fn unpack(value: u64) -> CombatState {
-//         let round: u32 = MaskDowncast::cast(value);
-//         let progress = match ShiftCast::const_unpack::<SHIFT_4B>(value) {
-//             0_u8 => CombatProgress::Active,
-//             1_u8 => CombatProgress::Ended(Player::Player1),
-//             2_u8 => CombatProgress::Ended(Player::Player2),
-//             _ => panic!("Invalid value for CombatProgress"),
-//         };
-//         CombatState { round, progress }
-//     }
-// }
 
 #[derive(Destruct)]
 pub struct Combat {
@@ -364,7 +334,7 @@ pub impl CombatImpl of CombatTrait {
     fn run_attack(ref self: Combat, source: Player) {
         let attack_id = self.run_attack_check(source);
         let result = if attack_id.is_zero() {
-            AttackResult::Failed
+            AttackResult::NotAvailable
         } else if self.run_stun(source) {
             AttackResult::Stunned
         } else if self.randomness.get(100) < self.attack_dispatcher.chance(attack_id) {

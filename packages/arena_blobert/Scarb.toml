@@ -29,8 +29,9 @@ starknet.workspace = true
 beacon_macros.workspace = true
 beacon_library.workspace = true
 beacon_entity.workspace = true
-ba_blobert = { path = "../blobert" }
-ba_utils = { path = "../utils" }
+ba_blobert.workspace = true
+ba_utils.workspace = true
+ba_credit.workspace = true
 
 [[target.starknet-contract]]
 allowed-libfuncs-list.name = "experimental"

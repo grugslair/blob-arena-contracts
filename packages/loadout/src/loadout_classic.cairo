@@ -17,6 +17,14 @@ pub trait IClassicLoadout<TContractState> {
     fn set_loadouts(ref self: TContractState, loadouts: Array<LoadoutInput>);
 }
 
+/// Input structure for setting multiple loadouts in batch operations
+///
+/// # Fields
+/// * `blobert_trait` - The type/category of blobert this loadout applies to
+/// * `index` - The specific index within the blobert trait category
+/// * `name` - Human-readable name for this loadout configuration
+/// * `attributes` - Partial attribute modifiers applied by this loadout
+/// * `attacks` - Array of attacks available to this loadout configuration
 #[derive(Drop, Serde)]
 struct LoadoutInput {
     blobert_trait: BlobertTrait,
@@ -26,6 +34,13 @@ struct LoadoutInput {
     attacks: Array<IdTagAttack>,
 }
 
+/// Represents an attack assigned to a specific slot for a blobert loadout
+///
+/// # Fields
+/// * `blobert_trait` - The type/category of blobert this attack slot belongs to
+/// * `index` - The specific index within the blobert trait category
+/// * `slot` - The slot number where this attack is assigned (0-based)
+/// * `attack` - The unique identifier of the attack assigned to this slot
 #[derive(Drop, Serde, Introspect)]
 struct AttackSlot {
     blobert_trait: BlobertTrait,
@@ -35,6 +50,18 @@ struct AttackSlot {
 }
 
 
+/// Represents the complete ability set and attributes for a specific blobert configuration
+///
+/// This struct is used for storage and querying of blobert loadout data, containing both
+/// identification information and the actual attribute values.
+///
+/// # Fields
+/// ## Identification
+/// * `blobert_trait` - The type/category of blobert
+/// * `index` - The specific index within the blobert trait category
+/// * `name` - Human-readable name for this blobert configuration
+/// ## Abilities
+///     From loadout
 #[derive(Drop, Serde, Introspect)]
 struct BlobertAbilities {
     blobert_trait: BlobertTrait,

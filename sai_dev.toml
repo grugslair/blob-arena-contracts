@@ -26,6 +26,7 @@ amma_blobert_minter = {}
 attack = {}
 loadout_classic = {}
 loadout_amma = {}
+orbs = {}
 
 arena_credit = {}
 arena_credit_purchase = {}

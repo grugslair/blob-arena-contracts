@@ -3,6 +3,7 @@ import { loadSai } from "./sai.js";
 import { parseAttributes, parseIdTagAttackStructs } from "./loadout.js";
 import { CairoCustomEnum } from "starknet";
 import { makeSetCombatClassHashCall } from "./combat.js";
+import { makeArcadeConfigCalls } from "./arcade.js";
 
 export const makeOpponentStruct = (opponent) => {
   return {
@@ -18,24 +19,6 @@ export const makeOpponentsCall = (contract, opponents) => {
   });
 };
 
-export const makeSetConfigCalls = (contract, config) => {
-  return [
-    contract.populate("set_max_respawns", {
-      max_respawns: BigInt(config.max_respawns),
-    }),
-    contract.populate("set_time_limit", {
-      time_limit: BigInt(config.time_limit),
-    }),
-    contract.populate("set_cost", {
-      energy: BigInt(config.energy_cost),
-      credit: BigInt(config.credit_cost),
-    }),
-    contract.populate("set_health_regen_percent", {
-      health_regen_percent: BigInt(config.health_regen_percent),
-    }),
-  ];
-};
-
 export const makeArcadeClassicCalls = async (sai) => {
   const arcadeClassicData = loadJson(
     "./post-deploy-config/arcade-classic.json"
@@ -44,7 +27,7 @@ export const makeArcadeClassicCalls = async (sai) => {
   return [
     makeSetCombatClassHashCall(contract, sai.classes.combat.class_hash),
     makeOpponentsCall(contract, arcadeClassicData.opponents),
-    ...makeSetConfigCalls(contract, arcadeClassicData),
+    ...makeArcadeConfigCalls(sai, contract, arcadeClassicData),
   ];
 };
 
