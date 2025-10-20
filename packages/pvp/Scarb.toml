@@ -29,6 +29,7 @@ beacon_entity.workspace = true
 ba_loadout.workspace = true
 ba_combat.workspace = true
 ba_utils.workspace = true
+ba_orbs.workspace = true
 
 [[target.starknet-contract]]
 allowed-libfuncs-list.name = "experimental"

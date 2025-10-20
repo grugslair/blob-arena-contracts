@@ -291,9 +291,7 @@ pub mod arcade_component {
                     self
                         .orb_address
                         .read()
-                        .try_use_owners_charge_cost(
-                            attempt_ptr.player.read(), orb_id.try_into().unwrap(),
-                        )
+                        .try_use_owners_charge_cost(attempt_ptr.player.read(), orb_id)
                         .unwrap_or(0),
                     AttackCheck::None,
                 ),

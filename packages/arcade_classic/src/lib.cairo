@@ -58,6 +58,7 @@ trait IArcadeClassic<TState> {
 mod arcade_classic {
     use ba_arcade::attempt::{ArcadeProgress, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::{IArcade, arcade_component};
+    use ba_combat::Action;
     use ba_combat::systems::get_attack_dispatcher_address;
     use ba_loadout::attack::interface::maybe_create_attacks_array;
     use ba_utils::vrf::vrf_component;
@@ -152,9 +153,9 @@ mod arcade_classic {
             emit_return(attempt_id)
         }
 
-        fn attack(ref self: ContractState, attempt_id: felt252, attack_id: felt252) {
-            let (mut attempt_ptr, result, _) = ArcadeInternal::attack_attempt(
-                ref self.arcade, attempt_id, attack_id,
+        fn act(ref self: ContractState, attempt_id: felt252, action: Action) {
+            let (mut attempt_ptr, result, _) = ArcadeInternal::act_attempt(
+                ref self.arcade, attempt_id, action,
             );
             if result.phase == ArcadeProgress::PlayerWon {
                 let next_stage = result.stage + 1;

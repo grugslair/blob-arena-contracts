@@ -24,10 +24,12 @@ pub struct PvpCombatTable {
     pub p1_loadout: ContractAddress,
     pub p1_token: (ContractAddress, u256),
     pub p1_attacks: Span<felt252>,
+    pub p1_orb: felt252,
     pub player_2: ContractAddress,
     pub p2_loadout: ContractAddress,
     pub p2_token: (ContractAddress, u256),
     pub p2_attacks: Span<felt252>,
+    pub p2_orb: felt252,
     pub time_limit: u64,
     pub phase: CombatPhase,
     pub round: u32,
@@ -43,6 +45,7 @@ pub struct LobbyCombatInitSchema {
     pub p1_loadout: ContractAddress,
     pub p1_token: (ContractAddress, u256),
     pub p1_attacks: Span<felt252>,
+    pub p1_orb: felt252,
     pub p2_loadout: ContractAddress,
     pub time_limit: u64,
 }
@@ -53,6 +56,7 @@ pub struct LobbyCombatRespondSchema {
     pub lobby: LobbyPhase,
     pub p2_token: (ContractAddress, u256),
     pub p2_attacks: Span<felt252>,
+    pub p2_orb: felt252,
 }
 
 #[derive(Drop, Serde, Schema)]

@@ -184,6 +184,7 @@ dependencies = [
  "openzeppelin_access",
  "openzeppelin_introspection",
  "openzeppelin_token",
+ "sai_access",
  "sai_token",
 ]
 
@@ -194,6 +195,7 @@ dependencies = [
  "alexandria_macros",
  "ba_combat",
  "ba_loadout",
+ "ba_orbs",
  "ba_utils",
  "beacon_entity",
  "beacon_library",

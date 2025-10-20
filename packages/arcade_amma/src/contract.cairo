@@ -118,6 +118,7 @@ trait IArcadeAmma<TState> {
 mod arcade_amma {
     use ba_arcade::attempt::{ArcadeProgress, AttemptNodeTrait};
     use ba_arcade::{IArcade, Opponent, arcade_component};
+    use ba_combat::Action;
     use ba_combat::systems::get_attack_dispatcher_address;
     use ba_loadout::PartialAttributes;
     use ba_loadout::attack::interface::maybe_create_attacks_array;
@@ -250,9 +251,9 @@ mod arcade_amma {
             emit_return(attempt_id)
         }
 
-        fn attack(ref self: ContractState, attempt_id: felt252, attack_id: felt252) {
-            let (mut attempt_ptr, result, mut randomness) = ArcadeInternal::attack_attempt(
-                ref self.arcade, attempt_id, attack_id,
+        fn act(ref self: ContractState, attempt_id: felt252, action: Action) {
+            let (mut attempt_ptr, result, mut randomness) = ArcadeInternal::act_attempt(
+                ref self.arcade, attempt_id, action,
             );
 
             if result.phase == ArcadeProgress::PlayerWon {

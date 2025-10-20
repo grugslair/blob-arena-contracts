@@ -36,9 +36,9 @@ pub trait IOrbAdmin<TContractState> {
         ref self: TContractState,
         owner: ContractAddress,
         attack: felt252,
+        rarity: Rarity,
         charge: u128,
         charge_cost: u128,
-        rarity: Rarity,
     ) -> u256;
     fn add_charge_cost(ref self: TContractState, token_id: u256);
     fn add_charge_amount(ref self: TContractState, token_id: u256, amount: u128);
@@ -54,8 +54,9 @@ pub trait IOrbAdmin<TContractState> {
 #[generate_trait]
 pub impl OrbImpl of OrbTrait {
     fn try_use_owners_charge_cost(
-        self: ContractAddress, user: ContractAddress, token_id: u256,
+        self: ContractAddress, user: ContractAddress, token_id: felt252,
     ) -> Option<felt252> {
+        let token_id = token_id.into();
         if (ERC721ABIDispatcher { contract_address: self }.owner_of(token_id) == user) {
             IOrbAdminDispatcher { contract_address: self }.try_use_charge_cost(token_id)
         } else {
@@ -67,9 +68,9 @@ pub impl OrbImpl of OrbTrait {
         self: ContractAddress,
         owner: ContractAddress,
         attack: felt252,
+        rarity: Rarity,
         charge: u128,
         charge_cost: u128,
-        rarity: Rarity,
     ) -> u256 {
         IOrbAdminDispatcher { contract_address: self }
             .mint(owner, attack, charge, charge_cost, rarity)
