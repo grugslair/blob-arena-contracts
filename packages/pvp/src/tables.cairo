@@ -23,12 +23,12 @@ pub struct PvpCombatTable {
     pub player_1: ContractAddress,
     pub p1_loadout: ContractAddress,
     pub p1_token: (ContractAddress, u256),
-    pub p1_attacks: Span<felt252>,
+    pub p1_actions: Span<felt252>,
     pub p1_orb: felt252,
     pub player_2: ContractAddress,
     pub p2_loadout: ContractAddress,
     pub p2_token: (ContractAddress, u256),
-    pub p2_attacks: Span<felt252>,
+    pub p2_actions: Span<felt252>,
     pub p2_orb: felt252,
     pub time_limit: u64,
     pub phase: CombatPhase,
@@ -44,7 +44,7 @@ pub struct LobbyCombatInitSchema {
     pub player_2: ContractAddress,
     pub p1_loadout: ContractAddress,
     pub p1_token: (ContractAddress, u256),
-    pub p1_attacks: Span<felt252>,
+    pub p1_actions: Span<felt252>,
     pub p1_orb: felt252,
     pub p2_loadout: ContractAddress,
     pub time_limit: u64,
@@ -55,7 +55,7 @@ pub struct LobbyCombatInitSchema {
 pub struct LobbyCombatRespondSchema {
     pub lobby: LobbyPhase,
     pub p2_token: (ContractAddress, u256),
-    pub p2_attacks: Span<felt252>,
+    pub p2_actions: Span<felt252>,
     pub p2_orb: felt252,
 }
 
@@ -66,10 +66,10 @@ pub struct LobbyCombatStartSchema {
 }
 
 #[derive(Drop, Serde, Introspect)]
-pub struct PvpAttackLastUsedTable {
+pub struct PvpActionLastUsedTable {
     pub combat: felt252,
     pub player: Player,
-    pub attack: felt252,
+    pub action: felt252,
     pub last_used: u32,
 }
 

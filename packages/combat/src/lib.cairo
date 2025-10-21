@@ -10,4 +10,4 @@ pub use action::Action;
 pub use combat::{Combat, CombatProgress, CombatTrait, Player, RoundResult};
 pub use combatant::{CombatantState, CombatantStateTrait};
 pub use contract::library_run_round;
-pub use result::{AttackResult, RoundEffectResult};
+pub use result::{ActionResult, RoundEffectResult};

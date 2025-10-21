@@ -1,5 +1,5 @@
-use ba_loadout::attack::Affect;
-use ba_loadout::attack::effect::unpack_affect;
+use ba_loadout::action::Affect;
+use ba_loadout::action::effect::unpack_affect;
 use ba_utils::storage::{read_at_base_offset, read_at_felt252, write_at_base_offset};
 use core::dict::Felt252Dict;
 use core::nullable::{FromNullableResult, match_nullable};
@@ -51,7 +51,7 @@ impl RoundEffectStorePacking of StorePacking<RoundEffect, felt252> {
             1_u8 => (Player::Player2, Player::Player1),
             2_u8 => (Player::Player1, Player::Player2),
             3_u8 => (Player::Player2, Player::Player2),
-            _ => panic!("Invalid value for Target"),
+            _ => panic!("Invalid value for Recipient"),
         };
 
         RoundEffect { source, target, affect: unpack_affect(variant, low) }

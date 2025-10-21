@@ -2,6 +2,6 @@
 pub enum Action {
     #[default]
     None,
-    Attack: felt252,
+    Action: felt252,
     Orb: felt252,
 }

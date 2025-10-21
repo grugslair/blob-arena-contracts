@@ -226,12 +226,12 @@ pub enum Affect {
 /// Specifies the target of an effect
 ///
 /// # Variants
-/// * `Attacker` - The effect targets the entity that initiated the action
-/// * `Defender` - The effect targets the entity that is receiving the action
+/// * `Actor` - The effect targets the entity that initiated the action
+/// * `Target` - The effect targets the entity that is receiving the action
 #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
-pub enum Target {
-    Attacker,
-    Defender,
+pub enum Recipient {
+    Actor,
+    Target,
 }
 
 /// Defines how long an effect lasts
@@ -253,12 +253,12 @@ pub enum Duration {
 /// Represents an effect that can be applied during combat
 ///
 /// # Fields
-/// * `target` - Specifies who receives the effect (Attacker or Defender)
+/// * `target` - Specifies who receives the effect (Actor or Target)
 /// * `duration` - How long the effect lasts (Instant, Round(s), or Infinite)
 /// * `affect` - The specific type of effect to be applied and its parameters
 #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
 pub struct Effect {
-    pub target: Target,
+    pub target: Recipient,
     pub duration: Duration,
     pub affect: Affect,
 }
@@ -267,8 +267,8 @@ impl EffectStorePacking of StorePacking<Effect, felt252> {
     fn pack(value: Effect) -> felt252 {
         StorePacking::pack(value.affect)
             + match value.target {
-                Target::Attacker => ATTACKER_PACKING_BITS,
-                Target::Defender => DEFENDER_PACKING_BITS,
+                Recipient::Actor => ATTACKER_PACKING_BITS,
+                Recipient::Target => DEFENDER_PACKING_BITS,
             }
             + match value.duration {
                 Duration::Instant => 0,
@@ -282,9 +282,9 @@ impl EffectStorePacking of StorePacking<Effect, felt252> {
         let u256 { low, high } = value.into();
         let variant: u16 = MaskDowncast::cast(high);
         let target = match ShiftCast::const_unpack::<SHIFT_2B>(high) {
-            0_u16 => Target::Attacker,
-            1_u16 => Target::Defender,
-            _ => panic!("Invalid value for Target"),
+            0_u16 => Recipient::Actor,
+            1_u16 => Recipient::Target,
+            _ => panic!("Invalid value for Recipient"),
         };
         let duration = match ShiftCast::const_unpack::<SHIFT_4B>(high) {
             0_u16 => Duration::Instant,
@@ -467,7 +467,7 @@ pub enum DamageType {
     Pierce,
 }
 
-/// Represents the damage characteristics of an attack
+/// Represents the damage characteristics of an action
 ///
 /// # Fields
 /// * `critical` - Critical hit chance as a percentage (0-100)

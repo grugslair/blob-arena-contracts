@@ -1,4 +1,4 @@
-use ba_loadout::attack::{Affect, Damage, DamageType};
+use ba_loadout::action::{Affect, Damage, DamageType};
 use ba_loadout::attributes::{
     AbilityMods, Attributes, MAX_ABILITY_SCORE, MAX_TEMP_ABILITY_SCORE, MIN_TEMP_ABILITY_SCORE,
     ResistanceMods, Resistances, Vulnerabilities, VulnerabilityMods,
@@ -243,11 +243,11 @@ pub impl CombatantStateImpl of CombatantStateTrait {
     fn apply_damage(
         ref self: CombatantState,
         damage: Damage,
-        attacker_state: @CombatantState,
+        actor_state: @CombatantState,
         ref randomness: Randomness,
     ) -> DamageResult {
-        let critical = did_critical(damage.critical, attacker_state.luck(), ref randomness);
-        let mut hp = damage_calculation(damage.power, attacker_state.strength(), critical);
+        let critical = did_critical(damage.critical, actor_state.luck(), ref randomness);
+        let mut hp = damage_calculation(damage.power, actor_state.strength(), critical);
         let affinity = self.affinity(damage.damage_type);
         let hp = match affinity != 100 {
             true => (hp.wide_mul(affinity) / 100).saturating_into(),
@@ -498,7 +498,7 @@ pub impl CombatantStateImpl of CombatantStateTrait {
     fn apply_affect(
         ref self: CombatantState,
         affect: Affect,
-        attacker_state: @CombatantState,
+        actor_state: @CombatantState,
         ref randomness: Randomness,
     ) -> AffectResult {
         match affect {
@@ -534,7 +534,7 @@ pub impl CombatantStateImpl of CombatantStateTrait {
                 self.modify_vulnerabilities(mods),
             ),
             Affect::Damage(damage) => {
-                AffectResult::Damage(self.apply_damage(damage, attacker_state, ref randomness))
+                AffectResult::Damage(self.apply_damage(damage, actor_state, ref randomness))
             },
             Affect::Stun(stun) => {
                 self.increase_stun(stun);

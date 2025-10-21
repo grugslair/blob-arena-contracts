@@ -10,22 +10,22 @@ pub use starknet::storage::{
 };
 use super::Effect;
 use super::effect::pack_effect_array;
-const ATTACK_TAG_GROUP: felt252 = 'attacks';
+const ATTACK_TAG_GROUP: felt252 = 'actions';
 
 
 /// Setup models
 
-/// A struct representing an attack in the game.
+/// A struct representing an action in the game.
 ///
 /// # Fields
-/// * `name` - The name of the attack. (For off chain use)
-/// * `speed` - The speed of the attack (0 to 10000)
-/// * `chance` - The chance of the attack (0-100)
-/// * `cooldown` - The cooldown period of the attack in rounds
-/// * `success` - Array of effects that occur when the attack succeeds
-/// * `fail` - Array of effects that occur when the attack fails
+/// * `name` - The name of the action. (For off chain use)
+/// * `speed` - The speed of the action (0 to 10000)
+/// * `chance` - The chance of the action (0-100)
+/// * `cooldown` - The cooldown period of the action in rounds
+/// * `success` - Array of effects that occur when the action succeeds
+/// * `fail` - Array of effects that occur when the action fails
 #[derive(Drop, Serde, Default, Introspect)]
-pub struct Attack {
+pub struct Action {
     pub speed: u16,
     pub chance: u8,
     pub cooldown: u32,
@@ -34,7 +34,7 @@ pub struct Attack {
 }
 
 #[derive(Drop, Serde, Clone, Introspect)]
-pub struct AttackWithName {
+pub struct ActionWithName {
     pub name: ByteArray,
     pub speed: u16,
     pub chance: u8,
@@ -44,9 +44,9 @@ pub struct AttackWithName {
 }
 
 
-impl AttackWithNameIntoAttack of Into<AttackWithName, Attack> {
-    fn into(self: AttackWithName) -> Attack {
-        Attack {
+impl ActionWithNameIntoAction of Into<ActionWithName, Action> {
+    fn into(self: ActionWithName) -> Action {
+        Action {
             speed: self.speed,
             chance: self.chance,
             cooldown: self.cooldown,
@@ -57,19 +57,19 @@ impl AttackWithNameIntoAttack of Into<AttackWithName, Attack> {
 }
 
 
-/// A struct that combines an ID, a tag, or an attack.
+/// A struct that combines an ID, a tag, or an action.
 #[derive(Drop, Serde, Clone)]
-pub enum IdTagAttack {
+pub enum IdTagAction {
     Id: felt252,
     Tag: ByteArray,
-    Attack: AttackWithName,
+    Action: ActionWithName,
 }
 
 
 #[generate_trait]
-pub impl AttackWithNameImpl of AttackWithNameTrait {
-    fn attack_id(self: AttackWithName) -> felt252 {
-        get_attack_id(
+pub impl ActionWithNameImpl of ActionWithNameTrait {
+    fn action_id(self: ActionWithName) -> felt252 {
+        get_action_id(
             @self.name,
             self.speed,
             self.chance,
@@ -81,7 +81,7 @@ pub impl AttackWithNameImpl of AttackWithNameTrait {
 }
 
 
-pub fn get_attack_id(
+pub fn get_action_id(
     name: @ByteArray,
     speed: u16,
     chance: u8,
@@ -155,8 +155,8 @@ pub fn byte_array_to_tag(array: @ByteArray) -> felt252 {
 }
 
 #[starknet::contract]
-pub mod attack_model {
-    use super::AttackWithName;
+pub mod action_model {
+    use super::ActionWithName;
 
     #[storage]
     struct Storage {}
@@ -171,14 +171,14 @@ pub mod attack_model {
     }
 
     #[abi(embed_v0)]
-    impl AttackWithNameModelImpl =
-        beacon_entity::interface::ISaiModelImpl<ContractState, AttackWithName>;
+    impl ActionWithNameModelImpl =
+        beacon_entity::interface::ISaiModelImpl<ContractState, ActionWithName>;
 }
 
 #[cfg(test)]
 mod tests {
     use beacon_entity::get_schema_size;
-    use crate::attack::Affect;
+    use crate::action::Affect;
     use super::*;
 
     #[derive(Drop, Serde, Introspect)]
@@ -187,7 +187,7 @@ mod tests {
     }
     #[test]
     fn table_size_test() {
-        println!("AttackWithName size: {}", get_schema_size::<AttackWithName>());
+        println!("ActionWithName size: {}", get_schema_size::<ActionWithName>());
         println!("Affect size: {}", get_schema_size::<AnAffect>());
     }
 }

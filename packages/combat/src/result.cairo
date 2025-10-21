@@ -3,16 +3,16 @@ use sai_core_utils::BoolIntoBinary;
 use crate::Player;
 
 
-/// Represents the possible outcomes of an attack action in the game
+/// Represents the possible outcomes of an action action in the game
 ///
 /// # Variants
-/// * `NotAvailable` - The attack is not available (e.g., on cooldown, invalid selection)
-/// * `Stunned` - The attacker was stunned and couldn't execute the attack
-/// * `Success` - The attack succeeded, contains array of effect results from the attack
-/// * `Fail` - The attack failed, contains array of effect results from the attack
+/// * `NotAvailable` - The action is not available (e.g., on cooldown, invalid selection)
+/// * `Stunned` - The actor was stunned and couldn't execute the action
+/// * `Success` - The action succeeded, contains array of effect results from the action
+/// * `Fail` - The action failed, contains array of effect results from the action
 /// results
 #[derive(Drop, Serde, Introspect, Default)]
-pub enum AttackResult {
+pub enum ActionResult {
     #[default]
     NotAvailable,
     Stunned,

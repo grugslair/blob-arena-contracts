@@ -1,21 +1,21 @@
 use starknet::ContractAddress;
-use crate::attack::IdTagAttack;
+use crate::action::IdTagAction;
 use crate::attributes::Attributes;
 
 #[derive(Drop, Serde)]
 struct FighterInput {
     attributes: Attributes,
-    attacks: Array<IdTagAttack>,
+    actions: Array<IdTagAction>,
 }
 
 #[starknet::interface]
 pub trait IAmmaLoadout<TContractState> {
     fn set_fighter(
-        ref self: TContractState, fighter: u32, attributes: Attributes, attacks: Array<IdTagAttack>,
+        ref self: TContractState, fighter: u32, attributes: Attributes, actions: Array<IdTagAction>,
     );
 
     fn add_fighter(
-        ref self: TContractState, attributes: Attributes, attacks: Array<IdTagAttack>,
+        ref self: TContractState, attributes: Attributes, actions: Array<IdTagAction>,
     ) -> u32;
 
     fn set_fighters(ref self: TContractState, fighters: Array<FighterInput>);
@@ -26,7 +26,7 @@ pub trait IAmmaLoadout<TContractState> {
 
     fn fighter_attributes(self: @TContractState, fighter: u32) -> Attributes;
 
-    fn fighter_attacks(
+    fn fighter_actions(
         self: @TContractState, fighter: u32, slots: Array<Array<felt252>>,
     ) -> Array<felt252>;
 
@@ -41,10 +41,10 @@ pub fn get_fighter_loadout(
     IAmmaLoadoutDispatcher { contract_address }.fighter_loadout(fighter, slots)
 }
 
-pub fn get_fighter_attacks(
+pub fn get_fighter_actions(
     contract_address: ContractAddress, fighter: u32, slots: Array<Array<felt252>>,
 ) -> Array<felt252> {
-    IAmmaLoadoutDispatcher { contract_address }.fighter_attacks(fighter, slots)
+    IAmmaLoadoutDispatcher { contract_address }.fighter_actions(fighter, slots)
 }
 
 pub fn get_fighter_count(contract_address: ContractAddress) -> u32 {
@@ -52,10 +52,10 @@ pub fn get_fighter_count(contract_address: ContractAddress) -> u32 {
 }
 
 #[derive(Drop, Serde, Introspect)]
-struct AttackSlot {
+struct ActionSlot {
     fighter: u32,
     slot: u32,
-    attack: felt252,
+    action: felt252,
 }
 
 #[starknet::contract]
@@ -71,17 +71,17 @@ mod loadout_amma {
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
         StoragePointerWriteAccess,
     };
-    use crate::attack::{IAttackAdminDispatcher, IAttackAdminDispatcherTrait, IdTagAttack};
+    use crate::action::{IActionAdminDispatcher, IActionAdminDispatcherTrait, IdTagAction};
     use crate::interface::ILoadout;
-    use super::{AttackSlot, Attributes, FighterInput, IAmmaLoadout};
+    use super::{ActionSlot, Attributes, FighterInput, IAmmaLoadout};
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
 
     const ABILITY_TABLE_ID: felt252 = bytearrays_hash!("loadout_amma", "Attributes");
-    const ATTACK_SLOT_TABLE_ID: felt252 = bytearrays_hash!("loadout_amma", "AttackSlots");
+    const ATTACK_SLOT_TABLE_ID: felt252 = bytearrays_hash!("loadout_amma", "ActionSlots");
 
     impl AbilityTable = ToriiTable<ABILITY_TABLE_ID>;
-    impl AttackSlotTable = ToriiTable<ATTACK_SLOT_TABLE_ID>;
+    impl ActionSlotTable = ToriiTable<ATTACK_SLOT_TABLE_ID>;
 
     #[storage]
     struct Storage {
@@ -89,8 +89,8 @@ mod loadout_amma {
         ownable: ownable_component::Storage,
         collection_addresses: Map<ContractAddress, bool>,
         attributes: Map<u32, Attributes>,
-        attack_dispatcher: IAttackAdminDispatcher,
-        attack_slots: Map<felt252, felt252>,
+        action_dispatcher: IActionAdminDispatcher,
+        action_slots: Map<felt252, felt252>,
         count: u32,
     }
 
@@ -105,7 +105,7 @@ mod loadout_amma {
     fn constructor(
         ref self: ContractState,
         owner: ContractAddress,
-        attack_dispatcher_address: ContractAddress,
+        action_dispatcher_address: ContractAddress,
         collection_addresses: Array<ContractAddress>,
     ) {
         self.grant_owner(owner);
@@ -113,10 +113,10 @@ mod loadout_amma {
             self.collection_addresses.write(address, true);
         }
         self
-            .attack_dispatcher
-            .write(IAttackAdminDispatcher { contract_address: attack_dispatcher_address });
+            .action_dispatcher
+            .write(IActionAdminDispatcher { contract_address: action_dispatcher_address });
         register_table_with_schema::<Attributes>("loadout_amma", "Attributes");
-        register_table_with_schema::<AttackSlot>("loadout_amma", "AttackSlots");
+        register_table_with_schema::<ActionSlot>("loadout_amma", "ActionSlots");
     }
 
     #[abi(embed_v0)]
@@ -129,13 +129,13 @@ mod loadout_amma {
         ) -> Attributes {
             self.fighter_attributes(self.fighter(collection_address, token_id))
         }
-        fn attacks(
+        fn actions(
             self: @ContractState,
             collection_address: ContractAddress,
             token_id: u256,
             slots: Array<Array<felt252>>,
         ) -> Array<felt252> {
-            self.fighter_attacks(self.fighter(collection_address, token_id), slots)
+            self.fighter_actions(self.fighter(collection_address, token_id), slots)
         }
         fn loadout(
             self: @ContractState,
@@ -153,24 +153,24 @@ mod loadout_amma {
             ref self: ContractState,
             fighter: u32,
             attributes: Attributes,
-            attacks: Array<IdTagAttack>,
+            actions: Array<IdTagAction>,
         ) {
             self.assert_caller_is_owner();
             assert(fighter > 0, 'Fighter must be greater than 0');
             assert(fighter <= self.count.read(), 'Fighter does not exist');
-            let mut attack_dispatcher = self.attack_dispatcher.read();
-            let attack_ids = attack_dispatcher.maybe_create_attacks(attacks);
-            self.set_fighter_internal(fighter, attributes, attack_ids);
+            let mut action_dispatcher = self.action_dispatcher.read();
+            let action_ids = action_dispatcher.maybe_create_actions(actions);
+            self.set_fighter_internal(fighter, attributes, action_ids);
         }
 
         fn add_fighter(
-            ref self: ContractState, attributes: Attributes, attacks: Array<IdTagAttack>,
+            ref self: ContractState, attributes: Attributes, actions: Array<IdTagAction>,
         ) -> u32 {
             self.assert_caller_is_owner();
             let fighter = self.count.read() + 1;
-            let mut attack_dispatcher = self.attack_dispatcher.read();
-            let attack_ids = attack_dispatcher.maybe_create_attacks(attacks);
-            self.set_fighter_internal(fighter, attributes, attack_ids);
+            let mut action_dispatcher = self.action_dispatcher.read();
+            let action_ids = action_dispatcher.maybe_create_actions(actions);
+            self.set_fighter_internal(fighter, attributes, action_ids);
             self.count.write(fighter);
             fighter
         }
@@ -195,11 +195,11 @@ mod loadout_amma {
             self.check_fighter(fighter);
             self.fighter_attributes_internal(fighter)
         }
-        fn fighter_attacks(
+        fn fighter_actions(
             self: @ContractState, fighter: u32, slots: Array<Array<felt252>>,
         ) -> Array<felt252> {
             self.check_fighter(fighter);
-            self.fighter_attacks_internal(fighter, slots)
+            self.fighter_actions_internal(fighter, slots)
         }
 
         fn fighter_loadout(
@@ -208,7 +208,7 @@ mod loadout_amma {
             self.check_fighter(fighter);
             (
                 self.fighter_attributes_internal(fighter),
-                self.fighter_attacks_internal(fighter, slots),
+                self.fighter_actions_internal(fighter, slots),
             )
         }
     }
@@ -220,57 +220,57 @@ mod loadout_amma {
                 self.collection_addresses.read(collection_address), 'Invalid collection address',
             );
         }
-        fn clip_attack_slot_slots(ref self: ContractState, index: felt252, slots: u32) {
+        fn clip_action_slot_slots(ref self: ContractState, index: felt252, slots: u32) {
             let mut slots: felt252 = slots.into();
             let mut slot_ids: Array<felt252> = Default::default();
 
             loop {
                 let slot_id = index + slots.into();
-                if self.attack_slots.read(slot_id).is_non_zero() {
-                    self.attack_slots.write(slot_id, 0);
+                if self.action_slots.read(slot_id).is_non_zero() {
+                    self.action_slots.write(slot_id, 0);
                     slot_ids.append(slot_id);
                     slots += 1;
                 } else {
                     break;
                 }
             }
-            AttackSlotTable::delete_entities(slot_ids);
+            ActionSlotTable::delete_entities(slot_ids);
         }
 
         fn set_fighter_internal(
-            ref self: ContractState, fighter: u32, attributes: Attributes, attacks: Array<felt252>,
+            ref self: ContractState, fighter: u32, attributes: Attributes, actions: Array<felt252>,
         ) {
             AbilityTable::set_entity(fighter, @attributes);
             self.attributes.write(fighter, attributes);
             let slot_index: felt252 = fighter.into() * SHIFT_4B_FELT252;
-            self.clip_attack_slot_slots(slot_index, attacks.len());
-            for (n, attack_id) in attacks.into_iter().enumerate() {
+            self.clip_action_slot_slots(slot_index, actions.len());
+            for (n, action_id) in actions.into_iter().enumerate() {
                 let slot_id = slot_index + n.into();
-                AttackSlotTable::set_entity(slot_id, @(fighter, n, attack_id));
-                self.attack_slots.write(slot_id, attack_id);
+                ActionSlotTable::set_entity(slot_id, @(fighter, n, action_id));
+                self.action_slots.write(slot_id, action_id);
             }
         }
 
         fn set_fighters_internal(
             ref self: ContractState, starting_count: u32, fighters: Array<FighterInput>,
         ) -> Array<u32> {
-            let mut all_attacks: Array<Array<IdTagAttack>> = Default::default();
+            let mut all_actions: Array<Array<IdTagAction>> = Default::default();
             let mut all_fighters: Array<Attributes> = Default::default();
             self.count.write(fighters.len() + starting_count);
-            for FighterInput { attributes, attacks } in fighters {
-                all_attacks.append(attacks);
+            for FighterInput { attributes, actions } in fighters {
+                all_actions.append(actions);
                 all_fighters.append(attributes);
             }
-            let attack_dispatcher = self.attack_dispatcher.read();
-            let all_attack_ids = attack_dispatcher.maybe_create_attacks_array(all_attacks);
+            let action_dispatcher = self.action_dispatcher.read();
+            let all_action_ids = action_dispatcher.maybe_create_actions_array(all_actions);
             let mut ids: Array<u32> = Default::default();
-            for (i, (attributes, attacks)) in all_fighters
+            for (i, (attributes, actions)) in all_fighters
                 .into_iter()
-                .zip(all_attack_ids)
+                .zip(all_action_ids)
                 .enumerate() {
                 let id = i + starting_count + 1;
                 ids.append(id);
-                self.set_fighter_internal(id, attributes, attacks);
+                self.set_fighter_internal(id, attributes, actions);
             }
             ids
         }
@@ -291,11 +291,11 @@ mod loadout_amma {
             self.attributes.read(fighter)
         }
 
-        fn fighter_attacks_internal(
+        fn fighter_actions_internal(
             self: @ContractState, fighter: u32, slots: Array<Array<felt252>>,
         ) -> Array<felt252> {
             let slot_index: felt252 = fighter.into() * SHIFT_4B_FELT252;
-            slots.into_iter().map(|s| self.attack_slots.read(slot_index + *s[0])).collect()
+            slots.into_iter().map(|s| self.action_slots.read(slot_index + *s[0])).collect()
         }
     }
 }

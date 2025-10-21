@@ -1,5 +1,5 @@
 use ba_blobert::BlobertTrait;
-use crate::attack::IdTagAttack;
+use crate::action::IdTagAction;
 use crate::attributes::{Attributes, PartialAttributes};
 
 #[starknet::interface]
@@ -11,7 +11,7 @@ pub trait IClassicLoadout<TContractState> {
         index: u32,
         name: ByteArray,
         attributes: PartialAttributes,
-        attacks: Array<IdTagAttack>,
+        actions: Array<IdTagAction>,
     );
 
     fn set_loadouts(ref self: TContractState, loadouts: Array<LoadoutInput>);
@@ -24,29 +24,29 @@ pub trait IClassicLoadout<TContractState> {
 /// * `index` - The specific index within the blobert trait category
 /// * `name` - Human-readable name for this loadout configuration
 /// * `attributes` - Partial attribute modifiers applied by this loadout
-/// * `attacks` - Array of attacks available to this loadout configuration
+/// * `actions` - Array of actions available to this loadout configuration
 #[derive(Drop, Serde)]
 struct LoadoutInput {
     blobert_trait: BlobertTrait,
     index: u32,
     name: ByteArray,
     attributes: PartialAttributes,
-    attacks: Array<IdTagAttack>,
+    actions: Array<IdTagAction>,
 }
 
-/// Represents an attack assigned to a specific slot for a blobert loadout
+/// Represents an action assigned to a specific slot for a blobert loadout
 ///
 /// # Fields
-/// * `blobert_trait` - The type/category of blobert this attack slot belongs to
+/// * `blobert_trait` - The type/category of blobert this action slot belongs to
 /// * `index` - The specific index within the blobert trait category
-/// * `slot` - The slot number where this attack is assigned (0-based)
-/// * `attack` - The unique identifier of the attack assigned to this slot
+/// * `slot` - The slot number where this action is assigned (0-based)
+/// * `action` - The unique identifier of the action assigned to this slot
 #[derive(Drop, Serde, Introspect)]
-struct AttackSlot {
+struct ActionSlot {
     blobert_trait: BlobertTrait,
     index: u32,
     slot: u32,
-    attack: felt252,
+    action: felt252,
 }
 
 
@@ -95,30 +95,30 @@ mod loadout_classic {
         Map, Mutable, StorageBase, StorageMapReadAccess, StorageMapWriteAccess,
         StoragePointerReadAccess, StoragePointerWriteAccess,
     };
-    use crate::attack::{IAttackAdminDispatcher, IAttackAdminDispatcherTrait};
+    use crate::action::{IActionAdminDispatcher, IActionAdminDispatcherTrait};
     use crate::attributes;
     use crate::attributes::{Attributes, AttributesTrait};
     use crate::interface::ILoadout;
     use super::{
-        AttackSlot, BlobertAbilities, IClassicLoadout, IdTagAttack, LoadoutInput, PartialAttributes,
+        ActionSlot, BlobertAbilities, IClassicLoadout, IdTagAction, LoadoutInput, PartialAttributes,
     };
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
 
     const ATTRIBUTE_TABLE_ID: felt252 = bytearrays_hash!("loadout_classic", "Attributes");
-    const ATTACK_SLOT_TABLE_ID: felt252 = bytearrays_hash!("loadout_classic", "AttackSlots");
+    const ATTACK_SLOT_TABLE_ID: felt252 = bytearrays_hash!("loadout_classic", "ActionSlots");
 
     impl AttributeTable = ToriiTable<ATTRIBUTE_TABLE_ID>;
-    impl AttackSlotTable = ToriiTable<ATTACK_SLOT_TABLE_ID>;
+    impl ActionSlotTable = ToriiTable<ATTACK_SLOT_TABLE_ID>;
 
     #[storage]
     struct Storage {
         #[substorage(v0)]
         ownable: ownable_component::Storage,
         collection_addresses: Map<ContractAddress, bool>,
-        attack_dispatcher: IAttackAdminDispatcher,
+        action_dispatcher: IActionAdminDispatcher,
         attributes: Map<felt252, PartialAttributes>,
-        attack_slots: Map<felt252, felt252>,
+        action_slots: Map<felt252, felt252>,
         base_attributes: Attributes,
     }
 
@@ -133,7 +133,7 @@ mod loadout_classic {
     fn constructor(
         ref self: ContractState,
         owner: ContractAddress,
-        attack_dispatcher_address: ContractAddress,
+        action_dispatcher_address: ContractAddress,
         collection_addresses: Array<ContractAddress>,
     ) {
         self.grant_owner(owner);
@@ -141,10 +141,10 @@ mod loadout_classic {
             self.collection_addresses.write(address, true);
         }
         self
-            .attack_dispatcher
-            .write(IAttackAdminDispatcher { contract_address: attack_dispatcher_address });
+            .action_dispatcher
+            .write(IActionAdminDispatcher { contract_address: action_dispatcher_address });
         register_table_with_schema::<BlobertAbilities>("loadout_classic", "Attributes");
-        register_table_with_schema::<AttackSlot>("loadout_classic", "AttackSlots");
+        register_table_with_schema::<ActionSlot>("loadout_classic", "ActionSlots");
     }
 
     #[abi(embed_v0)]
@@ -162,7 +162,7 @@ mod loadout_classic {
             };
             self.get_combined_attributes(attributes)
         }
-        fn attacks(
+        fn actions(
             self: @ContractState,
             collection_address: ContractAddress,
             token_id: u256,
@@ -170,9 +170,9 @@ mod loadout_classic {
         ) -> Array<felt252> {
             self.assert_collection_address(collection_address);
             match get_blobert_traits(collection_address, token_id) {
-                TokenTraits::Seed(seed) => self.get_seed_attack_slots(seed.indexes(), slots),
+                TokenTraits::Seed(seed) => self.get_seed_action_slots(seed.indexes(), slots),
                 TokenTraits::Custom(index) => self
-                    .get_custom_attack_slots(get_custom_index(index), slots),
+                    .get_custom_action_slots(get_custom_index(index), slots),
             }
         }
 
@@ -183,17 +183,17 @@ mod loadout_classic {
             slots: Array<Array<felt252>>,
         ) -> (Attributes, Array<felt252>) {
             self.assert_collection_address(collection_address);
-            let (indexes, attack_slots) = match get_blobert_traits(collection_address, token_id) {
+            let (indexes, action_slots) = match get_blobert_traits(collection_address, token_id) {
                 TokenTraits::Seed(seed) => {
                     let indexes = seed.indexes();
-                    (indexes, self.get_seed_attack_slots(indexes, slots))
+                    (indexes, self.get_seed_action_slots(indexes, slots))
                 },
                 TokenTraits::Custom(index) => {
                     let cindex = get_custom_index(index);
-                    ([cindex].span(), self.get_custom_attack_slots(cindex, slots))
+                    ([cindex].span(), self.get_custom_action_slots(cindex, slots))
                 },
             };
-            (self.get_combined_attributes(indexes), attack_slots)
+            (self.get_combined_attributes(indexes), action_slots)
         }
     }
 
@@ -210,33 +210,33 @@ mod loadout_classic {
             index: u32,
             name: ByteArray,
             attributes: PartialAttributes,
-            attacks: Array<IdTagAttack>,
+            actions: Array<IdTagAction>,
         ) {
             self.assert_caller_is_owner();
             let abilities_index = blobert_trait.index(index);
             self.attributes.write(abilities_index, attributes);
 
-            let attack_ids = self.attack_dispatcher.read().maybe_create_attacks(attacks);
-            self.set_item_loadout(blobert_trait, index, name, attributes, attack_ids);
+            let action_ids = self.action_dispatcher.read().maybe_create_actions(actions);
+            self.set_item_loadout(blobert_trait, index, name, attributes, action_ids);
         }
 
 
         fn set_loadouts(ref self: ContractState, loadouts: Array<LoadoutInput>) {
             self.assert_caller_is_owner();
-            let mut all_attacks: Array<Array<IdTagAttack>> = Default::default();
+            let mut all_actions: Array<Array<IdTagAction>> = Default::default();
             for loadout in loadouts.span() {
-                all_attacks.append(loadout.attacks.clone());
+                all_actions.append(loadout.actions.clone());
             }
-            let attack_dispatcher = self.attack_dispatcher.read();
-            let all_attack_ids = attack_dispatcher.maybe_create_attacks_array(all_attacks);
-            for (loadout, attack_ids) in loadouts.into_iter().zip(all_attack_ids) {
+            let action_dispatcher = self.action_dispatcher.read();
+            let all_action_ids = action_dispatcher.maybe_create_actions_array(all_actions);
+            for (loadout, action_ids) in loadouts.into_iter().zip(all_action_ids) {
                 self
                     .set_item_loadout(
                         loadout.blobert_trait,
                         loadout.index,
                         loadout.name,
                         loadout.attributes,
-                        attack_ids,
+                        action_ids,
                     );
             }
         }
@@ -249,7 +249,7 @@ mod loadout_classic {
                 self.collection_addresses.read(collection_address), 'Invalid collection address',
             );
         }
-        fn clip_attack_slot_slots(
+        fn clip_action_slot_slots(
             self: StorageBase<Mutable<Map<felt252, felt252>>>, slot_index: felt252, slots: u32,
         ) {
             let mut slots: felt252 = slots.into();
@@ -264,7 +264,7 @@ mod loadout_classic {
                     break;
                 }
             }
-            AttackSlotTable::delete_entities(slot_ids);
+            ActionSlotTable::delete_entities(slot_ids);
         }
 
         fn set_item_loadout(
@@ -273,17 +273,17 @@ mod loadout_classic {
             index: u32,
             name: ByteArray,
             attributes: PartialAttributes,
-            attacks: Array<felt252>,
+            actions: Array<felt252>,
         ) {
             let item_index = blobert_trait.index(index);
             self.attributes.write(item_index, attributes);
             AttributeTable::set_entity(item_index, @(blobert_trait, index, name, attributes));
             let slot_index = item_index * SHIFT_4B_FELT252;
-            self.attack_slots.clip_attack_slot_slots(slot_index, attacks.len());
-            for (slot, attack_id) in attacks.into_iter().enumerate() {
+            self.action_slots.clip_action_slot_slots(slot_index, actions.len());
+            for (slot, action_id) in actions.into_iter().enumerate() {
                 let slot_id = slot_index + slot.into();
-                AttackSlotTable::set_entity(slot_id, @(blobert_trait, index, slot, attack_id));
-                self.attack_slots.write(slot_id, attack_id);
+                ActionSlotTable::set_entity(slot_id, @(blobert_trait, index, slot, action_id));
+                self.action_slots.write(slot_id, action_id);
             }
         }
 
@@ -297,7 +297,7 @@ mod loadout_classic {
             self.base_attributes.read().add_partial_attributes(attributes)
         }
 
-        fn get_seed_attack_slots(
+        fn get_seed_action_slots(
             self: @ContractState, hashes: Span<felt252>, slots: Array<Array<felt252>>,
         ) -> Array<felt252> {
             slots
@@ -305,17 +305,17 @@ mod loadout_classic {
                 .map(
                     |ks| {
                         let [key, slot]: [u32; 2] = ks.try_into().expect('Invalid slot format');
-                        self.attack_slots.read(*hashes[key] * SHIFT_4B_FELT252 + slot.into())
+                        self.action_slots.read(*hashes[key] * SHIFT_4B_FELT252 + slot.into())
                     },
                 )
                 .collect()
         }
 
-        fn get_custom_attack_slots(
+        fn get_custom_action_slots(
             self: @ContractState, abilities_index: felt252, slots: Array<Array<felt252>>,
         ) -> Array<felt252> {
             let slot_index = abilities_index * SHIFT_4B_FELT252;
-            slots.into_iter().map(|slot| self.attack_slots.read(slot_index + *slot[0])).collect()
+            slots.into_iter().map(|slot| self.action_slots.read(slot_index + *slot[0])).collect()
         }
     }
 

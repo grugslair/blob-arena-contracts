@@ -5,7 +5,7 @@ pub trait ILoadout<TContractState> {
     fn attributes(
         self: @TContractState, collection_address: ContractAddress, token_id: u256,
     ) -> Attributes;
-    fn attacks(
+    fn actions(
         self: @TContractState,
         collection_address: ContractAddress,
         token_id: u256,
@@ -29,13 +29,13 @@ pub fn get_loadout(
     ILoadoutDispatcher { contract_address }.loadout(collection_address, token_id, slots)
 }
 
-pub fn get_attacks(
+pub fn get_actions(
     contract_address: ContractAddress,
     collection_address: ContractAddress,
     token_id: u256,
     slots: Array<Array<felt252>>,
 ) -> Array<felt252> {
-    ILoadoutDispatcher { contract_address }.attacks(collection_address, token_id, slots)
+    ILoadoutDispatcher { contract_address }.actions(collection_address, token_id, slots)
 }
 
 pub fn get_attributes(

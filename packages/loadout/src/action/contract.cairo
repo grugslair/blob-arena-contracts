@@ -1,5 +1,5 @@
 #[starknet::contract]
-mod attack {
+mod action {
     use ba_utils::storage::ShortArrayStore;
     use beacon_library::{ToriiTable, register_table};
     use core::num::traits::Zero;
@@ -8,19 +8,19 @@ mod attack {
     use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess};
     use starknet::storage_access::StorePacking;
     use starknet::{ClassHash, ContractAddress};
-    use crate::attack::attack::{
+    use crate::action::action::{
         EffectArrayStorageMapReadAccess, EffectArrayStorageMapWriteAccess, byte_array_to_tag,
     };
-    use crate::attack::effect::EffectArrayStorePacking;
-    use crate::attack::{
-        Attack, AttackWithName, AttackWithNameTrait, Effect, IAttack, IAttackAdmin, IdTagAttack,
-        get_attack_id,
+    use crate::action::effect::EffectArrayStorePacking;
+    use crate::action::{
+        Action, ActionWithName, ActionWithNameTrait, Effect, IAction, IActionAdmin, IdTagAction,
+        get_action_id,
     };
 
     component!(path: access_component, storage: access, event: AccessEvents);
 
-    const ATTACK_TABLE_ID: felt252 = bytearrays_hash!("attack", "Attack");
-    impl AttackTable = ToriiTable<ATTACK_TABLE_ID>;
+    const ATTACK_TABLE_ID: felt252 = bytearrays_hash!("action", "Action");
+    impl ActionTable = ToriiTable<ATTACK_TABLE_ID>;
 
     #[storage]
     struct Storage {
@@ -43,19 +43,19 @@ mod attack {
 
     #[constructor]
     fn constructor(
-        ref self: ContractState, owner: ContractAddress, attack_model_class_hash: ClassHash,
+        ref self: ContractState, owner: ContractAddress, action_model_class_hash: ClassHash,
     ) {
         self.grant_owner(owner);
-        register_table("attack", "Attack", attack_model_class_hash);
+        register_table("action", "Action", action_model_class_hash);
     }
 
     #[abi(embed_v0)]
     impl IAccessImpl = access_component::AccessImpl<ContractState>;
 
     #[abi(embed_v0)]
-    impl IAttackImpl of IAttack<ContractState> {
-        fn attack(self: @ContractState, id: felt252) -> Attack {
-            Attack {
+    impl IActionImpl of IAction<ContractState> {
+        fn action(self: @ContractState, id: felt252) -> Action {
+            Action {
                 speed: self.speeds.read(id),
                 chance: self.chances.read(id),
                 cooldown: self.cooldowns.read(id),
@@ -64,8 +64,8 @@ mod attack {
             }
         }
 
-        fn attacks(self: @ContractState, ids: Array<felt252>) -> Array<Attack> {
-            ids.into_iter().map(|id| self.attack(id)).collect()
+        fn actions(self: @ContractState, ids: Array<felt252>) -> Array<Action> {
+            ids.into_iter().map(|id| self.action(id)).collect()
         }
 
         fn speed(self: @ContractState, id: felt252) -> u16 {
@@ -108,7 +108,7 @@ mod attack {
             ids.into_iter().map(|id| self.fail(id)).collect()
         }
 
-        fn attack_id(
+        fn action_id(
             self: @ContractState,
             name: ByteArray,
             speed: u16,
@@ -117,11 +117,11 @@ mod attack {
             success: Array<Effect>,
             fail: Array<Effect>,
         ) -> felt252 {
-            AttackWithName { name, speed, chance, cooldown, success, fail }.attack_id()
+            ActionWithName { name, speed, chance, cooldown, success, fail }.action_id()
         }
 
-        fn attack_ids(self: @ContractState, attacks: Array<AttackWithName>) -> Array<felt252> {
-            attacks.into_iter().map(|attack| attack.attack_id()).collect()
+        fn action_ids(self: @ContractState, actions: Array<ActionWithName>) -> Array<felt252> {
+            actions.into_iter().map(|action| action.action_id()).collect()
         }
 
         fn tag(self: @ContractState, tag: felt252) -> felt252 {
@@ -130,8 +130,8 @@ mod attack {
     }
 
     #[abi(embed_v0)]
-    impl IAttackAdminImpl of IAttackAdmin<ContractState> {
-        fn create_attack(
+    impl IActionAdminImpl of IActionAdmin<ContractState> {
+        fn create_action(
             ref self: ContractState,
             name: ByteArray,
             speed: u16,
@@ -141,86 +141,86 @@ mod attack {
             fail: Array<Effect>,
         ) -> felt252 {
             self.assert_caller_is_writer();
-            self._create_attack(AttackWithName { name, speed, chance, cooldown, success, fail })
+            self._create_action(ActionWithName { name, speed, chance, cooldown, success, fail })
         }
 
-        fn create_attacks(
-            ref self: ContractState, attacks: Array<AttackWithName>,
+        fn create_actions(
+            ref self: ContractState, actions: Array<ActionWithName>,
         ) -> Array<felt252> {
             self.assert_caller_is_writer();
-            let mut attack_ids: Array<felt252> = Default::default();
-            for attack in attacks {
-                attack_ids.append(self._create_attack(attack))
+            let mut action_ids: Array<felt252> = Default::default();
+            for action in actions {
+                action_ids.append(self._create_action(action))
             }
-            attack_ids
+            action_ids
         }
-        fn maybe_create_attacks(
-            ref self: ContractState, attacks: Array<IdTagAttack>,
+        fn maybe_create_actions(
+            ref self: ContractState, actions: Array<IdTagAction>,
         ) -> Array<felt252> {
             self.assert_caller_is_writer();
-            let mut attack_ids: Array<felt252> = Default::default();
+            let mut action_ids: Array<felt252> = Default::default();
 
-            for maybe_attack in attacks {
-                let attack_id = match maybe_attack {
-                    IdTagAttack::Id(attack_id) => { attack_id },
-                    IdTagAttack::Tag(tag) => { self.tags.read(byte_array_to_tag(@tag)) },
-                    IdTagAttack::Attack(attack) => { self._create_attack(attack) },
+            for maybe_action in actions {
+                let action_id = match maybe_action {
+                    IdTagAction::Id(action_id) => { action_id },
+                    IdTagAction::Tag(tag) => { self.tags.read(byte_array_to_tag(@tag)) },
+                    IdTagAction::Action(action) => { self._create_action(action) },
                 };
-                attack_ids.append(attack_id);
+                action_ids.append(action_id);
             }
-            attack_ids
+            action_ids
         }
-        fn maybe_create_attacks_array(
-            ref self: ContractState, attacks: Array<Array<IdTagAttack>>,
+        fn maybe_create_actions_array(
+            ref self: ContractState, actions: Array<Array<IdTagAction>>,
         ) -> Array<Array<felt252>> {
             self.assert_caller_is_writer();
-            let mut all_attack_ids: Array<Array<felt252>> = Default::default();
-            for attack_array in attacks {
-                let mut attack_ids: Array<felt252> = Default::default();
-                for maybe_attack in attack_array {
-                    let attack_id = match maybe_attack {
-                        IdTagAttack::Id(attack_id) => { attack_id },
-                        IdTagAttack::Tag(tag) => { self.tags.read(byte_array_to_tag(@tag)) },
-                        IdTagAttack::Attack(attack) => { self._create_attack(attack) },
+            let mut all_action_ids: Array<Array<felt252>> = Default::default();
+            for action_array in actions {
+                let mut action_ids: Array<felt252> = Default::default();
+                for maybe_action in action_array {
+                    let action_id = match maybe_action {
+                        IdTagAction::Id(action_id) => { action_id },
+                        IdTagAction::Tag(tag) => { self.tags.read(byte_array_to_tag(@tag)) },
+                        IdTagAction::Action(action) => { self._create_action(action) },
                     };
-                    attack_ids.append(attack_id);
+                    action_ids.append(action_id);
                 }
-                all_attack_ids.append(attack_ids);
+                all_action_ids.append(action_ids);
             }
-            all_attack_ids
+            all_action_ids
         }
     }
 
 
     #[generate_trait]
     impl PrivateImpl of PrivateTrait {
-        fn _create_attack(ref self: ContractState, attack: AttackWithName) -> felt252 {
-            let snapshot = @attack;
-            let success = StorePacking::pack(attack.success);
-            let fail = StorePacking::pack(attack.fail);
-            let attack_id = get_attack_id(
-                @attack.name,
-                attack.speed,
-                attack.chance,
-                attack.cooldown,
+        fn _create_action(ref self: ContractState, action: ActionWithName) -> felt252 {
+            let snapshot = @action;
+            let success = StorePacking::pack(action.success);
+            let fail = StorePacking::pack(action.fail);
+            let action_id = get_action_id(
+                @action.name,
+                action.speed,
+                action.chance,
+                action.cooldown,
                 success.span(),
                 fail.span(),
             );
-            self.tags.write(byte_array_to_tag(@attack.name), attack_id);
-            // let attack: Attack = attack.into();
-            if self.chances.read(attack_id).is_non_zero() {
-                return attack_id; // Attack already exists
+            self.tags.write(byte_array_to_tag(@action.name), action_id);
+            // let action: Action = action.into();
+            if self.chances.read(action_id).is_non_zero() {
+                return action_id; // Action already exists
             }
-            assert(0 < attack.chance && attack.chance <= 100, 'Chance must between 0 and 100');
+            assert(0 < action.chance && action.chance <= 100, 'Chance must between 0 and 100');
 
-            AttackTable::set_entity(attack_id, snapshot);
-            self.speeds.write(attack_id, attack.speed);
-            self.chances.write(attack_id, attack.chance);
-            self.cooldowns.write(attack_id, attack.cooldown);
-            self.successes.write(attack_id, success);
-            self.fails.write(attack_id, fail);
+            ActionTable::set_entity(action_id, snapshot);
+            self.speeds.write(action_id, action.speed);
+            self.chances.write(action_id, action.chance);
+            self.cooldowns.write(action_id, action.cooldown);
+            self.successes.write(action_id, success);
+            self.fails.write(action_id, fail);
 
-            attack_id
+            action_id
         }
     }
 }

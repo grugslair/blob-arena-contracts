@@ -1,14 +1,14 @@
-use ba_loadout::attack::IAttackDispatcher;
+use ba_loadout::action::IActionDispatcher;
 use ba_utils::{ExternalCalls, Randomness};
 use starknet::ClassHash;
-use crate::combat::AttackCheck;
+use crate::combat::ActionCheck;
 use crate::{CombatantState, RoundResult};
 
 #[starknet::contract]
 mod combat {
-    use ba_loadout::attack::IAttackDispatcher;
+    use ba_loadout::action::IActionDispatcher;
     use ba_utils::Randomness;
-    use crate::combat::AttackCheck;
+    use crate::combat::ActionCheck;
     use crate::{CombatTrait, CombatantState, RoundResult};
 
     #[storage]
@@ -16,7 +16,7 @@ mod combat {
 
     /// Executes a single combat round between two combatants
     ///
-    /// Processes one round of combat by applying attacks from both combatants,
+    /// Processes one round of combat by applying actions from both combatants,
     /// resolving damage, effects, and state changes. Uses provided randomness
     /// for combat calculations and returns updated randomness state.
     ///
@@ -25,11 +25,11 @@ mod combat {
     /// * `round` - Current round number in the combat sequence
     /// * `state_1` - Current state of the first combatant (health, effects, etc.)
     /// * `state_2` - Current state of the second combatant (health, effects, etc.)
-    /// * `attack_1` - Attack identifier chosen by the first combatant
-    /// * `attack_2` - Attack identifier chosen by the second combatant
-    /// * `attack_check_1` - Pre-validated attack data for the first combatant
-    /// * `attack_check_2` - Pre-validated attack data for the second combatant
-    /// * `attack_dispatcher` - Interface for resolving attack effects and damage
+    /// * `action_1` - Action identifier chosen by the first combatant
+    /// * `action_2` - Action identifier chosen by the second combatant
+    /// * `action_check_1` - Pre-validated action data for the first combatant
+    /// * `action_check_2` - Pre-validated action data for the second combatant
+    /// * `action_dispatcher` - Interface for resolving action effects and damage
     /// * `randomness` - Current randomness state for combat calculations
     ///
     /// # Returns
@@ -43,11 +43,11 @@ mod combat {
         round: u32,
         state_1: CombatantState,
         state_2: CombatantState,
-        attack_1: felt252,
-        attack_2: felt252,
-        attack_check_1: AttackCheck,
-        attack_check_2: AttackCheck,
-        attack_dispatcher: IAttackDispatcher,
+        action_1: felt252,
+        action_2: felt252,
+        action_check_1: ActionCheck,
+        action_check_2: ActionCheck,
+        action_dispatcher: IActionDispatcher,
         randomness: Randomness,
     ) -> (RoundResult, Randomness) {
         let mut combat = CombatTrait::new(
@@ -55,12 +55,12 @@ mod combat {
             round,
             state_1,
             state_2,
-            attack_1,
-            attack_2,
-            attack_check_1,
-            attack_check_2,
+            action_1,
+            action_2,
+            action_check_1,
+            action_check_2,
             randomness,
-            attack_dispatcher,
+            action_dispatcher,
         );
         combat.run_round();
         combat.to_round_and_randomness()
@@ -79,11 +79,11 @@ mod combat {
 /// * `round` - Current round number in the combat sequence
 /// * `state_1` - Current state of the first combatant
 /// * `state_2` - Current state of the second combatant
-/// * `attack_1` - Attack identifier chosen by the first combatant
-/// * `attack_2` - Attack identifier chosen by the second combatant
-/// * `attack_check_1` - Pre-validated attack data for the first combatant
-/// * `attack_check_2` - Pre-validated attack data for the second combatant
-/// * `attack_dispatcher` - Interface for resolving attack effects and damage
+/// * `action_1` - Action identifier chosen by the first combatant
+/// * `action_2` - Action identifier chosen by the second combatant
+/// * `action_check_1` - Pre-validated action data for the first combatant
+/// * `action_check_2` - Pre-validated action data for the second combatant
+/// * `action_dispatcher` - Interface for resolving action effects and damage
 /// * `randomness` - Current randomness state for combat calculations
 ///
 /// # Returns
@@ -95,11 +95,11 @@ pub fn library_run_round(
     round: u32,
     state_1: CombatantState,
     state_2: CombatantState,
-    attack_1: felt252,
-    attack_2: felt252,
-    attack_check_1: AttackCheck,
-    attack_check_2: AttackCheck,
-    attack_dispatcher: IAttackDispatcher,
+    action_1: felt252,
+    action_2: felt252,
+    action_check_1: ActionCheck,
+    action_check_2: ActionCheck,
+    action_dispatcher: IActionDispatcher,
     randomness: Randomness,
 ) -> (RoundResult, Randomness) {
     class_hash
@@ -110,11 +110,11 @@ pub fn library_run_round(
                 round,
                 state_1,
                 state_2,
-                attack_1,
-                attack_2,
-                attack_check_1,
-                attack_check_2,
-                attack_dispatcher,
+                action_1,
+                action_2,
+                action_check_1,
+                action_check_2,
+                action_dispatcher,
                 randomness,
             ),
         )

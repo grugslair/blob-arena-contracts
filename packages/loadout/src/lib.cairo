@@ -1,13 +1,13 @@
-pub mod attack {
-    pub mod attack;
+pub mod action {
+    pub mod action;
     mod contract;
     pub mod effect;
     pub mod interface;
-    pub use attack::{Attack, AttackWithName, AttackWithNameTrait, IdTagAttack, get_attack_id};
-    pub use effect::{Affect, Damage, DamageType, Effect, Target};
+    pub use action::{Action, ActionWithName, ActionWithNameTrait, IdTagAction, get_action_id};
+    pub use effect::{Affect, Damage, DamageType, Effect, Recipient};
     pub use interface::{
-        IAttack, IAttackAdmin, IAttackAdminDispatcher, IAttackAdminDispatcherTrait,
-        IAttackDispatcher, IAttackDispatcherTrait, maybe_create_attacks,
+        IAction, IActionAdmin, IActionAdminDispatcher, IActionAdminDispatcherTrait,
+        IActionDispatcher, IActionDispatcherTrait, maybe_create_actions,
     };
 }
 pub mod attributes;

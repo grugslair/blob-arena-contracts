@@ -24,7 +24,7 @@ pub enum Role {
 
 #[starknet::interface]
 pub trait IOrb<TContractState> {
-    fn attack(self: @TContractState, token_id: u256) -> felt252;
+    fn action(self: @TContractState, token_id: u256) -> felt252;
     fn charge(self: @TContractState, token_id: u256) -> u128;
     fn rarity(self: @TContractState, token_id: u256) -> Rarity;
     fn charge_cost(self: @TContractState, token_id: u256) -> u128;
@@ -35,7 +35,7 @@ pub trait IOrbAdmin<TContractState> {
     fn mint(
         ref self: TContractState,
         owner: ContractAddress,
-        attack: felt252,
+        action: felt252,
         rarity: Rarity,
         charge: u128,
         charge_cost: u128,
@@ -67,13 +67,13 @@ pub impl OrbImpl of OrbTrait {
     fn mint(
         self: ContractAddress,
         owner: ContractAddress,
-        attack: felt252,
+        action: felt252,
         rarity: Rarity,
         charge: u128,
         charge_cost: u128,
     ) -> u256 {
         IOrbAdminDispatcher { contract_address: self }
-            .mint(owner, attack, charge, charge_cost, rarity)
+            .mint(owner, action, charge, charge_cost, rarity)
     }
 }
 
@@ -122,7 +122,7 @@ pub mod orbs {
 
     #[derive(Drop, Serde, Introspect)]
     pub struct Orb {
-        attack: felt252,
+        action: felt252,
         charge: u128,
         rarity: Rarity,
         charge_cost: u128,
@@ -136,7 +136,7 @@ pub mod orbs {
         #[substorage(v0)]
         src5: SRC5Component::Storage,
         charges: Map<felt252, u128>,
-        attacks: Map<felt252, felt252>,
+        actions: Map<felt252, felt252>,
         rarities: Map<felt252, Rarity>,
         charge_costs: Map<felt252, u128>,
         tokens_minted: felt252,
@@ -180,8 +180,8 @@ pub mod orbs {
 
     #[abi(embed_v0)]
     impl IOrbImpl of IOrb<ContractState> {
-        fn attack(self: @ContractState, token_id: u256) -> felt252 {
-            self.attacks.read(downcast_id(token_id))
+        fn action(self: @ContractState, token_id: u256) -> felt252 {
+            self.actions.read(downcast_id(token_id))
         }
 
         fn charge(self: @ContractState, token_id: u256) -> u128 {
@@ -202,13 +202,13 @@ pub mod orbs {
         fn mint(
             ref self: ContractState,
             owner: ContractAddress,
-            attack: felt252,
+            action: felt252,
             charge: u128,
             charge_cost: u128,
             rarity: Rarity,
         ) -> u256 {
             self.assert_caller_has_role(Role::Minter);
-            self.mint_internal(owner, attack, charge, charge_cost, rarity)
+            self.mint_internal(owner, action, charge, charge_cost, rarity)
         }
 
         fn add_charge_cost(ref self: ContractState, token_id: u256) {
@@ -276,17 +276,17 @@ pub mod orbs {
         fn mint_internal(
             ref self: ContractState,
             owner: ContractAddress,
-            attack: felt252,
+            action: felt252,
             charge: u128,
             charge_cost: u128,
             rarity: Rarity,
         ) -> u256 {
             let token_id = self.tokens_minted.read() + 1;
             self.tokens_minted.write(token_id);
-            assert(attack.is_non_zero(), 'Invalid attack ID');
+            assert(action.is_non_zero(), 'Invalid action ID');
             assert(charge_cost.is_non_zero(), 'Charge cost cannot be zero');
-            OrbTable::set_entity(token_id, @Orb { attack, charge, rarity, charge_cost });
-            self.attacks.write(token_id, attack);
+            OrbTable::set_entity(token_id, @Orb { action, charge, rarity, charge_cost });
+            self.actions.write(token_id, action);
             self.charges.write(token_id, charge);
             self.rarities.write(token_id, rarity);
             self.charge_costs.write(token_id, charge_cost);
@@ -359,7 +359,7 @@ pub mod orbs {
             ref self: ContractState, token_id: felt252, amount: u128,
         ) -> Option<felt252> {
             if self.decrease_token_charge(token_id, amount) {
-                Some(self.attacks.read(token_id))
+                Some(self.actions.read(token_id))
             } else {
                 None
             }

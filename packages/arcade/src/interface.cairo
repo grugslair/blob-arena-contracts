@@ -4,18 +4,18 @@ use starknet::{ClassHash, ContractAddress};
 /// Main interface for arcade gameplay functionality
 ///
 /// Provides the core game mechanics for players to start arcade attempts,
-/// execute attacks, manage respawns, and forfeit attempts.
+/// execute actions, manage respawns, and forfeit attempts.
 #[starknet::interface]
 pub trait IArcade<TState> {
     /// Starts a new arcade attempt for the specified NFT
     ///
-    /// Creates a new arcade session using the player's NFT and selected attack loadout.
+    /// Creates a new arcade session using the player's NFT and selected action loadout.
     /// The player must have sufficient energy/credits and the NFT must be valid.
     ///
     /// # Arguments
     /// * `collection_address` - The NFT collection contract address
     /// * `token_id` - The specific NFT token ID to use for this attempt
-    /// * `attack_slots` - Array of attack slot configurations for the loadout
+    /// * `action_slots` - Array of action slot configurations for the loadout
     ///
     /// # Returns
     /// * `felt252` - Unique identifier for the created arcade attempt
@@ -23,17 +23,17 @@ pub trait IArcade<TState> {
         ref self: TState,
         collection_address: ContractAddress,
         token_id: u256,
-        attack_slots: Array<Array<felt252>>,
+        action_slots: Array<Array<felt252>>,
     ) -> felt252;
 
-    /// Executes an attack in the current combat round
+    /// Executes an action in the current combat round
     ///
-    /// Performs the specified attack against the current opponent in the arcade attempt.
-    /// The attack must be available in the player's loadout and not on cooldown.
+    /// Performs the specified action against the current opponent in the arcade attempt.
+    /// The action must be available in the player's loadout and not on cooldown.
     ///
     /// # Arguments
     /// * `attempt_id` - The arcade attempt identifier
-    /// * `attack_id` - The attack to execute (must be in the player's loadout)
+    /// * `action_id` - The action to execute (must be in the player's loadout)
     fn act(ref self: TState, attempt_id: felt252, action: Action);
 
     /// Respawns the player's character after defeat
