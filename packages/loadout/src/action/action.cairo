@@ -1,16 +1,26 @@
-use core::num::traits::{One, Zero};
+use ba_utils::storage::read_at_base_offset;
+use core::num::traits::{DivRem, One, Zero};
 use core::poseidon::poseidon_hash_span;
-use sai_core_utils::SerdeAll;
 use sai_core_utils::poseidon_serde::PoseidonSerde;
+use sai_core_utils::{SerdeAll, poseidon_hash_two};
 use sai_packing::ShiftCast;
 use sai_packing::byte::{SHIFT_4B, SHIFT_6B};
 pub use starknet::storage::{
     Map, Mutable, MutableVecTrait, StorageBase, StorageMapReadAccess, StorageMapWriteAccess,
     StoragePath, StoragePathEntry, StoragePointerReadAccess, Vec, VecTrait,
 };
-use super::Effect;
+use starknet::storage_access::StorageBaseAddress;
+use crate::action::effect::EffectArrayReadWrite;
 use super::effect::pack_effect_array;
+use super::{Effect, effect};
 const ATTACK_TAG_GROUP: felt252 = 'actions';
+const NZ_MILLION: NonZero<u256> = 1_000_000;
+const NZ_12: NonZero<u16> = 12;
+
+pub struct Effects {
+    pub chance: Array<(u32, Array<Effect>)>,
+    pub base: Array<Effect>,
+}
 
 
 /// Setup models
@@ -27,21 +37,69 @@ const ATTACK_TAG_GROUP: felt252 = 'actions';
 #[derive(Drop, Serde, Default, Introspect)]
 pub struct Action {
     pub speed: u16,
-    pub chance: u8,
     pub cooldown: u32,
-    pub success: Array<Effect>,
-    pub fail: Array<Effect>,
+    pub base_effects: Array<Effect>,
+    pub chance_effects: Array<(u32, Array<Effect>)>,
 }
 
 #[derive(Drop, Serde, Clone, Introspect)]
 pub struct ActionWithName {
     pub name: ByteArray,
     pub speed: u16,
-    pub chance: u8,
     pub cooldown: u32,
-    pub success: Array<Effect>,
-    pub fail: Array<Effect>,
+    pub base_effects: Array<Effect>,
+    pub chance_effects: Array<(u32, Array<Effect>)>,
 }
+
+#[derive(Drop)]
+struct EffectReader {
+    action_id: felt252,
+    storage_base: StorageBaseAddress,
+    n: u16,
+    current_chances: u256,
+}
+
+#[generate_trait]
+impl EffectReaderImpl of EffectReaderTrait {
+    fn next_chance(ref self: EffectReader) -> u32 {
+        let (felt, n) = self.n.div_rem(NZ_12);
+        if n.is_zero() {
+            self
+                .current_chances = read_at_base_offset(self.storage_base, felt.try_into().unwrap())
+                .into();
+        }
+        let (quotient, remainder) = self.current_chances.div_rem(NZ_MILLION);
+        self.current_chances = quotient;
+
+        self.n += 1;
+        remainder.try_into().unwrap()
+    }
+
+    fn get_effects(ref self: EffectReader, chance_value: u32) -> (u16, Array<Effect>) {
+        let mut next_chance = self.next_chance();
+        let mut current_chance = next_chance;
+        while current_chance < chance_value && next_chance.is_non_zero() {
+            next_chance = self.next_chance();
+            current_chance += next_chance;
+        }
+        let mut n = if next_chance.is_zero() {
+            *(@self).n
+        } else {
+            0
+        };
+        let effects = self.get_effects_at(n);
+        (n, effects)
+    }
+    fn get_effects_at(self: @EffectReader, n: u16) -> Array<Effect> {
+        EffectArrayReadWrite::read_short_array(
+            poseidon_hash_two(*self.action_id, n).try_into().unwrap(),
+        )
+            .unwrap()
+    }
+}
+
+
+fn write_effect_chances() {}
 
 
 impl ActionWithNameIntoAction of Into<ActionWithName, Action> {
@@ -69,13 +127,17 @@ pub enum IdTagAction {
 #[generate_trait]
 pub impl ActionWithNameImpl of ActionWithNameTrait {
     fn action_id(self: ActionWithName) -> felt252 {
+        let mut chance_effects: Array<(u32, Span<felt252>)> = Default::default();
+        for (chance, effects) in self.chance_effects {
+            chance_effects.append((chance, pack_effect_array(effects).span()));
+        }
+
         get_action_id(
             @self.name,
             self.speed,
-            self.chance,
             self.cooldown,
-            pack_effect_array(self.success).span(),
-            pack_effect_array(self.fail).span(),
+            pack_effect_array(self.base_effects).span(),
+            chance_effects.span(),
         )
     }
 }
@@ -84,15 +146,13 @@ pub impl ActionWithNameImpl of ActionWithNameTrait {
 pub fn get_action_id(
     name: @ByteArray,
     speed: u16,
-    chance: u8,
     cooldown: u32,
-    success: Span<felt252>,
-    fail: Span<felt252>,
+    base_effects: Span<felt252>,
+    chance_effects: Span<(u32, Span<felt252>)>,
 ) -> felt252 {
     let mut serialized: Array<felt252> = Default::default();
-    let value: u64 = cooldown.into()
-        + ShiftCast::const_cast::<SHIFT_4B>(speed)
-        + ShiftCast::const_cast::<SHIFT_6B>(chance);
+    let value: u64 = cooldown.into() + ShiftCast::const_cast::<SHIFT_4B>(speed);
+    let mut serialized = array![value.into()];
 
     Serde::serialize(name, ref serialized);
     serialized.append(value.into());

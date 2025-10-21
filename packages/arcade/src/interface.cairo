@@ -1,4 +1,4 @@
-use ba_combat::Action;
+use ba_combat::Move;
 use starknet::{ClassHash, ContractAddress};
 
 /// Main interface for arcade gameplay functionality
@@ -34,7 +34,7 @@ pub trait IArcade<TState> {
     /// # Arguments
     /// * `attempt_id` - The arcade attempt identifier
     /// * `action_id` - The action to execute (must be in the player's loadout)
-    fn act(ref self: TState, attempt_id: felt252, action: Action);
+    fn act(ref self: TState, attempt_id: felt252, action: Move);
 
     /// Respawns the player's character after defeat
     ///
