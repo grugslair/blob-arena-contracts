@@ -1,4 +1,4 @@
-use ba_combat::{Action, Player};
+use ba_combat::{Move, Player};
 use starknet::{ClassHash, ContractAddress};
 
 #[starknet::interface]
@@ -75,7 +75,7 @@ pub trait IPvp<TContractState> {
     /// * `player` - Player revealing the action
     /// * `action` - The action being revealed
     /// * `salt` - The salt used in the original hash
-    fn reveal(ref self: TContractState, id: felt252, player: Player, action: Action, salt: felt252);
+    fn reveal(ref self: TContractState, id: felt252, player: Player, action: Move, salt: felt252);
     /// ## forfeit
     ///  Forfeits the current PvP combat, conceding victory to the opponent
     /// * `id` - ID of the PvP combat
@@ -96,7 +96,7 @@ pub trait IPvpAdmin<TContractState> {
 mod pvp {
     use ba_combat::combat::{ActionCheck, CombatProgress, RoundZeroResult, set_actions_available};
     use ba_combat::systems::{get_action_dispatcher, set_action_dispatcher_address};
-    use ba_combat::{Action, CombatantState, RoundResult, library_run_round};
+    use ba_combat::{CombatantState, Move, RoundResult, library_run_round};
     use ba_loadout::get_loadout;
     use ba_orbs::OrbTrait;
     use ba_utils::{RandomnessTrait, uuid};
@@ -330,7 +330,7 @@ mod pvp {
             combat.commit.write(hash);
         }
         fn reveal(
-            ref self: ContractState, id: felt252, player: Player, action: Action, salt: felt252,
+            ref self: ContractState, id: felt252, player: Player, action: Move, salt: felt252,
         ) {
             let mut combat = self.combats.entry(id);
             let mut maybe_players = combat.assert_caller_is_player_return_maybe(player);
@@ -414,7 +414,7 @@ mod pvp {
             node: PvpNodePath,
             combat_id: felt252,
             phase: CombatPhase,
-            action: Action,
+            action: Move,
             salt: felt252,
             players: MaybePlayers<T>,
         ) -> RoundResult {
@@ -487,13 +487,13 @@ mod pvp {
         >(
             ref self: ContractState,
             ref orb_address: AddressOrPtr<T>,
-            action: Action,
+            action: Move,
             player_address: AddressOrPtr<S>,
             orb_ptr: PendingStoragePath<Mutable<felt252>>,
         ) -> (felt252, ActionCheck) {
             match action {
-                Action::Action(action_id) => (action_id, ActionCheck::All),
-                Action::Orb(orb_id) => {
+                Move::Action(action_id) => (action_id, ActionCheck::All),
+                Move::Orb(orb_id) => {
                     let action_id = if orb_id == orb_ptr.read() {
                         match orb_address
                             .read()
@@ -509,7 +509,7 @@ mod pvp {
                     };
                     (action_id, ActionCheck::None)
                 },
-                Action::None => (0, ActionCheck::None),
+                Move::None => (0, ActionCheck::None),
             }
         }
     }

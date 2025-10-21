@@ -131,7 +131,6 @@ pub impl ActionWithNameImpl of ActionWithNameTrait {
         for (chance, effects) in self.chance_effects {
             chance_effects.append((chance, pack_effect_array(effects).span()));
         }
-
         get_action_id(
             @self.name,
             self.speed,

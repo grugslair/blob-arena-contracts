@@ -8,14 +8,11 @@ pub trait IAction<TContractState> {
     fn actions(self: @TContractState, ids: Array<felt252>) -> Array<Action>;
     fn speed(self: @TContractState, id: felt252) -> u16;
     fn speeds(self: @TContractState, ids: Array<felt252>) -> Array<u16>;
-    fn chance(self: @TContractState, id: felt252) -> u8;
-    fn chances(self: @TContractState, ids: Array<felt252>) -> Array<u8>;
     fn cooldown(self: @TContractState, id: felt252) -> u32;
     fn cooldowns(self: @TContractState, ids: Array<felt252>) -> Array<u32>;
-    fn success(self: @TContractState, id: felt252) -> Array<Effect>;
-    fn successes(self: @TContractState, ids: Array<felt252>) -> Array<Array<Effect>>;
-    fn fail(self: @TContractState, id: felt252) -> Array<Effect>;
-    fn fails(self: @TContractState, ids: Array<felt252>) -> Array<Array<Effect>>;
+    fn effects(self: @TContractState, id: felt252) -> Array<Effect>;
+    fn chance(self: @TContractState, id: felt252) -> u8;
+    fn chances(self: @TContractState, id: felt252) -> u8;
     fn action_id(
         self: @TContractState,
         name: ByteArray,

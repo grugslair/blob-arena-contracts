@@ -1,4 +1,4 @@
-use ba_combat::{Action, CombatantState, Player};
+use ba_combat::{CombatantState, Move, Player};
 use ba_loadout::Attributes;
 use core::metaprogramming::TypeEqual;
 use starknet::storage::{Mutable, PendingStoragePath, StoragePath, StoragePointerReadAccess};
@@ -45,7 +45,7 @@ pub struct PvpNode {
     pub player_1: ContractAddress,
     pub player_2: ContractAddress,
     pub commit: felt252,
-    pub reveal: (Action, felt252),
+    pub reveal: (Move, felt252),
     pub player_states: [CombatantState; 2],
     pub orb_1: felt252,
     pub orb_2: felt252,

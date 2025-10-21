@@ -30,7 +30,7 @@ pub mod arcade_component {
     use ba_combat::combat::ActionCheck;
     use ba_combat::combatant::get_max_health_percent;
     use ba_combat::systems::{get_action_dispatcher, set_action_dispatcher_address};
-    use ba_combat::{Action, CombatantState, library_run_round};
+    use ba_combat::{CombatantState, Move, library_run_round};
     use ba_credit::arena_credit_consume;
     use ba_loadout::get_loadout;
     use ba_orbs::OrbTrait;
@@ -144,7 +144,7 @@ pub mod arcade_component {
     }
 
     mod internal_trait {
-        use ba_combat::Action;
+        use ba_combat::Move;
         use ba_utils::Randomness;
         use starknet::{ClassHash, ContractAddress};
         use crate::Opponent;
@@ -166,7 +166,7 @@ pub mod arcade_component {
             ) -> (AttemptNodePath, felt252, ContractAddress);
 
             fn act_attempt(
-                ref self: TState, attempt_id: felt252, action: Action,
+                ref self: TState, attempt_id: felt252, action: Move,
             ) -> (AttemptNodePath, ArcadeActionResult, Randomness);
 
             fn respawn_attempt(
@@ -261,7 +261,7 @@ pub mod arcade_component {
         }
 
         fn act_attempt(
-            ref self: ComponentState<TContractState>, attempt_id: felt252, action: Action,
+            ref self: ComponentState<TContractState>, attempt_id: felt252, action: Move,
         ) -> (AttemptNodePath, ArcadeActionResult, Randomness) {
             let mut attempt_ptr = self.attempts.entry(attempt_id);
 
@@ -283,11 +283,11 @@ pub mod arcade_component {
             let opponent_state_ptr = combat_node.opponent_state;
 
             let (action_id, check) = match action {
-                Action::None => (0, ActionCheck::None),
-                Action::Action(action_id) => (
+                Move::None => (0, ActionCheck::None),
+                Move::Action(action_id) => (
                     action_id, ActionCheck::Cooldown(attempt_ptr.actions_available.read(action_id)),
                 ),
-                Action::Orb(orb_id) => (
+                Move::Orb(orb_id) => (
                     self
                         .orb_address
                         .read()
