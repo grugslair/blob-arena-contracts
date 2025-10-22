@@ -36,6 +36,7 @@ struct OpponentInput {
     actions: Array<IdTagAction>,
 }
 
+
 mod errors {
     pub const RESPAWN_WHEN_NOT_LOST: felt252 = 'Cannot respawn, player not lost';
     pub const NOT_ACTIVE: felt252 = 'Combat is not active';
@@ -70,7 +71,7 @@ mod arcade_classic {
         StoragePointerWriteAccess,
     };
     use starknet::{ClassHash, ContractAddress};
-    use crate::Opponent;
+    use crate::{Attributes, Opponent, TokenTraits};
     use super::{IArcadeClassic, IdTagAction, OpponentInput};
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
@@ -201,17 +202,20 @@ mod arcade_classic {
             self.assert_caller_is_owner();
             self.stages_len.write(opponents.len());
             let mut all_actions: Array<Array<IdTagAction>> = Default::default();
-            for opponent in opponents.span() {
-                all_actions.append(opponent.actions.clone());
+            let mut attributes: Array<(TokenTraits, Attributes)> = Default::default();
+            for opponent in opponents {
+                all_actions.append(opponent.actions);
+                attributes.append((opponent.traits, opponent.attributes));
             }
             let all_action_ids = maybe_create_actions_array(
                 get_action_dispatcher_address(), all_actions,
             );
-            for (i, (opponent, actions)) in opponents.into_iter().zip(all_action_ids).enumerate() {
-                OpponentTable::set_entity(
-                    i, @(opponent.traits, opponent.attributes, actions.span()),
-                );
-                self.opponents.write(i, Opponent { attributes: opponent.attributes, actions });
+            for (i, ((traits, attr), actions)) in attributes
+                .into_iter()
+                .zip(all_action_ids)
+                .enumerate() {
+                OpponentTable::set_entity(i, @(traits, attr, actions.span()));
+                self.opponents.write(i, Opponent { attributes: attr, actions });
             }
         }
     }

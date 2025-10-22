@@ -333,12 +333,11 @@ pub impl CombatImpl of CombatTrait {
             ActionResult::NotAvailable
         } else if self.run_stun(source) {
             ActionResult::Stunned
-        } else if self.randomness.get(100) < self.action_dispatcher.chance(action_id) {
-            ActionResult::Success(
-                self.apply_effects(source, self.action_dispatcher.success(action_id)),
-            )
         } else {
-            ActionResult::Fail(self.apply_effects(source, self.action_dispatcher.fail(action_id)))
+            let (n, effect) = self
+                .action_dispatcher
+                .get_effects(action_id, self.randomness.get(1_000_000));
+            ActionResult::Action((n, self.apply_effects(source, effect)))
         };
         self.action_results.append(result);
         self.check_progress(!source);

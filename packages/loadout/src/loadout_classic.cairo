@@ -34,6 +34,30 @@ struct LoadoutInput {
     actions: Array<IdTagAction>,
 }
 
+#[derive(Drop, Serde)]
+pub struct AttributesWithName {
+    blobert_trait: BlobertTrait,
+    index: u32,
+    name: ByteArray,
+    attributes: PartialAttributes,
+}
+
+impl LoadoutInputIntoAttributesWithName of Into<
+    LoadoutInput, (AttributesWithName, Array<IdTagAction>),
+> {
+    fn into(self: LoadoutInput) -> (AttributesWithName, Array<IdTagAction>) {
+        (
+            AttributesWithName {
+                blobert_trait: self.blobert_trait,
+                index: self.index,
+                name: self.name,
+                attributes: self.attributes,
+            },
+            self.actions,
+        )
+    }
+}
+
 /// Represents an action assigned to a specific slot for a blobert loadout
 ///
 /// # Fields
@@ -100,7 +124,8 @@ mod loadout_classic {
     use crate::attributes::{Attributes, AttributesTrait};
     use crate::interface::ILoadout;
     use super::{
-        ActionSlot, BlobertAbilities, IClassicLoadout, IdTagAction, LoadoutInput, PartialAttributes,
+        ActionSlot, AttributesWithName, BlobertAbilities, IClassicLoadout, IdTagAction,
+        LoadoutInput, PartialAttributes,
     };
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
@@ -224,19 +249,18 @@ mod loadout_classic {
         fn set_loadouts(ref self: ContractState, loadouts: Array<LoadoutInput>) {
             self.assert_caller_is_owner();
             let mut all_actions: Array<Array<IdTagAction>> = Default::default();
-            for loadout in loadouts.span() {
-                all_actions.append(loadout.actions.clone());
+            let mut attributes: Array<AttributesWithName> = Default::default();
+            for loadout in loadouts {
+                let (attr, actions) = loadout.into();
+                attributes.append(attr);
+                all_actions.append(actions);
             }
             let action_dispatcher = self.action_dispatcher.read();
             let all_action_ids = action_dispatcher.maybe_create_actions_array(all_actions);
-            for (loadout, action_ids) in loadouts.into_iter().zip(all_action_ids) {
+            for (attr, action_ids) in attributes.into_iter().zip(all_action_ids) {
                 self
                     .set_item_loadout(
-                        loadout.blobert_trait,
-                        loadout.index,
-                        loadout.name,
-                        loadout.attributes,
-                        action_ids,
+                        attr.blobert_trait, attr.index, attr.name, attr.attributes, action_ids,
                     );
             }
         }

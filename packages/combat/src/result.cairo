@@ -16,8 +16,7 @@ pub enum ActionResult {
     #[default]
     NotAvailable,
     Stunned,
-    Success: Array<EffectResult>,
-    Fail: Array<EffectResult>,
+    Action: (u16, Array<EffectResult>),
 }
 
 /// Represents the result of an effect application in the battle system

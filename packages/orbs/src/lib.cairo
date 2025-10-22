@@ -1,7 +1,7 @@
 use core::num::traits::Zero;
 use openzeppelin_token::erc721::{ERC721ABIDispatcher, ERC721ABIDispatcherTrait};
 use starknet::ContractAddress;
-mod minter;
+// mod minter;
 
 #[derive(Drop, Copy, Serde, Introspect, PartialEq, Default, starknet::Store)]
 pub enum Rarity {
@@ -73,7 +73,7 @@ pub impl OrbImpl of OrbTrait {
         charge_cost: u128,
     ) -> u256 {
         IOrbAdminDispatcher { contract_address: self }
-            .mint(owner, action, charge, charge_cost, rarity)
+            .mint(owner, action, rarity, charge, charge_cost)
     }
 }
 
@@ -203,9 +203,9 @@ pub mod orbs {
             ref self: ContractState,
             owner: ContractAddress,
             action: felt252,
+            rarity: Rarity,
             charge: u128,
             charge_cost: u128,
-            rarity: Rarity,
         ) -> u256 {
             self.assert_caller_has_role(Role::Minter);
             self.mint_internal(owner, action, charge, charge_cost, rarity)

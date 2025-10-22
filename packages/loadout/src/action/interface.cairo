@@ -1,6 +1,7 @@
 use starknet::ContractAddress;
 use crate::action::{Action, ActionWithName, Effect};
 use super::IdTagAction;
+use super::action::{ChanceEffects, Effects};
 
 #[starknet::interface]
 pub trait IAction<TContractState> {
@@ -9,18 +10,17 @@ pub trait IAction<TContractState> {
     fn speed(self: @TContractState, id: felt252) -> u16;
     fn speeds(self: @TContractState, ids: Array<felt252>) -> Array<u16>;
     fn cooldown(self: @TContractState, id: felt252) -> u32;
-    fn cooldowns(self: @TContractState, ids: Array<felt252>) -> Array<u32>;
-    fn effects(self: @TContractState, id: felt252) -> Array<Effect>;
-    fn chance(self: @TContractState, id: felt252) -> u8;
-    fn chances(self: @TContractState, id: felt252) -> u8;
+    fn get_effects(self: @TContractState, id: felt252, chance_value: u32) -> (u16, Array<Effect>);
+    fn effects(self: @TContractState, id: felt252) -> Effects;
+    fn base_effects(self: @TContractState, id: felt252) -> Array<Effect>;
+    fn chance_effects(self: @TContractState, id: felt252) -> Array<ChanceEffects>;
     fn action_id(
         self: @TContractState,
         name: ByteArray,
         speed: u16,
-        chance: u8,
         cooldown: u32,
-        success: Array<Effect>,
-        fail: Array<Effect>,
+        base_effects: Array<Effect>,
+        chance_effects: Array<ChanceEffects>,
     ) -> felt252;
     fn action_ids(self: @TContractState, actions: Array<ActionWithName>) -> Array<felt252>;
     fn tag(self: @TContractState, tag: felt252) -> felt252;
@@ -33,10 +33,9 @@ pub trait IActionAdmin<TContractState> {
         ref self: TContractState,
         name: ByteArray,
         speed: u16,
-        chance: u8,
         cooldown: u32,
-        success: Array<Effect>,
-        fail: Array<Effect>,
+        base_effects: Array<Effect>,
+        chance_effects: Array<ChanceEffects>,
     ) -> felt252;
     fn create_actions(ref self: TContractState, actions: Array<ActionWithName>) -> Array<felt252>;
     fn maybe_create_actions(
