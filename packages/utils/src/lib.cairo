@@ -1,6 +1,5 @@
-use calls::ExternalCalls;
+pub use calls::ExternalCalls;
 use core::hash::HashStateTrait;
-use core::integer::u128_safe_divmod;
 use core::num::traits::{DivRem, Zero};
 pub use core::ops::DivAssign;
 use core::poseidon::{HashState, poseidon_hash_span};

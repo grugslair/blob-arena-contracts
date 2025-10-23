@@ -1,13 +1,13 @@
-pub mod action;
 pub mod calculations;
 pub mod combat;
 pub mod combatant;
 pub mod contract;
+pub mod move;
 pub mod result;
 pub mod round_effect;
 pub mod systems;
-pub use action::Action;
 pub use combat::{Combat, CombatProgress, CombatTrait, Player, RoundResult};
 pub use combatant::{CombatantState, CombatantStateTrait};
 pub use contract::library_run_round;
-pub use result::{AttackResult, RoundEffectResult};
+pub use move::Move;
+pub use result::{ActionResult, RoundEffectResult};

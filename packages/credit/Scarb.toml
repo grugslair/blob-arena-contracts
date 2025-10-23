@@ -10,8 +10,6 @@ experimental-features = ["associated_item_constraints"]
 fmt.workspace = true
 scarb.workspace = true
 
-[cairo]
-sierra-replace-ids = true
 
 [dependencies]
 starknet.workspace = true

@@ -153,7 +153,7 @@ const parseEffects = (target, duration, affects) => {
 const parseTarget = (target) => {
   let [key, _] = parseEnumObject(target);
   key = pascal(key);
-  if (key === "Attacker" || key === "Defender") {
+  if (key === "Actioner" || key === "Defender") {
     return new CairoCustomEnum({ [key]: {} });
   }
   throw new Error(`Unknown effect target: ${key}`);
@@ -369,35 +369,49 @@ const parseN200To200Ne0 = (value, name) => {
   return parseValueInRange(value, name, -200n, 200n);
 };
 
-export const parseNewAttack = (attack) => {
+const parsePercentToPpm = (value, name) => {
+  value = Number(value || 0);
+  if (value === 0) {
+    throw new Error(`${name}: value ${value} cannot be zero`);
+  }
+  return BigInt(value * 10_000);
+};
+
+const parseEventChance = (eventChance) => {
+  return {
+    chance_ppm: parsePercentToPpm(eventChance.chance, "Chance"),
+    effects: parseEffectsArray(eventChance.effects || []),
+  };
+};
+
+export const parseNewAction = (action) => {
   try {
     return {
-      name: attack.name,
-      speed: parseU16(attack.speed, "Speed"),
-      chance: parse1To100(attack.chance, "Chance"),
-      cooldown: parseU8(attack.cooldown, "Cooldown"),
-      success: parseEffectsArray(attack.success || []),
-      fail: parseEffectsArray(attack.fail || []),
+      name: action.name,
+      speed: parseU16(action.speed, "Speed"),
+      cooldown: parseU8(action.cooldown, "Cooldown"),
+      base_effects: parseEffectsArray(action.base_effects || []),
+      chance_effects: (action.chance_effects || []).map(parseEventChance),
     };
   } catch (e) {
-    console.error(`Error parsing attack: ${attack.name}`);
+    console.error(`Error parsing action: ${action.name}`);
     throw e;
   }
 };
 
-export const parseIdTagAttackStruct = (attack) => {
-  if (typeof attack.tag === "string") {
-    return new CairoCustomEnum({ Tag: attack.tag });
+export const parseIdTagActionStruct = (action) => {
+  if (typeof action.tag === "string") {
+    return new CairoCustomEnum({ Tag: action.tag });
   }
-  if (attack.id != null) {
-    return new CairoCustomEnum({ Id: attack.id });
+  if (action.id != null) {
+    return new CairoCustomEnum({ Id: action.id });
   }
-  if (attack.attack != null) {
-    return new CairoCustomEnum({ Attack: parseNewAttack(attack.attack) });
+  if (action.action != null) {
+    return new CairoCustomEnum({ Action: parseNewAction(action.action) });
   }
-  return new CairoCustomEnum({ Attack: parseNewAttack(attack) });
+  return new CairoCustomEnum({ Action: parseNewAction(action) });
 };
 
-export const parseIdTagAttackStructs = (attacks) => {
-  return attacks.map(parseIdTagAttackStruct);
+export const parseIdTagActionStructs = (actions) => {
+  return actions.map(parseIdTagActionStruct);
 };

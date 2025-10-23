@@ -1,7 +1,7 @@
 #[derive(Drop, Serde, Copy, PartialEq, Default, starknet::Store)]
-pub enum Action {
+pub enum Move {
     #[default]
     None,
-    Attack: felt252,
+    Action: felt252,
     Orb: felt252,
 }

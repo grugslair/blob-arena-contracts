@@ -1,4 +1,4 @@
-use ba_combat::{Action, Player};
+use ba_combat::{Move, Player};
 use starknet::{ClassHash, ContractAddress};
 
 #[starknet::interface]
@@ -9,7 +9,7 @@ pub trait IPvp<TContractState> {
     /// * `receiver` - Address of the invited receiver
     /// * `collection_address` - NFT collection address for the blobert
     /// * `token_id` - Token ID to use
-    /// * `attacks` - Array of attack moves as (felt252, felt252) tuples
+    /// * `actions` - Array of action moves as (felt252, felt252) tuples
     /// * Returns: A felt252 representing the lobby ID
     ///
     fn send_invite(
@@ -19,7 +19,7 @@ pub trait IPvp<TContractState> {
         loadout_address: ContractAddress,
         collection_address: ContractAddress,
         token_id: u256,
-        attack_slots: Array<Array<felt252>>,
+        action_slots: Array<Array<felt252>>,
         orb: felt252,
     ) -> felt252;
 
@@ -29,16 +29,16 @@ pub trait IPvp<TContractState> {
     fn rescind_invite(ref self: TContractState, id: felt252);
 
     /// ## respond_invite
-    /// Accepts a lobby invite with specified blob and attacks
+    /// Accepts a lobby invite with specified blob and actions
     /// * `challenge_id` - ID of the lobby to respond to
     /// * `token_id` - Token ID of the responding player's blob
-    /// * `attacks` - Array of attack moves as (felt252, felt252) tuple
+    /// * `actions` - Array of action moves as (felt252, felt252) tuple
     fn respond_invite(
         ref self: TContractState,
         id: felt252,
         collection_address: ContractAddress,
         token_id: u256,
-        attack_slots: Array<Array<felt252>>,
+        action_slots: Array<Array<felt252>>,
         orb: felt252,
     );
     /// ## reject_invite
@@ -62,9 +62,27 @@ pub trait IPvp<TContractState> {
     ///
     fn reject_response(ref self: TContractState, id: felt252);
 
+    /// ## commit
+    /// Commits to an action for the current round (Only 1 player commits per round)
+    /// * `id` - ID of the PvP combat
+    /// * `player` - Player committing the action
+    /// * `hash` - Hash of the action and salt [salt, action...]
     fn commit(ref self: TContractState, id: felt252, player: Player, hash: felt252);
-    fn reveal(ref self: TContractState, id: felt252, player: Player, action: Action, salt: felt252);
+    /// ## reveal
+    /// Reveals the committed action for the current round
+    ///     Player that did not commit reveals first, then the committing player
+    /// * `id` - ID of the PvP combat
+    /// * `player` - Player revealing the action
+    /// * `action` - The action being revealed
+    /// * `salt` - The salt used in the original hash
+    fn reveal(ref self: TContractState, id: felt252, player: Player, action: Move, salt: felt252);
+    /// ## forfeit
+    ///  Forfeits the current PvP combat, conceding victory to the opponent
+    /// * `id` - ID of the PvP combat
+    /// * `player` - Player forfeiting the combat
     fn forfeit(ref self: TContractState, id: felt252, player: Player);
+    /// ## kick_player
+    /// Kicks a player for inactivity after timeout, conceding victory to the opponent
     fn kick_player(ref self: TContractState, id: felt252);
 }
 
@@ -76,9 +94,9 @@ pub trait IPvpAdmin<TContractState> {
 
 #[starknet::contract]
 mod pvp {
-    use ba_combat::combat::{AttackCheck, CombatProgress, RoundZeroResult, set_attacks_available};
-    use ba_combat::systems::{get_attack_dispatcher, set_attack_dispatcher_address};
-    use ba_combat::{Action, CombatantState, RoundResult, library_run_round};
+    use ba_combat::combat::{ActionCheck, CombatProgress, RoundZeroResult, set_actions_available};
+    use ba_combat::systems::{get_action_dispatcher, set_action_dispatcher_address};
+    use ba_combat::{CombatantState, Move, RoundResult, library_run_round};
     use ba_loadout::get_loadout;
     use ba_orbs::OrbTrait;
     use ba_utils::{RandomnessTrait, uuid};
@@ -99,7 +117,7 @@ mod pvp {
     };
     use crate::tables::{
         LobbyCombatInitSchema, LobbyCombatRespondSchema, LobbyCombatStartSchema,
-        PvpAttackLastUsedTable, PvpCombatTable, WinVia,
+        PvpActionLastUsedTable, PvpCombatTable, WinVia,
     };
     use crate::utils::pad_to_fixed;
     use super::{IPvp, IPvpAdmin, Player};
@@ -108,11 +126,11 @@ mod pvp {
 
     const COMBAT_HASH: felt252 = bytearrays_hash!("pvp", "Combat");
     const ROUND_HASH: felt252 = bytearrays_hash!("pvp", "Round");
-    const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("pvp", "AttackLastUsed");
+    const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("pvp", "ActionLastUsed");
 
     impl CombatTable = ToriiTable<COMBAT_HASH>;
     impl RoundTable = ToriiTable<ROUND_HASH>;
-    impl LastUsedAttackTable = ToriiTable<LAST_USED_ATTACK_HASH>;
+    impl LastUsedActionTable = ToriiTable<LAST_USED_ATTACK_HASH>;
 
     #[storage]
     struct Storage {
@@ -137,13 +155,13 @@ mod pvp {
         ref self: ContractState,
         owner: ContractAddress,
         round_result_class_hash: ClassHash,
-        attack_address: ContractAddress,
+        action_address: ContractAddress,
     ) {
         self.grant_owner(owner);
         register_table_with_schema::<PvpCombatTable>("pvp", "Combat");
-        register_table_with_schema::<PvpAttackLastUsedTable>("pvp", "AttackLastUsed");
+        register_table_with_schema::<PvpActionLastUsedTable>("pvp", "ActionLastUsed");
         register_table("pvp", "Round", round_result_class_hash);
-        set_attack_dispatcher_address(attack_address);
+        set_action_dispatcher_address(action_address);
     }
 
     #[abi(embed_v0)]
@@ -163,19 +181,19 @@ mod pvp {
             loadout_address: ContractAddress,
             collection_address: ContractAddress,
             token_id: u256,
-            attack_slots: Array<Array<felt252>>,
+            action_slots: Array<Array<felt252>>,
             orb: felt252,
         ) -> felt252 {
             let id = uuid();
             let player = get_caller_address();
-            assert(attack_slots.len() <= 4, 'Too many attacks');
+            assert(action_slots.len() <= 4, 'Too many actions');
             assert(erc721_owner_of(collection_address, token_id) == player, 'Not Token Owner');
 
             let mut combat = self.combats.entry(id);
             let mut lobby = self.lobbies.entry(id);
 
-            let (attributes, attack_ids) = get_loadout(
-                loadout_address, collection_address, token_id, attack_slots,
+            let (attributes, action_ids) = get_loadout(
+                loadout_address, collection_address, token_id, action_slots,
             );
 
             combat.player_1.write(player);
@@ -195,12 +213,12 @@ mod pvp {
                     p1_loadout: loadout_address,
                     p2_loadout: loadout_address,
                     p1_token: (collection_address, token_id),
-                    p1_attacks: attack_ids.span(),
+                    p1_actions: action_ids.span(),
                     p1_orb: orb,
                     time_limit,
                 },
             );
-            set_attacks_available(id, Player::Player1, attack_ids.span());
+            set_actions_available(id, Player::Player1, action_ids.span());
             id
         }
 
@@ -218,7 +236,7 @@ mod pvp {
             id: felt252,
             collection_address: ContractAddress,
             token_id: u256,
-            attack_slots: Array<Array<felt252>>,
+            action_slots: Array<Array<felt252>>,
             orb: felt252,
         ) {
             let caller = get_caller_address();
@@ -227,22 +245,22 @@ mod pvp {
             combat.orb_2.write(orb);
             assert(combat.player_2.read() == caller, 'Not Callers Lobby');
             assert(lobby.phase.read() == LobbyPhase::Invited, 'Lobby not active');
-            assert(attack_slots.len() <= 4, 'Too many attacks');
+            assert(action_slots.len() <= 4, 'Too many actions');
             assert(erc721_owner_of(collection_address, token_id) == caller, 'Not Token Owner');
 
-            let (attributes, attack_ids) = get_loadout(
-                lobby.loadout_address.read(), collection_address, token_id, attack_slots,
+            let (attributes, action_ids) = get_loadout(
+                lobby.loadout_address.read(), collection_address, token_id, action_slots,
             );
 
-            let attack_ids = pad_to_fixed(attack_ids);
-            lobby.combatant_2.write((attributes, attack_ids));
+            let action_ids = pad_to_fixed(action_ids);
+            lobby.combatant_2.write((attributes, action_ids));
             lobby.phase.write(LobbyPhase::Responded);
             CombatTable::set_schema(
                 id,
                 @LobbyCombatRespondSchema {
                     lobby: LobbyPhase::Responded,
                     p2_token: (collection_address, token_id),
-                    p2_attacks: attack_ids.span(),
+                    p2_actions: action_ids.span(),
                     p2_orb: orb,
                 },
             );
@@ -288,10 +306,10 @@ mod pvp {
             assert(combat.player_1.read() == caller, 'Not Callers Lobby');
 
             let attributes_1 = lobby.attributes_1.read();
-            let (attributes_2, attack_ids_2) = lobby.combatant_2.read();
+            let (attributes_2, action_ids_2) = lobby.combatant_2.read();
             let states: [CombatantState; 2] = [attributes_1.into(), attributes_2.into()];
             combat.player_states.write(states);
-            set_attacks_available(id, Player::Player2, attack_ids_2.span());
+            set_actions_available(id, Player::Player2, action_ids_2.span());
             RoundTable::set_schema(
                 id, @RoundZeroResult { combat: id, states, progress: CombatProgress::Active },
             );
@@ -312,7 +330,7 @@ mod pvp {
             combat.commit.write(hash);
         }
         fn reveal(
-            ref self: ContractState, id: felt252, player: Player, action: Action, salt: felt252,
+            ref self: ContractState, id: felt252, player: Player, action: Move, salt: felt252,
         ) {
             let mut combat = self.combats.entry(id);
             let mut maybe_players = combat.assert_caller_is_player_return_maybe(player);
@@ -396,7 +414,7 @@ mod pvp {
             node: PvpNodePath,
             combat_id: felt252,
             phase: CombatPhase,
-            action: Action,
+            action: Move,
             salt: felt252,
             players: MaybePlayers<T>,
         ) -> RoundResult {
@@ -408,10 +426,10 @@ mod pvp {
             let [state_1, state_2] = node.player_states.read();
             let randomness = RandomnessTrait::new(poseidon_hash_two(salt_1, salt_2));
             let mut orb_address = AddressOrPtr::Ptr(self.orb_address);
-            let (attack_1, check_1) = self
-                .get_attack_and_check(ref orb_address, action_1, players.player1, node.orb_1);
-            let (attack_2, check_2) = self
-                .get_attack_and_check(ref orb_address, action_2, players.player2, node.orb_2);
+            let (action_1, check_1) = self
+                .get_action_and_check(ref orb_address, action_1, players.player1, node.orb_1);
+            let (action_2, check_2) = self
+                .get_action_and_check(ref orb_address, action_2, players.player2, node.orb_2);
 
             let (result, _) = library_run_round(
                 self.combat_class_hash.read(),
@@ -419,11 +437,11 @@ mod pvp {
                 node.round.read(),
                 state_1,
                 state_2,
-                attack_1,
-                attack_2,
+                action_1,
+                action_2,
                 check_1,
                 check_2,
-                get_attack_dispatcher(),
+                get_action_dispatcher(),
                 randomness,
             );
             result
@@ -464,34 +482,34 @@ mod pvp {
         }
 
 
-        fn get_attack_and_check<
+        fn get_action_and_check<
             T, S, +Drop<T>, +Drop<S>, +AddressOrPtrTrait<T>, +AddressOrPtrTrait<S>,
         >(
             ref self: ContractState,
             ref orb_address: AddressOrPtr<T>,
-            action: Action,
+            action: Move,
             player_address: AddressOrPtr<S>,
             orb_ptr: PendingStoragePath<Mutable<felt252>>,
-        ) -> (felt252, AttackCheck) {
+        ) -> (felt252, ActionCheck) {
             match action {
-                Action::Attack(attack_id) => (attack_id, AttackCheck::All),
-                Action::Orb(orb_id) => {
-                    let attack_id = if orb_id == orb_ptr.read() {
+                Move::Action(action_id) => (action_id, ActionCheck::All),
+                Move::Orb(orb_id) => {
+                    let action_id = if orb_id == orb_ptr.read() {
                         match orb_address
                             .read()
                             .try_use_owners_charge_cost(player_address.final_read(), orb_id) {
-                            Some(attack_id) => {
+                            Some(action_id) => {
                                 orb_ptr.write(0);
-                                attack_id
+                                action_id
                             },
                             None => 0,
                         }
                     } else {
                         0
                     };
-                    (attack_id, AttackCheck::None)
+                    (action_id, ActionCheck::None)
                 },
-                Action::None => (0, AttackCheck::None),
+                Move::None => (0, ActionCheck::None),
             }
         }
     }

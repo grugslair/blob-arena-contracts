@@ -1,5 +1,5 @@
 use ba_combat::combat::PlayerOrNone;
-use ba_combat::{AttackResult, Combat, CombatantState, RoundEffectResult, RoundResult};
+use ba_combat::{ActionResult, Combat, CombatantState, RoundEffectResult, RoundResult};
 use ba_loadout::attributes::Attributes;
 use starknet::ContractAddress;
 use crate::attempt::ArcadeProgress;
@@ -13,7 +13,7 @@ use crate::attempt::ArcadeProgress;
 /// * `token_id` - The specific NFT token ID being used
 /// * `expiry` - Timestamp when this attempt expires
 /// * `attributes` - The combatant's calculated attributes for this attempt
-/// * `attacks` - Available attacks for this attempt (as a span for efficiency)
+/// * `actions` - Available actions for this attempt (as a span for efficiency)
 /// * `health_regen` - Health regeneration amount between stages
 /// * `respawns` - Number of respawns/lives remaining
 /// * `stage` - Current stage number in the arcade progression
@@ -25,7 +25,7 @@ pub struct ArcadeAttemptTable {
     pub token_id: u256,
     pub expiry: u64,
     pub attributes: Attributes,
-    pub attacks: Span<felt252>,
+    pub actions: Span<felt252>,
     pub health_regen: u8,
     pub respawns: u32,
     pub stage: u32,
@@ -55,7 +55,7 @@ pub struct CombatTable {
 /// Represents the complete result of a single combat round in an arcade attempt
 ///
 /// Contains all information about what happened during a specific round, including
-/// combatant states, attacks used, and the effects that occurred.
+/// combatant states, actions used, and the effects that occurred.
 ///
 /// # Fields
 /// * `attempt` - Unique identifier of the arcade attempt this round belongs to
@@ -63,11 +63,11 @@ pub struct CombatTable {
 /// * `round` - Round number within the current combat
 /// * `player_state` - Player's combatant state after this round
 /// * `opponent_state` - Opponent's combatant state after this round
-/// * `player_attack` - Attack ID used by the player this round
-/// * `opponent_attack` - Attack ID used by the opponent this round
+/// * `player_action` - Action ID used by the player this round
+/// * `opponent_action` - Action ID used by the opponent this round
 /// * `first` - Who acted first this round (Player1, Player2, or None)
 /// * `round_effect_results` - Results of any ongoing effects that triggered
-/// * `attack_results` - Results of the attacks that were executed
+/// * `action_results` - Results of the actions that were executed
 /// * `progress` - Updated progress state after this round
 #[derive(Drop, Serde, Introspect)]
 pub struct ArcadeRoundTable {
@@ -76,28 +76,28 @@ pub struct ArcadeRoundTable {
     pub round: u32,
     pub player_state: CombatantState,
     pub opponent_state: CombatantState,
-    pub player_attack: felt252,
-    pub opponent_attack: felt252,
+    pub player_action: felt252,
+    pub opponent_action: felt252,
     pub first: PlayerOrNone,
     pub round_effect_results: Array<RoundEffectResult>,
-    pub attack_results: Array<AttackResult>,
+    pub action_results: Array<ActionResult>,
     pub progress: ArcadeProgress,
 }
 
-/// Tracks the last time a specific attack was used in an arcade attempt
+/// Tracks the last time a specific action was used in an arcade attempt
 ///
-/// Used for cooldown management and attack usage restrictions.
+/// Used for cooldown management and action usage restrictions.
 ///
 /// # Fields
 /// * `attempt` - Unique identifier of the arcade attempt
-/// * `combat` - Combat number when the attack was last used
-/// * `attack` - The attack ID that was used
-/// * `round` - Round number when the attack was last used
+/// * `combat` - Combat number when the action was last used
+/// * `action` - The action ID that was used
+/// * `round` - Round number when the action was last used
 #[derive(Drop, Serde, Introspect)]
-pub struct AttackLastUsed {
+pub struct ActionLastUsed {
     pub attempt: felt252,
     pub combat: u32,
-    pub attack: felt252,
+    pub action: felt252,
     pub round: u32,
 }
 
@@ -128,11 +128,11 @@ impl CombatToAttemptRoundImpl of AttemptRoundTrait<Combat> {
             round: self.round,
             player_state: self.state_1,
             opponent_state: self.state_2,
-            player_attack: self.attack_1,
-            opponent_attack: self.attack_2,
+            player_action: self.action_1,
+            opponent_action: self.action_2,
             first: self.first.into(),
             round_effect_results: self.round_effect_results,
-            attack_results: self.attack_results,
+            action_results: self.action_results,
             progress: self.progress.into(),
         }
     }
@@ -141,18 +141,18 @@ impl CombatToAttemptRoundImpl of AttemptRoundTrait<Combat> {
 impl RoundResultToAttemptRoundImpl of AttemptRoundTrait<RoundResult> {
     fn to_arcade_round(self: RoundResult, attempt: felt252, combat: u32) -> ArcadeRoundTable {
         let [player_state, opponent_state] = self.states;
-        let [player_attack, opponent_attack] = self.attacks;
+        let [player_action, opponent_action] = self.actions;
         ArcadeRoundTable {
             attempt: attempt,
             combat: combat,
             round: self.round,
             player_state,
             opponent_state,
-            player_attack,
-            opponent_attack,
+            player_action,
+            opponent_action,
             first: self.first.into(),
             round_effect_results: self.round_effect_results,
-            attack_results: self.attack_results,
+            action_results: self.action_results,
             progress: self.progress.into(),
         }
     }

@@ -1,40 +1,41 @@
 use ba_arcade::Opponent;
 use ba_blobert::TokenTraits;
 use ba_loadout::Attributes;
-use ba_loadout::attack::IdTagAttack;
+use ba_loadout::action::IdTagAction;
 use ba_utils::storage::{FeltArrayReadWrite, ShortArrayStore};
 
 /// Storage and query structure for classic arcade opponents
 ///
 /// Represents a fully configured opponent stored in the contract state for classic arcade mode.
-/// Contains resolved attack IDs and complete attribute sets for immediate use in combat.
+/// Contains resolved action IDs and complete attribute sets for immediate use in combat.
 ///
 /// # Fields
 /// * `traits` - Token traits that define the opponent's visual and thematic characteristics
 /// * `attributes` - Complete attribute set including abilities, resistances, and vulnerabilities
-/// * `attacks` - Array of resolved attack IDs available to this opponent
+/// * `actions` - Array of resolved action IDs available to this opponent
 #[derive(Drop, Serde, Introspect)]
 struct OpponentTable {
     traits: TokenTraits,
     attributes: Attributes,
-    attacks: Array<felt252>,
+    actions: Array<felt252>,
 }
 
 /// Input structure for configuring classic arcade opponents
 ///
 /// Used when setting up the fixed opponent sequence for classic arcade mode.
-/// Contains raw attack definitions that will be processed into attack IDs during setup.
+/// Contains raw action definitions that will be processed into action IDs during setup.
 ///
 /// # Fields
 /// * `traits` - Token traits for the opponent's appearance and characteristics
 /// * `attributes` - Complete attribute configuration for this opponent
-/// * `attacks` - Array of attack definitions that will be resolved to attack IDs
+/// * `actions` - Array of action definitions that will be resolved to action IDs
 #[derive(Drop, Serde)]
 struct OpponentInput {
     traits: TokenTraits,
     attributes: Attributes,
-    attacks: Array<IdTagAttack>,
+    actions: Array<IdTagAction>,
 }
+
 
 mod errors {
     pub const RESPAWN_WHEN_NOT_LOST: felt252 = 'Cannot respawn, player not lost';
@@ -58,9 +59,9 @@ trait IArcadeClassic<TState> {
 mod arcade_classic {
     use ba_arcade::attempt::{ArcadeProgress, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::{IArcade, arcade_component};
-    use ba_combat::Action;
-    use ba_combat::systems::get_attack_dispatcher_address;
-    use ba_loadout::attack::interface::maybe_create_attacks_array;
+    use ba_combat::Move;
+    use ba_combat::systems::get_action_dispatcher_address;
+    use ba_loadout::action::interface::maybe_create_actions_array;
     use ba_utils::vrf::vrf_component;
     use beacon_library::{ToriiTable, register_table_with_schema};
     use sai_ownable::{OwnableTrait, ownable_component};
@@ -70,8 +71,8 @@ mod arcade_classic {
         StoragePointerWriteAccess,
     };
     use starknet::{ClassHash, ContractAddress};
-    use crate::Opponent;
-    use super::{IArcadeClassic, IdTagAttack, OpponentInput};
+    use crate::{Attributes, Opponent, TokenTraits};
+    use super::{IArcadeClassic, IdTagAction, OpponentInput};
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
     component!(path: arcade_component, storage: arcade, event: ArcadeEvents);
@@ -80,7 +81,7 @@ mod arcade_classic {
     const ATTEMPT_HASH: felt252 = bytearrays_hash!("arcade_classic", "Attempt");
     const COMBAT_HASH: felt252 = bytearrays_hash!("arcade_classic", "Combat");
     const ROUND_HASH: felt252 = bytearrays_hash!("arcade_classic", "Round");
-    const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("arcade_classic", "AttackLastUsed");
+    const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("arcade_classic", "ActionLastUsed");
     const OPPONENT_HASH: felt252 = bytearrays_hash!("arcade_classic", "Opponent");
 
     impl OpponentTable = ToriiTable<OPPONENT_HASH>;
@@ -117,7 +118,7 @@ mod arcade_classic {
         ref self: ContractState,
         owner: ContractAddress,
         arcade_round_result_class_hash: ClassHash,
-        attack_address: ContractAddress,
+        action_address: ContractAddress,
         loadout_address: ContractAddress,
     ) {
         self.grant_owner(owner);
@@ -125,7 +126,7 @@ mod arcade_classic {
             ref self.arcade,
             "arcade_classic",
             arcade_round_result_class_hash,
-            attack_address,
+            action_address,
             loadout_address,
         );
         register_table_with_schema::<super::OpponentTable>("arcade_classic", "Opponent");
@@ -143,17 +144,17 @@ mod arcade_classic {
             ref self: ContractState,
             collection_address: ContractAddress,
             token_id: u256,
-            attack_slots: Array<Array<felt252>>,
+            action_slots: Array<Array<felt252>>,
         ) -> felt252 {
             let (mut attempt_ptr, attempt_id, _) = ArcadeInternal::start_attempt(
-                ref self.arcade, collection_address, token_id, attack_slots,
+                ref self.arcade, collection_address, token_id, action_slots,
             );
 
             self.new_combat(ref attempt_ptr, attempt_id, 0, 0, None);
             emit_return(attempt_id)
         }
 
-        fn act(ref self: ContractState, attempt_id: felt252, action: Action) {
+        fn act(ref self: ContractState, attempt_id: felt252, action: Move) {
             let (mut attempt_ptr, result, _) = ArcadeInternal::act_attempt(
                 ref self.arcade, attempt_id, action,
             );
@@ -200,18 +201,21 @@ mod arcade_classic {
         fn set_opponents(ref self: ContractState, opponents: Array<OpponentInput>) {
             self.assert_caller_is_owner();
             self.stages_len.write(opponents.len());
-            let mut all_attacks: Array<Array<IdTagAttack>> = Default::default();
-            for opponent in opponents.span() {
-                all_attacks.append(opponent.attacks.clone());
+            let mut all_actions: Array<Array<IdTagAction>> = Default::default();
+            let mut attributes: Array<(TokenTraits, Attributes)> = Default::default();
+            for opponent in opponents {
+                all_actions.append(opponent.actions);
+                attributes.append((opponent.traits, opponent.attributes));
             }
-            let all_attack_ids = maybe_create_attacks_array(
-                get_attack_dispatcher_address(), all_attacks,
+            let all_action_ids = maybe_create_actions_array(
+                get_action_dispatcher_address(), all_actions,
             );
-            for (i, (opponent, attacks)) in opponents.into_iter().zip(all_attack_ids).enumerate() {
-                OpponentTable::set_entity(
-                    i, @(opponent.traits, opponent.attributes, attacks.span()),
-                );
-                self.opponents.write(i, Opponent { attributes: opponent.attributes, attacks });
+            for (i, ((traits, attr), actions)) in attributes
+                .into_iter()
+                .zip(all_action_ids)
+                .enumerate() {
+                OpponentTable::set_entity(i, @(traits, attr, actions.span()));
+                self.opponents.write(i, Opponent { attributes: attr, actions });
             }
         }
     }

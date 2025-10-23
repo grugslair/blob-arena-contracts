@@ -22,7 +22,7 @@ pub fn random_selection(ref randomness: Randomness, range: u32, number: u32) -> 
 }
 
 
-pub fn attack_slots() -> Array<Array<felt252>> {
+pub fn action_slots() -> Array<Array<felt252>> {
     array![array![0, 1, 2, 3]]
 }
 

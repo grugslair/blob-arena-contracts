@@ -1,35 +1,35 @@
 use ba_loadout::PartialAttributes;
-use ba_loadout::attack::IdTagAttack;
+use ba_loadout::action::IdTagAction;
 use ba_utils::storage::{FeltArrayReadWrite, ShortArrayStore};
 
 /// Input structure for configuring Amma arcade opponents
 ///
 /// Used when setting up or adding opponents to the arcade opponent pool.
-/// Contains the raw attack definitions that will be processed into attack IDs.
+/// Contains the raw action definitions that will be processed into action IDs.
 ///
 /// # Fields
 /// * `base` - Base attribute modifiers applied to the opponent regardless of stage
 /// * `level` - Per-level attribute scaling modifiers (multiplied by stage number, capped at 10)
-/// * `attacks` - Array of attack definitions that will be created/resolved to attack IDs
+/// * `actions` - Array of action definitions that will be created/resolved to action IDs
 #[derive(Drop, Serde)]
 struct AmmaOpponentInput {
     base: PartialAttributes,
     level: PartialAttributes,
-    attacks: Array<IdTagAttack>,
+    actions: Array<IdTagAction>,
 }
 
 #[derive(Drop, Serde, Introspect, starknet::Store)]
 struct AmmaOpponent {
     base: PartialAttributes,
     level: PartialAttributes,
-    attacks: Array<felt252>,
+    actions: Array<felt252>,
 }
 
 impl AmmaOpponentInputIntoParts of Into<
-    AmmaOpponentInput, ([PartialAttributes; 2], Array<IdTagAttack>),
+    AmmaOpponentInput, ([PartialAttributes; 2], Array<IdTagAction>),
 > {
-    fn into(self: AmmaOpponentInput) -> ([PartialAttributes; 2], Array<IdTagAttack>) {
-        ([self.base, self.level], self.attacks)
+    fn into(self: AmmaOpponentInput) -> ([PartialAttributes; 2], Array<IdTagAction>) {
+        ([self.base, self.level], self.actions)
     }
 }
 
@@ -63,7 +63,7 @@ trait IArcadeAmma<TState> {
     /// * `fighter` - Unique identifier of the opponent to retrieve
     ///
     /// # Returns
-    /// * `AmmaOpponent` - Complete opponent configuration including attributes and attacks
+    /// * `AmmaOpponent` - Complete opponent configuration including attributes and actions
     fn opponent(self: @TState, fighter: u32) -> AmmaOpponent;
 
     /// Sets or updates a specific opponent in the opponent pool
@@ -72,13 +72,13 @@ trait IArcadeAmma<TState> {
     /// * `fighter` - Unique identifier for this opponent
     /// * `base` - Base attribute modifiers for this opponent
     /// * `level` - Per-level attribute scaling modifiers
-    /// * `attacks` - Array of attacks available to this opponent
+    /// * `actions` - Array of actions available to this opponent
     fn set_opponent(
         ref self: TState,
         fighter: u32,
         base: PartialAttributes,
         level: PartialAttributes,
-        attacks: Array<IdTagAttack>,
+        actions: Array<IdTagAction>,
     );
 
     /// Adds a new opponent to the opponent pool
@@ -89,12 +89,12 @@ trait IArcadeAmma<TState> {
     /// # Arguments
     /// * `base` - Base attribute modifiers for this opponent
     /// * `level` - Per-level attribute scaling modifiers
-    /// * `attacks` - Array of attacks available to this opponent
+    /// * `actions` - Array of actions available to this opponent
     fn add_opponent(
         ref self: TState,
         base: PartialAttributes,
         level: PartialAttributes,
-        attacks: Array<IdTagAttack>,
+        actions: Array<IdTagAction>,
     );
 
     /// Replaces the entire opponent pool with new opponents
@@ -118,11 +118,11 @@ trait IArcadeAmma<TState> {
 mod arcade_amma {
     use ba_arcade::attempt::{ArcadeProgress, AttemptNodeTrait};
     use ba_arcade::{IArcade, Opponent, arcade_component};
-    use ba_combat::Action;
-    use ba_combat::systems::get_attack_dispatcher_address;
+    use ba_combat::Move;
+    use ba_combat::systems::get_action_dispatcher_address;
     use ba_loadout::PartialAttributes;
-    use ba_loadout::attack::interface::maybe_create_attacks_array;
-    use ba_loadout::attack::maybe_create_attacks;
+    use ba_loadout::action::interface::maybe_create_actions_array;
+    use ba_loadout::action::maybe_create_actions;
     use ba_loadout::attributes::AttributesCalcTrait;
     use ba_loadout::loadout_amma::{get_fighter_count, get_fighter_loadout};
     use ba_utils::vrf::vrf_component;
@@ -136,8 +136,8 @@ mod arcade_amma {
         StoragePointerWriteAccess,
     };
     use starknet::{ClassHash, ContractAddress};
-    use crate::systems::{attack_slots, random_selection};
-    use super::{AmmaOpponent, AmmaOpponentInput, IArcadeAmma, IdTagAttack};
+    use crate::systems::{action_slots, random_selection};
+    use super::{AmmaOpponent, AmmaOpponentInput, IArcadeAmma, IdTagAction};
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);
     component!(path: arcade_component, storage: arcade, event: ArcadeEvents);
@@ -147,7 +147,7 @@ mod arcade_amma {
     const ROUND_HASH: felt252 = bytearrays_hash!("arcade_amma", "Round");
     const ATTEMPT_HASH: felt252 = bytearrays_hash!("arcade_amma", "Attempt");
     const COMBAT_HASH: felt252 = bytearrays_hash!("arcade_amma", "Combat");
-    const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("arcade_amma", "AttackLastUsed");
+    const LAST_USED_ATTACK_HASH: felt252 = bytearrays_hash!("arcade_amma", "ActionLastUsed");
     const STAGE_OPPONENTS_HASH: felt252 = bytearrays_hash!("arcade_amma", "StageOpponents");
     const OPPONENTS_HASH: felt252 = bytearrays_hash!("arcade_amma", "Opponent");
 
@@ -196,7 +196,7 @@ mod arcade_amma {
         ref self: ContractState,
         owner: ContractAddress,
         arcade_round_result_class_hash: ClassHash,
-        attack_address: ContractAddress,
+        action_address: ContractAddress,
         loadout_address: ContractAddress,
         collectable_address: ContractAddress,
     ) {
@@ -205,7 +205,7 @@ mod arcade_amma {
             ref self.arcade,
             "arcade_amma",
             arcade_round_result_class_hash,
-            attack_address,
+            action_address,
             loadout_address,
         );
         register_table_with_schema::<StageOpponents>("arcade_amma", "StageOpponents");
@@ -225,10 +225,10 @@ mod arcade_amma {
             ref self: ContractState,
             collection_address: ContractAddress,
             token_id: u256,
-            attack_slots: Array<Array<felt252>>,
+            action_slots: Array<Array<felt252>>,
         ) -> felt252 {
             let (mut attempt_ptr, attempt_id, loadout_address) = ArcadeInternal::start_attempt(
-                ref self.arcade, collection_address, token_id, attack_slots,
+                ref self.arcade, collection_address, token_id, action_slots,
             );
             let mut randomness = ArcadeInternal::consume_randomness(ref self.arcade, attempt_id);
             let opponents = random_selection(
@@ -251,7 +251,7 @@ mod arcade_amma {
             emit_return(attempt_id)
         }
 
-        fn act(ref self: ContractState, attempt_id: felt252, action: Action) {
+        fn act(ref self: ContractState, attempt_id: felt252, action: Move) {
             let (mut attempt_ptr, result, mut randomness) = ArcadeInternal::act_attempt(
                 ref self.arcade, attempt_id, action,
             );
@@ -342,23 +342,23 @@ mod arcade_amma {
             fighter: u32,
             base: PartialAttributes,
             level: PartialAttributes,
-            attacks: Array<IdTagAttack>,
+            actions: Array<IdTagAction>,
         ) {
             self.assert_caller_is_owner();
-            let attack_ids = maybe_create_attacks(get_attack_dispatcher_address(), attacks);
-            self.set_opponent_internal(fighter, base, level, attack_ids);
+            let action_ids = maybe_create_actions(get_action_dispatcher_address(), actions);
+            self.set_opponent_internal(fighter, base, level, action_ids);
         }
 
         fn add_opponent(
             ref self: ContractState,
             base: PartialAttributes,
             level: PartialAttributes,
-            attacks: Array<IdTagAttack>,
+            actions: Array<IdTagAction>,
         ) {
             self.assert_caller_is_owner();
             let fighter = self.opponent_count.read();
-            let attack_ids = maybe_create_attacks(get_attack_dispatcher_address(), attacks);
-            self.set_opponent_internal(fighter, base, level, attack_ids);
+            let action_ids = maybe_create_actions(get_action_dispatcher_address(), actions);
+            self.set_opponent_internal(fighter, base, level, action_ids);
             self.opponent_count.write(fighter + 1);
         }
 
@@ -390,22 +390,22 @@ mod arcade_amma {
         fn set_opponents_internal(
             ref self: ContractState, starting_count: u32, opponents: Array<AmmaOpponentInput>,
         ) {
-            let mut all_attacks: Array<Array<IdTagAttack>> = Default::default();
+            let mut all_actions: Array<Array<IdTagAction>> = Default::default();
             let mut attributes: Array<[PartialAttributes; 2]> = Default::default();
             self.opponent_count.write(opponents.len() + starting_count);
             for opponent in opponents {
-                let (attr, attacks) = opponent.into();
-                all_attacks.append(attacks);
+                let (attr, actions) = opponent.into();
+                all_actions.append(actions);
                 attributes.append(attr);
             }
-            let all_attack_ids = maybe_create_attacks_array(
-                get_attack_dispatcher_address(), all_attacks,
+            let all_action_ids = maybe_create_actions_array(
+                get_action_dispatcher_address(), all_actions,
             );
-            for (i, ([base, level], attacks)) in attributes
+            for (i, ([base, level], actions)) in attributes
                 .into_iter()
-                .zip(all_attack_ids)
+                .zip(all_action_ids)
                 .enumerate() {
-                self.set_opponent_internal(i + starting_count + 1, base, level, attacks);
+                self.set_opponent_internal(i + starting_count + 1, base, level, actions);
             }
         }
 
@@ -414,9 +414,9 @@ mod arcade_amma {
             fighter: u32,
             base: PartialAttributes,
             level: PartialAttributes,
-            attacks: Array<felt252>,
+            actions: Array<felt252>,
         ) {
-            let opponent = AmmaOpponent { base, level, attacks };
+            let opponent = AmmaOpponent { base, level, actions };
             OpponentTable::set_entity(fighter, @opponent);
             self.opponents.write(fighter, opponent);
         }
@@ -424,9 +424,9 @@ mod arcade_amma {
         fn gen_opponent(
             self: @ContractState, loadout_address: ContractAddress, fighter: u32, stage: u32,
         ) -> Opponent {
-            let AmmaOpponent { base, level, attacks } = self.opponents.read(fighter);
+            let AmmaOpponent { base, level, actions } = self.opponents.read(fighter);
             let attributes = (level.into().mul(stage.cap_into(10)) + base.into()).finalize();
-            Opponent { attributes, attacks }
+            Opponent { attributes, actions }
         }
 
         fn gen_boss_opponent(
@@ -449,10 +449,10 @@ mod arcade_amma {
         fn boss_opponent(
             self: @ContractState, loadout_address: ContractAddress, fighter: u32,
         ) -> Opponent {
-            let (attributes, attacks) = get_fighter_loadout(
-                loadout_address, fighter, attack_slots(),
+            let (attributes, actions) = get_fighter_loadout(
+                loadout_address, fighter, action_slots(),
             );
-            Opponent { attributes, attacks }
+            Opponent { attributes, actions }
         }
     }
 }

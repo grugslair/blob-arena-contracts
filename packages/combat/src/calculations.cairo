@@ -59,10 +59,10 @@ pub fn increase_resistance(value: u8, change: u8) -> u8 {
     (((value + change) * 100 - value * change) / 100).cap_into(100)
 }
 
-pub fn get_new_stun_chance(current_stun: u8, attack_stun: u8) -> u8 {
+pub fn get_new_stun_chance(current_stun: u8, action_stun: u8) -> u8 {
     (current_stun.into()
-        + attack_stun.into()
-        - (current_stun.into() * attack_stun.into() / 100_u16))
+        + action_stun.into()
+        - (current_stun.into() * action_stun.into() / 100_u16))
         .saturating_into()
 }
 
@@ -107,11 +107,11 @@ pub fn combine_resistance<
         .unwrap()
 }
 
-/// Calculates the damage dealt by an attack based on move power, strength, and critical hit status
+/// Calculates the damage dealt by an action based on move power, strength, and critical hit status
 /// # Arguments
 /// * `move_power` - The base power of the move being used (0-100)
-/// * `strength` - The strength stat of the attacker (0-100)
-/// * `critical` - Whether the attack is a critical hit
+/// * `strength` - The strength stat of the actor (0-100)
+/// * `critical` - Whether the action is a critical hit
 /// # Returns
 /// The calculated damage as a u8 between 0 and 101 (202 if critical)
 

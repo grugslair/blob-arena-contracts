@@ -1,5 +1,5 @@
-use ba_loadout::attack::effect::Duration;
-use ba_loadout::attack::{Affect, Effect, IAttackDispatcher, IAttackDispatcherTrait, Target};
+use ba_loadout::action::effect::Duration;
+use ba_loadout::action::{Affect, Effect, IActionDispatcher, IActionDispatcherTrait, Recipient};
 use ba_utils::storage::{read_at_address, write_at_address};
 use ba_utils::{Randomness, RandomnessTrait};
 use core::num::traits::Zero;
@@ -9,7 +9,7 @@ use sai_packing::shifts::{SHIFT_4B, SHIFT_4B_FELT252};
 use sai_packing::{MaskDowncast, ShiftCast};
 use starknet::StorageAddress;
 use starknet::storage_access::StorePacking;
-use crate::result::{AffectResult, AttackResult, EffectResult, RoundEffectResult};
+use crate::result::{ActionResult, AffectResult, EffectResult, RoundEffectResult};
 use crate::round_effect::{RoundEffect, RoundEffects, RoundEffectsTrait};
 use crate::{CombatantState, CombatantStateTrait};
 
@@ -21,8 +21,8 @@ pub enum CombatProgress {
     Ended: Player,
 }
 
-const PLAYER_1_ATTACK_STORAGE_ADDRESS: felt252 = selector!("player-1-attacks");
-const PLAYER_2_ATTACK_STORAGE_ADDRESS: felt252 = selector!("player-2-attacks");
+const PLAYER_1_ATTACK_STORAGE_ADDRESS: felt252 = selector!("player-1-actions");
+const PLAYER_2_ATTACK_STORAGE_ADDRESS: felt252 = selector!("player-2-actions");
 const ATTACK_AVAILABLE_BIT: felt252 = SHIFT_4B_FELT252;
 
 
@@ -36,12 +36,12 @@ pub struct Combat {
     pub round: u32,
     pub progress: CombatProgress,
     pub randomness: Randomness,
-    pub attack_1: felt252,
-    pub attack_2: felt252,
-    pub attach_check_1: AttackCheck,
-    pub attach_check_2: AttackCheck,
-    pub attack_dispatcher: IAttackDispatcher,
-    pub attack_results: Array<AttackResult>,
+    pub action_1: felt252,
+    pub action_2: felt252,
+    pub attach_check_1: ActionCheck,
+    pub attach_check_2: ActionCheck,
+    pub action_dispatcher: IActionDispatcher,
+    pub action_results: Array<ActionResult>,
     pub round_effect_results: Array<RoundEffectResult>,
 }
 
@@ -70,7 +70,7 @@ pub enum PlayerOrNone {
 }
 
 #[derive(Drop, Serde, Copy, PartialEq)]
-pub enum AttackCheck {
+pub enum ActionCheck {
     None,
     Cooldown: bool,
     Available: bool,
@@ -117,10 +117,10 @@ impl PlayerIntoPlayerOrNone of Into<Player, PlayerOrNone> {
 
 #[generate_trait]
 impl PlayerImpl of PlayerTrait {
-    fn target(self: Player, target: Target) -> Player {
+    fn target(self: Player, target: Recipient) -> Player {
         match target {
-            Target::Attacker => self,
-            Target::Defender => !self,
+            Recipient::Actor => self,
+            Recipient::Target => !self,
         }
     }
 }
@@ -134,14 +134,14 @@ impl NotPlayer of Not<Player> {
     }
 }
 
-pub fn set_attacks_available(combat_id: felt252, player: Player, attacks: Span<felt252>) {
-    let attack_storage = match player {
+pub fn set_actions_available(combat_id: felt252, player: Player, actions: Span<felt252>) {
+    let action_storage = match player {
         Player::Player1 => PLAYER_1_ATTACK_STORAGE_ADDRESS,
         Player::Player2 => PLAYER_2_ATTACK_STORAGE_ADDRESS,
     };
-    for attack_id in attacks {
+    for action_id in actions {
         let storage_address: StorageAddress = poseidon_hash_three(
-            combat_id, attack_storage, *attack_id,
+            combat_id, action_storage, *action_id,
         )
             .try_into()
             .unwrap();
@@ -156,12 +156,12 @@ pub impl CombatImpl of CombatTrait {
         round: u32,
         state_1: CombatantState,
         state_2: CombatantState,
-        attack_1: felt252,
-        attack_2: felt252,
-        attach_check_1: AttackCheck,
-        attach_check_2: AttackCheck,
+        action_1: felt252,
+        action_2: felt252,
+        attach_check_1: ActionCheck,
+        attach_check_2: ActionCheck,
         randomness: Randomness,
-        attack_dispatcher: IAttackDispatcher,
+        action_dispatcher: IActionDispatcher,
     ) -> Combat {
         Combat {
             id,
@@ -170,14 +170,14 @@ pub impl CombatImpl of CombatTrait {
             first: None,
             round_effects: RoundEffectsTrait::new(id, round),
             round,
-            attack_1,
-            attack_2,
+            action_1,
+            action_2,
             attach_check_1,
             attach_check_2,
             progress: CombatProgress::Active,
             randomness,
-            attack_dispatcher,
-            attack_results: Default::default(),
+            action_dispatcher,
+            action_results: Default::default(),
             round_effect_results: Default::default(),
         }
     }
@@ -186,19 +186,15 @@ pub impl CombatImpl of CombatTrait {
     fn apply_affect(
         ref self: Combat, source: Player, target: Player, affect: Affect,
     ) -> EffectResult {
-        let attacker_state = self.get_attacker_state(source);
+        let actor_state = self.get_actor_state(source);
         let affect = match target {
-            Player::Player1 => self
-                .state_1
-                .apply_affect(affect, attacker_state, ref self.randomness),
-            Player::Player2 => self
-                .state_2
-                .apply_affect(affect, attacker_state, ref self.randomness),
+            Player::Player1 => self.state_1.apply_affect(affect, actor_state, ref self.randomness),
+            Player::Player2 => self.state_2.apply_affect(affect, actor_state, ref self.randomness),
         };
         EffectResult { target, affect }
     }
 
-    fn get_attacker_state(self: @Combat, player: Player) -> @CombatantState {
+    fn get_actor_state(self: @Combat, player: Player) -> @CombatantState {
         match player {
             Player::Player1 => self.state_1,
             Player::Player2 => self.state_2,
@@ -215,9 +211,9 @@ pub impl CombatImpl of CombatTrait {
         self.round_effects.add_infinite_effect(RoundEffect { source, target, affect })
     }
 
-    fn set_attacks(ref self: Combat, attack_1: felt252, attack_2: felt252) {
-        self.attack_1 = attack_1;
-        self.attack_2 = attack_2;
+    fn set_actions(ref self: Combat, action_1: felt252, action_2: felt252) {
+        self.action_1 = action_1;
+        self.action_2 = action_2;
     }
 
     fn apply_effect(ref self: Combat, source: Player, effect: Effect) -> EffectResult {
@@ -252,68 +248,68 @@ pub impl CombatImpl of CombatTrait {
         results
     }
 
-    fn attack_dispatcher(self: @Combat) -> @IAttackDispatcher {
-        self.attack_dispatcher
+    fn action_dispatcher(self: @Combat) -> @IActionDispatcher {
+        self.action_dispatcher
     }
 
-    fn get_attack_id_and_storage(self: @Combat, player: Player) -> (felt252, StorageAddress) {
-        let (attack_id, attack_storage) = match player {
-            Player::Player1 => (*self.attack_1, PLAYER_1_ATTACK_STORAGE_ADDRESS),
-            Player::Player2 => (*self.attack_2, PLAYER_2_ATTACK_STORAGE_ADDRESS),
+    fn get_action_id_and_storage(self: @Combat, player: Player) -> (felt252, StorageAddress) {
+        let (action_id, action_storage) = match player {
+            Player::Player1 => (*self.action_1, PLAYER_1_ATTACK_STORAGE_ADDRESS),
+            Player::Player2 => (*self.action_2, PLAYER_2_ATTACK_STORAGE_ADDRESS),
         };
         let storage_address: StorageAddress = poseidon_hash_three(
-            *self.id, attack_storage, attack_id,
+            *self.id, action_storage, action_id,
         )
             .try_into()
             .unwrap();
-        (attack_id, storage_address)
+        (action_id, storage_address)
     }
-    fn check_attack_available(self: @Combat, player: Player) -> felt252 {
-        let (attack_id, storage_address) = self.get_attack_id_and_storage(player);
+    fn check_action_available(self: @Combat, player: Player) -> felt252 {
+        let (action_id, storage_address) = self.get_action_id_and_storage(player);
         ShiftCast::<u64>::const_unpack::<SHIFT_4B>(read_at_address(storage_address)).into()
-            * attack_id
+            * action_id
     }
-    fn run_attack_cooldown(ref self: Combat, player: Player, available: bool) -> felt252 {
-        let (attack_id, storage_address) = self.get_attack_id_and_storage(player);
+    fn run_action_cooldown(ref self: Combat, player: Player, available: bool) -> felt252 {
+        let (action_id, storage_address) = self.get_action_id_and_storage(player);
         let round_available = read_at_address(storage_address);
         let last_used: u32 = MaskDowncast::cast(round_available);
         if available || ShiftCast::<u8>::const_unpack::<SHIFT_4B>(round_available).is_non_zero() {
             let round = self.round;
-            let cooldown = self.attack_dispatcher().cooldown(attack_id);
+            let cooldown = self.action_dispatcher().cooldown(action_id);
             if cooldown.is_zero() {
-                return attack_id;
+                return action_id;
             } else if last_used.is_zero() || ((cooldown.into() + last_used) < round) {
                 write_at_address(storage_address, round.into() + ATTACK_AVAILABLE_BIT);
-                return attack_id;
+                return action_id;
             }
         }
         return 0;
     }
-    fn attack_id(self: @Combat, player: Player) -> felt252 {
+    fn action_id(self: @Combat, player: Player) -> felt252 {
         match player {
-            Player::Player1 => *self.attack_1,
-            Player::Player2 => *self.attack_2,
+            Player::Player1 => *self.action_1,
+            Player::Player2 => *self.action_2,
         }
     }
-    fn attack_check(self: @Combat, player: Player) -> AttackCheck {
+    fn action_check(self: @Combat, player: Player) -> ActionCheck {
         match player {
             Player::Player1 => *self.attach_check_1,
             Player::Player2 => *self.attach_check_2,
         }
     }
-    fn run_attack_check(ref self: Combat, player: Player) -> felt252 {
-        let attack_check = self.attack_check(player);
-        match attack_check {
-            AttackCheck::None => self.attack_id(player),
-            AttackCheck::Cooldown(available) => match available {
-                true => self.run_attack_cooldown(player, true),
+    fn run_action_check(ref self: Combat, player: Player) -> felt252 {
+        let action_check = self.action_check(player);
+        match action_check {
+            ActionCheck::None => self.action_id(player),
+            ActionCheck::Cooldown(available) => match available {
+                true => self.run_action_cooldown(player, true),
                 false => 0x0,
             },
-            AttackCheck::Available(cooldown) => match cooldown {
-                true => self.check_attack_available(player),
+            ActionCheck::Available(cooldown) => match cooldown {
+                true => self.check_action_available(player),
                 false => 0x0,
             },
-            AttackCheck::All => { self.run_attack_cooldown(player, false) },
+            ActionCheck::All => { self.run_action_cooldown(player, false) },
         }
     }
 
@@ -324,27 +320,26 @@ pub impl CombatImpl of CombatTrait {
         }
     }
 
-    fn get_attack(self: @Combat, player: Player) -> felt252 {
+    fn get_action(self: @Combat, player: Player) -> felt252 {
         match player {
-            Player::Player1 => *self.attack_1,
-            Player::Player2 => *self.attack_2,
+            Player::Player1 => *self.action_1,
+            Player::Player2 => *self.action_2,
         }
     }
 
-    fn run_attack(ref self: Combat, source: Player) {
-        let attack_id = self.run_attack_check(source);
-        let result = if attack_id.is_zero() {
-            AttackResult::NotAvailable
+    fn run_action(ref self: Combat, source: Player) {
+        let action_id = self.run_action_check(source);
+        let result = if action_id.is_zero() {
+            ActionResult::NotAvailable
         } else if self.run_stun(source) {
-            AttackResult::Stunned
-        } else if self.randomness.get(100) < self.attack_dispatcher.chance(attack_id) {
-            AttackResult::Success(
-                self.apply_effects(source, self.attack_dispatcher.success(attack_id)),
-            )
+            ActionResult::Stunned
         } else {
-            AttackResult::Fail(self.apply_effects(source, self.attack_dispatcher.fail(attack_id)))
+            let (n, effect) = self
+                .action_dispatcher
+                .get_effects(action_id, self.randomness.get(1_000_000));
+            ActionResult::Action((n, self.apply_effects(source, effect)))
         };
-        self.attack_results.append(result);
+        self.action_results.append(result);
         self.check_progress(!source);
     }
 
@@ -363,8 +358,8 @@ pub impl CombatImpl of CombatTrait {
     }
 
     fn get_first_player(ref self: Combat) -> Option<Player> {
-        let speed_1 = self.attack_dispatcher.speed(self.attack_1) + (self.state_1.dexterity).into();
-        let speed_2 = self.attack_dispatcher.speed(self.attack_2) + (self.state_2.dexterity).into();
+        let speed_1 = self.action_dispatcher.speed(self.action_1) + (self.state_1.dexterity).into();
+        let speed_2 = self.action_dispatcher.speed(self.action_2) + (self.state_2.dexterity).into();
         self
             .first =
                 Some(
@@ -399,11 +394,11 @@ pub impl CombatImpl of CombatTrait {
         RoundResult {
             combat: self.id,
             round: self.round,
-            attacks: [self.attack_1, self.attack_2],
+            actions: [self.action_1, self.action_2],
             first: self.first.into(),
             states: [self.state_1, self.state_2],
             round_effect_results: self.round_effect_results,
-            attack_results: self.attack_results,
+            action_results: self.action_results,
             progress: self.progress,
         }
     }
@@ -413,11 +408,11 @@ pub impl CombatImpl of CombatTrait {
             RoundResult {
                 combat: self.id,
                 round: self.round,
-                attacks: [self.attack_1, self.attack_2],
+                actions: [self.action_1, self.action_2],
                 first: self.first.into(),
                 states: [self.state_1, self.state_2],
                 round_effect_results: self.round_effect_results,
-                attack_results: self.attack_results,
+                action_results: self.action_results,
                 progress: self.progress,
             },
             self.randomness,
@@ -429,9 +424,9 @@ pub impl CombatImpl of CombatTrait {
 
         if self.progress == CombatProgress::Active {
             let first = self.get_first_player().unwrap();
-            self.run_attack(first);
+            self.run_action(first);
             if self.progress == CombatProgress::Active {
-                self.run_attack(!first);
+                self.run_action(!first);
             }
         }
     }
@@ -443,10 +438,10 @@ pub struct RoundResult {
     pub combat: felt252,
     pub round: u32,
     pub states: [CombatantState; 2],
-    pub attacks: [felt252; 2],
+    pub actions: [felt252; 2],
     pub first: PlayerOrNone,
     pub round_effect_results: Array<RoundEffectResult>,
-    pub attack_results: Array<AttackResult>,
+    pub action_results: Array<ActionResult>,
     pub progress: CombatProgress,
 }
 
