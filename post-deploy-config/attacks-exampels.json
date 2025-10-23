@@ -3,43 +3,7 @@
     {
       "name": "Attack 1",
       "speed": 5010,
-      "chance": 100,
-      "success": [
-        {
-          "target": "Attacker",
-          "Strength": 20,
-          "Luck": -10,
-          "Dexterity": 20,
-          "Vitality": 100,
-          "Block": 50,
-          "Resistances": {
-            "bludgeon": 100,
-            "magic": 50,
-            "pierce": 0
-          },
-          "PierceVulnerability": 50
-        },
-        {
-          "target": "Defender",
-          "Damage": {
-            "power": 10,
-            "critical": 0,
-            "damage_type": "bludgeon"
-          },
-          "Abilities": {
-            "strength": -100,
-            "vitality": 100,
-            "luck": 0
-          },
-          "Vulnerabilities": {
-            "bludgeon": 20,
-            "pierce": 1000
-          },
-          "Stun": 75,
-          "PierceResistance": -100
-        }
-      ],
-      "fail": [
+      "base_effects": [
         {
           "target": "Attacker",
           "affect": {
@@ -54,6 +18,46 @@
             },
             "Health": -20
           }
+        }
+      ],
+      "chance_effects": [
+        {
+          "chance": 50,
+          "effects": [
+            {
+              "target": "Attacker",
+              "Strength": 20,
+              "Luck": -10,
+              "Dexterity": 20,
+              "Vitality": 100,
+              "Block": 50,
+              "Resistances": {
+                "bludgeon": 100,
+                "magic": 50,
+                "pierce": 0
+              },
+              "PierceVulnerability": 50
+            }
+          ]
+        },
+        {
+          "chance": 50,
+          "effects": [
+            {
+              "target": "Attacker",
+              "Strength": 10,
+              "Luck": -10,
+              "Dexterity": 20,
+              "Vitality": 100,
+              "Block": 50,
+              "Resistances": {
+                "bludgeon": 100,
+                "magic": 50,
+                "pierce": 0
+              },
+              "PierceVulnerability": 50
+            }
+          ]
         }
       ]
     },
