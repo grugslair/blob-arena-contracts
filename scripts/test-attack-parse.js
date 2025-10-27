@@ -2,7 +2,7 @@ import { parseIdTagAttackStructs } from "./loadout.js";
 import { loadJson } from "./stark-utils.js";
 
 const main = () => {
-  const testAttacks = loadJson("./post-deploy-config/attacks.json").attacks;
+  const testActions = loadJson("./post-deploy-config/attacks.json").attacks;
   console.log(testAttacks);
   console.log("Testing attack parsing:");
   const parsedAttacks = parseIdTagAttackStructs(testAttacks);

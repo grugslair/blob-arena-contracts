@@ -12,7 +12,7 @@ salt = "0x0"
 
 [declare]
 mock_vrf = {}
-attack_model = {}
+action_model = {}
 round_result_model = {}
 arcade_round_result_model = {}
 combat = {}
@@ -23,7 +23,7 @@ amma_blobert = {}
 amma_blobert_soulbound = {}
 amma_blobert_minter = {}
 
-attack = {}
+action = {}
 loadout_classic = {}
 loadout_amma = {}
 orbs = {}
@@ -40,7 +40,7 @@ pvp = {}
 class = "mock_vrf"
 
 [deploy]
-attack_model.salt = "0x0"
+action_model.salt = "0x0"
 round_result_model.salt = "0x0"
 arcade_round_result_model.salt = "0x0"
 
@@ -63,7 +63,7 @@ amma_blobert_soulbound = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A85543
 arena_credit = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
 arena_credit_purchase = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
 
-attack = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
+action = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
 loadout_classic = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
 loadout_amma = "0x04eD97D7549E11745300b30036c327f14d70B5cDDE7085A8554327478f09c8Bc"
 

@@ -21,7 +21,7 @@
         "dexterity": 15,
         "luck": 15
       },
-      "attacks": [
+      "actions": [
         { "tag": "Binary Bash" },
         { "tag": "Algorithm Assault" },
         { "tag": "Algorithmic Overload" }
@@ -43,7 +43,7 @@
         "dexterity": 20,
         "luck": 20
       },
-      "attacks": [
+      "actions": [
         { "tag": "Argent Assault" },
         { "tag": "Argent Crush" },
         { "tag": "Two Factor Authentication" }
@@ -65,7 +65,7 @@
         "dexterity": 25,
         "luck": 25
       },
-      "attacks": [
+      "actions": [
         { "tag": "Helium Blast" },
         { "tag": "Balloon Bombardment" },
         { "tag": "Inflatable Explosion" }
@@ -87,7 +87,7 @@
         "dexterity": 30,
         "luck": 30
       },
-      "attacks": [
+      "actions": [
         { "tag": "Briq Bash" },
         { "tag": "Briq Breaker" },
         { "tag": "Briq Avalanche" }
@@ -109,7 +109,7 @@
         "dexterity": 35,
         "luck": 35
       },
-      "attacks": [
+      "actions": [
         { "tag": "Hash Hit" },
         { "tag": "Calculated Crush" },
         { "tag": "Quantum Singularity" }
@@ -131,7 +131,7 @@
         "dexterity": 40,
         "luck": 40
       },
-      "attacks": [
+      "actions": [
         { "tag": "Code Crush" },
         { "tag": "Debug Destruction" },
         { "tag": "Algorithm Overload" }
@@ -153,7 +153,7 @@
         "dexterity": 45,
         "luck": 45
       },
-      "attacks": [
+      "actions": [
         { "tag": "Diamond Strike" },
         { "tag": "Diamond Destruction" },
         { "tag": "Diamond Hand" }
@@ -175,7 +175,7 @@
         "dexterity": 50,
         "luck": 50
       },
-      "attacks": [
+      "actions": [
         { "tag": "Bullet Blast" },
         { "tag": "Bullet Barrage" },
         { "tag": "Desperation Toss" }
@@ -197,7 +197,7 @@
         "dexterity": 55,
         "luck": 55
       },
-      "attacks": [
+      "actions": [
         { "tag": "Spectral Hit" },
         { "tag": "Phantom Pulse" },
         { "tag": "Phantom Blast" }
@@ -219,7 +219,7 @@
         "dexterity": 70,
         "luck": 70
       },
-      "attacks": [
+      "actions": [
         { "tag": "Grug's Crush" },
         { "tag": "Grug's Smash" },
         { "tag": "Giant Rock Uppercut Grapple" }

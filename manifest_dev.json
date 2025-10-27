@@ -11,41 +11,41 @@
       "calldata": [],
       "calldata_compiled": []
     },
-    "attack_model": {
-      "contract_address": "0x5bd64e5f58dbe9954c5c558b7c45c725f5a3607c2bc2ba6d546b53565cdcf9d",
-      "tag": "attack_model",
+    "action_model": {
+      "contract_address": "0x2c1ea847fbd98d0d15398c2a6b915f1f548530233ac493273db9a53c539f3ef",
+      "tag": "action_model",
       "salt": "0x0",
       "unique": false,
       "once": true,
-      "class": "attack_model",
-      "class_hash": "0x1e053e8df220cc146da92f3fcbac4cabdfffd46d99b524e2785226988425bc3",
+      "class": "action_model",
+      "class_hash": "0x51914a51d3a3f30fce59b11eff04955217ad3d368f6fbf89b556515ca5efc58",
       "calldata": [],
       "calldata_compiled": []
     },
     "round_result_model": {
-      "contract_address": "0x10e78ee257f09b0e9854c5d6e313e5a34e14ea011e4a6723ea218770c393ab3",
+      "contract_address": "0x5349c64b92622341f2ef665ecbfff4e16d5acd2fc8fb62132e3019cd44bfa3",
       "tag": "round_result_model",
       "salt": "0x0",
       "unique": false,
       "once": true,
       "class": "round_result_model",
-      "class_hash": "0x17647f84236bfd3f45094f74214919db024ffce34d165df4fb7138269bb681e",
+      "class_hash": "0x1f75ae3422d68d968fa10a550218d55260a26892d6f6f2c88714c530f7bd8e7",
       "calldata": [],
       "calldata_compiled": []
     },
     "arcade_round_result_model": {
-      "contract_address": "0x2d3d7eb3ed777d977d32336f126ec1261daedf1030b617a5f07b0c520158874",
+      "contract_address": "0x82a7d07077aec5fa54f9a45327b2e698ba493bd749cc2c393eb1d75477c2f4",
       "tag": "arcade_round_result_model",
       "salt": "0x0",
       "unique": false,
       "once": true,
       "class": "arcade_round_result_model",
-      "class_hash": "0x133290439bb99be00f1d8a3dd729ad655f45d45a4c9e7f4c077ce6b2f6c0a6d",
+      "class_hash": "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
       "calldata": [],
       "calldata_compiled": []
     },
     "arena_blobert": {
-      "contract_address": "0x6aa15127d211108257546e7bd2ef818d1cab6eec2595e5640205949e8a4ce2e",
+      "contract_address": "0x1bea635394e89010fc827d6cb4043c2781a23bc05fd2136be50023af43b310e",
       "tag": "arena_blobert",
       "unique": false,
       "calldata": {
@@ -54,13 +54,13 @@
       "salt": "0x0",
       "once": true,
       "class": "arena_blobert",
-      "class_hash": "0x2dce1d083c36359770cea55d1bc35548d254c4c0d2190f37ccdd0b154ef930d",
+      "class_hash": "0x65f2d6e583f86237f9f046fbc0817a7bbb0e85a1fbbeedf672fd05288a3590c",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       ]
     },
     "amma_blobert": {
-      "contract_address": "0x75a2505c28e8ca7a377c5c7958b1c31ef1e7b176cd8fe8c574ab038e6f959c9",
+      "contract_address": "0x755a231a093e8b4e09c106d680d91c7dfec170186343fc0e38b8ab0ac428d51",
       "tag": "amma_blobert",
       "unique": false,
       "calldata": {
@@ -69,13 +69,13 @@
       "salt": "0x0",
       "once": true,
       "class": "amma_blobert",
-      "class_hash": "0x3c86b3ad9417d38323b25ca39a82075fc6d0172392785b5115613651388dcfc",
+      "class_hash": "0x4cac2dde125d08e2d76841527ce5edb9ac08fd58fb1f54caaa1c6a874c9b5b8",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       ]
     },
     "amma_blobert_soulbound": {
-      "contract_address": "0x8d84086781a51c934819a012c17f692abbbaf2ff2251793cd60d990a103f70",
+      "contract_address": "0x4058fff9d25339f3bbd660501b5b9118e91b66d50a7f1908ac0dfe53a692517",
       "tag": "amma_blobert_soulbound",
       "unique": false,
       "calldata": {
@@ -84,7 +84,7 @@
       "salt": "0x0",
       "once": true,
       "class": "amma_blobert_soulbound",
-      "class_hash": "0x736a2629969bf47f5ffb418673c0a963a2bd5b76be1c3d3b087cbecb4dec6fa",
+      "class_hash": "0x2a3f22e91d891700653cd7f14f6bd8c6c8e268381c242e424f4f379602a5050",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       ]
@@ -104,30 +104,30 @@
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       ]
     },
-    "attack": {
-      "contract_address": "0x6a768f4edd810e5b769b05638b159f63d312ea41d5368a29966b0b9d019f713",
-      "tag": "attack",
+    "action": {
+      "contract_address": "0x5531d38f21f013a7d4fb595e20cbd31dac5c469c8ad92053c65f73dd918880e",
+      "tag": "action",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_model_class_hash": "0x1e053e8df220cc146da92f3fcbac4cabdfffd46d99b524e2785226988425bc3"
+        "action_model_class_hash": "0x51914a51d3a3f30fce59b11eff04955217ad3d368f6fbf89b556515ca5efc58"
       },
       "salt": "0x0",
       "once": true,
-      "class": "attack",
-      "class_hash": "0x49b467ec1c20108e5ef0f6b3e6faf84bc9a24fee9c1a7eb1d6b1ee58d90e8e7",
+      "class": "action",
+      "class_hash": "0x73e0ce82b46ce8e492b6221980b45134e95c1cdbbcc87ba5f6bcca26a84649e",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x1e053e8df220cc146da92f3fcbac4cabdfffd46d99b524e2785226988425bc3"
+        "0x51914a51d3a3f30fce59b11eff04955217ad3d368f6fbf89b556515ca5efc58"
       ]
     },
     "arena_blobert_minter": {
-      "contract_address": "0x69679155d702cdbbb4a3b17ea1830a2640059fce4455c6a5d3d6a380be5e44a",
+      "contract_address": "0x4d341969708c6ab4235ae3e4dce83ad319a0a169da5b090092a80a737a972c8",
       "tag": "arena_blobert_minter",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "token_address": "0x6aa15127d211108257546e7bd2ef818d1cab6eec2595e5640205949e8a4ce2e"
+        "token_address": "0x1bea635394e89010fc827d6cb4043c2781a23bc05fd2136be50023af43b310e"
       },
       "salt": "0x0",
       "once": true,
@@ -135,22 +135,22 @@
       "class_hash": "0x764dd0b7161c25158d46ca66b95ff9398cb0adc7492b4b2ba89533f39e0ce7a",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x6aa15127d211108257546e7bd2ef818d1cab6eec2595e5640205949e8a4ce2e"
+        "0x1bea635394e89010fc827d6cb4043c2781a23bc05fd2136be50023af43b310e"
       ]
     },
     "amma_blobert_minter": {
-      "contract_address": "0x3602e0f3b6d9dffcfb1affa392f63c64ca605d2bb15c889561f3650cdf441fc",
+      "contract_address": "0x7cc45e1aa806a219fa18e5e9615612504efd3ce70c7b122f015cce58b768474",
       "tag": "amma_blobert_minter",
       "unique": false,
       "calldata": {
-        "token_address": "0x8d84086781a51c934819a012c17f692abbbaf2ff2251793cd60d990a103f70"
+        "token_address": "0x4058fff9d25339f3bbd660501b5b9118e91b66d50a7f1908ac0dfe53a692517"
       },
       "salt": "0x0",
       "once": true,
       "class": "amma_blobert_minter",
       "class_hash": "0x4bbd4269e9fc9b370a01bfc3a7cf8bc72eeee7206505ee10d9f593cd9e429f",
       "calldata_compiled": [
-        "0x8d84086781a51c934819a012c17f692abbbaf2ff2251793cd60d990a103f70"
+        "0x4058fff9d25339f3bbd660501b5b9118e91b66d50a7f1908ac0dfe53a692517"
       ]
     },
     "arena_credit_purchase": {
@@ -171,114 +171,114 @@
       ]
     },
     "loadout_classic": {
-      "contract_address": "0x3558a31a3e1fd707d8f9c1aa6e6a2281ca36fc2c5b368870592265b73bc542c",
+      "contract_address": "0x458488a04dd6d895736c448e31a9d7d4eb5f683e81250eab96f1507ce8d5fc",
       "tag": "loadout_classic",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_dispatcher_address": "0x6a768f4edd810e5b769b05638b159f63d312ea41d5368a29966b0b9d019f713",
+        "action_dispatcher_address": "0x5531d38f21f013a7d4fb595e20cbd31dac5c469c8ad92053c65f73dd918880e",
         "collection_addresses": [
-          "0x6aa15127d211108257546e7bd2ef818d1cab6eec2595e5640205949e8a4ce2e",
+          "0x1bea635394e89010fc827d6cb4043c2781a23bc05fd2136be50023af43b310e",
           "0x0"
         ]
       },
       "salt": "0x0",
       "once": true,
       "class": "loadout_classic",
-      "class_hash": "0x69c47f18c8a64325247537144ccbdf1823f8f984e2d644aca1a21b48bdffa19",
+      "class_hash": "0x1cf347168a95b33015f6bc5a2931ed2194644136cfbacb9b92052b8158649dd",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x6a768f4edd810e5b769b05638b159f63d312ea41d5368a29966b0b9d019f713",
+        "0x5531d38f21f013a7d4fb595e20cbd31dac5c469c8ad92053c65f73dd918880e",
         "0x2",
-        "0x6aa15127d211108257546e7bd2ef818d1cab6eec2595e5640205949e8a4ce2e",
+        "0x1bea635394e89010fc827d6cb4043c2781a23bc05fd2136be50023af43b310e",
         "0x0"
       ]
     },
     "loadout_amma": {
-      "contract_address": "0x303023d4767a06d418f54d2d120769bb7a8572f35ce89536da0bc90f3a76a25",
+      "contract_address": "0x2aa584f1e4339e3ceb2a489330dbd2c13ccf897c69e6bbb983487aa04130ab4",
       "tag": "loadout_amma",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "attack_dispatcher_address": "0x6a768f4edd810e5b769b05638b159f63d312ea41d5368a29966b0b9d019f713",
+        "action_dispatcher_address": "0x5531d38f21f013a7d4fb595e20cbd31dac5c469c8ad92053c65f73dd918880e",
         "collection_addresses": [
-          "0x75a2505c28e8ca7a377c5c7958b1c31ef1e7b176cd8fe8c574ab038e6f959c9",
-          "0x8d84086781a51c934819a012c17f692abbbaf2ff2251793cd60d990a103f70"
+          "0x755a231a093e8b4e09c106d680d91c7dfec170186343fc0e38b8ab0ac428d51",
+          "0x4058fff9d25339f3bbd660501b5b9118e91b66d50a7f1908ac0dfe53a692517"
         ]
       },
       "salt": "0x0",
       "once": true,
       "class": "loadout_amma",
-      "class_hash": "0x2b0d31def92fbac25fed6f1553c5dae56ff942fc2f37f5dd895224cf989f11b",
+      "class_hash": "0x2fb5a21fad3a9529d4e017f1c0343f34307a0ee6bdcb2b0bb4346c4e30b7bb8",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x6a768f4edd810e5b769b05638b159f63d312ea41d5368a29966b0b9d019f713",
+        "0x5531d38f21f013a7d4fb595e20cbd31dac5c469c8ad92053c65f73dd918880e",
         "0x2",
-        "0x75a2505c28e8ca7a377c5c7958b1c31ef1e7b176cd8fe8c574ab038e6f959c9",
-        "0x8d84086781a51c934819a012c17f692abbbaf2ff2251793cd60d990a103f70"
+        "0x755a231a093e8b4e09c106d680d91c7dfec170186343fc0e38b8ab0ac428d51",
+        "0x4058fff9d25339f3bbd660501b5b9118e91b66d50a7f1908ac0dfe53a692517"
       ]
     },
     "arcade_classic": {
-      "contract_address": "0x6fc2a4df9aeaaafbaa416536f6f6737f2b85066c040f466146b1cbd0e9c7729",
+      "contract_address": "0x8fa3313b62f44942b9effb4efa3cd9d3bd8684554c30a0eaa274877e5b3050",
       "tag": "arcade_classic",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "arcade_round_result_class_hash": "0x133290439bb99be00f1d8a3dd729ad655f45d45a4c9e7f4c077ce6b2f6c0a6d",
-        "attack_address": "0x6a768f4edd810e5b769b05638b159f63d312ea41d5368a29966b0b9d019f713",
-        "loadout_address": "0x3558a31a3e1fd707d8f9c1aa6e6a2281ca36fc2c5b368870592265b73bc542c"
+        "arcade_round_result_class_hash": "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
+        "action_address": "0x5531d38f21f013a7d4fb595e20cbd31dac5c469c8ad92053c65f73dd918880e",
+        "loadout_address": "0x458488a04dd6d895736c448e31a9d7d4eb5f683e81250eab96f1507ce8d5fc"
       },
       "salt": "0x0",
       "once": true,
       "class": "arcade_classic",
-      "class_hash": "0x32251ca0e36e8c2da90f82ad1110d9d1d1578b376a2c0bb5f7ba95d5909a857",
+      "class_hash": "0x6f5e45d938a7d3e8e287ffbe3f70f3c803e877e3306377089b0dfd4d7d09ff",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x133290439bb99be00f1d8a3dd729ad655f45d45a4c9e7f4c077ce6b2f6c0a6d",
-        "0x6a768f4edd810e5b769b05638b159f63d312ea41d5368a29966b0b9d019f713",
-        "0x3558a31a3e1fd707d8f9c1aa6e6a2281ca36fc2c5b368870592265b73bc542c"
+        "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
+        "0x5531d38f21f013a7d4fb595e20cbd31dac5c469c8ad92053c65f73dd918880e",
+        "0x458488a04dd6d895736c448e31a9d7d4eb5f683e81250eab96f1507ce8d5fc"
       ]
     },
     "arcade_amma": {
-      "contract_address": "0x14722a00fab70cb9d00b04a308f09f344faf9b5e4c789cf3bcd21a5744bb33e",
+      "contract_address": "0x3b4dfb48297441d9d46dae177eb112009455c3e33429169ac38e190a022f3c2",
       "tag": "arcade_amma",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "arcade_round_result_class_hash": "0x133290439bb99be00f1d8a3dd729ad655f45d45a4c9e7f4c077ce6b2f6c0a6d",
-        "attack_address": "0x6a768f4edd810e5b769b05638b159f63d312ea41d5368a29966b0b9d019f713",
-        "loadout_address": "0x303023d4767a06d418f54d2d120769bb7a8572f35ce89536da0bc90f3a76a25",
-        "collectable_address": "0x75a2505c28e8ca7a377c5c7958b1c31ef1e7b176cd8fe8c574ab038e6f959c9"
+        "arcade_round_result_class_hash": "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
+        "action_address": "0x5531d38f21f013a7d4fb595e20cbd31dac5c469c8ad92053c65f73dd918880e",
+        "loadout_address": "0x2aa584f1e4339e3ceb2a489330dbd2c13ccf897c69e6bbb983487aa04130ab4",
+        "collectable_address": "0x755a231a093e8b4e09c106d680d91c7dfec170186343fc0e38b8ab0ac428d51"
       },
       "salt": "0x0",
       "once": true,
       "class": "arcade_amma",
-      "class_hash": "0x2a1c451c03e2385ebcf7949a8d2c3095c8ad486e0533a57603af0a709616689",
+      "class_hash": "0x5a9e249dc07a6aaa0b011c4b773a907551b916155b73b6e62dfa7207589d490",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x133290439bb99be00f1d8a3dd729ad655f45d45a4c9e7f4c077ce6b2f6c0a6d",
-        "0x6a768f4edd810e5b769b05638b159f63d312ea41d5368a29966b0b9d019f713",
-        "0x303023d4767a06d418f54d2d120769bb7a8572f35ce89536da0bc90f3a76a25",
-        "0x75a2505c28e8ca7a377c5c7958b1c31ef1e7b176cd8fe8c574ab038e6f959c9"
+        "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
+        "0x5531d38f21f013a7d4fb595e20cbd31dac5c469c8ad92053c65f73dd918880e",
+        "0x2aa584f1e4339e3ceb2a489330dbd2c13ccf897c69e6bbb983487aa04130ab4",
+        "0x755a231a093e8b4e09c106d680d91c7dfec170186343fc0e38b8ab0ac428d51"
       ]
     },
     "pvp": {
-      "contract_address": "0x147e4f08d27acb92a095a9a1fa9bf1f96cbdf9dabe21703e9f68110dcc6c70e",
+      "contract_address": "0x210d86be3ce0d61f0bb4ba837083995c349e82b91c261721083641ce25c0d8a",
       "tag": "pvp",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "round_result_class_hash": "0x17647f84236bfd3f45094f74214919db024ffce34d165df4fb7138269bb681e",
-        "attack_address": "0x6a768f4edd810e5b769b05638b159f63d312ea41d5368a29966b0b9d019f713"
+        "round_result_class_hash": "0x1f75ae3422d68d968fa10a550218d55260a26892d6f6f2c88714c530f7bd8e7",
+        "action_address": "0x5531d38f21f013a7d4fb595e20cbd31dac5c469c8ad92053c65f73dd918880e"
       },
       "salt": "0x0",
       "once": true,
       "class": "pvp",
-      "class_hash": "0x2fc217811e4aca2e27ea2b72ac6547286df84f9e6764e227ca7de7028ea67a9",
+      "class_hash": "0x54e2d881e8dd77a00b8390ea81dfa215201a1ea7f5c44d10b7a5ed963a452c",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x17647f84236bfd3f45094f74214919db024ffce34d165df4fb7138269bb681e",
-        "0x6a768f4edd810e5b769b05638b159f63d312ea41d5368a29966b0b9d019f713"
+        "0x1f75ae3422d68d968fa10a550218d55260a26892d6f6f2c88714c530f7bd8e7",
+        "0x5531d38f21f013a7d4fb595e20cbd31dac5c469c8ad92053c65f73dd918880e"
       ]
     }
   },
@@ -286,41 +286,44 @@
     "mock_vrf": {
       "class_hash": "0x301acbd969fe41d1dd0a3349a17db0e779d78644aa21d4ff6ef3f0d0498479f"
     },
-    "attack_model": {
-      "class_hash": "0x1e053e8df220cc146da92f3fcbac4cabdfffd46d99b524e2785226988425bc3"
+    "action_model": {
+      "class_hash": "0x51914a51d3a3f30fce59b11eff04955217ad3d368f6fbf89b556515ca5efc58"
     },
     "round_result_model": {
-      "class_hash": "0x17647f84236bfd3f45094f74214919db024ffce34d165df4fb7138269bb681e"
+      "class_hash": "0x1f75ae3422d68d968fa10a550218d55260a26892d6f6f2c88714c530f7bd8e7"
     },
     "arcade_round_result_model": {
-      "class_hash": "0x133290439bb99be00f1d8a3dd729ad655f45d45a4c9e7f4c077ce6b2f6c0a6d"
+      "class_hash": "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a"
     },
     "combat": {
-      "class_hash": "0x40791cfa5599204cffb231ccf04ac9b3fe8ddeded35ca7ede42d99f81dfc24f"
+      "class_hash": "0x2ea37d62b1e73925e56c7654043993e28aaf60162f287d6a30ae95bdf292fa1"
     },
     "arena_blobert": {
-      "class_hash": "0x2dce1d083c36359770cea55d1bc35548d254c4c0d2190f37ccdd0b154ef930d"
+      "class_hash": "0x65f2d6e583f86237f9f046fbc0817a7bbb0e85a1fbbeedf672fd05288a3590c"
     },
     "arena_blobert_minter": {
       "class_hash": "0x764dd0b7161c25158d46ca66b95ff9398cb0adc7492b4b2ba89533f39e0ce7a"
     },
     "amma_blobert": {
-      "class_hash": "0x3c86b3ad9417d38323b25ca39a82075fc6d0172392785b5115613651388dcfc"
+      "class_hash": "0x4cac2dde125d08e2d76841527ce5edb9ac08fd58fb1f54caaa1c6a874c9b5b8"
     },
     "amma_blobert_soulbound": {
-      "class_hash": "0x736a2629969bf47f5ffb418673c0a963a2bd5b76be1c3d3b087cbecb4dec6fa"
+      "class_hash": "0x2a3f22e91d891700653cd7f14f6bd8c6c8e268381c242e424f4f379602a5050"
     },
     "amma_blobert_minter": {
       "class_hash": "0x4bbd4269e9fc9b370a01bfc3a7cf8bc72eeee7206505ee10d9f593cd9e429f"
     },
-    "attack": {
-      "class_hash": "0x49b467ec1c20108e5ef0f6b3e6faf84bc9a24fee9c1a7eb1d6b1ee58d90e8e7"
+    "action": {
+      "class_hash": "0x73e0ce82b46ce8e492b6221980b45134e95c1cdbbcc87ba5f6bcca26a84649e"
     },
     "loadout_classic": {
-      "class_hash": "0x69c47f18c8a64325247537144ccbdf1823f8f984e2d644aca1a21b48bdffa19"
+      "class_hash": "0x1cf347168a95b33015f6bc5a2931ed2194644136cfbacb9b92052b8158649dd"
     },
     "loadout_amma": {
-      "class_hash": "0x2b0d31def92fbac25fed6f1553c5dae56ff942fc2f37f5dd895224cf989f11b"
+      "class_hash": "0x2fb5a21fad3a9529d4e017f1c0343f34307a0ee6bdcb2b0bb4346c4e30b7bb8"
+    },
+    "orbs": {
+      "class_hash": "0x15bc92b95bdf5c65ea349c98a5d27cda791dc98a672ce0c3e7f92946daf7b7e"
     },
     "arena_credit": {
       "class_hash": "0x29eb7b4a082ebcef9bc97a5fcc6e109414975c4cc5d5db1e31de82d52a94cc0"
@@ -329,13 +332,13 @@
       "class_hash": "0x4be30835b6c7e9bc04c7cb119eab8670da3f168c58ebe718b8e4fb5c7aeb799"
     },
     "arcade_classic": {
-      "class_hash": "0x32251ca0e36e8c2da90f82ad1110d9d1d1578b376a2c0bb5f7ba95d5909a857"
+      "class_hash": "0x6f5e45d938a7d3e8e287ffbe3f70f3c803e877e3306377089b0dfd4d7d09ff"
     },
     "arcade_amma": {
-      "class_hash": "0x2a1c451c03e2385ebcf7949a8d2c3095c8ad486e0533a57603af0a709616689"
+      "class_hash": "0x5a9e249dc07a6aaa0b011c4b773a907551b916155b73b6e62dfa7207589d490"
     },
     "pvp": {
-      "class_hash": "0x2fc217811e4aca2e27ea2b72ac6547286df84f9e6764e227ca7de7028ea67a9"
+      "class_hash": "0x54e2d881e8dd77a00b8390ea81dfa215201a1ea7f5c44d10b7a5ed963a452c"
     }
   },
   "contracts": {
@@ -350,34 +353,34 @@
       "class_hash": "0x301acbd969fe41d1dd0a3349a17db0e779d78644aa21d4ff6ef3f0d0498479f",
       "class": "mock_vrf"
     },
-    "attack_model": {
-      "contract_address": "0x5bd64e5f58dbe9954c5c558b7c45c725f5a3607c2bc2ba6d546b53565cdcf9d",
-      "class_hash": "0x1e053e8df220cc146da92f3fcbac4cabdfffd46d99b524e2785226988425bc3",
-      "class": "attack_model"
+    "action_model": {
+      "contract_address": "0x2c1ea847fbd98d0d15398c2a6b915f1f548530233ac493273db9a53c539f3ef",
+      "class_hash": "0x51914a51d3a3f30fce59b11eff04955217ad3d368f6fbf89b556515ca5efc58",
+      "class": "action_model"
     },
     "round_result_model": {
-      "contract_address": "0x10e78ee257f09b0e9854c5d6e313e5a34e14ea011e4a6723ea218770c393ab3",
-      "class_hash": "0x17647f84236bfd3f45094f74214919db024ffce34d165df4fb7138269bb681e",
+      "contract_address": "0x5349c64b92622341f2ef665ecbfff4e16d5acd2fc8fb62132e3019cd44bfa3",
+      "class_hash": "0x1f75ae3422d68d968fa10a550218d55260a26892d6f6f2c88714c530f7bd8e7",
       "class": "round_result_model"
     },
     "arcade_round_result_model": {
-      "contract_address": "0x2d3d7eb3ed777d977d32336f126ec1261daedf1030b617a5f07b0c520158874",
-      "class_hash": "0x133290439bb99be00f1d8a3dd729ad655f45d45a4c9e7f4c077ce6b2f6c0a6d",
+      "contract_address": "0x82a7d07077aec5fa54f9a45327b2e698ba493bd749cc2c393eb1d75477c2f4",
+      "class_hash": "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
       "class": "arcade_round_result_model"
     },
     "arena_blobert": {
-      "contract_address": "0x6aa15127d211108257546e7bd2ef818d1cab6eec2595e5640205949e8a4ce2e",
-      "class_hash": "0x2dce1d083c36359770cea55d1bc35548d254c4c0d2190f37ccdd0b154ef930d",
+      "contract_address": "0x1bea635394e89010fc827d6cb4043c2781a23bc05fd2136be50023af43b310e",
+      "class_hash": "0x65f2d6e583f86237f9f046fbc0817a7bbb0e85a1fbbeedf672fd05288a3590c",
       "class": "arena_blobert"
     },
     "amma_blobert": {
-      "contract_address": "0x75a2505c28e8ca7a377c5c7958b1c31ef1e7b176cd8fe8c574ab038e6f959c9",
-      "class_hash": "0x3c86b3ad9417d38323b25ca39a82075fc6d0172392785b5115613651388dcfc",
+      "contract_address": "0x755a231a093e8b4e09c106d680d91c7dfec170186343fc0e38b8ab0ac428d51",
+      "class_hash": "0x4cac2dde125d08e2d76841527ce5edb9ac08fd58fb1f54caaa1c6a874c9b5b8",
       "class": "amma_blobert"
     },
     "amma_blobert_soulbound": {
-      "contract_address": "0x8d84086781a51c934819a012c17f692abbbaf2ff2251793cd60d990a103f70",
-      "class_hash": "0x736a2629969bf47f5ffb418673c0a963a2bd5b76be1c3d3b087cbecb4dec6fa",
+      "contract_address": "0x4058fff9d25339f3bbd660501b5b9118e91b66d50a7f1908ac0dfe53a692517",
+      "class_hash": "0x2a3f22e91d891700653cd7f14f6bd8c6c8e268381c242e424f4f379602a5050",
       "class": "amma_blobert_soulbound"
     },
     "arena_credit": {
@@ -385,18 +388,18 @@
       "class_hash": "0x29eb7b4a082ebcef9bc97a5fcc6e109414975c4cc5d5db1e31de82d52a94cc0",
       "class": "arena_credit"
     },
-    "attack": {
-      "contract_address": "0x6a768f4edd810e5b769b05638b159f63d312ea41d5368a29966b0b9d019f713",
-      "class_hash": "0x49b467ec1c20108e5ef0f6b3e6faf84bc9a24fee9c1a7eb1d6b1ee58d90e8e7",
-      "class": "attack"
+    "action": {
+      "contract_address": "0x5531d38f21f013a7d4fb595e20cbd31dac5c469c8ad92053c65f73dd918880e",
+      "class_hash": "0x73e0ce82b46ce8e492b6221980b45134e95c1cdbbcc87ba5f6bcca26a84649e",
+      "class": "action"
     },
     "arena_blobert_minter": {
-      "contract_address": "0x69679155d702cdbbb4a3b17ea1830a2640059fce4455c6a5d3d6a380be5e44a",
+      "contract_address": "0x4d341969708c6ab4235ae3e4dce83ad319a0a169da5b090092a80a737a972c8",
       "class_hash": "0x764dd0b7161c25158d46ca66b95ff9398cb0adc7492b4b2ba89533f39e0ce7a",
       "class": "arena_blobert_minter"
     },
     "amma_blobert_minter": {
-      "contract_address": "0x3602e0f3b6d9dffcfb1affa392f63c64ca605d2bb15c889561f3650cdf441fc",
+      "contract_address": "0x7cc45e1aa806a219fa18e5e9615612504efd3ce70c7b122f015cce58b768474",
       "class_hash": "0x4bbd4269e9fc9b370a01bfc3a7cf8bc72eeee7206505ee10d9f593cd9e429f",
       "class": "amma_blobert_minter"
     },
@@ -406,107 +409,34 @@
       "class": "arena_credit_purchase"
     },
     "loadout_classic": {
-      "contract_address": "0x3558a31a3e1fd707d8f9c1aa6e6a2281ca36fc2c5b368870592265b73bc542c",
-      "class_hash": "0x69c47f18c8a64325247537144ccbdf1823f8f984e2d644aca1a21b48bdffa19",
+      "contract_address": "0x458488a04dd6d895736c448e31a9d7d4eb5f683e81250eab96f1507ce8d5fc",
+      "class_hash": "0x1cf347168a95b33015f6bc5a2931ed2194644136cfbacb9b92052b8158649dd",
       "class": "loadout_classic"
     },
     "loadout_amma": {
-      "contract_address": "0x303023d4767a06d418f54d2d120769bb7a8572f35ce89536da0bc90f3a76a25",
-      "class_hash": "0x2b0d31def92fbac25fed6f1553c5dae56ff942fc2f37f5dd895224cf989f11b",
+      "contract_address": "0x2aa584f1e4339e3ceb2a489330dbd2c13ccf897c69e6bbb983487aa04130ab4",
+      "class_hash": "0x2fb5a21fad3a9529d4e017f1c0343f34307a0ee6bdcb2b0bb4346c4e30b7bb8",
       "class": "loadout_amma"
     },
     "arcade_classic": {
-      "contract_address": "0x6fc2a4df9aeaaafbaa416536f6f6737f2b85066c040f466146b1cbd0e9c7729",
-      "class_hash": "0x32251ca0e36e8c2da90f82ad1110d9d1d1578b376a2c0bb5f7ba95d5909a857",
+      "contract_address": "0x8fa3313b62f44942b9effb4efa3cd9d3bd8684554c30a0eaa274877e5b3050",
+      "class_hash": "0x6f5e45d938a7d3e8e287ffbe3f70f3c803e877e3306377089b0dfd4d7d09ff",
       "class": "arcade_classic"
     },
     "arcade_amma": {
-      "contract_address": "0x14722a00fab70cb9d00b04a308f09f344faf9b5e4c789cf3bcd21a5744bb33e",
-      "class_hash": "0x2a1c451c03e2385ebcf7949a8d2c3095c8ad486e0533a57603af0a709616689",
+      "contract_address": "0x3b4dfb48297441d9d46dae177eb112009455c3e33429169ac38e190a022f3c2",
+      "class_hash": "0x5a9e249dc07a6aaa0b011c4b773a907551b916155b73b6e62dfa7207589d490",
       "class": "arcade_amma"
     },
     "pvp": {
-      "contract_address": "0x147e4f08d27acb92a095a9a1fa9bf1f96cbdf9dabe21703e9f68110dcc6c70e",
-      "class_hash": "0x2fc217811e4aca2e27ea2b72ac6547286df84f9e6764e227ca7de7028ea67a9",
+      "contract_address": "0x210d86be3ce0d61f0bb4ba837083995c349e82b91c261721083641ce25c0d8a",
+      "class_hash": "0x54e2d881e8dd77a00b8390ea81dfa215201a1ea7f5c44d10b7a5ed963a452c",
       "class": "pvp"
     }
   },
-  "declarations": {
-    "mock_vrf": {
-      "class_hash": "0x301acbd969fe41d1dd0a3349a17db0e779d78644aa21d4ff6ef3f0d0498479f",
-      "transaction_hash": "0x434ca03ae9c228ada9a96d52037abf6a1323be8a7ee38acaf8e532c48abb681"
-    },
-    "attack_model": {
-      "class_hash": "0x1e053e8df220cc146da92f3fcbac4cabdfffd46d99b524e2785226988425bc3",
-      "transaction_hash": "0x542430c55ddf424bcd6bb394e4e5b0e1c18518dcaa3aa7eb433f6314b0dd4c1"
-    },
-    "round_result_model": {
-      "class_hash": "0x17647f84236bfd3f45094f74214919db024ffce34d165df4fb7138269bb681e",
-      "transaction_hash": "0x57e83badd0967a405d5612dc82d92365a1436e7d388d34278994d1478dcd0fc"
-    },
-    "arcade_round_result_model": {
-      "class_hash": "0x133290439bb99be00f1d8a3dd729ad655f45d45a4c9e7f4c077ce6b2f6c0a6d",
-      "transaction_hash": "0x4c65c45a3d49bb200f5c2caec763e693908e0b101fe03d60533047ff2d02418"
-    },
-    "combat": {
-      "class_hash": "0x40791cfa5599204cffb231ccf04ac9b3fe8ddeded35ca7ede42d99f81dfc24f",
-      "transaction_hash": "0x49f4cbec316ec466f08925415c3d1deb30fff0d248c5aa2c5fcb8df40eecad8"
-    },
-    "arena_blobert": {
-      "class_hash": "0x2dce1d083c36359770cea55d1bc35548d254c4c0d2190f37ccdd0b154ef930d",
-      "transaction_hash": "0x7e6755489e77e2e5ac62c6f4cb315217cfe626e6deaf14b2af417651920bbb2"
-    },
-    "arena_blobert_minter": {
-      "class_hash": "0x764dd0b7161c25158d46ca66b95ff9398cb0adc7492b4b2ba89533f39e0ce7a",
-      "transaction_hash": "0x5e45657747277996a90649d92010f327ca0674fe19c2a219db42fb5c4cd200d"
-    },
-    "amma_blobert": {
-      "class_hash": "0x3c86b3ad9417d38323b25ca39a82075fc6d0172392785b5115613651388dcfc",
-      "transaction_hash": "0x9b727df587dc0fd76e06620f367b750515d2071fa865f712ea3d3002d77688"
-    },
-    "amma_blobert_soulbound": {
-      "class_hash": "0x736a2629969bf47f5ffb418673c0a963a2bd5b76be1c3d3b087cbecb4dec6fa",
-      "transaction_hash": "0x578caa17c2782aed6be368ad83dd80eab5972dd58e1167cdb654e8e39c0a68"
-    },
-    "amma_blobert_minter": {
-      "class_hash": "0x4bbd4269e9fc9b370a01bfc3a7cf8bc72eeee7206505ee10d9f593cd9e429f",
-      "transaction_hash": "0xffb504c2377290f19f7b98d4bbc81281f39cd2353c11a9e8367a984db0a47"
-    },
-    "attack": {
-      "class_hash": "0x49b467ec1c20108e5ef0f6b3e6faf84bc9a24fee9c1a7eb1d6b1ee58d90e8e7",
-      "transaction_hash": "0x47944801e521c6acbaed189b2f9c1cc59a203203bf94b46fc73194568b0c9f5"
-    },
-    "loadout_classic": {
-      "class_hash": "0x69c47f18c8a64325247537144ccbdf1823f8f984e2d644aca1a21b48bdffa19",
-      "transaction_hash": "0x5ccf9574548901993b27b16eca75461c89f3e24223cb357a5985980e42386d7"
-    },
-    "loadout_amma": {
-      "class_hash": "0x2b0d31def92fbac25fed6f1553c5dae56ff942fc2f37f5dd895224cf989f11b",
-      "transaction_hash": "0x66db6483ff26961f8f79b7a3b3c7cae698216322fc6e84e4e1dcd4e4ee15b64"
-    },
-    "arena_credit": {
-      "class_hash": "0x29eb7b4a082ebcef9bc97a5fcc6e109414975c4cc5d5db1e31de82d52a94cc0",
-      "transaction_hash": "0x7576e67d568b22d7ca1f929c802af9a1bda17912bf2c4199061a921a3d994ac"
-    },
-    "arena_credit_purchase": {
-      "class_hash": "0x4be30835b6c7e9bc04c7cb119eab8670da3f168c58ebe718b8e4fb5c7aeb799",
-      "transaction_hash": "0x3ed2961de7cad3a2380d84d502616ea19742e6fc5f1b5449c222a2e44c13117"
-    },
-    "arcade_classic": {
-      "class_hash": "0x32251ca0e36e8c2da90f82ad1110d9d1d1578b376a2c0bb5f7ba95d5909a857",
-      "transaction_hash": "0x34723c2d90e56bce7bad7b8704982ff99fc8a05c80097ae93f49c486bf1b1ec"
-    },
-    "arcade_amma": {
-      "class_hash": "0x2a1c451c03e2385ebcf7949a8d2c3095c8ad486e0533a57603af0a709616689",
-      "transaction_hash": "0x6ac6b6ea8869e8ae9d07850da183c2641aefe9ce05213237bb763aad952fea5"
-    },
-    "pvp": {
-      "class_hash": "0x2fc217811e4aca2e27ea2b72ac6547286df84f9e6764e227ca7de7028ea67a9",
-      "transaction_hash": "0x3214d7409d4912841e1333680fca809349aa8584c3950fea21ff56a1c359ed1"
-    }
-  },
+  "declarations": {},
   "abis": {
-    "0x2dce1d083c36359770cea55d1bc35548d254c4c0d2190f37ccdd0b154ef930d": [
+    "0x65f2d6e583f86237f9f046fbc0817a7bbb0e85a1fbbeedf672fd05288a3590c": [
       {
         "type": "impl",
         "name": "IArenaBlobertImpl",
@@ -1314,30 +1244,6 @@
       },
       {
         "type": "event",
-        "name": "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Upgraded",
-        "kind": "struct",
-        "members": [
-          {
-            "name": "class_hash",
-            "type": "core::starknet::class_hash::ClassHash",
-            "kind": "data"
-          }
-        ]
-      },
-      {
-        "type": "event",
-        "name": "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Event",
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "Upgraded",
-            "type": "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Upgraded",
-            "kind": "nested"
-          }
-        ]
-      },
-      {
-        "type": "event",
         "name": "sai_ownable::ownable_component::GrantContractOwner",
         "kind": "struct",
         "members": [
@@ -1427,11 +1333,6 @@
             "kind": "flat"
           },
           {
-            "name": "UpgradeableEvent",
-            "type": "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Event",
-            "kind": "flat"
-          },
-          {
             "name": "AccessEvents",
             "type": "sai_access::access_component::Event",
             "kind": "flat"
@@ -1439,7 +1340,7 @@
         ]
       }
     ],
-    "0x3c86b3ad9417d38323b25ca39a82075fc6d0172392785b5115613651388dcfc": [
+    "0x4cac2dde125d08e2d76841527ce5edb9ac08fd58fb1f54caaa1c6a874c9b5b8": [
       {
         "type": "impl",
         "name": "IAmmaBlobertImpl",
@@ -2217,30 +2118,6 @@
       },
       {
         "type": "event",
-        "name": "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Upgraded",
-        "kind": "struct",
-        "members": [
-          {
-            "name": "class_hash",
-            "type": "core::starknet::class_hash::ClassHash",
-            "kind": "data"
-          }
-        ]
-      },
-      {
-        "type": "event",
-        "name": "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Event",
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "Upgraded",
-            "type": "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Upgraded",
-            "kind": "nested"
-          }
-        ]
-      },
-      {
-        "type": "event",
         "name": "sai_ownable::ownable_component::GrantContractOwner",
         "kind": "struct",
         "members": [
@@ -2330,11 +2207,6 @@
             "kind": "flat"
           },
           {
-            "name": "UpgradeableEvent",
-            "type": "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Event",
-            "kind": "flat"
-          },
-          {
             "name": "AccessEvents",
             "type": "sai_access::access_component::Event",
             "kind": "flat"
@@ -2342,7 +2214,7 @@
         ]
       }
     ],
-    "0x736a2629969bf47f5ffb418673c0a963a2bd5b76be1c3d3b087cbecb4dec6fa": [
+    "0x2a3f22e91d891700653cd7f14f6bd8c6c8e268381c242e424f4f379602a5050": [
       {
         "type": "impl",
         "name": "IAmmaBlobertImpl",
@@ -3087,30 +2959,6 @@
       },
       {
         "type": "event",
-        "name": "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Upgraded",
-        "kind": "struct",
-        "members": [
-          {
-            "name": "class_hash",
-            "type": "core::starknet::class_hash::ClassHash",
-            "kind": "data"
-          }
-        ]
-      },
-      {
-        "type": "event",
-        "name": "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Event",
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "Upgraded",
-            "type": "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Upgraded",
-            "kind": "nested"
-          }
-        ]
-      },
-      {
-        "type": "event",
         "name": "sai_ownable::ownable_component::GrantContractOwner",
         "kind": "struct",
         "members": [
@@ -3197,11 +3045,6 @@
           {
             "name": "SRC5Event",
             "type": "openzeppelin_introspection::src5::SRC5Component::Event",
-            "kind": "flat"
-          },
-          {
-            "name": "UpgradeableEvent",
-            "type": "openzeppelin_upgrades::upgradeable::UpgradeableComponent::Event",
             "kind": "flat"
           },
           {
@@ -3694,29 +3537,29 @@
         ]
       }
     ],
-    "0x49b467ec1c20108e5ef0f6b3e6faf84bc9a24fee9c1a7eb1d6b1ee58d90e8e7": [
+    "0x73e0ce82b46ce8e492b6221980b45134e95c1cdbbcc87ba5f6bcca26a84649e": [
       {
         "type": "impl",
-        "name": "IAttackImpl",
-        "interface_name": "ba_loadout::attack::interface::IAttack"
+        "name": "IActionImpl",
+        "interface_name": "ba_loadout::action::interface::IAction"
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::Target",
+        "name": "ba_loadout::action::effect::Recipient",
         "variants": [
           {
-            "name": "Attacker",
+            "name": "Actor",
             "type": "()"
           },
           {
-            "name": "Defender",
+            "name": "Target",
             "type": "()"
           }
         ]
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::Duration",
+        "name": "ba_loadout::action::effect::Duration",
         "variants": [
           {
             "name": "Instant",
@@ -3800,7 +3643,7 @@
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::DamageType",
+        "name": "ba_loadout::action::effect::DamageType",
         "variants": [
           {
             "name": "None",
@@ -3822,7 +3665,7 @@
       },
       {
         "type": "struct",
-        "name": "ba_loadout::attack::effect::Damage",
+        "name": "ba_loadout::action::effect::Damage",
         "members": [
           {
             "name": "critical",
@@ -3834,13 +3677,13 @@
           },
           {
             "name": "damage_type",
-            "type": "ba_loadout::attack::effect::DamageType"
+            "type": "ba_loadout::action::effect::DamageType"
           }
         ]
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::Affect",
+        "name": "ba_loadout::action::effect::Affect",
         "variants": [
           {
             "name": "None",
@@ -3972,7 +3815,7 @@
           },
           {
             "name": "Damage",
-            "type": "ba_loadout::attack::effect::Damage"
+            "type": "ba_loadout::action::effect::Damage"
           },
           {
             "name": "SetHealth",
@@ -4006,45 +3849,69 @@
       },
       {
         "type": "struct",
-        "name": "ba_loadout::attack::effect::Effect",
+        "name": "ba_loadout::action::effect::Effect",
         "members": [
           {
             "name": "target",
-            "type": "ba_loadout::attack::effect::Target"
+            "type": "ba_loadout::action::effect::Recipient"
           },
           {
             "name": "duration",
-            "type": "ba_loadout::attack::effect::Duration"
+            "type": "ba_loadout::action::effect::Duration"
           },
           {
             "name": "affect",
-            "type": "ba_loadout::attack::effect::Affect"
+            "type": "ba_loadout::action::effect::Affect"
           }
         ]
       },
       {
         "type": "struct",
-        "name": "ba_loadout::attack::attack::Attack",
+        "name": "ba_loadout::action::action::ChanceEffects",
+        "members": [
+          {
+            "name": "chance_ppm",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "effects",
+            "type": "core::array::Array::<ba_loadout::action::effect::Effect>"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::action::action::Action",
         "members": [
           {
             "name": "speed",
             "type": "core::integer::u16"
           },
           {
-            "name": "chance",
-            "type": "core::integer::u8"
-          },
-          {
             "name": "cooldown",
             "type": "core::integer::u32"
           },
           {
-            "name": "success",
-            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+            "name": "base_effects",
+            "type": "core::array::Array::<ba_loadout::action::effect::Effect>"
           },
           {
-            "name": "fail",
-            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+            "name": "chance_effects",
+            "type": "core::array::Array::<ba_loadout::action::action::ChanceEffects>"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::action::action::Effects",
+        "members": [
+          {
+            "name": "chance",
+            "type": "core::array::Array::<ba_loadout::action::action::ChanceEffects>"
+          },
+          {
+            "name": "base",
+            "type": "core::array::Array::<ba_loadout::action::effect::Effect>"
           }
         ]
       },
@@ -4068,7 +3935,7 @@
       },
       {
         "type": "struct",
-        "name": "ba_loadout::attack::attack::AttackWithName",
+        "name": "ba_loadout::action::action::ActionWithName",
         "members": [
           {
             "name": "name",
@@ -4079,30 +3946,26 @@
             "type": "core::integer::u16"
           },
           {
-            "name": "chance",
-            "type": "core::integer::u8"
-          },
-          {
             "name": "cooldown",
             "type": "core::integer::u32"
           },
           {
-            "name": "success",
-            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+            "name": "base_effects",
+            "type": "core::array::Array::<ba_loadout::action::effect::Effect>"
           },
           {
-            "name": "fail",
-            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+            "name": "chance_effects",
+            "type": "core::array::Array::<ba_loadout::action::action::ChanceEffects>"
           }
         ]
       },
       {
         "type": "interface",
-        "name": "ba_loadout::attack::interface::IAttack",
+        "name": "ba_loadout::action::interface::IAction",
         "items": [
           {
             "type": "function",
-            "name": "attack",
+            "name": "action",
             "inputs": [
               {
                 "name": "id",
@@ -4111,14 +3974,14 @@
             ],
             "outputs": [
               {
-                "type": "ba_loadout::attack::attack::Attack"
+                "type": "ba_loadout::action::action::Action"
               }
             ],
             "state_mutability": "view"
           },
           {
             "type": "function",
-            "name": "attacks",
+            "name": "actions",
             "inputs": [
               {
                 "name": "ids",
@@ -4127,7 +3990,7 @@
             ],
             "outputs": [
               {
-                "type": "core::array::Array::<ba_loadout::attack::attack::Attack>"
+                "type": "core::array::Array::<ba_loadout::action::action::Action>"
               }
             ],
             "state_mutability": "view"
@@ -4166,38 +4029,6 @@
           },
           {
             "type": "function",
-            "name": "chance",
-            "inputs": [
-              {
-                "name": "id",
-                "type": "core::felt252"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::integer::u8"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "chances",
-            "inputs": [
-              {
-                "name": "ids",
-                "type": "core::array::Array::<core::felt252>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::array::Array::<core::integer::u8>"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
             "name": "cooldown",
             "inputs": [
               {
@@ -4214,23 +4045,27 @@
           },
           {
             "type": "function",
-            "name": "cooldowns",
+            "name": "get_effects",
             "inputs": [
               {
-                "name": "ids",
-                "type": "core::array::Array::<core::felt252>"
+                "name": "id",
+                "type": "core::felt252"
+              },
+              {
+                "name": "chance_value",
+                "type": "core::integer::u32"
               }
             ],
             "outputs": [
               {
-                "type": "core::array::Array::<core::integer::u32>"
+                "type": "(core::integer::u16, core::array::Array::<ba_loadout::action::effect::Effect>)"
               }
             ],
             "state_mutability": "view"
           },
           {
             "type": "function",
-            "name": "success",
+            "name": "effects",
             "inputs": [
               {
                 "name": "id",
@@ -4239,30 +4074,14 @@
             ],
             "outputs": [
               {
-                "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+                "type": "ba_loadout::action::action::Effects"
               }
             ],
             "state_mutability": "view"
           },
           {
             "type": "function",
-            "name": "successes",
-            "inputs": [
-              {
-                "name": "ids",
-                "type": "core::array::Array::<core::felt252>"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::array::Array::<core::array::Array::<ba_loadout::attack::effect::Effect>>"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "fail",
+            "name": "base_effects",
             "inputs": [
               {
                 "name": "id",
@@ -4271,30 +4090,30 @@
             ],
             "outputs": [
               {
-                "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+                "type": "core::array::Array::<ba_loadout::action::effect::Effect>"
               }
             ],
             "state_mutability": "view"
           },
           {
             "type": "function",
-            "name": "fails",
+            "name": "chance_effects",
             "inputs": [
               {
-                "name": "ids",
-                "type": "core::array::Array::<core::felt252>"
+                "name": "id",
+                "type": "core::felt252"
               }
             ],
             "outputs": [
               {
-                "type": "core::array::Array::<core::array::Array::<ba_loadout::attack::effect::Effect>>"
+                "type": "core::array::Array::<ba_loadout::action::action::ChanceEffects>"
               }
             ],
             "state_mutability": "view"
           },
           {
             "type": "function",
-            "name": "attack_id",
+            "name": "action_id",
             "inputs": [
               {
                 "name": "name",
@@ -4305,20 +4124,16 @@
                 "type": "core::integer::u16"
               },
               {
-                "name": "chance",
-                "type": "core::integer::u8"
-              },
-              {
                 "name": "cooldown",
                 "type": "core::integer::u32"
               },
               {
-                "name": "success",
-                "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+                "name": "base_effects",
+                "type": "core::array::Array::<ba_loadout::action::effect::Effect>"
               },
               {
-                "name": "fail",
-                "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+                "name": "chance_effects",
+                "type": "core::array::Array::<ba_loadout::action::action::ChanceEffects>"
               }
             ],
             "outputs": [
@@ -4330,11 +4145,11 @@
           },
           {
             "type": "function",
-            "name": "attack_ids",
+            "name": "action_ids",
             "inputs": [
               {
-                "name": "attacks",
-                "type": "core::array::Array::<ba_loadout::attack::attack::AttackWithName>"
+                "name": "actions",
+                "type": "core::array::Array::<ba_loadout::action::action::ActionWithName>"
               }
             ],
             "outputs": [
@@ -4364,12 +4179,12 @@
       },
       {
         "type": "impl",
-        "name": "IAttackAdminImpl",
-        "interface_name": "ba_loadout::attack::interface::IAttackAdmin"
+        "name": "IActionAdminImpl",
+        "interface_name": "ba_loadout::action::interface::IActionAdmin"
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::attack::IdTagAttack",
+        "name": "ba_loadout::action::action::IdTagAction",
         "variants": [
           {
             "name": "Id",
@@ -4380,18 +4195,18 @@
             "type": "core::byte_array::ByteArray"
           },
           {
-            "name": "Attack",
-            "type": "ba_loadout::attack::attack::AttackWithName"
+            "name": "Action",
+            "type": "ba_loadout::action::action::ActionWithName"
           }
         ]
       },
       {
         "type": "interface",
-        "name": "ba_loadout::attack::interface::IAttackAdmin",
+        "name": "ba_loadout::action::interface::IActionAdmin",
         "items": [
           {
             "type": "function",
-            "name": "create_attack",
+            "name": "create_action",
             "inputs": [
               {
                 "name": "name",
@@ -4402,20 +4217,16 @@
                 "type": "core::integer::u16"
               },
               {
-                "name": "chance",
-                "type": "core::integer::u8"
-              },
-              {
                 "name": "cooldown",
                 "type": "core::integer::u32"
               },
               {
-                "name": "success",
-                "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+                "name": "base_effects",
+                "type": "core::array::Array::<ba_loadout::action::effect::Effect>"
               },
               {
-                "name": "fail",
-                "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+                "name": "chance_effects",
+                "type": "core::array::Array::<ba_loadout::action::action::ChanceEffects>"
               }
             ],
             "outputs": [
@@ -4427,11 +4238,11 @@
           },
           {
             "type": "function",
-            "name": "create_attacks",
+            "name": "create_actions",
             "inputs": [
               {
-                "name": "attacks",
-                "type": "core::array::Array::<ba_loadout::attack::attack::AttackWithName>"
+                "name": "actions",
+                "type": "core::array::Array::<ba_loadout::action::action::ActionWithName>"
               }
             ],
             "outputs": [
@@ -4443,11 +4254,11 @@
           },
           {
             "type": "function",
-            "name": "maybe_create_attacks",
+            "name": "maybe_create_actions",
             "inputs": [
               {
-                "name": "attacks",
-                "type": "core::array::Array::<ba_loadout::attack::attack::IdTagAttack>"
+                "name": "actions",
+                "type": "core::array::Array::<ba_loadout::action::action::IdTagAction>"
               }
             ],
             "outputs": [
@@ -4459,11 +4270,11 @@
           },
           {
             "type": "function",
-            "name": "maybe_create_attacks_array",
+            "name": "maybe_create_actions_array",
             "inputs": [
               {
-                "name": "attacks",
-                "type": "core::array::Array::<core::array::Array::<ba_loadout::attack::attack::IdTagAttack>>"
+                "name": "actions",
+                "type": "core::array::Array::<core::array::Array::<ba_loadout::action::action::IdTagAction>>"
               }
             ],
             "outputs": [
@@ -4669,7 +4480,7 @@
             "type": "core::starknet::contract_address::ContractAddress"
           },
           {
-            "name": "attack_model_class_hash",
+            "name": "action_model_class_hash",
             "type": "core::starknet::class_hash::ClassHash"
           }
         ]
@@ -4751,7 +4562,7 @@
       },
       {
         "type": "event",
-        "name": "ba_loadout::attack::contract::attack::Event",
+        "name": "ba_loadout::action::contract::action::Event",
         "kind": "enum",
         "variants": [
           {
@@ -5555,7 +5366,7 @@
         ]
       }
     ],
-    "0x69c47f18c8a64325247537144ccbdf1823f8f984e2d644aca1a21b48bdffa19": [
+    "0x1cf347168a95b33015f6bc5a2931ed2194644136cfbacb9b92052b8158649dd": [
       {
         "type": "impl",
         "name": "ILoadoutImpl",
@@ -5651,7 +5462,7 @@
           },
           {
             "type": "function",
-            "name": "attacks",
+            "name": "actions",
             "inputs": [
               {
                 "name": "collection_address",
@@ -5808,21 +5619,21 @@
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::Target",
+        "name": "ba_loadout::action::effect::Recipient",
         "variants": [
           {
-            "name": "Attacker",
+            "name": "Actor",
             "type": "()"
           },
           {
-            "name": "Defender",
+            "name": "Target",
             "type": "()"
           }
         ]
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::Duration",
+        "name": "ba_loadout::action::effect::Duration",
         "variants": [
           {
             "name": "Instant",
@@ -5906,7 +5717,7 @@
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::DamageType",
+        "name": "ba_loadout::action::effect::DamageType",
         "variants": [
           {
             "name": "None",
@@ -5928,7 +5739,7 @@
       },
       {
         "type": "struct",
-        "name": "ba_loadout::attack::effect::Damage",
+        "name": "ba_loadout::action::effect::Damage",
         "members": [
           {
             "name": "critical",
@@ -5940,13 +5751,13 @@
           },
           {
             "name": "damage_type",
-            "type": "ba_loadout::attack::effect::DamageType"
+            "type": "ba_loadout::action::effect::DamageType"
           }
         ]
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::Affect",
+        "name": "ba_loadout::action::effect::Affect",
         "variants": [
           {
             "name": "None",
@@ -6078,7 +5889,7 @@
           },
           {
             "name": "Damage",
-            "type": "ba_loadout::attack::effect::Damage"
+            "type": "ba_loadout::action::effect::Damage"
           },
           {
             "name": "SetHealth",
@@ -6112,25 +5923,39 @@
       },
       {
         "type": "struct",
-        "name": "ba_loadout::attack::effect::Effect",
+        "name": "ba_loadout::action::effect::Effect",
         "members": [
           {
             "name": "target",
-            "type": "ba_loadout::attack::effect::Target"
+            "type": "ba_loadout::action::effect::Recipient"
           },
           {
             "name": "duration",
-            "type": "ba_loadout::attack::effect::Duration"
+            "type": "ba_loadout::action::effect::Duration"
           },
           {
             "name": "affect",
-            "type": "ba_loadout::attack::effect::Affect"
+            "type": "ba_loadout::action::effect::Affect"
           }
         ]
       },
       {
         "type": "struct",
-        "name": "ba_loadout::attack::attack::AttackWithName",
+        "name": "ba_loadout::action::action::ChanceEffects",
+        "members": [
+          {
+            "name": "chance_ppm",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "effects",
+            "type": "core::array::Array::<ba_loadout::action::effect::Effect>"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::action::action::ActionWithName",
         "members": [
           {
             "name": "name",
@@ -6141,26 +5966,22 @@
             "type": "core::integer::u16"
           },
           {
-            "name": "chance",
-            "type": "core::integer::u8"
-          },
-          {
             "name": "cooldown",
             "type": "core::integer::u32"
           },
           {
-            "name": "success",
-            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+            "name": "base_effects",
+            "type": "core::array::Array::<ba_loadout::action::effect::Effect>"
           },
           {
-            "name": "fail",
-            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+            "name": "chance_effects",
+            "type": "core::array::Array::<ba_loadout::action::action::ChanceEffects>"
           }
         ]
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::attack::IdTagAttack",
+        "name": "ba_loadout::action::action::IdTagAction",
         "variants": [
           {
             "name": "Id",
@@ -6171,8 +5992,8 @@
             "type": "core::byte_array::ByteArray"
           },
           {
-            "name": "Attack",
-            "type": "ba_loadout::attack::attack::AttackWithName"
+            "name": "Action",
+            "type": "ba_loadout::action::action::ActionWithName"
           }
         ]
       },
@@ -6197,8 +6018,8 @@
             "type": "ba_loadout::attributes::PartialAttributes"
           },
           {
-            "name": "attacks",
-            "type": "core::array::Array::<ba_loadout::attack::attack::IdTagAttack>"
+            "name": "actions",
+            "type": "core::array::Array::<ba_loadout::action::action::IdTagAction>"
           }
         ]
       },
@@ -6239,8 +6060,8 @@
                 "type": "ba_loadout::attributes::PartialAttributes"
               },
               {
-                "name": "attacks",
-                "type": "core::array::Array::<ba_loadout::attack::attack::IdTagAttack>"
+                "name": "actions",
+                "type": "core::array::Array::<ba_loadout::action::action::IdTagAction>"
               }
             ],
             "outputs": [],
@@ -6374,7 +6195,7 @@
             "type": "core::starknet::contract_address::ContractAddress"
           },
           {
-            "name": "attack_dispatcher_address",
+            "name": "action_dispatcher_address",
             "type": "core::starknet::contract_address::ContractAddress"
           },
           {
@@ -6437,7 +6258,7 @@
         ]
       }
     ],
-    "0x2b0d31def92fbac25fed6f1553c5dae56ff942fc2f37f5dd895224cf989f11b": [
+    "0x2fb5a21fad3a9529d4e017f1c0343f34307a0ee6bdcb2b0bb4346c4e30b7bb8": [
       {
         "type": "impl",
         "name": "ILoadoutImpl",
@@ -6533,7 +6354,7 @@
           },
           {
             "type": "function",
-            "name": "attacks",
+            "name": "actions",
             "inputs": [
               {
                 "name": "collection_address",
@@ -6606,21 +6427,21 @@
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::Target",
+        "name": "ba_loadout::action::effect::Recipient",
         "variants": [
           {
-            "name": "Attacker",
+            "name": "Actor",
             "type": "()"
           },
           {
-            "name": "Defender",
+            "name": "Target",
             "type": "()"
           }
         ]
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::Duration",
+        "name": "ba_loadout::action::effect::Duration",
         "variants": [
           {
             "name": "Instant",
@@ -6704,7 +6525,7 @@
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::DamageType",
+        "name": "ba_loadout::action::effect::DamageType",
         "variants": [
           {
             "name": "None",
@@ -6726,7 +6547,7 @@
       },
       {
         "type": "struct",
-        "name": "ba_loadout::attack::effect::Damage",
+        "name": "ba_loadout::action::effect::Damage",
         "members": [
           {
             "name": "critical",
@@ -6738,13 +6559,13 @@
           },
           {
             "name": "damage_type",
-            "type": "ba_loadout::attack::effect::DamageType"
+            "type": "ba_loadout::action::effect::DamageType"
           }
         ]
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::Affect",
+        "name": "ba_loadout::action::effect::Affect",
         "variants": [
           {
             "name": "None",
@@ -6876,7 +6697,7 @@
           },
           {
             "name": "Damage",
-            "type": "ba_loadout::attack::effect::Damage"
+            "type": "ba_loadout::action::effect::Damage"
           },
           {
             "name": "SetHealth",
@@ -6910,25 +6731,39 @@
       },
       {
         "type": "struct",
-        "name": "ba_loadout::attack::effect::Effect",
+        "name": "ba_loadout::action::effect::Effect",
         "members": [
           {
             "name": "target",
-            "type": "ba_loadout::attack::effect::Target"
+            "type": "ba_loadout::action::effect::Recipient"
           },
           {
             "name": "duration",
-            "type": "ba_loadout::attack::effect::Duration"
+            "type": "ba_loadout::action::effect::Duration"
           },
           {
             "name": "affect",
-            "type": "ba_loadout::attack::effect::Affect"
+            "type": "ba_loadout::action::effect::Affect"
           }
         ]
       },
       {
         "type": "struct",
-        "name": "ba_loadout::attack::attack::AttackWithName",
+        "name": "ba_loadout::action::action::ChanceEffects",
+        "members": [
+          {
+            "name": "chance_ppm",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "effects",
+            "type": "core::array::Array::<ba_loadout::action::effect::Effect>"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::action::action::ActionWithName",
         "members": [
           {
             "name": "name",
@@ -6939,26 +6774,22 @@
             "type": "core::integer::u16"
           },
           {
-            "name": "chance",
-            "type": "core::integer::u8"
-          },
-          {
             "name": "cooldown",
             "type": "core::integer::u32"
           },
           {
-            "name": "success",
-            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+            "name": "base_effects",
+            "type": "core::array::Array::<ba_loadout::action::effect::Effect>"
           },
           {
-            "name": "fail",
-            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+            "name": "chance_effects",
+            "type": "core::array::Array::<ba_loadout::action::action::ChanceEffects>"
           }
         ]
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::attack::IdTagAttack",
+        "name": "ba_loadout::action::action::IdTagAction",
         "variants": [
           {
             "name": "Id",
@@ -6969,8 +6800,8 @@
             "type": "core::byte_array::ByteArray"
           },
           {
-            "name": "Attack",
-            "type": "ba_loadout::attack::attack::AttackWithName"
+            "name": "Action",
+            "type": "ba_loadout::action::action::ActionWithName"
           }
         ]
       },
@@ -6983,8 +6814,8 @@
             "type": "ba_loadout::attributes::Attributes"
           },
           {
-            "name": "attacks",
-            "type": "core::array::Array::<ba_loadout::attack::attack::IdTagAttack>"
+            "name": "actions",
+            "type": "core::array::Array::<ba_loadout::action::action::IdTagAction>"
           }
         ]
       },
@@ -7005,8 +6836,8 @@
                 "type": "ba_loadout::attributes::Attributes"
               },
               {
-                "name": "attacks",
-                "type": "core::array::Array::<ba_loadout::attack::attack::IdTagAttack>"
+                "name": "actions",
+                "type": "core::array::Array::<ba_loadout::action::action::IdTagAction>"
               }
             ],
             "outputs": [],
@@ -7021,8 +6852,8 @@
                 "type": "ba_loadout::attributes::Attributes"
               },
               {
-                "name": "attacks",
-                "type": "core::array::Array::<ba_loadout::attack::attack::IdTagAttack>"
+                "name": "actions",
+                "type": "core::array::Array::<ba_loadout::action::action::IdTagAction>"
               }
             ],
             "outputs": [
@@ -7089,7 +6920,7 @@
           },
           {
             "type": "function",
-            "name": "fighter_attacks",
+            "name": "fighter_actions",
             "inputs": [
               {
                 "name": "fighter",
@@ -7243,7 +7074,7 @@
             "type": "core::starknet::contract_address::ContractAddress"
           },
           {
-            "name": "attack_dispatcher_address",
+            "name": "action_dispatcher_address",
             "type": "core::starknet::contract_address::ContractAddress"
           },
           {
@@ -7306,7 +7137,7 @@
         ]
       }
     ],
-    "0x32251ca0e36e8c2da90f82ad1110d9d1d1578b376a2c0bb5f7ba95d5909a857": [
+    "0x6f5e45d938a7d3e8e287ffbe3f70f3c803e877e3306377089b0dfd4d7d09ff": [
       {
         "type": "impl",
         "name": "IArcadeImpl",
@@ -7327,6 +7158,24 @@
         ]
       },
       {
+        "type": "enum",
+        "name": "ba_combat::move::Move",
+        "variants": [
+          {
+            "name": "None",
+            "type": "()"
+          },
+          {
+            "name": "Action",
+            "type": "core::felt252"
+          },
+          {
+            "name": "Orb",
+            "type": "core::felt252"
+          }
+        ]
+      },
+      {
         "type": "interface",
         "name": "ba_arcade::interface::IArcade",
         "items": [
@@ -7343,7 +7192,7 @@
                 "type": "core::integer::u256"
               },
               {
-                "name": "attack_slots",
+                "name": "action_slots",
                 "type": "core::array::Array::<core::array::Array::<core::felt252>>"
               }
             ],
@@ -7356,15 +7205,15 @@
           },
           {
             "type": "function",
-            "name": "attack",
+            "name": "act",
             "inputs": [
               {
                 "name": "attempt_id",
                 "type": "core::felt252"
               },
               {
-                "name": "attack_id",
-                "type": "core::felt252"
+                "name": "action",
+                "type": "ba_combat::move::Move"
               }
             ],
             "outputs": [],
@@ -7511,21 +7360,21 @@
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::Target",
+        "name": "ba_loadout::action::effect::Recipient",
         "variants": [
           {
-            "name": "Attacker",
+            "name": "Actor",
             "type": "()"
           },
           {
-            "name": "Defender",
+            "name": "Target",
             "type": "()"
           }
         ]
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::Duration",
+        "name": "ba_loadout::action::effect::Duration",
         "variants": [
           {
             "name": "Instant",
@@ -7609,7 +7458,7 @@
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::DamageType",
+        "name": "ba_loadout::action::effect::DamageType",
         "variants": [
           {
             "name": "None",
@@ -7631,7 +7480,7 @@
       },
       {
         "type": "struct",
-        "name": "ba_loadout::attack::effect::Damage",
+        "name": "ba_loadout::action::effect::Damage",
         "members": [
           {
             "name": "critical",
@@ -7643,13 +7492,13 @@
           },
           {
             "name": "damage_type",
-            "type": "ba_loadout::attack::effect::DamageType"
+            "type": "ba_loadout::action::effect::DamageType"
           }
         ]
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::Affect",
+        "name": "ba_loadout::action::effect::Affect",
         "variants": [
           {
             "name": "None",
@@ -7781,7 +7630,7 @@
           },
           {
             "name": "Damage",
-            "type": "ba_loadout::attack::effect::Damage"
+            "type": "ba_loadout::action::effect::Damage"
           },
           {
             "name": "SetHealth",
@@ -7815,25 +7664,39 @@
       },
       {
         "type": "struct",
-        "name": "ba_loadout::attack::effect::Effect",
+        "name": "ba_loadout::action::effect::Effect",
         "members": [
           {
             "name": "target",
-            "type": "ba_loadout::attack::effect::Target"
+            "type": "ba_loadout::action::effect::Recipient"
           },
           {
             "name": "duration",
-            "type": "ba_loadout::attack::effect::Duration"
+            "type": "ba_loadout::action::effect::Duration"
           },
           {
             "name": "affect",
-            "type": "ba_loadout::attack::effect::Affect"
+            "type": "ba_loadout::action::effect::Affect"
           }
         ]
       },
       {
         "type": "struct",
-        "name": "ba_loadout::attack::attack::AttackWithName",
+        "name": "ba_loadout::action::action::ChanceEffects",
+        "members": [
+          {
+            "name": "chance_ppm",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "effects",
+            "type": "core::array::Array::<ba_loadout::action::effect::Effect>"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::action::action::ActionWithName",
         "members": [
           {
             "name": "name",
@@ -7844,26 +7707,22 @@
             "type": "core::integer::u16"
           },
           {
-            "name": "chance",
-            "type": "core::integer::u8"
-          },
-          {
             "name": "cooldown",
             "type": "core::integer::u32"
           },
           {
-            "name": "success",
-            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+            "name": "base_effects",
+            "type": "core::array::Array::<ba_loadout::action::effect::Effect>"
           },
           {
-            "name": "fail",
-            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+            "name": "chance_effects",
+            "type": "core::array::Array::<ba_loadout::action::action::ChanceEffects>"
           }
         ]
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::attack::IdTagAttack",
+        "name": "ba_loadout::action::action::IdTagAction",
         "variants": [
           {
             "name": "Id",
@@ -7874,8 +7733,8 @@
             "type": "core::byte_array::ByteArray"
           },
           {
-            "name": "Attack",
-            "type": "ba_loadout::attack::attack::AttackWithName"
+            "name": "Action",
+            "type": "ba_loadout::action::action::ActionWithName"
           }
         ]
       },
@@ -7892,8 +7751,8 @@
             "type": "ba_loadout::attributes::Attributes"
           },
           {
-            "name": "attacks",
-            "type": "core::array::Array::<ba_loadout::attack::attack::IdTagAttack>"
+            "name": "actions",
+            "type": "core::array::Array::<ba_loadout::action::action::IdTagAction>"
           }
         ]
       },
@@ -8231,7 +8090,7 @@
             "type": "core::starknet::class_hash::ClassHash"
           },
           {
-            "name": "attack_address",
+            "name": "action_address",
             "type": "core::starknet::contract_address::ContractAddress"
           },
           {
@@ -8316,7 +8175,7 @@
         ]
       }
     ],
-    "0x2a1c451c03e2385ebcf7949a8d2c3095c8ad486e0533a57603af0a709616689": [
+    "0x5a9e249dc07a6aaa0b011c4b773a907551b916155b73b6e62dfa7207589d490": [
       {
         "type": "impl",
         "name": "IArcadeImpl",
@@ -8337,6 +8196,24 @@
         ]
       },
       {
+        "type": "enum",
+        "name": "ba_combat::move::Move",
+        "variants": [
+          {
+            "name": "None",
+            "type": "()"
+          },
+          {
+            "name": "Action",
+            "type": "core::felt252"
+          },
+          {
+            "name": "Orb",
+            "type": "core::felt252"
+          }
+        ]
+      },
+      {
         "type": "interface",
         "name": "ba_arcade::interface::IArcade",
         "items": [
@@ -8353,7 +8230,7 @@
                 "type": "core::integer::u256"
               },
               {
-                "name": "attack_slots",
+                "name": "action_slots",
                 "type": "core::array::Array::<core::array::Array::<core::felt252>>"
               }
             ],
@@ -8366,15 +8243,15 @@
           },
           {
             "type": "function",
-            "name": "attack",
+            "name": "act",
             "inputs": [
               {
                 "name": "attempt_id",
                 "type": "core::felt252"
               },
               {
-                "name": "attack_id",
-                "type": "core::felt252"
+                "name": "action",
+                "type": "ba_combat::move::Move"
               }
             ],
             "outputs": [],
@@ -8474,7 +8351,7 @@
             "type": "ba_loadout::attributes::PartialAttributes"
           },
           {
-            "name": "attacks",
+            "name": "actions",
             "type": "core::array::Array::<core::felt252>"
           }
         ]
@@ -8499,21 +8376,21 @@
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::Target",
+        "name": "ba_loadout::action::effect::Recipient",
         "variants": [
           {
-            "name": "Attacker",
+            "name": "Actor",
             "type": "()"
           },
           {
-            "name": "Defender",
+            "name": "Target",
             "type": "()"
           }
         ]
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::Duration",
+        "name": "ba_loadout::action::effect::Duration",
         "variants": [
           {
             "name": "Instant",
@@ -8597,7 +8474,7 @@
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::DamageType",
+        "name": "ba_loadout::action::effect::DamageType",
         "variants": [
           {
             "name": "None",
@@ -8619,7 +8496,7 @@
       },
       {
         "type": "struct",
-        "name": "ba_loadout::attack::effect::Damage",
+        "name": "ba_loadout::action::effect::Damage",
         "members": [
           {
             "name": "critical",
@@ -8631,13 +8508,13 @@
           },
           {
             "name": "damage_type",
-            "type": "ba_loadout::attack::effect::DamageType"
+            "type": "ba_loadout::action::effect::DamageType"
           }
         ]
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::effect::Affect",
+        "name": "ba_loadout::action::effect::Affect",
         "variants": [
           {
             "name": "None",
@@ -8769,7 +8646,7 @@
           },
           {
             "name": "Damage",
-            "type": "ba_loadout::attack::effect::Damage"
+            "type": "ba_loadout::action::effect::Damage"
           },
           {
             "name": "SetHealth",
@@ -8803,25 +8680,39 @@
       },
       {
         "type": "struct",
-        "name": "ba_loadout::attack::effect::Effect",
+        "name": "ba_loadout::action::effect::Effect",
         "members": [
           {
             "name": "target",
-            "type": "ba_loadout::attack::effect::Target"
+            "type": "ba_loadout::action::effect::Recipient"
           },
           {
             "name": "duration",
-            "type": "ba_loadout::attack::effect::Duration"
+            "type": "ba_loadout::action::effect::Duration"
           },
           {
             "name": "affect",
-            "type": "ba_loadout::attack::effect::Affect"
+            "type": "ba_loadout::action::effect::Affect"
           }
         ]
       },
       {
         "type": "struct",
-        "name": "ba_loadout::attack::attack::AttackWithName",
+        "name": "ba_loadout::action::action::ChanceEffects",
+        "members": [
+          {
+            "name": "chance_ppm",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "effects",
+            "type": "core::array::Array::<ba_loadout::action::effect::Effect>"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "ba_loadout::action::action::ActionWithName",
         "members": [
           {
             "name": "name",
@@ -8832,26 +8723,22 @@
             "type": "core::integer::u16"
           },
           {
-            "name": "chance",
-            "type": "core::integer::u8"
-          },
-          {
             "name": "cooldown",
             "type": "core::integer::u32"
           },
           {
-            "name": "success",
-            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+            "name": "base_effects",
+            "type": "core::array::Array::<ba_loadout::action::effect::Effect>"
           },
           {
-            "name": "fail",
-            "type": "core::array::Array::<ba_loadout::attack::effect::Effect>"
+            "name": "chance_effects",
+            "type": "core::array::Array::<ba_loadout::action::action::ChanceEffects>"
           }
         ]
       },
       {
         "type": "enum",
-        "name": "ba_loadout::attack::attack::IdTagAttack",
+        "name": "ba_loadout::action::action::IdTagAction",
         "variants": [
           {
             "name": "Id",
@@ -8862,8 +8749,8 @@
             "type": "core::byte_array::ByteArray"
           },
           {
-            "name": "Attack",
-            "type": "ba_loadout::attack::attack::AttackWithName"
+            "name": "Action",
+            "type": "ba_loadout::action::action::ActionWithName"
           }
         ]
       },
@@ -8880,8 +8767,8 @@
             "type": "ba_loadout::attributes::PartialAttributes"
           },
           {
-            "name": "attacks",
-            "type": "core::array::Array::<ba_loadout::attack::attack::IdTagAttack>"
+            "name": "actions",
+            "type": "core::array::Array::<ba_loadout::action::action::IdTagAction>"
           }
         ]
       },
@@ -8956,8 +8843,8 @@
                 "type": "ba_loadout::attributes::PartialAttributes"
               },
               {
-                "name": "attacks",
-                "type": "core::array::Array::<ba_loadout::attack::attack::IdTagAttack>"
+                "name": "actions",
+                "type": "core::array::Array::<ba_loadout::action::action::IdTagAction>"
               }
             ],
             "outputs": [],
@@ -8976,8 +8863,8 @@
                 "type": "ba_loadout::attributes::PartialAttributes"
               },
               {
-                "name": "attacks",
-                "type": "core::array::Array::<ba_loadout::attack::attack::IdTagAttack>"
+                "name": "actions",
+                "type": "core::array::Array::<ba_loadout::action::action::IdTagAction>"
               }
             ],
             "outputs": [],
@@ -9325,7 +9212,7 @@
             "type": "core::starknet::class_hash::ClassHash"
           },
           {
-            "name": "attack_address",
+            "name": "action_address",
             "type": "core::starknet::contract_address::ContractAddress"
           },
           {
@@ -9414,7 +9301,7 @@
         ]
       }
     ],
-    "0x2fc217811e4aca2e27ea2b72ac6547286df84f9e6764e227ca7de7028ea67a9": [
+    "0x54e2d881e8dd77a00b8390ea81dfa215201a1ea7f5c44d10b7a5ed963a452c": [
       {
         "type": "impl",
         "name": "IPvpAdminImpl",
@@ -9472,6 +9359,24 @@
         ]
       },
       {
+        "type": "enum",
+        "name": "ba_combat::move::Move",
+        "variants": [
+          {
+            "name": "None",
+            "type": "()"
+          },
+          {
+            "name": "Action",
+            "type": "core::felt252"
+          },
+          {
+            "name": "Orb",
+            "type": "core::felt252"
+          }
+        ]
+      },
+      {
         "type": "interface",
         "name": "ba_pvp::contract::IPvp",
         "items": [
@@ -9500,8 +9405,12 @@
                 "type": "core::integer::u256"
               },
               {
-                "name": "attack_slots",
+                "name": "action_slots",
                 "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+              },
+              {
+                "name": "orb",
+                "type": "core::felt252"
               }
             ],
             "outputs": [
@@ -9540,8 +9449,12 @@
                 "type": "core::integer::u256"
               },
               {
-                "name": "attack_slots",
+                "name": "action_slots",
                 "type": "core::array::Array::<core::array::Array::<core::felt252>>"
+              },
+              {
+                "name": "orb",
+                "type": "core::felt252"
               }
             ],
             "outputs": [],
@@ -9628,8 +9541,8 @@
                 "type": "ba_combat::combat::Player"
               },
               {
-                "name": "attack",
-                "type": "core::felt252"
+                "name": "action",
+                "type": "ba_combat::move::Move"
               },
               {
                 "name": "salt",
@@ -9682,7 +9595,7 @@
             "type": "core::starknet::class_hash::ClassHash"
           },
           {
-            "name": "attack_address",
+            "name": "action_address",
             "type": "core::starknet::contract_address::ContractAddress"
           }
         ]

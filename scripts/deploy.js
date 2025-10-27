@@ -31,11 +31,11 @@ await sai.deployContract(
 );
 await sai.deployContract([
   {
-    tag: "attack",
+    tag: "action",
     unique: false,
     calldata: {
       owner,
-      attack_model_class_hash: sai.classes.attack_model.class_hash,
+      action_model_class_hash: sai.classes.action_model.class_hash,
     },
   },
   {
@@ -68,7 +68,7 @@ await sai.deployContract([
     unique: false,
     calldata: {
       owner,
-      attack_dispatcher_address: sai.contracts["attack"].contract_address,
+      action_dispatcher_address: sai.contracts["action"].contract_address,
       collection_addresses: [
         sai.contracts["arena_blobert"].contract_address,
         sai.contracts["blobert"].contract_address,
@@ -80,7 +80,7 @@ await sai.deployContract([
     unique: false,
     calldata: {
       owner,
-      attack_dispatcher_address: sai.contracts["attack"].contract_address,
+      action_dispatcher_address: sai.contracts["action"].contract_address,
       collection_addresses: [
         sai.contracts["amma_blobert"].contract_address,
         sai.contracts["amma_blobert_soulbound"].contract_address,
@@ -97,7 +97,7 @@ await sai.deployContract([
       owner,
       arcade_round_result_class_hash:
         sai.classes.arcade_round_result_model.class_hash,
-      attack_address: sai.contracts["attack"].contract_address,
+      action_address: sai.contracts["action"].contract_address,
       loadout_address: sai.contracts["loadout_classic"].contract_address,
     },
   },
@@ -108,7 +108,7 @@ await sai.deployContract([
       owner,
       arcade_round_result_class_hash:
         sai.classes.arcade_round_result_model.class_hash,
-      attack_address: sai.contracts["attack"].contract_address,
+      action_address: sai.contracts["action"].contract_address,
       loadout_address: sai.contracts["loadout_amma"].contract_address,
       collectable_address: sai.contracts["amma_blobert"].contract_address,
     },
@@ -119,7 +119,7 @@ await sai.deployContract([
     calldata: {
       owner,
       round_result_class_hash: sai.classes.round_result_model.class_hash,
-      attack_address: sai.contracts["attack"].contract_address,
+      action_address: sai.contracts["action"].contract_address,
     },
   },
 ]);
@@ -134,7 +134,7 @@ const toriiContract = [
   ["amma_blobert_minter", "contract"],
   ["loadout_classic", "contract"],
   ["loadout_amma", "contract"],
-  ["attack", "contract"],
+  ["action", "contract"],
   ["arcade_classic", "contract"],
   ["arcade_amma", "contract"],
   ["arena_credit", "contract"],
@@ -151,7 +151,7 @@ console.log("Contracts Deployed");
 const writersCalls = await sai.setOnlyWritersCalls({
   arena_blobert: [sai.contracts.arena_blobert_minter.contract_address],
   amma_blobert_soulbound: [sai.contracts.amma_blobert_minter.contract_address],
-  attack: [
+  action: [
     sai.contracts.loadout_amma.contract_address,
     sai.contracts.loadout_classic.contract_address,
     sai.contracts.arcade_classic.contract_address,

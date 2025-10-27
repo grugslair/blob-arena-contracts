@@ -125,7 +125,7 @@ const getDuration = (effect) => {
     if (
       ["instant", "round", "rounds", "infinite"].includes(key.toLowerCase())
     ) {
-      return effect[key];
+      return { [key]: effect[key] };
     }
   }
 };
@@ -153,7 +153,7 @@ const parseEffects = (target, duration, affects) => {
 const parseTarget = (target) => {
   let [key, _] = parseEnumObject(target);
   key = pascal(key);
-  if (key === "Actioner" || key === "Defender") {
+  if (key === "Actor" || key === "Target") {
     return new CairoCustomEnum({ [key]: {} });
   }
   throw new Error(`Unknown effect target: ${key}`);

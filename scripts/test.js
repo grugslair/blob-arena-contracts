@@ -1,4 +1,4 @@
-import { CallData, EntryPointType } from "starknet";
+import { CairoCustomEnum } from "starknet";
 import { loadSai } from "./sai.js";
 
 const sai = await loadSai();
@@ -45,30 +45,30 @@ try {
   await sai.executeAndWait(arenaBlobertMinter.populate("mint"));
   console.log("Minted Arena Blobert");
 }
-const ammaAttackId = (
-  await loadoutAmmaContract.attacks(
+const ammaActionId = (
+  await loadoutAmmaContract.actions(
     sai.contracts.amma_blobert_soulbound.contract_address,
     ammaToken,
     [[0]]
   )
 )[0];
-console.log("Amma Attack ID:", ammaAttackId);
+console.log("Amma Action ID:", ammaActionId);
 
-const classicAttackId = (
-  await loadoutClassicContract.attacks(
+const classicActionId = (
+  await loadoutClassicContract.actions(
     sai.contracts.arena_blobert.contract_address,
     classicToken,
     [[1, 0]]
   )
 )[0];
 
-console.log("Classic Attack ID:", classicAttackId);
+console.log("Classic Action ID:", classicActionId);
 const classicAttemptId = (
   await sai.executeWithReturn(
     arcadeClassicContract.populate("start", {
       collection_address: sai.contracts["arena_blobert"].contract_address,
       token_id: classicToken,
-      attack_slots: [
+      action_slots: [
         [1, 0],
         [4, 0],
         [4, 1],
@@ -84,44 +84,58 @@ const ammaAttemptId = (
       collection_address:
         sai.contracts["amma_blobert_soulbound"].contract_address,
       token_id: ammaToken,
-      attack_slots: [[0], [1], [2], [3]],
+      action_slots: [[0], [1], [2], [3]],
     })
   )
 )[0].data[0];
 console.log("Amma Attempt ID:", ammaAttemptId);
 
+// await sai.executeAndWait(
+//   arcadeAmmaContract.populate("act", {
+//     attempt_id: ammaAttemptId,
+//     action: new CairoCustomEnum({ Action: ammaActionId }),
+//   })
+// );
+
+// await sai.executeAndWait(
+//   arcadeClassicContract.populate("act", {
+//     attempt_id: classicAttemptId,
+//     action: new CairoCustomEnum({ Action: classicActionId }),
+//   })
+// );
+
 let n = 1;
 while (true) {
   try {
     await sai.executeAndWait(
-      arcadeAmmaContract.populate("attack", {
+      arcadeAmmaContract.populate("act", {
         attempt_id: ammaAttemptId,
-        attack_id: ammaAttackId,
+        action: new CairoCustomEnum({ Action: ammaActionId }),
       })
     );
-    console.log(`Amma attack ${n} executed`);
+    console.log(`Amma action ${n} executed`);
     n++;
   } catch (e) {
-    console.error("Error during amma attack:");
+    console.error("Error during amma action:");
     break;
   }
 }
 
-console.log("Amma attack executed");
+console.log("Amma action executed");
 n = 1;
 while (true) {
   try {
     await sai.executeAndWait(
-      arcadeClassicContract.populate("attack", {
+      arcadeClassicContract.populate("act", {
         attempt_id: classicAttemptId,
-        attack_id: classicAttackId,
+        action: new CairoCustomEnum({ Action: classicActionId }),
       })
     );
-    console.log(`Classic attack ${n} executed`);
+    console.log(`Classic action ${n} executed`);
     n++;
   } catch (e) {
-    console.error("Error during classic attack:");
+    console.error("Error during classic action:");
     break;
   }
 }
-console.log("Classic attack executed");
+console.log("Classic action executed");

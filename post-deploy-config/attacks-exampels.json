@@ -1,17 +1,17 @@
 {
-  "attacks": [
+  "actions": [
     {
       "name": "Attack 1",
       "speed": 5010,
       "base_effects": [
         {
-          "target": "Attacker",
+          "target": "Actor",
           "affect": {
             "Stun": 10
           }
         },
         {
-          "target": "Attacker",
+          "target": "Actor",
           "affects": {
             "Damage": {
               "power": 5
@@ -25,7 +25,7 @@
           "chance": 50,
           "effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "Strength": 20,
               "Luck": -10,
               "Dexterity": 20,
@@ -44,7 +44,7 @@
           "chance": 50,
           "effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "Strength": 10,
               "Luck": -10,
               "Dexterity": 20,

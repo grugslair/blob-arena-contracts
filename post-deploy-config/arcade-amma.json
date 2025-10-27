@@ -23,7 +23,7 @@
         "bludgeon_resistance": 2,
         "pierce_vulnerability": -1
       },
-      "attacks": [
+      "actions": [
         { "tag": "Sword Slash" },
         { "tag": "Shield Punch" },
         { "tag": "Grapple" },
@@ -47,7 +47,7 @@
         "bludgeon_vulnerability": -1,
         "pierce_resistance": 2
       },
-      "attacks": [
+      "actions": [
         { "tag": "Sword Slash" },
         { "tag": "Ground and Pound" },
         { "tag": "Grind" },
@@ -71,7 +71,7 @@
         "bludgeon_resistance": 2,
         "pierce_vulnerability": -1
       },
-      "attacks": [
+      "actions": [
         { "tag": "Sword Slash" },
         { "tag": "Shield Block" },
         { "tag": "Sword Dance" },
@@ -95,7 +95,7 @@
         "bludgeon_resistance": 2,
         "pierce_vulnerability": -1
       },
-      "attacks": [
+      "actions": [
         { "tag": "Sword Slash" },
         { "tag": "Low Kick" },
         { "tag": "Swag" },
@@ -119,7 +119,7 @@
         "bludgeon_resistance": 2,
         "pierce_vulnerability": -1
       },
-      "attacks": [
+      "actions": [
         { "tag": "Axe Attack" },
         { "tag": "Shield Punch" },
         { "tag": "Grind" },
@@ -143,7 +143,7 @@
         "bludgeon_resistance": 2,
         "pierce_vulnerability": -1
       },
-      "attacks": [
+      "actions": [
         { "tag": "Sword Slash" },
         { "tag": "Shield Punch" },
         { "tag": "Swift Attack" },
@@ -167,7 +167,7 @@
         "bludgeon_resistance": 2,
         "pierce_resistance": 2
       },
-      "attacks": [
+      "actions": [
         { "tag": "Sword Slash" },
         { "tag": "Weapon Master" },
         { "tag": "Superman Shield Punch" },
@@ -191,7 +191,7 @@
         "bludgeon_resistance": 2,
         "pierce_vulnerability": -1
       },
-      "attacks": [
+      "actions": [
         { "tag": "Two-Handed Slash" },
         { "tag": "Sword Snipe" },
         { "tag": "Multi Strike" },
@@ -215,11 +215,11 @@
         "bludgeon_resistance": 3,
         "pierce_vulnerability": -1
       },
-      "attacks": [
-        {"tag": "Axe Attack"},
-        {"tag": "Buckler Tap"},
-        {"tag": "Jujitsu Throw"},
-        {"tag": "Steal Weapon"}
+      "actions": [
+        { "tag": "Axe Attack" },
+        { "tag": "Buckler Tap" },
+        { "tag": "Jujitsu Throw" },
+        { "tag": "Steal Weapon" }
       ]
     },
     {
@@ -239,11 +239,11 @@
         "bludgeon_resistance": 3,
         "pierce_vulnerability": -1
       },
-      "attacks": [
-        {"tag": "Quick Slash"},
-        {"tag": "Buckler Tap"},
-        {"tag": "Steel Sonata"},
-        {"tag": "Circle Out"}
+      "actions": [
+        { "tag": "Quick Slash" },
+        { "tag": "Buckler Tap" },
+        { "tag": "Steel Sonata" },
+        { "tag": "Circle Out" }
       ]
     },
     {
@@ -263,11 +263,11 @@
         "bludgeon_vulnerability": -1,
         "pierce_resistance": 3
       },
-      "attacks": [
-        {"tag": "Axe Attack"},
-        {"tag": "Hammer Fist"},
-        {"tag": "Spinning Axe"},
-        {"tag": "One Shot"}
+      "actions": [
+        { "tag": "Axe Attack" },
+        { "tag": "Hammer Fist" },
+        { "tag": "Spinning Axe" },
+        { "tag": "One Shot" }
       ]
     },
     {
@@ -287,11 +287,11 @@
         "bludgeon_vulnerability": -1,
         "pierce_resistance": 3
       },
-      "attacks": [
-        {"tag": "Quick Slash"},
-        {"tag": "Shield Punch"},
-        {"tag": "Power Arm"},
-        {"tag": "Snap Shot"}
+      "actions": [
+        { "tag": "Quick Slash" },
+        { "tag": "Shield Punch" },
+        { "tag": "Power Arm" },
+        { "tag": "Snap Shot" }
       ]
     },
     {
@@ -311,11 +311,11 @@
         "bludgeon_vulnerability": -1,
         "pierce_resistance": 3
       },
-      "attacks": [
-        {"tag": "Quick Slash"},
-        {"tag": "Knee Check"},
-        {"tag": "Headbutt"},
-        {"tag": "Final Judgement"}
+      "actions": [
+        { "tag": "Quick Slash" },
+        { "tag": "Knee Check" },
+        { "tag": "Headbutt" },
+        { "tag": "Final Judgement" }
       ]
     },
     {
@@ -335,11 +335,11 @@
         "bludgeon_resistance": 3,
         "pierce_vulnerability": -1
       },
-      "attacks": [
-        {"tag": "Sword Slash"},
-        {"tag": "Shield Check"},
-        {"tag": "Hold The Line"},
-        {"tag": "Seismic Toss"}
+      "actions": [
+        { "tag": "Sword Slash" },
+        { "tag": "Shield Check" },
+        { "tag": "Hold The Line" },
+        { "tag": "Seismic Toss" }
       ]
     },
     {
@@ -359,11 +359,11 @@
         "bludgeon_vulnerability": -1,
         "pierce_resistance": 3
       },
-      "attacks": [
-        {"tag": "Axe Attack"},
-        {"tag": "Hammer Fist"},
-        {"tag": "Axe Thrust"},
-        {"tag": "Spartan Spear"}
+      "actions": [
+        { "tag": "Axe Attack" },
+        { "tag": "Hammer Fist" },
+        { "tag": "Axe Thrust" },
+        { "tag": "Spartan Spear" }
       ]
     },
     {
@@ -383,11 +383,11 @@
         "bludgeon_resistance": 3,
         "pierce_vulnerability": -1
       },
-      "attacks": [
-        {"tag": "Sword Attack"},
-        {"tag": "Shield Check"},
-        {"tag": "Karate Kick"},
-        {"tag": "Throwing Hands"}
+      "actions": [
+        { "tag": "Sword Attack" },
+        { "tag": "Shield Check" },
+        { "tag": "Karate Kick" },
+        { "tag": "Throwing Hands" }
       ]
     },
     {
@@ -407,11 +407,11 @@
         "bludgeon_resistance": 3,
         "pierce_vulnerability": -1
       },
-      "attacks": [
-        {"tag": "Sword Attack"},
-        {"tag": "Shield Check"},
-        {"tag": "Meteor Shield"},
-        {"tag": "Hip Throw"}
+      "actions": [
+        { "tag": "Sword Attack" },
+        { "tag": "Shield Check" },
+        { "tag": "Meteor Shield" },
+        { "tag": "Hip Throw" }
       ]
     },
     {
@@ -431,11 +431,11 @@
         "bludgeon_resistance": 3,
         "pierce_vulnerability": -1
       },
-      "attacks": [
-        {"tag": "Sword Attack"},
-        {"tag": "Shield Punch"},
-        {"tag": "Jumping Punch"},
-        {"tag": "Flying Hussar"}
+      "actions": [
+        { "tag": "Sword Attack" },
+        { "tag": "Shield Punch" },
+        { "tag": "Jumping Punch" },
+        { "tag": "Flying Hussar" }
       ]
     }
   ]

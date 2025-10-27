@@ -1,6 +1,6 @@
 import { loadJson } from "./stark-utils.js";
 import { loadSai } from "./sai.js";
-import { parseAttributes, parseIdTagAttackStructs } from "./loadout.js";
+import { parseAttributes, parseIdTagActionStructs } from "./loadout.js";
 import { CairoCustomEnum } from "starknet";
 import { makeSetCombatClassHashCall } from "./combat.js";
 import { makeArcadeConfigCalls } from "./arcade.js";
@@ -9,7 +9,7 @@ export const makeOpponentStruct = (opponent) => {
   return {
     traits: new CairoCustomEnum(opponent.traits),
     attributes: parseAttributes(opponent.attributes),
-    attacks: parseIdTagAttackStructs(opponent.attacks),
+    actions: parseIdTagActionStructs(opponent.actions),
   };
 };
 

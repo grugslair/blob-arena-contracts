@@ -9,7 +9,7 @@
       "bludgeon_resistance": 25,
       "pierce_vulnerability": 5
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Sword Slash",
         "speed": 5085,
@@ -19,7 +19,7 @@
             "chance": 95,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "critical": 20,
@@ -40,7 +40,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 45,
                   "damage_type": "bludgeon"
@@ -61,7 +61,7 @@
             "chance": 90,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 50,
                   "critical": 10,
@@ -85,7 +85,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 80,
                   "damage_type": "pierce"
@@ -108,7 +108,7 @@
       "bludgeon_vulnerability": 5,
       "pierce_resistance": 25
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Sword Slash",
         "speed": 5085,
@@ -118,7 +118,7 @@
             "chance": 95,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "critical": 20,
@@ -139,7 +139,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 60,
                   "damage_type": "bludgeon"
@@ -147,7 +147,7 @@
                 "stun": 20
               },
               {
-                "target": "Attacker",
+                "target": "Actor",
                 "Strength": 30,
                 "rounds": 2
               }
@@ -165,7 +165,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 60,
                   "damage_type": "bludgeon"
@@ -175,7 +175,7 @@
                 "rounds": 3
               },
               {
-                "target": "Attacker",
+                "target": "Actor",
                 "bludgeon_resistance_temp": 30,
                 "pierce_resistance_temp": 30,
                 "rounds": 2
@@ -194,7 +194,7 @@
             "chance": 90,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 90,
                   "critical": 20,
@@ -217,7 +217,7 @@
       "bludgeon_resistance": 30,
       "pierce_vulnerability": 10
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Sword Slash",
         "speed": 5085,
@@ -227,7 +227,7 @@
             "chance": 95,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "critical": 20,
@@ -248,7 +248,7 @@
             "chance": 100,
             "effects": [
               {
-                "target": "Attacker",
+                "target": "Actor",
                 "health": 40,
                 "bludgeon_resistance_temp": 50,
                 "pierce_resistance_temp": 50,
@@ -268,7 +268,7 @@
             "chance": 90,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 50,
                   "critical": 15,
@@ -276,7 +276,7 @@
                 }
               },
               {
-                "target": "Attacker",
+                "target": "Actor",
                 "Strength": 20,
                 "Luck": 20
               }
@@ -294,7 +294,7 @@
             "chance": 90,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 75,
                   "critical": 20,
@@ -317,7 +317,7 @@
       "bludgeon_resistance": 25,
       "pierce_vulnerability": 5
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Sword Slash",
         "speed": 5085,
@@ -327,7 +327,7 @@
             "chance": 95,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "critical": 20,
@@ -348,7 +348,7 @@
             "chance": 90,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 40,
                   "critical": 10,
@@ -372,7 +372,7 @@
             "chance": 50,
             "effects": [
               {
-                "target": "Attacker",
+                "target": "Actor",
                 "Strength": 30,
                 "Luck": 30,
                 "rounds": 2
@@ -383,7 +383,7 @@
             "chance": 50,
             "effects": [
               {
-                "target": "Attacker",
+                "target": "Actor",
                 "Strength": 30,
                 "Luck": 30,
                 "bludgeon_vulnerability_temp": 10,
@@ -391,7 +391,7 @@
                 "rounds": 2
               },
               {
-                "target": "Defender",
+                "target": "Target",
                 "bludgeon_vulnerability": 30,
                 "pierce_vulnerability": 30,
                 "rounds": 2
@@ -410,7 +410,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 60,
                   "damage_type": "bludgeon"
@@ -433,7 +433,7 @@
       "bludgeon_resistance": 30,
       "pierce_vulnerability": 10
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Axe Attack",
         "speed": 5060,
@@ -443,7 +443,7 @@
             "chance": 85,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 40,
                   "critical": 10,
@@ -465,7 +465,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 45,
                   "damage_type": "bludgeon"
@@ -486,7 +486,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 60,
                   "damage_type": "bludgeon"
@@ -496,7 +496,7 @@
                 "rounds": 3
               },
               {
-                "target": "Attacker",
+                "target": "Actor",
                 "bludgeon_resistance_temp": 30,
                 "pierce_resistance_temp": 30,
                 "rounds": 2
@@ -515,7 +515,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 60,
                   "damage_type": "bludgeon"
@@ -540,7 +540,7 @@
       "bludgeon_resistance": 25,
       "pierce_vulnerability": 5
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Sword Slash",
         "speed": 5085,
@@ -550,7 +550,7 @@
             "chance": 95,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "critical": 20,
@@ -571,7 +571,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 45,
                   "damage_type": "bludgeon"
@@ -592,7 +592,7 @@
             "chance": 90,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 60,
                   "critical": 15,
@@ -613,7 +613,7 @@
             "chance": 100,
             "effects": [
               {
-                "target": "Attacker",
+                "target": "Actor",
                 "health": 80,
                 "bludgeon_resistance_temp": 20,
                 "pierce_resistance_temp": 20,
@@ -635,7 +635,7 @@
       "bludgeon_resistance": 20,
       "pierce_resistance": 20
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Sword Slash",
         "speed": 5085,
@@ -645,7 +645,7 @@
             "chance": 95,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "critical": 20,
@@ -666,7 +666,7 @@
             "chance": 50,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "damage_type": "pierce"
@@ -678,14 +678,14 @@
             "chance": 25,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "damage_type": "pierce"
                 }
               },
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 20,
                   "damage_type": "bludgeon"
@@ -697,21 +697,21 @@
             "chance": 10,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "damage_type": "pierce"
                 }
               },
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 20,
                   "damage_type": "bludgeon"
                 }
               },
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 10
                 }
@@ -730,7 +730,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 70,
                   "damage_type": "bludgeon"
@@ -738,7 +738,7 @@
                 "stun": 30
               },
               {
-                "target": "Attacker",
+                "target": "Actor",
                 "health": -20
               }
             ]
@@ -747,7 +747,7 @@
             "chance": 20,
             "effects": [
               {
-                "target": "Attacker",
+                "target": "Actor",
                 "health": -20
               }
             ]
@@ -764,7 +764,7 @@
             "chance": 75,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 80,
                   "damage_type": "bludgeon"
@@ -777,7 +777,7 @@
             "chance": 25,
             "effects": [
               {
-                "target": "Attacker",
+                "target": "Actor",
                 "bludgeon_resistance_temp": -30,
                 "rounds": 2
               }
@@ -797,7 +797,7 @@
       "bludgeon_resistance": 30,
       "pierce_vulnerability": 5
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Two-Handed Slash",
         "speed": 5060,
@@ -807,7 +807,7 @@
             "chance": 85,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 40,
                   "critical": 10,
@@ -828,7 +828,7 @@
             "chance": 95,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 50,
                   "critical": 30,
@@ -850,7 +850,7 @@
             "chance": 20,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 25,
                   "damage_type": "pierce"
@@ -863,7 +863,7 @@
             "chance": 50,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 25,
                   "damage_type": "pierce"
@@ -871,7 +871,7 @@
                 "stun": 10
               },
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 25,
                   "damage_type": "pierce"
@@ -884,7 +884,7 @@
             "chance": 20,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 25,
                   "damage_type": "pierce"
@@ -892,7 +892,7 @@
                 "stun": 10
               },
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 25,
                   "damage_type": "pierce"
@@ -900,7 +900,7 @@
                 "stun": 10
               },
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 25,
                   "damage_type": "pierce"
@@ -921,7 +921,7 @@
             "chance": 100,
             "effects": [
               {
-                "target": "Attacker",
+                "target": "Actor",
                 "Abilities": {
                   "strength": 30,
                   "vitality": 0,
@@ -949,7 +949,7 @@
       "bludgeon_resistance": 40,
       "pierce_vulnerability": 15
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Axe Attack",
         "speed": 5060,
@@ -959,7 +959,7 @@
             "chance": 85,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 40,
                   "critical": 10,
@@ -981,7 +981,7 @@
             "chance": 90,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "critical": 15,
@@ -1003,7 +1003,7 @@
             "chance": 75,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 60,
                   "critical": 10,
@@ -1013,7 +1013,7 @@
                 "Dexterity": -30,
                 "Luck": -30,
                 "bludgeon_vulnerability": 20,
-                "health_percent": -50,
+                "health_percent_max": -50,
                 "rounds": 2
               }
             ]
@@ -1030,7 +1030,7 @@
             "chance": 100,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "damage_type": "bludgeon"
@@ -1055,7 +1055,7 @@
       "bludgeon_resistance": 25,
       "pierce_vulnerability": 5
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Quick Slash",
         "speed": 5095,
@@ -1065,7 +1065,7 @@
             "chance": 90,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "critical": 15,
@@ -1086,7 +1086,7 @@
             "chance": 90,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "critical": 15,
@@ -1108,7 +1108,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 70,
                   "critical": 20,
@@ -1116,7 +1116,7 @@
                 }
               },
               {
-                "target": "Attacker",
+                "target": "Actor",
                 "Strength": 30,
                 "Luck": 30,
                 "rounds": 2
@@ -1135,7 +1135,7 @@
             "chance": 90,
             "effects": [
               {
-                "target": "Attacker",
+                "target": "Actor",
                 "health_percent_max": 40,
                 "Dexterity": 30,
                 "rounds": 2
@@ -1156,7 +1156,7 @@
       "bludgeon_vulnerability": 10,
       "pierce_resistance": 30
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Axe Attack",
         "speed": 5060,
@@ -1166,7 +1166,7 @@
             "chance": 85,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 40,
                   "critical": 10,
@@ -1188,7 +1188,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 45,
                   "damage_type": "bludgeon"
@@ -1209,7 +1209,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 55,
                   "critical": 20,
@@ -1226,7 +1226,7 @@
         "cooldown": 5,
         "base_effects": [
           {
-            "target": "Attacker",
+            "target": "Actor",
             "Stun": 100,
             "round": 1
           }
@@ -1236,7 +1236,7 @@
             "chance": 70,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 100,
                   "critical": 10
@@ -1259,7 +1259,7 @@
       "bludgeon_vulnerability": 5,
       "pierce_resistance": 25
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Quick Slash",
         "speed": 5095,
@@ -1269,7 +1269,7 @@
             "chance": 90,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "critical": 15,
@@ -1290,7 +1290,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 45,
                   "damage_type": "bludgeon"
@@ -1311,7 +1311,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 60,
                   "critical": 20,
@@ -1333,14 +1333,14 @@
             "chance": 100,
             "effects": [
               {
-                "target": "Attacker",
+                "target": "Actor",
                 "Strength": 30,
                 "Luck": 30,
                 "health_percent_max": 30,
                 "rounds": 2
               },
               {
-                "target": "Defender",
+                "target": "Target",
                 "bludgeon_vulnerability": 40,
                 "rounds": 2
               }
@@ -1360,7 +1360,7 @@
       "bludgeon_vulnerability": 5,
       "pierce_resistance": 25
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Quick Slash",
         "speed": 5095,
@@ -1370,7 +1370,7 @@
             "chance": 90,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "critical": 15,
@@ -1391,7 +1391,7 @@
             "chance": 90,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 40,
                   "damage_type": "bludgeon"
@@ -1413,7 +1413,7 @@
             "chance": 75,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 70,
                   "critical": 15,
@@ -1422,7 +1422,7 @@
                 "stun": 50
               },
               {
-                "target": "Attacker",
+                "target": "Actor",
                 "health": -20,
                 "bludgeon_vulnerability_temp": 20,
                 "rounds": 2
@@ -1441,7 +1441,7 @@
             "chance": 95,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 75,
                   "critical": 20,
@@ -1464,7 +1464,7 @@
       "bludgeon_resistance": 25,
       "pierce_vulnerability": 5
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Sword Slash",
         "speed": 5085,
@@ -1474,7 +1474,7 @@
             "chance": 95,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "critical": 20,
@@ -1495,7 +1495,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 45,
                   "damage_type": "bludgeon"
@@ -1516,7 +1516,7 @@
             "chance": 100,
             "effects": [
               {
-                "target": "Attacker",
+                "target": "Actor",
                 "health": 50,
                 "bludgeon_resistance_temp": 20,
                 "pierce_resistance_temp": 20,
@@ -1536,7 +1536,7 @@
             "chance": 75,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 65,
                   "critical": 10,
@@ -1560,7 +1560,7 @@
       "pierce_resistance": 25,
       "bludgeon_vulnerability": 5
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Axe Attack",
         "speed": 5060,
@@ -1570,7 +1570,7 @@
             "chance": 85,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 40,
                   "critical": 10,
@@ -1592,7 +1592,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 45,
                   "damage_type": "bludgeon"
@@ -1613,7 +1613,7 @@
             "chance": 70,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 60,
                   "critical": 10,
@@ -1623,7 +1623,7 @@
                 "rounds": 1
               },
               {
-                "target": "Attacker",
+                "target": "Actor",
                 "Luck": 30,
                 "rounds": 1
               }
@@ -1641,7 +1641,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 70,
                   "critical": 20,
@@ -1664,7 +1664,7 @@
       "bludgeon_resistance": 30,
       "pierce_vulnerability": 5
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Sword Slash",
         "speed": 5085,
@@ -1674,7 +1674,7 @@
             "chance": 95,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "critical": 20,
@@ -1695,7 +1695,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 45,
                   "damage_type": "bludgeon"
@@ -1716,7 +1716,7 @@
             "chance": 70,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 50,
                   "critical": 10,
@@ -1740,7 +1740,7 @@
             "chance": 85,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 70,
                   "critical": 10,
@@ -1763,7 +1763,7 @@
       "bludgeon_resistance": 30,
       "pierce_vulnerability": 10
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Sword Slash",
         "speed": 5085,
@@ -1773,7 +1773,7 @@
             "chance": 95,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "critical": 20,
@@ -1794,7 +1794,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 45,
                   "damage_type": "bludgeon"
@@ -1815,13 +1815,13 @@
             "chance": 95,
             "effects": [
               {
-                "target": "Attacker",
+                "target": "Actor",
                 "health": 40,
                 "bludgeon_resistance_temp": 20,
                 "rounds": 2
               },
               {
-                "target": "Defender",
+                "target": "Target",
                 "Strength": -20,
                 "Dexterity": -20,
                 "rounds": 2
@@ -1840,7 +1840,7 @@
             "chance": 90,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 65,
                   "damage_type": "bludgeon"
@@ -1863,7 +1863,7 @@
       "bludgeon_resistance": 40,
       "pierce_vulnerability": 15
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Sword Slash",
         "speed": 5085,
@@ -1873,7 +1873,7 @@
             "chance": 95,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "critical": 20,
@@ -1894,7 +1894,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 45,
                   "damage_type": "bludgeon"
@@ -1915,7 +1915,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 50,
                   "critical": 10,
@@ -1936,7 +1936,7 @@
             "chance": 70,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 60,
                   "critical": 10,
@@ -1959,7 +1959,7 @@
       "bludgeon_resistance": 25,
       "pierce_vulnerability": 5
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Sword Slash",
         "speed": 5085,
@@ -1969,7 +1969,7 @@
             "chance": 95,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "critical": 20,
@@ -1990,7 +1990,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 45,
                   "damage_type": "bludgeon"
@@ -2011,7 +2011,7 @@
             "chance": 90,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "pierce_vulnerability": 20,
                 "bludgeon_vulnerability": 20,
                 "rounds": 2
@@ -2030,7 +2030,7 @@
             "chance": 70,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 70,
                   "critical": 20,
@@ -2053,7 +2053,7 @@
       "bludgeon_resistance": 30,
       "pierce_vulnerability": 10
     },
-    "attacks": [
+    "actions": [
       {
         "name": "Sword Slash",
         "speed": 5085,
@@ -2063,7 +2063,7 @@
             "chance": 95,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "critical": 20,
@@ -2084,7 +2084,7 @@
             "chance": 80,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 45,
                   "damage_type": "bludgeon"
@@ -2105,7 +2105,7 @@
             "chance": 20,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 30,
                   "damage_type": "bludgeon"
@@ -2118,7 +2118,7 @@
             "chance": 50,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 40,
                   "damage_type": "bludgeon"
@@ -2131,7 +2131,7 @@
             "chance": 20,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 50,
                   "damage_type": "bludgeon"
@@ -2152,7 +2152,7 @@
             "chance": 60,
             "effects": [
               {
-                "target": "Defender",
+                "target": "Target",
                 "damage": {
                   "power": 80,
                   "critical": 30,
