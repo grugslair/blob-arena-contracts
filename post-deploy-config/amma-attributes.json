@@ -1691,16 +1691,16 @@
   "20": {
     "name": "AMMA 20",
     "stats": {
-        "strength": 65,
-        "vitality": 68,
-        "dexterity": 60,
-        "luck": 47
+        "strength": 57,
+        "vitality": 60,
+        "dexterity": 52,
+        "luck": 39
     },
     "generated_stats": {
-      "strength": 5,
-      "vitality": 5,
-      "dexterity": 3,
-      "luck": 2
+      "strength": 4,
+      "vitality": 4,
+      "dexterity": 2,
+      "luck": 1
     },
     "attacks": [
         {
@@ -1724,7 +1724,7 @@
         {
             "name": "Log Toss",
             "speed": 70,
-            "accuracy": 90,
+            "accuracy": 80,
             "cooldown": 1,
             "hit": [
               {
@@ -1759,7 +1759,7 @@
         {
             "name": "Grapple Hook",
             "speed": 80,
-            "accuracy": 85,
+            "accuracy": 80,
             "cooldown": 3,
             "hit": [
               {
@@ -1794,14 +1794,14 @@
         {
             "name": "Final Chop",
             "speed": 50,
-            "accuracy": 90,
+            "accuracy": 85,
             "cooldown": 3,
             "hit": [
                 {
                     "target": "Opponent",
                     "affect": {
                         "Damage": {
-                            "power": 85,
+                            "power": 80,
                             "critical": 15
                         }
                     }
