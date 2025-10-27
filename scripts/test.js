@@ -7,6 +7,7 @@ sai.loadManifest();
 const classicToken = 0x12edn;
 const ammaToken = 0x1n;
 
+const actionContract = await sai.getContract("action");
 const arcadeClassicContract = await sai.getContract("arcade_classic");
 const arcadeAmmaContract = await sai.getContract("arcade_amma");
 const arenaCreditContract = await sai.getContract("arena_credit");
@@ -61,6 +62,9 @@ const classicActionId = (
     [[1, 0]]
   )
 )[0];
+
+console.log(await actionContract.action(ammaActionId));
+console.log(await actionContract.action(classicActionId));
 
 console.log("Classic Action ID:", classicActionId);
 const classicAttemptId = (

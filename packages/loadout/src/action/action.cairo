@@ -103,9 +103,9 @@ pub impl EffectReaderImpl of EffectReaderTrait {
             current_chance += next_chance;
         }
         let mut n = if next_chance.is_zero() {
-            *(@self).n
-        } else {
             0
+        } else {
+            *(@self).n
         };
         let effects = self.get_effects_at(n);
         (n, effects)
@@ -136,7 +136,7 @@ pub fn read_chance_effects(effects_hash: felt252) -> Array<ChanceEffects> {
         }
         n += 1;
         let effects = EffectArrayReadWrite::read_short_array(
-            poseidon_hash_two(effects_hash, (n + 1)).try_into().unwrap(),
+            poseidon_hash_two(effects_hash, n).try_into().unwrap(),
         )
             .unwrap();
         chance_effects
@@ -167,7 +167,7 @@ pub fn read_all_effects(action_id: felt252) -> (Array<Effect>, Array<ChanceEffec
         }
         n += 1;
         let effects = EffectArrayReadWrite::read_short_array(
-            poseidon_hash_two(effects_hash, (n + 1)).try_into().unwrap(),
+            poseidon_hash_two(effects_hash, n).try_into().unwrap(),
         )
             .unwrap();
         chance_effects

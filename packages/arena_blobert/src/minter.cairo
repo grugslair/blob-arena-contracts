@@ -168,7 +168,7 @@ mod arena_blobert_minter {
     ) {
         self.grant_owner(owner);
         self.token_contract.write(IArenaBlobertDispatcher { contract_address: token_address });
-        register_table_with_schema::<Tokens>("arena_blobert", "Token");
+        register_table_with_schema::<Tokens>("arena_blobert", "Tokens");
     }
 
 
