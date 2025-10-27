@@ -13,249 +13,44 @@
       {
         "name": "Sword Slash",
         "speed": 5085,
-        "chance": 95,
-        "cooldown": 0,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 30,
-              "critical": 20,
-              "damage_type": "pierce"
-            },
-            "PierceVulnerability": 15
+            "chance": 95,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 30,
+                  "critical": 20,
+                  "damage_type": "pierce"
+                },
+                "pierce_vulnerability": 15
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
-        "name": "Lifesteal",
-        "speed": 5000,
-        "chance": 100,
+        "name": "Shield Punch",
+        "speed": 5070,
         "cooldown": 1,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 40,
-              "damage_type": "bludgeon"
-            },
-            "stun": 40
-          },
-          {
-            "target": "Attacker",
-            "health": 30
+            "chance": 80,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 40,
+                  "damage_type": "bludgeon"
+                },
+                "stun": 40
+              }
+            ]
           }
-        ],
-        "fail": []
-      },
-      {
-        "name": "DoT Hit",
-        "speed": 5000,
-        "chance": 100,
-        "cooldown": 1,
-        "success": [
-          {
-            "target": "Defender",
-            "damage": {
-              "power": 40,
-              "damage_type": "bludgeon"
-            }
-          },
-          {
-            "target": "Defender",
-            "damage": {
-              "power": 40,
-              "damage_type": "bludgeon"
-            },
-            "rounds": 3
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "DoT Hit",
-        "speed": 5000,
-        "chance": 100,
-        "cooldown": 1,
-        "success": [
-          {
-            "target": "Defender",
-            "damage": {
-              "power": 40,
-              "damage_type": "bludgeon"
-            }
-          },
-          {
-            "target": "Defender",
-            "damage": {
-              "power": 40,
-              "damage_type": "bludgeon"
-            },
-            "rounds": 3
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Regen",
-        "speed": 5000,
-        "chance": 100,
-        "cooldown": 1,
-        "success": [
-          {
-            "target": "Attacker",
-            "health": 50
-          },
-          {
-            "target": "Attacker",
-            "health": 30,
-            "rounds": 2
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Regen Max HP",
-        "speed": 5000,
-        "chance": 100,
-        "cooldown": 1,
-        "success": [
-          {
-            "target": "Attacker",
-            "percentage_of_max_health": 30
-          },
-          {
-            "target": "Attacker",
-            "percentage_of_max_health": 10,
-            "rounds": 2
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "DoT Percent Health",
-        "speed": 5000,
-        "chance": 100,
-        "cooldown": 1,
-        "success": [
-          {
-            "target": "Defender",
-            "health_percent": -30,
-            "rounds": 2
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Beast Mode",
-        "speed": 5000,
-        "chance": 100,
-        "cooldown": 1,
-        "success": [
-          {
-            "target": "Attacker",
-            "Strength": 50 
-          },
-          {
-            "target": "Defender",
-            "damage": {
-              "power": 100,
-              "damage_type": "bludgeon"
-            }
-          },
-          {
-            "target": "Attacker",
-            "ceil_health_percent": 10
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Charged Attack",
-        "speed": 5000,
-        "chance": 100,
-        "cooldown": 1,
-        "success": [
-          {
-            "target": "Attacker",
-            "Strength": 80,
-            "round": 1
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Max HP Damage",
-        "speed": 5000,
-        "chance": 100,
-        "cooldown": 1,
-        "success": [
-          {
-            "target": "Defender",
-            "health_percent": -50
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "2 Turn Buff",
-        "speed": 5000,
-        "chance": 100,
-        "cooldown": 1,
-        "success": [
-          {
-              "target": "Attacker",
-              "affect": {
-                "Abilities": {
-                  "strength": 30,
-                  "dexterity": 30,
-                  "bludgeon_resistance": 10,
-                  "pierce_vulnerability": 10
-                }
-              },
-              "rounds": 2
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "2 Turn Debuff",
-        "speed": 5000,
-        "chance": 100,
-        "cooldown": 1,
-        "success": [
-          {
-              "target": "Defender",
-              "affect": {
-                "Abilities": {
-                  "strength": -30,
-                  "dexterity": -30,
-                  "bludgeon_vulnerability": 10,
-                  "pierce_vulnerability": 10
-                }
-              },
-              "rounds": 2
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Both Max Health",
-        "speed": 5000,
-        "chance": 100,
-        "cooldown": 1,
-        "success": [
-          {
-              "target": "Attacker",
-              "set_health_percent": 100
-          },
-          {
-              "target": "Defender",
-              "set_health_percent": 100
-          }
-        ],
-        "fail": []
+        ]
       }
     ]
   },
@@ -271,57 +66,101 @@
     },
     "attacks": [
       {
-        "tag": "Sword Slash"
+        "name": "Sword Slash",
+        "speed": 5085,
+        "base_effects": [],
+        "chance_effects": [
+          {
+            "chance": 95,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 30,
+                  "critical": 20,
+                  "damage_type": "pierce"
+                },
+                "pierce_vulnerability": 15
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "Ground and Pound",
         "speed": 5065,
-        "chance": 80,
         "cooldown": 1,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 60,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 20
+            "chance": 80,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 60,
+                  "damage_type": "bludgeon"
+                },
+                "stun": 20
+              },
+              {
+                "target": "Attacker",
+                "Strength": 30,
+                "rounds": 2
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Grind",
         "speed": 5045,
-        "chance": 80,
         "cooldown": 3,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 55,
-              "damage_type": "bludgeon"
-            },
-            "Strength": -25,
-            "PierceVulnerability": 20
+            "chance": 80,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 60,
+                  "damage_type": "bludgeon"
+                },
+                "Strength": -25,
+                "pierce_vulnerability": 20,
+                "rounds": 3
+              },
+              {
+                "target": "Attacker",
+                "bludgeon_resistance_temp": 30,
+                "pierce_resistance_temp": 30,
+                "rounds": 2
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "White Company",
         "speed": 5040,
-        "chance": 90,
         "cooldown": 5,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 90
-            }
+            "chance": 90,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 90,
+                  "critical": 20,
+                  "damage_type": "pierce"
+                }
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       }
     ]
   },
@@ -337,66 +176,92 @@
     },
     "attacks": [
       {
-        "tag": "Sword Slash"
+        "name": "Sword Slash",
+        "speed": 5085,
+        "base_effects": [],
+        "chance_effects": [
+          {
+            "chance": 95,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 30,
+                  "critical": 20,
+                  "damage_type": "pierce"
+                },
+                "pierce_vulnerability": 15
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "Shield Block",
         "speed": 8000,
-        "chance": 100,
-        "cooldown": 3,
-        "success": [
+        "cooldown": 2,
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Attacker",
-            "Vitality": 30,
-            "Health": 30,
-            "Block": 75,
-            "bludgeon_resistance": 60,
-            "pierce_resistance": 60
-          },
-          {
-            "target": "Defender",
-            "Strength": -20
+            "chance": 100,
+            "effects": [
+              {
+                "target": "Attacker",
+                "health": 40,
+                "bludgeon_resistance_temp": 50,
+                "pierce_resistance_temp": 50,
+                "rounds": 1
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Sword Dance",
         "speed": 5085,
-        "chance": 90,
         "cooldown": 3,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 50,
-              "critical": 15,
-              "damage_type": "pierce"
-            }
-          },
-          {
-            "target": "Attacker",
-            "Strength": 20
+            "chance": 90,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 50,
+                  "critical": 15,
+                  "damage_type": "pierce"
+                }
+              },
+              {
+                "target": "Attacker",
+                "Strength": 20,
+                "Luck": 20
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Spin Attack",
         "speed": 5050,
-        "chance": 90,
         "cooldown": 5,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 70,
-              "critical": 20,
-              "damage_type": "pierce"
-            }
+            "chance": 90,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 75,
+                  "critical": 20,
+                  "damage_type": "pierce"
+                }
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       }
     ]
   },
@@ -412,69 +277,108 @@
     },
     "attacks": [
       {
-        "tag": "Sword Slash"
+        "name": "Sword Slash",
+        "speed": 5085,
+        "base_effects": [],
+        "chance_effects": [
+          {
+            "chance": 95,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 30,
+                  "critical": 20,
+                  "damage_type": "pierce"
+                },
+                "pierce_vulnerability": 15
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "Low Kick",
-        "speed": 5075,
-        "chance": 100,
+        "speed": 6050,
         "cooldown": 1,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 40,
-              "critical": 10,
-              "damage_type": "bludgeon"
-            },
-            "Dexterity": -20,
-            "Luck": -10,
-            "bludgeon_vulnerability": 20
+            "chance": 90,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 40,
+                  "critical": 10,
+                  "damage_type": "bludgeon"
+                },
+                "stun": 20,
+                "Dexterity": -20,
+                "Luck": -20
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Swag",
         "speed": 5065,
-        "chance": 100,
-        "cooldown": 5,
-        "success": [
+        "cooldown": 3,
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Attacker",
-            "Abilities": {
-              "strength": 30,
-              "vitality": 0,
-              "dexterity": 30,
-              "luck": 30
-            },
-            "bludgeon_vulnerability": 10,
-            "pierce_vulnerability": 10
+            "chance": 50,
+            "effects": [
+              {
+                "target": "Attacker",
+                "Strength": 30,
+                "Luck": 30,
+                "rounds": 2
+              }
+            ]
           },
           {
-            "target": "Defender",
-            "bludgeon_vulnerability": 30,
-            "pierce_vulnerability": 30
+            "chance": 50,
+            "effects": [
+              {
+                "target": "Attacker",
+                "Strength": 30,
+                "Luck": 30,
+                "bludgeon_vulnerability_temp": 10,
+                "pierce_vulnerability_temp": 10,
+                "rounds": 2
+              },
+              {
+                "target": "Defender",
+                "bludgeon_vulnerability": 30,
+                "pierce_vulnerability": 30,
+                "rounds": 2
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Mega Shield Bash",
         "speed": 5050,
-        "chance": 80,
         "cooldown": 3,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 60,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 50
+            "chance": 80,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 60,
+                  "damage_type": "bludgeon"
+                },
+                "stun": 50
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       }
     ]
   },
@@ -492,44 +396,96 @@
       {
         "name": "Axe Attack",
         "speed": 5060,
-        "chance": 85,
-        "cooldown": 0,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 40,
-              "critical": 10,
-              "damage_type": "pierce"
-            }
+            "chance": 85,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 40,
+                  "critical": 10,
+                  "damage_type": "pierce"
+                },
+                "bludgeon_vulnerability": 10
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
-        "tag": "Shield Punch"
+        "name": "Shield Punch",
+        "speed": 5070,
+        "cooldown": 1,
+        "base_effects": [],
+        "chance_effects": [
+          {
+            "chance": 80,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 40,
+                  "damage_type": "bludgeon"
+                },
+                "stun": 40
+              }
+            ]
+          }
+        ]
       },
       {
-        "tag": "Grind"
+        "name": "Grind",
+        "speed": 5045,
+        "cooldown": 3,
+        "base_effects": [],
+        "chance_effects": [
+          {
+            "chance": 80,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 60,
+                  "damage_type": "bludgeon"
+                },
+                "Strength": -25,
+                "pierce_vulnerability": 20,
+                "rounds": 3
+              },
+              {
+                "target": "Attacker",
+                "bludgeon_resistance_temp": 30,
+                "pierce_resistance_temp": 30,
+                "rounds": 2
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "Reverse Throw",
         "speed": 5040,
-        "chance": 80,
         "cooldown": 3,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 60,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 30,
-            "Dexterity": -20,
-            "bludgeon_vulnerability": 30
+            "chance": 80,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 60,
+                  "damage_type": "bludgeon"
+                },
+                "stun": 30,
+                "health": -20,
+                "rounds": 2
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       }
     ]
   },
@@ -545,42 +501,87 @@
     },
     "attacks": [
       {
-        "tag": "Sword Slash"
+        "name": "Sword Slash",
+        "speed": 5085,
+        "base_effects": [],
+        "chance_effects": [
+          {
+            "chance": 95,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 30,
+                  "critical": 20,
+                  "damage_type": "pierce"
+                },
+                "pierce_vulnerability": 15
+              }
+            ]
+          }
+        ]
       },
       {
-        "tag": "Shield Punch"
+        "name": "Shield Punch",
+        "speed": 5070,
+        "cooldown": 1,
+        "base_effects": [],
+        "chance_effects": [
+          {
+            "chance": 80,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 40,
+                  "damage_type": "bludgeon"
+                },
+                "stun": 40
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "Swift Attack",
-        "speed": 6090,
-        "chance": 90,
+        "speed": 6000,
         "cooldown": 1,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 60,
-              "critical": 10,
-              "damage_type": "pierce"
-            }
+            "chance": 90,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 60,
+                  "critical": 15,
+                  "damage_type": "pierce"
+                }
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Comeback Kid",
-        "speed": 5050,
-        "chance": 100,
+        "speed": 4000,
         "cooldown": 5,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Attacker",
-            "Health": 80,
-            "bludgeon_resistance": 25,
-            "pierce_resistance": 25
+            "chance": 100,
+            "effects": [
+              {
+                "target": "Attacker",
+                "health": 80,
+                "bludgeon_resistance_temp": 20,
+                "pierce_resistance_temp": 20,
+                "rounds": 2
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       }
     ]
   },
@@ -596,56 +597,154 @@
     },
     "attacks": [
       {
-        "tag": "Sword Slash"
+        "name": "Sword Slash",
+        "speed": 5085,
+        "base_effects": [],
+        "chance_effects": [
+          {
+            "chance": 95,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 30,
+                  "critical": 20,
+                  "damage_type": "pierce"
+                },
+                "pierce_vulnerability": 15
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "Weapon Master",
         "speed": 5040,
-        "chance": 90,
         "cooldown": 1,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 40,
-              "critical": 20
-            }
+            "chance": 50,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 30,
+                  "damage_type": "pierce"
+                }
+              }
+            ]
+          },
+          {
+            "chance": 25,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 30,
+                  "damage_type": "pierce"
+                }
+              },
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 20,
+                  "damage_type": "bludgeon"
+                }
+              }
+            ]
+          },
+          {
+            "chance": 10,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 30,
+                  "damage_type": "pierce"
+                }
+              },
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 20,
+                  "damage_type": "bludgeon"
+                }
+              },
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 10
+                }
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Superman Shield Punch",
         "speed": 5060,
-        "chance": 80,
         "cooldown": 3,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 60,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 20
+            "chance": 80,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 70,
+                  "damage_type": "bludgeon"
+                },
+                "stun": 30
+              },
+              {
+                "target": "Attacker",
+                "health": -20
+              }
+            ]
+          },
+          {
+            "chance": 20,
+            "effects": [
+              {
+                "target": "Attacker",
+                "health": -20
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "People's Elbow",
         "speed": 5030,
-        "chance": 75,
         "cooldown": 5,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 80
-            },
-            "Stun": 40
+            "chance": 75,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 80,
+                  "damage_type": "bludgeon"
+                },
+                "stun": 40
+              }
+            ]
+          },
+          {
+            "chance": 25,
+            "effects": [
+              {
+                "target": "Attacker",
+                "bludgeon_resistance_temp": -30,
+                "rounds": 2
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       }
     ]
   },
@@ -663,73 +762,141 @@
       {
         "name": "Two-Handed Slash",
         "speed": 5060,
-        "chance": 85,
-        "cooldown": 0,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 40,
-              "critical": 10,
-              "damage_type": "pierce"
-            }
+            "chance": 85,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 40,
+                  "critical": 10,
+                  "damage_type": "pierce"
+                }
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Sword Snipe",
         "speed": 5040,
-        "chance": 95,
-        "cooldown": 1,
-        "success": [
+        "cooldown": 2,
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 40,
-              "critical": 30,
-              "damage_type": "pierce"
-            }
+            "chance": 95,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 50,
+                  "critical": 30,
+                  "damage_type": "pierce"
+                },
+                "round": 1
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Multi Strike",
         "speed": 5070,
-        "chance": 75,
         "cooldown": 3,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 60
-            },
-            "Stun": 20
+            "chance": 20,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 25,
+                  "damage_type": "pierce"
+                },
+                "stun": 10
+              }
+            ]
+          },
+          {
+            "chance": 50,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 25,
+                  "damage_type": "pierce"
+                },
+                "stun": 10
+              },
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 25,
+                  "damage_type": "pierce"
+                },
+                "stun": 10
+              }
+            ]
+          },
+          {
+            "chance": 20,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 25,
+                  "damage_type": "pierce"
+                },
+                "stun": 10
+              },
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 25,
+                  "damage_type": "pierce"
+                },
+                "stun": 10
+              },
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 25,
+                  "damage_type": "pierce"
+                },
+                "stun": 10
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Knight of Wakanda",
         "speed": 5080,
-        "chance": 100,
         "cooldown": 5,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Attacker",
-            "Abilities": {
-              "strength": 30,
-              "vitality": 0,
-              "dexterity": 30,
-              "luck": 30
-            },
-            "Health": 30,
-            "bludgeon_resistance": 20,
-            "pierce_resistance": 20
+            "chance": 100,
+            "effects": [
+              {
+                "target": "Attacker",
+                "Abilities": {
+                  "strength": 30,
+                  "vitality": 0,
+                  "dexterity": 30,
+                  "luck": 30
+                },
+                "health": 30,
+                "bludgeon_resistance_temp": 25,
+                "pierce_resistance_temp": 25,
+                "rounds": 3
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       }
     ]
   },
@@ -746,82 +913,96 @@
     "attacks": [
       {
         "name": "Axe Attack",
-        "speed": 5090,
-        "chance": 85,
-        "cooldown": 0,
-        "success": [
+        "speed": 5060,
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 40,
-              "critical": 10,
-              "damage_type": "pierce"
-            }
+            "chance": 85,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 40,
+                  "critical": 10,
+                  "damage_type": "pierce"
+                },
+                "bludgeon_vulnerability": 10
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Buckler Tap",
         "speed": 5090,
-        "chance": 90,
         "cooldown": 1,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 30,
-              "critical": 15,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 30,
-            "Dexterity": -10
+            "chance": 90,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 30,
+                  "critical": 15,
+                  "damage_type": "bludgeon"
+                },
+                "stun": 30
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Jujitsu Throw",
         "speed": 5060,
-        "chance": 75,
         "cooldown": 3,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 60,
-              "critical": 10,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 20,
-            "Health": -20,
-            "Abilities": {
-              "vitality": -20,
-              "dexterity": -20,
-              "luck": -20
-            },
-            "bludgeon_vulnerability": 20
+            "chance": 75,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 60,
+                  "critical": 10,
+                  "damage_type": "bludgeon"
+                },
+                "stun": 20,
+                "Dexterity": -30,
+                "Luck": -30,
+                "bludgeon_vulnerability": 20,
+                "health_percent": -50,
+                "rounds": 2
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Steal Weapon",
-        "speed": 5080,
-        "chance": 65,
+        "speed": 6080,
         "cooldown": 5,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 30,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 100,
-            "Strength": -40
+            "chance": 100,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 30,
+                  "damage_type": "bludgeon"
+                },
+                "stun": 100,
+                "Strength": -40,
+                "rounds": 2
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       }
     ]
   },
@@ -839,73 +1020,90 @@
       {
         "name": "Quick Slash",
         "speed": 5095,
-        "chance": 90,
-        "cooldown": 0,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 30,
-              "critical": 15,
-              "damage_type": "pierce"
-            }
+            "chance": 90,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 30,
+                  "critical": 15,
+                  "damage_type": "pierce"
+                }
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Buckler Tap",
         "speed": 5090,
-        "chance": 90,
         "cooldown": 1,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 30,
-              "critical": 15,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 30,
-            "Dexterity": -10
+            "chance": 90,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 30,
+                  "critical": 15,
+                  "damage_type": "bludgeon"
+                },
+                "stun": 30
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Steel Sonata",
         "speed": 5070,
-        "chance": 80,
-        "cooldown": 5,
-        "success": [
+        "cooldown": 3,
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 70,
-              "critical": 20
-            }
-          },
-          {
-            "target": "Attacker",
-            "Strength": 30,
-            "Luck": 30
+            "chance": 80,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 70,
+                  "critical": 20,
+                  "damage_type": "pierce"
+                }
+              },
+              {
+                "target": "Attacker",
+                "Strength": 30,
+                "Luck": 30,
+                "rounds": 2
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Circle Out",
-        "speed": 5090,
-        "chance": 90,
+        "speed": 6090,
         "cooldown": 3,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Attacker",
-            "Health": 50,
-            "Dexterity": 20
+            "chance": 90,
+            "effects": [
+              {
+                "target": "Attacker",
+                "health_percent_max": 40,
+                "Dexterity": 30,
+                "rounds": 2
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       }
     ]
   },
@@ -923,69 +1121,92 @@
       {
         "name": "Axe Attack",
         "speed": 5060,
-        "chance": 85,
-        "cooldown": 0,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 40,
-              "critical": 10,
-              "damage_type": "pierce"
-            }
+            "chance": 85,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 40,
+                  "critical": 10,
+                  "damage_type": "pierce"
+                },
+                "bludgeon_vulnerability": 10
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Hammer Fist",
         "speed": 5070,
-        "chance": 80,
         "cooldown": 1,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 45,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 30
+            "chance": 80,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 45,
+                  "damage_type": "bludgeon"
+                },
+                "stun": 30
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Spinning Axe",
         "speed": 5050,
-        "chance": 80,
         "cooldown": 3,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 55,
-              "critical": 20,
-              "damage_type": "pierce"
-            }
+            "chance": 80,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 55,
+                  "critical": 20,
+                  "damage_type": "pierce"
+                }
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "One Shot",
         "speed": 5040,
-        "chance": 60,
         "cooldown": 5,
-        "success": [
+        "base_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 100,
-              "critical": 10
-            }
+            "target": "Attacker",
+            "Stun": 100,
+            "round": 1
           }
         ],
-        "fail": []
+        "chance_effects": [
+          {
+            "chance": 70,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 100,
+                  "critical": 10
+                },
+                "round": 1
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -1003,73 +1224,90 @@
       {
         "name": "Quick Slash",
         "speed": 5095,
-        "chance": 90,
-        "cooldown": 0,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 30,
-              "critical": 15,
-              "damage_type": "pierce"
-            }
+            "chance": 90,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 30,
+                  "critical": 15,
+                  "damage_type": "pierce"
+                }
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Shield Punch",
         "speed": 5070,
-        "chance": 80,
         "cooldown": 1,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 40,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 40
+            "chance": 80,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 40,
+                  "damage_type": "bludgeon"
+                },
+                "stun": 40
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Power Arm",
         "speed": 5050,
-        "chance": 80,
-        "cooldown": 3,
-        "success": [
+        "cooldown": 2,
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 60,
-              "critical": 20,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 10
+            "chance": 80,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 60,
+                  "critical": 20,
+                  "damage_type": "bludgeon"
+                },
+                "stun": 10
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Snap Shot",
         "speed": 5090,
-        "chance": 100,
         "cooldown": 3,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Attacker",
-            "Strength": 30,
-            "Luck": 30
-          },
-          {
-            "target": "Defender",
-            "Strength": -20,
-            "Dexterity": -20
+            "chance": 100,
+            "effects": [
+              {
+                "target": "Attacker",
+                "Strength": 30,
+                "Luck": 30,
+                "health_percent_max": 30,
+                "rounds": 2
+              },
+              {
+                "target": "Defender",
+                "bludgeon_vulnerability": 40,
+                "rounds": 2
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       }
     ]
   },
@@ -1087,484 +1325,93 @@
       {
         "name": "Quick Slash",
         "speed": 5095,
-        "chance": 90,
-        "cooldown": 0,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 30,
-              "critical": 15,
-              "damage_type": "pierce"
-            }
+            "chance": 90,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 30,
+                  "critical": 15,
+                  "damage_type": "pierce"
+                }
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Knee Check",
         "speed": 5080,
-        "chance": 90,
         "cooldown": 1,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 40,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 15,
-            "Dexterity": -15
+            "chance": 90,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 40,
+                  "damage_type": "bludgeon"
+                },
+                "stun": 15,
+                "Dexterity": -15
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Headbutt",
         "speed": 5050,
-        "chance": 75,
         "cooldown": 3,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 60,
-              "critical": 10,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 50
-          },
-          {
-            "target": "Attacker",
-            "Health": -20
+            "chance": 75,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 70,
+                  "critical": 15,
+                  "damage_type": "bludgeon"
+                },
+                "stun": 50
+              },
+              {
+                "target": "Attacker",
+                "health": -20,
+                "bludgeon_vulnerability_temp": 20,
+                "rounds": 2
+              }
+            ]
           }
-        ],
-        "fail": []
+        ]
       },
       {
         "name": "Final Judgement",
         "speed": 5040,
-        "chance": 95,
         "cooldown": 3,
-        "success": [
+        "base_effects": [],
+        "chance_effects": [
           {
-            "target": "Defender",
-            "Damage": {
-              "power": 75,
-              "critical": 20
-            }
+            "chance": 95,
+            "effects": [
+              {
+                "target": "Defender",
+                "damage": {
+                  "power": 75,
+                  "critical": 20,
+                  "damage_type": "pierce"
+                }
+              }
+            ]
           }
-        ],
-        "fail": []
-      }
-    ]
-  },
-  "14": {
-    "name": "AMMA 14",
-    "abilities": {
-      "strength": 55,
-      "vitality": 68,
-      "dexterity": 40,
-      "luck": 35,
-      "bludgeon_resistance": 25,
-      "pierce_vulnerability": 5
-    },
-    "attacks": [
-      {
-        "name": "Sword Slash",
-        "speed": 5085,
-        "chance": 95,
-        "cooldown": 0,
-        "success": [
-          {
-            "target": "Defender",
-            "Damage": {
-              "power": 30,
-              "critical": 20,
-              "damage_type": "pierce"
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Shield Check",
-        "speed": 5055,
-        "chance": 80,
-        "cooldown": 1,
-        "success": [
-          {
-            "target": "Defender",
-            "Damage": {
-              "power": 45,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 30
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Hold The Line",
-        "speed": 5060,
-        "chance": 100,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Attacker",
-            "Health": 60
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Seismic Toss",
-        "speed": 5030,
-        "chance": 75,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Defender",
-            "Damage": {
-              "power": 65,
-              "critical": 10,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 50
-          }
-        ],
-        "fail": []
-      }
-    ]
-  },
-  "15": {
-    "name": "AMMA 15",
-    "abilities": {
-      "strength": 60,
-      "vitality": 63,
-      "dexterity": 45,
-      "luck": 42,
-      "bludgeon_vulnerability": 5,
-      "pierce_resistance": 25
-    },
-    "attacks": [
-      {
-        "name": "Axe Attack",
-        "speed": 5060,
-        "chance": 85,
-        "cooldown": 0,
-        "success": [
-          {
-            "target": "Defender",
-            "Damage": {
-              "power": 40,
-              "critical": 10,
-              "damage_type": "pierce"
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Hammer Fist",
-        "speed": 5070,
-        "chance": 80,
-        "cooldown": 1,
-        "success": [
-          {
-            "target": "Defender",
-            "Damage": {
-              "power": 45,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 30
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Axe Thrust",
-        "speed": 5050,
-        "chance": 70,
-        "cooldown": 2,
-        "success": [
-          {
-            "target": "Defender",
-            "Damage": {
-              "power": 60,
-              "critical": 10,
-              "damage_type": "pierce"
-            }
-          },
-          {
-            "target": "Attacker",
-            "Luck": 30
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Spartan Spear",
-        "speed": 5070,
-        "chance": 80,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Defender",
-            "Damage": {
-              "power": 70,
-              "critical": 20,
-              "damage_type": "pierce"
-            }
-          }
-        ],
-        "fail": []
-      }
-    ]
-  },
-  "16": {
-    "name": "AMMA 16",
-    "abilities": {
-      "strength": 66,
-      "vitality": 50,
-      "dexterity": 46,
-      "luck": 50,
-      "bludgeon_resistance": 30,
-      "pierce_vulnerability": 5
-    },
-    "attacks": [
-      {
-        "name": "Sword Attack",
-        "speed": 5075,
-        "chance": 90,
-        "cooldown": 0,
-        "success": [
-          {
-            "target": "Defender",
-            "Damage": {
-              "power": 40,
-              "critical": 10,
-              "damage_type": "pierce"
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Shield Check",
-        "speed": 5055,
-        "chance": 80,
-        "cooldown": 1,
-        "success": [
-          {
-            "target": "Defender",
-            "Damage": {
-              "power": 45,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 30
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Karate Kick",
-        "speed": 5075,
-        "chance": 80,
-        "cooldown": 2,
-        "success": [
-          {
-            "target": "Defender",
-            "Damage": {
-              "power": 50,
-              "critical": 20,
-              "damage_type": "bludgeon"
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Throwing Hands",
-        "speed": 5060,
-        "chance": 85,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Defender",
-            "Damage": {
-              "power": 60,
-              "critical": 20,
-              "damage_type": "bludgeon"
-            }
-          }
-        ],
-        "fail": []
-      }
-    ]
-  },
-  "17": {
-    "name": "AMMA 17",
-    "abilities": {
-      "strength": 42,
-      "vitality": 57,
-      "dexterity": 47,
-      "luck": 58,
-      "bludgeon_resistance": 30,
-      "pierce_vulnerability": 10
-    },
-    "attacks": [
-      {
-        "name": "Sword Attack",
-        "speed": 5075,
-        "chance": 90,
-        "cooldown": 0,
-        "success": [
-          {
-            "target": "Defender",
-            "Damage": {
-              "power": 40,
-              "critical": 10,
-              "damage_type": "pierce"
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Shield Check",
-        "speed": 5055,
-        "chance": 80,
-        "cooldown": 1,
-        "success": [
-          {
-            "target": "Defender",
-            "Damage": {
-              "power": 45,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 30
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Meteor Shield",
-        "speed": 5070,
-        "chance": 95,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Attacker",
-            "Strength": 20,
-            "Vitality": 20,
-            "Health": 20
-          },
-          {
-            "target": "Defender",
-            "Strength": -20,
-            "Dexterity": -20
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Hip Throw",
-        "speed": 5050,
-        "chance": 90,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Defender",
-            "Damage": {
-              "power": 60,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 50,
-            "bludgeon_vulnerability": 20
-          }
-        ],
-        "fail": []
-      }
-    ]
-  },
-  "18": {
-    "name": "AMMA 18",
-    "abilities": {
-      "strength": 46,
-      "vitality": 43,
-      "dexterity": 47,
-      "luck": 60,
-      "bludgeon_resistance": 40,
-      "pierce_vulnerability": 15
-    },
-    "attacks": [
-      {
-        "name": "Sword Attack",
-        "speed": 5075,
-        "chance": 90,
-        "cooldown": 0,
-        "success": [
-          {
-            "target": "Defender",
-            "Damage": {
-              "power": 40,
-              "critical": 10,
-              "damage_type": "pierce"
-            }
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Shield Punch",
-        "speed": 5070,
-        "chance": 80,
-        "cooldown": 1,
-        "success": [
-          {
-            "target": "Defender",
-            "Damage": {
-              "power": 40,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 40
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Jumping Punch",
-        "speed": 5070,
-        "chance": 75,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Defender",
-            "Damage": {
-              "power": 60,
-              "damage_type": "bludgeon"
-            },
-            "Stun": 40
-          }
-        ],
-        "fail": []
-      },
-      {
-        "name": "Flying Hussar",
-        "speed": 5040,
-        "chance": 70,
-        "cooldown": 3,
-        "success": [
-          {
-            "target": "Defender",
-            "Damage": {
-              "power": 80,
-              "critical": 10
-            }
-          }
-        ],
-        "fail": []
+        ]
       }
     ]
   }
