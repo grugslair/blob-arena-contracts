@@ -73,10 +73,10 @@ const classicAttemptId = (
       collection_address: sai.contracts["arena_blobert"].contract_address,
       token_id: classicToken,
       action_slots: [
-        [1, 0],
         [4, 0],
         [4, 1],
         [4, 2],
+        [1, 0],
       ],
     })
   )

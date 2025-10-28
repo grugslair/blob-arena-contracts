@@ -104,6 +104,23 @@
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       ]
     },
+    "action": {
+      "contract_address": "0x7031e3728bfafcc4196d2cccc93dafb1303dab0f73a0c619aafb2fbaf96d2a5",
+      "tag": "action",
+      "unique": false,
+      "calldata": {
+        "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
+        "action_model_class_hash": "0x51914a51d3a3f30fce59b11eff04955217ad3d368f6fbf89b556515ca5efc58"
+      },
+      "salt": "0x0",
+      "once": true,
+      "class": "action",
+      "class_hash": "0x1e87aa4a6d650866f76fec908600db16ce164c4dc407958251e5106ac92e918",
+      "calldata_compiled": [
+        "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
+        "0x51914a51d3a3f30fce59b11eff04955217ad3d368f6fbf89b556515ca5efc58"
+      ]
+    },
     "arena_blobert_minter": {
       "contract_address": "0x5211935753df2a1f327e70b0b039afab03c286ca2249f4ff38148ac9212eaf7",
       "tag": "arena_blobert_minter",
@@ -151,23 +168,6 @@
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
         "0x66025b7ff99146ca601d852338f76741d5e8a412b000f4490b3ba1e2d358c35"
-      ]
-    },
-    "action": {
-      "contract_address": "0x7031e3728bfafcc4196d2cccc93dafb1303dab0f73a0c619aafb2fbaf96d2a5",
-      "tag": "action",
-      "unique": false,
-      "calldata": {
-        "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "action_model_class_hash": "0x51914a51d3a3f30fce59b11eff04955217ad3d368f6fbf89b556515ca5efc58"
-      },
-      "salt": "0x0",
-      "once": true,
-      "class": "action",
-      "class_hash": "0x1e87aa4a6d650866f76fec908600db16ce164c4dc407958251e5106ac92e918",
-      "calldata_compiled": [
-        "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x51914a51d3a3f30fce59b11eff04955217ad3d368f6fbf89b556515ca5efc58"
       ]
     },
     "loadout_classic": {
@@ -388,6 +388,11 @@
       "class_hash": "0x29eb7b4a082ebcef9bc97a5fcc6e109414975c4cc5d5db1e31de82d52a94cc0",
       "class": "arena_credit"
     },
+    "action": {
+      "contract_address": "0x7031e3728bfafcc4196d2cccc93dafb1303dab0f73a0c619aafb2fbaf96d2a5",
+      "class_hash": "0x1e87aa4a6d650866f76fec908600db16ce164c4dc407958251e5106ac92e918",
+      "class": "action"
+    },
     "arena_blobert_minter": {
       "contract_address": "0x5211935753df2a1f327e70b0b039afab03c286ca2249f4ff38148ac9212eaf7",
       "class_hash": "0x724b4eca7c6414d7d8dfb11cc616cde5b6ffe12d1c6032d10c667f48e1c84ea",
@@ -402,11 +407,6 @@
       "contract_address": "0x4ba574262a90949d95b600f2164b6918807ef3fd5bab05ba21842bad71c24b6",
       "class_hash": "0x4be30835b6c7e9bc04c7cb119eab8670da3f168c58ebe718b8e4fb5c7aeb799",
       "class": "arena_credit_purchase"
-    },
-    "action": {
-      "contract_address": "0x7031e3728bfafcc4196d2cccc93dafb1303dab0f73a0c619aafb2fbaf96d2a5",
-      "class_hash": "0x1e87aa4a6d650866f76fec908600db16ce164c4dc407958251e5106ac92e918",
-      "class": "action"
     },
     "loadout_classic": {
       "contract_address": "0x4164d479e24831b3105123b8084c60bc3478317a8d9ee76a678a2338b6e82fe",
@@ -435,9 +435,81 @@
     }
   },
   "declarations": {
+    "mock_vrf": {
+      "class_hash": "0x301acbd969fe41d1dd0a3349a17db0e779d78644aa21d4ff6ef3f0d0498479f",
+      "transaction_hash": "0x434ca03ae9c228ada9a96d52037abf6a1323be8a7ee38acaf8e532c48abb681"
+    },
+    "action_model": {
+      "class_hash": "0x51914a51d3a3f30fce59b11eff04955217ad3d368f6fbf89b556515ca5efc58",
+      "transaction_hash": "0x13bd0cfb6a5dd097cf5f3cda7a9b73b23d0f5c6548f2fcf77a56fdd974f69c7"
+    },
+    "round_result_model": {
+      "class_hash": "0x1f75ae3422d68d968fa10a550218d55260a26892d6f6f2c88714c530f7bd8e7",
+      "transaction_hash": "0x29d94fa1ec573acae31768577bf56dd43c53b47f19c96f934315544498f0687"
+    },
+    "arcade_round_result_model": {
+      "class_hash": "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
+      "transaction_hash": "0xef3ae84af9a0bb3301c30334cdbfae5075c2ab7302e0032072f1ebd310608c"
+    },
+    "combat": {
+      "class_hash": "0x2ea37d62b1e73925e56c7654043993e28aaf60162f287d6a30ae95bdf292fa1",
+      "transaction_hash": "0x30a35fccc56abd6b254d66d00bacd391ef202c66b527c2f2c369efe8a69de80"
+    },
+    "arena_blobert": {
+      "class_hash": "0x65f2d6e583f86237f9f046fbc0817a7bbb0e85a1fbbeedf672fd05288a3590c",
+      "transaction_hash": "0x7e9f855605db0b03809b2065fd98dbcf0bc1880d115c083f2e3327d254cad06"
+    },
+    "arena_blobert_minter": {
+      "class_hash": "0x724b4eca7c6414d7d8dfb11cc616cde5b6ffe12d1c6032d10c667f48e1c84ea",
+      "transaction_hash": "0x198de0fefe901ccd3d6208e4f65f662b27a6f0a993b73751094e27d2aa3348e"
+    },
+    "amma_blobert": {
+      "class_hash": "0x4cac2dde125d08e2d76841527ce5edb9ac08fd58fb1f54caaa1c6a874c9b5b8",
+      "transaction_hash": "0x2890ceca5d40c39a6ba0bdce641a3f5597dad3903db796c1c1c18b3db3c30b7"
+    },
+    "amma_blobert_soulbound": {
+      "class_hash": "0x2a3f22e91d891700653cd7f14f6bd8c6c8e268381c242e424f4f379602a5050",
+      "transaction_hash": "0x7c9f9cf4620c45879d82d59d1c0dfbfb1e1f41e1a5df21dbbd8b6454d1b6d7b"
+    },
+    "amma_blobert_minter": {
+      "class_hash": "0x4bbd4269e9fc9b370a01bfc3a7cf8bc72eeee7206505ee10d9f593cd9e429f",
+      "transaction_hash": "0xffb504c2377290f19f7b98d4bbc81281f39cd2353c11a9e8367a984db0a47"
+    },
     "action": {
       "class_hash": "0x1e87aa4a6d650866f76fec908600db16ce164c4dc407958251e5106ac92e918",
-      "transaction_hash": "0xd0383183023e49fca34ccd83ae5cc7e1fb2ef2c682a8b28444b8d1e474a4c9"
+      "transaction_hash": "0x383a692e22855f535a8413cbbb7e56df2761a3071d0f46b29f0545e8ad6a93b"
+    },
+    "loadout_classic": {
+      "class_hash": "0x1cf347168a95b33015f6bc5a2931ed2194644136cfbacb9b92052b8158649dd",
+      "transaction_hash": "0x4fafe73ad1ce61d07d55b4f3ae1fa59614222a49547dd5e1d197effba27b952"
+    },
+    "loadout_amma": {
+      "class_hash": "0x2fb5a21fad3a9529d4e017f1c0343f34307a0ee6bdcb2b0bb4346c4e30b7bb8",
+      "transaction_hash": "0x5e1dd331254130cdcb0e8ae0566bcea2760958dfafff9cde13672baf8b4c3e0"
+    },
+    "orbs": {
+      "class_hash": "0x15bc92b95bdf5c65ea349c98a5d27cda791dc98a672ce0c3e7f92946daf7b7e",
+      "transaction_hash": "0x2b126835421ec2a42b081636594507738c3db76a4e9071b9853501db34faf22"
+    },
+    "arena_credit": {
+      "class_hash": "0x29eb7b4a082ebcef9bc97a5fcc6e109414975c4cc5d5db1e31de82d52a94cc0",
+      "transaction_hash": "0x7a6de89b78f064c31b5335f0397da164ed1ed93608e1ab1eb398612166a4321"
+    },
+    "arena_credit_purchase": {
+      "class_hash": "0x4be30835b6c7e9bc04c7cb119eab8670da3f168c58ebe718b8e4fb5c7aeb799",
+      "transaction_hash": "0x603858f08ebd3e096c6000485917fbacb88ab16dc2fa9faad1ef870bc235146"
+    },
+    "arcade_classic": {
+      "class_hash": "0x6f5e45d938a7d3e8e287ffbe3f70f3c803e877e3306377089b0dfd4d7d09ff",
+      "transaction_hash": "0x274ed7dfe758ca979af1c3b8da72be2cc77fde7dea4412aca5a1ae56dcc9110"
+    },
+    "arcade_amma": {
+      "class_hash": "0x5a9e249dc07a6aaa0b011c4b773a907551b916155b73b6e62dfa7207589d490",
+      "transaction_hash": "0x33f578e6a1012ff1bd9f6c98b361bd731086c5e24464d80bb6a973af894e0f7"
+    },
+    "pvp": {
+      "class_hash": "0x54e2d881e8dd77a00b8390ea81dfa215201a1ea7f5c44d10b7a5ed963a452c",
+      "transaction_hash": "0xa1410fff616dbf14131ad311956cfce4cc20b41a995bf79f0e8966f263813b"
     }
   },
   "abis": {
