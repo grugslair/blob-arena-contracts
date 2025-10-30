@@ -61,6 +61,7 @@ pub mod arcade_component {
         pub health_regen_percent: u8,
         pub current_attempt: Map<felt252, felt252>,
         pub loadout_address: ContractAddress,
+        pub orb_minter_address: ContractAddress,
         pub orb_address: ContractAddress,
         pub credit_address: ContractAddress,
         pub credit_cost: u128,

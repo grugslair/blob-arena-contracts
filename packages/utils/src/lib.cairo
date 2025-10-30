@@ -21,18 +21,39 @@ pub impl SeedProbabilityImpl of SeedProbability {
         self = seed;
         value < probability.into()
     }
-    fn get_value<T, +Into<T, u128>, +TryInto<u128, T>, +Zero<T>>(ref self: u128, scale: T) -> T {
-        let scale: NonZero<u128> = match Into::<_, u128>::into(scale).try_into() {
+    fn get_value<
+        T, +Into<T, NonZero<T>>, +Into<NonZero<T>, NonZero<u128>>, +TryInto<u128, T>, +Zero<T>,
+    >(
+        ref self: u128, scale: T,
+    ) -> T {
+        let scale: NonZero<T> = match scale.try_into() {
             None => { return Zero::zero(); },
             Some(s) => s,
         };
-        let (seed, value) = self.div_rem(scale);
+        self.get_value_nz(scale)
+    }
+    fn get_value_nz<T, +Into<NonZero<T>, NonZero<u128>>, +TryInto<u128, T>>(
+        ref self: u128, scale: NonZero<T>,
+    ) -> T {
+        let (seed, value) = self.div_rem(Into::<NonZero<T>, NonZero<u128>>::into(scale));
         self = seed;
         value.try_into().unwrap()
     }
-    fn get_final_value<T, +Into<T, u128>, +TryInto<u128, T>>(self: u128, scale: T) -> T {
-        let (_, value) = self.div_rem(Into::<T, u128>::into(scale).try_into().unwrap());
-
+    fn get_final_value<
+        T, +Into<T, NonZero<T>>, +Into<NonZero<T>, NonZero<u128>>, +TryInto<u128, T>, +Zero<T>,
+    >(
+        self: u128, scale: T,
+    ) -> T {
+        let scale: NonZero<T> = match scale.try_into() {
+            None => { return Zero::zero(); },
+            Some(s) => s,
+        };
+        self.get_final_value_nz(scale)
+    }
+    fn get_final_value_nz<T, +Into<NonZero<T>, NonZero<u128>>, +TryInto<u128, T>>(
+        self: u128, scale: NonZero<T>,
+    ) -> T {
+        let (_, value) = self.div_rem(Into::<NonZero<T>, NonZero<u128>>::into(scale));
         value.try_into().unwrap()
     }
 }

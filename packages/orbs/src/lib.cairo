@@ -1,17 +1,7 @@
 use core::num::traits::Zero;
 use openzeppelin_token::erc721::{ERC721ABIDispatcher, ERC721ABIDispatcherTrait};
 use starknet::ContractAddress;
-// mod minter;
-
-#[derive(Drop, Copy, Serde, Introspect, PartialEq, Default, starknet::Store)]
-pub enum Rarity {
-    #[default]
-    None,
-    Common,
-    Rare,
-    Epic,
-    Legendary,
-}
+mod minter;
 
 
 #[derive(Drop, Copy, Serde, Introspect, PartialEq)]
@@ -26,7 +16,6 @@ pub enum Role {
 pub trait IOrb<TContractState> {
     fn action(self: @TContractState, token_id: u256) -> felt252;
     fn charge(self: @TContractState, token_id: u256) -> u128;
-    fn rarity(self: @TContractState, token_id: u256) -> Rarity;
     fn charge_cost(self: @TContractState, token_id: u256) -> u128;
 }
 
@@ -36,7 +25,6 @@ pub trait IOrbAdmin<TContractState> {
         ref self: TContractState,
         owner: ContractAddress,
         action: felt252,
-        rarity: Rarity,
         charge: u128,
         charge_cost: u128,
     ) -> u256;
@@ -68,12 +56,10 @@ pub impl OrbImpl of OrbTrait {
         self: ContractAddress,
         owner: ContractAddress,
         action: felt252,
-        rarity: Rarity,
         charge: u128,
         charge_cost: u128,
     ) -> u256 {
-        IOrbAdminDispatcher { contract_address: self }
-            .mint(owner, action, rarity, charge, charge_cost)
+        IOrbAdminDispatcher { contract_address: self }.mint(owner, action, charge, charge_cost)
     }
 }
 
@@ -97,7 +83,7 @@ pub mod orbs {
     };
     use starknet::{ContractAddress, get_caller_address};
     use crate::Role;
-    use super::{IOrb, IOrbAdmin, Rarity, downcast_id};
+    use super::{IOrb, IOrbAdmin, downcast_id};
 
     component!(path: ERC721Component, storage: erc721, event: ERC721Event);
     component!(path: SRC5Component, storage: src5, event: SRC5Event);
@@ -124,7 +110,6 @@ pub mod orbs {
     pub struct Orb {
         action: felt252,
         charge: u128,
-        rarity: Rarity,
         charge_cost: u128,
     }
 
@@ -137,7 +122,6 @@ pub mod orbs {
         src5: SRC5Component::Storage,
         charges: Map<felt252, u128>,
         actions: Map<felt252, felt252>,
-        rarities: Map<felt252, Rarity>,
         charge_costs: Map<felt252, u128>,
         tokens_minted: felt252,
         role_owners: Map<ContractAddress, bool>,
@@ -188,10 +172,6 @@ pub mod orbs {
             self.charges.read(downcast_id(token_id))
         }
 
-        fn rarity(self: @ContractState, token_id: u256) -> Rarity {
-            self.rarities.read(downcast_id(token_id))
-        }
-
         fn charge_cost(self: @ContractState, token_id: u256) -> u128 {
             self.charge_costs.read(downcast_id(token_id))
         }
@@ -203,12 +183,11 @@ pub mod orbs {
             ref self: ContractState,
             owner: ContractAddress,
             action: felt252,
-            rarity: Rarity,
             charge: u128,
             charge_cost: u128,
         ) -> u256 {
             self.assert_caller_has_role(Role::Minter);
-            self.mint_internal(owner, action, charge, charge_cost, rarity)
+            self.mint_internal(owner, action, charge, charge_cost)
         }
 
         fn add_charge_cost(ref self: ContractState, token_id: u256) {
@@ -279,16 +258,14 @@ pub mod orbs {
             action: felt252,
             charge: u128,
             charge_cost: u128,
-            rarity: Rarity,
         ) -> u256 {
             let token_id = self.tokens_minted.read() + 1;
             self.tokens_minted.write(token_id);
             assert(action.is_non_zero(), 'Invalid action ID');
             assert(charge_cost.is_non_zero(), 'Charge cost cannot be zero');
-            OrbTable::set_entity(token_id, @Orb { action, charge, rarity, charge_cost });
+            OrbTable::set_entity(token_id, @Orb { action, charge, charge_cost });
             self.actions.write(token_id, action);
             self.charges.write(token_id, charge);
-            self.rarities.write(token_id, rarity);
             self.charge_costs.write(token_id, charge_cost);
             let token_id: u256 = token_id.into();
             self.erc721.mint(owner, token_id);
