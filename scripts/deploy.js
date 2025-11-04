@@ -8,6 +8,7 @@ import { dumpToml, loadToml } from "./stark-utils.js";
 import { makeArcadeAmmaCalls } from "./set-arcade-amma.js";
 import { makeArenaCreditCalls } from "./set-arena-credits.js";
 import { makePvpCalls } from "./set-pvp.js";
+import { makeOrbsMinterConfigCalls, makeOrbTokenCalls } from "./set-orbs.js";
 const deployWithOwner = [
   "arena_blobert",
   "amma_blobert",
@@ -163,6 +164,7 @@ const writersCalls = await sai.setOnlyWritersCalls({
   arena_blobert: [sai.contracts.arena_blobert_minter.contract_address],
   amma_blobert_soulbound: [sai.contracts.amma_blobert_minter.contract_address],
   action: [
+    owner,
     sai.contracts.loadout_amma.contract_address,
     sai.contracts.loadout_classic.contract_address,
     sai.contracts.arcade_classic.contract_address,
@@ -192,6 +194,8 @@ await sai.executeAndWait([
   ...(await makeArcadeAmmaCalls(sai)),
   ...(await makePvpCalls(sai)),
   ...(await makeArenaCreditCalls(sai)),
+  ...(await makeOrbsMinterConfigCalls(sai)),
+  ...(await makeOrbTokenCalls(sai)),
 ]);
 
 console.log("Granting writers and owners...");

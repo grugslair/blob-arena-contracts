@@ -180,11 +180,11 @@ mod orb_minter {
 
     #[constructor]
     fn constructor(
-        ref self: ContractState, owner: ContractAddress, token_contract: ContractAddress,
+        ref self: ContractState, owner: ContractAddress, token_address: ContractAddress,
     ) {
         register_table_with_schema::<Shards>("orbs", "Shards");
         self.grant_owner(owner);
-        self.orb_contract.write(token_contract);
+        self.orb_contract.write(token_address);
     }
 
     #[abi(embed_v0)]

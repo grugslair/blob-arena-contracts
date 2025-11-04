@@ -1,14 +1,10 @@
 import { loadJson } from "./stark-utils.js";
 import { loadSai } from "./sai.js";
-import { parseIdTagActionStructs } from "./loadout.js";
 import { parseNewAction } from "./loadout.js";
+import { CairoCustomEnum } from "starknet";
 
 const parseNewActionsAndIds = (actions, check) => {
-  return [
-    actions.filter((_, i) => check[i][1]),
-    check.map((a) => a),
-    check,
-  ].map(([id, _]) => id);
+  return [actions.filter((_, i) => check[i][1]), check.map(([id, _]) => id)];
 };
 
 const makeOrbActionsCalls = async (
@@ -49,6 +45,20 @@ const makeOrbActionsCalls = async (
     orbContract.populate("set_rare_actions", { actions: rareIds }),
     orbContract.populate("set_epic_actions", { actions: epicIds }),
     orbContract.populate("set_legendary_actions", { actions: legendaryIds }),
+  ];
+};
+
+export const makeOrbTokenCalls = async (sai) => {
+  const contract = await sai.getContract("orb");
+  return [
+    contract.populate("grant_role", {
+      user: sai.contracts.arcade_amma.contract_address,
+      role: new CairoCustomEnum({ Consumer: {} }),
+    }),
+    contract.populate("grant_role", {
+      user: sai.contracts.arcade_classic.contract_address,
+      role: new CairoCustomEnum({ Consumer: {} }),
+    }),
   ];
 };
 

@@ -165,6 +165,13 @@ pub mod arcade_component {
             self.combat_class_hash.write(class_hash);
         }
 
+        fn set_orb_address(
+            ref self: ComponentState<TContractState>, contract_address: ContractAddress,
+        ) {
+            self.get_contract().assert_caller_is_owner();
+            self.orb_address.write(contract_address);
+        }
+
         fn set_orb_minter_address(
             ref self: ComponentState<TContractState>, contract_address: ContractAddress,
         ) {

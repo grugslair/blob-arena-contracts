@@ -104,8 +104,23 @@
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
       ]
     },
+    "orb": {
+      "contract_address": "0x43b57ae8c441f0c2405bdceda6b42b704ed34a03b63eb651a58db5f58a1c5e5",
+      "tag": "orb",
+      "unique": false,
+      "calldata": {
+        "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
+      },
+      "salt": "0x0",
+      "once": true,
+      "class": "orb",
+      "class_hash": "0x16083a680f916dc90c184862448c02e5639ab98156982f9df1b00cba6602552",
+      "calldata_compiled": [
+        "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba"
+      ]
+    },
     "action": {
-      "contract_address": "0x7031e3728bfafcc4196d2cccc93dafb1303dab0f73a0c619aafb2fbaf96d2a5",
+      "contract_address": "0x394a469a4ab6c9d60a0e097a06d8ff17270e2df9a35f63adb2f3948521ff50f",
       "tag": "action",
       "unique": false,
       "calldata": {
@@ -115,10 +130,27 @@
       "salt": "0x0",
       "once": true,
       "class": "action",
-      "class_hash": "0x1e87aa4a6d650866f76fec908600db16ce164c4dc407958251e5106ac92e918",
+      "class_hash": "0x44ee042ec162efe13080050d3c880440ec70960349cc4d54d8b91924d34432b",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
         "0x51914a51d3a3f30fce59b11eff04955217ad3d368f6fbf89b556515ca5efc58"
+      ]
+    },
+    "orb_minter": {
+      "contract_address": "0x43b93845a4478937615818fc534ff7528b78def6ddfae78f4e686ff3e2164a5",
+      "tag": "orb_minter",
+      "unique": false,
+      "calldata": {
+        "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
+        "token_address": "0x43b57ae8c441f0c2405bdceda6b42b704ed34a03b63eb651a58db5f58a1c5e5"
+      },
+      "salt": "0x0",
+      "once": true,
+      "class": "orb_minter",
+      "class_hash": "0x46bf8dbce3df35f685dc6e0e4fe48d788dc2693ba296e060e70bef069a1f46b",
+      "calldata_compiled": [
+        "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
+        "0x43b57ae8c441f0c2405bdceda6b42b704ed34a03b63eb651a58db5f58a1c5e5"
       ]
     },
     "arena_blobert_minter": {
@@ -171,12 +203,12 @@
       ]
     },
     "loadout_classic": {
-      "contract_address": "0x4164d479e24831b3105123b8084c60bc3478317a8d9ee76a678a2338b6e82fe",
+      "contract_address": "0x529795d15e5451c3656953ba800aed8e0987f9abb7afaac5ef392834154500f",
       "tag": "loadout_classic",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "action_dispatcher_address": "0x7031e3728bfafcc4196d2cccc93dafb1303dab0f73a0c619aafb2fbaf96d2a5",
+        "action_dispatcher_address": "0x394a469a4ab6c9d60a0e097a06d8ff17270e2df9a35f63adb2f3948521ff50f",
         "collection_addresses": [
           "0x1bea635394e89010fc827d6cb4043c2781a23bc05fd2136be50023af43b310e",
           "0x0"
@@ -188,19 +220,19 @@
       "class_hash": "0x1cf347168a95b33015f6bc5a2931ed2194644136cfbacb9b92052b8158649dd",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x7031e3728bfafcc4196d2cccc93dafb1303dab0f73a0c619aafb2fbaf96d2a5",
+        "0x394a469a4ab6c9d60a0e097a06d8ff17270e2df9a35f63adb2f3948521ff50f",
         "0x2",
         "0x1bea635394e89010fc827d6cb4043c2781a23bc05fd2136be50023af43b310e",
         "0x0"
       ]
     },
     "loadout_amma": {
-      "contract_address": "0x463834e44e84dbf8e2bd6d5e445e2f3e558f9b143631e494e3963927104c4",
+      "contract_address": "0x7ad06ca408eb740efb9f46e547cb958d9ccfd2b2a85019b36e3da2c527ff06a",
       "tag": "loadout_amma",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "action_dispatcher_address": "0x7031e3728bfafcc4196d2cccc93dafb1303dab0f73a0c619aafb2fbaf96d2a5",
+        "action_dispatcher_address": "0x394a469a4ab6c9d60a0e097a06d8ff17270e2df9a35f63adb2f3948521ff50f",
         "collection_addresses": [
           "0x755a231a093e8b4e09c106d680d91c7dfec170186343fc0e38b8ab0ac428d51",
           "0x4058fff9d25339f3bbd660501b5b9118e91b66d50a7f1908ac0dfe53a692517"
@@ -212,73 +244,77 @@
       "class_hash": "0x2fb5a21fad3a9529d4e017f1c0343f34307a0ee6bdcb2b0bb4346c4e30b7bb8",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x7031e3728bfafcc4196d2cccc93dafb1303dab0f73a0c619aafb2fbaf96d2a5",
+        "0x394a469a4ab6c9d60a0e097a06d8ff17270e2df9a35f63adb2f3948521ff50f",
         "0x2",
         "0x755a231a093e8b4e09c106d680d91c7dfec170186343fc0e38b8ab0ac428d51",
         "0x4058fff9d25339f3bbd660501b5b9118e91b66d50a7f1908ac0dfe53a692517"
       ]
     },
     "arcade_classic": {
-      "contract_address": "0x5b083bfc89afecf951c45f699225f9eb38518fbd3e0decc143eff06825b4a62",
+      "contract_address": "0x319334eefc029ceada928ac59cdeaf08a1c9cdc3f22842b9aecfced8ebbfbd8",
       "tag": "arcade_classic",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
         "arcade_round_result_class_hash": "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
-        "action_address": "0x7031e3728bfafcc4196d2cccc93dafb1303dab0f73a0c619aafb2fbaf96d2a5",
-        "loadout_address": "0x4164d479e24831b3105123b8084c60bc3478317a8d9ee76a678a2338b6e82fe"
+        "action_address": "0x394a469a4ab6c9d60a0e097a06d8ff17270e2df9a35f63adb2f3948521ff50f",
+        "loadout_address": "0x529795d15e5451c3656953ba800aed8e0987f9abb7afaac5ef392834154500f",
+        "orb_address": "0x43b57ae8c441f0c2405bdceda6b42b704ed34a03b63eb651a58db5f58a1c5e5"
       },
       "salt": "0x0",
       "once": true,
       "class": "arcade_classic",
-      "class_hash": "0x6f5e45d938a7d3e8e287ffbe3f70f3c803e877e3306377089b0dfd4d7d09ff",
+      "class_hash": "0x48cb348fb5fc817174043b49b61dd30be284306952da75080d514d8977eb13e",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
         "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
-        "0x7031e3728bfafcc4196d2cccc93dafb1303dab0f73a0c619aafb2fbaf96d2a5",
-        "0x4164d479e24831b3105123b8084c60bc3478317a8d9ee76a678a2338b6e82fe"
+        "0x394a469a4ab6c9d60a0e097a06d8ff17270e2df9a35f63adb2f3948521ff50f",
+        "0x529795d15e5451c3656953ba800aed8e0987f9abb7afaac5ef392834154500f",
+        "0x43b57ae8c441f0c2405bdceda6b42b704ed34a03b63eb651a58db5f58a1c5e5"
       ]
     },
     "arcade_amma": {
-      "contract_address": "0x665f41badc47b5b81b8d04b6691c15b3e8c1234c93f06da2667730301058309",
+      "contract_address": "0x7135405e89f7a9e11ad28233f6abb34a1d375d32f01c29c6cdcf49e57d352a2",
       "tag": "arcade_amma",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
         "arcade_round_result_class_hash": "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
-        "action_address": "0x7031e3728bfafcc4196d2cccc93dafb1303dab0f73a0c619aafb2fbaf96d2a5",
-        "loadout_address": "0x463834e44e84dbf8e2bd6d5e445e2f3e558f9b143631e494e3963927104c4",
+        "action_address": "0x394a469a4ab6c9d60a0e097a06d8ff17270e2df9a35f63adb2f3948521ff50f",
+        "loadout_address": "0x7ad06ca408eb740efb9f46e547cb958d9ccfd2b2a85019b36e3da2c527ff06a",
+        "orb_address": "0x43b57ae8c441f0c2405bdceda6b42b704ed34a03b63eb651a58db5f58a1c5e5",
         "collectable_address": "0x755a231a093e8b4e09c106d680d91c7dfec170186343fc0e38b8ab0ac428d51"
       },
       "salt": "0x0",
       "once": true,
       "class": "arcade_amma",
-      "class_hash": "0x5a9e249dc07a6aaa0b011c4b773a907551b916155b73b6e62dfa7207589d490",
+      "class_hash": "0x1ddaf9e92710a59f5728a1def5ca88e26a3e9fc81ae5019c87fcab6abbb672b",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
         "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
-        "0x7031e3728bfafcc4196d2cccc93dafb1303dab0f73a0c619aafb2fbaf96d2a5",
-        "0x463834e44e84dbf8e2bd6d5e445e2f3e558f9b143631e494e3963927104c4",
+        "0x394a469a4ab6c9d60a0e097a06d8ff17270e2df9a35f63adb2f3948521ff50f",
+        "0x7ad06ca408eb740efb9f46e547cb958d9ccfd2b2a85019b36e3da2c527ff06a",
+        "0x43b57ae8c441f0c2405bdceda6b42b704ed34a03b63eb651a58db5f58a1c5e5",
         "0x755a231a093e8b4e09c106d680d91c7dfec170186343fc0e38b8ab0ac428d51"
       ]
     },
     "pvp": {
-      "contract_address": "0x6fc44a63484dd312e67aa4d0fb63aca2867613d8fb3cd9901324a02f3d7bf17",
+      "contract_address": "0x5dd69a5deed13f64c0bb19e7a1b6b893c55cf0ee7de48986253609c43928235",
       "tag": "pvp",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
         "round_result_class_hash": "0x1f75ae3422d68d968fa10a550218d55260a26892d6f6f2c88714c530f7bd8e7",
-        "action_address": "0x7031e3728bfafcc4196d2cccc93dafb1303dab0f73a0c619aafb2fbaf96d2a5"
+        "action_address": "0x394a469a4ab6c9d60a0e097a06d8ff17270e2df9a35f63adb2f3948521ff50f"
       },
       "salt": "0x0",
       "once": true,
       "class": "pvp",
-      "class_hash": "0x54e2d881e8dd77a00b8390ea81dfa215201a1ea7f5c44d10b7a5ed963a452c",
+      "class_hash": "0x16ffe3d6270b2c2ef303a6ea6ba7568ebb5dfd4b9ae181ded89bfecc26759ea",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
         "0x1f75ae3422d68d968fa10a550218d55260a26892d6f6f2c88714c530f7bd8e7",
-        "0x7031e3728bfafcc4196d2cccc93dafb1303dab0f73a0c619aafb2fbaf96d2a5"
+        "0x394a469a4ab6c9d60a0e097a06d8ff17270e2df9a35f63adb2f3948521ff50f"
       ]
     }
   },
@@ -296,7 +332,7 @@
       "class_hash": "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a"
     },
     "combat": {
-      "class_hash": "0x2ea37d62b1e73925e56c7654043993e28aaf60162f287d6a30ae95bdf292fa1"
+      "class_hash": "0x967270354c18455f388366448c06d318cc426fb1a891b149f0dacd8cbcfc83"
     },
     "arena_blobert": {
       "class_hash": "0x65f2d6e583f86237f9f046fbc0817a7bbb0e85a1fbbeedf672fd05288a3590c"
@@ -314,7 +350,7 @@
       "class_hash": "0x4bbd4269e9fc9b370a01bfc3a7cf8bc72eeee7206505ee10d9f593cd9e429f"
     },
     "action": {
-      "class_hash": "0x1e87aa4a6d650866f76fec908600db16ce164c4dc407958251e5106ac92e918"
+      "class_hash": "0x44ee042ec162efe13080050d3c880440ec70960349cc4d54d8b91924d34432b"
     },
     "loadout_classic": {
       "class_hash": "0x1cf347168a95b33015f6bc5a2931ed2194644136cfbacb9b92052b8158649dd"
@@ -322,8 +358,11 @@
     "loadout_amma": {
       "class_hash": "0x2fb5a21fad3a9529d4e017f1c0343f34307a0ee6bdcb2b0bb4346c4e30b7bb8"
     },
-    "orbs": {
-      "class_hash": "0x15bc92b95bdf5c65ea349c98a5d27cda791dc98a672ce0c3e7f92946daf7b7e"
+    "orb": {
+      "class_hash": "0x16083a680f916dc90c184862448c02e5639ab98156982f9df1b00cba6602552"
+    },
+    "orb_minter": {
+      "class_hash": "0x46bf8dbce3df35f685dc6e0e4fe48d788dc2693ba296e060e70bef069a1f46b"
     },
     "arena_credit": {
       "class_hash": "0x29eb7b4a082ebcef9bc97a5fcc6e109414975c4cc5d5db1e31de82d52a94cc0"
@@ -332,13 +371,13 @@
       "class_hash": "0x4be30835b6c7e9bc04c7cb119eab8670da3f168c58ebe718b8e4fb5c7aeb799"
     },
     "arcade_classic": {
-      "class_hash": "0x6f5e45d938a7d3e8e287ffbe3f70f3c803e877e3306377089b0dfd4d7d09ff"
+      "class_hash": "0x48cb348fb5fc817174043b49b61dd30be284306952da75080d514d8977eb13e"
     },
     "arcade_amma": {
-      "class_hash": "0x5a9e249dc07a6aaa0b011c4b773a907551b916155b73b6e62dfa7207589d490"
+      "class_hash": "0x1ddaf9e92710a59f5728a1def5ca88e26a3e9fc81ae5019c87fcab6abbb672b"
     },
     "pvp": {
-      "class_hash": "0x54e2d881e8dd77a00b8390ea81dfa215201a1ea7f5c44d10b7a5ed963a452c"
+      "class_hash": "0x16ffe3d6270b2c2ef303a6ea6ba7568ebb5dfd4b9ae181ded89bfecc26759ea"
     }
   },
   "contracts": {
@@ -388,10 +427,20 @@
       "class_hash": "0x29eb7b4a082ebcef9bc97a5fcc6e109414975c4cc5d5db1e31de82d52a94cc0",
       "class": "arena_credit"
     },
+    "orb": {
+      "contract_address": "0x43b57ae8c441f0c2405bdceda6b42b704ed34a03b63eb651a58db5f58a1c5e5",
+      "class_hash": "0x16083a680f916dc90c184862448c02e5639ab98156982f9df1b00cba6602552",
+      "class": "orb"
+    },
     "action": {
-      "contract_address": "0x7031e3728bfafcc4196d2cccc93dafb1303dab0f73a0c619aafb2fbaf96d2a5",
-      "class_hash": "0x1e87aa4a6d650866f76fec908600db16ce164c4dc407958251e5106ac92e918",
+      "contract_address": "0x394a469a4ab6c9d60a0e097a06d8ff17270e2df9a35f63adb2f3948521ff50f",
+      "class_hash": "0x44ee042ec162efe13080050d3c880440ec70960349cc4d54d8b91924d34432b",
       "class": "action"
+    },
+    "orb_minter": {
+      "contract_address": "0x43b93845a4478937615818fc534ff7528b78def6ddfae78f4e686ff3e2164a5",
+      "class_hash": "0x46bf8dbce3df35f685dc6e0e4fe48d788dc2693ba296e060e70bef069a1f46b",
+      "class": "orb_minter"
     },
     "arena_blobert_minter": {
       "contract_address": "0x5211935753df2a1f327e70b0b039afab03c286ca2249f4ff38148ac9212eaf7",
@@ -409,109 +458,32 @@
       "class": "arena_credit_purchase"
     },
     "loadout_classic": {
-      "contract_address": "0x4164d479e24831b3105123b8084c60bc3478317a8d9ee76a678a2338b6e82fe",
+      "contract_address": "0x529795d15e5451c3656953ba800aed8e0987f9abb7afaac5ef392834154500f",
       "class_hash": "0x1cf347168a95b33015f6bc5a2931ed2194644136cfbacb9b92052b8158649dd",
       "class": "loadout_classic"
     },
     "loadout_amma": {
-      "contract_address": "0x463834e44e84dbf8e2bd6d5e445e2f3e558f9b143631e494e3963927104c4",
+      "contract_address": "0x7ad06ca408eb740efb9f46e547cb958d9ccfd2b2a85019b36e3da2c527ff06a",
       "class_hash": "0x2fb5a21fad3a9529d4e017f1c0343f34307a0ee6bdcb2b0bb4346c4e30b7bb8",
       "class": "loadout_amma"
     },
     "arcade_classic": {
-      "contract_address": "0x5b083bfc89afecf951c45f699225f9eb38518fbd3e0decc143eff06825b4a62",
-      "class_hash": "0x6f5e45d938a7d3e8e287ffbe3f70f3c803e877e3306377089b0dfd4d7d09ff",
+      "contract_address": "0x319334eefc029ceada928ac59cdeaf08a1c9cdc3f22842b9aecfced8ebbfbd8",
+      "class_hash": "0x48cb348fb5fc817174043b49b61dd30be284306952da75080d514d8977eb13e",
       "class": "arcade_classic"
     },
     "arcade_amma": {
-      "contract_address": "0x665f41badc47b5b81b8d04b6691c15b3e8c1234c93f06da2667730301058309",
-      "class_hash": "0x5a9e249dc07a6aaa0b011c4b773a907551b916155b73b6e62dfa7207589d490",
+      "contract_address": "0x7135405e89f7a9e11ad28233f6abb34a1d375d32f01c29c6cdcf49e57d352a2",
+      "class_hash": "0x1ddaf9e92710a59f5728a1def5ca88e26a3e9fc81ae5019c87fcab6abbb672b",
       "class": "arcade_amma"
     },
     "pvp": {
-      "contract_address": "0x6fc44a63484dd312e67aa4d0fb63aca2867613d8fb3cd9901324a02f3d7bf17",
-      "class_hash": "0x54e2d881e8dd77a00b8390ea81dfa215201a1ea7f5c44d10b7a5ed963a452c",
+      "contract_address": "0x5dd69a5deed13f64c0bb19e7a1b6b893c55cf0ee7de48986253609c43928235",
+      "class_hash": "0x16ffe3d6270b2c2ef303a6ea6ba7568ebb5dfd4b9ae181ded89bfecc26759ea",
       "class": "pvp"
     }
   },
-  "declarations": {
-    "mock_vrf": {
-      "class_hash": "0x301acbd969fe41d1dd0a3349a17db0e779d78644aa21d4ff6ef3f0d0498479f",
-      "transaction_hash": "0x434ca03ae9c228ada9a96d52037abf6a1323be8a7ee38acaf8e532c48abb681"
-    },
-    "action_model": {
-      "class_hash": "0x51914a51d3a3f30fce59b11eff04955217ad3d368f6fbf89b556515ca5efc58",
-      "transaction_hash": "0x13bd0cfb6a5dd097cf5f3cda7a9b73b23d0f5c6548f2fcf77a56fdd974f69c7"
-    },
-    "round_result_model": {
-      "class_hash": "0x1f75ae3422d68d968fa10a550218d55260a26892d6f6f2c88714c530f7bd8e7",
-      "transaction_hash": "0x29d94fa1ec573acae31768577bf56dd43c53b47f19c96f934315544498f0687"
-    },
-    "arcade_round_result_model": {
-      "class_hash": "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
-      "transaction_hash": "0xef3ae84af9a0bb3301c30334cdbfae5075c2ab7302e0032072f1ebd310608c"
-    },
-    "combat": {
-      "class_hash": "0x2ea37d62b1e73925e56c7654043993e28aaf60162f287d6a30ae95bdf292fa1",
-      "transaction_hash": "0x30a35fccc56abd6b254d66d00bacd391ef202c66b527c2f2c369efe8a69de80"
-    },
-    "arena_blobert": {
-      "class_hash": "0x65f2d6e583f86237f9f046fbc0817a7bbb0e85a1fbbeedf672fd05288a3590c",
-      "transaction_hash": "0x7e9f855605db0b03809b2065fd98dbcf0bc1880d115c083f2e3327d254cad06"
-    },
-    "arena_blobert_minter": {
-      "class_hash": "0x724b4eca7c6414d7d8dfb11cc616cde5b6ffe12d1c6032d10c667f48e1c84ea",
-      "transaction_hash": "0x198de0fefe901ccd3d6208e4f65f662b27a6f0a993b73751094e27d2aa3348e"
-    },
-    "amma_blobert": {
-      "class_hash": "0x4cac2dde125d08e2d76841527ce5edb9ac08fd58fb1f54caaa1c6a874c9b5b8",
-      "transaction_hash": "0x2890ceca5d40c39a6ba0bdce641a3f5597dad3903db796c1c1c18b3db3c30b7"
-    },
-    "amma_blobert_soulbound": {
-      "class_hash": "0x2a3f22e91d891700653cd7f14f6bd8c6c8e268381c242e424f4f379602a5050",
-      "transaction_hash": "0x7c9f9cf4620c45879d82d59d1c0dfbfb1e1f41e1a5df21dbbd8b6454d1b6d7b"
-    },
-    "amma_blobert_minter": {
-      "class_hash": "0x4bbd4269e9fc9b370a01bfc3a7cf8bc72eeee7206505ee10d9f593cd9e429f",
-      "transaction_hash": "0xffb504c2377290f19f7b98d4bbc81281f39cd2353c11a9e8367a984db0a47"
-    },
-    "action": {
-      "class_hash": "0x1e87aa4a6d650866f76fec908600db16ce164c4dc407958251e5106ac92e918",
-      "transaction_hash": "0x383a692e22855f535a8413cbbb7e56df2761a3071d0f46b29f0545e8ad6a93b"
-    },
-    "loadout_classic": {
-      "class_hash": "0x1cf347168a95b33015f6bc5a2931ed2194644136cfbacb9b92052b8158649dd",
-      "transaction_hash": "0x4fafe73ad1ce61d07d55b4f3ae1fa59614222a49547dd5e1d197effba27b952"
-    },
-    "loadout_amma": {
-      "class_hash": "0x2fb5a21fad3a9529d4e017f1c0343f34307a0ee6bdcb2b0bb4346c4e30b7bb8",
-      "transaction_hash": "0x5e1dd331254130cdcb0e8ae0566bcea2760958dfafff9cde13672baf8b4c3e0"
-    },
-    "orbs": {
-      "class_hash": "0x15bc92b95bdf5c65ea349c98a5d27cda791dc98a672ce0c3e7f92946daf7b7e",
-      "transaction_hash": "0x2b126835421ec2a42b081636594507738c3db76a4e9071b9853501db34faf22"
-    },
-    "arena_credit": {
-      "class_hash": "0x29eb7b4a082ebcef9bc97a5fcc6e109414975c4cc5d5db1e31de82d52a94cc0",
-      "transaction_hash": "0x7a6de89b78f064c31b5335f0397da164ed1ed93608e1ab1eb398612166a4321"
-    },
-    "arena_credit_purchase": {
-      "class_hash": "0x4be30835b6c7e9bc04c7cb119eab8670da3f168c58ebe718b8e4fb5c7aeb799",
-      "transaction_hash": "0x603858f08ebd3e096c6000485917fbacb88ab16dc2fa9faad1ef870bc235146"
-    },
-    "arcade_classic": {
-      "class_hash": "0x6f5e45d938a7d3e8e287ffbe3f70f3c803e877e3306377089b0dfd4d7d09ff",
-      "transaction_hash": "0x274ed7dfe758ca979af1c3b8da72be2cc77fde7dea4412aca5a1ae56dcc9110"
-    },
-    "arcade_amma": {
-      "class_hash": "0x5a9e249dc07a6aaa0b011c4b773a907551b916155b73b6e62dfa7207589d490",
-      "transaction_hash": "0x33f578e6a1012ff1bd9f6c98b361bd731086c5e24464d80bb6a973af894e0f7"
-    },
-    "pvp": {
-      "class_hash": "0x54e2d881e8dd77a00b8390ea81dfa215201a1ea7f5c44d10b7a5ed963a452c",
-      "transaction_hash": "0xa1410fff616dbf14131ad311956cfce4cc20b41a995bf79f0e8966f263813b"
-    }
-  },
+  "declarations": {},
   "abis": {
     "0x65f2d6e583f86237f9f046fbc0817a7bbb0e85a1fbbeedf672fd05288a3590c": [
       {
@@ -3614,7 +3586,877 @@
         ]
       }
     ],
-    "0x1e87aa4a6d650866f76fec908600db16ce164c4dc407958251e5106ac92e918": [
+    "0x16083a680f916dc90c184862448c02e5639ab98156982f9df1b00cba6602552": [
+      {
+        "type": "impl",
+        "name": "IOrbImpl",
+        "interface_name": "ba_orbs::token::IOrb"
+      },
+      {
+        "type": "struct",
+        "name": "core::integer::u256",
+        "members": [
+          {
+            "name": "low",
+            "type": "core::integer::u128"
+          },
+          {
+            "name": "high",
+            "type": "core::integer::u128"
+          }
+        ]
+      },
+      {
+        "type": "interface",
+        "name": "ba_orbs::token::IOrb",
+        "items": [
+          {
+            "type": "function",
+            "name": "action",
+            "inputs": [
+              {
+                "name": "token_id",
+                "type": "core::integer::u256"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::felt252"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "charge",
+            "inputs": [
+              {
+                "name": "token_id",
+                "type": "core::integer::u256"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::integer::u128"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "charge_cost",
+            "inputs": [
+              {
+                "name": "token_id",
+                "type": "core::integer::u256"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::integer::u128"
+              }
+            ],
+            "state_mutability": "view"
+          }
+        ]
+      },
+      {
+        "type": "impl",
+        "name": "IOrbAdminImpl",
+        "interface_name": "ba_orbs::token::IOrbAdmin"
+      },
+      {
+        "type": "enum",
+        "name": "ba_orbs::token::Role",
+        "variants": [
+          {
+            "name": "Owner",
+            "type": "()"
+          },
+          {
+            "name": "Minter",
+            "type": "()"
+          },
+          {
+            "name": "Charger",
+            "type": "()"
+          },
+          {
+            "name": "Consumer",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "enum",
+        "name": "core::bool",
+        "variants": [
+          {
+            "name": "False",
+            "type": "()"
+          },
+          {
+            "name": "True",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "interface",
+        "name": "ba_orbs::token::IOrbAdmin",
+        "items": [
+          {
+            "type": "function",
+            "name": "mint",
+            "inputs": [
+              {
+                "name": "owner",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "action",
+                "type": "core::felt252"
+              },
+              {
+                "name": "charge",
+                "type": "core::integer::u128"
+              },
+              {
+                "name": "charge_cost",
+                "type": "core::integer::u128"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::integer::u256"
+              }
+            ],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "add_charge_cost",
+            "inputs": [
+              {
+                "name": "token_id",
+                "type": "core::integer::u256"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "add_charge_amount",
+            "inputs": [
+              {
+                "name": "token_id",
+                "type": "core::integer::u256"
+              },
+              {
+                "name": "amount",
+                "type": "core::integer::u128"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "grant_role",
+            "inputs": [
+              {
+                "name": "user",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "role",
+                "type": "ba_orbs::token::Role"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "revoke_role",
+            "inputs": [
+              {
+                "name": "user",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "role",
+                "type": "ba_orbs::token::Role"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "has_role",
+            "inputs": [
+              {
+                "name": "user",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "role",
+                "type": "ba_orbs::token::Role"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::bool"
+              }
+            ],
+            "state_mutability": "view"
+          }
+        ]
+      },
+      {
+        "type": "impl",
+        "name": "IOrbUserImpl",
+        "interface_name": "ba_orbs::token::IOrbUser"
+      },
+      {
+        "type": "enum",
+        "name": "core::option::Option::<core::felt252>",
+        "variants": [
+          {
+            "name": "Some",
+            "type": "core::felt252"
+          },
+          {
+            "name": "None",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "interface",
+        "name": "ba_orbs::token::IOrbUser",
+        "items": [
+          {
+            "type": "function",
+            "name": "try_use_charge_cost",
+            "inputs": [
+              {
+                "name": "token_id",
+                "type": "core::integer::u256"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::option::Option::<core::felt252>"
+              }
+            ],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "try_use_charge_amount",
+            "inputs": [
+              {
+                "name": "token_id",
+                "type": "core::integer::u256"
+              },
+              {
+                "name": "amount",
+                "type": "core::integer::u128"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::option::Option::<core::felt252>"
+              }
+            ],
+            "state_mutability": "external"
+          }
+        ]
+      },
+      {
+        "type": "impl",
+        "name": "SRC5Impl",
+        "interface_name": "openzeppelin_introspection::interface::ISRC5"
+      },
+      {
+        "type": "interface",
+        "name": "openzeppelin_introspection::interface::ISRC5",
+        "items": [
+          {
+            "type": "function",
+            "name": "supports_interface",
+            "inputs": [
+              {
+                "name": "interface_id",
+                "type": "core::felt252"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::bool"
+              }
+            ],
+            "state_mutability": "view"
+          }
+        ]
+      },
+      {
+        "type": "impl",
+        "name": "ERC721Impl",
+        "interface_name": "openzeppelin_token::erc721::interface::IERC721"
+      },
+      {
+        "type": "struct",
+        "name": "core::array::Span::<core::felt252>",
+        "members": [
+          {
+            "name": "snapshot",
+            "type": "@core::array::Array::<core::felt252>"
+          }
+        ]
+      },
+      {
+        "type": "interface",
+        "name": "openzeppelin_token::erc721::interface::IERC721",
+        "items": [
+          {
+            "type": "function",
+            "name": "balance_of",
+            "inputs": [
+              {
+                "name": "account",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::integer::u256"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "owner_of",
+            "inputs": [
+              {
+                "name": "token_id",
+                "type": "core::integer::u256"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "safe_transfer_from",
+            "inputs": [
+              {
+                "name": "from",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "to",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "token_id",
+                "type": "core::integer::u256"
+              },
+              {
+                "name": "data",
+                "type": "core::array::Span::<core::felt252>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "transfer_from",
+            "inputs": [
+              {
+                "name": "from",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "to",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "token_id",
+                "type": "core::integer::u256"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "approve",
+            "inputs": [
+              {
+                "name": "to",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "token_id",
+                "type": "core::integer::u256"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_approval_for_all",
+            "inputs": [
+              {
+                "name": "operator",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "approved",
+                "type": "core::bool"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "get_approved",
+            "inputs": [
+              {
+                "name": "token_id",
+                "type": "core::integer::u256"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "is_approved_for_all",
+            "inputs": [
+              {
+                "name": "owner",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "operator",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::bool"
+              }
+            ],
+            "state_mutability": "view"
+          }
+        ]
+      },
+      {
+        "type": "impl",
+        "name": "ERC721CamelOnlyImpl",
+        "interface_name": "openzeppelin_token::erc721::interface::IERC721CamelOnly"
+      },
+      {
+        "type": "interface",
+        "name": "openzeppelin_token::erc721::interface::IERC721CamelOnly",
+        "items": [
+          {
+            "type": "function",
+            "name": "balanceOf",
+            "inputs": [
+              {
+                "name": "account",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::integer::u256"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "ownerOf",
+            "inputs": [
+              {
+                "name": "tokenId",
+                "type": "core::integer::u256"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "safeTransferFrom",
+            "inputs": [
+              {
+                "name": "from",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "to",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "tokenId",
+                "type": "core::integer::u256"
+              },
+              {
+                "name": "data",
+                "type": "core::array::Span::<core::felt252>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "transferFrom",
+            "inputs": [
+              {
+                "name": "from",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "to",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "tokenId",
+                "type": "core::integer::u256"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "setApprovalForAll",
+            "inputs": [
+              {
+                "name": "operator",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "approved",
+                "type": "core::bool"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "getApproved",
+            "inputs": [
+              {
+                "name": "tokenId",
+                "type": "core::integer::u256"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "isApprovedForAll",
+            "inputs": [
+              {
+                "name": "owner",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "operator",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::bool"
+              }
+            ],
+            "state_mutability": "view"
+          }
+        ]
+      },
+      {
+        "type": "impl",
+        "name": "ERC721Metadata",
+        "interface_name": "sai_token::erc721::metadata::IERC721Metadata"
+      },
+      {
+        "type": "struct",
+        "name": "core::byte_array::ByteArray",
+        "members": [
+          {
+            "name": "data",
+            "type": "core::array::Array::<core::bytes_31::bytes31>"
+          },
+          {
+            "name": "pending_word",
+            "type": "core::felt252"
+          },
+          {
+            "name": "pending_word_len",
+            "type": "core::integer::u32"
+          }
+        ]
+      },
+      {
+        "type": "interface",
+        "name": "sai_token::erc721::metadata::IERC721Metadata",
+        "items": [
+          {
+            "type": "function",
+            "name": "name",
+            "inputs": [],
+            "outputs": [
+              {
+                "type": "core::byte_array::ByteArray"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "symbol",
+            "inputs": [],
+            "outputs": [
+              {
+                "type": "core::byte_array::ByteArray"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "token_uri",
+            "inputs": [
+              {
+                "name": "token_id",
+                "type": "core::integer::u256"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::byte_array::ByteArray"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "tokenURI",
+            "inputs": [
+              {
+                "name": "tokenId",
+                "type": "core::integer::u256"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::byte_array::ByteArray"
+              }
+            ],
+            "state_mutability": "view"
+          }
+        ]
+      },
+      {
+        "type": "constructor",
+        "name": "constructor",
+        "inputs": [
+          {
+            "name": "owner",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "openzeppelin_token::erc721::erc721::ERC721Component::Transfer",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "from",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          },
+          {
+            "name": "to",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          },
+          {
+            "name": "token_id",
+            "type": "core::integer::u256",
+            "kind": "key"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "openzeppelin_token::erc721::erc721::ERC721Component::Approval",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "owner",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          },
+          {
+            "name": "approved",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          },
+          {
+            "name": "token_id",
+            "type": "core::integer::u256",
+            "kind": "key"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "openzeppelin_token::erc721::erc721::ERC721Component::ApprovalForAll",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "owner",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          },
+          {
+            "name": "operator",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          },
+          {
+            "name": "approved",
+            "type": "core::bool",
+            "kind": "data"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "openzeppelin_token::erc721::erc721::ERC721Component::Event",
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Transfer",
+            "type": "openzeppelin_token::erc721::erc721::ERC721Component::Transfer",
+            "kind": "nested"
+          },
+          {
+            "name": "Approval",
+            "type": "openzeppelin_token::erc721::erc721::ERC721Component::Approval",
+            "kind": "nested"
+          },
+          {
+            "name": "ApprovalForAll",
+            "type": "openzeppelin_token::erc721::erc721::ERC721Component::ApprovalForAll",
+            "kind": "nested"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "openzeppelin_introspection::src5::SRC5Component::Event",
+        "kind": "enum",
+        "variants": []
+      },
+      {
+        "type": "event",
+        "name": "ba_orbs::token::orb::GrantRole",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "role",
+            "type": "ba_orbs::token::Role",
+            "kind": "key"
+          },
+          {
+            "name": "user",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "ba_orbs::token::orb::RevokeRole",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "role",
+            "type": "ba_orbs::token::Role",
+            "kind": "key"
+          },
+          {
+            "name": "user",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "ba_orbs::token::orb::Event",
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "ERC721Event",
+            "type": "openzeppelin_token::erc721::erc721::ERC721Component::Event",
+            "kind": "flat"
+          },
+          {
+            "name": "SRC5Event",
+            "type": "openzeppelin_introspection::src5::SRC5Component::Event",
+            "kind": "flat"
+          },
+          {
+            "name": "GrantRole",
+            "type": "ba_orbs::token::orb::GrantRole",
+            "kind": "nested"
+          },
+          {
+            "name": "RevokeRole",
+            "type": "ba_orbs::token::orb::RevokeRole",
+            "kind": "nested"
+          }
+        ]
+      }
+    ],
+    "0x44ee042ec162efe13080050d3c880440ec70960349cc4d54d8b91924d34432b": [
       {
         "type": "impl",
         "name": "IActionImpl",
@@ -4037,6 +4879,20 @@
         ]
       },
       {
+        "type": "enum",
+        "name": "core::bool",
+        "variants": [
+          {
+            "name": "False",
+            "type": "()"
+          },
+          {
+            "name": "True",
+            "type": "()"
+          }
+        ]
+      },
+      {
         "type": "interface",
         "name": "ba_loadout::action::interface::IAction",
         "items": [
@@ -4238,6 +5094,70 @@
           },
           {
             "type": "function",
+            "name": "check_action",
+            "inputs": [
+              {
+                "name": "name",
+                "type": "core::byte_array::ByteArray"
+              },
+              {
+                "name": "speed",
+                "type": "core::integer::u16"
+              },
+              {
+                "name": "cooldown",
+                "type": "core::integer::u32"
+              },
+              {
+                "name": "base_effects",
+                "type": "core::array::Array::<ba_loadout::action::effect::Effect>"
+              },
+              {
+                "name": "chance_effects",
+                "type": "core::array::Array::<ba_loadout::action::action::ChanceEffects>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "(core::felt252, core::bool)"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "check_actions",
+            "inputs": [
+              {
+                "name": "actions",
+                "type": "core::array::Array::<ba_loadout::action::action::ActionWithName>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::array::Array::<(core::felt252, core::bool)>"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "check_action_arrays",
+            "inputs": [
+              {
+                "name": "actions_arrays",
+                "type": "core::array::Array::<core::array::Array::<ba_loadout::action::action::ActionWithName>>"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::array::Array::<core::array::Array::<(core::felt252, core::bool)>>"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
             "name": "tag",
             "inputs": [
               {
@@ -4367,20 +5287,6 @@
         "type": "impl",
         "name": "IAccessImpl",
         "interface_name": "sai_access::IAccess"
-      },
-      {
-        "type": "enum",
-        "name": "core::bool",
-        "variants": [
-          {
-            "name": "False",
-            "type": "()"
-          },
-          {
-            "name": "True",
-            "type": "()"
-          }
-        ]
       },
       {
         "type": "interface",
@@ -4642,6 +5548,366 @@
         "name": "ba_loadout::action::contract::action::Event",
         "kind": "enum",
         "variants": [
+          {
+            "name": "AccessEvents",
+            "type": "sai_access::access_component::Event",
+            "kind": "flat"
+          }
+        ]
+      }
+    ],
+    "0x46bf8dbce3df35f685dc6e0e4fe48d788dc2693ba296e060e70bef069a1f46b": [
+      {
+        "type": "impl",
+        "name": "IOrbMinterImpl",
+        "interface_name": "ba_orbs::minter::IOrbMinter"
+      },
+      {
+        "type": "struct",
+        "name": "ba_orbs::minter::OrbDropRates",
+        "members": [
+          {
+            "name": "common_full",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "rare_full",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "epic_full",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "legendary_full",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "rare_shard",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "epic_shard",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "legendary_shard",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "max_rare_shards",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "max_epic_shards",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "max_legendary_shards",
+            "type": "core::integer::u8"
+          }
+        ]
+      },
+      {
+        "type": "enum",
+        "name": "ba_orbs::minter::Rarity",
+        "variants": [
+          {
+            "name": "None",
+            "type": "()"
+          },
+          {
+            "name": "Common",
+            "type": "()"
+          },
+          {
+            "name": "Rare",
+            "type": "()"
+          },
+          {
+            "name": "Epic",
+            "type": "()"
+          },
+          {
+            "name": "Legendary",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "struct",
+        "name": "core::integer::u256",
+        "members": [
+          {
+            "name": "low",
+            "type": "core::integer::u128"
+          },
+          {
+            "name": "high",
+            "type": "core::integer::u128"
+          }
+        ]
+      },
+      {
+        "type": "enum",
+        "name": "ba_orbs::minter::RollReward",
+        "variants": [
+          {
+            "name": "None",
+            "type": "()"
+          },
+          {
+            "name": "Orb",
+            "type": "(ba_orbs::minter::Rarity, core::felt252, core::integer::u256)"
+          },
+          {
+            "name": "Shard",
+            "type": "(ba_orbs::minter::Rarity, core::integer::u32)"
+          }
+        ]
+      },
+      {
+        "type": "interface",
+        "name": "ba_orbs::minter::IOrbMinter",
+        "items": [
+          {
+            "type": "function",
+            "name": "roll",
+            "inputs": [
+              {
+                "name": "to",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "drop_rates",
+                "type": "ba_orbs::minter::OrbDropRates"
+              },
+              {
+                "name": "randomness",
+                "type": "core::integer::u64"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "ba_orbs::minter::RollReward"
+              }
+            ],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "combine_shards",
+            "inputs": [
+              {
+                "name": "rarity",
+                "type": "ba_orbs::minter::Rarity"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "(core::felt252, core::integer::u256)"
+              }
+            ],
+            "state_mutability": "external"
+          }
+        ]
+      },
+      {
+        "type": "impl",
+        "name": "IOrbMinterAdminImpl",
+        "interface_name": "ba_orbs::minter::IOrbMinterAdmin"
+      },
+      {
+        "type": "interface",
+        "name": "ba_orbs::minter::IOrbMinterAdmin",
+        "items": [
+          {
+            "type": "function",
+            "name": "set_common_actions",
+            "inputs": [
+              {
+                "name": "actions",
+                "type": "core::array::Array::<core::felt252>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_rare_actions",
+            "inputs": [
+              {
+                "name": "actions",
+                "type": "core::array::Array::<core::felt252>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_epic_actions",
+            "inputs": [
+              {
+                "name": "actions",
+                "type": "core::array::Array::<core::felt252>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_legendary_actions",
+            "inputs": [
+              {
+                "name": "actions",
+                "type": "core::array::Array::<core::felt252>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_shards_in_orbs",
+            "inputs": [
+              {
+                "name": "rare",
+                "type": "core::integer::u32"
+              },
+              {
+                "name": "epic",
+                "type": "core::integer::u32"
+              },
+              {
+                "name": "legendary",
+                "type": "core::integer::u32"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_charge",
+            "inputs": [
+              {
+                "name": "charge",
+                "type": "core::integer::u128"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          }
+        ]
+      },
+      {
+        "type": "constructor",
+        "name": "constructor",
+        "inputs": [
+          {
+            "name": "owner",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "token_address",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "ba_utils::vrf::vrf_component::Event",
+        "kind": "enum",
+        "variants": []
+      },
+      {
+        "type": "event",
+        "name": "sai_ownable::ownable_component::GrantContractOwner",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "user",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "sai_ownable::ownable_component::RevokeContractOwner",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "user",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "sai_access::access_component::GrantContractWriter",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "user",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "sai_access::access_component::RevokeContractWriter",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "user",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "key"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "sai_access::access_component::Event",
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "GrantContractOwner",
+            "type": "sai_ownable::ownable_component::GrantContractOwner",
+            "kind": "nested"
+          },
+          {
+            "name": "RevokeContractOwner",
+            "type": "sai_ownable::ownable_component::RevokeContractOwner",
+            "kind": "nested"
+          },
+          {
+            "name": "GrantContractWriter",
+            "type": "sai_access::access_component::GrantContractWriter",
+            "kind": "nested"
+          },
+          {
+            "name": "RevokeContractWriter",
+            "type": "sai_access::access_component::RevokeContractWriter",
+            "kind": "nested"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "ba_orbs::minter::orb_minter::Event",
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "VrfEvents",
+            "type": "ba_utils::vrf::vrf_component::Event",
+            "kind": "flat"
+          },
           {
             "name": "AccessEvents",
             "type": "sai_access::access_component::Event",
@@ -7214,7 +8480,7 @@
         ]
       }
     ],
-    "0x6f5e45d938a7d3e8e287ffbe3f70f3c803e877e3306377089b0dfd4d7d09ff": [
+    "0x48cb348fb5fc817174043b49b61dd30be284306952da75080d514d8977eb13e": [
       {
         "type": "impl",
         "name": "IArcadeImpl",
@@ -7996,6 +9262,52 @@
         "interface_name": "ba_arcade::interface::IArcadeSetup"
       },
       {
+        "type": "struct",
+        "name": "ba_orbs::minter::OrbDropRates",
+        "members": [
+          {
+            "name": "common_full",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "rare_full",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "epic_full",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "legendary_full",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "rare_shard",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "epic_shard",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "legendary_shard",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "max_rare_shards",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "max_epic_shards",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "max_legendary_shards",
+            "type": "core::integer::u8"
+          }
+        ]
+      },
+      {
         "type": "interface",
         "name": "ba_arcade::interface::IArcadeSetup",
         "items": [
@@ -8078,6 +9390,55 @@
           },
           {
             "type": "function",
+            "name": "orb_address",
+            "inputs": [],
+            "outputs": [
+              {
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "orb_minter_address",
+            "inputs": [],
+            "outputs": [
+              {
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "stage_drop_rates",
+            "inputs": [
+              {
+                "name": "stage",
+                "type": "core::integer::u32"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "ba_orbs::minter::OrbDropRates"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "challenge_drop_rate",
+            "inputs": [],
+            "outputs": [
+              {
+                "type": "ba_orbs::minter::OrbDropRates"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
             "name": "set_max_respawns",
             "inputs": [
               {
@@ -8151,6 +9512,46 @@
             ],
             "outputs": [],
             "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_orb_address",
+            "inputs": [
+              {
+                "name": "contract_address",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_orb_minter_address",
+            "inputs": [
+              {
+                "name": "contract_address",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_drop_rates",
+            "inputs": [
+              {
+                "name": "challenge_rates",
+                "type": "ba_orbs::minter::OrbDropRates"
+              },
+              {
+                "name": "stage_rates",
+                "type": "core::array::Array::<ba_orbs::minter::OrbDropRates>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
           }
         ]
       },
@@ -8172,6 +9573,10 @@
           },
           {
             "name": "loadout_address",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "orb_address",
             "type": "core::starknet::contract_address::ContractAddress"
           }
         ]
@@ -8252,7 +9657,7 @@
         ]
       }
     ],
-    "0x5a9e249dc07a6aaa0b011c4b773a907551b916155b73b6e62dfa7207589d490": [
+    "0x1ddaf9e92710a59f5728a1def5ca88e26a3e9fc81ae5019c87fcab6abbb672b": [
       {
         "type": "impl",
         "name": "IArcadeImpl",
@@ -9118,6 +10523,52 @@
         "interface_name": "ba_arcade::interface::IArcadeSetup"
       },
       {
+        "type": "struct",
+        "name": "ba_orbs::minter::OrbDropRates",
+        "members": [
+          {
+            "name": "common_full",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "rare_full",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "epic_full",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "legendary_full",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "rare_shard",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "epic_shard",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "legendary_shard",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "max_rare_shards",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "max_epic_shards",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "max_legendary_shards",
+            "type": "core::integer::u8"
+          }
+        ]
+      },
+      {
         "type": "interface",
         "name": "ba_arcade::interface::IArcadeSetup",
         "items": [
@@ -9200,6 +10651,55 @@
           },
           {
             "type": "function",
+            "name": "orb_address",
+            "inputs": [],
+            "outputs": [
+              {
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "orb_minter_address",
+            "inputs": [],
+            "outputs": [
+              {
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "stage_drop_rates",
+            "inputs": [
+              {
+                "name": "stage",
+                "type": "core::integer::u32"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "ba_orbs::minter::OrbDropRates"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
+            "name": "challenge_drop_rate",
+            "inputs": [],
+            "outputs": [
+              {
+                "type": "ba_orbs::minter::OrbDropRates"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
             "name": "set_max_respawns",
             "inputs": [
               {
@@ -9273,6 +10773,46 @@
             ],
             "outputs": [],
             "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_orb_address",
+            "inputs": [
+              {
+                "name": "contract_address",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_orb_minter_address",
+            "inputs": [
+              {
+                "name": "contract_address",
+                "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_drop_rates",
+            "inputs": [
+              {
+                "name": "challenge_rates",
+                "type": "ba_orbs::minter::OrbDropRates"
+              },
+              {
+                "name": "stage_rates",
+                "type": "core::array::Array::<ba_orbs::minter::OrbDropRates>"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
           }
         ]
       },
@@ -9294,6 +10834,10 @@
           },
           {
             "name": "loadout_address",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "orb_address",
             "type": "core::starknet::contract_address::ContractAddress"
           },
           {
@@ -9378,7 +10922,7 @@
         ]
       }
     ],
-    "0x54e2d881e8dd77a00b8390ea81dfa215201a1ea7f5c44d10b7a5ed963a452c": [
+    "0x16ffe3d6270b2c2ef303a6ea6ba7568ebb5dfd4b9ae181ded89bfecc26759ea": [
       {
         "type": "impl",
         "name": "IPvpAdminImpl",

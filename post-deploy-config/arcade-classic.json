@@ -4,7 +4,7 @@
   "credit_cost": 100,
   "time_limit": 7200,
   "health_regen_percent": 40,
-  "stage_rewards": [
+  "stage_drop_rates": [
     {
       "common_full_ppm": 0,
       "rare_full_ppm": 0,
@@ -18,7 +18,7 @@
       "max_legendary_shards": 0
     }
   ],
-  "challenge_rewards": {
+  "challenge_drop_rates": {
     "common_full_ppm": 0,
     "rare_full_ppm": 0,
     "epic_full_ppm": 0,
