@@ -19,5 +19,12 @@ export const makeArcadeConfigCalls = (sai, contract, config) => {
     contract.populate("set_credit_address", {
       contract_address: sai.contracts.arena_credit.contract_address,
     }),
+    contract.populate("set_orb_minter_address", {
+      contract_address: sai.contracts.orb_minter.contract_address,
+    }),
+    contract.populate("set_drop_rates", {
+      challenge_rates: config.challenge_drop_rates,
+      stage_rates: config.stage_drop_rates,
+    }),
   ];
 };

@@ -119,6 +119,33 @@ mod action {
             actions.into_iter().map(|action| action.action_id()).collect()
         }
 
+
+        fn check_action(
+            self: @ContractState,
+            name: ByteArray,
+            speed: u16,
+            cooldown: u32,
+            base_effects: Array<Effect>,
+            chance_effects: Array<ChanceEffects>,
+        ) -> (felt252, bool) {
+            self
+                ._check_action(
+                    ActionWithName { name, speed, cooldown, base_effects, chance_effects },
+                )
+        }
+
+        fn check_actions(
+            self: @ContractState, actions: Array<ActionWithName>,
+        ) -> Array<(felt252, bool)> {
+            actions.into_iter().map(|action| self._check_action(action)).collect()
+        }
+
+        fn check_action_arrays(
+            self: @ContractState, actions_arrays: Array<Array<ActionWithName>>,
+        ) -> Array<Array<(felt252, bool)>> {
+            actions_arrays.into_iter().map(|actions| self.check_actions(actions)).collect()
+        }
+
         fn tag(self: @ContractState, tag: felt252) -> felt252 {
             self.tags.read(tag)
         }
@@ -218,6 +245,15 @@ mod action {
                 .unwrap();
             write_chance_effects(effects_hash, chance_effects);
             action_id
+        }
+
+        fn _check_action(self: @ContractState, action: ActionWithName) -> (felt252, bool) {
+            let action_id = action.action_id();
+            (
+                action_id,
+                read_at_felt252(poseidon_hash_two(get_effects_storage_address(action_id), 0))
+                    .is_non_zero(),
+            )
         }
     }
 }

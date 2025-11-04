@@ -13,6 +13,7 @@ const deployWithOwner = [
   "amma_blobert",
   "amma_blobert_soulbound",
   "arena_credit",
+  "orb",
 ];
 
 config.set("rpcVersion", "0.9.0");
@@ -36,6 +37,14 @@ await sai.deployContract([
     calldata: {
       owner,
       action_model_class_hash: sai.classes.action_model.class_hash,
+    },
+  },
+  {
+    tag: "orb_minter",
+    unique: false,
+    calldata: {
+      owner,
+      token_address: sai.contracts.orb.contract_address,
     },
   },
   {
@@ -97,8 +106,9 @@ await sai.deployContract([
       owner,
       arcade_round_result_class_hash:
         sai.classes.arcade_round_result_model.class_hash,
-      action_address: sai.contracts["action"].contract_address,
-      loadout_address: sai.contracts["loadout_classic"].contract_address,
+      action_address: sai.contracts.action.contract_address,
+      loadout_address: sai.contracts.loadout_classic.contract_address,
+      orb_address: sai.contracts.orb.contract_address,
     },
   },
   {
@@ -108,9 +118,10 @@ await sai.deployContract([
       owner,
       arcade_round_result_class_hash:
         sai.classes.arcade_round_result_model.class_hash,
-      action_address: sai.contracts["action"].contract_address,
-      loadout_address: sai.contracts["loadout_amma"].contract_address,
-      collectable_address: sai.contracts["amma_blobert"].contract_address,
+      action_address: sai.contracts.action.contract_address,
+      loadout_address: sai.contracts.loadout_amma.contract_address,
+      orb_address: sai.contracts.orb.contract_address,
+      collectable_address: sai.contracts.amma_blobert.contract_address,
     },
   },
   {

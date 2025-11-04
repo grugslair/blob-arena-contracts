@@ -98,7 +98,8 @@ build-external-contracts = [
     "ba_arcade_amma::contract::arcade_amma",
     "ba_pvp::contract::pvp",
     "ba_utils::vrf::mock_vrf",
-    "ba_orbs::orbs",
+    "ba_orbs::token::orb",
+    "ba_orbs::minter::orb_minter",
 ]
 
 [tool]

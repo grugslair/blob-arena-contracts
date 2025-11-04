@@ -1,5 +1,6 @@
 use ba_loadout::Attributes;
 use ba_utils::storage::{FeltArrayReadWrite, ShortArrayStore};
+use starknet::ContractAddress;
 use crate::attempt::ArcadeProgress;
 
 mod errors {
@@ -16,6 +17,7 @@ pub struct Opponent {
 
 #[derive(Drop)]
 pub struct ArcadeActionResult {
+    pub player: ContractAddress,
     pub phase: ArcadeProgress,
     pub stage: u32,
     pub combat_n: u32,
@@ -33,9 +35,9 @@ pub mod arcade_component {
     use ba_combat::{CombatantState, Move, library_run_round};
     use ba_credit::arena_credit_consume;
     use ba_loadout::get_loadout;
-    use ba_orbs::OrbTrait;
+    use ba_orbs::{IOrbMinterDispatcher, IOrbMinterDispatcherTrait, OrbDropRates, OrbTrait};
     use ba_utils::vrf::{HasVrfComponent, VrfTrait};
-    use ba_utils::{Randomness, erc721_token_hash, uuid};
+    use ba_utils::{Randomness, RandomnessTrait, erc721_token_hash, uuid};
     use beacon_library::{
         ToriiTable, register_table, register_table_with_schema, set_entity, set_member,
     };
@@ -61,12 +63,14 @@ pub mod arcade_component {
         pub health_regen_percent: u8,
         pub current_attempt: Map<felt252, felt252>,
         pub loadout_address: ContractAddress,
-        pub orb_minter_address: ContractAddress,
+        pub orb_minter: IOrbMinterDispatcher,
         pub orb_address: ContractAddress,
         pub credit_address: ContractAddress,
         pub credit_cost: u128,
         pub energy_cost: u64,
         pub combat_class_hash: ClassHash,
+        pub stage_reward_rates: Map<u32, OrbDropRates>,
+        pub challenge_drop_rate: OrbDropRates,
     }
 
     #[event]
@@ -104,9 +108,27 @@ pub mod arcade_component {
             self.credit_address.read()
         }
 
+
         fn combat_class_hash(self: @ComponentState<TContractState>) -> ClassHash {
             self.combat_class_hash.read()
         }
+
+        fn orb_address(self: @ComponentState<TContractState>) -> ContractAddress {
+            self.orb_address.read()
+        }
+
+        fn orb_minter_address(self: @ComponentState<TContractState>) -> ContractAddress {
+            self.orb_minter.read().contract_address
+        }
+
+        fn stage_drop_rates(self: @ComponentState<TContractState>, stage: u32) -> OrbDropRates {
+            self.stage_reward_rates.read(stage)
+        }
+
+        fn challenge_drop_rate(self: @ComponentState<TContractState>) -> OrbDropRates {
+            self.challenge_drop_rate.read()
+        }
+
 
         fn set_max_respawns(ref self: ComponentState<TContractState>, max_respawns: u32) {
             self.get_contract().assert_caller_is_owner();
@@ -142,6 +164,25 @@ pub mod arcade_component {
             self.get_contract().assert_caller_is_owner();
             self.combat_class_hash.write(class_hash);
         }
+
+        fn set_orb_minter_address(
+            ref self: ComponentState<TContractState>, contract_address: ContractAddress,
+        ) {
+            self.get_contract().assert_caller_is_owner();
+            self.orb_minter.write(IOrbMinterDispatcher { contract_address });
+        }
+
+        fn set_drop_rates(
+            ref self: ComponentState<TContractState>,
+            challenge_rates: OrbDropRates,
+            stage_rates: Array<OrbDropRates>,
+        ) {
+            self.get_contract().assert_caller_is_owner();
+            self.challenge_drop_rate.write(challenge_rates);
+            for (i, rates) in stage_rates.into_iter().enumerate() {
+                self.stage_reward_rates.write(i, rates);
+            }
+        }
     }
 
     mod internal_trait {
@@ -158,6 +199,7 @@ pub mod arcade_component {
                 arcade_round_result_class_hash: ClassHash,
                 action_address: ContractAddress,
                 loadout_address: ContractAddress,
+                orb_address: ContractAddress,
             );
             fn start_attempt(
                 ref self: TState,
@@ -186,6 +228,13 @@ pub mod arcade_component {
                 health: Option<u8>,
             );
 
+            fn get_stage_reward(
+                ref self: TState, player: ContractAddress, stage: u32, ref randomness: Randomness,
+            );
+            fn get_challenge_reward(
+                ref self: TState, player: ContractAddress, ref randomness: Randomness,
+            );
+
             fn set_phase(ref self: AttemptNodePath, attempt_id: felt252, phase: ArcadeProgress);
             fn set_loss(ref self: TState, ref attempt: AttemptNodePath, attempt_id: felt252);
             fn use_credit(ref self: TState, player: ContractAddress);
@@ -210,6 +259,7 @@ pub mod arcade_component {
             arcade_round_result_class_hash: ClassHash,
             action_address: ContractAddress,
             loadout_address: ContractAddress,
+            orb_address: ContractAddress,
         ) {
             set_action_dispatcher_address(action_address);
             self.loadout_address.write(loadout_address);
@@ -270,7 +320,7 @@ pub mod arcade_component {
             let combat_n = stage + attempt_ptr.respawns.read();
             let combat_id: felt252 = attempt_id + (combat_n.into());
 
-            attempt_ptr.assert_caller_is_owner();
+            let player = attempt_ptr.assert_caller_is_owner();
             assert(attempt_ptr.phase.read() == ArcadeProgress::Active, 'Game is not active');
             let action_dispatcher = get_action_dispatcher();
             let mut combat_node = attempt_ptr.combats.entry(combat_n);
@@ -335,7 +385,11 @@ pub mod arcade_component {
             (
                 attempt_ptr,
                 ArcadeActionResult {
-                    phase: result.progress, stage, combat_n, health: result.player_state.health,
+                    player,
+                    phase: result.progress,
+                    stage,
+                    combat_n,
+                    health: result.player_state.health,
                 },
                 randomness,
             )
@@ -446,6 +500,25 @@ pub mod arcade_component {
             let mut component = HasVrfComponent::get_component_mut(ref contract);
 
             component.get_salt_randomness(salt)
+        }
+
+        fn get_stage_reward(
+            ref self: ComponentState<TContractState>,
+            player: ContractAddress,
+            stage: u32,
+            ref randomness: Randomness,
+        ) {
+            let drop_rates = self.stage_reward_rates.read(stage);
+            self.orb_minter.read().roll(player, drop_rates, randomness.get_u64());
+        }
+
+        fn get_challenge_reward(
+            ref self: ComponentState<TContractState>,
+            player: ContractAddress,
+            ref randomness: Randomness,
+        ) {
+            let drop_rates = self.challenge_drop_rate.read();
+            self.orb_minter.read().roll(player, drop_rates, randomness.get_u64());
         }
     }
 }

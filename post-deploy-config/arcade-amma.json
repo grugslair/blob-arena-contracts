@@ -5,6 +5,32 @@
   "time_limit": 7200,
   "health_regen_percent": 30,
   "generated_stages": 9,
+  "stage_rewards": [
+    {
+      "common_full_ppm": 0,
+      "rare_full_ppm": 0,
+      "epic_full_ppm": 0,
+      "legendary_full_ppm": 0,
+      "rare_shard_ppm": 0,
+      "epic_shard_ppm": 0,
+      "legendary_shard_ppm": 0,
+      "max_rare_shards": 0,
+      "max_epic_shards": 0,
+      "max_legendary_shards": 0
+    }
+  ],
+  "challenge_rewards": {
+    "common_full_ppm": 0,
+    "rare_full_ppm": 0,
+    "epic_full_ppm": 0,
+    "legendary_full_ppm": 0,
+    "rare_shard_ppm": 0,
+    "epic_shard_ppm": 0,
+    "legendary_shard_ppm": 0,
+    "max_rare_shards": 0,
+    "max_epic_shards": 0,
+    "max_legendary_shards": 0
+  },
   "opponents": [
     {
       "base": {

@@ -23,6 +23,20 @@ pub trait IAction<TContractState> {
         chance_effects: Array<ChanceEffects>,
     ) -> felt252;
     fn action_ids(self: @TContractState, actions: Array<ActionWithName>) -> Array<felt252>;
+    fn check_action(
+        self: @TContractState,
+        name: ByteArray,
+        speed: u16,
+        cooldown: u32,
+        base_effects: Array<Effect>,
+        chance_effects: Array<ChanceEffects>,
+    ) -> (felt252, bool);
+    fn check_actions(
+        self: @TContractState, actions: Array<ActionWithName>,
+    ) -> Array<(felt252, bool)>;
+    fn check_action_arrays(
+        self: @TContractState, actions_arrays: Array<Array<ActionWithName>>,
+    ) -> Array<Array<(felt252, bool)>>;
     fn tag(self: @TContractState, tag: felt252) -> felt252;
 }
 
