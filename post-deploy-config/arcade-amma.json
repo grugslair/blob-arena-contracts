@@ -5,6 +5,7 @@
   "time_limit": 7200,
   "health_regen_percent": 30,
   "generated_stages": 9,
+  "max_orb_uses": 2,
   "stage_drop_rates": [
     {
       "common_full": 0.01,

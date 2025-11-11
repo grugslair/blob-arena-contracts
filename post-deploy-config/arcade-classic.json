@@ -4,6 +4,7 @@
   "credit_cost": 100,
   "time_limit": 7200,
   "health_regen_percent": 40,
+  "max_orb_uses": 2,
   "stage_drop_rates": [
     {
       "common_full": 3,

@@ -65,6 +65,7 @@ pub mod arcade_component {
         pub loadout_address: ContractAddress,
         pub orb_minter: IOrbMinterDispatcher,
         pub orb_address: ContractAddress,
+        pub max_orb_uses: u32,
         pub credit_address: ContractAddress,
         pub credit_cost: u128,
         pub energy_cost: u64,
@@ -119,6 +120,10 @@ pub mod arcade_component {
 
         fn orb_minter_address(self: @ComponentState<TContractState>) -> ContractAddress {
             self.orb_minter.read().contract_address
+        }
+
+        fn max_orb_uses(self: @ComponentState<TContractState>) -> u32 {
+            self.max_orb_uses.read()
         }
 
         fn stage_drop_rates(self: @ComponentState<TContractState>, stage: u32) -> OrbDropRates {
@@ -177,6 +182,11 @@ pub mod arcade_component {
         ) {
             self.get_contract().assert_caller_is_owner();
             self.orb_minter.write(IOrbMinterDispatcher { contract_address });
+        }
+
+        fn set_max_orb_uses(ref self: ComponentState<TContractState>, max_uses: u32) {
+            self.get_contract().assert_caller_is_owner();
+            self.max_orb_uses.write(max_uses);
         }
 
         fn set_drop_rates(
@@ -292,7 +302,7 @@ pub mod arcade_component {
             assert(self.current_attempt.read(token_hash).is_zero(), 'Token Already in Challenge');
             assert(erc721_owner_of(collection_address, token_id) == player, 'Not Token Owner');
             let loadout_address = self.loadout_address.read();
-
+            attempt_ptr.orb_uses.write(self.max_orb_uses.read());
             let (attributes, action_ids) = get_loadout(
                 loadout_address, collection_address, token_id, action_slots,
             );
@@ -345,14 +355,24 @@ pub mod arcade_component {
                 Move::Action(action_id) => (
                     action_id, ActionCheck::Cooldown(attempt_ptr.actions_available.read(action_id)),
                 ),
-                Move::Orb(orb_id) => (
-                    self
-                        .orb_address
-                        .read()
-                        .try_use_owners_charge_cost(attempt_ptr.player.read(), orb_id)
-                        .unwrap_or(0),
-                    ActionCheck::None,
-                ),
+                Move::Orb(orb_id) => {
+                    let orb_uses = attempt_ptr.orb_uses.read();
+                    let action = if orb_uses == 0 {
+                        0
+                    } else {
+                        match self
+                            .orb_address
+                            .read()
+                            .try_use_owners_charge_cost(attempt_ptr.player.read(), orb_id) {
+                            Some(action) => {
+                                attempt_ptr.orb_uses.write(orb_uses - 1);
+                                action
+                            },
+                            None => 0,
+                        }
+                    };
+                    (action, ActionCheck::None)
+                },
             };
 
             let opponent_action = combat_node

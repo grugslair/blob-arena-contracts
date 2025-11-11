@@ -115,6 +115,12 @@ pub trait IArcadeSetup<TState> {
     /// * `ContractAddress` - Address of the orb minter contract
     fn orb_minter_address(self: @TState) -> ContractAddress;
 
+    /// Gets the maximum number of orb uses allowed per arcade attempt
+    ///
+    /// # Returns
+    /// * `u32` - Maximum orb uses per attempt
+    fn max_orb_uses(self: @TState) -> u32;
+
     /// Gets the drop rates for orbs at a specific stage
     ///
     /// # Arguments
@@ -181,6 +187,12 @@ pub trait IArcadeSetup<TState> {
     /// # Arguments
     /// * `contract_address` - Address of the new orb minter contract
     fn set_orb_minter_address(ref self: TState, contract_address: ContractAddress);
+
+    /// Sets the maximum number of orb uses allowed per arcade attempt
+    ///
+    /// # Arguments
+    /// * `max_uses` - New maximum orb uses per attempt
+    fn set_max_orb_uses(ref self: TState, max_uses: u32);
 
     /// Sets the drop rates for orbs at a specific stage
     ///
