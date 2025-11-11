@@ -2,7 +2,6 @@ pub use sai_core_utils::BoundedCast;
 use sai_core_utils::{poseidon_hash_three, poseidon_hash_two};
 use starknet::syscalls::{storage_read_syscall, storage_write_syscall};
 use starknet::{ContractAddress, StorageAddress, SyscallResultTrait, get_contract_address};
-pub mod bytes;
 pub mod calls;
 pub mod random;
 pub mod storage;

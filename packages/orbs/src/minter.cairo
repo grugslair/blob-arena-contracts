@@ -196,8 +196,8 @@ mod orb_minter {
             mut randomness: u64,
         ) -> RollReward {
             self.assert_caller_is_writer();
-            let rarity = self.get_random_rarity(drop_rates, ref randomness);
-            match rarity {
+            let reward = self.get_random_rarity(drop_rates, ref randomness);
+            match reward {
                 RollResult::Orb(rarity) => {
                     let (action, token_id) = self.mint_random_action(to, rarity, randomness);
                     RollReward::Orb((rarity, action, token_id))
@@ -231,6 +231,7 @@ mod orb_minter {
             };
 
             let amount_of_shards = shard_ptr.read(caller);
+            assert(shards_in_orb > 0, 'Shards not combinable');
             assert(amount_of_shards >= shards_in_orb, 'Not enough shards to combine');
             self.set_shards(shard_ptr, selector, caller, amount_of_shards - shards_in_orb);
             self.mint_random_action(caller, rarity, randomness)
@@ -321,19 +322,19 @@ mod orb_minter {
             chance += rare_shard;
             if value < chance {
                 return RollResult::Shard(
-                    (Rarity::Rare, randomness.get_value(max_rare_shards).into()),
+                    (Rarity::Rare, randomness.get_value(max_rare_shards).into() + 1),
                 );
             }
             chance += epic_shard;
             if value < chance {
                 return RollResult::Shard(
-                    (Rarity::Epic, randomness.get_value(max_epic_shards).into()),
+                    (Rarity::Epic, randomness.get_value(max_epic_shards).into() + 1),
                 );
             }
             chance += legendary_shard;
             if value < chance {
                 return RollResult::Shard(
-                    (Rarity::Legendary, randomness.get_value(max_legendary_shards).into()),
+                    (Rarity::Legendary, randomness.get_value(max_legendary_shards).into() + 1),
                 );
             }
             RollResult::None

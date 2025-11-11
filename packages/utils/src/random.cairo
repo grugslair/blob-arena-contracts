@@ -1,5 +1,5 @@
 use core::metaprogramming::TypeEqual;
-use core::num::traits::{Bounded, DivRem, Zero};
+use core::num::traits::{Bounded, DivRem, One, Zero};
 pub use core::ops::DivAssign;
 pub use sai_core_utils::BoundedCast;
 use sai_core_utils::poseidon_hash_single;
@@ -44,6 +44,8 @@ pub impl SeedProbabilityImpl<
     +Drop<S>,
     +PartialOrd<T>,
     +Zero<T>,
+    +One<T>,
+    +One<S>,
 > of SeedProbability<S, T> {
     fn get_outcome(ref self: S, scale: T, probability: T) -> bool {
         Self::get_outcome_nz(ref self, try_into_non_zero(scale).unwrap(), probability)
@@ -59,11 +61,17 @@ pub impl SeedProbabilityImpl<
         Self::get_value_nz(ref self, scale)
     }
     fn get_value_nz(ref self: S, scale: NonZero<S>) -> T {
+        if Into::<_, S>::into(scale).is_one() {
+            return Zero::zero();
+        }
         let (seed, value) = self.div_rem(scale);
         self = seed;
         value.try_into().unwrap()
     }
     fn get_final_value(self: S, scale: T) -> T {
+        if scale.is_zero() || scale.is_one() {
+            return Zero::zero();
+        }
         (self % scale.into()).try_into().unwrap()
     }
 }
