@@ -483,7 +483,88 @@
       "class": "pvp"
     }
   },
-  "declarations": {},
+  "declarations": {
+    "mock_vrf": {
+      "class_hash": "0x301acbd969fe41d1dd0a3349a17db0e779d78644aa21d4ff6ef3f0d0498479f",
+      "transaction_hash": "0x434ca03ae9c228ada9a96d52037abf6a1323be8a7ee38acaf8e532c48abb681"
+    },
+    "action_model": {
+      "class_hash": "0x51914a51d3a3f30fce59b11eff04955217ad3d368f6fbf89b556515ca5efc58",
+      "transaction_hash": "0x13bd0cfb6a5dd097cf5f3cda7a9b73b23d0f5c6548f2fcf77a56fdd974f69c7"
+    },
+    "round_result_model": {
+      "class_hash": "0x1f75ae3422d68d968fa10a550218d55260a26892d6f6f2c88714c530f7bd8e7",
+      "transaction_hash": "0x29d94fa1ec573acae31768577bf56dd43c53b47f19c96f934315544498f0687"
+    },
+    "arcade_round_result_model": {
+      "class_hash": "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
+      "transaction_hash": "0xef3ae84af9a0bb3301c30334cdbfae5075c2ab7302e0032072f1ebd310608c"
+    },
+    "combat": {
+      "class_hash": "0x967270354c18455f388366448c06d318cc426fb1a891b149f0dacd8cbcfc83",
+      "transaction_hash": "0x47779ad605f876c15be75f94916b36c6765d0c4916a962894892d1ab5a7ec48"
+    },
+    "arena_blobert": {
+      "class_hash": "0x65f2d6e583f86237f9f046fbc0817a7bbb0e85a1fbbeedf672fd05288a3590c",
+      "transaction_hash": "0x7e9f855605db0b03809b2065fd98dbcf0bc1880d115c083f2e3327d254cad06"
+    },
+    "arena_blobert_minter": {
+      "class_hash": "0x724b4eca7c6414d7d8dfb11cc616cde5b6ffe12d1c6032d10c667f48e1c84ea",
+      "transaction_hash": "0x198de0fefe901ccd3d6208e4f65f662b27a6f0a993b73751094e27d2aa3348e"
+    },
+    "amma_blobert": {
+      "class_hash": "0x4cac2dde125d08e2d76841527ce5edb9ac08fd58fb1f54caaa1c6a874c9b5b8",
+      "transaction_hash": "0x2890ceca5d40c39a6ba0bdce641a3f5597dad3903db796c1c1c18b3db3c30b7"
+    },
+    "amma_blobert_soulbound": {
+      "class_hash": "0x2a3f22e91d891700653cd7f14f6bd8c6c8e268381c242e424f4f379602a5050",
+      "transaction_hash": "0x7c9f9cf4620c45879d82d59d1c0dfbfb1e1f41e1a5df21dbbd8b6454d1b6d7b"
+    },
+    "amma_blobert_minter": {
+      "class_hash": "0x4bbd4269e9fc9b370a01bfc3a7cf8bc72eeee7206505ee10d9f593cd9e429f",
+      "transaction_hash": "0xffb504c2377290f19f7b98d4bbc81281f39cd2353c11a9e8367a984db0a47"
+    },
+    "action": {
+      "class_hash": "0x44ee042ec162efe13080050d3c880440ec70960349cc4d54d8b91924d34432b",
+      "transaction_hash": "0x66b4b8a60de9748646880ce331856bda67e936016982bcc3270500c1b722434"
+    },
+    "loadout_classic": {
+      "class_hash": "0x1cf347168a95b33015f6bc5a2931ed2194644136cfbacb9b92052b8158649dd",
+      "transaction_hash": "0x4fafe73ad1ce61d07d55b4f3ae1fa59614222a49547dd5e1d197effba27b952"
+    },
+    "loadout_amma": {
+      "class_hash": "0x2fb5a21fad3a9529d4e017f1c0343f34307a0ee6bdcb2b0bb4346c4e30b7bb8",
+      "transaction_hash": "0x5e1dd331254130cdcb0e8ae0566bcea2760958dfafff9cde13672baf8b4c3e0"
+    },
+    "orb": {
+      "class_hash": "0x16083a680f916dc90c184862448c02e5639ab98156982f9df1b00cba6602552",
+      "transaction_hash": "0x5ed95f7e31baecb82b4888b8047b29f23676e91ac89ff032efd0181986c41f0"
+    },
+    "orb_minter": {
+      "class_hash": "0x46bf8dbce3df35f685dc6e0e4fe48d788dc2693ba296e060e70bef069a1f46b",
+      "transaction_hash": "0x24f6690a1923d8db726f36918023039a4a8df0f7d91a086e81c636614beab39"
+    },
+    "arena_credit": {
+      "class_hash": "0x29eb7b4a082ebcef9bc97a5fcc6e109414975c4cc5d5db1e31de82d52a94cc0",
+      "transaction_hash": "0x6eba5d525b2af0a1d43b163b65b6660de1cb5bba69e1edb4f8f24f5eb401d9a"
+    },
+    "arena_credit_purchase": {
+      "class_hash": "0x4be30835b6c7e9bc04c7cb119eab8670da3f168c58ebe718b8e4fb5c7aeb799",
+      "transaction_hash": "0x52343048511cbfb4996ce61a3fe3ce06c7911e88caf5417a375345c2540675d"
+    },
+    "arcade_classic": {
+      "class_hash": "0x48cb348fb5fc817174043b49b61dd30be284306952da75080d514d8977eb13e",
+      "transaction_hash": "0x243d3869a3cf1566891ebee7b00da6f634b20a7f348d4026734e7c53d2bf8be"
+    },
+    "arcade_amma": {
+      "class_hash": "0x1ddaf9e92710a59f5728a1def5ca88e26a3e9fc81ae5019c87fcab6abbb672b",
+      "transaction_hash": "0x2b64e37cd3cfec59f9c5fb2aa2b7261a8e1df62c026153397cd83452594c999"
+    },
+    "pvp": {
+      "class_hash": "0x16ffe3d6270b2c2ef303a6ea6ba7568ebb5dfd4b9ae181ded89bfecc26759ea",
+      "transaction_hash": "0x7b67fe06bda8f34b301558e4265685bcee93688f44d07cb18004e683ff87ac5"
+    }
+  },
   "abis": {
     "0x65f2d6e583f86237f9f046fbc0817a7bbb0e85a1fbbeedf672fd05288a3590c": [
       {

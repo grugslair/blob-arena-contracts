@@ -334,7 +334,6 @@ pub fn byte_array_to_tag(array: @ByteArray) -> felt252 {
 #[starknet::contract]
 pub mod action_model {
     use super::ActionWithName;
-
     #[storage]
     struct Storage {}
 

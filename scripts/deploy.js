@@ -147,6 +147,7 @@ const toriiContract = [
   ["loadout_classic", "contract"],
   ["loadout_amma", "contract"],
   ["action", "contract"],
+  ["orb", "erc721"],
   ["arcade_classic", "contract"],
   ["arcade_amma", "contract"],
   ["arena_credit", "contract"],
