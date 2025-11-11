@@ -5,8 +5,8 @@
     "epic": 1,
     "legendary": 1
   },
-  "common": [],
-  "rare": [],
-  "epic": [],
-  "legendary": []
+  "common_actions": [],
+  "rare_actions": [],
+  "epic_actions": [],
+  "legendary_actions": []
 }
