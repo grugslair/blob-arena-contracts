@@ -337,6 +337,10 @@ const parseI16Ne0 = (value, name) => {
   return parseValueInRange(value, name, -32768n, 32767n);
 };
 
+export const parseU32 = (value, name) => {
+  return parseValueInRange(value, name, 0n, 4294967295n);
+};
+
 const parse0To100 = (value, name) => {
   return parseValueInRange(value, name, 0n, 100n);
 };

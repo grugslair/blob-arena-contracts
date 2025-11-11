@@ -31,6 +31,7 @@ pub mod arcade_component {
     use ba_arcade::table::{ActionLastUsed, ArcadeAttemptTable};
     use ba_combat::combat::ActionCheck;
     use ba_combat::combatant::get_max_health_percent;
+    use ba_combat::result::MoveResult;
     use ba_combat::systems::{get_action_dispatcher, set_action_dispatcher_address};
     use ba_combat::{CombatantState, Move, library_run_round};
     use ba_credit::arena_credit_consume;
@@ -349,7 +350,6 @@ pub mod arcade_component {
 
             let player_state_ptr = combat_node.player_state;
             let opponent_state_ptr = combat_node.opponent_state;
-
             let (action_id, check) = match action {
                 Move::None => (0, ActionCheck::None),
                 Move::Action(action_id) => (
@@ -391,7 +391,7 @@ pub mod arcade_component {
                 randomness,
             );
 
-            let mut result: ArcadeRoundTable = result.to_arcade_round(attempt_id, combat_n);
+            let mut result: ArcadeRoundTable = result.to_arcade_round(attempt_id, combat_n, action);
             player_state_ptr.write(result.player_state);
             opponent_state_ptr.write(result.opponent_state);
             if result.progress == ArcadeProgress::Active {
@@ -400,7 +400,7 @@ pub mod arcade_component {
                 combat_node.phase.write(result.progress);
             }
             set_entity(ROUND_HASH, poseidon_hash_three(attempt_id, combat_n, round), @result);
-            if result.player_action.is_non_zero() {
+            if let MoveResult::Action(action_id) = result.player_move && action_id.is_non_zero() {
                 set_entity(
                     LAST_USED_ATTACK_HASH,
                     poseidon_hash_two(combat_id, action_id),

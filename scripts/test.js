@@ -94,20 +94,6 @@ const ammaAttemptId = (
 )[0].data[0];
 console.log("Amma Attempt ID:", ammaAttemptId);
 
-// await sai.executeAndWait(
-//   arcadeAmmaContract.populate("act", {
-//     attempt_id: ammaAttemptId,
-//     action: new CairoCustomEnum({ Action: ammaActionId }),
-//   })
-// );
-
-// await sai.executeAndWait(
-//   arcadeClassicContract.populate("act", {
-//     attempt_id: classicAttemptId,
-//     action: new CairoCustomEnum({ Action: classicActionId }),
-//   })
-// );
-
 let n = 1;
 while (true) {
   try {

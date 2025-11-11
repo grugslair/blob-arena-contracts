@@ -1,4 +1,4 @@
-import { parseU8, parsePercentToPpm } from "./loadout.js";
+import { parseU8, parsePercentToPpm, parseU32 } from "./loadout.js";
 
 const parseDropRates = (rates) => {
   return {
@@ -47,6 +47,9 @@ export const makeArcadeConfigCalls = (sai, contract, config) => {
     }),
     contract.populate("set_orb_minter_address", {
       contract_address: sai.contracts.orb_minter.contract_address,
+    }),
+    contract.populate("set_max_orb_uses", {
+      max_uses: parseU32(config.max_orb_uses, "max_orb_uses"),
     }),
     contract.populate("set_drop_rates", {
       challenge_rates: parseDropRates(config.challenge_drop_rates),

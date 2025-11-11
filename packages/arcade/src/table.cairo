@@ -1,5 +1,6 @@
 use ba_combat::combat::PlayerOrNone;
-use ba_combat::{ActionResult, Combat, CombatantState, RoundEffectResult, RoundResult};
+use ba_combat::result::{MoveResult, OrbResult};
+use ba_combat::{ActionResult, Combat, CombatantState, Move, RoundEffectResult, RoundResult};
 use ba_loadout::attributes::Attributes;
 use starknet::ContractAddress;
 use crate::attempt::ArcadeProgress;
@@ -76,7 +77,7 @@ pub struct ArcadeRoundTable {
     pub round: u32,
     pub player_state: CombatantState,
     pub opponent_state: CombatantState,
-    pub player_action: felt252,
+    pub player_move: MoveResult,
     pub opponent_action: felt252,
     pub first: PlayerOrNone,
     pub round_effect_results: Array<RoundEffectResult>,
@@ -116,19 +117,27 @@ pub trait AttemptRoundTrait<T> {
     ///
     /// # Returns
     /// An ArcadeRoundResult containing all the round information
-    fn to_arcade_round(self: T, attempt: felt252, combat: u32) -> ArcadeRoundTable;
+    fn to_arcade_round(
+        self: T, attempt: felt252, combat: u32, player_move: Move,
+    ) -> ArcadeRoundTable;
 }
 
 
 impl CombatToAttemptRoundImpl of AttemptRoundTrait<Combat> {
-    fn to_arcade_round(self: Combat, attempt: felt252, combat: u32) -> ArcadeRoundTable {
+    fn to_arcade_round(
+        self: Combat, attempt: felt252, combat: u32, player_move: Move,
+    ) -> ArcadeRoundTable {
         ArcadeRoundTable {
             attempt: attempt,
             combat: combat,
             round: self.round,
             player_state: self.state_1,
             opponent_state: self.state_2,
-            player_action: self.action_1,
+            player_move: match player_move {
+                Move::None => MoveResult::None,
+                Move::Action(_) => MoveResult::Action(self.action_1),
+                Move::Orb(orb) => MoveResult::Orb(OrbResult { id: orb, action: self.action_1 }),
+            },
             opponent_action: self.action_2,
             first: self.first.into(),
             round_effect_results: self.round_effect_results,
@@ -139,7 +148,9 @@ impl CombatToAttemptRoundImpl of AttemptRoundTrait<Combat> {
 }
 
 impl RoundResultToAttemptRoundImpl of AttemptRoundTrait<RoundResult> {
-    fn to_arcade_round(self: RoundResult, attempt: felt252, combat: u32) -> ArcadeRoundTable {
+    fn to_arcade_round(
+        self: RoundResult, attempt: felt252, combat: u32, player_move: Move,
+    ) -> ArcadeRoundTable {
         let [player_state, opponent_state] = self.states;
         let [player_action, opponent_action] = self.actions;
         ArcadeRoundTable {
@@ -148,7 +159,11 @@ impl RoundResultToAttemptRoundImpl of AttemptRoundTrait<RoundResult> {
             round: self.round,
             player_state,
             opponent_state,
-            player_action,
+            player_move: match player_move {
+                Move::None => MoveResult::None,
+                Move::Action(_) => MoveResult::Action(player_action),
+                Move::Orb(orb) => MoveResult::Orb(OrbResult { id: orb, action: player_action }),
+            },
             opponent_action,
             first: self.first.into(),
             round_effect_results: self.round_effect_results,
