@@ -26,15 +26,14 @@
         "magic_vulnerability": 0,
         "pierce_vulnerability": 0
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Woolen Guard",
           "speed": 70,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -45,13 +44,13 @@
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": 20
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -63,15 +62,14 @@
         "dexterity": 12,
         "luck": 20
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Cuddle Defense",
           "speed": 80,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -82,13 +80,13 @@
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": 10
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -100,15 +98,14 @@
         "dexterity": 8,
         "luck": 18
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Shadow Shroud",
           "speed": 60,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": -10,
@@ -119,13 +116,13 @@
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": 25
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -137,15 +134,14 @@
         "dexterity": 8,
         "luck": 15
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Heavenly Aegis",
           "speed": 50,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -156,13 +152,13 @@
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": 30
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -174,15 +170,14 @@
         "dexterity": 12,
         "luck": 14
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Focus Guard",
           "speed": 70,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -193,13 +188,13 @@
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": 10
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -211,15 +206,14 @@
         "dexterity": 5,
         "luck": 15
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Divine Protection",
           "speed": 60,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -230,13 +224,13 @@
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": 40
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -248,15 +242,14 @@
         "dexterity": 10,
         "luck": 20
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Infernal Barrier",
           "speed": 50,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -267,13 +260,13 @@
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": 25
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -285,15 +278,14 @@
         "dexterity": 10,
         "luck": 16
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Leather Fortify",
           "speed": 75,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -304,13 +296,13 @@
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": 15
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -322,21 +314,20 @@
         "dexterity": 15,
         "luck": 14
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Feral Dash",
           "speed": 90,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": -10
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -347,7 +338,7 @@
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -359,15 +350,14 @@
         "dexterity": 12,
         "luck": 18
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Mystic Shield",
           "speed": 60,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -378,13 +368,13 @@
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": 20
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -396,15 +386,14 @@
         "dexterity": 5,
         "luck": 15
       },
-      "attacks": [
+      "actions": [
         {
           "name": "King's Aegis",
           "speed": 55,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": -10,
@@ -415,13 +404,13 @@
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": 30
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -433,15 +422,14 @@
         "dexterity": 12,
         "luck": 18
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Ink Shield",
           "speed": 70,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -452,13 +440,13 @@
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": 15
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -470,15 +458,14 @@
         "dexterity": 9,
         "luck": 14
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Steel Guard",
           "speed": 65,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -489,13 +476,13 @@
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": 20
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -507,15 +494,14 @@
         "dexterity": 10,
         "luck": 10
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Tactical Shift",
           "speed": 80,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -526,13 +512,13 @@
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": 15
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -544,15 +530,14 @@
         "dexterity": 15,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Bare Minimum Defense",
           "speed": 90,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -563,13 +548,13 @@
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": 10
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -581,15 +566,14 @@
         "dexterity": 12,
         "luck": 6
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Casual Guard",
           "speed": 70,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -600,13 +584,13 @@
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": 10
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -618,21 +602,20 @@
         "dexterity": 15,
         "luck": 5
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Risky Offense",
           "speed": 60,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": -10
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 20,
@@ -643,7 +626,7 @@
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     }
@@ -657,7 +640,7 @@
         "dexterity": 10,
         "luck": 6
       },
-      "attacks": []
+      "actions": []
     },
     "1": {
       "name": "Blue",
@@ -667,7 +650,7 @@
         "dexterity": 14,
         "luck": 6
       },
-      "attacks": []
+      "actions": []
     },
     "2": {
       "name": "Crypts and Caverns",
@@ -677,7 +660,7 @@
         "dexterity": 12,
         "luck": 8
       },
-      "attacks": []
+      "actions": []
     },
     "3": {
       "name": "Fibrous Frame",
@@ -687,7 +670,7 @@
         "dexterity": 12,
         "luck": 4
       },
-      "attacks": []
+      "actions": []
     },
     "4": {
       "name": "Green",
@@ -697,7 +680,7 @@
         "dexterity": 18,
         "luck": 6
       },
-      "attacks": []
+      "actions": []
     },
     "5": {
       "name": "Holo",
@@ -707,7 +690,7 @@
         "dexterity": 14,
         "luck": 8
       },
-      "attacks": []
+      "actions": []
     },
     "6": {
       "name": "Orange",
@@ -717,7 +700,7 @@
         "dexterity": 14,
         "luck": 8
       },
-      "attacks": []
+      "actions": []
     },
     "7": {
       "name": "Purple",
@@ -727,7 +710,7 @@
         "dexterity": 10,
         "luck": 10
       },
-      "attacks": []
+      "actions": []
     },
     "8": {
       "name": "Realms Dark",
@@ -737,7 +720,7 @@
         "dexterity": 8,
         "luck": 8
       },
-      "attacks": []
+      "actions": []
     },
     "9": {
       "name": "Realms",
@@ -747,7 +730,7 @@
         "dexterity": 12,
         "luck": 8
       },
-      "attacks": []
+      "actions": []
     },
     "10": {
       "name": "Terraforms",
@@ -757,7 +740,7 @@
         "dexterity": 16,
         "luck": 5
       },
-      "attacks": []
+      "actions": []
     },
     "11": {
       "name": "Tulip",
@@ -767,7 +750,7 @@
         "dexterity": 14,
         "luck": 8
       },
-      "attacks": []
+      "actions": []
     }
   },
   "jewelry": {
@@ -779,15 +762,14 @@
         "dexterity": 5,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Power Infusion",
           "speed": 75,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 15,
@@ -798,7 +780,7 @@
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -810,15 +792,14 @@
         "dexterity": 20,
         "luck": 10
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Swift Maneuver",
           "speed": 85,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -829,7 +810,7 @@
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -841,15 +822,14 @@
         "dexterity": 10,
         "luck": 15
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Golden Sacrifice",
           "speed": 60,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 20,
@@ -860,13 +840,13 @@
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": 20
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -878,15 +858,14 @@
         "dexterity": 10,
         "luck": 5
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Golden Fortitude",
           "speed": 70,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 20,
@@ -897,7 +876,7 @@
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -909,15 +888,14 @@
         "dexterity": 5,
         "luck": 15
       },
-      "attacks": [
+      "actions": [
         {
-          "name": "Defender's Grace",
+          "name": "Target's Grace",
           "speed": 65,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -928,13 +906,13 @@
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": 25
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -946,15 +924,14 @@
         "dexterity": 5,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Force Balance",
           "speed": 70,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 20,
@@ -965,7 +942,7 @@
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -977,15 +954,14 @@
         "dexterity": 15,
         "luck": 5
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Reflex Guard",
           "speed": 80,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 0,
@@ -996,13 +972,13 @@
               }
             },
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Health": 10
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -1014,15 +990,14 @@
         "dexterity": 5,
         "luck": 7
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Titan's Might",
           "speed": 65,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Attacker",
+              "target": "Actor",
               "affect": {
                 "Abilities": {
                   "strength": 20,
@@ -1033,7 +1008,7 @@
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     }
@@ -1047,7 +1022,7 @@
         "dexterity": 5,
         "luck": 12
       },
-      "attacks": []
+      "actions": []
     },
     "1": {
       "name": "Doge",
@@ -1057,7 +1032,7 @@
         "dexterity": 20,
         "luck": 10
       },
-      "attacks": []
+      "actions": []
     },
     "2": {
       "name": "Dojo",
@@ -1067,7 +1042,7 @@
         "dexterity": 10,
         "luck": 15
       },
-      "attacks": []
+      "actions": []
     },
     "3": {
       "name": "Ducks",
@@ -1077,7 +1052,7 @@
         "dexterity": 10,
         "luck": 5
       },
-      "attacks": []
+      "actions": []
     },
     "4": {
       "name": "Kevin",
@@ -1087,7 +1062,7 @@
         "dexterity": 5,
         "luck": 15
       },
-      "attacks": []
+      "actions": []
     },
     "5": {
       "name": "Milady",
@@ -1097,7 +1072,7 @@
         "dexterity": 5,
         "luck": 12
       },
-      "attacks": []
+      "actions": []
     },
     "6": {
       "name": "Pepe",
@@ -1107,7 +1082,7 @@
         "dexterity": 15,
         "luck": 5
       },
-      "attacks": []
+      "actions": []
     },
     "7": {
       "name": "Pudgy",
@@ -1117,7 +1092,7 @@
         "dexterity": 5,
         "luck": 7
       },
-      "attacks": []
+      "actions": []
     },
     "8": {
       "name": "3d glasses",
@@ -1127,7 +1102,7 @@
         "dexterity": 15,
         "luck": 5
       },
-      "attacks": []
+      "actions": []
     },
     "9": {
       "name": "1337 Skulls",
@@ -1137,7 +1112,7 @@
         "dexterity": 10,
         "luck": 10
       },
-      "attacks": []
+      "actions": []
     },
     "10": {
       "name": "Ancient Helm",
@@ -1147,7 +1122,7 @@
         "dexterity": 5,
         "luck": 12
       },
-      "attacks": []
+      "actions": []
     },
     "11": {
       "name": "Bane",
@@ -1157,7 +1132,7 @@
         "dexterity": 5,
         "luck": 12
       },
-      "attacks": []
+      "actions": []
     },
     "12": {
       "name": "Braavos Helm",
@@ -1167,7 +1142,7 @@
         "dexterity": 5,
         "luck": 12
       },
-      "attacks": []
+      "actions": []
     },
     "13": {
       "name": "Bulbhead",
@@ -1177,7 +1152,7 @@
         "dexterity": 5,
         "luck": 15
       },
-      "attacks": []
+      "actions": []
     },
     "14": {
       "name": "Deal With It Glasses",
@@ -1187,7 +1162,7 @@
         "dexterity": 10,
         "luck": 10
       },
-      "attacks": []
+      "actions": []
     },
     "15": {
       "name": "Demon Crown",
@@ -1197,7 +1172,7 @@
         "dexterity": 5,
         "luck": 12
       },
-      "attacks": []
+      "actions": []
     },
     "16": {
       "name": "Divine Hood",
@@ -1207,7 +1182,7 @@
         "dexterity": 5,
         "luck": 12
       },
-      "attacks": []
+      "actions": []
     },
     "17": {
       "name": "Ekubo",
@@ -1217,7 +1192,7 @@
         "dexterity": 15,
         "luck": 5
       },
-      "attacks": []
+      "actions": []
     },
     "18": {
       "name": "Hyperloot Crown",
@@ -1227,7 +1202,7 @@
         "dexterity": 10,
         "luck": 10
       },
-      "attacks": []
+      "actions": []
     },
     "19": {
       "name": "Influence Helmet",
@@ -1237,7 +1212,7 @@
         "dexterity": 5,
         "luck": 12
       },
-      "attacks": []
+      "actions": []
     },
     "20": {
       "name": "Lords Helm",
@@ -1247,7 +1222,7 @@
         "dexterity": 5,
         "luck": 12
       },
-      "attacks": []
+      "actions": []
     },
     "21": {
       "name": "Nostrahat",
@@ -1257,7 +1232,7 @@
         "dexterity": 10,
         "luck": 10
       },
-      "attacks": []
+      "actions": []
     },
     "22": {
       "name": "Nouns Glasses",
@@ -1267,7 +1242,7 @@
         "dexterity": 10,
         "luck": 10
       },
-      "attacks": []
+      "actions": []
     },
     "23": {
       "name": "Pope Hat",
@@ -1277,7 +1252,7 @@
         "dexterity": 5,
         "luck": 12
       },
-      "attacks": []
+      "actions": []
     },
     "24": {
       "name": "Taproot Wizard Hat",
@@ -1287,7 +1262,7 @@
         "dexterity": 10,
         "luck": 10
       },
-      "attacks": []
+      "actions": []
     },
     "25": {
       "name": "Wif Hat",
@@ -1297,7 +1272,7 @@
         "dexterity": 10,
         "luck": 10
       },
-      "attacks": []
+      "actions": []
     }
   },
   "weapon": {
@@ -1309,72 +1284,84 @@
         "dexterity": 10,
         "luck": 10
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Binary Bash",
           "speed": 60,
-          "chance": 80,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 25,
-                  "critical": 20
+              "chance": 80,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 25,
+                      "critical": 20
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Algorithm Assault",
           "speed": 40,
-          "chance": 90,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 40,
-                  "critical": 10
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 40,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Algorithmic Overload",
           "speed": 30,
-          "chance": 75,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 80,
-                  "critical": 0
+              "chance": 75,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 80,
+                      "critical": 0
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 15
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 15
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -1386,72 +1373,84 @@
         "dexterity": 12,
         "luck": 10
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Argent Assault",
           "speed": 70,
-          "chance": 90,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 20,
-                  "critical": 20
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 20,
+                      "critical": 20
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Argent Crush",
           "speed": 50,
-          "chance": 85,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 35,
-                  "critical": 20
+              "chance": 85,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 35,
+                      "critical": 20
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 15
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 15
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Two Factor Authentication",
           "speed": 60,
-          "chance": 90,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 45,
-                  "critical": 20
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 45,
+                      "critical": 20
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -1463,15 +1462,14 @@
         "dexterity": 18,
         "luck": 10
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Helium Blast",
           "speed": 90,
-          "chance": 100,
           "cooldown": 0,
-          "success": [
+          "base_effects": [
             {
-              "target": "Defender",
+              "target": "Target",
               "affect": {
                 "Damage": {
                   "power": 20,
@@ -1480,49 +1478,57 @@
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         },
         {
           "name": "Balloon Bombardment",
           "speed": 60,
-          "chance": 95,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 30,
-                  "critical": 20
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 30,
+                      "critical": 20
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 5
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 5
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Inflatable Explosion",
           "speed": 100,
-          "chance": 90,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 40,
-                  "critical": 30
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 40,
+                      "critical": 30
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -1534,72 +1540,84 @@
         "dexterity": 10,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Fury Lash",
           "speed": 60,
-          "chance": 80,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 30,
-                  "critical": 10
+              "chance": 80,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 30,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Banner Javelin",
           "speed": 40,
-          "chance": 80,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 45,
-                  "critical": 10
+              "chance": 80,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 45,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 15
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 15
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Rage Unleashed",
           "speed": 50,
-          "chance": 80,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 55,
-                  "critical": 15
+              "chance": 80,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 55,
+                      "critical": 15
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 15
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 15
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -1611,24 +1629,28 @@
         "dexterity": 16,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Brilliant Flash",
           "speed": 80,
-          "chance": 95,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 25,
-                  "critical": 10
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 25,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "tag": "Banner Javelin"
@@ -1636,26 +1658,30 @@
         {
           "name": "Blinding Radiance",
           "speed": 70,
-          "chance": 85,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 45,
-                  "critical": 20
+              "chance": 85,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 45,
+                      "critical": 20
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 20
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 20
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -1667,15 +1693,14 @@
         "dexterity": 15,
         "luck": 13
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Keen Eye",
           "speed": 70,
-          "chance": 100,
           "cooldown": 0,
-          "success": [
+          "base_effects": [
             {
-              "target": "Defender",
+              "target": "Target",
               "affect": {
                 "Damage": {
                   "power": 25,
@@ -1684,7 +1709,7 @@
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         },
         {
           "tag": "Banner Javelin"
@@ -1692,26 +1717,30 @@
         {
           "name": "True Sight",
           "speed": 60,
-          "chance": 90,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 50,
-                  "critical": 20
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 50,
+                      "critical": 20
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -1723,24 +1752,28 @@
         "dexterity": 10,
         "luck": 10
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Wisdom's Edge",
           "speed": 80,
-          "chance": 95,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 20,
-                  "critical": 20
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 20,
+                      "critical": 20
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "tag": "Banner Javelin"
@@ -1748,26 +1781,30 @@
         {
           "name": "Divine Insight",
           "speed": 50,
-          "chance": 85,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 55,
-                  "critical": 15
+              "chance": 85,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 55,
+                      "critical": 15
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -1779,24 +1816,28 @@
         "dexterity": 15,
         "luck": 7
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Frenzied Blow",
           "speed": 70,
-          "chance": 85,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 30,
-                  "critical": 10
+              "chance": 85,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 30,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "tag": "Banner Javelin"
@@ -1804,26 +1845,30 @@
         {
           "name": "Wrathful Smite",
           "speed": 40,
-          "chance": 75,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 65,
-                  "critical": 0
+              "chance": 75,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 65,
+                      "critical": 0
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 20
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 20
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -1835,24 +1880,28 @@
         "dexterity": 10,
         "luck": 18
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Colossal Swing",
           "speed": 60,
-          "chance": 80,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 25,
-                  "critical": 20
+              "chance": 80,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 25,
+                      "critical": 20
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "tag": "Banner Javelin"
@@ -1860,26 +1909,30 @@
         {
           "name": "Giant's Hammer",
           "speed": 30,
-          "chance": 60,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 65,
-                  "critical": 10
+              "chance": 60,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 65,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 20
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 20
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -1891,24 +1944,28 @@
         "dexterity": 12,
         "luck": 14
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Flawless Hit",
           "speed": 75,
-          "chance": 95,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 25,
-                  "critical": 10
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 25,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "tag": "Banner Javelin"
@@ -1916,11 +1973,10 @@
         {
           "name": "Perfect Strike",
           "speed": 60,
-          "chance": 100,
           "cooldown": 3,
-          "success": [
+          "base_effects": [
             {
-              "target": "Defender",
+              "target": "Target",
               "affect": {
                 "Damage": {
                   "power": 60,
@@ -1929,7 +1985,7 @@
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         }
       ]
     },
@@ -1941,24 +1997,28 @@
         "dexterity": 10,
         "luck": 14
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Forceful Blow",
           "speed": 70,
-          "chance": 90,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 30,
-                  "critical": 0
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 30,
+                      "critical": 0
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "tag": "Banner Javelin"
@@ -1966,20 +2026,24 @@
         {
           "name": "Energy Overload",
           "speed": 30,
-          "chance": 70,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 100,
-                  "critical": 0
+              "chance": 70,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 100,
+                      "critical": 0
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -1991,24 +2055,28 @@
         "dexterity": 10,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Shielding Bash",
           "speed": 70,
-          "chance": 90,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 20,
-                  "critical": 20
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 20,
+                      "critical": 20
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "tag": "Banner Javelin"
@@ -2016,26 +2084,30 @@
         {
           "name": "Guardian's Blow",
           "speed": 50,
-          "chance": 85,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 50,
-                  "critical": 10
+              "chance": 85,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 50,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 20
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 20
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -2047,24 +2119,28 @@
         "dexterity": 10,
         "luck": 10
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Savage Blow",
           "speed": 70,
-          "chance": 85,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 30,
-                  "critical": 10
+              "chance": 85,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 30,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "tag": "Banner Javelin"
@@ -2072,26 +2148,30 @@
         {
           "name": "Vengeful Strike",
           "speed": 40,
-          "chance": 70,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 55,
-                  "critical": 15
+              "chance": 70,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 55,
+                      "critical": 15
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 25
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 25
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -2103,24 +2183,28 @@
         "dexterity": 8,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Mirror Smash",
           "speed": 75,
-          "chance": 95,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 25,
-                  "critical": 10
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 25,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "tag": "Banner Javelin"
@@ -2128,26 +2212,30 @@
         {
           "name": "Echoing Blow",
           "speed": 60,
-          "chance": 90,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 45,
-                  "critical": 20
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 45,
+                      "critical": 20
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -2159,15 +2247,14 @@
         "dexterity": 14,
         "luck": 10
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Precision Hit",
           "speed": 80,
-          "chance": 100,
           "cooldown": 0,
-          "success": [
+          "base_effects": [
             {
-              "target": "Defender",
+              "target": "Target",
               "affect": {
                 "Damage": {
                   "power": 20,
@@ -2176,7 +2263,7 @@
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         },
         {
           "tag": "Banner Javelin"
@@ -2184,26 +2271,30 @@
         {
           "name": "Masterful Blow",
           "speed": 50,
-          "chance": 80,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 60,
-                  "critical": 10
+              "chance": 80,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 60,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -2215,24 +2306,28 @@
         "dexterity": 18,
         "luck": 10
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Deceptive Swipe",
           "speed": 90,
-          "chance": 90,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 30,
-                  "critical": 0
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 30,
+                      "critical": 0
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "tag": "Banner Javelin"
@@ -2240,26 +2335,30 @@
         {
           "name": "Cunning Strike",
           "speed": 50,
-          "chance": 90,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 55,
-                  "critical": 10
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 55,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -2271,24 +2370,28 @@
         "dexterity": 12,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Dual Fang",
           "speed": 70,
-          "chance": 95,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 25,
-                  "critical": 10
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 25,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "tag": "Banner Javelin"
@@ -2296,26 +2399,30 @@
         {
           "name": "Twin Assault",
           "speed": 50,
-          "chance": 85,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 60,
-                  "critical": 10
+              "chance": 85,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 60,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -2327,24 +2434,28 @@
         "dexterity": 10,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Colossal Impact",
           "speed": 60,
-          "chance": 85,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 30,
-                  "critical": 10
+              "chance": 85,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 30,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "tag": "Banner Javelin"
@@ -2352,26 +2463,30 @@
         {
           "name": "Gargantuan Blow",
           "speed": 40,
-          "chance": 70,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 60,
-                  "critical": 10
+              "chance": 70,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 60,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 20
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 20
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -2383,24 +2498,28 @@
         "dexterity": 18,
         "luck": 10
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Skate Slam",
           "speed": 90,
-          "chance": 90,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 30,
-                  "critical": 0
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 30,
+                      "critical": 0
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "tag": "Banner Javelin"
@@ -2408,26 +2527,30 @@
         {
           "name": "Kickflip Crush",
           "speed": 50,
-          "chance": 90,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 55,
-                  "critical": 10
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 55,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -2439,24 +2562,28 @@
         "dexterity": 12,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Corrosive Hit",
           "speed": 70,
-          "chance": 95,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 25,
-                  "critical": 10
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 25,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "tag": "Banner Javelin"
@@ -2464,26 +2591,30 @@
         {
           "name": "Acidic Strike",
           "speed": 50,
-          "chance": 80,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 45,
-                  "critical": 20
+              "chance": 80,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 45,
+                      "critical": 20
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 20
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 20
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -2495,24 +2626,28 @@
         "dexterity": 14,
         "luck": 14
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Standard Strike",
           "speed": 80,
-          "chance": 95,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 25,
-                  "critical": 10
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 25,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "tag": "Banner Javelin"
@@ -2520,26 +2655,30 @@
         {
           "name": "Banner Whirlwind",
           "speed": 50,
-          "chance": 85,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 50,
-                  "critical": 20
+              "chance": 85,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 50,
+                      "critical": 20
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -2551,72 +2690,84 @@
         "dexterity": 10,
         "luck": 16
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Briq Bash",
           "speed": 50,
-          "chance": 80,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 30,
-                  "critical": 10
+              "chance": 80,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 30,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Briq Breaker",
           "speed": 30,
-          "chance": 85,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 45,
-                  "critical": 0
+              "chance": 85,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 45,
+                      "critical": 0
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 20
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 20
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Briq Avalanche",
           "speed": 40,
-          "chance": 70,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 60,
-                  "critical": 10
+              "chance": 70,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 60,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 20
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 20
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -2628,72 +2779,84 @@
         "dexterity": 12,
         "luck": 10
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Hash Hit",
           "speed": 70,
-          "chance": 90,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 20,
-                  "critical": 20
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 20,
+                      "critical": 20
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Calculated Crush",
           "speed": 50,
-          "chance": 90,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 40,
-                  "critical": 10
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 40,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Quantum Singularity",
           "speed": 50,
-          "chance": 80,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 60,
-                  "critical": 10
+              "chance": 80,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 60,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -2705,72 +2868,84 @@
         "dexterity": 14,
         "luck": 14
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Code Crush",
           "speed": 75,
-          "chance": 95,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 25,
-                  "critical": 10
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 25,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Debug Destruction",
           "speed": 50,
-          "chance": 90,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 35,
-                  "critical": 20
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 35,
+                      "critical": 20
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Algorithm Overload",
           "speed": 50,
-          "chance": 85,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 55,
-                  "critical": 15
+              "chance": 85,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 55,
+                      "critical": 15
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -2782,72 +2957,84 @@
         "dexterity": 10,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Diamond Strike",
           "speed": 70,
-          "chance": 90,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 20,
-                  "critical": 20
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 20,
+                      "critical": 20
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Diamond Destruction",
           "speed": 50,
-          "chance": 90,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 40,
-                  "critical": 10
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 40,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Diamond Hand",
           "speed": 50,
-          "chance": 80,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 60,
-                  "critical": 10
+              "chance": 80,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 60,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -2859,72 +3046,84 @@
         "dexterity": 12,
         "luck": 10
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Bullet Blast",
           "speed": 80,
-          "chance": 80,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 30,
-                  "critical": 10
+              "chance": 80,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 30,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Bullet Barrage",
           "speed": 60,
-          "chance": 80,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 45,
-                  "critical": 10
+              "chance": 80,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 45,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 5
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 5
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Desperation Toss",
           "speed": 60,
-          "chance": 85,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 55,
-                  "critical": 15
+              "chance": 85,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 55,
+                      "critical": 15
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 5
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 5
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -2936,72 +3135,84 @@
         "dexterity": 14,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Spectral Hit",
           "speed": 75,
-          "chance": 95,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 20,
-                  "critical": 20
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 20,
+                      "critical": 20
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Phantom Pulse",
           "speed": 50,
-          "chance": 90,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 35,
-                  "critical": 20
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 35,
+                      "critical": 20
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Phantom Blast",
           "speed": 50,
-          "chance": 90,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 50,
-                  "critical": 20
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 50,
+                      "critical": 20
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -3013,72 +3224,84 @@
         "dexterity": 14,
         "luck": 10
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Arcane Assault",
           "speed": 70,
-          "chance": 95,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 25,
-                  "critical": 10
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 25,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Dark Devastation",
           "speed": 50,
-          "chance": 90,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 40,
-                  "critical": 10
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 40,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Spellstorm",
           "speed": 50,
-          "chance": 80,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 60,
-                  "critical": 10
+              "chance": 80,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 60,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -3090,72 +3313,84 @@
         "dexterity": 10,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Grug's Crush",
           "speed": 50,
-          "chance": 80,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 30,
-                  "critical": 10
+              "chance": 80,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 30,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Grug's Smash",
           "speed": 30,
-          "chance": 85,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 45,
-                  "critical": 0
+              "chance": 85,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 45,
+                      "critical": 0
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 20
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 20
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Giant Rock Uppercut Grapple",
           "speed": 30,
-          "chance": 60,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 80,
-                  "critical": 0
+              "chance": 60,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 80,
+                      "critical": 0
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 20
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 20
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -3167,72 +3402,84 @@
         "dexterity": 12,
         "luck": 10
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Saber Slash",
           "speed": 80,
-          "chance": 95,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 25,
-                  "critical": 10
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 25,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Saber Storm",
           "speed": 50,
-          "chance": 90,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 40,
-                  "critical": 10
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 40,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Force Swap",
           "speed": 50,
-          "chance": 90,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 55,
-                  "critical": 10
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 55,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -3244,15 +3491,14 @@
         "dexterity": 14,
         "luck": 10
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Blade Swipe",
           "speed": 90,
-          "chance": 100,
           "cooldown": 0,
-          "success": [
+          "base_effects": [
             {
-              "target": "Defender",
+              "target": "Target",
               "affect": {
                 "Damage": {
                   "power": 20,
@@ -3261,55 +3507,63 @@
               }
             }
           ],
-          "fail": []
+          "chance_effects": []
         },
         {
           "name": "Swift Slice",
           "speed": 60,
-          "chance": 95,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 35,
-                  "critical": 15
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 35,
+                      "critical": 15
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 5
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 5
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Dragon's Fury",
           "speed": 60,
-          "chance": 90,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 50,
-                  "critical": 20
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 50,
+                      "critical": 20
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 5
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 5
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -3321,72 +3575,84 @@
         "dexterity": 14,
         "luck": 14
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Noble Strike",
           "speed": 75,
-          "chance": 95,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 25,
-                  "critical": 10
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 25,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Noble Bash",
           "speed": 50,
-          "chance": 90,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 35,
-                  "critical": 20
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 35,
+                      "critical": 20
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Royal Whirlwind",
           "speed": 50,
-          "chance": 90,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 55,
-                  "critical": 10
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 55,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -3398,72 +3664,84 @@
         "dexterity": 14,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Chill Strike",
           "speed": 75,
-          "chance": 95,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 25,
-                  "critical": 10
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 25,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Ice Cold Crush",
           "speed": 50,
-          "chance": 90,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 40,
-                  "critical": 10
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 40,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Ultimate Burn",
           "speed": 50,
-          "chance": 80,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 60,
-                  "critical": 10
+              "chance": 80,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 60,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 15
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 15
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -3475,72 +3753,84 @@
         "dexterity": 16,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Melody Strike",
           "speed": 75,
-          "chance": 95,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 20,
-                  "critical": 20
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 20,
+                      "critical": 20
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Harmonic Hit",
           "speed": 50,
-          "chance": 90,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 35,
-                  "critical": 20
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 35,
+                      "critical": 20
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Harmony Burst",
           "speed": 50,
-          "chance": 85,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 45,
-                  "critical": 20
+              "chance": 85,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 45,
+                      "critical": 20
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -3552,72 +3842,84 @@
         "dexterity": 14,
         "luck": 14
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Sign Slam",
           "speed": 75,
-          "chance": 95,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 25,
-                  "critical": 10
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 25,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "We Are So Back",
           "speed": 50,
-          "chance": 90,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 40,
-                  "critical": 10
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 40,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "It's So Over",
           "speed": 50,
-          "chance": 90,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 55,
-                  "critical": 10
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 55,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -3629,72 +3931,84 @@
         "dexterity": 14,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Signature Hit",
           "speed": 75,
-          "chance": 95,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 25,
-                  "critical": 10
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 25,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Signature Slam",
           "speed": 50,
-          "chance": 90,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 35,
-                  "critical": 20
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 35,
+                      "critical": 20
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Banner Whirlwind",
           "speed": 50,
-          "chance": 90,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 55,
-                  "critical": 10
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 55,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -3706,72 +4020,84 @@
         "dexterity": 12,
         "luck": 10
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Dark Slash",
           "speed": 80,
-          "chance": 95,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 20,
-                  "critical": 20
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 20,
+                      "critical": 20
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Sith Strike",
           "speed": 50,
-          "chance": 90,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 40,
-                  "critical": 10
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 40,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Force Surge",
           "speed": 50,
-          "chance": 80,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 60,
-                  "critical": 10
+              "chance": 80,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 60,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 15
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 15
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -3783,66 +4109,78 @@
         "dexterity": 14,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Noodle Strike",
           "speed": 80,
-          "chance": 90,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 20,
-                  "critical": 20
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 20,
+                      "critical": 20
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Pasta Pummel",
           "speed": 60,
-          "chance": 95,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 30,
-                  "critical": 20
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 30,
+                      "critical": 20
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 5
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 5
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Pasta Tornado",
           "speed": 100,
-          "chance": 95,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 45,
-                  "critical": 20
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 45,
+                      "critical": 20
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -3854,72 +4192,84 @@
         "dexterity": 14,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Tentacle Strike",
           "speed": 70,
-          "chance": 90,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 30,
-                  "critical": 0
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 30,
+                      "critical": 0
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Kraken's Crush",
           "speed": 50,
-          "chance": 90,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 40,
-                  "critical": 10
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 40,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Tentacle Fury",
           "speed": 40,
-          "chance": 75,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 60,
-                  "critical": 10
+              "chance": 75,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 60,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 20
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 20
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -3931,72 +4281,84 @@
         "dexterity": 12,
         "luck": 10
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Magic Blast",
           "speed": 70,
-          "chance": 95,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 25,
-                  "critical": 10
+              "chance": 95,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 25,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Arcane Annihilation",
           "speed": 50,
-          "chance": 90,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 45,
-                  "critical": 5
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 45,
+                      "critical": 5
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Cairo Burst",
           "speed": 30,
-          "chance": 60,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 70,
-                  "critical": 10
+              "chance": 60,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 70,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -4008,72 +4370,84 @@
         "dexterity": 10,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Shield Bash",
           "speed": 70,
-          "chance": 90,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 20,
-                  "critical": 20
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 20,
+                      "critical": 20
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Iron Wall",
           "speed": 50,
-          "chance": 90,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 35,
-                  "critical": 20
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 35,
+                      "critical": 20
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 10
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 10
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Cairo Blast",
           "speed": 50,
-          "chance": 80,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 50,
-                  "critical": 20
+              "chance": 80,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 50,
+                      "critical": 20
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 20
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 20
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -4085,72 +4459,84 @@
         "dexterity": 10,
         "luck": 16
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Stool Smash",
           "speed": 50,
-          "chance": 80,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 30,
-                  "critical": 10
+              "chance": 80,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 30,
+                      "critical": 10
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Stool Toss",
           "speed": 30,
-          "chance": 85,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 45,
-                  "critical": 0
+              "chance": 85,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 45,
+                      "critical": 0
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 20
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 20
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Heavy Stool Slam",
           "speed": 40,
-          "chance": 70,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 60,
-                  "critical": 10
+              "chance": 70,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 60,
+                      "critical": 10
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 25
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 25
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     },
@@ -4162,72 +4548,84 @@
         "dexterity": 10,
         "luck": 12
       },
-      "attacks": [
+      "actions": [
         {
           "name": "Hammer Strike",
           "speed": 70,
-          "chance": 80,
           "cooldown": 0,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 25,
-                  "critical": 20
+              "chance": 80,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 25,
+                      "critical": 20
+                    }
+                  }
                 }
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Warhammer Wreck",
           "speed": 40,
-          "chance": 90,
           "cooldown": 1,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 50,
-                  "critical": 0
+              "chance": 90,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 50,
+                      "critical": 0
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 15
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 15
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         },
         {
           "name": "Earthquake Hammer",
           "speed": 30,
-          "chance": 70,
           "cooldown": 3,
-          "success": [
+          "base_effects": [],
+          "chance_effects": [
             {
-              "target": "Defender",
-              "affect": {
-                "Damage": {
-                  "power": 70,
-                  "critical": 0
+              "chance": 70,
+              "effects": [
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Damage": {
+                      "power": 70,
+                      "critical": 0
+                    }
+                  }
+                },
+                {
+                  "target": "Target",
+                  "affect": {
+                    "Stun": 20
+                  }
                 }
-              }
-            },
-            {
-              "target": "Defender",
-              "affect": {
-                "Stun": 20
-              }
+              ]
             }
-          ],
-          "fail": []
+          ]
         }
       ]
     }

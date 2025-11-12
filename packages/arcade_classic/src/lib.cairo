@@ -120,6 +120,7 @@ mod arcade_classic {
         arcade_round_result_class_hash: ClassHash,
         action_address: ContractAddress,
         loadout_address: ContractAddress,
+        orb_address: ContractAddress,
     ) {
         self.grant_owner(owner);
         ArcadeInternal::init(
@@ -128,6 +129,7 @@ mod arcade_classic {
             arcade_round_result_class_hash,
             action_address,
             loadout_address,
+            orb_address,
         );
         register_table_with_schema::<super::OpponentTable>("arcade_classic", "Opponent");
     }
@@ -155,14 +157,20 @@ mod arcade_classic {
         }
 
         fn act(ref self: ContractState, attempt_id: felt252, action: Move) {
-            let (mut attempt_ptr, result, _) = ArcadeInternal::act_attempt(
+            let (mut attempt_ptr, result, mut randomness) = ArcadeInternal::act_attempt(
                 ref self.arcade, attempt_id, action,
             );
             if result.phase == ArcadeProgress::PlayerWon {
+                ArcadeInternal::get_stage_reward(
+                    ref self.arcade, result.player, result.stage, ref randomness,
+                );
                 let next_stage = result.stage + 1;
                 if next_stage == self.stages_len.read() {
                     ArcadeInternal::set_phase(
                         ref attempt_ptr, attempt_id, ArcadeProgress::PlayerWon,
+                    );
+                    ArcadeInternal::get_challenge_reward(
+                        ref self.arcade, result.player, ref randomness,
                     );
                 } else if attempt_ptr.is_not_expired() {
                     attempt_ptr.stage.write(next_stage);

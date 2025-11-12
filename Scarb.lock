@@ -185,6 +185,7 @@ dependencies = [
  "openzeppelin_introspection",
  "openzeppelin_token",
  "sai_access",
+ "sai_packing",
  "sai_token",
 ]
 

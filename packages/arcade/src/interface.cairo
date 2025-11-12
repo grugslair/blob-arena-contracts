@@ -1,4 +1,5 @@
 use ba_combat::Move;
+use ba_orbs::OrbDropRates;
 use starknet::{ClassHash, ContractAddress};
 
 /// Main interface for arcade gameplay functionality
@@ -102,6 +103,40 @@ pub trait IArcadeSetup<TState> {
     /// * `ClassHash` - Class hash of the combat implementation
     fn combat_class_hash(self: @TState) -> ClassHash;
 
+    /// Gets the address of the orb contract
+    ///
+    /// # Returns
+    /// * `ContractAddress` - Address of the orb contract
+    fn orb_address(self: @TState) -> ContractAddress;
+
+    /// Gets the address of the orb minter contract
+    ///
+    /// # Returns
+    /// * `ContractAddress` - Address of the orb minter contract
+    fn orb_minter_address(self: @TState) -> ContractAddress;
+
+    /// Gets the maximum number of orb uses allowed per arcade attempt
+    ///
+    /// # Returns
+    /// * `u32` - Maximum orb uses per attempt
+    fn max_orb_uses(self: @TState) -> u32;
+
+    /// Gets the drop rates for orbs at a specific stage
+    ///
+    /// # Arguments
+    /// * `stage` - The stage to get drop rates for
+    ///
+    /// # Returns
+    /// * `OrbDropRates` - Drop rates for the specified stage
+    fn stage_drop_rates(self: @TState, stage: u32) -> OrbDropRates;
+
+    /// Gets the drop rates for orbs after completing the challenge
+    ///
+    /// # Returns
+    /// * `OrbDropRates` - Drop rates for challenge
+
+    fn challenge_drop_rate(self: @TState) -> OrbDropRates;
+
     /// Sets the maximum number of respawns allowed per arcade attempt
     ///
     /// # Arguments
@@ -126,6 +161,7 @@ pub trait IArcadeSetup<TState> {
     /// * `contract_address` - Address of the new credit contract
     fn set_credit_address(ref self: TState, contract_address: ContractAddress);
 
+
     /// Sets both energy and credit costs for arcade attempts
     ///
     /// # Arguments
@@ -138,4 +174,31 @@ pub trait IArcadeSetup<TState> {
     /// # Arguments
     /// * `class_hash` - New combat contract class hash
     fn set_combat_class_hash(ref self: TState, class_hash: ClassHash);
+
+
+    /// Sets the address of the orb contract
+    ///
+    /// # Arguments
+    /// * `contract_address` - Address of the new orb contract
+    fn set_orb_address(ref self: TState, contract_address: ContractAddress);
+
+    /// Sets the address of the orb minter contract
+    ///
+    /// # Arguments
+    /// * `contract_address` - Address of the new orb minter contract
+    fn set_orb_minter_address(ref self: TState, contract_address: ContractAddress);
+
+    /// Sets the maximum number of orb uses allowed per arcade attempt
+    ///
+    /// # Arguments
+    /// * `max_uses` - New maximum orb uses per attempt
+    fn set_max_orb_uses(ref self: TState, max_uses: u32);
+
+    /// Sets the drop rates for orbs at a specific stage
+    ///
+    /// # Arguments
+    /// * `drop_rates` - New drop rates for the specified stage
+    fn set_drop_rates(
+        ref self: TState, challenge_rates: OrbDropRates, stage_rates: Array<OrbDropRates>,
+    );
 }

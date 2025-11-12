@@ -1,7 +1,7 @@
 import { loadJson, makeCairoEnum } from "./stark-utils.js";
 import { CairoCustomEnum } from "starknet";
 import { loadSai } from "./sai.js";
-import { parseIdTagAttackStructs, parsePartialAttributes } from "./loadout.js";
+import { parseIdTagActionStructs, parsePartialAttributes } from "./loadout.js";
 import pkg from "case";
 const { pascal } = pkg;
 
@@ -28,7 +28,7 @@ const makeSeedItemCallData = (trait, n, item) => {
       index: BigInt(n),
       name: item.name,
       attributes: parsePartialAttributes(item.attributes),
-      attacks: parseIdTagAttackStructs(item.attacks),
+      actions: parseIdTagActionStructs(item.actions),
     };
   } catch (e) {
     console.error(`Error processing item: ${trait} ${n}, ${item.name}`);

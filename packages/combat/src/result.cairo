@@ -17,6 +17,20 @@ pub enum ActionResult {
     NotAvailable,
     Stunned,
     Action: (u16, Array<EffectResult>),
+    None,
+}
+
+#[derive(Drop, Serde, Introspect)]
+pub enum MoveResult {
+    None,
+    Action: felt252,
+    Orb: OrbResult,
+}
+
+#[derive(Drop, Serde, Introspect)]
+pub struct OrbResult {
+    pub id: felt252,
+    pub action: felt252,
 }
 
 /// Represents the result of an effect application in the battle system

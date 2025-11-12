@@ -85,8 +85,8 @@ build-external-contracts = [
     "amma_blobert::minter::amma_blobert_minter",
     "arena_blobert::arena_blobert",
     "arena_blobert::minter::arena_blobert_minter",
-    "ba_loadout::attack::contract::attack",
-    "ba_loadout::attack::attack::attack_model",
+    "ba_loadout::action::contract::action",
+    "ba_loadout::action::action::action_model",
     "ba_loadout::loadout_amma::loadout_amma",
     "ba_loadout::loadout_classic::loadout_classic",
     "ba_combat::combat::round_result_model",
@@ -98,7 +98,8 @@ build-external-contracts = [
     "ba_arcade_amma::contract::arcade_amma",
     "ba_pvp::contract::pvp",
     "ba_utils::vrf::mock_vrf",
-    "ba_orbs::orbs",
+    "ba_orbs::token::orb",
+    "ba_orbs::minter::orb_minter",
 ]
 
 [tool]

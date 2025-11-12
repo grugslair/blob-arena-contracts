@@ -29,7 +29,7 @@ await sai.executeAndWait([
   }),
 
   (
-    await sai.getContract("attack")
+    await sai.getContract("action")
   ).populate("grant_contract_writers", {
     writers: [
       // sai.deployments["loadout_amma"].contract_address,

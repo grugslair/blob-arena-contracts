@@ -1,13 +1,13 @@
 import { loadJson } from "./stark-utils.js";
 import { loadSai } from "./sai.js";
-import { parseIdTagAttackStructs } from "./loadout.js";
+import { parseIdTagActionStructs } from "./loadout.js";
 import { parseAttributes } from "./loadout.js";
 
 const makeFighterItemCallData = (n, data) => {
   return {
     fighter: Number(n),
     attributes: parseAttributes(data.abilities),
-    attacks: parseIdTagAttackStructs(data.attacks),
+    actions: parseIdTagActionStructs(data.actions),
   };
 };
 

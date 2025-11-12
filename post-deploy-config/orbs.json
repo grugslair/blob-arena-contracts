@@ -1,0 +1,12 @@
+{
+  "charge": 42069,
+  "shards_in_orbs": {
+    "rare": 1,
+    "epic": 1,
+    "legendary": 1
+  },
+  "common_actions": [],
+  "rare_actions": [],
+  "epic_actions": [],
+  "legendary_actions": []
+}

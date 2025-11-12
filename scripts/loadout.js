@@ -125,7 +125,7 @@ const getDuration = (effect) => {
     if (
       ["instant", "round", "rounds", "infinite"].includes(key.toLowerCase())
     ) {
-      return effect[key];
+      return { [key]: effect[key] };
     }
   }
 };
@@ -153,7 +153,7 @@ const parseEffects = (target, duration, affects) => {
 const parseTarget = (target) => {
   let [key, _] = parseEnumObject(target);
   key = pascal(key);
-  if (key === "Actioner" || key === "Defender") {
+  if (key === "Actor" || key === "Target") {
     return new CairoCustomEnum({ [key]: {} });
   }
   throw new Error(`Unknown effect target: ${key}`);
@@ -305,7 +305,7 @@ export const parseVulnerabilityMods = (vulnerabilities) => {
   };
 };
 
-const parseValueInRange = (value, name, min, max) => {
+export const parseValueInRange = (value, name, min, max) => {
   value = BigInt(value || 0n);
   if (value > max || value < min) {
     throw new Error(`${name}: value ${value} out of range (${min}-${max})`);
@@ -313,7 +313,7 @@ const parseValueInRange = (value, name, min, max) => {
   return value;
 };
 
-const parseU8 = (value, name) => {
+export const parseU8 = (value, name) => {
   return parseValueInRange(value, name, 0n, 255n);
 };
 
@@ -335,6 +335,10 @@ const parseI16Ne0 = (value, name) => {
     throw new Error(`${name}: value ${value} cannot be zero`);
   }
   return parseValueInRange(value, name, -32768n, 32767n);
+};
+
+export const parseU32 = (value, name) => {
+  return parseValueInRange(value, name, 0n, 4294967295n);
 };
 
 const parse0To100 = (value, name) => {
@@ -369,7 +373,7 @@ const parseN200To200Ne0 = (value, name) => {
   return parseValueInRange(value, name, -200n, 200n);
 };
 
-const parsePercentToPpm = (value, name) => {
+export const parsePercentToPpmNZ = (value, name) => {
   value = Number(value || 0);
   if (value === 0) {
     throw new Error(`${name}: value ${value} cannot be zero`);
@@ -377,9 +381,14 @@ const parsePercentToPpm = (value, name) => {
   return BigInt(value * 10_000);
 };
 
+export const parsePercentToPpm = (value, name) => {
+  value = Number(value || 0) * 10000;
+  return parseValueInRange(value, name, 0n, 1000000n);
+};
+
 const parseEventChance = (eventChance) => {
   return {
-    chance_ppm: parsePercentToPpm(eventChance.chance, "Chance"),
+    chance_ppm: parsePercentToPpmNZ(eventChance.chance, "Chance"),
     effects: parseEffectsArray(eventChance.effects || []),
   };
 };

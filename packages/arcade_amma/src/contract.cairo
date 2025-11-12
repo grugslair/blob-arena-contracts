@@ -198,6 +198,7 @@ mod arcade_amma {
         arcade_round_result_class_hash: ClassHash,
         action_address: ContractAddress,
         loadout_address: ContractAddress,
+        orb_address: ContractAddress,
         collectable_address: ContractAddress,
     ) {
         self.grant_owner(owner);
@@ -207,6 +208,7 @@ mod arcade_amma {
             arcade_round_result_class_hash,
             action_address,
             loadout_address,
+            orb_address,
         );
         register_table_with_schema::<StageOpponents>("arcade_amma", "StageOpponents");
         register_table_with_schema::<AmmaOpponent>("arcade_amma", "Opponent");
@@ -257,11 +259,19 @@ mod arcade_amma {
             );
 
             if result.phase == ArcadeProgress::PlayerWon {
+                ArcadeInternal::get_stage_reward(
+                    ref self.arcade, result.player, result.stage, ref randomness,
+                );
+
                 let next_stage = result.stage + 1;
                 let gen_stages = self.gen_stages.read();
+
                 if next_stage == gen_stages + 1 {
                     ArcadeInternal::set_phase(
                         ref attempt_ptr, attempt_id, ArcadeProgress::PlayerWon,
+                    );
+                    ArcadeInternal::get_challenge_reward(
+                        ref self.arcade, result.player, ref randomness,
                     );
                 } else if attempt_ptr.is_not_expired() {
                     attempt_ptr.stage.write(next_stage);

@@ -72,6 +72,7 @@ pub struct AttemptNode {
     pub token_hash: felt252,
     pub health_regen: u8,
     pub actions_available: Map<felt252, bool>,
+    pub orb_uses: u32,
     pub combats: Map<u32, CombatNode>,
     pub expiry: u64,
     pub phase: ArcadeProgress,
