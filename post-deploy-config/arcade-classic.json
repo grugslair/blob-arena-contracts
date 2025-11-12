@@ -7,9 +7,9 @@
   "max_orb_uses": 2,
   "stage_drop_rates": [
     {
-      "common_full": 3,
+      "common_full": 10,
       "rare_full": 0,
-      "epic_full": 1,
+      "epic_full": 0,
       "legendary_full": 0,
       "rare_shard": 0,
       "epic_shard": 0,
@@ -17,6 +17,114 @@
       "max_rare_shards": 0,
       "max_epic_shards": 0,
       "max_legendary_shards": 0
+    },
+    {
+      "common_full": 10,
+      "rare_full": 0,
+      "epic_full": 0,
+      "legendary_full": 0,
+      "rare_shard": 0,
+      "epic_shard": 0,
+      "legendary_shard": 0,
+      "max_rare_shards": 0,
+      "max_epic_shards": 0,
+      "max_legendary_shards": 0
+    },
+    {
+      "common_full": 10,
+      "rare_full": 0,
+      "epic_full": 0,
+      "legendary_full": 0,
+      "rare_shard": 0,
+      "epic_shard": 0,
+      "legendary_shard": 0,
+      "max_rare_shards": 0,
+      "max_epic_shards": 0,
+      "max_legendary_shards": 0
+    },
+    {
+      "common_full": 7,
+      "rare_full": 0.6,
+      "epic_full": 0,
+      "legendary_full": 0,
+      "rare_shard": 2.4,
+      "epic_shard": 0,
+      "legendary_shard": 0,
+      "max_rare_shards": 2,
+      "max_epic_shards": 0,
+      "max_legendary_shards": 0
+    },
+    {
+      "common_full": 6,
+      "rare_full": 0.8,
+      "epic_full": 0,
+      "legendary_full": 0,
+      "rare_shard": 3.2,
+      "epic_shard": 0,
+      "legendary_shard": 0,
+      "max_rare_shards": 3,
+      "max_epic_shards": 0,
+      "max_legendary_shards": 0
+    },
+    {
+      "common_full": 5,
+      "rare_full": 1,
+      "epic_full": 0,
+      "legendary_full": 0,
+      "rare_shard": 4,
+      "epic_shard": 0,
+      "legendary_shard": 0,
+      "max_rare_shards": 5,
+      "max_epic_shards": 0,
+      "max_legendary_shards": 0
+    },
+    {
+      "common_full": 3,
+      "rare_full": 1,
+      "epic_full": 0.4,
+      "legendary_full": 0,
+      "rare_shard": 4,
+      "epic_shard": 1.6,
+      "legendary_shard": 0,
+      "max_rare_shards": 5,
+      "max_epic_shards": 2,
+      "max_legendary_shards": 0
+    },
+    {
+      "common_full": 2,
+      "rare_full": 1,
+      "epic_full": 0.6,
+      "legendary_full": 0,
+      "rare_shard": 4,
+      "epic_shard": 2.4,
+      "legendary_shard": 0,
+      "max_rare_shards": 5,
+      "max_epic_shards": 3,
+      "max_legendary_shards": 0
+    },
+    {
+      "common_full": 1,
+      "rare_full": 1,
+      "epic_full": 0.8,
+      "legendary_full": 0,
+      "rare_shard": 4,
+      "epic_shard": 3.2,
+      "legendary_shard": 0,
+      "max_rare_shards": 5,
+      "max_epic_shards": 5,
+      "max_legendary_shards": 0
+    },
+    {
+      "common_full": 0,
+      "rare_full": 1,
+      "epic_full": 0.8,
+      "legendary_full": 0.2,
+      "rare_shard": 4,
+      "epic_shard": 3.2,
+      "legendary_shard": 0.8,
+      "max_rare_shards": 5,
+      "max_epic_shards": 5,
+      "max_legendary_shards": 5
     }
   ],
   "challenge_drop_rates": {

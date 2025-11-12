@@ -1,12 +1,362 @@
 {
   "charge": 42069,
   "shards_in_orbs": {
-    "rare": 1,
-    "epic": 1,
-    "legendary": 1
+    "rare": 10,
+    "epic": 20,
+    "legendary": 40
   },
-  "common_actions": [],
-  "rare_actions": [],
-  "epic_actions": [],
-  "legendary_actions": []
+  "common_actions": [
+    {
+      "name": "Orb of Prayer",
+      "speed": 5000,
+      "cooldown": 2,
+      "base_effects": [],
+      "chance_effects": [
+        {
+          "chance": 50,
+          "effects": [
+            {
+              "target": "Actor",
+              "health": 100
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Orb of Kamikaze",
+      "speed": 5050,
+      "cooldown": 3,
+      "base_effects": [],
+      "chance_effects": [
+        {
+          "chance": 100,
+          "effects": [
+            {
+              "target": "Actor",
+              "damage": {
+                "power": 50,
+                "damage_type": "magic"
+              }
+            },
+            {
+              "target": "Target",
+              "damage": {
+                "power": 50,
+                "damage_type": "magic"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Orb of Gambit",
+      "speed": 5040,
+      "cooldown": 3,
+      "base_effects": [],
+      "chance_effects": [
+        {
+          "chance": 50,
+          "effects": [
+            {
+              "target": "Target",
+              "damage": {
+                "power": 100,
+                "damage_type": "magic"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Orb of Boost",
+      "speed": 5020,
+      "cooldown": 3,
+      "base_effects": [],
+      "chance_effects": [
+        {
+          "chance": 100,
+          "effects": [
+            {
+              "target": "Actor",
+              "strength_temp": 40,
+              "dexterity_temp": 40,
+              "luck_temp": 40,
+              "rounds": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Orb of Siphon",
+      "speed": 5050,
+      "cooldown": 2,
+      "base_effects": [],
+      "chance_effects": [
+        {
+          "chance": 100,
+          "effects": [
+            {
+              "target": "Target",
+              "health": -50
+            },
+            {
+              "target": "Actor",
+              "health": 50
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "rare_actions": [
+    {
+      "name": "Orb of Hex",
+      "speed": 5040,
+      "cooldown": 3,
+      "base_effects": [],
+      "chance_effects": [
+        {
+          "chance": 100,
+          "effects": [
+            {
+              "target": "Target",
+              "magic_vulnerability_temp": 50,
+              "rounds": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Orb of Fortify",
+      "speed": 5020,
+      "cooldown": 3,
+      "base_effects": [],
+      "chance_effects": [
+        {
+          "chance": 100,
+          "effects": [
+            {
+              "target": "Actor",
+              "bludgeon_resistance_temp": 50,
+              "pierce_resistance_temp": 50,
+              "magic_resistance_temp": 50,
+              "rounds": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Orb of Vitality",
+      "speed": 5010,
+      "cooldown": 3,
+      "base_effects": [],
+      "chance_effects": [
+        {
+          "chance": 100,
+          "effects": [
+            {
+              "target": "Actor",
+              "vitality": 50,
+              "health": 50
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Orb of Sanctuary",
+      "speed": 5030,
+      "cooldown": 3,
+      "base_effects": [],
+      "chance_effects": [
+        {
+          "chance": 100,
+          "effects": [
+            {
+              "target": "Actor",
+              "bludgeon_vulnerability_temp": -100,
+              "pierce_vulnerability_temp": -100,
+              "magic_vulnerability_temp": -100,
+              "rounds": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "epic_actions": [
+    {
+      "name": "Orb of Corrosion",
+      "speed": 5030,
+      "cooldown": 3,
+      "base_effects": [],
+      "chance_effects": [
+        {
+          "chance": 100,
+          "effects": [
+            {
+              "target": "Target",
+              "bludgeon_resistance_temp": -100,
+              "pierce_resistance_temp": -100,
+              "magic_resistance_temp": -100,
+              "rounds": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Orb of Frost",
+      "speed": 5035,
+      "cooldown": 3,
+      "base_effects": [],
+      "chance_effects": [
+        {
+          "chance": 90,
+          "effects": [
+            {
+              "target": "Target",
+              "damage": {
+                "power": 80,
+                "damage_type": "magic"
+              },
+              "dexterity_temp": -40,
+              "rounds": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Orb of Bloom",
+      "speed": 5020,
+      "cooldown": 4,
+      "base_effects": [],
+      "chance_effects": [
+        {
+          "chance": 100,
+          "effects": [
+            {
+              "target": "Actor",
+              "health": 10,
+              "round": 1
+            },
+            {
+              "target": "Actor",
+              "health": 20,
+              "round": 2
+            },
+            {
+              "target": "Actor",
+              "health": 30,
+              "round": 3
+            },
+            {
+              "target": "Actor",
+              "health": 40,
+              "round": 4
+            }           
+          ]
+        }
+      ]
+    }
+  ],
+  "legendary_actions": [
+    {
+      "name": "Orb of Reaper",
+      "speed": 5045,
+      "cooldown": 4,
+      "base_effects": [],
+      "chance_effects": [
+        {
+          "chance": 100,
+          "effects": [
+            {
+              "target": "Target",
+              "health_percent": -60
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Orb of Peace",
+      "speed": 5000,
+      "cooldown": 5,
+      "base_effects": [],
+      "chance_effects": [
+        {
+          "chance": 100,
+          "effects": [
+            {
+              "target": "Actor",
+              "health_percent": 100
+            },
+            {
+              "target": "Target",
+              "health_percent": 100
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Orb of Trinity",
+      "speed": 5050,
+      "cooldown": 5,
+      "base_effects": [],
+      "chance_effects": [
+        {
+          "chance": 100,
+          "effects": [
+            {
+              "target": "Target",
+              "damage": {
+                "power": 40,
+                "critical": 20,
+                "damage_type": "magic"
+              }
+            },
+            {
+              "target": "Target",                
+              "health": -10,
+              "rounds": 3
+            },
+            {
+              "target": "Target",
+              "damage": {
+                "power": 40,
+                "critical": 20,
+                "damage_type": "magic"
+              }
+            },
+            {
+              "target": "Target",
+              "dexterity_temp": -30,
+              "rounds": 3
+            },
+            {
+              "target": "Target",
+              "damage": {
+                "power": 40,
+                "critical": 20,
+                "damage_type": "magic"
+              }
+            },
+            {
+              "target": "Target",
+              "strength_temp": -30,
+              "rounds": 3
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
