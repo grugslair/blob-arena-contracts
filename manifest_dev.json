@@ -23,24 +23,24 @@
       "calldata_compiled": []
     },
     "round_result_model": {
-      "contract_address": "0x5349c64b92622341f2ef665ecbfff4e16d5acd2fc8fb62132e3019cd44bfa3",
+      "contract_address": "0x5909c0f267bfc6a47f963041208c58a1835e2176d71f3ebcdadf03e528de1f0",
       "tag": "round_result_model",
       "salt": "0x0",
       "unique": false,
       "once": true,
       "class": "round_result_model",
-      "class_hash": "0x1f75ae3422d68d968fa10a550218d55260a26892d6f6f2c88714c530f7bd8e7",
+      "class_hash": "0x79506b8d4b84258d60e7b6b74fe39a45bb7d94ba04ba90691a8f729d2bd7e49",
       "calldata": [],
       "calldata_compiled": []
     },
     "arcade_round_result_model": {
-      "contract_address": "0x82a7d07077aec5fa54f9a45327b2e698ba493bd749cc2c393eb1d75477c2f4",
+      "contract_address": "0x2d8109bc1be1fb46764a9c77dfd07effd59e6466972a065f01d31ba8da778d7",
       "tag": "arcade_round_result_model",
       "salt": "0x0",
       "unique": false,
       "once": true,
       "class": "arcade_round_result_model",
-      "class_hash": "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
+      "class_hash": "0x522fd9327725d4535e9983d0fc2ab3de6d15ad8349a63720c5836b5aa9ac9a8",
       "calldata": [],
       "calldata_compiled": []
     },
@@ -137,7 +137,7 @@
       ]
     },
     "orb_minter": {
-      "contract_address": "0x43b93845a4478937615818fc534ff7528b78def6ddfae78f4e686ff3e2164a5",
+      "contract_address": "0x670609b4682e13f8141852f896b10ae0f7e36144ffb1c830c71e5af23ea3463",
       "tag": "orb_minter",
       "unique": false,
       "calldata": {
@@ -147,14 +147,14 @@
       "salt": "0x0",
       "once": true,
       "class": "orb_minter",
-      "class_hash": "0x46bf8dbce3df35f685dc6e0e4fe48d788dc2693ba296e060e70bef069a1f46b",
+      "class_hash": "0x3c1050bc97edb40c4e236cf124c6bd56d9ac8b27fa29d5c9ea8bf7fa7431e0b",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
         "0x43b57ae8c441f0c2405bdceda6b42b704ed34a03b63eb651a58db5f58a1c5e5"
       ]
     },
     "arena_blobert_minter": {
-      "contract_address": "0x5211935753df2a1f327e70b0b039afab03c286ca2249f4ff38148ac9212eaf7",
+      "contract_address": "0x7cd9a8cea3863ef0a51ef8e6a18c7f747f18d59af12a0108230869ff702416d",
       "tag": "arena_blobert_minter",
       "unique": false,
       "calldata": {
@@ -164,7 +164,7 @@
       "salt": "0x0",
       "once": true,
       "class": "arena_blobert_minter",
-      "class_hash": "0x724b4eca7c6414d7d8dfb11cc616cde5b6ffe12d1c6032d10c667f48e1c84ea",
+      "class_hash": "0x60ae33b8db9295128af2e2beb6f3cc557032b58598ed7ea74d5621ddebab70d",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
         "0x1bea635394e89010fc827d6cb4043c2781a23bc05fd2136be50023af43b310e"
@@ -251,12 +251,12 @@
       ]
     },
     "arcade_classic": {
-      "contract_address": "0x319334eefc029ceada928ac59cdeaf08a1c9cdc3f22842b9aecfced8ebbfbd8",
+      "contract_address": "0x183db06e96a5a19e78fb2743f81e7961f78ecba07c05d6fa5223b90a4fb57bb",
       "tag": "arcade_classic",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "arcade_round_result_class_hash": "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
+        "arcade_round_result_class_hash": "0x522fd9327725d4535e9983d0fc2ab3de6d15ad8349a63720c5836b5aa9ac9a8",
         "action_address": "0x394a469a4ab6c9d60a0e097a06d8ff17270e2df9a35f63adb2f3948521ff50f",
         "loadout_address": "0x529795d15e5451c3656953ba800aed8e0987f9abb7afaac5ef392834154500f",
         "orb_address": "0x43b57ae8c441f0c2405bdceda6b42b704ed34a03b63eb651a58db5f58a1c5e5"
@@ -264,22 +264,22 @@
       "salt": "0x0",
       "once": true,
       "class": "arcade_classic",
-      "class_hash": "0x48cb348fb5fc817174043b49b61dd30be284306952da75080d514d8977eb13e",
+      "class_hash": "0x69fd22bdc3e52c164365970d5e5c815d7c5ca1950b87a3d1a0438bc8c349686",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
+        "0x522fd9327725d4535e9983d0fc2ab3de6d15ad8349a63720c5836b5aa9ac9a8",
         "0x394a469a4ab6c9d60a0e097a06d8ff17270e2df9a35f63adb2f3948521ff50f",
         "0x529795d15e5451c3656953ba800aed8e0987f9abb7afaac5ef392834154500f",
         "0x43b57ae8c441f0c2405bdceda6b42b704ed34a03b63eb651a58db5f58a1c5e5"
       ]
     },
     "arcade_amma": {
-      "contract_address": "0x7135405e89f7a9e11ad28233f6abb34a1d375d32f01c29c6cdcf49e57d352a2",
+      "contract_address": "0xdd7d654e1947d42a56928dfe17d12b4260297ba77a4872eb301fbfa656e92b",
       "tag": "arcade_amma",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "arcade_round_result_class_hash": "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
+        "arcade_round_result_class_hash": "0x522fd9327725d4535e9983d0fc2ab3de6d15ad8349a63720c5836b5aa9ac9a8",
         "action_address": "0x394a469a4ab6c9d60a0e097a06d8ff17270e2df9a35f63adb2f3948521ff50f",
         "loadout_address": "0x7ad06ca408eb740efb9f46e547cb958d9ccfd2b2a85019b36e3da2c527ff06a",
         "orb_address": "0x43b57ae8c441f0c2405bdceda6b42b704ed34a03b63eb651a58db5f58a1c5e5",
@@ -288,10 +288,10 @@
       "salt": "0x0",
       "once": true,
       "class": "arcade_amma",
-      "class_hash": "0x1ddaf9e92710a59f5728a1def5ca88e26a3e9fc81ae5019c87fcab6abbb672b",
+      "class_hash": "0x4ad150a31fcf6b8442283a9ed5acf94e8d062e3d5d73e76cbdb6cafa6967455",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
+        "0x522fd9327725d4535e9983d0fc2ab3de6d15ad8349a63720c5836b5aa9ac9a8",
         "0x394a469a4ab6c9d60a0e097a06d8ff17270e2df9a35f63adb2f3948521ff50f",
         "0x7ad06ca408eb740efb9f46e547cb958d9ccfd2b2a85019b36e3da2c527ff06a",
         "0x43b57ae8c441f0c2405bdceda6b42b704ed34a03b63eb651a58db5f58a1c5e5",
@@ -299,21 +299,21 @@
       ]
     },
     "pvp": {
-      "contract_address": "0x5dd69a5deed13f64c0bb19e7a1b6b893c55cf0ee7de48986253609c43928235",
+      "contract_address": "0x2f0a9884f3905f5c7b46d3ad3c46d3eb3aae074d4e4c5eda5a571084520546b",
       "tag": "pvp",
       "unique": false,
       "calldata": {
         "owner": "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "round_result_class_hash": "0x1f75ae3422d68d968fa10a550218d55260a26892d6f6f2c88714c530f7bd8e7",
+        "round_result_class_hash": "0x79506b8d4b84258d60e7b6b74fe39a45bb7d94ba04ba90691a8f729d2bd7e49",
         "action_address": "0x394a469a4ab6c9d60a0e097a06d8ff17270e2df9a35f63adb2f3948521ff50f"
       },
       "salt": "0x0",
       "once": true,
       "class": "pvp",
-      "class_hash": "0x16ffe3d6270b2c2ef303a6ea6ba7568ebb5dfd4b9ae181ded89bfecc26759ea",
+      "class_hash": "0x5290bc202e1fc27e82d4ce723f5eaa18c18af241ce824215dd2e627a5854d37",
       "calldata_compiled": [
         "0x2af9427c5a277474c079a1283c880ee8a6f0f8fbf73ce969c08d88befec1bba",
-        "0x1f75ae3422d68d968fa10a550218d55260a26892d6f6f2c88714c530f7bd8e7",
+        "0x79506b8d4b84258d60e7b6b74fe39a45bb7d94ba04ba90691a8f729d2bd7e49",
         "0x394a469a4ab6c9d60a0e097a06d8ff17270e2df9a35f63adb2f3948521ff50f"
       ]
     }
@@ -326,19 +326,19 @@
       "class_hash": "0x51914a51d3a3f30fce59b11eff04955217ad3d368f6fbf89b556515ca5efc58"
     },
     "round_result_model": {
-      "class_hash": "0x1f75ae3422d68d968fa10a550218d55260a26892d6f6f2c88714c530f7bd8e7"
+      "class_hash": "0x79506b8d4b84258d60e7b6b74fe39a45bb7d94ba04ba90691a8f729d2bd7e49"
     },
     "arcade_round_result_model": {
-      "class_hash": "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a"
+      "class_hash": "0x522fd9327725d4535e9983d0fc2ab3de6d15ad8349a63720c5836b5aa9ac9a8"
     },
     "combat": {
-      "class_hash": "0x967270354c18455f388366448c06d318cc426fb1a891b149f0dacd8cbcfc83"
+      "class_hash": "0x5bd4eb54d4e5fce6e777a6569eaef3cc8ed7a93bac60fdacbfc0d48560603cb"
     },
     "arena_blobert": {
       "class_hash": "0x65f2d6e583f86237f9f046fbc0817a7bbb0e85a1fbbeedf672fd05288a3590c"
     },
     "arena_blobert_minter": {
-      "class_hash": "0x724b4eca7c6414d7d8dfb11cc616cde5b6ffe12d1c6032d10c667f48e1c84ea"
+      "class_hash": "0x60ae33b8db9295128af2e2beb6f3cc557032b58598ed7ea74d5621ddebab70d"
     },
     "amma_blobert": {
       "class_hash": "0x4cac2dde125d08e2d76841527ce5edb9ac08fd58fb1f54caaa1c6a874c9b5b8"
@@ -362,7 +362,7 @@
       "class_hash": "0x16083a680f916dc90c184862448c02e5639ab98156982f9df1b00cba6602552"
     },
     "orb_minter": {
-      "class_hash": "0x46bf8dbce3df35f685dc6e0e4fe48d788dc2693ba296e060e70bef069a1f46b"
+      "class_hash": "0x3c1050bc97edb40c4e236cf124c6bd56d9ac8b27fa29d5c9ea8bf7fa7431e0b"
     },
     "arena_credit": {
       "class_hash": "0x29eb7b4a082ebcef9bc97a5fcc6e109414975c4cc5d5db1e31de82d52a94cc0"
@@ -371,13 +371,13 @@
       "class_hash": "0x4be30835b6c7e9bc04c7cb119eab8670da3f168c58ebe718b8e4fb5c7aeb799"
     },
     "arcade_classic": {
-      "class_hash": "0x48cb348fb5fc817174043b49b61dd30be284306952da75080d514d8977eb13e"
+      "class_hash": "0x69fd22bdc3e52c164365970d5e5c815d7c5ca1950b87a3d1a0438bc8c349686"
     },
     "arcade_amma": {
-      "class_hash": "0x1ddaf9e92710a59f5728a1def5ca88e26a3e9fc81ae5019c87fcab6abbb672b"
+      "class_hash": "0x4ad150a31fcf6b8442283a9ed5acf94e8d062e3d5d73e76cbdb6cafa6967455"
     },
     "pvp": {
-      "class_hash": "0x16ffe3d6270b2c2ef303a6ea6ba7568ebb5dfd4b9ae181ded89bfecc26759ea"
+      "class_hash": "0x5290bc202e1fc27e82d4ce723f5eaa18c18af241ce824215dd2e627a5854d37"
     }
   },
   "contracts": {
@@ -398,13 +398,13 @@
       "class": "action_model"
     },
     "round_result_model": {
-      "contract_address": "0x5349c64b92622341f2ef665ecbfff4e16d5acd2fc8fb62132e3019cd44bfa3",
-      "class_hash": "0x1f75ae3422d68d968fa10a550218d55260a26892d6f6f2c88714c530f7bd8e7",
+      "contract_address": "0x5909c0f267bfc6a47f963041208c58a1835e2176d71f3ebcdadf03e528de1f0",
+      "class_hash": "0x79506b8d4b84258d60e7b6b74fe39a45bb7d94ba04ba90691a8f729d2bd7e49",
       "class": "round_result_model"
     },
     "arcade_round_result_model": {
-      "contract_address": "0x82a7d07077aec5fa54f9a45327b2e698ba493bd749cc2c393eb1d75477c2f4",
-      "class_hash": "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
+      "contract_address": "0x2d8109bc1be1fb46764a9c77dfd07effd59e6466972a065f01d31ba8da778d7",
+      "class_hash": "0x522fd9327725d4535e9983d0fc2ab3de6d15ad8349a63720c5836b5aa9ac9a8",
       "class": "arcade_round_result_model"
     },
     "arena_blobert": {
@@ -438,13 +438,13 @@
       "class": "action"
     },
     "orb_minter": {
-      "contract_address": "0x43b93845a4478937615818fc534ff7528b78def6ddfae78f4e686ff3e2164a5",
-      "class_hash": "0x46bf8dbce3df35f685dc6e0e4fe48d788dc2693ba296e060e70bef069a1f46b",
+      "contract_address": "0x670609b4682e13f8141852f896b10ae0f7e36144ffb1c830c71e5af23ea3463",
+      "class_hash": "0x3c1050bc97edb40c4e236cf124c6bd56d9ac8b27fa29d5c9ea8bf7fa7431e0b",
       "class": "orb_minter"
     },
     "arena_blobert_minter": {
-      "contract_address": "0x5211935753df2a1f327e70b0b039afab03c286ca2249f4ff38148ac9212eaf7",
-      "class_hash": "0x724b4eca7c6414d7d8dfb11cc616cde5b6ffe12d1c6032d10c667f48e1c84ea",
+      "contract_address": "0x7cd9a8cea3863ef0a51ef8e6a18c7f747f18d59af12a0108230869ff702416d",
+      "class_hash": "0x60ae33b8db9295128af2e2beb6f3cc557032b58598ed7ea74d5621ddebab70d",
       "class": "arena_blobert_minter"
     },
     "amma_blobert_minter": {
@@ -468,103 +468,22 @@
       "class": "loadout_amma"
     },
     "arcade_classic": {
-      "contract_address": "0x319334eefc029ceada928ac59cdeaf08a1c9cdc3f22842b9aecfced8ebbfbd8",
-      "class_hash": "0x48cb348fb5fc817174043b49b61dd30be284306952da75080d514d8977eb13e",
+      "contract_address": "0x183db06e96a5a19e78fb2743f81e7961f78ecba07c05d6fa5223b90a4fb57bb",
+      "class_hash": "0x69fd22bdc3e52c164365970d5e5c815d7c5ca1950b87a3d1a0438bc8c349686",
       "class": "arcade_classic"
     },
     "arcade_amma": {
-      "contract_address": "0x7135405e89f7a9e11ad28233f6abb34a1d375d32f01c29c6cdcf49e57d352a2",
-      "class_hash": "0x1ddaf9e92710a59f5728a1def5ca88e26a3e9fc81ae5019c87fcab6abbb672b",
+      "contract_address": "0xdd7d654e1947d42a56928dfe17d12b4260297ba77a4872eb301fbfa656e92b",
+      "class_hash": "0x4ad150a31fcf6b8442283a9ed5acf94e8d062e3d5d73e76cbdb6cafa6967455",
       "class": "arcade_amma"
     },
     "pvp": {
-      "contract_address": "0x5dd69a5deed13f64c0bb19e7a1b6b893c55cf0ee7de48986253609c43928235",
-      "class_hash": "0x16ffe3d6270b2c2ef303a6ea6ba7568ebb5dfd4b9ae181ded89bfecc26759ea",
+      "contract_address": "0x2f0a9884f3905f5c7b46d3ad3c46d3eb3aae074d4e4c5eda5a571084520546b",
+      "class_hash": "0x5290bc202e1fc27e82d4ce723f5eaa18c18af241ce824215dd2e627a5854d37",
       "class": "pvp"
     }
   },
-  "declarations": {
-    "mock_vrf": {
-      "class_hash": "0x301acbd969fe41d1dd0a3349a17db0e779d78644aa21d4ff6ef3f0d0498479f",
-      "transaction_hash": "0x434ca03ae9c228ada9a96d52037abf6a1323be8a7ee38acaf8e532c48abb681"
-    },
-    "action_model": {
-      "class_hash": "0x51914a51d3a3f30fce59b11eff04955217ad3d368f6fbf89b556515ca5efc58",
-      "transaction_hash": "0x13bd0cfb6a5dd097cf5f3cda7a9b73b23d0f5c6548f2fcf77a56fdd974f69c7"
-    },
-    "round_result_model": {
-      "class_hash": "0x1f75ae3422d68d968fa10a550218d55260a26892d6f6f2c88714c530f7bd8e7",
-      "transaction_hash": "0x29d94fa1ec573acae31768577bf56dd43c53b47f19c96f934315544498f0687"
-    },
-    "arcade_round_result_model": {
-      "class_hash": "0x63ebe436dcaaf194ed2286f4ea8df449280f668d502f51a1edbb728bbe1cf6a",
-      "transaction_hash": "0xef3ae84af9a0bb3301c30334cdbfae5075c2ab7302e0032072f1ebd310608c"
-    },
-    "combat": {
-      "class_hash": "0x967270354c18455f388366448c06d318cc426fb1a891b149f0dacd8cbcfc83",
-      "transaction_hash": "0x47779ad605f876c15be75f94916b36c6765d0c4916a962894892d1ab5a7ec48"
-    },
-    "arena_blobert": {
-      "class_hash": "0x65f2d6e583f86237f9f046fbc0817a7bbb0e85a1fbbeedf672fd05288a3590c",
-      "transaction_hash": "0x7e9f855605db0b03809b2065fd98dbcf0bc1880d115c083f2e3327d254cad06"
-    },
-    "arena_blobert_minter": {
-      "class_hash": "0x724b4eca7c6414d7d8dfb11cc616cde5b6ffe12d1c6032d10c667f48e1c84ea",
-      "transaction_hash": "0x198de0fefe901ccd3d6208e4f65f662b27a6f0a993b73751094e27d2aa3348e"
-    },
-    "amma_blobert": {
-      "class_hash": "0x4cac2dde125d08e2d76841527ce5edb9ac08fd58fb1f54caaa1c6a874c9b5b8",
-      "transaction_hash": "0x2890ceca5d40c39a6ba0bdce641a3f5597dad3903db796c1c1c18b3db3c30b7"
-    },
-    "amma_blobert_soulbound": {
-      "class_hash": "0x2a3f22e91d891700653cd7f14f6bd8c6c8e268381c242e424f4f379602a5050",
-      "transaction_hash": "0x7c9f9cf4620c45879d82d59d1c0dfbfb1e1f41e1a5df21dbbd8b6454d1b6d7b"
-    },
-    "amma_blobert_minter": {
-      "class_hash": "0x4bbd4269e9fc9b370a01bfc3a7cf8bc72eeee7206505ee10d9f593cd9e429f",
-      "transaction_hash": "0xffb504c2377290f19f7b98d4bbc81281f39cd2353c11a9e8367a984db0a47"
-    },
-    "action": {
-      "class_hash": "0x44ee042ec162efe13080050d3c880440ec70960349cc4d54d8b91924d34432b",
-      "transaction_hash": "0x66b4b8a60de9748646880ce331856bda67e936016982bcc3270500c1b722434"
-    },
-    "loadout_classic": {
-      "class_hash": "0x1cf347168a95b33015f6bc5a2931ed2194644136cfbacb9b92052b8158649dd",
-      "transaction_hash": "0x4fafe73ad1ce61d07d55b4f3ae1fa59614222a49547dd5e1d197effba27b952"
-    },
-    "loadout_amma": {
-      "class_hash": "0x2fb5a21fad3a9529d4e017f1c0343f34307a0ee6bdcb2b0bb4346c4e30b7bb8",
-      "transaction_hash": "0x5e1dd331254130cdcb0e8ae0566bcea2760958dfafff9cde13672baf8b4c3e0"
-    },
-    "orb": {
-      "class_hash": "0x16083a680f916dc90c184862448c02e5639ab98156982f9df1b00cba6602552",
-      "transaction_hash": "0x5ed95f7e31baecb82b4888b8047b29f23676e91ac89ff032efd0181986c41f0"
-    },
-    "orb_minter": {
-      "class_hash": "0x46bf8dbce3df35f685dc6e0e4fe48d788dc2693ba296e060e70bef069a1f46b",
-      "transaction_hash": "0x24f6690a1923d8db726f36918023039a4a8df0f7d91a086e81c636614beab39"
-    },
-    "arena_credit": {
-      "class_hash": "0x29eb7b4a082ebcef9bc97a5fcc6e109414975c4cc5d5db1e31de82d52a94cc0",
-      "transaction_hash": "0x6eba5d525b2af0a1d43b163b65b6660de1cb5bba69e1edb4f8f24f5eb401d9a"
-    },
-    "arena_credit_purchase": {
-      "class_hash": "0x4be30835b6c7e9bc04c7cb119eab8670da3f168c58ebe718b8e4fb5c7aeb799",
-      "transaction_hash": "0x52343048511cbfb4996ce61a3fe3ce06c7911e88caf5417a375345c2540675d"
-    },
-    "arcade_classic": {
-      "class_hash": "0x48cb348fb5fc817174043b49b61dd30be284306952da75080d514d8977eb13e",
-      "transaction_hash": "0x243d3869a3cf1566891ebee7b00da6f634b20a7f348d4026734e7c53d2bf8be"
-    },
-    "arcade_amma": {
-      "class_hash": "0x1ddaf9e92710a59f5728a1def5ca88e26a3e9fc81ae5019c87fcab6abbb672b",
-      "transaction_hash": "0x2b64e37cd3cfec59f9c5fb2aa2b7261a8e1df62c026153397cd83452594c999"
-    },
-    "pvp": {
-      "class_hash": "0x16ffe3d6270b2c2ef303a6ea6ba7568ebb5dfd4b9ae181ded89bfecc26759ea",
-      "transaction_hash": "0x7b67fe06bda8f34b301558e4265685bcee93688f44d07cb18004e683ff87ac5"
-    }
-  },
+  "declarations": {},
   "abis": {
     "0x65f2d6e583f86237f9f046fbc0817a7bbb0e85a1fbbeedf672fd05288a3590c": [
       {
@@ -5637,7 +5556,7 @@
         ]
       }
     ],
-    "0x46bf8dbce3df35f685dc6e0e4fe48d788dc2693ba296e060e70bef069a1f46b": [
+    "0x3c1050bc97edb40c4e236cf124c6bd56d9ac8b27fa29d5c9ea8bf7fa7431e0b": [
       {
         "type": "impl",
         "name": "IOrbMinterImpl",
@@ -5997,7 +5916,7 @@
         ]
       }
     ],
-    "0x724b4eca7c6414d7d8dfb11cc616cde5b6ffe12d1c6032d10c667f48e1c84ea": [
+    "0x60ae33b8db9295128af2e2beb6f3cc557032b58598ed7ea74d5621ddebab70d": [
       {
         "type": "impl",
         "name": "IArcadeBlobertMinterImpl",
@@ -8561,7 +8480,7 @@
         ]
       }
     ],
-    "0x48cb348fb5fc817174043b49b61dd30be284306952da75080d514d8977eb13e": [
+    "0x69fd22bdc3e52c164365970d5e5c815d7c5ca1950b87a3d1a0438bc8c349686": [
       {
         "type": "impl",
         "name": "IArcadeImpl",
@@ -9493,6 +9412,17 @@
           },
           {
             "type": "function",
+            "name": "max_orb_uses",
+            "inputs": [],
+            "outputs": [
+              {
+                "type": "core::integer::u32"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
             "name": "stage_drop_rates",
             "inputs": [
               {
@@ -9620,6 +9550,18 @@
           },
           {
             "type": "function",
+            "name": "set_max_orb_uses",
+            "inputs": [
+              {
+                "name": "max_uses",
+                "type": "core::integer::u32"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
             "name": "set_drop_rates",
             "inputs": [
               {
@@ -9738,7 +9680,7 @@
         ]
       }
     ],
-    "0x1ddaf9e92710a59f5728a1def5ca88e26a3e9fc81ae5019c87fcab6abbb672b": [
+    "0x4ad150a31fcf6b8442283a9ed5acf94e8d062e3d5d73e76cbdb6cafa6967455": [
       {
         "type": "impl",
         "name": "IArcadeImpl",
@@ -10754,6 +10696,17 @@
           },
           {
             "type": "function",
+            "name": "max_orb_uses",
+            "inputs": [],
+            "outputs": [
+              {
+                "type": "core::integer::u32"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
             "name": "stage_drop_rates",
             "inputs": [
               {
@@ -10874,6 +10827,18 @@
               {
                 "name": "contract_address",
                 "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "set_max_orb_uses",
+            "inputs": [
+              {
+                "name": "max_uses",
+                "type": "core::integer::u32"
               }
             ],
             "outputs": [],
@@ -11003,7 +10968,7 @@
         ]
       }
     ],
-    "0x16ffe3d6270b2c2ef303a6ea6ba7568ebb5dfd4b9ae181ded89bfecc26759ea": [
+    "0x5290bc202e1fc27e82d4ce723f5eaa18c18af241ce824215dd2e627a5854d37": [
       {
         "type": "impl",
         "name": "IPvpAdminImpl",

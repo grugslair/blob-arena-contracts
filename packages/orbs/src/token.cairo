@@ -203,7 +203,6 @@ pub mod orb {
             self.increase_token_charge(downcast_id(token_id), amount);
         }
 
-
         fn grant_role(ref self: ContractState, user: ContractAddress, role: Role) {
             self.assert_caller_has_role(Role::Owner);
             self.grant_role_internal(user, role);

@@ -8,7 +8,11 @@ import { dumpToml, loadToml } from "./stark-utils.js";
 import { makeArcadeAmmaCalls } from "./set-arcade-amma.js";
 import { makeArenaCreditCalls } from "./set-arena-credits.js";
 import { makePvpCalls } from "./set-pvp.js";
-import { makeOrbsMinterConfigCalls, makeOrbTokenCalls } from "./set-orbs.js";
+import {
+  makeOrbPermissionsCalls,
+  makeOrbsMinterConfigCalls,
+  makeOrbTokenCalls,
+} from "./set-orbs.js";
 const deployWithOwner = [
   "arena_blobert",
   "amma_blobert",
@@ -197,6 +201,7 @@ await sai.executeAndWait([
   ...(await makeArenaCreditCalls(sai)),
   ...(await makeOrbsMinterConfigCalls(sai)),
   ...(await makeOrbTokenCalls(sai)),
+  ...(await makeOrbPermissionsCalls(sai)),
 ]);
 
 console.log("Granting writers and owners...");

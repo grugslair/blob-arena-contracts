@@ -17,6 +17,9 @@ const ammaBlobertContract = await sai.getContract("amma_blobert_soulbound");
 const arenaBlobertContract = await sai.getContract("arena_blobert");
 const ammaBlobertMinter = await sai.getContract("amma_blobert_minter");
 const arenaBlobertMinter = await sai.getContract("arena_blobert_minter");
+const orbContract = await sai.getContract("orb");
+
+const orbActionId = "";
 
 await sai.executeAndWait(
   arenaCreditContract.populate("add_credits", {
@@ -25,6 +28,10 @@ await sai.executeAndWait(
   })
 );
 console.log("Added credits");
+
+orbContract.populate("", {});
+
+console.log("Mint orbs");
 
 try {
   const maybeOwner = await ammaBlobertContract.owner_of(ammaToken);
