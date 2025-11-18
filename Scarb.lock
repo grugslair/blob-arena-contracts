@@ -153,6 +153,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "ba_endless"
+version = "0.15.0"
+dependencies = [
+ "ba_loadout",
+ "ba_utils",
+ "beacon_entity",
+ "beacon_library",
+ "beacon_macros",
+ "dojo",
+ "dojo_macros",
+ "openzeppelin_access",
+ "openzeppelin_introspection",
+ "openzeppelin_token",
+ "sai_access",
+ "sai_packing",
+ "sai_token",
+]
+
+[[package]]
 name = "ba_loadout"
 version = "0.15.0"
 dependencies = [
