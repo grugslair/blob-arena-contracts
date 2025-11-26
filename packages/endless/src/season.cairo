@@ -25,6 +25,12 @@ pub struct SeasonNode {
     pub claimed: Map<u8, bool>,
     pub winners: Winners,
     pub jackpot_splits: JackpotSplits,
+    pub fees: Fees,
+}
+
+
+#[derive(Drop)]
+struct Fees {
     pub team_ppm: u16,
     pub vlords_ppm: u16,
 }
@@ -41,8 +47,6 @@ struct Winners {
 
 #[derive(Drop)]
 pub struct JackpotSplits {
-    pub team: u16,
-    pub vlords: u16,
     pub first: u32,
     pub second: u32,
     pub third: u32,
@@ -112,6 +116,19 @@ pub impl SeasonImpl of SeasonTrait {
     }
 }
 
+
+impl FeesStorePacking of StorePacking<Fees, u32> {
+    fn pack(value: Fees) -> u32 {
+        value.team_ppm.into() + ShiftCast::const_cast::<SHIFT_2B>(value.vlords_ppm)
+    }
+
+    fn unpack(value: u32) -> Fees {
+        Fees {
+            team_ppm: MaskDowncast::cast(value),
+            vlords_ppm: ShiftCast::const_unpack::<SHIFT_2B>(value),
+        }
+    }
+}
 
 impl TimesStorePacking of StorePacking<Times, felt252> {
     fn pack(value: Times) -> felt252 {
