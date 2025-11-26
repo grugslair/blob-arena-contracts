@@ -156,6 +156,7 @@ dependencies = [
 name = "ba_endless"
 version = "0.15.0"
 dependencies = [
+ "ba_combat",
  "ba_loadout",
  "ba_utils",
  "beacon_entity",

@@ -7,13 +7,15 @@ trait IEndless<TState> {
 #[starknet::component]
 mod endless_component {
     use ba_loadout::Attributes;
+    use core::cmp::min;
     use openzeppelin_token::erc20::{ERC20ABIDispatcher, ERC20ABIDispatcherTrait};
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePathEntry,
         StoragePointerReadAccess, StoragePointerWriteAccess,
     };
-    use starknet::{ContractAddress, get_caller_address};
-    use crate::season::{JackpotSplits, SeasonNode, SeasonTrait};
+    use starknet::{ContractAddress, get_block_timestamp, get_caller_address, get_contract_address};
+    use crate::attempt::{AttemptInfo, AttemptInfoTrait, AttemptNodePath};
+    use crate::season::{JackpotSplits, SeasonNode, SeasonNodePath, SeasonTrait};
     use super::IEndless;
 
     #[storage]
@@ -24,6 +26,8 @@ mod endless_component {
         seasons: Map<u64, SeasonNode>,
         jackpot: u256,
         jackpot_token: ERC20ABIDispatcher,
+        team_wallet: ContractAddress,
+        vlords_wallet: ContractAddress,
     }
 
     #[embeddable_as(EndlessImpl)]
@@ -48,21 +52,24 @@ mod endless_component {
             let user = attempt_node.player.read();
             self.jackpot_token.read().transfer(user, portion);
         }
-
-
-        fn start_attempt(ref self: ComponentState<TContractState>) -> u64 {
-            let season_node = self.seasons.entry(self.current_season.read());
-            let attempt_id = season_node.n_attempts.read() + 1;
-            season_node.n_attempts.write(attempt_id);
-            let dispatcher = self.jackpot_token.read();
-            let attempt_node = season_node.attempts.entry(attempt_id);
-            0
-        }
     }
 
 
     #[generate_trait]
     impl PrivateImpl<TState> of PrivateTrait<TState> {
+        fn init_attempt(
+            ref self: ComponentState<TState>, attempt_id: u64, player: ContractAddress,
+        ) {
+            let season_node = self.seasons.entry(self.current_season.read());
+            self.pay_entry(season_node, player);
+            let attempt_node = season_node.attempts.entry(attempt_id);
+            attempt_node.player.write(player);
+            let times = season_node.times.read();
+            let expiry = min(get_block_timestamp() + times.limit, times.end);
+            let attempt_info = AttemptInfoTrait::new(expiry);
+            attempt_node.info.write(attempt_info);
+        }
+
         fn start_attempt_private(
             ref self: ComponentState<TState>,
             attempt_id: u64,
@@ -70,8 +77,38 @@ mod endless_component {
             attributes: Attributes,
         ) {
             let season_node = self.seasons.entry(self.current_season.read());
+            let attempt_id = season_node.n_attempts.read() + 1;
+            season_node.n_attempts.write(attempt_id);
             let attempt_node = season_node.attempts.entry(attempt_id);
-            assert(attempt_node.player.read() == player, 'Attempt already exists');
+            attempt_node.attributes.write(attributes);
         }
+
+        fn pay_entry(
+            ref self: ComponentState<TState>, season_node: SeasonNodePath, player: ContractAddress,
+        ) {
+            let splits = season_node.jackpot_splits.read();
+
+            let current_jackpot = season_node.jackpot.read();
+            let entry_fee = self.get_entry_fee(current_jackpot);
+            let team_fee = entry_fee * splits.team.into() / 1_000_000;
+            let vlords_fee = entry_fee * splits.vlords.into() / 1_000_000;
+            let jackpot_amount = entry_fee - team_fee - vlords_fee;
+            let dispatcher = self.jackpot_token.read();
+            dispatcher.transfer_from(player, self.team_wallet.read(), team_fee);
+            dispatcher.transfer_from(player, self.vlords_wallet.read(), vlords_fee);
+            dispatcher.transfer_from(player, get_contract_address(), jackpot_amount);
+            self.jackpot.write(self.jackpot.read() + jackpot_amount);
+        }
+
+        fn get_entry_fee(ref self: ComponentState<TState>, jackpot: u256) -> u256 {
+            12
+        }
+
+        fn new_combat(
+            ref self: ComponentState<TState>,
+            attempt_id: u64,
+            attempt_node: AttemptNodePath,
+            attempt_info: AttemptInfo,
+        ) {}
     }
 }

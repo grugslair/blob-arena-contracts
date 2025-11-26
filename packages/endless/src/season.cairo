@@ -27,9 +27,6 @@ pub struct SeasonNode {
     pub jackpot_splits: JackpotSplits,
     pub team_ppm: u16,
     pub vlords_ppm: u16,
-    pub first_place_split_ppm: u32,
-    pub second_place_split_ppm: u32,
-    pub third_place_split_ppm: u32,
 }
 
 #[derive(Drop)]
@@ -53,9 +50,9 @@ pub struct JackpotSplits {
 
 #[derive(Drop)]
 struct Times {
-    start: u64,
-    end: u64,
-    limit: u64,
+    pub start: u64,
+    pub end: u64,
+    pub limit: u64,
 }
 
 #[generate_trait]
