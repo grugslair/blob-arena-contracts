@@ -61,7 +61,7 @@ pub struct Attempt {
     pub health_regen: u8,
     pub expiry: u64,
     pub phase: ArcadeProgress,
-    pub stage: u32,
+    pub combat: u32,
     pub respawns: u32,
 }
 

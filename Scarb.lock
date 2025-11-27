@@ -173,6 +173,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "ba_endless_amma"
+version = "0.15.0"
+dependencies = [
+ "alexandria_macros",
+ "ba_blobert",
+ "ba_combat",
+ "ba_endless",
+ "ba_loadout",
+ "ba_utils",
+ "beacon_entity",
+ "beacon_library",
+ "beacon_macros",
+ "dojo",
+ "dojo_macros",
+ "sai_core_utils",
+ "sai_ownable",
+ "sai_packing",
+]
+
+[[package]]
 name = "ba_loadout"
 version = "0.15.0"
 dependencies = [

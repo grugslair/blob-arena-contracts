@@ -3,6 +3,7 @@ pub mod combat;
 pub mod combatant;
 pub mod contract;
 pub mod move;
+pub mod opponent;
 pub mod result;
 pub mod round_effect;
 pub mod systems;

@@ -1,0 +1,41 @@
+[package]
+name = "ba_endless_amma"
+version.workspace = true
+edition.workspace = true
+cairo-version.workspace = true
+scarb-version.workspace = true
+experimental-features = ["associated_item_constraints"]
+
+
+[tool]
+fmt.workspace = true
+scarb.workspace = true
+
+
+[dependencies]
+alexandria_macros.workspace = true
+starknet.workspace = true
+sai_core_utils.workspace = true
+sai_ownable.workspace = true
+sai_packing.workspace = true
+dojo_macros.workspace = true
+dojo.workspace = true
+beacon_library.workspace = true
+beacon_macros.workspace = true
+beacon_entity.workspace = true
+ba_blobert.workspace = true
+ba_loadout.workspace = true
+ba_combat.workspace = true
+ba_utils.workspace = true
+ba_endless.workspace = true
+
+
+[[target.starknet-contract]]
+allowed-libfuncs-list.name = "experimental"
+sierra = true
+casm = true
+
+[dev-dependencies]
+# dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.6.0-alpha.2" }
+
+[lib]

@@ -1,3 +1,5 @@
+use core::cmp::min;
+use core::dict::Felt252Dict;
 use core::metaprogramming::TypeEqual;
 use core::num::traits::{Bounded, DivRem, One, Zero};
 pub use core::ops::DivAssign;
@@ -171,3 +173,21 @@ pub impl RandomnessImpl of RandomnessTrait {
     }
 }
 
+pub fn random_selection(ref randomness: Randomness, range: u32, number: u32) -> Array<u32> {
+    assert(number <= range, 'Number must be <= to range');
+
+    let mut values: Array<u32> = Default::default();
+    let mut dict: Felt252Dict<u32> = Default::default();
+    for n in 0..range {
+        dict.insert(n.into(), n.into());
+    }
+    for i in 0..min(number, range - 1) {
+        let j = i + randomness.get(range - i);
+        values.append(dict.get(j.into()) + 1);
+        dict.insert(j.into(), dict.get(i.into()));
+    }
+    if range == number {
+        values.append(dict.get((range - 1).into()) + 1);
+    }
+    values
+}

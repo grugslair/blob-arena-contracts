@@ -1,10 +1,11 @@
+use ba_utils::{Randomness, RandomnessTrait};
 use core::cmp::min;
 use sai_packing::shifts::{
     SHIFT_10B, SHIFT_12B, SHIFT_16B, SHIFT_16B_FELT252, SHIFT_18B, SHIFT_20B_FELT252,
     SHIFT_22B_FELT252, SHIFT_24B, SHIFT_24B_FELT252, SHIFT_26B, SHIFT_26B_FELT252, SHIFT_28B,
     SHIFT_28B_FELT252, SHIFT_2B, SHIFT_4B, SHIFT_8B,
 };
-use sai_packing::{MaskDowncast, ShiftCast};
+use sai_packing::{BytePacking, MaskDowncast, ShiftCast};
 use starknet::storage::{
     Map, Mutable, MutableVecTrait, StorageMapReadAccess, StorageMapWriteAccess, StoragePath,
     StoragePathEntry, StoragePointerReadAccess, StoragePointerWriteAccess, Vec,
@@ -15,10 +16,15 @@ use crate::attempt::{AttemptInfo, AttemptInfoTrait, AttemptNode};
 
 pub type SeasonNodePath = StoragePath<Mutable<SeasonNode>>;
 
+#[derive(Drop)]
+pub struct HealthRegen {
+    pub min_percent: u8,
+    pub max_percent: u8,
+}
+
 #[starknet::storage_node]
 pub struct SeasonNode {
     pub times: Times,
-    pub stage_winners: felt252,
     pub n_attempts: u64,
     pub attempts: Map<u64, AttemptNode>,
     pub jackpot: u256,
@@ -26,6 +32,8 @@ pub struct SeasonNode {
     pub winners: Winners,
     pub jackpot_splits: JackpotSplits,
     pub fees: Fees,
+    pub max_respawns: u16,
+    pub health_regen: HealthRegen,
 }
 
 
@@ -61,19 +69,19 @@ struct Times {
 
 #[generate_trait]
 pub impl SeasonImpl of SeasonTrait {
-    fn submit_attempt(ref self: SeasonNodePath, id: u64, stage: u16) -> Option<@Winners> {
+    fn submit_attempt(self: SeasonNodePath, id: u64, stage: u16) {
         let mut winners = self.winners.read();
         if stage < winners.third_stage {
-            return None;
+            return;
         } else if stage < winners.second_stage {
             if id == winners.third_attempt {
-                return None;
+                return;
             }
             winners.third_attempt = id;
             winners.third_stage = stage;
         } else if stage < winners.first_stage {
             if id == winners.second_attempt {
-                return None;
+                return;
             }
             winners.third_attempt = winners.second_attempt;
             winners.third_stage = winners.second_stage;
@@ -81,7 +89,7 @@ pub impl SeasonImpl of SeasonTrait {
             winners.second_stage = stage;
         } else {
             if id == winners.first_attempt {
-                return None;
+                return;
             }
             winners.third_attempt = winners.second_attempt;
             winners.third_stage = winners.second_stage;
@@ -90,9 +98,7 @@ pub impl SeasonImpl of SeasonTrait {
             winners.first_attempt = id;
             winners.first_stage = stage;
         }
-        let sswinner = @winners;
         self.winners.write(winners);
-        Some(sswinner)
     }
 
     fn init_attempt(ref self: SeasonNodePath, player: ContractAddress) -> u64 {
@@ -113,6 +119,11 @@ pub impl SeasonImpl of SeasonTrait {
     fn assert_ended(self: @SeasonNodePath) {
         let times = self.times.read();
         assert(get_block_timestamp() >= times.end, 'Season not ended')
+    }
+
+    fn get_health_regen_percent(self: @SeasonNodePath, ref randomness: Randomness) -> u8 {
+        let HealthRegen { min_percent, max_percent } = self.health_regen.read();
+        randomness.get(max_percent - min_percent + 1) + min_percent
     }
 }
 
@@ -185,3 +196,15 @@ impl JackpotSplitsPacking of StorePacking<JackpotSplits, u128> {
         }
     }
 }
+
+impl HealthRegenStorePacking of StorePacking<HealthRegen, u16> {
+    fn pack(value: HealthRegen) -> u16 {
+        BytePacking::pack([value.min_percent, value.max_percent])
+    }
+
+    fn unpack(value: u16) -> HealthRegen {
+        let [min_percent, max_percent] = BytePacking::unpack(value);
+        HealthRegen { min_percent, max_percent }
+    }
+}
+

@@ -256,7 +256,10 @@ pub impl CombatantStateImpl of CombatantStateTrait {
         self.health = self.health.saturating_sub(hp);
         DamageResult { hp, critical }
     }
-
+    fn set_and_regen_health(ref self: CombatantState, health: u8, amount: u8) {
+        self.health = health;
+        self.health = min(self.health.saturating_add(amount), self.max_health());
+    }
 
     fn modify_health(ref self: CombatantState, change: i16) -> u8 {
         let health: i16 = self.health.try_into().unwrap();

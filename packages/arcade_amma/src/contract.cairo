@@ -125,6 +125,7 @@ mod arcade_amma {
     use ba_loadout::action::maybe_create_actions;
     use ba_loadout::attributes::AttributesCalcTrait;
     use ba_loadout::loadout_amma::{get_fighter_count, get_fighter_loadout};
+    use ba_utils::random::random_selection;
     use ba_utils::vrf::vrf_component;
     use ba_utils::{CapInto, Randomness, RandomnessTrait};
     use beacon_library::{ToriiTable, register_table_with_schema};
@@ -136,7 +137,7 @@ mod arcade_amma {
         StoragePointerWriteAccess,
     };
     use starknet::{ClassHash, ContractAddress};
-    use crate::systems::{action_slots, random_selection};
+    use crate::systems::action_slots;
     use super::{AmmaOpponent, AmmaOpponentInput, IArcadeAmma, IdTagAction};
 
     component!(path: ownable_component, storage: ownable, event: OwnableEvents);

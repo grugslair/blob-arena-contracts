@@ -42,6 +42,7 @@ ba_credit = { path = "packages/credit" }
 ba_pvp = { path = "packages/pvp" }
 ba_orbs = { path = "packages/orbs" }
 ba_endless = { path = "packages/endless" }
+ba_endless_amma = { path = "packages/endless_amma" }
 
 [workspace.tool.fmt]
 sort-module-level-items = true

@@ -1,5 +1,3 @@
-use ba_loadout::Attributes;
-use ba_utils::storage::{FeltArrayReadWrite, ShortArrayStore};
 use starknet::ContractAddress;
 use crate::attempt::ArcadeProgress;
 
@@ -7,12 +5,6 @@ mod errors {
     pub const RESPAWN_WHEN_NOT_LOST: felt252 = 'Cannot respawn, player not lost';
     pub const NOT_ACTIVE: felt252 = 'Combat is not active';
     pub const MAX_RESPAWNS_REACHED: felt252 = 'Max respawns reached';
-}
-
-#[derive(Drop, starknet::Store)]
-pub struct Opponent {
-    pub attributes: Attributes,
-    pub actions: Array<felt252>,
 }
 
 #[derive(Drop)]
@@ -31,9 +23,10 @@ pub mod arcade_component {
     use ba_arcade::table::{ActionLastUsed, ArcadeAttemptTable};
     use ba_combat::combat::ActionCheck;
     use ba_combat::combatant::get_max_health_percent;
+    use ba_combat::opponent::Opponent;
     use ba_combat::result::MoveResult;
     use ba_combat::systems::{get_action_dispatcher, set_action_dispatcher_address};
-    use ba_combat::{CombatantState, Move, library_run_round};
+    use ba_combat::{CombatantState, CombatantStateTrait, Move, library_run_round};
     use ba_credit::arena_credit_consume;
     use ba_loadout::get_loadout;
     use ba_orbs::{IOrbMinterDispatcher, IOrbMinterDispatcherTrait, OrbDropRates, OrbTrait};
@@ -42,8 +35,7 @@ pub mod arcade_component {
     use beacon_library::{
         ToriiTable, register_table, register_table_with_schema, set_entity, set_member,
     };
-    use core::cmp::min;
-    use core::num::traits::{SaturatingAdd, Zero};
+    use core::num::traits::Zero;
     use core::panic_with_const_felt252;
     use sai_core_utils::{poseidon_hash_three, poseidon_hash_two};
     use sai_ownable::OwnableTrait;
@@ -54,7 +46,7 @@ pub mod arcade_component {
     };
     use starknet::{ClassHash, ContractAddress, get_block_timestamp, get_caller_address};
     use crate::table::{ArcadeRoundTable, AttemptRoundTrait, CombatTable};
-    use super::{ArcadeActionResult, Opponent, errors};
+    use super::{ArcadeActionResult, errors};
 
     #[storage]
     pub struct Storage {
@@ -489,12 +481,7 @@ pub mod arcade_component {
             let mut combat = attempt_ptr.combats.entry(combat_n);
             let mut player_state: CombatantState = attempt_ptr.attributes.read().into();
             if let Some(health) = health {
-                player_state
-                    .health =
-                        min(
-                            health.saturating_add(attempt_ptr.health_regen.read()),
-                            player_state.health,
-                        );
+                player_state.set_and_regen_health(health, attempt_ptr.health_regen.read());
             }
             let opponent_state: CombatantState = opponent.attributes.into();
             combat.create_combat(player_state, opponent_state, opponent.actions);
