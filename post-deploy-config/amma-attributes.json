@@ -66,7 +66,7 @@
             "target": "Opponent",
             "affect": {
               "Damage": {
-                "power": 50,
+                "power": 55,
                 "critical": 10
               }
             }
@@ -297,7 +297,7 @@
             "target": "Opponent",
             "affect": {
               "Damage": {
-                "power": 75,
+                "power": 80,
                 "critical": 20
               }
             }
@@ -507,14 +507,14 @@
         "name": "Swift Attack",
         "speed": 90,
         "accuracy": 90,
-        "cooldown": 1,
+        "cooldown": 2,
         "hit": [
           {
             "target": "Opponent",
             "affect": {
               "Damage": {
-                "power": 60,
-                "critical": 15
+                "power": 65,
+                "critical": 20
               }
             }
           }
@@ -592,7 +592,7 @@
           {
             "target": "Opponent",
             "affect": {
-              "Stun": 20
+              "Stun": 30
             }
           }
         ],
@@ -1178,7 +1178,7 @@
                     "target": "Opponent",
                     "affect": {
                         "Damage": {
-                            "power": 60,
+                            "power": 65,
                             "critical": 10
                         }
                     }
@@ -1332,7 +1332,7 @@
                     "target": "Opponent",
                     "affect": {
                         "Damage": {
-                            "power": 60,
+                            "power": 65,
                             "critical": 10
                         }
                     }
@@ -1361,7 +1361,7 @@
                     "target": "Opponent",
                     "affect": {
                         "Damage": {
-                            "power": 70,
+                            "power": 75,
                             "critical": 20
                         }
                     }
@@ -1425,7 +1425,7 @@
                 {
                     "target": "Opponent",
                     "affect": {
-                        "Stun": 0
+                        "Stun": 20
                     }
                 }
             ],
@@ -1441,7 +1441,7 @@
                     "target": "Opponent",
                     "affect": {
                         "Damage": {
-                            "power": 60,
+                            "power": 70,
                             "critical": 20
                         }
                     }
@@ -1559,7 +1559,7 @@
         {
             "name": "Jumping Punch",
             "speed": 70,
-            "accuracy": 75,
+            "accuracy": 80,
             "cooldown": 3,
             "hit": [
               {
@@ -1583,7 +1583,7 @@
         {
             "name": "Flying Hussar",
             "speed": 40,
-            "accuracy": 70,
+            "accuracy": 75,
             "cooldown": 3,
             "hit": [
                 {
@@ -1766,7 +1766,7 @@
                 "target": "Opponent",
                 "affect": {
                   "Damage": {
-                    "power": 60,
+                    "power": 50,
                     "critical": 15
                   }
                 }
