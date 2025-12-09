@@ -1,186 +1,72 @@
 use ba_utils::{CapInto, IntoRange};
-use core::num::traits::Zero;
+use core::num::traits::{Pow, WideMul, Zero};
 use core::ops::AddAssign;
 use sai_core_utils::SaturatingInto;
+use sai_packing::masks::*;
 use sai_packing::shifts::*;
 use sai_packing::{BytePacking, IntPacking, MaskDowncast, ShiftCast};
 use starknet::storage_access::StorePacking;
 
-/// Maximum value for permanent ability scores
-pub const MAX_ABILITY_SCORE: u8 = 100;
-/// Maximum positive value for temporary ability score modifiers
-pub const MAX_TEMP_ABILITY_SCORE: i8 = 100;
-/// Maximum negative value for temporary ability score modifiers
-pub const MIN_TEMP_ABILITY_SCORE: i8 = -100;
 
-/// Represents the four core ability scores of a combatant
-///
-/// # Fields
-/// * `strength` - Physical power, affects damage dealt (0-100)
-/// * `vitality` - Health and endurance, affects maximum health (0-100)
-/// * `dexterity` - Speed and agility, affects initiative and dodge (0-100)
-/// * `luck` - Fortune and chance, affects critical hits and random events (0-100)
-#[derive(Copy, Drop, Serde, Default, PartialEq, Introspect)]
-pub struct Abilities {
-    pub strength: u8,
-    pub vitality: u8,
-    pub dexterity: u8,
-    pub luck: u8,
-}
-
-/// Represents modifiers to the four core ability scores
-///
-/// # Fields
-/// * `strength` - Strength modifier (can be positive or negative)
-/// * `vitality` - Vitality modifier (can be positive or negative)
-/// * `dexterity` - Dexterity modifier (can be positive or negative)
-/// * `luck` - Luck modifier (can be positive or negative)
-#[derive(Copy, Drop, Serde, Default, PartialEq, Introspect)]
-pub struct AbilityMods {
-    pub strength: i8,
-    pub vitality: i8,
-    pub dexterity: i8,
-    pub luck: i8,
-}
-
-/// Represents damage resistances and vulnerabilities (legacy struct)
-///
-/// # Fields
-/// * `bludgeon_resistance` - Resistance to bludgeon damage (0-100%)
-/// * `magic_resistance` - Resistance to magic damage (0-100%)
-/// * `pierce_resistance` - Resistance to pierce damage (0-100%)
-/// * `bludgeon_vulnerability` - Additional vulnerability to bludgeon damage
-/// * `magic_vulnerability` - Additional vulnerability to magic damage
-/// * `pierce_vulnerability` - Additional vulnerability to pierce damage
-#[derive(Copy, Drop, Serde, Default, PartialEq, Introspect)]
-pub struct Affinities {
-    pub bludgeon_resistance: u8,
-    pub magic_resistance: u8,
-    pub pierce_resistance: u8,
-    pub bludgeon_vulnerability: u16,
-    pub magic_vulnerability: u16,
-    pub pierce_vulnerability: u16,
-}
-
-/// Represents resistances to various damage types and effects
-///
-/// # Fields
-/// * `stun` - Resistance to stun effects (0-100%)
-/// * `bludgeon` - Resistance to bludgeon damage (0-100%)
-/// * `magic` - Resistance to magic damage (0-100%)
-/// * `pierce` - Resistance to pierce damage (0-100%)
-#[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
-pub struct Resistances {
-    pub stun: u8,
-    pub bludgeon: u8,
-    pub magic: u8,
-    pub pierce: u8,
-}
-
-/// Represents vulnerabilities to various damage types
-///
-/// # Fields
-/// * `bludgeon` - Additional vulnerability to bludgeon damage
-/// * `magic` - Additional vulnerability to magic damage
-/// * `pierce` - Additional vulnerability to pierce damage
-#[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
-pub struct Vulnerabilities {
-    pub bludgeon: u16,
-    pub magic: u16,
-    pub pierce: u16,
-}
-
-
-/// Represents modifiers to resistance values
-///
-/// # Fields
-/// * `stun` - Stun resistance modifier (can be positive or negative)
-/// * `bludgeon` - Bludgeon resistance modifier (can be positive or negative)
-/// * `magic` - Magic resistance modifier (can be positive or negative)
-/// * `pierce` - Pierce resistance modifier (can be positive or negative)
-#[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
-pub struct ResistanceMods {
-    pub stun: i8,
-    pub bludgeon: i8,
-    pub magic: i8,
-    pub pierce: i8,
-}
-
-/// Represents modifiers to vulnerability values
-///
-/// # Fields
-/// * `bludgeon` - Bludgeon vulnerability modifier (can be positive or negative)
-/// * `magic` - Magic vulnerability modifier (can be positive or negative)
-/// * `pierce` - Pierce vulnerability modifier (can be positive or negative)
-#[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
-pub struct VulnerabilityMods {
-    pub bludgeon: i16,
-    pub magic: i16,
-    pub pierce: i16,
-}
+pub const MAX_MODIFIER: u32 = 2147483648;
+pub const MODIFIER_SCALE_U32: u64 = 65536;
+pub const MODIFIER_SCALE_U64: u128 = 4294967296;
+pub const MAX_STAT_VALUE: u16 = 65535;
 
 /// Represents the complete set of attributes for a combatant
 ///
 /// # Fields
-/// ## Core Abilities
-/// * `strength` - Physical power (0-100)
-/// * `vitality` - Health and endurance (0-100)
-/// * `dexterity` - Speed and agility (0-100)
-/// * `luck` - Fortune and chance (0-100)
-/// ## Resistances
-/// * `stun_resistance` - Resistance to stun effects (0-100%)
-/// * `bludgeon_resistance` - Resistance to bludgeon damage (0-100%)
-/// * `magic_resistance` - Resistance to magic damage (0-100%)
-/// * `pierce_resistance` - Resistance to pierce damage (0-100%)
-/// ## Vulnerabilities
-/// * `bludgeon_vulnerability` - Additional vulnerability to bludgeon damage
-/// * `magic_vulnerability` - Additional vulnerability to magic damage
-/// * `pierce_vulnerability` - Additional vulnerability to pierce damage
+/// ## Core Abilities - 0 to 65535
+/// * `strength` - Strength
+/// * `vitality` - Vitality
+/// * `dexterity` - Dexterity
+/// * `luck` - Luck
+/// ## Modifiers - 2^-16 to 2^15 Scaled by 2^16
+/// * `stun_modifier` - Stun modifier.
+/// * `bludgeon_modifier` - Bludgeon damage modifier
+/// * `magic_modifier` - Magic damage modifier
+/// * `pierce_modifier` - Pierce damage modifier
+/// * `damage_modifier` - Overall damage modifier
 #[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
 pub struct Attributes {
-    pub strength: u8,
-    pub vitality: u8,
-    pub dexterity: u8,
-    pub luck: u8,
-    pub stun_resistance: u8,
-    pub bludgeon_resistance: u8,
-    pub magic_resistance: u8,
-    pub pierce_resistance: u8,
-    pub bludgeon_vulnerability: u16,
-    pub magic_vulnerability: u16,
-    pub pierce_vulnerability: u16,
+    pub strength: u16,
+    pub vitality: u16,
+    pub dexterity: u16,
+    pub luck: u16,
+    pub stun_modifier: u32,
+    pub bludgeon_modifier: u32,
+    pub magic_modifier: u32,
+    pub pierce_modifier: u32,
+    pub damage_modifier: u32,
 }
 
-/// Represents partial attribute modifications that can be combined with base attributes
+/// Represents a partial set of attributes, typically from items or buffs
 ///
+/// that can be applied to a full Attributes set.
 /// # Fields
-/// ## Core Abilities (can be negative)
-/// * `strength` - Strength modifier
-/// * `vitality` - Vitality modifier
-/// * `dexterity` - Dexterity modifier
-/// * `luck` - Luck modifier
-/// ## Resistances (additive)
-/// * `stun_resistance` - Stun resistance bonus (0-100)
-/// * `bludgeon_resistance` - Bludgeon resistance bonus (0-100)
-/// * `magic_resistance` - Magic resistance bonus (0-100)
-/// * `pierce_resistance` - Pierce resistance bonus (0-100)
-/// ## Vulnerabilities (can be negative)
-/// * `bludgeon_vulnerability` - Bludgeon vulnerability modifier
-/// * `magic_vulnerability` - Magic vulnerability modifier
-/// * `pierce_vulnerability` - Pierce vulnerability modifier
+/// ## Core Abilities -65536 to 65535
+/// * `strength` - Strength
+/// * `vitality` - Vitality
+/// * `dexterity` - Dexterity
+/// * `luck` - Luck
+/// ## Modifiers - 2^-16 to 2^15 Scaled by 2^16
+/// * `stun_modifier` - Stun modifier.
+/// * `bludgeon_modifier` - Bludgeon damage modifier
+/// * `magic_modifier` - Magic damage modifier
+/// * `pierce_modifier` - Pierce damage modifier
+/// * `damage_modifier` - Overall damage modifier
+
 #[derive(Copy, Drop, Serde, Default, PartialEq, Introspect)]
 pub struct PartialAttributes {
-    pub strength: i8,
-    pub vitality: i8,
-    pub dexterity: i8,
-    pub luck: i8,
-    pub stun_resistance: u8,
-    pub bludgeon_resistance: u8,
-    pub magic_resistance: u8,
-    pub pierce_resistance: u8,
-    pub bludgeon_vulnerability: i16,
-    pub magic_vulnerability: i16,
-    pub pierce_vulnerability: i16,
+    pub strength: i32,
+    pub vitality: i32,
+    pub dexterity: i32,
+    pub luck: i32,
+    pub stun_modifier: u32,
+    pub bludgeon_modifier: u32,
+    pub magic_modifier: u32,
+    pub pierce_modifier: u32,
+    pub damage_modifier: u32,
 }
 
 /// Internal calculation struct for combining and processing attributes
@@ -193,39 +79,22 @@ pub struct PartialAttributes {
 /// * `vitality` - Vitality value during calculation (i32 for overflow safety)
 /// * `dexterity` - Dexterity value during calculation (i32 for overflow safety)
 /// * `luck` - Luck value during calculation (i32 for overflow safety)
-/// * `stun_resistance` - Stun resistance during calculation (u16 for intermediate values)
-/// * `bludgeon_resistance` - Bludgeon resistance during calculation (u16 for intermediate values)
-/// * `magic_resistance` - Magic resistance during calculation (u16 for intermediate values)
-/// * `pierce_resistance` - Pierce resistance during calculation (u16 for intermediate values)
-/// * `bludgeon_vulnerability` - Bludgeon vulnerability during calculation (i32 for overflow safety)
-/// * `magic_vulnerability` - Magic vulnerability during calculation (i32 for overflow safety)
-/// * `pierce_vulnerability` - Pierce vulnerability during calculation (i32 for overflow safety)
-#[derive(Copy, Drop, Default)]
+/// * `stun_modifier` - Stun modifier during calculation (u64 for overflow safety)
+/// * `damage_modifier` - Overall damage modifier during calculation (u64 for overflow safety)
+/// * `bludgeon_modifier` - Bludgeon damage modifier during calculation (u64 for overflow safety)
+/// * `magic_modifier` - Magic damage modifier during calculation (u64 for overflow safety)
+/// * `pierce_modifier` - Pierce damage modifier during calculation (u64 for overflow safety)
+#[derive(Copy, Drop, Default, Introspect)]
 pub struct AttributesCalc {
     pub strength: i32,
     pub vitality: i32,
     pub dexterity: i32,
     pub luck: i32,
-    pub stun_resistance: u16,
-    pub bludgeon_resistance: u16,
-    pub magic_resistance: u16,
-    pub pierce_resistance: u16,
-    pub bludgeon_vulnerability: i32,
-    pub magic_vulnerability: i32,
-    pub pierce_vulnerability: i32,
-}
-
-fn mul_resistance(value: u16, factor: u8) -> u16 {
-    if value.is_zero() || factor.is_zero() {
-        return 0;
-    }
-    let mul = 100_u16 - value.into();
-    let mut result = mul;
-    for _ in 1..factor {
-        result *= mul;
-        result /= 100;
-    }
-    100 - result
+    pub stun_modifier: u64,
+    pub bludgeon_modifier: u64,
+    pub magic_modifier: u64,
+    pub pierce_modifier: u64,
+    pub damage_modifier: u64,
 }
 
 
@@ -236,10 +105,8 @@ impl AddAttributesCalc of Add<AttributesCalc> {
             vitality: lhs.vitality + rhs.vitality,
             dexterity: lhs.dexterity + rhs.dexterity,
             luck: lhs.luck + rhs.luck,
-            stun_resistance: increase_resistance_calc(lhs.stun_resistance, rhs.stun_resistance),
-            bludgeon_resistance: increase_resistance_calc(
-                lhs.bludgeon_resistance, rhs.bludgeon_resistance,
-            ),
+            stun_modifier: increase_modifier_calc(lhs.stun_modifier, rhs.stun_modifier),
+            bludgeon_modifier: increase_modifier_calc(lhs.bludgeon_modifier, rhs.bludgeon_modifier),
             magic_resistance: increase_resistance_calc(lhs.magic_resistance, rhs.magic_resistance),
             pierce_resistance: increase_resistance_calc(
                 lhs.pierce_resistance, rhs.pierce_resistance,
@@ -372,15 +239,14 @@ pub fn combine_partial_attributes(base: Attributes, items: Array<PartialAttribut
 }
 
 
-fn increase_resistance_calc(value: u16, change: u16) -> u16 {
-    if change.is_zero() {
-        return value;
-    }
-    if change == 100 || value == 100 {
-        return 100;
-    }
-    (((value + change) * 100 - value * change) / 100).try_into().unwrap()
+fn combine_modifiers_u32(value: u32, change: u32) -> u32 {
+    (value.wide_mul(change) / MODIFIER_SCALE_U32.into()).saturating_into()
 }
+
+fn combine_modifiers_u64(value: u64, change: u64) -> u64 {
+    (value.wide_mul(change) / MODIFIER_SCALE_U64.into()).saturating_into()
+}
+
 
 impl PartialAttributesIntoAttributes of Into<PartialAttributes, Attributes> {
     fn into(self: PartialAttributes) -> Attributes {
@@ -400,66 +266,78 @@ impl PartialAttributesIntoAttributes of Into<PartialAttributes, Attributes> {
     }
 }
 
-impl AttributesStorePacking of StorePacking<Attributes, u128> {
-    fn pack(value: Attributes) -> u128 {
+impl AttributesStorePacking of StorePacking<Attributes, felt252> {
+    fn pack(value: Attributes) -> felt252 {
         value.strength.into()
-            + ShiftCast::const_cast::<SHIFT_1B>(value.vitality)
-            + ShiftCast::const_cast::<SHIFT_2B>(value.dexterity)
-            + ShiftCast::const_cast::<SHIFT_3B>(value.luck)
-            + ShiftCast::const_cast::<SHIFT_4B>(value.stun_resistance)
-            + ShiftCast::const_cast::<SHIFT_5B>(value.bludgeon_resistance)
-            + ShiftCast::const_cast::<SHIFT_6B>(value.magic_resistance)
-            + ShiftCast::const_cast::<SHIFT_7B>(value.pierce_resistance)
-            + ShiftCast::const_cast::<SHIFT_8B>(value.bludgeon_vulnerability)
-            + ShiftCast::const_cast::<SHIFT_10B>(value.magic_vulnerability)
-            + ShiftCast::const_cast::<SHIFT_12B>(value.pierce_vulnerability)
+            + SHIFT_2B_FELT252 * value.vitality.into()
+            + SHIFT_4B_FELT252 * value.dexterity.into()
+            + SHIFT_6B_FELT252 * value.luck.into()
+            + SHIFT_8B_FELT252 * value.stun_modifier.into()
+            + SHIFT_95b_FELT252 * value.bludgeon_modifier.into()
+            + SHIFT_126b_FELT252 * value.magic_modifier.into()
+            + SHIFT_157b_FELT252 * value.pierce_modifier.into()
+            + SHIFT_188b_FELT252 * value.damage_modifier.into()
     }
 
-    fn unpack(value: u128) -> Attributes {
+    fn unpack(value: felt252) -> Attributes {
+        let value: u256 = value.into();
+        let u256 { low, high } = value;
         Attributes {
-            strength: MaskDowncast::cast(value),
-            vitality: ShiftCast::const_unpack::<SHIFT_1B>(value),
-            dexterity: ShiftCast::const_unpack::<SHIFT_2B>(value),
-            luck: ShiftCast::const_unpack::<SHIFT_3B>(value),
-            stun_resistance: ShiftCast::const_unpack::<SHIFT_4B>(value),
-            bludgeon_resistance: ShiftCast::const_unpack::<SHIFT_5B>(value),
-            magic_resistance: ShiftCast::const_unpack::<SHIFT_6B>(value),
-            pierce_resistance: ShiftCast::const_unpack::<SHIFT_7B>(value),
-            bludgeon_vulnerability: ShiftCast::const_unpack::<SHIFT_8B>(value),
-            magic_vulnerability: ShiftCast::const_unpack::<SHIFT_10B>(value),
-            pierce_vulnerability: ShiftCast::const_unpack::<SHIFT_12B>(value),
+            strength: MaskDowncast::cast(low),
+            vitality: ShiftCast::const_unpack::<SHIFT_2B>(low),
+            dexterity: ShiftCast::const_unpack::<SHIFT_4B>(low),
+            luck: ShiftCast::const_unpack::<SHIFT_6B>(low),
+            stun_modifier: ((low / SHIFT_8B) & MASK_31b_U128).try_into().unwrap(),
+            bludgeon_modifier: ((low / SHIFT_95b) & MASK_31b_U128).try_into().unwrap(),
+            magic_modifier: ((value / SHIFT_126b_U256) & MASK_31b_U256).try_into().unwrap(),
+            pierce_modifier: ((high / SHIFT_29b_U128) & MASK_31b_U128).try_into().unwrap(),
+            damage_modifier: ((high / SHIFT_60b_U128) & MASK_31b_U128).try_into().unwrap(),
         }
     }
 }
 
-impl PartialAttributesStorePacking of StorePacking<PartialAttributes, u128> {
-    fn pack(value: PartialAttributes) -> u128 {
-        IntPacking::pack(value.strength).into()
-            + ShiftCast::const_cast::<SHIFT_1B>(value.vitality)
-            + ShiftCast::const_cast::<SHIFT_2B>(value.dexterity)
-            + ShiftCast::const_cast::<SHIFT_3B>(value.luck)
-            + ShiftCast::const_cast::<SHIFT_4B>(value.stun_resistance)
-            + ShiftCast::const_cast::<SHIFT_5B>(value.bludgeon_resistance)
-            + ShiftCast::const_cast::<SHIFT_6B>(value.magic_resistance)
-            + ShiftCast::const_cast::<SHIFT_7B>(value.pierce_resistance)
-            + ShiftCast::const_cast::<SHIFT_8B>(value.bludgeon_vulnerability)
-            + ShiftCast::const_cast::<SHIFT_10B>(value.magic_vulnerability)
-            + ShiftCast::const_cast::<SHIFT_12B>(value.pierce_vulnerability)
+fn pack_partial_attribute(value: i32) -> u32 {
+    if value >= 0 {
+        value.try_into().unwrap()
+    } else {
+        SHIFT_17b_U32 + (-value).try_into().unwrap()
+    }
+}
+
+fn unpack_partial_attribute(value: u32) -> i32 {
+    if value < SHIFT_17b_U32 {
+        value.try_into().unwrap()
+    } else {
+        -(value - SHIFT_17b_U32).try_into().unwrap()
+    }
+}
+
+impl PartialAttributesStorePacking of StorePacking<PartialAttributes, felt252> {
+    fn pack(value: PartialAttributes) -> felt252 {
+        pack_partial_attribute(value.strength).into()
+            + SHIFT_17b_FELT252 * pack_partial_attribute(value.vitality).into()
+            + SHIFT_34b_FELT252 * pack_partial_attribute(value.dexterity).into()
+            + SHIFT_51b_FELT252 * pack_partial_attribute(value.luck).into()
+            + SHIFT_68b_FELT252 * value.stun_modifier.into()
+            + SHIFT_99b_FELT252 * value.bludgeon_modifier.into()
+            + SHIFT_130b_FELT252 * value.magic_modifier.into()
+            + SHIFT_161b_FELT252 * value.pierce_modifier.into()
+            + SHIFT_192b_FELT252 * value.damage_modifier.into()
     }
 
-    fn unpack(value: u128) -> PartialAttributes {
+    fn unpack(value: felt252) -> PartialAttributes {
+        let value: u256 = value.into();
+        let u256 { low, high } = value;
         PartialAttributes {
-            strength: MaskDowncast::cast(value),
-            vitality: ShiftCast::const_unpack::<SHIFT_1B>(value),
-            dexterity: ShiftCast::const_unpack::<SHIFT_2B>(value),
-            luck: ShiftCast::const_unpack::<SHIFT_3B>(value),
-            stun_resistance: ShiftCast::const_unpack::<SHIFT_4B>(value),
-            bludgeon_resistance: ShiftCast::const_unpack::<SHIFT_5B>(value),
-            magic_resistance: ShiftCast::const_unpack::<SHIFT_6B>(value),
-            pierce_resistance: ShiftCast::const_unpack::<SHIFT_7B>(value),
-            bludgeon_vulnerability: ShiftCast::const_unpack::<SHIFT_8B>(value),
-            magic_vulnerability: ShiftCast::const_unpack::<SHIFT_10B>(value),
-            pierce_vulnerability: ShiftCast::const_unpack::<SHIFT_12B>(value),
+            strength: unpack_partial_attribute(MaskDowncast::cast(low)),
+            vitality: unpack_partial_attribute(ShiftCast::const_unpack::<SHIFT_17b>(low)),
+            dexterity: unpack_partial_attribute(ShiftCast::const_unpack::<SHIFT_34b>(low)),
+            luck: unpack_partial_attribute(ShiftCast::const_unpack::<SHIFT_51b>(low)),
+            stun_modifier: ((low / SHIFT_68b) & MASK_31b_U128).try_into().unwrap(),
+            bludgeon_modifier: ((value / SHIFT_99b_U256) & MASK_31b_U256).try_into().unwrap(),
+            magic_modifier: ((high / SHIFT_2b_U128) & MASK_31b_U128).try_into().unwrap(),
+            pierce_modifier: ((high / SHIFT_33b_U128) & MASK_31b_U128).try_into().unwrap(),
+            damage_modifier: ((high / SHIFT_64b_U128) & MASK_31b_U128).try_into().unwrap(),
         }
     }
 }

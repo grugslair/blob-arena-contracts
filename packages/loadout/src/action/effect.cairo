@@ -1,62 +1,23 @@
-use ba_utils::storage;
 use ba_utils::storage::ShortArrayStore;
+use ba_utils::{BoolIntoU8, storage};
 use sai_packing::shifts::{
     SHIFT_1B, SHIFT_20B_FELT252, SHIFT_22B_FELT252, SHIFT_2B_U32, SHIFT_4B, SHIFT_6B,
 };
 use sai_packing::{
-    IntPacking, MaskDowncast, SHIFT_16B_FELT252, SHIFT_18B_FELT252, SHIFT_2B, ShiftCast,
+    BytePacking, IntPacking, MaskDowncast, SHIFT_16B_FELT252, SHIFT_18B_FELT252, SHIFT_2B,
+    ShiftCast,
 };
 use starknet::storage_access::StorePacking;
-use crate::attributes::{AbilityMods, ResistanceMods, VulnerabilityMods};
-
 
 const INSTANT_N: u32 = 0;
 const ROUND_N: u32 = 1;
 const ROUNDS_N: u32 = 2;
 const INFINITE_N: u32 = 3;
 
-const ATTACKER_N: u16 = 0;
-const DEFENDER_N: u16 = 1;
+const ACTOR_N: u16 = 0;
+const TARGET_N: u16 = 1;
 
-const HEALTH_N: u32 = 1;
-const STUN_N: u32 = HEALTH_N + 1;
-const BLOCK_N: u32 = STUN_N + 1;
-const STRENGTH_N: u32 = BLOCK_N + 1;
-const VITALITY_N: u32 = STRENGTH_N + 1;
-const DEXTERITY_N: u32 = VITALITY_N + 1;
-const LUCK_N: u32 = DEXTERITY_N + 1;
-const STUN_RES_N: u32 = LUCK_N + 1;
-const BLUDGEON_RES_N: u32 = STUN_RES_N + 1;
-const MAGIC_RES_N: u32 = BLUDGEON_RES_N + 1;
-const PIERCE_RES_N: u32 = MAGIC_RES_N + 1;
-const BLUDGEON_VUL_N: u32 = PIERCE_RES_N + 1;
-const MAGIC_VUL_N: u32 = BLUDGEON_VUL_N + 1;
-const PIERCE_VUL_N: u32 = MAGIC_VUL_N + 1;
-const ABILITIES_N: u32 = PIERCE_VUL_N + 1;
-const RESISTANCES_N: u32 = ABILITIES_N + 1;
-const VULNERABILITIES_N: u32 = RESISTANCES_N + 1;
-const STRENGTH_TEMP_N: u32 = VULNERABILITIES_N + 1;
-const VITALITY_TEMP_N: u32 = STRENGTH_TEMP_N + 1;
-const DEXTERITY_TEMP_N: u32 = VITALITY_TEMP_N + 1;
-const LUCK_TEMP_N: u32 = DEXTERITY_TEMP_N + 1;
-const STUN_RESISTANCE_TEMP_N: u32 = LUCK_TEMP_N + 1;
-const BLUDGEON_RESISTANCE_TEMP_N: u32 = STUN_RESISTANCE_TEMP_N + 1;
-const MAGIC_RESISTANCE_TEMP_N: u32 = BLUDGEON_RESISTANCE_TEMP_N + 1;
-const PIERCE_RESISTANCE_TEMP_N: u32 = MAGIC_RESISTANCE_TEMP_N + 1;
-const BLUDGEON_VULNERABILITY_TEMP_N: u32 = PIERCE_RESISTANCE_TEMP_N + 1;
-const MAGIC_VULNERABILITY_TEMP_N: u32 = BLUDGEON_VULNERABILITY_TEMP_N + 1;
-const PIERCE_VULNERABILITY_TEMP_N: u32 = MAGIC_VULNERABILITY_TEMP_N + 1;
-const ABILITIES_TEMP_N: u32 = PIERCE_VULNERABILITY_TEMP_N + 1;
-const RESISTANCES_TEMP_N: u32 = ABILITIES_TEMP_N + 1;
-const VULNERABILITIES_TEMP_N: u32 = RESISTANCES_TEMP_N + 1;
-const DAMAGE_N: u32 = VULNERABILITIES_TEMP_N + 1;
-const SET_HEALTH_N: u32 = DAMAGE_N + 1;
-const FLOOR_HEALTH_N: u32 = SET_HEALTH_N + 1;
-const CEIL_HEALTH_N: u32 = FLOOR_HEALTH_N + 1;
-const HEALTH_PERCENT_N: u32 = CEIL_HEALTH_N + 1;
-const SET_HEALTH_PERCENT_N: u32 = HEALTH_PERCENT_N + 1;
-const FLOOR_HEALTH_PERCENT_N: u32 = SET_HEALTH_PERCENT_N + 1;
-const CEIL_HEALTH_PERCENT_N: u32 = FLOOR_HEALTH_PERCENT_N + 1;
+
 
 
 const D_TYPE_BLUDGEON_N: u32 = 1;
@@ -68,57 +29,9 @@ const ROUND_PACKING_BITS: felt252 = ROUND_N.into() * SHIFT_20B_FELT252;
 const ROUNDS_PACKING_BITS: felt252 = ROUNDS_N.into() * SHIFT_20B_FELT252;
 const INFINITE_PACKING_BITS: felt252 = INFINITE_N.into() * SHIFT_20B_FELT252;
 
-const ATTACKER_PACKING_BITS: felt252 = ATTACKER_N.into() * SHIFT_18B_FELT252;
-const DEFENDER_PACKING_BITS: felt252 = DEFENDER_N.into() * SHIFT_18B_FELT252;
+const ACTOR_PACKING_BITS: felt252 = ACTOR_N.into() * SHIFT_18B_FELT252;
+const TARGET_PACKING_BITS: felt252 = TARGET_N.into() * SHIFT_18B_FELT252;
 
-const STRENGTH_PACKING_BITS: felt252 = STRENGTH_N.into() * SHIFT_16B_FELT252;
-const VITALITY_PACKING_BITS: felt252 = VITALITY_N.into() * SHIFT_16B_FELT252;
-const DEXTERITY_PACKING_BITS: felt252 = DEXTERITY_N.into() * SHIFT_16B_FELT252;
-const LUCK_PACKING_BITS: felt252 = LUCK_N.into() * SHIFT_16B_FELT252;
-const STUN_RES_PACKING_BITS: felt252 = STUN_RES_N.into() * SHIFT_16B_FELT252;
-const BLUDGEON_RES_PACKING_BITS: felt252 = BLUDGEON_RES_N.into() * SHIFT_16B_FELT252;
-const MAGIC_RES_PACKING_BITS: felt252 = MAGIC_RES_N.into() * SHIFT_16B_FELT252;
-const PIERCE_RES_PACKING_BITS: felt252 = PIERCE_RES_N.into() * SHIFT_16B_FELT252;
-const BLUDGEON_VUL_PACKING_BITS: felt252 = BLUDGEON_VUL_N.into() * SHIFT_16B_FELT252;
-const MAGIC_VUL_PACKING_BITS: felt252 = MAGIC_VUL_N.into() * SHIFT_16B_FELT252;
-const PIERCE_VUL_PACKING_BITS: felt252 = PIERCE_VUL_N.into() * SHIFT_16B_FELT252;
-const ABILITIES_PACKING_BITS: felt252 = ABILITIES_N.into() * SHIFT_16B_FELT252;
-const RESISTANCES_PACKING_BITS: felt252 = RESISTANCES_N.into() * SHIFT_16B_FELT252;
-const VULNERABILITIES_PACKING_BITS: felt252 = VULNERABILITIES_N.into() * SHIFT_16B_FELT252;
-const DAMAGE_PACKING_BITS: felt252 = DAMAGE_N.into() * SHIFT_16B_FELT252;
-const STUN_PACKING_BITS: felt252 = STUN_N.into() * SHIFT_16B_FELT252;
-const BLOCK_PACKING_BITS: felt252 = BLOCK_N.into() * SHIFT_16B_FELT252;
-const HEALTH_PACKING_BITS: felt252 = HEALTH_N.into() * SHIFT_16B_FELT252;
-const STRENGTH_TEMP_PACKING_BITS: felt252 = STRENGTH_TEMP_N.into() * SHIFT_16B_FELT252;
-const VITALITY_TEMP_PACKING_BITS: felt252 = VITALITY_TEMP_N.into() * SHIFT_16B_FELT252;
-const DEXTERITY_TEMP_PACKING_BITS: felt252 = DEXTERITY_TEMP_N.into() * SHIFT_16B_FELT252;
-const LUCK_TEMP_PACKING_BITS: felt252 = LUCK_TEMP_N.into() * SHIFT_16B_FELT252;
-const STUN_RESISTANCE_TEMP_PACKING_BITS: felt252 = STUN_RESISTANCE_TEMP_N.into()
-    * SHIFT_16B_FELT252;
-const BLUDGEON_RESISTANCE_TEMP_PACKING_BITS: felt252 = BLUDGEON_RESISTANCE_TEMP_N.into()
-    * SHIFT_16B_FELT252;
-const MAGIC_RESISTANCE_TEMP_PACKING_BITS: felt252 = MAGIC_RESISTANCE_TEMP_N.into()
-    * SHIFT_16B_FELT252;
-const PIERCE_RESISTANCE_TEMP_PACKING_BITS: felt252 = PIERCE_RESISTANCE_TEMP_N.into()
-    * SHIFT_16B_FELT252;
-const BLUDGEON_VULNERABILITY_TEMP_PACKING_BITS: felt252 = BLUDGEON_VULNERABILITY_TEMP_N.into()
-    * SHIFT_16B_FELT252;
-const MAGIC_VULNERABILITY_TEMP_PACKING_BITS: felt252 = MAGIC_VULNERABILITY_TEMP_N.into()
-    * SHIFT_16B_FELT252;
-const PIERCE_VULNERABILITY_TEMP_PACKING_BITS: felt252 = PIERCE_VULNERABILITY_TEMP_N.into()
-    * SHIFT_16B_FELT252;
-const ABILITIES_TEMP_PACKING_BITS: felt252 = ABILITIES_TEMP_N.into() * SHIFT_16B_FELT252;
-const RESISTANCES_TEMP_PACKING_BITS: felt252 = RESISTANCES_TEMP_N.into() * SHIFT_16B_FELT252;
-const VULNERABILITIES_TEMP_PACKING_BITS: felt252 = VULNERABILITIES_TEMP_N.into()
-    * SHIFT_16B_FELT252;
-const SET_HEALTH_PACKING_BITS: felt252 = SET_HEALTH_N.into() * SHIFT_16B_FELT252;
-const FLOOR_HEALTH_PACKING_BITS: felt252 = FLOOR_HEALTH_N.into() * SHIFT_16B_FELT252;
-const CEIL_HEALTH_PACKING_BITS: felt252 = CEIL_HEALTH_N.into() * SHIFT_16B_FELT252;
-const HEALTH_PERCENT_PACKING_BITS: felt252 = HEALTH_PERCENT_N.into() * SHIFT_16B_FELT252;
-const SET_HEALTH_PERCENT_PACKING_BITS: felt252 = SET_HEALTH_PERCENT_N.into() * SHIFT_16B_FELT252;
-const FLOOR_HEALTH_PERCENT_PACKING_BITS: felt252 = FLOOR_HEALTH_PERCENT_N.into()
-    * SHIFT_16B_FELT252;
-const CEIL_HEALTH_PERCENT_PACKING_BITS: felt252 = CEIL_HEALTH_PERCENT_N.into() * SHIFT_16B_FELT252;
 
 const D_TYPE_BLUDGEON_PACKING_BITS: u32 = D_TYPE_BLUDGEON_N * SHIFT_2B_U32;
 const D_TYPE_MAGIC_PACKING_BITS: u32 = D_TYPE_MAGIC_N * SHIFT_2B_U32;
@@ -178,50 +91,27 @@ const D_TYPE_PIERCE_PACKING_BITS: u32 = D_TYPE_PIERCE_N * SHIFT_2B_U32;
 /// * `SetHealthPercentMax` - Sets health to percentage of max health
 /// * `FloorHealthPercentMax` - Sets health to minimum of current or percentage of max
 /// * `CeilHealthPercentMax` - Sets health to maximum of current or percentage of max
+
 #[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
 pub enum Affect {
     #[default]
     None,
-    Health: i16,
-    Stun: u8,
-    Block: u8,
-    Strength: i8,
-    Vitality: i8,
-    Dexterity: i8,
-    Luck: i8,
-    StunResistance: i8,
-    BludgeonResistance: i8,
-    MagicResistance: i8,
-    PierceResistance: i8,
-    BludgeonVulnerability: i16,
-    MagicVulnerability: i16,
-    PierceVulnerability: i16,
-    Abilities: AbilityMods,
-    Resistances: ResistanceMods,
-    Vulnerabilities: VulnerabilityMods,
-    StrengthTemp: i8,
-    VitalityTemp: i8,
-    DexterityTemp: i8,
-    LuckTemp: i8,
-    StunResistanceTemp: i8,
-    BludgeonResistanceTemp: i8,
-    MagicResistanceTemp: i8,
-    PierceResistanceTemp: i8,
-    BludgeonVulnerabilityTemp: i16,
-    MagicVulnerabilityTemp: i16,
-    PierceVulnerabilityTemp: i16,
-    AbilitiesTemp: AbilityMods,
-    ResistancesTemp: ResistanceMods,
-    VulnerabilitiesTemp: VulnerabilityMods,
+    Health: Mod<u16>,
+    HealthTemp: Mod<i32>,
+    HealthMaxPercent: Mod<u8>,
+    HealthMaxPercentTemp: Mod<u8>,
+    Stun: u16,
+    StunModifier: u32,
+    StunModifierTemp: u32,
+    Abilities: Abilities,
+    AbilitiesTemp: Abilities,
+    DamageModifiers: Modifiers,
+    DamageModifiersTemp: Modifiers,
+    DamageModifiersSet: SetModifier,
     Damage: Damage,
-    SetHealth: u8,
-    FloorHealth: u8,
-    CeilHealth: u8,
-    HealthPercentMax: i8,
-    SetHealthPercentMax: u8,
-    FloorHealthPercentMax: u8,
-    CeilHealthPercentMax: u8,
+
 }
+
 
 /// Specifies the target of an effect
 ///
@@ -263,12 +153,122 @@ pub struct Effect {
     pub affect: Affect,
 }
 
+
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
+pub enum ModType {
+    Add,
+    Subtract,
+    Set,
+    Floor,
+    Ceil,
+}
+
+pub enum ModOf {
+    Value,
+    PercentageValue,
+    PercentageLimit,
+}
+
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
+struct Mod<T> {
+    mod_type: ModType,
+    value: T,
+}
+
+impl ModDefault<T, +Default<T>> of Default<Mod<T>> {
+    fn default() -> Mod<T> {
+        Mod { mod_type: ModType::Add, value: Default::default() }
+    }
+}
+
+
+#[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
+pub struct Abilities {
+    pub strength: i32,
+    pub vitality: i32,
+    pub dexterity: i32,
+    pub luck: i32,
+}
+
+#[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
+pub struct Modifiers {
+    pub bludgeon: u32,
+    pub magic: u32,
+    pub pierce: u32,
+    pub all_types: u32,
+}
+
+#[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
+pub struct SetModifier {
+    value: u32,
+    bludgeon: bool,
+    magic: bool,
+    pierce: bool,
+    all_types: bool,
+}
+
+
+impl AbilitiesPacking of StorePacking<Abilities, u128> {
+    fn pack(value: Abilities) -> u128 {
+        BytePacking::pack([value.strength, value.vitality, value.dexterity, value.luck])
+    }
+
+    fn unpack(value: u128) -> Abilities {
+        let [strength, vitality, dexterity, luck] = BytePacking::unpack(value);
+        Abilities { strength, vitality, dexterity, luck }
+    }
+}
+
+
+impl ModifiersPacking of StorePacking<Modifiers, u128> {
+    fn pack(value: Modifiers) -> u128 {
+        BytePacking::pack([value.bludgeon, value.magic, value.pierce, value.all_types])
+    }
+
+    fn unpack(value: u128) -> Modifiers {
+        let [bludgeon, magic, pierce, all_types] = BytePacking::unpack(value);
+        Modifiers { bludgeon, magic, pierce, all_types }
+    }
+}
+
+impl SetModifierPacking of StorePacking<SetModifier, u128> {
+    fn pack(value: SetModifier) -> u128 {
+        BytePacking::<
+            [u8; 4], u32,
+        >::pack(
+            [
+                value.bludgeon.into(), value.magic.into(), value.pierce.into(),
+                value.all_types.into(),
+            ],
+        )
+            .into()
+            + ShiftCast::const_cast::<SHIFT_4B>(value.value)
+    }
+
+    fn unpack(value: u128) -> SetModifier {
+        let [bludgeon, magic, pierce, all_types] = BytePacking::<
+            [u8; 4], u32,
+        >::unpack(MaskDowncast::cast(value));
+        SetModifier {
+            value: ShiftCast::const_unpack::<SHIFT_4B>(value),
+            bludgeon: bludgeon != 0,
+            magic: magic != 0,
+            pierce: pierce != 0,
+            all_types: all_types != 0,
+        }
+    }
+}
+
+
+
+
+
 impl EffectStorePacking of StorePacking<Effect, felt252> {
     fn pack(value: Effect) -> felt252 {
         StorePacking::pack(value.affect)
             + match value.target {
-                Recipient::Actor => ATTACKER_PACKING_BITS,
-                Recipient::Target => DEFENDER_PACKING_BITS,
+                Recipient::Actor => ACTOR_PACKING_BITS,
+                Recipient::Target => TARGET_PACKING_BITS,
             }
             + match value.duration {
                 Duration::Instant => 0,
@@ -299,48 +299,48 @@ impl EffectStorePacking of StorePacking<Effect, felt252> {
 }
 
 
+impl ModTPacking<T, +ShiftCast<T, u128, u64>, +Drop<T>> of StorePacking<Mod<T>, u128> {
+    fn pack(value: Mod<T>) -> u128 {
+        match value.mod_type {
+            ModType::Add => 0_u128,
+            ModType::Subtract => 1_u128,
+            ModType::Set => 2_u128,
+            ModType::Floor => 3_u128,
+            ModType::Ceil => 4_u128,
+        }
+            + ShiftCast::const_cast::<SHIFT_4B>(value.value)
+    }
+
+    fn unpack(value: u128) -> Mod<T> {
+        let mod_type = match MaskDowncast::cast(value) {
+            0_u16 => ModType::Add,
+            1_u16 => ModType::Subtract,
+            2_u16 => ModType::Set,
+            3_u16 => ModType::Floor,
+            4_u16 => ModType::Ceil,
+            _ => panic!("Invalid value for ModType"),
+        }
+        Mod { mod_type, value: ShiftCast::const_unpack::<SHIFT_4B>(value) }
+    }
+}
+
+
 pub fn unpack_affect(variant: u16, data: u128) -> Affect {
     match variant {
         0 => Affect::None,
-        1 => Affect::Health(MaskDowncast::cast(data)),
-        2 => Affect::Stun(MaskDowncast::cast(data)),
-        3 => Affect::Block(MaskDowncast::cast(data)),
-        4 => Affect::Strength(MaskDowncast::cast(data)),
-        5 => Affect::Vitality(MaskDowncast::cast(data)),
-        6 => Affect::Dexterity(MaskDowncast::cast(data)),
-        7 => Affect::Luck(MaskDowncast::cast(data)),
-        8 => Affect::StunResistance(MaskDowncast::cast(data)),
-        9 => Affect::BludgeonResistance(MaskDowncast::cast(data)),
-        10 => Affect::MagicResistance(MaskDowncast::cast(data)),
-        11 => Affect::PierceResistance(MaskDowncast::cast(data)),
-        12 => Affect::BludgeonVulnerability(MaskDowncast::cast(data)),
-        13 => Affect::MagicVulnerability(MaskDowncast::cast(data)),
-        14 => Affect::PierceVulnerability(MaskDowncast::cast(data)),
-        15 => Affect::Abilities(StorePacking::unpack(MaskDowncast::cast(data))),
-        16 => Affect::Resistances(StorePacking::unpack(MaskDowncast::cast(data))),
-        17 => Affect::Vulnerabilities(StorePacking::unpack(MaskDowncast::cast(data))),
-        18 => Affect::StrengthTemp(MaskDowncast::cast(data)),
-        19 => Affect::VitalityTemp(MaskDowncast::cast(data)),
-        20 => Affect::DexterityTemp(MaskDowncast::cast(data)),
-        21 => Affect::LuckTemp(MaskDowncast::cast(data)),
-        22 => Affect::StunResistanceTemp(MaskDowncast::cast(data)),
-        23 => Affect::BludgeonResistanceTemp(MaskDowncast::cast(data)),
-        24 => Affect::MagicResistanceTemp(MaskDowncast::cast(data)),
-        25 => Affect::PierceResistanceTemp(MaskDowncast::cast(data)),
-        26 => Affect::BludgeonVulnerabilityTemp(MaskDowncast::cast(data)),
-        27 => Affect::MagicVulnerabilityTemp(MaskDowncast::cast(data)),
-        28 => Affect::PierceVulnerabilityTemp(MaskDowncast::cast(data)),
-        29 => Affect::AbilitiesTemp(StorePacking::unpack(MaskDowncast::cast(data))),
-        30 => Affect::ResistancesTemp(StorePacking::unpack(MaskDowncast::cast(data))),
-        31 => Affect::VulnerabilitiesTemp(StorePacking::unpack(MaskDowncast::cast(data))),
-        32 => Affect::Damage(DamageStorePacking::unpack(MaskDowncast::cast(data))),
-        33 => Affect::SetHealth(MaskDowncast::cast(data)),
-        34 => Affect::FloorHealth(MaskDowncast::cast(data)),
-        35 => Affect::CeilHealth(MaskDowncast::cast(data)),
-        36 => Affect::HealthPercentMax(MaskDowncast::cast(data)),
-        37 => Affect::SetHealthPercentMax(MaskDowncast::cast(data)),
-        38 => Affect::FloorHealthPercentMax(MaskDowncast::cast(data)),
-        39 => Affect::CeilHealthPercentMax(MaskDowncast::cast(data)),
+        1 => Affect::Health(StorePacking::unpack(data)),
+        2 => Affect::HealthTemp(StorePacking::unpack(data)),
+        3 => Affect::HealthMaxPercent(StorePacking::unpack(data)),
+        4 => Affect::HealthMaxPercentTemp(StorePacking::unpack(data)),
+        100 => Affect::Stun(MaskDowncast::cast(data)),
+        101 => Affect::StunModifier(MaskDowncast::cast(data)),
+        102 => Affect::StunModifierTemp(MaskDowncast::cast(data)),
+        200 => Affect::Abilities(StorePacking::unpack(data)),
+        201 => Affect::AbilitiesTemp(StorePacking::unpack(data)),
+        301 => Affect::DamageModifiers(StorePacking::unpack(data)),
+        302 => Affect::DamageModifiersTemp(StorePacking::unpack(data)),
+        303 => Affect::DamageModifiersSet(StorePacking::unpack(data)),
+        400 => Affect::Damage(StorePacking::unpack(data)),
         _ => panic!("Invalid value for Affect"),
     }
 }
@@ -480,8 +480,8 @@ pub struct Damage {
     pub damage_type: DamageType,
 }
 
-impl DamageStorePacking of StorePacking<Damage, u32> {
-    fn pack(value: Damage) -> u32 {
+impl DamageStorePacking of StorePacking<Damage, u128> {
+    fn pack(value: Damage) -> u128 {
         value.critical.into()
             + ShiftCast::const_cast::<SHIFT_1B>(value.power)
             + match value.damage_type {

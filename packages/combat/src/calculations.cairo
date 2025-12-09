@@ -5,7 +5,7 @@ use sai_core_utils::SaturatingInto;
 
 const HUNDRED_FIXED: Fixed = Fixed { mag: 1844674407370955161600, sign: false };
 const FIXED_255: Fixed = Fixed { mag: 4703919738795935662080, sign: false };
-
+const RESISTANCE_SCALE: u32 = 1_000_000;
 /// Applies a luck modifier to a given value, transforming it based on the luck parameter.
 /// The function uses a mathematical formula to adjust the value based on the luck ratio.
 ///
@@ -18,7 +18,7 @@ const FIXED_255: Fixed = Fixed { mag: 4703919738795935662080, sign: false };
 ///
 /// * a value scaled between 0 and 225
 ///
-/// # Formula
+/// #
 ///
 ///                    value   ^  luck_ratio
 /// equivalent to  (0.0 - 1.0) ^ (0.66 to 1.5)
@@ -28,7 +28,7 @@ const FIXED_255: Fixed = Fixed { mag: 4703919738795935662080, sign: false };
 /// # Note
 ///
 /// If the input value is 0, the function returns zero regardless of luck value.
-/// If the calculated new value exceeds 255, it is capped at 255.
+/// If the calculated new value exceeds 255, it is capped at 255.Testing. Testing.
 
 pub fn apply_luck_modifier<T, +TryInto<Fixed, T>, +Into<u8, T>, +Zero<T>>(
     value: u8, luck: u8,
@@ -66,45 +66,11 @@ pub fn get_new_stun_chance(current_stun: u8, action_stun: u8) -> u8 {
         .saturating_into()
 }
 
-pub fn combine_resistance_temp(value: i8, change: i8) -> i8 {
-    if value <= 0 {}
-    let value: i16 = value.into();
-    let change: i16 = change.into();
-    if change >= 100 {
-        return 100;
-    }
-    let sum = value + change;
-    if sum <= Zero::zero() {
-        sum
-    } else if change < 0 {
-        sum * 100 / (100 + change)
-    } else {
-        (sum * 100 - value * change) / 100
-    }
-        .try_into()
-        .unwrap()
-}
-
-pub fn combine_resistance<
-    T, S, +Drop<T>, +Into<T, i16>, +Drop<S>, +Into<S, i16>, +TryInto<i16, T>, +Into<u8, T>,
->(
-    value: T, change: S,
-) -> T {
-    let value: i16 = value.into();
-    let change: i16 = change.into();
-    if change >= 100 {
-        return 100_u8.into();
-    }
-    let sum = value + change;
-    if sum <= Zero::zero() {
-        Zero::zero()
-    } else if change < 0 {
-        sum * 100 / (100 + change)
-    } else {
-        (sum * 100 - value * change) / 100
-    }
-        .try_into()
-        .unwrap()
+pub fn combine_resistance(
+    value: u32 , change: u32,
+) -> u32 {
+    value.into() * change.into() / 1_000
+    
 }
 
 /// Calculates the damage dealt by an action based on move power, strength, and critical hit status
@@ -117,8 +83,8 @@ pub fn combine_resistance<
 
 pub fn damage_calculation(move_power: u8, strength: u8, critical: bool) -> u16 {
     (move_power.wide_mul(100 + strength) / match critical {
-        true => 75,
-        false => 150,
+        true => 50,
+        false => 100,
     })
 }
 

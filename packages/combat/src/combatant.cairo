@@ -5,8 +5,9 @@ use ba_loadout::attributes::{
 };
 use ba_utils::{IntoRange, Randomness, RandomnessTrait};
 use core::cmp::{max, min};
-use core::num::traits::{SaturatingAdd, SaturatingSub, WideMul, Zero};
+use core::num::traits::{Pow, SaturatingAdd, SaturatingSub, WideMul, Zero};
 use sai_core_utils::SaturatingInto;
+use sai_packing::masks::*;
 use sai_packing::shifts::*;
 use sai_packing::{MaskDowncast, ShiftCast};
 use starknet::storage::StorageNodeDeref;
@@ -20,93 +21,87 @@ use crate::result::{
     VitalityTempResult,
 };
 
-const BASE_HEALTH: u8 = 100;
+pub const BASE_HEALTH: u16 = 100;
+
 
 #[derive(Drop, Copy, Serde, Schema, Introspect, Default)]
 pub struct CombatantState {
-    pub health: u8,
-    pub stun_chance: u8,
-    pub block: u8,
-    pub strength: u8,
-    pub vitality: u8,
-    pub dexterity: u8,
-    pub luck: u8,
-    pub stun_resistance: u8,
-    pub bludgeon_resistance: u8,
-    pub magic_resistance: u8,
-    pub pierce_resistance: u8,
-    pub bludgeon_vulnerability: u16,
-    pub magic_vulnerability: u16,
-    pub pierce_vulnerability: u16,
-    pub strength_temp: i8,
-    pub vitality_temp: i8,
-    pub dexterity_temp: i8,
-    pub luck_temp: i8,
-    pub stun_resistance_temp: i8,
-    pub bludgeon_resistance_temp: i8,
-    pub magic_resistance_temp: i8,
-    pub pierce_resistance_temp: i8,
-    pub bludgeon_vulnerability_temp: i16,
-    pub magic_vulnerability_temp: i16,
-    pub pierce_vulnerability_temp: i16,
+    pub strength: u16,
+    pub vitality: u16,
+    pub dexterity: u16,
+    pub luck: u16,
+    pub stun_modifier: u32,
+    pub damage_modifier: u32,
+    pub bludgeon_modifier: u32,
+    pub magic_modifier: u32,
+    pub pierce_modifier: u32,
+    pub health: u16,
+    pub stun_chance: u16,
+    /// temp values
+    pub strength_temp: i32,
+    pub vitality_temp: i32,
+    pub dexterity_temp: i32,
+    pub luck_temp: i32,
+    pub stun_modifier_temp: u32,
+    pub damage_modifier_temp: u32,
+    pub bludgeon_modifier_temp: u32,
+    pub magic_modifier_temp: u32,
+    pub pierce_modifier_temp: u32,
+    pub health_temp: i32,
 }
 
 
-impl UAbilityStorePacking of StorePacking<CombatantState, u128> {
-    fn pack(value: CombatantState) -> u128 {
-        value.health.into()
-            + ShiftCast::const_cast::<SHIFT_1B>(value.stun_chance)
-            + ShiftCast::const_cast::<SHIFT_2B>(value.strength)
-            + ShiftCast::const_cast::<SHIFT_3B>(value.vitality)
-            + ShiftCast::const_cast::<SHIFT_4B>(value.dexterity)
-            + ShiftCast::const_cast::<SHIFT_5B>(value.luck)
-            + ShiftCast::const_cast::<SHIFT_6B>(value.stun_resistance)
-            + ShiftCast::const_cast::<SHIFT_7B>(value.bludgeon_resistance)
-            + ShiftCast::const_cast::<SHIFT_8B>(value.magic_resistance)
-            + ShiftCast::const_cast::<SHIFT_9B>(value.pierce_resistance)
-            + ShiftCast::const_cast::<SHIFT_10B>(value.bludgeon_vulnerability)
-            + ShiftCast::const_cast::<SHIFT_12B>(value.magic_vulnerability)
-            + ShiftCast::const_cast::<SHIFT_14B>(value.pierce_vulnerability)
+impl UAbilityStorePacking of StorePacking<CombatantState, felt252> {
+    fn pack(value: CombatantState) -> felt252 {
+        value.strength.into()
+            + SHIFT_2B_FELT252 * value.vitality.into()
+            + SHIFT_4B_FELT252 * value.dexterity.into()
+            + SHIFT_6B_FELT252 * value.luck.into()
+            + SHIFT_8B_FELT252 * value.stun_modifier.into()
+            + SHIFT_95b_FELT252 * value.bludgeon_modifier.into()
+            + SHIFT_126b_FELT252 * value.magic_modifier.into()
+            + SHIFT_157b_FELT252 * value.pierce_modifier.into()
+            + SHIFT_188b_FELT252 * value.damage_modifier.into()
+            + SHIFT_219b_FELT252 * value.health.into()
+            + SHIFT_235b_FELT252 * value.stun_chance.into()
     }
 
-    fn unpack(value: u128) -> CombatantState {
+    fn unpack(value: felt252) -> CombatantState {
+        let value: u256 = value.into();
+        let u256 { low, high } = value;
         CombatantState {
-            health: MaskDowncast::cast(value),
-            stun_chance: ShiftCast::const_unpack::<SHIFT_1B>(value),
-            strength: ShiftCast::const_unpack::<SHIFT_2B>(value),
-            vitality: ShiftCast::const_unpack::<SHIFT_3B>(value),
-            dexterity: ShiftCast::const_unpack::<SHIFT_4B>(value),
-            luck: ShiftCast::const_unpack::<SHIFT_5B>(value),
-            stun_resistance: ShiftCast::const_unpack::<SHIFT_6B>(value),
-            bludgeon_resistance: ShiftCast::const_unpack::<SHIFT_7B>(value),
-            magic_resistance: ShiftCast::const_unpack::<SHIFT_8B>(value),
-            pierce_resistance: ShiftCast::const_unpack::<SHIFT_9B>(value),
-            bludgeon_vulnerability: ShiftCast::const_unpack::<SHIFT_10B>(value),
-            magic_vulnerability: ShiftCast::const_unpack::<SHIFT_12B>(value),
-            pierce_vulnerability: ShiftCast::const_unpack::<SHIFT_14B>(value),
-            strength_temp: Zero::zero(),
-            vitality_temp: Zero::zero(),
-            dexterity_temp: Zero::zero(),
-            luck_temp: Zero::zero(),
-            stun_resistance_temp: Zero::zero(),
-            bludgeon_resistance_temp: Zero::zero(),
-            magic_resistance_temp: Zero::zero(),
-            pierce_resistance_temp: Zero::zero(),
-            bludgeon_vulnerability_temp: Zero::zero(),
-            magic_vulnerability_temp: Zero::zero(),
-            pierce_vulnerability_temp: Zero::zero(),
-            block: Zero::zero(),
+            strength: MaskDowncast::cast(low),
+            vitality: ShiftCast::const_unpack::<SHIFT_2B>(low),
+            dexterity: ShiftCast::const_unpack::<SHIFT_4B>(low),
+            luck: ShiftCast::const_unpack::<SHIFT_6B>(low),
+            stun_modifier: ((low / SHIFT_8B) & MASK_31b_U128).try_into().unwrap(),
+            bludgeon_modifier: ((low / SHIFT_95b) & MASK_31b_U128).try_into().unwrap(),
+            magic_modifier: ((value / SHIFT_126b_U256) & MASK_31b_U256).try_into().unwrap(),
+            pierce_modifier: ((high / SHIFT_29b_U128) & MASK_31b_U128).try_into().unwrap(),
+            damage_modifier: ((high / SHIFT_60b_U128) & MASK_31b_U128).try_into().unwrap(),
+            stun_chance: ShiftCast::const_unpack::<SHIFT_91b_U128>(high),
+            health: ShiftCast::const_unpack::<SHIFT_107b_U128>(high),
+            health_temp: 0,
+            strength_temp: 0,
+            vitality_temp: 0,
+            dexterity_temp: 0,
+            luck_temp: 0,
+            stun_modifier_temp: 0,
+            damage_modifier_temp: 0,
+            bludgeon_modifier_temp: 0,
+            magic_modifier_temp: 0,
+            pierce_modifier_temp: 0,
         }
     }
 }
 
 
-pub fn get_max_health(vitality: u8) -> u8 {
+pub fn get_max_health(vitality: u16) -> u16 {
     BASE_HEALTH + vitality
 }
 
-pub fn get_max_health_percent(vitality: u8, percent: u8) -> u8 {
-    (percent.wide_mul(get_max_health(vitality).into()) / 100).saturating_into()
+pub fn get_max_health_percent(vitality: u16, percent: u8) -> u8 {
+    (get_max_health(vitality).wide_mul(percent.into()) / 100_u32).saturating_into()
 }
 
 impl AbilitiesIntoCombatantState of Into<Attributes, CombatantState> {
@@ -116,27 +111,23 @@ impl AbilitiesIntoCombatantState of Into<Attributes, CombatantState> {
             vitality: self.vitality,
             dexterity: self.dexterity,
             luck: self.luck,
-            stun_resistance: self.stun_resistance,
-            bludgeon_resistance: self.bludgeon_resistance,
-            magic_resistance: self.magic_resistance,
-            pierce_resistance: self.pierce_resistance,
-            bludgeon_vulnerability: self.bludgeon_vulnerability,
-            magic_vulnerability: self.magic_vulnerability,
-            pierce_vulnerability: self.pierce_vulnerability,
+            stun_modifier: self.stun_modifier,
+            damage_modifier: self.damage_modifier,
+            bludgeon_modifier: self.bludgeon_modifier,
+            magic_modifier: self.magic_modifier,
+            pierce_modifier: self.pierce_modifier,
             health: get_max_health(self.vitality),
-            strength_temp: Zero::zero(),
-            vitality_temp: Zero::zero(),
-            dexterity_temp: Zero::zero(),
-            luck_temp: Zero::zero(),
-            stun_resistance_temp: Zero::zero(),
-            bludgeon_resistance_temp: Zero::zero(),
-            magic_resistance_temp: Zero::zero(),
-            pierce_resistance_temp: Zero::zero(),
-            bludgeon_vulnerability_temp: Zero::zero(),
-            magic_vulnerability_temp: Zero::zero(),
-            pierce_vulnerability_temp: Zero::zero(),
-            stun_chance: Zero::zero(),
-            block: Zero::zero(),
+            stun_chance: 0,
+            strength_temp: 0,
+            vitality_temp: 0,
+            dexterity_temp: 0,
+            luck_temp: 0,
+            stun_modifier_temp: 0,
+            damage_modifier_temp: 0,
+            bludgeon_modifier_temp: 0,
+            magic_modifier_temp: 0,
+            pierce_modifier_temp: 0,
+            health_temp: 0,
         }
     }
 }
@@ -159,8 +150,8 @@ fn modify_ability_temp(ref current: i8, modifier: i8) -> i8 {
     current
 }
 
-fn modify_resistance_temp(ref value: i8, change: i8) -> i8 {
-    value = combine_resistance_temp(value, change);
+fn modify_resistance_temp(ref value: u32, change: u32) -> u32 {
+    value = value.into() * change.into()
     value
 }
 
