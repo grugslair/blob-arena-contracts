@@ -1,11 +1,8 @@
 use ba_utils::storage::ShortArrayStore;
 use ba_utils::{BoolIntoU8, storage};
-use sai_packing::shifts::{
-    SHIFT_1B, SHIFT_20B_FELT252, SHIFT_22B_FELT252, SHIFT_2B_U32, SHIFT_4B, SHIFT_6B,
-};
+use sai_packing::shifts::*;
 use sai_packing::{
-    BytePacking, IntPacking, MaskDowncast, SHIFT_16B_FELT252, SHIFT_18B_FELT252, SHIFT_2B,
-    ShiftCast,
+    BytePacking, MaskDowncast, SHIFT_16B_FELT252, SHIFT_18B_FELT252, SHIFT_2B, ShiftCast,
 };
 use starknet::storage_access::StorePacking;
 
@@ -17,13 +14,22 @@ const INFINITE_N: u32 = 3;
 const ACTOR_N: u16 = 0;
 const TARGET_N: u16 = 1;
 
+const HEALTH_PACKING_BITS: felt252 = 1 * SHIFT_16B_FELT252;
+const HEALTH_MAX_PERCENT_PACKING_BITS: felt252 = 2 * SHIFT_16B_FELT252;
+const STUN_PACKING_BITS: felt252 = 100 * SHIFT_16B_FELT252;
+const STUN_MODIFIER_PACKING_BITS: felt252 = 101 * SHIFT_16B_FELT252;
+const STUN_MODIFIER_TEMP_PACKING_BITS: felt252 = 102 * SHIFT_16B_FELT252;
+const ABILITIES_PACKING_BITS: felt252 = 200 * SHIFT_16B_FELT252;
+const ABILITIES_TEMP_PACKING_BITS: felt252 = 201 * SHIFT_16B_FELT252;
+const DAMAGE_MODIFIERS_PACKING_BITS: felt252 = 301 * SHIFT_16B_FELT252;
+const DAMAGE_MODIFIERS_TEMP_PACKING_BITS: felt252 = 302 * SHIFT_16B_FELT252;
+const DAMAGE_MODIFIERS_SET_PACKING_BITS: felt252 = 303 * SHIFT_16B_FELT252;
+const DAMAGE_MODIFIERS_SET_TEMP_PACKING_BITS: felt252 = 304 * SHIFT_16B_FELT252;
+const DAMAGE_PACKING_BITS: felt252 = 400 * SHIFT_16B_FELT252;
 
-
-
-const D_TYPE_BLUDGEON_N: u32 = 1;
-const D_TYPE_MAGIC_N: u32 = 2;
-const D_TYPE_PIERCE_N: u32 = 3;
-
+const D_TYPE_BLUDGEON_N: u128 = 1;
+const D_TYPE_MAGIC_N: u128 = 2;
+const D_TYPE_PIERCE_N: u128 = 3;
 
 const ROUND_PACKING_BITS: felt252 = ROUND_N.into() * SHIFT_20B_FELT252;
 const ROUNDS_PACKING_BITS: felt252 = ROUNDS_N.into() * SHIFT_20B_FELT252;
@@ -32,10 +38,9 @@ const INFINITE_PACKING_BITS: felt252 = INFINITE_N.into() * SHIFT_20B_FELT252;
 const ACTOR_PACKING_BITS: felt252 = ACTOR_N.into() * SHIFT_18B_FELT252;
 const TARGET_PACKING_BITS: felt252 = TARGET_N.into() * SHIFT_18B_FELT252;
 
-
-const D_TYPE_BLUDGEON_PACKING_BITS: u32 = D_TYPE_BLUDGEON_N * SHIFT_2B_U32;
-const D_TYPE_MAGIC_PACKING_BITS: u32 = D_TYPE_MAGIC_N * SHIFT_2B_U32;
-const D_TYPE_PIERCE_PACKING_BITS: u32 = D_TYPE_PIERCE_N * SHIFT_2B_U32;
+const D_TYPE_BLUDGEON_PACKING_BITS: u128 = D_TYPE_BLUDGEON_N * SHIFT_2B_U128;
+const D_TYPE_MAGIC_PACKING_BITS: u128 = D_TYPE_MAGIC_N * SHIFT_2B_U128;
+const D_TYPE_PIERCE_PACKING_BITS: u128 = D_TYPE_PIERCE_N * SHIFT_2B_U128;
 
 /// Represents the different types of effects that can be applied to combatants
 ///
@@ -92,24 +97,18 @@ const D_TYPE_PIERCE_PACKING_BITS: u32 = D_TYPE_PIERCE_N * SHIFT_2B_U32;
 /// * `FloorHealthPercentMax` - Sets health to minimum of current or percentage of max
 /// * `CeilHealthPercentMax` - Sets health to maximum of current or percentage of max
 
-#[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
 pub enum Affect {
-    #[default]
-    None,
-    Health: Mod<u16>,
-    HealthTemp: Mod<i32>,
-    HealthMaxPercent: Mod<u8>,
-    HealthMaxPercentTemp: Mod<u8>,
-    Stun: u16,
-    StunModifier: u32,
-    StunModifierTemp: u32,
+    Health: HealthMod<u16>,
+    HealthMaxPercent: HealthMod<u8>,
+    Stun: u8,
+    StunModifier: u16,
+    StunModifierTemp: u16,
     Abilities: Abilities,
     AbilitiesTemp: Abilities,
     DamageModifiers: Modifiers,
     DamageModifiersTemp: Modifiers,
-    DamageModifiersSet: SetModifier,
     Damage: Damage,
-
 }
 
 
@@ -155,7 +154,7 @@ pub struct Effect {
 
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect)]
-pub enum ModType {
+pub enum HealthModType {
     Add,
     Subtract,
     Set,
@@ -163,31 +162,25 @@ pub enum ModType {
     Ceil,
 }
 
-pub enum ModOf {
-    Value,
-    PercentageValue,
-    PercentageLimit,
-}
-
 #[derive(Copy, Drop, Serde, PartialEq, Introspect)]
-struct Mod<T> {
-    mod_type: ModType,
-    value: T,
+pub struct HealthMod<T> {
+    pub mod_type: HealthModType,
+    pub value: T,
 }
 
-impl ModDefault<T, +Default<T>> of Default<Mod<T>> {
-    fn default() -> Mod<T> {
-        Mod { mod_type: ModType::Add, value: Default::default() }
+impl ModDefault<T, +Default<T>> of Default<HealthMod<T>> {
+    fn default() -> HealthMod<T> {
+        HealthMod { mod_type: HealthModType::Add, value: Default::default() }
     }
 }
 
 
 #[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
 pub struct Abilities {
-    pub strength: i32,
-    pub vitality: i32,
-    pub dexterity: i32,
-    pub luck: i32,
+    pub strength: i16,
+    pub vitality: i16,
+    pub dexterity: i16,
+    pub luck: i16,
 }
 
 #[derive(Copy, Drop, Serde, PartialEq, Default, Introspect)]
@@ -210,11 +203,14 @@ pub struct SetModifier {
 
 impl AbilitiesPacking of StorePacking<Abilities, u128> {
     fn pack(value: Abilities) -> u128 {
-        BytePacking::pack([value.strength, value.vitality, value.dexterity, value.luck])
+        BytePacking::<_, u64>::pack([value.strength, value.vitality, value.dexterity, value.luck])
+            .into()
     }
 
     fn unpack(value: u128) -> Abilities {
-        let [strength, vitality, dexterity, luck] = BytePacking::unpack(value);
+        let [strength, vitality, dexterity, luck] = BytePacking::<
+            _, u64,
+        >::unpack(value.try_into().unwrap());
         Abilities { strength, vitality, dexterity, luck }
     }
 }
@@ -260,9 +256,6 @@ impl SetModifierPacking of StorePacking<SetModifier, u128> {
 }
 
 
-
-
-
 impl EffectStorePacking of StorePacking<Effect, felt252> {
     fn pack(value: Effect) -> felt252 {
         StorePacking::pack(value.affect)
@@ -299,39 +292,36 @@ impl EffectStorePacking of StorePacking<Effect, felt252> {
 }
 
 
-impl ModTPacking<T, +ShiftCast<T, u128, u64>, +Drop<T>> of StorePacking<Mod<T>, u128> {
-    fn pack(value: Mod<T>) -> u128 {
+impl ModTPacking<T, +ShiftCast<T, u128, u64>, +Drop<T>> of StorePacking<HealthMod<T>, u128> {
+    fn pack(value: HealthMod<T>) -> u128 {
         match value.mod_type {
-            ModType::Add => 0_u128,
-            ModType::Subtract => 1_u128,
-            ModType::Set => 2_u128,
-            ModType::Floor => 3_u128,
-            ModType::Ceil => 4_u128,
+            HealthModType::Add => 0_u128,
+            HealthModType::Subtract => 1_u128,
+            HealthModType::Set => 2_u128,
+            HealthModType::Floor => 3_u128,
+            HealthModType::Ceil => 4_u128,
         }
             + ShiftCast::const_cast::<SHIFT_4B>(value.value)
     }
 
-    fn unpack(value: u128) -> Mod<T> {
+    fn unpack(value: u128) -> HealthMod<T> {
         let mod_type = match MaskDowncast::cast(value) {
-            0_u16 => ModType::Add,
-            1_u16 => ModType::Subtract,
-            2_u16 => ModType::Set,
-            3_u16 => ModType::Floor,
-            4_u16 => ModType::Ceil,
+            0_u16 => HealthModType::Add,
+            1_u16 => HealthModType::Subtract,
+            2_u16 => HealthModType::Set,
+            3_u16 => HealthModType::Floor,
+            4_u16 => HealthModType::Ceil,
             _ => panic!("Invalid value for ModType"),
-        }
-        Mod { mod_type, value: ShiftCast::const_unpack::<SHIFT_4B>(value) }
+        };
+        HealthMod { mod_type, value: ShiftCast::const_unpack::<SHIFT_4B>(value) }
     }
 }
 
 
 pub fn unpack_affect(variant: u16, data: u128) -> Affect {
     match variant {
-        0 => Affect::None,
         1 => Affect::Health(StorePacking::unpack(data)),
-        2 => Affect::HealthTemp(StorePacking::unpack(data)),
-        3 => Affect::HealthMaxPercent(StorePacking::unpack(data)),
-        4 => Affect::HealthMaxPercentTemp(StorePacking::unpack(data)),
+        2 => Affect::HealthMaxPercent(StorePacking::unpack(data)),
         100 => Affect::Stun(MaskDowncast::cast(data)),
         101 => Affect::StunModifier(MaskDowncast::cast(data)),
         102 => Affect::StunModifierTemp(MaskDowncast::cast(data)),
@@ -339,109 +329,34 @@ pub fn unpack_affect(variant: u16, data: u128) -> Affect {
         201 => Affect::AbilitiesTemp(StorePacking::unpack(data)),
         301 => Affect::DamageModifiers(StorePacking::unpack(data)),
         302 => Affect::DamageModifiersTemp(StorePacking::unpack(data)),
-        303 => Affect::DamageModifiersSet(StorePacking::unpack(data)),
         400 => Affect::Damage(StorePacking::unpack(data)),
         _ => panic!("Invalid value for Affect"),
     }
 }
 
+pub fn pack_affect(value: Affect) -> (u128, felt252) {
+    match value {
+        Affect::Health(mod_val) => (StorePacking::pack(mod_val), HEALTH_PACKING_BITS),
+        Affect::HealthMaxPercent(mod_val) => (
+            StorePacking::pack(mod_val), HEALTH_MAX_PERCENT_PACKING_BITS,
+        ),
+        Affect::Stun(val) => (val.into(), STUN_PACKING_BITS),
+        Affect::StunModifier(val) => (val.into(), STUN_MODIFIER_PACKING_BITS),
+        Affect::StunModifierTemp(val) => (val.into(), STUN_MODIFIER_TEMP_PACKING_BITS),
+        Affect::Abilities(val) => (StorePacking::pack(val), ABILITIES_PACKING_BITS),
+        Affect::AbilitiesTemp(val) => (StorePacking::pack(val), ABILITIES_TEMP_PACKING_BITS),
+        Affect::DamageModifiers(val) => (StorePacking::pack(val), DAMAGE_MODIFIERS_PACKING_BITS),
+        Affect::DamageModifiersTemp(val) => (
+            StorePacking::pack(val), DAMAGE_MODIFIERS_TEMP_PACKING_BITS,
+        ),
+        Affect::Damage(val) => (StorePacking::pack(val), DAMAGE_PACKING_BITS),
+    }
+}
+
 impl AffectStorePacking of StorePacking<Affect, felt252> {
     fn pack(value: Affect) -> felt252 {
-        let (amount, variant): (u128, felt252) = match value {
-            Affect::None => { return 0; },
-            Affect::Health(amount) => (IntPacking::pack_into(amount), HEALTH_PACKING_BITS),
-            Affect::Stun(amount) => (amount.into(), STUN_PACKING_BITS),
-            Affect::Block(amount) => (amount.into(), BLOCK_PACKING_BITS),
-            Affect::Strength(amount) => (IntPacking::pack_into(amount), STRENGTH_PACKING_BITS),
-            Affect::Vitality(amount) => (IntPacking::pack_into(amount), VITALITY_PACKING_BITS),
-            Affect::Dexterity(amount) => (IntPacking::pack_into(amount), DEXTERITY_PACKING_BITS),
-            Affect::Luck(amount) => (IntPacking::pack_into(amount), LUCK_PACKING_BITS),
-            Affect::StunResistance(amount) => (
-                IntPacking::pack_into(amount), STUN_RES_PACKING_BITS,
-            ),
-            Affect::BludgeonResistance(amount) => (
-                IntPacking::pack_into(amount), BLUDGEON_RES_PACKING_BITS,
-            ),
-            Affect::MagicResistance(amount) => (
-                IntPacking::pack_into(amount), MAGIC_RES_PACKING_BITS,
-            ),
-            Affect::PierceResistance(amount) => (
-                IntPacking::pack_into(amount), PIERCE_RES_PACKING_BITS,
-            ),
-            Affect::BludgeonVulnerability(amount) => (
-                IntPacking::pack_into(amount), BLUDGEON_VUL_PACKING_BITS,
-            ),
-            Affect::MagicVulnerability(amount) => (
-                IntPacking::pack_into(amount), MAGIC_VUL_PACKING_BITS,
-            ),
-            Affect::PierceVulnerability(amount) => (
-                IntPacking::pack_into(amount), PIERCE_VUL_PACKING_BITS,
-            ),
-            Affect::Abilities(amount) => (
-                StorePacking::pack(amount).into(), ABILITIES_PACKING_BITS,
-            ),
-            Affect::Resistances(amount) => (
-                StorePacking::pack(amount).into(), RESISTANCES_PACKING_BITS,
-            ),
-            Affect::Vulnerabilities(amount) => (
-                StorePacking::pack(amount).into(), VULNERABILITIES_PACKING_BITS,
-            ),
-            Affect::StrengthTemp(amount) => (
-                IntPacking::pack_into(amount), STRENGTH_TEMP_PACKING_BITS,
-            ),
-            Affect::VitalityTemp(amount) => (
-                IntPacking::pack_into(amount), VITALITY_TEMP_PACKING_BITS,
-            ),
-            Affect::DexterityTemp(amount) => (
-                IntPacking::pack_into(amount), DEXTERITY_TEMP_PACKING_BITS,
-            ),
-            Affect::LuckTemp(amount) => (IntPacking::pack_into(amount), LUCK_TEMP_PACKING_BITS),
-            Affect::StunResistanceTemp(amount) => (
-                IntPacking::pack_into(amount), STUN_RESISTANCE_TEMP_PACKING_BITS,
-            ),
-            Affect::BludgeonResistanceTemp(amount) => (
-                IntPacking::pack_into(amount), BLUDGEON_RESISTANCE_TEMP_PACKING_BITS,
-            ),
-            Affect::MagicResistanceTemp(amount) => (
-                IntPacking::pack_into(amount), MAGIC_RESISTANCE_TEMP_PACKING_BITS,
-            ),
-            Affect::PierceResistanceTemp(amount) => (
-                IntPacking::pack_into(amount), PIERCE_RESISTANCE_TEMP_PACKING_BITS,
-            ),
-            Affect::BludgeonVulnerabilityTemp(amount) => (
-                IntPacking::pack_into(amount), BLUDGEON_VULNERABILITY_TEMP_PACKING_BITS,
-            ),
-            Affect::MagicVulnerabilityTemp(amount) => (
-                IntPacking::pack_into(amount), MAGIC_VULNERABILITY_TEMP_PACKING_BITS,
-            ),
-            Affect::PierceVulnerabilityTemp(amount) => (
-                IntPacking::pack_into(amount), PIERCE_VULNERABILITY_TEMP_PACKING_BITS,
-            ),
-            Affect::AbilitiesTemp(amount) => (
-                StorePacking::pack(amount).into(), ABILITIES_TEMP_PACKING_BITS,
-            ),
-            Affect::ResistancesTemp(amount) => (
-                StorePacking::pack(amount).into(), RESISTANCES_TEMP_PACKING_BITS,
-            ),
-            Affect::VulnerabilitiesTemp(amount) => (
-                StorePacking::pack(amount).into(), VULNERABILITIES_TEMP_PACKING_BITS,
-            ),
-            Affect::Damage(amount) => (StorePacking::pack(amount).into(), DAMAGE_PACKING_BITS),
-            Affect::SetHealth(amount) => (amount.into(), SET_HEALTH_PACKING_BITS),
-            Affect::FloorHealth(amount) => (amount.into(), FLOOR_HEALTH_PACKING_BITS),
-            Affect::CeilHealth(amount) => (amount.into(), CEIL_HEALTH_PACKING_BITS),
-            Affect::HealthPercentMax(amount) => (
-                IntPacking::pack_into(amount), HEALTH_PERCENT_PACKING_BITS,
-            ),
-            Affect::SetHealthPercentMax(amount) => (amount.into(), SET_HEALTH_PERCENT_PACKING_BITS),
-            Affect::FloorHealthPercentMax(amount) => (
-                amount.into(), FLOOR_HEALTH_PERCENT_PACKING_BITS,
-            ),
-            Affect::CeilHealthPercentMax(amount) => (
-                amount.into(), CEIL_HEALTH_PERCENT_PACKING_BITS,
-            ),
-        };
-        amount.into() + variant
+        let (data, variant): (u128, felt252) = pack_affect(value);
+        data.into() + variant
     }
 
     fn unpack(value: felt252) -> Affect {
@@ -492,7 +407,7 @@ impl DamageStorePacking of StorePacking<Damage, u128> {
             }
     }
 
-    fn unpack(value: u32) -> Damage {
+    fn unpack(value: u128) -> Damage {
         let critical: u8 = MaskDowncast::cast(value);
         let power: u8 = ShiftCast::const_unpack::<SHIFT_1B>(value);
         let damage_type = match ShiftCast::const_unpack::<SHIFT_2B_U32>(value) {
@@ -526,10 +441,4 @@ pub impl EffectArrayStorePacking of StorePacking<Array<Effect>, Array<felt252>> 
 }
 
 pub impl EffectArrayReadWrite = storage::short_array::ShortArrayReadWrite<Effect>;
-// fn test() {
-//     let effects: Array<Effect> = Default::default();
-//     let effects: Array<Effect> = Store::read(0, storage_base_address_from_felt252(0))
-//         .unwrap_syscall();
-// }
-
 

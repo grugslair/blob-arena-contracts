@@ -5,6 +5,7 @@ use sai_core_utils::poseidon_serde::PoseidonSerde;
 use sai_core_utils::{SerdeAll, poseidon_hash_two};
 use sai_packing::byte::SHIFT_4B;
 use sai_packing::{BytePacking, ShiftCast};
+use starknet::SyscallResultTrait;
 pub use starknet::storage::{
     Map, Mutable, MutableVecTrait, StorageBase, StorageMapReadAccess, StorageMapWriteAccess,
     StoragePath, StoragePathEntry, StoragePointerReadAccess, Vec, VecTrait,
@@ -114,7 +115,7 @@ pub impl EffectReaderImpl of EffectReaderTrait {
         EffectArrayReadWrite::read_short_array(
             poseidon_hash_two(*self.effects_storage, n).try_into().unwrap(),
         )
-            .unwrap()
+            .unwrap_syscall()
     }
 }
 
@@ -138,7 +139,7 @@ pub fn read_chance_effects(effects_hash: felt252) -> Array<ChanceEffects> {
         let effects = EffectArrayReadWrite::read_short_array(
             poseidon_hash_two(effects_hash, n).try_into().unwrap(),
         )
-            .unwrap();
+            .unwrap_syscall();
         chance_effects
             .append(ChanceEffects { chance_ppm: this_chance.try_into().unwrap(), effects });
     }
@@ -151,7 +152,7 @@ pub fn read_all_effects(action_id: felt252) -> (Array<Effect>, Array<ChanceEffec
     let base_effects = EffectArrayReadWrite::read_short_array(
         poseidon_hash_two(effects_hash, 0).try_into().unwrap(),
     )
-        .unwrap();
+        .unwrap_syscall();
     let mut chance_effects: Array<ChanceEffects> = Default::default();
     let mut chances: u256 = 0;
     let mut n: u16 = 0;
@@ -169,7 +170,7 @@ pub fn read_all_effects(action_id: felt252) -> (Array<Effect>, Array<ChanceEffec
         let effects = EffectArrayReadWrite::read_short_array(
             poseidon_hash_two(effects_hash, n).try_into().unwrap(),
         )
-            .unwrap();
+            .unwrap_syscall();
         chance_effects
             .append(ChanceEffects { chance_ppm: this_chance.try_into().unwrap(), effects });
     }
@@ -194,7 +195,7 @@ pub fn write_chance_effects(effects_hash: felt252, chance_effects: Array<(u32, A
         FeltArrayReadWrite::write_short_array(
             poseidon_hash_two(effects_hash, m).try_into().unwrap(), effects,
         )
-            .unwrap();
+            .unwrap_syscall();
 
         chances += chance.into() * multiplier;
         multiplier *= 1_000_000;

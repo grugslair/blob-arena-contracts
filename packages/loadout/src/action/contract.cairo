@@ -8,7 +8,7 @@ mod action {
     use sai_core_utils::poseidon_serde::PoseidonSerde;
     use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess};
     use starknet::storage_access::StorePacking;
-    use starknet::{ClassHash, ContractAddress};
+    use starknet::{ClassHash, ContractAddress, SyscallResultTrait};
     use crate::action::action::{
         ChanceEffects, EffectArrayStorageMapReadAccess, EffectArrayStorageMapWriteAccess,
         EffectReaderTrait, Effects, byte_array_to_tag, get_effects_storage_address,
@@ -103,7 +103,7 @@ mod action {
             EffectArrayReadWrite::read_short_array(
                 poseidon_hash_two(effects_hash, 0).try_into().unwrap(),
             )
-                .unwrap()
+                .unwrap_syscall()
         }
 
         fn chance_effects(self: @ContractState, id: felt252) -> Array<ChanceEffects> {
@@ -242,7 +242,7 @@ mod action {
             self.speeds.write(action_id, action.speed);
             self.cooldowns.write(action_id, action.cooldown);
             FeltArrayReadWrite::write_short_array(effects_0_hash.try_into().unwrap(), base_effects)
-                .unwrap();
+                .unwrap_syscall();
             write_chance_effects(effects_hash, chance_effects);
             action_id
         }

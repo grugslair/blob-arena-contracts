@@ -35,6 +35,7 @@ pub struct Combat {
     pub round_effects: RoundEffects,
     pub round: u32,
     pub progress: CombatProgress,
+    pub ability_cap: Option<u16>,
     pub randomness: Randomness,
     pub action_1: felt252,
     pub action_2: felt252,
@@ -160,6 +161,7 @@ pub impl CombatImpl of CombatTrait {
         action_2: felt252,
         attach_check_1: ActionCheck,
         attach_check_2: ActionCheck,
+        ability_cap: Option<u16>,
         randomness: Randomness,
         action_dispatcher: IActionDispatcher,
     ) -> Combat {
@@ -176,6 +178,7 @@ pub impl CombatImpl of CombatTrait {
             attach_check_2,
             progress: CombatProgress::Active,
             randomness,
+            ability_cap,
             action_dispatcher,
             action_results: Default::default(),
             round_effect_results: Default::default(),
@@ -188,8 +191,12 @@ pub impl CombatImpl of CombatTrait {
     ) -> EffectResult {
         let actor_state = self.get_actor_state(source);
         let affect = match target {
-            Player::Player1 => self.state_1.apply_affect(affect, actor_state, ref self.randomness),
-            Player::Player2 => self.state_2.apply_affect(affect, actor_state, ref self.randomness),
+            Player::Player1 => self
+                .state_1
+                .apply_affect(affect, actor_state, self.ability_cap, ref self.randomness),
+            Player::Player2 => self
+                .state_2
+                .apply_affect(affect, actor_state, self.ability_cap, ref self.randomness),
         };
         EffectResult { target, affect }
     }
@@ -278,7 +285,7 @@ pub impl CombatImpl of CombatTrait {
             let cooldown = self.action_dispatcher().cooldown(action_id);
             if cooldown.is_zero() {
                 return action_id;
-            } else if last_used.is_zero() || ((cooldown.into() + last_used) < round) {
+            } else if last_used.is_zero() || ((cooldown + last_used) < round) {
                 write_at_address(storage_address, round.into() + ATTACK_AVAILABLE_BIT);
                 return action_id;
             }
@@ -358,8 +365,8 @@ pub impl CombatImpl of CombatTrait {
     }
 
     fn get_first_player(ref self: Combat) -> Option<Player> {
-        let speed_1 = self.action_dispatcher.speed(self.action_1) + (self.state_1.dexterity).into();
-        let speed_2 = self.action_dispatcher.speed(self.action_2) + (self.state_2.dexterity).into();
+        let speed_1 = self.action_dispatcher.speed(self.action_1) + (self.state_1.dexterity);
+        let speed_2 = self.action_dispatcher.speed(self.action_2) + (self.state_2.dexterity);
         self
             .first =
                 Some(

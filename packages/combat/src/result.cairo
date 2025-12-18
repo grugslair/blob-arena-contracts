@@ -1,4 +1,4 @@
-use ba_loadout::attributes::{ResistanceMods, Resistances, Vulnerabilities, VulnerabilityMods};
+use ba_loadout::action::{HealthMod, Modifiers};
 use sai_core_utils::BoolIntoBinary;
 use crate::Player;
 
@@ -105,46 +105,19 @@ pub struct EffectResult {
 pub enum AffectResult {
     None,
     Applied,
+    Health: u16,
     Stun: u8,
-    Block: u8,
-    Health: u8,
-    Strength: u8,
-    Vitality: VitalityResult,
-    Dexterity: u8,
-    Luck: u8,
-    StunResistance: u8,
-    BludgeonResistance: u8,
-    MagicResistance: u8,
-    PierceResistance: u8,
-    BludgeonVulnerability: u16,
-    MagicVulnerability: u16,
-    PierceVulnerability: u16,
+    StunModifier: u16,
+    StunModifierTemp: u16,
     Abilities: AbilitiesResult,
-    Resistances: Resistances,
-    Vulnerabilities: Vulnerabilities,
-    StrengthTemp: i8,
-    VitalityTemp: VitalityTempResult,
-    DexterityTemp: i8,
-    LuckTemp: i8,
-    StunResistanceTemp: i8,
-    BludgeonResistanceTemp: i8,
-    MagicResistanceTemp: i8,
-    PierceResistanceTemp: i8,
-    BludgeonVulnerabilityTemp: i16,
-    MagicVulnerabilityTemp: i16,
-    PierceVulnerabilityTemp: i16,
     AbilitiesTemp: AbilitiesTempResult,
-    ResistancesTemp: ResistanceMods,
-    VulnerabilitiesTemp: VulnerabilityMods,
+    DamageModifiers: Modifiers,
+    DamageModifiersTemp: Modifiers,
+    DamageModifierSet: Modifiers,
+    DamageModifierSetTemp: Modifiers,
     Damage: DamageResult,
-    SetHealth: u8,
-    FloorHealth: u8,
-    CeilHealth: u8,
-    HealthPercentMax: u8,
-    SetHealthPercentMax: u8,
-    FloorHealthPercentMax: u8,
-    CeilHealthPercentMax: u8,
 }
+
 
 /// Represents the result of a damage calculation
 ///
@@ -153,7 +126,7 @@ pub enum AffectResult {
 /// * `critical` - Whether the damage was a critical hit
 #[derive(Drop, Serde, PartialEq, Introspect)]
 pub struct DamageResult {
-    pub hp: u8,
+    pub hp: u16,
     pub critical: bool,
 }
 
@@ -189,11 +162,11 @@ pub struct VitalityTempResult {
 /// * `health` - The health change resulting from ability modifications
 #[derive(Drop, Serde, Copy, PartialEq, Introspect, Default)]
 pub struct AbilitiesResult {
-    pub strength: u8,
-    pub vitality: u8,
-    pub dexterity: u8,
-    pub luck: u8,
-    pub health: u8,
+    pub strength: u16,
+    pub vitality: u16,
+    pub dexterity: u16,
+    pub luck: u16,
+    pub health: u16,
 }
 
 /// Represents the result of applying temporary ability score modifiers
@@ -206,11 +179,11 @@ pub struct AbilitiesResult {
 /// * `health` - The health change resulting from temporary ability modifications
 #[derive(Drop, Serde, Copy, PartialEq, Introspect, Default)]
 pub struct AbilitiesTempResult {
-    pub strength: i8,
-    pub vitality: i8,
-    pub dexterity: i8,
-    pub luck: i8,
-    pub health: u8,
+    pub strength: i16,
+    pub vitality: i16,
+    pub dexterity: i16,
+    pub luck: i16,
+    pub health: u16,
 }
 
 /// Represents the result of a round effect application

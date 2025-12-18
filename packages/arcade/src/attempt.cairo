@@ -1,8 +1,7 @@
 use ba_combat::combat::{CombatProgress, Player};
 use ba_combat::combatant::CombatantState;
 use ba_loadout::Attributes;
-use ba_loadout::action::{IActionDispatcher, IActionDispatcherTrait};
-use ba_loadout::attributes::Abilities;
+use ba_loadout::action::{Abilities, IActionDispatcher, IActionDispatcherTrait};
 use ba_utils::{Randomness, RandomnessTrait};
 use core::num::traits::Zero;
 use starknet::storage::{
@@ -70,7 +69,7 @@ pub struct AttemptNode {
     pub player: ContractAddress,
     pub attributes: Attributes,
     pub token_hash: felt252,
-    pub health_regen: u8,
+    pub health_regen: u16,
     pub actions_available: Map<felt252, bool>,
     pub orb_uses: u32,
     pub combats: Map<u32, CombatNode>,
@@ -115,7 +114,7 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
         attributes: Attributes,
         actions: Array<felt252>,
         token_hash: felt252,
-        health_regen: u8,
+        health_regen: u16,
         expiry: u64,
     ) {
         self.player.write(player);
@@ -164,7 +163,7 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
             if cooldown == 0 {
                 return action_id;
             }
-            if last_used.is_zero() || ((cooldown.into() + last_used) < round) {
+            if last_used.is_zero() || ((cooldown + last_used) < round) {
                 self.opponent_actions.at(i).write((action_id, round));
                 return action_id;
             }
@@ -185,7 +184,7 @@ pub impl AttemptNodeImpl of AttemptNodeTrait {
             return action_id;
         }
         let last_used = self.action_last_used.read(action_id);
-        if last_used.is_zero() || ((cooldown.into() + last_used) < round) {
+        if last_used.is_zero() || ((cooldown + last_used) < round) {
             self.action_last_used.write(action_id, round);
             return action_id;
         }

@@ -48,6 +48,7 @@ mod combat {
         action_check_1: ActionCheck,
         action_check_2: ActionCheck,
         action_dispatcher: IActionDispatcher,
+        ability_cap: Option<u16>,
         randomness: Randomness,
     ) -> (RoundResult, Randomness) {
         let mut combat = CombatTrait::new(
@@ -59,6 +60,7 @@ mod combat {
             action_2,
             action_check_1,
             action_check_2,
+            ability_cap,
             randomness,
             action_dispatcher,
         );

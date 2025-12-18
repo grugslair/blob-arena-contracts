@@ -225,7 +225,7 @@ mod loadout_amma {
             let mut slot_ids: Array<felt252> = Default::default();
 
             loop {
-                let slot_id = index + slots.into();
+                let slot_id = index + slots;
                 if self.action_slots.read(slot_id).is_non_zero() {
                     self.action_slots.write(slot_id, 0);
                     slot_ids.append(slot_id);

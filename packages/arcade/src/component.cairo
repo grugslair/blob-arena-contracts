@@ -13,7 +13,7 @@ pub struct ArcadeActionResult {
     pub phase: ArcadeProgress,
     pub stage: u32,
     pub combat_n: u32,
-    pub health: u8,
+    pub health: u16,
 }
 
 #[starknet::component]
@@ -22,7 +22,7 @@ pub mod arcade_component {
     use ba_arcade::attempt::{ArcadeProgress, AttemptNode, AttemptNodePath, AttemptNodeTrait};
     use ba_arcade::table::{ActionLastUsed, ArcadeAttemptTable};
     use ba_combat::combat::ActionCheck;
-    use ba_combat::combatant::get_max_health_percent;
+    use ba_combat::combatant::get_starting_health_percent;
     use ba_combat::opponent::Opponent;
     use ba_combat::result::MoveResult;
     use ba_combat::systems::{get_action_dispatcher, set_action_dispatcher_address};
@@ -199,8 +199,7 @@ pub mod arcade_component {
         use ba_combat::Move;
         use ba_utils::Randomness;
         use starknet::{ClassHash, ContractAddress};
-        use crate::Opponent;
-        use super::{ArcadeActionResult, ArcadeProgress, AttemptNodePath};
+        use super::{ArcadeActionResult, ArcadeProgress, AttemptNodePath, Opponent};
 
         pub trait ArcadeInternalTrait<TState> {
             fn init(
@@ -235,7 +234,7 @@ pub mod arcade_component {
                 combat_n: u32,
                 stage: u32,
                 opponent: Opponent,
-                health: Option<u8>,
+                health: Option<u16>,
             );
 
             fn get_stage_reward(
@@ -300,7 +299,7 @@ pub mod arcade_component {
                 loadout_address, collection_address, token_id, action_slots,
             );
             let expiry = get_block_timestamp() + self.time_limit.read();
-            let health_regen = get_max_health_percent(
+            let health_regen = get_starting_health_percent(
                 attributes.vitality, self.health_regen_percent.read(),
             );
             let attempt = ArcadeAttemptTable {
@@ -476,7 +475,7 @@ pub mod arcade_component {
             combat_n: u32,
             stage: u32,
             opponent: Opponent,
-            health: Option<u8>,
+            health: Option<u16>,
         ) {
             let mut combat = attempt_ptr.combats.entry(combat_n);
             let mut player_state: CombatantState = attempt_ptr.attributes.read().into();

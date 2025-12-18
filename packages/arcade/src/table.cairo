@@ -27,7 +27,7 @@ pub struct ArcadeAttemptTable {
     pub expiry: u64,
     pub attributes: Attributes,
     pub actions: Span<felt252>,
-    pub health_regen: u8,
+    pub health_regen: u16,
     pub respawns: u32,
     pub stage: u32,
     pub phase: ArcadeProgress,
@@ -49,7 +49,7 @@ pub struct CombatTable {
     pub attempt: felt252,
     pub combat: u32,
     pub stage: u32,
-    pub starting_player_health: u8,
+    pub starting_player_health: u16,
     pub starting_opponent_attributes: Attributes,
 }
 
@@ -165,7 +165,7 @@ impl RoundResultToAttemptRoundImpl of AttemptRoundTrait<RoundResult> {
                 Move::Orb(orb) => MoveResult::Orb(OrbResult { id: orb, action: player_action }),
             },
             opponent_action,
-            first: self.first.into(),
+            first: self.first,
             round_effect_results: self.round_effect_results,
             action_results: self.action_results,
             progress: self.progress.into(),
